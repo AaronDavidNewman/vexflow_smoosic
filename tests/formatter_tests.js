@@ -95,6 +95,14 @@ VF.Test.Formatter = (function() {
         { stem: 'up' }
       );
 
+      // test: allow classes to be added to a note.
+      notes1.forEach((note) => {
+        note.attrs.classes = 'voice1';
+      });
+      notes1.forEach((note) => {
+        note.attrs.classes = 'voice2';
+      });
+
       var voices = [notes1, notes2].map(score.voice.bind(score));
 
       vf.Formatter()

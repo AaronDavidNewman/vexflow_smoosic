@@ -145,6 +145,10 @@ export class Annotation extends Modifier {
 
     // We're changing context parameters. Save current state.
     this.context.save();
+
+    const classString = Object.keys(this.getAttribute('classes')).join(' ');
+    this.context.openGroup(classString, this.getAttribute('id'));
+
     this.context.setFont(this.font.family, this.font.size, this.font.weight);
     const text_width = this.context.measureText(this.text).width;
 
@@ -203,6 +207,7 @@ export class Annotation extends Modifier {
 
     L('Rendering annotation: ', this.text, x, y);
     this.context.fillText(this.text, x, y);
+    this.context.closeGroup();
     this.context.restore();
   }
 }

@@ -113,6 +113,9 @@ export class Ornament extends Modifier {
     const stemDir = this.note.getStemDirection();
     const stave = this.note.getStave();
 
+    const classString = Object.keys(this.getAttribute('classes')).join(' ');
+    this.context.openGroup(classString, this.getAttribute('id'));
+
     // Get stem extents
     const stemExtents = this.note.getStem().getExtents();
     let y = stemDir === StaveNote.STEM_DOWN ? stemExtents.baseY : stemExtents.topY;
@@ -180,5 +183,6 @@ export class Ornament extends Modifier {
       glyphY -= this.render_options.accidentalUpperPadding;
       this.accidentalUpper.render(ctx, glyphX, glyphY);
     }
+    this.context.closeGroup();
   }
 }
