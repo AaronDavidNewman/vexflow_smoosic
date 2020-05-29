@@ -4167,6 +4167,7 @@ function (_Modifier) {
 
         x += symbol.width + symbol.xShift;
       });
+      this.context.closeGroup();
       this.context.restore();
     }
   }]);
