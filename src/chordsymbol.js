@@ -611,7 +611,7 @@ export class ChordSymbol extends Modifier {
 
       x += symbol.width + symbol.xShift;
     });
-
+    this.context.closeGroup();
     this.context.restore();
   }
 }
