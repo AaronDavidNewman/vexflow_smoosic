@@ -173,7 +173,7 @@ export const GonvilleMetrics = {
         superscriptOffset: -8,
         subscriptOffset: 6,
         kerningOffset: -2,
-        spacing: 0.05,
+        spacing: 100,
         superSubRatio: 0.66
       },
       csymDiminished: {
@@ -198,13 +198,13 @@ export const GonvilleMetrics = {
         scale: 0.8,
         leftSideBearing: 0,
         advanceWidth: 155,
-        yOffset: 0
+        yOffset: 250
       },
       csymParensRightTall: {
         scale: 0.8,
         leftSideBearing: -40,
         advanceWidth: 189,
-        yOffset: 0
+        yOffset: 250
       },
       csymBracketLeftTall: {
         scale: 0.8,
@@ -250,12 +250,12 @@ export const GonvilleMetrics = {
       accidentalSharp: {
         scale: 0.75,
         leftSideBearing: 40,
-        advanceWidth: 390,
-        yOffset: -282
+        advanceWidth: 250,
+        yOffset: -402
       },
       accidentalFlat: {
         scale: 0.9,
-        leftSideBearing: -10,
+        leftSideBearing: -50,
         advanceWidth: 208,
         yOffset: -184
       }

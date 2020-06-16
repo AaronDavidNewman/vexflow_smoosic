@@ -109,6 +109,10 @@ export class ChordSymbol extends Modifier {
     return Vex.Flow.DEFAULT_FONT_STACK[0].getResolution();
   }
 
+  static get spacingBetweenBlocks() {
+    return ChordSymbol.chordSymbolMetrics.global.spacing / ChordSymbol.engravingFontResolution;
+  }
+
   static getWidthForCharacter(c) {
     const resolution = ChordSymbol.textMetricsForEngravingFont.resolution;
     const metric = ChordSymbol.getMetricForCharacter(c);
@@ -262,7 +266,6 @@ export class ChordSymbol extends Modifier {
         const subAdj = (sup || sub) ? ChordSymbol.superSubRatio : 1;
         const adj = symbol.symbolType === ChordSymbol.symbolTypes.GLYPH ? glyphAdj * subAdj : fontAdj * subAdj;
 
-
         // If there are super/subscripts, they extend beyond the line so
         // assume they take up 2 lines
         if (sup || sub) {
@@ -274,10 +277,10 @@ export class ChordSymbol extends Modifier {
         if (symbol.symbolType === ChordSymbol.symbolTypes.GLYPH) {
           symbol.yShift += ChordSymbol.getYShiftForGlyph(symbol.glyph) * instance.pointsToPixels * subAdj;
           symbol.xShift += ChordSymbol.getXShiftForGlyph(symbol.glyph) * instance.pointsToPixels * subAdj;
-          symbol.width += ChordSymbol.chordSymbolMetrics.global.spacing * instance.pointsToPixels * subAdj;
           symbol.glyph.scale = symbol.glyph.scale * adj;
+          symbol.width = ChordSymbol.getWidthForGlyph(symbol.glyph) * instance.pointsToPixels * subAdj;
         } else if (symbol.symbolType === ChordSymbol.symbolTypes.TEXT) {
-          symbol.width = symbol.width * instance.pointsToPixels;
+          symbol.width = symbol.width * instance.pointsToPixels * subAdj;
           symbol.yShift += ChordSymbol.getYOffsetForText(symbol.text) * adj;
         }
 
@@ -285,6 +288,7 @@ export class ChordSymbol extends Modifier {
           symbol.glyph.code === ChordSymbol.glyphs.over.code) {
           lineSpaces = 2;
         }
+        symbol.width += ChordSymbol.spacingBetweenBlocks * instance.pointsToPixels * subAdj;
 
         // If a subscript immediately  follows a superscript block, try to
         // overlay them.
@@ -441,25 +445,18 @@ export class ChordSymbol extends Modifier {
     // pixel values when we know what the font is.
     if (symbolType === ChordSymbol.symbolTypes.GLYPH && typeof(parameters.glyph) === 'string') {
       const glyphArgs = ChordSymbol.glyphs[parameters.glyph];
-      let glyphPoints = 20;
-      // super and subscript are smaller
-      if (symbolModifier !== ChordSymbol.symbolModifiers.NONE) {
-        glyphPoints = glyphPoints / 1.3;
-      }
+      const glyphPoints = 20;
       rv.glyph = new Glyph(glyphArgs.code, glyphPoints, { category: 'chordSymbol' });
       // Beware: glyph.metrics is not the same as glyph.getMetrics() !
-      rv.glyph.point = rv.glyph.point * rv.glyph.metrics.scale;
-      rv.width = rv.glyph.getMetrics().width;
+      // rv.glyph.point = rv.glyph.point * rv.glyph.metrics.scale;
+      // rv.width = rv.glyph.getMetrics().width;
       // don't set yShift here, b/c we need to do it at formatting time after the font is set.
     } else if (symbolType === ChordSymbol.symbolTypes.TEXT) {
       let twidth = 0;
       for (let i = 0; i < rv.text.length; ++i) {
         twidth += ChordSymbol.getWidthForCharacter(rv.text[i]);
       }
-      if (symbolModifier !== ChordSymbol.symbolModifiers.NONE) {
-        twidth = twidth / 1.3;
-      }
-      rv.width = twidth + ChordSymbol.textMetricsForEngravingFont.spacing / ChordSymbol.textMetricsForEngravingFont.resolution;
+      rv.width = twidth;
     } else if (symbolType === ChordSymbol.symbolTypes.LINE) {
       rv.width = parameters.width;
     }

@@ -338,7 +338,7 @@ export const PetalumaMetrics = {
         superscriptOffset: -8,
         subscriptOffset: 6,
         kerningOffset: -1.5,
-        spacing: 0.05,
+        spacing: 20,
         superSubRatio: 0.73
       },
       csymDiminished: {
@@ -363,13 +363,13 @@ export const PetalumaMetrics = {
         scale: 0.8,
         leftSideBearing: 0,
         advanceWidth: 155,
-        yOffset: 0
+        yOffset: 150
       },
       csymParensRightTall: {
         scale: 0.8,
         leftSideBearing: 40,
         advanceWidth: 189,
-        yOffset: 0
+        yOffset: 150
       },
       csymBracketLeftTall: {
         scale: 0.8,
@@ -413,16 +413,16 @@ export const PetalumaMetrics = {
         yOffset: 0
       },
       accidentalSharp: {
-        scale: 0.77,
-        leftSideBearing: 25,
-        advanceWidth: 490,
+        scale: 0.7,
+        leftSideBearing: 0,
+        advanceWidth: 425,
         yOffset: -422
       },
       accidentalFlat: {
-        scale: 0.9,
-        leftSideBearing: 25,
-        advanceWidth: 208,
-        yOffset: -184
+        scale: 0.8,
+        leftSideBearing: -10,
+        advanceWidth: 228,
+        yOffset: -284
       }
     }
   }

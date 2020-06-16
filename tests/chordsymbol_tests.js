@@ -169,7 +169,7 @@ VF.Test.ChordSymbol = (function() {
     },
 
     fontSize: function(options) {
-      var vf = VF.Test.makeFactory(options, 650, 580);
+      var vf = VF.Test.makeFactory(options, 750, 580);
       var ctx = vf.getContext();
       ctx.scale(1.5, 1.5); ctx.fillStyle = '#221'; ctx.strokeStyle = '#221';
 
@@ -229,17 +229,17 @@ VF.Test.ChordSymbol = (function() {
       draw(chords, 140);
 
       chords = [];
-      chords.push(new VF.ChordSymbol().setFontSize(10).addGlyphOrText('Ab7')
-        .addGlyphOrText('(#11b9)', { symbolModifier: VF.ChordSymbol.symbolModifiers.SUPERSCRIPT })
+      chords.push(new VF.ChordSymbol().setFontSize(10).addGlyphOrText('Ab')
+        .addGlyphOrText('7(#11b9)', { symbolModifier: VF.ChordSymbol.symbolModifiers.SUPERSCRIPT })
       );
-      chords.push(new VF.ChordSymbol().setFontSize(14).addGlyphOrText('C#7')
-        .addGlyphOrText('(#11b9)', { symbolModifier: VF.ChordSymbol.symbolModifiers.SUPERSCRIPT })
+      chords.push(new VF.ChordSymbol().setFontSize(14).addGlyphOrText('C#')
+        .addGlyphOrText('7(#11b9)', { symbolModifier: VF.ChordSymbol.symbolModifiers.SUPERSCRIPT })
       );
-      chords.push(new VF.ChordSymbol().setFontSize(16).addGlyphOrText('Ab7')
-        .addGlyphOrText('(#11b9)', { symbolModifier: VF.ChordSymbol.symbolModifiers.SUPERSCRIPT })
+      chords.push(new VF.ChordSymbol().setFontSize(16).addGlyphOrText('Ab')
+        .addGlyphOrText('7(#11b9)', { symbolModifier: VF.ChordSymbol.symbolModifiers.SUPERSCRIPT })
       );
-      chords.push(new VF.ChordSymbol().setFontSize(18).addGlyphOrText('C#7')
-        .addGlyphOrText('(#11b9)', { symbolModifier: VF.ChordSymbol.symbolModifiers.SUPERSCRIPT })
+      chords.push(new VF.ChordSymbol().setFontSize(18).addGlyphOrText('C#')
+        .addGlyphOrText('7(#11b9)', { symbolModifier: VF.ChordSymbol.symbolModifiers.SUPERSCRIPT })
       );
       draw(chords, 240);
 

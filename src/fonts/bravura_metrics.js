@@ -311,7 +311,7 @@ export const BravuraMetrics = {
         superscriptOffset: -8,
         subscriptOffset: 6,
         kerningOffset: -2,
-        spacing: 0.05,
+        spacing: 100,
         superSubRatio: 0.66
       },
       csymDiminished: {
@@ -334,15 +334,15 @@ export const BravuraMetrics = {
       },
       csymParensLeftTall: {
         scale: 0.8,
-        leftSideBearing: 0,
-        advanceWidth: 155,
-        yOffset: 0
+        leftSideBearing: -20,
+        advanceWidth: 184,
+        yOffset: 250
       },
       csymParensRightTall: {
         scale: 0.8,
-        leftSideBearing: -40,
+        leftSideBearing: 0,
         advanceWidth: 189,
-        yOffset: 0
+        yOffset: 250
       },
       csymBracketLeftTall: {
         scale: 0.8,
@@ -387,14 +387,14 @@ export const BravuraMetrics = {
       },
       accidentalSharp: {
         scale: 0.75,
-        leftSideBearing: 40,
-        advanceWidth: 390,
-        yOffset: -282
+        leftSideBearing: 20,
+        advanceWidth: 250,
+        yOffset: -302
       },
       accidentalFlat: {
         scale: 0.9,
-        leftSideBearing: -10,
-        advanceWidth: 208,
+        leftSideBearing: -20,
+        advanceWidth: 226,
         yOffset: -184
       }
     }
