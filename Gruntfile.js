@@ -30,7 +30,7 @@ module.exports = (grunt) => {
 
   function webpackConfig(target, preset, mode) {
     return {
-      mode,
+      mode: 'development',
       entry: MODULE_ENTRY,
       output: {
         path: BUILD_DIR,
@@ -39,7 +39,7 @@ module.exports = (grunt) => {
         libraryTarget: 'umd',
         libraryExport: 'default',
       },
-      devtool: (mode === 'production') ? 'source-map' : false,
+      devtool: 'source-map',
       module: {
         rules: [
           {

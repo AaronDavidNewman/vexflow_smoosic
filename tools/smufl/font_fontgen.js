@@ -1,5 +1,5 @@
 /*
-Convert SMuFL OTF font to Vexflow glyph file.
+Convert text font to Vexflow glyph file.
 
 Usage: node fontgen.js Bravura.otf ../../src/fonts/bravura_glyphs.js
 */
@@ -45,8 +45,7 @@ function toVFPath(glyph) {
     'y_max': bb.y2,
     'ha': bb.y2 - bb.y1,
     'leftSideBearing': glyph.leftSideBearing,
-    'advanceWidth': glyph.advanceWidth,
-    'o': pathStr,
+    'advanceWidth': glyph.advanceWidth
   };
 }
 
@@ -63,24 +62,15 @@ const outFile = args[1];
 const font = opentype.loadSync(fontFile);
 const glyphNamesData = fs.readFileSync('./config/glyphnames.json');
 const glyphNames = JSON.parse(glyphNamesData);
-const VALID_CODES = require('./config/valid_codes');
 
 const fontData = {};
+let code = 33;
 
-// For each code in VALID_CODES, load the UTF code point from glyphnames.json, look
-// it up in the font file, and generate a vexflow path.
-Object.keys(VALID_CODES).forEach(k => {
-  const glyphCode = glyphNames[k];
-  if (!glyphCode) {
-    LogError('Skipping missing glyph:', k);
-    return;
-  }
-  const code = glyphCode.codepoint.substring(2);
-  const glyph = font.charToGlyph(String.fromCodePoint(parseInt(code, 16)));
-
-  fontData[k] = toVFPath(glyph);
-});
-
+for (; code < 95; ++code) {
+  const ch = String.fromCharCode(code);
+  const glyph = font.charToGlyph(ch);
+  fontData[ch] = toVFPath(glyph);
+}
 
 // File format for fonts/font_glyphs.js
 const fileData = {
