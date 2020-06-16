@@ -56,6 +56,12 @@ export class ChordSymbol extends Modifier {
     return ChordSymbol.debug;
   }
 
+  // ### NOFORMAT
+  // used to debug formatting by turning it off.
+  static get NOFORMAT() {
+    return false;
+  }
+
   static set DEBUG(val) {
     ChordSymbol.debug = val;
   }
@@ -84,6 +90,9 @@ export class ChordSymbol extends Modifier {
   }
 
   static getMetricForCharacter(c) {
+    if (ChordSymbol.NOFORMAT) {
+      return null;
+    }
     if (ChordSymbol.textMetricsForEngravingFont.glyphs[c]) {
       return ChordSymbol.textMetricsForEngravingFont.glyphs[c];
     }
@@ -117,7 +126,7 @@ export class ChordSymbol extends Modifier {
     const resolution = ChordSymbol.textMetricsForEngravingFont.resolution;
     const metric = ChordSymbol.getMetricForCharacter(c);
     if (!metric) {
-      return 7;
+      return 0.65;
     }
     return metric.advanceWidth / resolution;
   }
@@ -125,7 +134,7 @@ export class ChordSymbol extends Modifier {
   static getWidthForGlyph(glyph) {
     const metric = ChordSymbol.getMetricForGlyph(glyph.code);
     if (!metric) {
-      return 7;  // probably should do something here.
+      return 0.65;  // probably should do something here.
     }
     return metric.advanceWidth / ChordSymbol.engravingFontResolution;
   }

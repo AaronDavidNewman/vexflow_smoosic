@@ -200,8 +200,8 @@ VF.Test.ChordSymbol = (function() {
         .addGlyphOrText('#11', { symbolModifier: VF.ChordSymbol.symbolModifiers.SUBSCRIPT })
       );
       chords.push(new VF.ChordSymbol().setFontSize(14).addText('F7')
-        .addGlyphOrText('4', { symbolModifier: VF.ChordSymbol.symbolModifiers.SUPERSCRIPT })
-        .addGlyphOrText('6', { symbolModifier: VF.ChordSymbol.symbolModifiers.SUBSCRIPT })
+        .addGlyphOrText('add 3', { symbolModifier: VF.ChordSymbol.symbolModifiers.SUPERSCRIPT })
+        .addGlyphOrText('omit 9', { symbolModifier: VF.ChordSymbol.symbolModifiers.SUBSCRIPT })
       );
       chords.push(new VF.ChordSymbol().setFontSize(16).addText('F7')
         .addGlyphOrText('b9', { symbolModifier: VF.ChordSymbol.symbolModifiers.SUPERSCRIPT })
