@@ -245,7 +245,8 @@ export const GonvilleMetrics = {
       csymMajorSeventh: {
         scale: 1,
         leftSideBearing: 0,
-        yOffset: 0
+        yOffset: 0,
+        advanceWidth: 600        
       },
       accidentalSharp: {
         scale: 0.75,

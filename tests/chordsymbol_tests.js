@@ -121,7 +121,7 @@ VF.Test.ChordSymbol = (function() {
     },
 
     top: function(options) {
-      var vf = VF.Test.makeFactory(options, 500, 580);
+      var vf = VF.Test.makeFactory(options, 650, 650);
       var ctx = vf.getContext();
       ctx.scale(1.5, 1.5); ctx.fillStyle = '#221'; ctx.strokeStyle = '#221';
 
@@ -129,22 +129,22 @@ VF.Test.ChordSymbol = (function() {
         return new VF.StaveNote({ keys, duration }).addModifier(0, chordSymbol);
       }
 
-      function draw(chord1, chord2, y) {
+      function draw(c1, c2, y) {
         var notes = [];
 
         var stave = new VF.Stave(10, y, 450)
           .addClef('treble').setContext(ctx).draw();
 
-        notes.push(newNote(['e/4', 'a/4', 'd/5'], 'h', chord1)
+        notes.push(newNote(['e/4', 'a/4', 'd/5'], 'h', c1)
           .addAccidental(0, new VF.Accidental('b')));
-        notes.push(newNote(['c/4', 'e/4', 'B/4'], 'h', chord2));
+        notes.push(newNote(['c/4', 'e/4', 'b/4'], 'h', c2));
         VF.Formatter.FormatAndDraw(ctx, stave, notes);
       }
 
       var chord1 = new VF.ChordSymbol().addText('F7').setHorizontal('left')
         .addGlyphOrText('(#11b9)', { symbolModifier: VF.ChordSymbol.symbolModifiers.SUPERSCRIPT });
       var chord2 = new VF.ChordSymbol()
-        .addText('C')
+        .addText('C').setHorizontal('left')
         .addGlyphSuperscript('majorSeventh');
       draw(chord1, chord2, 40);
 

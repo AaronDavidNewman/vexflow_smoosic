@@ -59,7 +59,11 @@ export class ChordSymbol extends Modifier {
   // ### NOFORMAT
   // used to debug formatting by turning it off.
   static get NOFORMAT() {
-    return false;
+    return typeof(ChordSymbol.noFormat) === 'undefined' ? false : ChordSymbol.noFormat;
+  }
+
+  static set NOFORMAT(val) {
+    ChordSymbol.noFormat = val;
   }
 
   static set DEBUG(val) {
@@ -358,7 +362,7 @@ export class ChordSymbol extends Modifier {
 
     let fontFamily = 'Arial';
     if (this.musicFont.name === 'Petaluma') {
-      fontFamily = 'petaluma_scriptregular,Cursive';
+      fontFamily = 'petaluma_scriptregular,Arial';
     } else {
       fontFamily = 'robotoSlab,Times';
     }
