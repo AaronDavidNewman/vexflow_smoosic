@@ -90,6 +90,15 @@ export const Roboto_SlabFont = {
       "leftSideBearing": 84,
       "advanceWidth": 1154
     },
+    " ": {
+      "x_min": 0,
+      "x_max": 0,
+      "y_min": 0,
+      "y_max": 0,
+      "ha": 0,
+      "leftSideBearing": 0,
+      "advanceWidth": 509
+    },
     "!": {
       "x_min": 143,
       "x_max": 340,
@@ -557,9 +566,297 @@ export const Roboto_SlabFont = {
       "ha": 727,
       "leftSideBearing": 71,
       "advanceWidth": 864
+    },
+    "_": {
+      "x_min": 119,
+      "x_max": 1041,
+      "y_min": -154,
+      "y_max": 0,
+      "ha": 154,
+      "leftSideBearing": 119,
+      "advanceWidth": 1168
+    },
+    "`": {
+      "x_min": 40,
+      "x_max": 456,
+      "y_min": 1288,
+      "y_max": 1560,
+      "ha": 272,
+      "leftSideBearing": 40,
+      "advanceWidth": 496
+    },
+    "a": {
+      "x_min": 79,
+      "x_max": 1053,
+      "y_min": -21,
+      "y_max": 1102,
+      "ha": 1123,
+      "leftSideBearing": 79,
+      "advanceWidth": 1132
+    },
+    "b": {
+      "x_min": -16,
+      "x_max": 1071,
+      "y_min": -21,
+      "y_max": 1560,
+      "ha": 1581,
+      "leftSideBearing": -16,
+      "advanceWidth": 1145
+    },
+    "c": {
+      "x_min": 78,
+      "x_max": 988,
+      "y_min": -21,
+      "y_max": 1102,
+      "ha": 1123,
+      "leftSideBearing": 78,
+      "advanceWidth": 1067
+    },
+    "d": {
+      "x_min": 78,
+      "x_max": 1156,
+      "y_min": -21,
+      "y_max": 1560,
+      "ha": 1581,
+      "leftSideBearing": 78,
+      "advanceWidth": 1218
+    },
+    "e": {
+      "x_min": 74,
+      "x_max": 980,
+      "y_min": -21,
+      "y_max": 1102,
+      "ha": 1123,
+      "leftSideBearing": 74,
+      "advanceWidth": 1059
+    },
+    "f": {
+      "x_min": 64,
+      "x_max": 731,
+      "y_min": 0,
+      "y_max": 1581,
+      "ha": 1581,
+      "leftSideBearing": 64,
+      "advanceWidth": 725
+    },
+    "g": {
+      "x_min": 78,
+      "x_max": 1133,
+      "y_min": -437,
+      "y_max": 1102,
+      "ha": 1539,
+      "leftSideBearing": 78,
+      "advanceWidth": 1157
+    },
+    "h": {
+      "x_min": 49,
+      "x_max": 1255,
+      "y_min": 0,
+      "y_max": 1560,
+      "ha": 1560,
+      "leftSideBearing": 49,
+      "advanceWidth": 1315
+    },
+    "i": {
+      "x_min": 67,
+      "x_max": 590,
+      "y_min": 0,
+      "y_max": 1560,
+      "ha": 1560,
+      "leftSideBearing": 67,
+      "advanceWidth": 652
+    },
+    "j": {
+      "x_min": -56,
+      "x_max": 381,
+      "y_min": -437,
+      "y_max": 1560,
+      "ha": 1997,
+      "leftSideBearing": -56,
+      "advanceWidth": 525
+    },
+    "k": {
+      "x_min": 64,
+      "x_max": 1248,
+      "y_min": 0,
+      "y_max": 1560,
+      "ha": 1560,
+      "leftSideBearing": 64,
+      "advanceWidth": 1287
+    },
+    "l": {
+      "x_min": 64,
+      "x_max": 587,
+      "y_min": 0,
+      "y_max": 1560,
+      "ha": 1560,
+      "leftSideBearing": 64,
+      "advanceWidth": 653
+    },
+    "m": {
+      "x_min": 74,
+      "x_max": 1905,
+      "y_min": 0,
+      "y_max": 1102,
+      "ha": 1102,
+      "leftSideBearing": 74,
+      "advanceWidth": 1977
+    },
+    "n": {
+      "x_min": 74,
+      "x_max": 1278,
+      "y_min": 0,
+      "y_max": 1102,
+      "ha": 1102,
+      "leftSideBearing": 74,
+      "advanceWidth": 1343
+    },
+    "o": {
+      "x_min": 78,
+      "x_max": 1046,
+      "y_min": -21,
+      "y_max": 1102,
+      "ha": 1123,
+      "leftSideBearing": 78,
+      "advanceWidth": 1124
+    },
+    "p": {
+      "x_min": 34,
+      "x_max": 1119,
+      "y_min": -416,
+      "y_max": 1102,
+      "ha": 1518,
+      "leftSideBearing": 34,
+      "advanceWidth": 1197
+    },
+    "q": {
+      "x_min": 78,
+      "x_max": 1135,
+      "y_min": -416,
+      "y_max": 1102,
+      "ha": 1518,
+      "leftSideBearing": 78,
+      "advanceWidth": 1139
+    },
+    "r": {
+      "x_min": 72,
+      "x_max": 808,
+      "y_min": 0,
+      "y_max": 1102,
+      "ha": 1102,
+      "leftSideBearing": 72,
+      "advanceWidth": 854
+    },
+    "s": {
+      "x_min": 104,
+      "x_max": 933,
+      "y_min": -21,
+      "y_max": 1102,
+      "ha": 1123,
+      "leftSideBearing": 104,
+      "advanceWidth": 1022
+    },
+    "t": {
+      "x_min": 24,
+      "x_max": 678,
+      "y_min": -17,
+      "y_max": 1343,
+      "ha": 1360,
+      "leftSideBearing": 24,
+      "advanceWidth": 730
+    },
+    "u": {
+      "x_min": 52,
+      "x_max": 1181,
+      "y_min": -21,
+      "y_max": 1082,
+      "ha": 1103,
+      "leftSideBearing": 52,
+      "advanceWidth": 1245
+    },
+    "v": {
+      "x_min": 26,
+      "x_max": 1176,
+      "y_min": 0,
+      "y_max": 1082,
+      "ha": 1082,
+      "leftSideBearing": 26,
+      "advanceWidth": 1206
+    },
+    "w": {
+      "x_min": 52,
+      "x_max": 1777,
+      "y_min": 0,
+      "y_max": 1082,
+      "ha": 1082,
+      "leftSideBearing": 52,
+      "advanceWidth": 1823
+    },
+    "x": {
+      "x_min": 42,
+      "x_max": 1163,
+      "y_min": 0,
+      "y_max": 1082,
+      "ha": 1082,
+      "leftSideBearing": 42,
+      "advanceWidth": 1203
+    },
+    "y": {
+      "x_min": 24,
+      "x_max": 1172,
+      "y_min": -437,
+      "y_max": 1082,
+      "ha": 1519,
+      "leftSideBearing": 24,
+      "advanceWidth": 1192
+    },
+    "z": {
+      "x_min": 88,
+      "x_max": 960,
+      "y_min": 0,
+      "y_max": 1082,
+      "ha": 1082,
+      "leftSideBearing": 88,
+      "advanceWidth": 1032
+    },
+    "{": {
+      "x_min": 63,
+      "x_max": 671,
+      "y_min": -364,
+      "y_max": 1597,
+      "ha": 1961,
+      "leftSideBearing": 63,
+      "advanceWidth": 701
+    },
+    "|": {
+      "x_min": 150,
+      "x_max": 307,
+      "y_min": -270,
+      "y_max": 1456,
+      "ha": 1726,
+      "leftSideBearing": 150,
+      "advanceWidth": 451
+    },
+    "}": {
+      "x_min": 27,
+      "x_max": 635,
+      "y_min": -364,
+      "y_max": 1597,
+      "ha": 1961,
+      "leftSideBearing": 27,
+      "advanceWidth": 701
+    },
+    "~": {
+      "x_min": 121,
+      "x_max": 1257,
+      "y_min": 401,
+      "y_max": 803,
+      "ha": 402,
+      "leftSideBearing": 121,
+      "advanceWidth": 1386
     }
   },
   "fontFamily": "Roboto Slab",
   "resolution": 2048,
-  "generatedOn": "2020-06-15T20:37:29.714Z"
+  "generatedOn": "2020-06-17T17:41:06.497Z"
 };

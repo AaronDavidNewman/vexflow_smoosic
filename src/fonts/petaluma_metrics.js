@@ -335,20 +335,20 @@ export const PetalumaMetrics = {
     },
     chordSymbol: {
       global: {
-        superscriptOffset: -8,
-        subscriptOffset: 6,
-        kerningOffset: -1.5,
+        superscriptOffset: -400,
+        subscriptOffset: 300,
+        kerningOffset: -150,
         spacing: 20,
         superSubRatio: 0.73
       },
       csymDiminished: {
-        scale: 1,
+        scale: 0.8,
         leftSideBearing: -95,
         advanceWidth: 506,
         yOffset: 0
       },
       csymHalfDiminished: {
-        scale: 1,
+        scale: 0.8,
         leftSideBearing: -32,
         advanceWidth: 506,
         yOffset: 0
@@ -384,16 +384,16 @@ export const PetalumaMetrics = {
         yOffset: 0
       },
       csymParensLeftVeryTall: {
-        scale: 0.8,
+        scale: 0.95,
         leftSideBearing: 0,
-        advanceWidth: 101,
-        yOffset: 0
+        advanceWidth: 200,
+        yOffset: 250
       },
       csymParensRightVeryTall: {
-        scale: 0.8,
-        leftSideBearing: -20,
+        scale: 0.9,
+        leftSideBearing: -100,
         advanceWidth: 111,
-        yOffset: 0
+        yOffset: 250
       },
       csymDiagonalArrangementSlash: {
         scale: 0.6,

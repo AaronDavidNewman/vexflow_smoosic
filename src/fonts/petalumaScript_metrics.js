@@ -3,7 +3,15 @@ export const PetalumaScriptMetrics = {
   smufl: false,
   spacing:50,
   "glyphs": {
-    "0": {
+    " ": {
+      "x_min": 0,
+      "x_max": 250,
+      "y_min": 0,
+      "y_max": 500,
+      "ha": 500,
+      "leftSideBearing": 0,
+      "advanceWidth": 250
+    },"0": {
       "x_min": 33,
       "x_max": 534,
       "y_min": -13,
@@ -560,7 +568,296 @@ export const PetalumaScriptMetrics = {
       "ha": 295,
       "leftSideBearing": 43,
       "advanceWidth": 478
+    },
+    "_": {
+      "x_min": 29,
+      "x_max": 563,
+      "y_min": -110,
+      "y_max": -1,
+      "ha": 109,
+      "leftSideBearing": 29,
+      "advanceWidth": 598
+    },
+    "`": {
+      "x_min": 54,
+      "x_max": 321,
+      "y_min": 540,
+      "y_max": 747,
+      "ha": 207,
+      "leftSideBearing": 54,
+      "advanceWidth": 368
+    },
+    "a": {
+      "x_min": 20,
+      "x_max": 447,
+      "y_min": -17,
+      "y_max": 495,
+      "ha": 512,
+      "leftSideBearing": 20,
+      "advanceWidth": 494
+    },
+    "b": {
+      "x_min": 37,
+      "x_max": 466,
+      "y_min": -27,
+      "y_max": 770,
+      "ha": 797,
+      "leftSideBearing": 37,
+      "advanceWidth": 510
+    },
+    "c": {
+      "x_min": 35,
+      "x_max": 456,
+      "y_min": -9,
+      "y_max": 507,
+      "ha": 516,
+      "leftSideBearing": 35,
+      "advanceWidth": 460
+    },
+    "d": {
+      "x_min": 45,
+      "x_max": 520,
+      "y_min": -15,
+      "y_max": 764,
+      "ha": 779,
+      "leftSideBearing": 45,
+      "advanceWidth": 560
+    },
+    "e": {
+      "x_min": 33,
+      "x_max": 370,
+      "y_min": -5,
+      "y_max": 501,
+      "ha": 506,
+      "leftSideBearing": 33,
+      "advanceWidth": 397
+    },
+    "f": {
+      "x_min": 35,
+      "x_max": 411,
+      "y_min": -13,
+      "y_max": 695,
+      "ha": 708,
+      "leftSideBearing": 35,
+      "advanceWidth": 453
+    },
+    "g": {
+      "x_min": 33,
+      "x_max": 551,
+      "y_min": -257,
+      "y_max": 505,
+      "ha": 762,
+      "leftSideBearing": 33,
+      "advanceWidth": 611
+    },
+    "h": {
+      "x_min": 32,
+      "x_max": 458,
+      "y_min": -29,
+      "y_max": 743,
+      "ha": 772,
+      "leftSideBearing": 32,
+      "advanceWidth": 491
+    },
+    "i": {
+      "x_min": 45,
+      "x_max": 167,
+      "y_min": -13,
+      "y_max": 631,
+      "ha": 644,
+      "leftSideBearing": 45,
+      "advanceWidth": 220
+    },
+    "j": {
+      "x_min": -127,
+      "x_max": 261,
+      "y_min": -231,
+      "y_max": 601,
+      "ha": 832,
+      "leftSideBearing": -127,
+      "advanceWidth": 308
+    },
+    "k": {
+      "x_min": 39,
+      "x_max": 443,
+      "y_min": -3,
+      "y_max": 700,
+      "ha": 703,
+      "leftSideBearing": 39,
+      "advanceWidth": 497
+    },
+    "l": {
+      "x_min": 58,
+      "x_max": 168,
+      "y_min": -8,
+      "y_max": 686,
+      "ha": 694,
+      "leftSideBearing": 58,
+      "advanceWidth": 227
+    },
+    "m": {
+      "x_min": 39,
+      "x_max": 688,
+      "y_min": -14,
+      "y_max": 501,
+      "ha": 515,
+      "leftSideBearing": 39,
+      "advanceWidth": 718
+    },
+    "n": {
+      "x_min": 45,
+      "x_max": 491,
+      "y_min": -32,
+      "y_max": 512,
+      "ha": 544,
+      "leftSideBearing": 45,
+      "advanceWidth": 541
+    },
+    "o": {
+      "x_min": 41,
+      "x_max": 424,
+      "y_min": -12,
+      "y_max": 493,
+      "ha": 505,
+      "leftSideBearing": 41,
+      "advanceWidth": 447
+    },
+    "p": {
+      "x_min": 25,
+      "x_max": 529,
+      "y_min": -260,
+      "y_max": 500,
+      "ha": 760,
+      "leftSideBearing": 25,
+      "advanceWidth": 573
+    },
+    "q": {
+      "x_min": 53,
+      "x_max": 603,
+      "y_min": -235,
+      "y_max": 514,
+      "ha": 749,
+      "leftSideBearing": 53,
+      "advanceWidth": 623
+    },
+    "r": {
+      "x_min": 32,
+      "x_max": 407,
+      "y_min": -7,
+      "y_max": 492,
+      "ha": 499,
+      "leftSideBearing": 32,
+      "advanceWidth": 460
+    },
+    "s": {
+      "x_min": 49,
+      "x_max": 416,
+      "y_min": -12,
+      "y_max": 519,
+      "ha": 531,
+      "leftSideBearing": 49,
+      "advanceWidth": 460
+    },
+    "t": {
+      "x_min": 32,
+      "x_max": 442,
+      "y_min": -5,
+      "y_max": 684,
+      "ha": 689,
+      "leftSideBearing": 32,
+      "advanceWidth": 469
+    },
+    "u": {
+      "x_min": 41,
+      "x_max": 487,
+      "y_min": -5,
+      "y_max": 507,
+      "ha": 512,
+      "leftSideBearing": 41,
+      "advanceWidth": 510
+    },
+    "v": {
+      "x_min": 16,
+      "x_max": 441,
+      "y_min": -20,
+      "y_max": 542,
+      "ha": 562,
+      "leftSideBearing": 16,
+      "advanceWidth": 456
+    },
+    "w": {
+      "x_min": 39,
+      "x_max": 639,
+      "y_min": -22,
+      "y_max": 505,
+      "ha": 527,
+      "leftSideBearing": 39,
+      "advanceWidth": 661
+    },
+    "x": {
+      "x_min": 15,
+      "x_max": 505,
+      "y_min": -39,
+      "y_max": 539,
+      "ha": 578,
+      "leftSideBearing": 15,
+      "advanceWidth": 541
+    },
+    "y": {
+      "x_min": -98,
+      "x_max": 501,
+      "y_min": -242,
+      "y_max": 511,
+      "ha": 753,
+      "leftSideBearing": -98,
+      "advanceWidth": 548
+    },
+    "z": {
+      "x_min": 27,
+      "x_max": 479,
+      "y_min": -3,
+      "y_max": 494,
+      "ha": 497,
+      "leftSideBearing": 27,
+      "advanceWidth": 494
+    },
+    "{": {
+      "x_min": 0,
+      "x_max": 0,
+      "y_min": 0,
+      "y_max": 0,
+      "ha": 0,
+      "leftSideBearing": 0,
+      "advanceWidth": 308
+    },
+    "|": {
+      "x_min": 0,
+      "x_max": 0,
+      "y_min": 0,
+      "y_max": 0,
+      "ha": 0,
+      "leftSideBearing": 0,
+      "advanceWidth": 308
+    },
+    "}": {
+      "x_min": 0,
+      "x_max": 0,
+      "y_min": 0,
+      "y_max": 0,
+      "ha": 0,
+      "leftSideBearing": 0,
+      "advanceWidth": 308
+    },
+    "~": {
+      "x_min": 0,
+      "x_max": 0,
+      "y_min": 0,
+      "y_max": 0,
+      "ha": 0,
+      "leftSideBearing": 0,
+      "advanceWidth": 308
     }
+
   },
   "fontFamily": "Petaluma Script",
   "resolution": 1000,

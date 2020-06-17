@@ -159,6 +159,18 @@ export class ChordSymbol extends Modifier {
     return (-1 * metric.leftSideBearing) / ChordSymbol.engravingFontResolution;
   }
 
+  static get superscriptOffset() {
+    return ChordSymbol.chordSymbolMetrics.global.superscriptOffset / ChordSymbol.engravingFontResolution;
+  }
+
+  static get subscriptOffset() {
+    return ChordSymbol.chordSymbolMetrics.global.subscriptOffset / ChordSymbol.engravingFontResolution;
+  }
+
+  static get kerningOffset() {
+    return ChordSymbol.chordSymbolMetrics.global.kerningOffset / ChordSymbol.engravingFontResolution;
+  }
+
   // Glyph data
   static get glyphs() {
     return {
@@ -267,8 +279,6 @@ export class ChordSymbol extends Modifier {
       const instance = instances[i];
       const fontAdj = instance.font.size / 20;
       const glyphAdj = fontAdj * 2;
-      instance.subOffset = instance.subOffset * fontAdj;
-      instance.superOffset = instance.superOffset * fontAdj;
       let lineSpaces = 1;
       let vAlign = false;
 
@@ -357,8 +367,6 @@ export class ChordSymbol extends Modifier {
     this.horizontal = ChordSymbol.horizontalJustify.LEFT;
     this.vertical = ChordSymbol.verticalJustify.TOP;
     this.useKerning = true;
-    this.superOffset = ChordSymbol.chordSymbolMetrics.global.superscriptOffset;
-    this.subOffset = ChordSymbol.chordSymbolMetrics.global.subscriptOffset;
 
     let fontFamily = 'Arial';
     if (this.musicFont.name === 'Petaluma') {
@@ -379,10 +387,20 @@ export class ChordSymbol extends Modifier {
     return (this.font.size / 72) / (1 / 96);
   }
 
+  get superscriptOffset() {
+    return ChordSymbol.superscriptOffset * this.pointsToPixels;
+  }
+
+  get subscriptOffset() {
+    return ChordSymbol.subscriptOffset * this.pointsToPixels;
+  }
+
   updateKerningAjustments() {
+    let accum = 0;
     for (let j = 0; j < this.symbolBlocks.length; ++j) {
       const symbol = this.symbolBlocks[j];
-      symbol.xShift += this.getKerningAdjustment(j);
+      accum += this.getKerningAdjustment(j);
+      symbol.xShift += accum;
     }
   }
 
@@ -394,7 +412,7 @@ export class ChordSymbol extends Modifier {
       return 0;
     }
     const symbol = this.symbolBlocks[j];
-    const kernConst = ChordSymbol.chordSymbolMetrics.global.kerningOffset;
+    const kernConst = ChordSymbol.kerningOffset * this.pointsToPixels;
     const prevSymbol = j > 0 ? this.symbolBlocks[j - 1] : null;
     let rv = 0;
 
@@ -683,10 +701,10 @@ export class ChordSymbol extends Modifier {
       L('shift was ', symbol.xShift, symbol.yShift);
       L('curY pre sub ', curY);
       if (sp) {
-        curY += this.superOffset;
+        curY += this.superscriptOffset;
       }
       if (sub) {
-        curY += this.subOffset;
+        curY += this.subscriptOffset;
       }
       L('curY sup/sub ', curY);
 

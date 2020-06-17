@@ -1,7 +1,7 @@
 /*
-Convert text font to Vexflow glyph file.
+Convert text font to Vexflow glyph metrics.
 
-Usage: node fontgen.js Bravura.otf ../../src/fonts/bravura_glyphs.js
+Usage: node fontgen.js myFont.otf ../../src/fonts/myFont_metrics.js
 */
 
 const fs = require('fs');
@@ -64,9 +64,9 @@ const glyphNamesData = fs.readFileSync('./config/glyphnames.json');
 const glyphNames = JSON.parse(glyphNamesData);
 
 const fontData = {};
-let code = 33;
+let code = 32;
 
-for (; code < 95; ++code) {
+for (; code < 127; ++code) {
   const ch = String.fromCharCode(code);
   const glyph = font.charToGlyph(ch);
   fontData[ch] = toVFPath(glyph);

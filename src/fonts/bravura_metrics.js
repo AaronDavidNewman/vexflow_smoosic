@@ -308,9 +308,9 @@ export const BravuraMetrics = {
     },
     chordSymbol: {
       global: {
-        superscriptOffset: -8,
-        subscriptOffset: 6,
-        kerningOffset: -2,
+        superscriptOffset: -400,
+        subscriptOffset: 300,
+        kerningOffset: -250,
         spacing: 100,
         superSubRatio: 0.66
       },
@@ -357,16 +357,16 @@ export const BravuraMetrics = {
         yOffset: 0
       },
       csymParensLeftVeryTall: {
-        scale: 0.8,
+        scale: 0.9,
         leftSideBearing: 0,
         advanceWidth: 101,
-        yOffset: 0
+        yOffset: 350
       },
       csymParensRightVeryTall: {
-        scale: 0.8,
-        leftSideBearing: -20,
+        scale: 0.9,
+        leftSideBearing: 50,
         advanceWidth: 111,
-        yOffset: 0
+        yOffset: 350
       },
       csymDiagonalArrangementSlash: {
         scale: 0.6,
