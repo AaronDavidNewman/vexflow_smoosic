@@ -257,7 +257,7 @@ export const GonvilleMetrics = {
         yOffset: -402
       },
       accidentalFlat: {
-        scale: 0.9,
+        scale: 0.95,
         leftSideBearing: -50,
         advanceWidth: 208,
         yOffset: -184
