@@ -56,13 +56,14 @@ export class ChordSymbol extends Modifier {
     return ChordSymbol.debug;
   }
 
-  // ### NOFORMAT
-  // used to debug formatting by turning it off.
-  static get NOFORMAT() {
+  // ### NOTEXTFORMAT
+  // used to globally turn off text formatting, if the built-in formatting does not
+  // work for your font..
+  static get NOTEXTFORMAT() {
     return typeof(ChordSymbol.noFormat) === 'undefined' ? false : ChordSymbol.noFormat;
   }
 
-  static set NOFORMAT(val) {
+  static set NOTEXTFORMAT(val) {
     ChordSymbol.noFormat = val;
   }
 
@@ -94,7 +95,7 @@ export class ChordSymbol extends Modifier {
   }
 
   static getMetricForCharacter(c) {
-    if (ChordSymbol.NOFORMAT) {
+    if (ChordSymbol.NOTEXTFORMAT) {
       return null;
     }
     if (ChordSymbol.textMetricsForEngravingFont.glyphs[c]) {
@@ -258,11 +259,11 @@ export class ChordSymbol extends Modifier {
   }
 
   static get lowerKerningText() {
-    return ['D', 'F', 'P', 'T', 'V', 'Y'];
+    return Vex.Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.chordSymbol.global.lowerKerningText;
   }
 
   static get upperKerningText() {
-    return ['A', 'L'];
+    return Vex.Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.chordSymbol.global.upperKerningText;
   }
 
   // ### format
@@ -338,7 +339,8 @@ export class ChordSymbol extends Modifier {
       }
 
       // make kerning adjustments after computing super/subscripts
-      instance.updateKerningAjustments();
+      instance.updateKerningAdjustments();
+      instance.updateOverBarAdjustments();
 
       if (instance.getVertical() === ChordSymbol.verticalJustify.TOP) {
         instance.setTextLine(state.top_text_line);
@@ -395,7 +397,32 @@ export class ChordSymbol extends Modifier {
     return ChordSymbol.subscriptOffset * this.pointsToPixels;
   }
 
-  updateKerningAjustments() {
+  updateOverBarAdjustments() {
+    let symIx = 0;
+    const barIx = this.symbolBlocks.findIndex((symbol) =>
+      symbol.symbolType === ChordSymbol.symbolTypes.GLYPH &&
+      symbol.glyph.code === 'csymDiagonalArrangementSlash');
+
+    if (barIx < 0) {
+      return;
+    }
+    const bar = this.symbolBlocks[barIx];
+    const xoff = bar.width / 4;
+    const yoff = 0.25 * this.pointsToPixels;
+    for (symIx === 0; symIx < barIx; ++symIx) {
+      const symbol = this.symbolBlocks[symIx];
+      symbol.xShift = symbol.xShift + xoff;
+      symbol.yShift = symbol.yShift - yoff;
+    }
+
+    for (symIx = barIx + 1; symIx < this.symbolBlocks.length; ++symIx) {
+      const symbol = this.symbolBlocks[symIx];
+      symbol.xShift = symbol.xShift - xoff;
+      symbol.yShift = symbol.yShift + yoff;
+    }
+  }
+
+  updateKerningAdjustments() {
     let accum = 0;
     for (let j = 0; j < this.symbolBlocks.length; ++j) {
       const symbol = this.symbolBlocks[j];

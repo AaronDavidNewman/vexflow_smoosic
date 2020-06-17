@@ -173,6 +173,8 @@ export const GonvilleMetrics = {
         superscriptOffset: -400,
         subscriptOffset: 300,
         kerningOffset: -250,
+        lowerKerningText:  ['D', 'F', 'P', 'T', 'V', 'Y'],
+        upperKerningText:  ['A', 'L'],
         spacing: 100,
         superSubRatio: 0.66
       },

@@ -101,7 +101,7 @@ VF.Test.ChordSymbol = (function() {
 
       chords = [];
       chords.push(new VF.ChordSymbol()
-        .addGlyphOrText('F/Bb'));
+        .addGlyphOrText('F/B').addGlyphOrText('b', { symbolModifier: VF.ChordSymbol.symbolModifiers.SUPERSCRIPT }));
 
       chords.push(new VF.ChordSymbol()
         .addText('E')

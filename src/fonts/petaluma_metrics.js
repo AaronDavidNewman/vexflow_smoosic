@@ -338,6 +338,8 @@ export const PetalumaMetrics = {
         superscriptOffset: -400,
         subscriptOffset: 300,
         kerningOffset: -150,
+        lowerKerningText:  ['D', 'F', 'P', 'T', 'V', 'Y'],
+        upperKerningText:  ['L'],
         spacing: 20,
         superSubRatio: 0.73
       },
@@ -355,7 +357,7 @@ export const PetalumaMetrics = {
       },
       csymAugmented: {
         scale: 1,
-        leftSideBearing: -45,
+        leftSideBearing: -25,
         advanceWidth: 530,
         yOffset: 0
       },
@@ -402,7 +404,7 @@ export const PetalumaMetrics = {
         yOffset: 0
       },
       csymMinor: {
-        scale: 1,
+        scale: 0.8,
         leftSideBearing: 0,
         advanceWidth: 482,
         yOffset: 0
