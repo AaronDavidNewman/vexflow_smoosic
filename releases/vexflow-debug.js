@@ -3437,6 +3437,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tables */ "./src/tables.js");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./glyph */ "./src/glyph.js");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modifier */ "./src/modifier.js");
+/* harmony import */ var _fonts_petalumaScript_metrics__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./fonts/petalumaScript_metrics */ "./src/fonts/petalumaScript_metrics.js");
+/* harmony import */ var _fonts_robotoSlab_metrics__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./fonts/robotoSlab_metrics */ "./src/fonts/robotoSlab_metrics.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3467,6 +3469,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
+
  // To enable logging for this class. Set `Vex.Flow.ChordSymbol.DEBUG` to `true`.
 
 function L() {
@@ -3483,6 +3487,90 @@ function (_Modifier) {
   _inherits(ChordSymbol, _Modifier);
 
   _createClass(ChordSymbol, null, [{
+    key: "getMetricForGlyph",
+    value: function getMetricForGlyph(glyphCode) {
+      if (ChordSymbol.chordSymbolMetrics[glyphCode]) {
+        return ChordSymbol.chordSymbolMetrics[glyphCode];
+      }
+
+      return null;
+    }
+  }, {
+    key: "getMetricForCharacter",
+    value: function getMetricForCharacter(c) {
+      if (ChordSymbol.NOTEXTFORMAT) {
+        return null;
+      }
+
+      if (ChordSymbol.textMetricsForEngravingFont.glyphs[c]) {
+        return ChordSymbol.textMetricsForEngravingFont.glyphs[c];
+      }
+
+      return null;
+    }
+  }, {
+    key: "getYOffsetForText",
+    value: function getYOffsetForText(text) {
+      var acc = 0;
+      var ix = 0;
+      var resolution = ChordSymbol.textMetricsForEngravingFont.resolution;
+
+      for (ix = 0; ix < text.length; ++ix) {
+        var metric = ChordSymbol.getMetricForCharacter(text[ix]);
+
+        if (metric) {
+          acc = metric.y < acc ? metric.y : acc;
+        }
+      }
+
+      return ix > 0 ? -1 * (acc / resolution) : 0;
+    }
+  }, {
+    key: "getWidthForCharacter",
+    value: function getWidthForCharacter(c) {
+      var resolution = ChordSymbol.textMetricsForEngravingFont.resolution;
+      var metric = ChordSymbol.getMetricForCharacter(c);
+
+      if (!metric) {
+        return 0.65;
+      }
+
+      return metric.advanceWidth / resolution;
+    }
+  }, {
+    key: "getWidthForGlyph",
+    value: function getWidthForGlyph(glyph) {
+      var metric = ChordSymbol.getMetricForGlyph(glyph.code);
+
+      if (!metric) {
+        return 0.65; // probably should do something here.
+      }
+
+      return metric.advanceWidth / ChordSymbol.engravingFontResolution;
+    }
+  }, {
+    key: "getYShiftForGlyph",
+    value: function getYShiftForGlyph(glyph) {
+      var metric = ChordSymbol.getMetricForGlyph(glyph.code);
+
+      if (!metric) {
+        return 0;
+      }
+
+      return metric.yOffset / ChordSymbol.engravingFontResolution;
+    }
+  }, {
+    key: "getXShiftForGlyph",
+    value: function getXShiftForGlyph(glyph) {
+      var metric = ChordSymbol.getMetricForGlyph(glyph.code);
+
+      if (!metric) {
+        return 0;
+      }
+
+      return -1 * metric.leftSideBearing / ChordSymbol.engravingFontResolution;
+    }
+  }, {
     key: "format",
     // ### format
     // try to estimate the width of the whole chord symbol, based on the
@@ -3495,13 +3583,17 @@ function (_Modifier) {
 
       for (var i = 0; i < instances.length; ++i) {
         var instance = instances[i];
-        var fontAdj = instance.font.size / 10;
+        var fontAdj = instance.font.size / 20;
+        var glyphAdj = fontAdj * 2;
         var lineSpaces = 1;
+        var vAlign = false;
 
         for (var j = 0; j < instance.symbolBlocks.length; ++j) {
           var symbol = instance.symbolBlocks[j];
           var sup = instance.isSuperscript(symbol);
-          var sub = instance.isSubscript(symbol); // If there are super/subscripts, they extend beyond the line so
+          var sub = instance.isSubscript(symbol);
+          var subAdj = sup || sub ? ChordSymbol.superSubRatio : 1;
+          var adj = symbol.symbolType === ChordSymbol.symbolTypes.GLYPH ? glyphAdj * subAdj : fontAdj * subAdj; // If there are super/subscripts, they extend beyond the line so
           // assume they take up 2 lines
 
           if (sup || sub) {
@@ -3511,23 +3603,21 @@ function (_Modifier) {
 
 
           if (symbol.symbolType === ChordSymbol.symbolTypes.GLYPH) {
-            symbol.yShift += symbol.glyph.metrics.y_shift;
-          }
-
-          if (symbol.symbolType === ChordSymbol.symbolTypes.GLYPH) {
-            symbol.glyph.scale = symbol.glyph.scale * fontAdj;
+            symbol.yShift += ChordSymbol.getYShiftForGlyph(symbol.glyph) * instance.pointsToPixels * subAdj;
+            symbol.xShift += ChordSymbol.getXShiftForGlyph(symbol.glyph) * instance.pointsToPixels * subAdj;
+            symbol.glyph.scale = symbol.glyph.scale * adj;
+            symbol.width = ChordSymbol.getWidthForGlyph(symbol.glyph) * instance.pointsToPixels * subAdj;
+          } else if (symbol.symbolType === ChordSymbol.symbolTypes.TEXT) {
+            symbol.width = symbol.width * instance.pointsToPixels * subAdj;
+            symbol.yShift += ChordSymbol.getYOffsetForText(symbol.text) * adj;
           }
 
           if (symbol.symbolType === ChordSymbol.symbolTypes.GLYPH && symbol.glyph.code === ChordSymbol.glyphs.over.code) {
             lineSpaces = 2;
-            symbol.xShift += symbol.glyph.metrics.x_shift;
           }
 
-          if (j > 0 && instance.symbolBlocks[j - 1].symbolType === ChordSymbol.symbolTypes.GLYPH && instance.symbolBlocks[j - 1].glyph.code === ChordSymbol.glyphs.over.code) {
-            symbol.xShift += instance.symbolBlocks[j - 1].glyph.metrics.x_shift;
-          } // If a subscript immediately  follows a superscript block, try to
+          symbol.width += ChordSymbol.spacingBetweenBlocks * instance.pointsToPixels * subAdj; // If a subscript immediately  follows a superscript block, try to
           // overlay them.
-
 
           if (sup && j > 0) {
             var prev = instance.symbolBlocks[j - 1];
@@ -3538,9 +3628,10 @@ function (_Modifier) {
           }
 
           if (sub && nonSuperWidth > 0) {
-            // slide the symbol over so it lines up with superscript
-            symbol.xShift = nonSuperWidth - width;
-            width = nonSuperWidth - symbol.width;
+            vAlign = true; // slide the symbol over so it lines up with superscript
+
+            symbol.xShift = symbol.xShift + (nonSuperWidth - width);
+            width = nonSuperWidth;
             nonSuperWidth = 0; // If we have vertically lined up, turn kerning off.
 
             instance.setEnableKerning(false);
@@ -3550,11 +3641,13 @@ function (_Modifier) {
             nonSuperWidth = 0;
           }
 
+          symbol.vAlign = vAlign;
           width += symbol.width;
         } // make kerning adjustments after computing super/subscripts
 
 
-        instance.updateKerningAjustments();
+        instance.updateKerningAdjustments();
+        instance.updateOverBarAdjustments();
 
         if (instance.getVertical() === ChordSymbol.verticalJustify.TOP) {
           instance.setTextLine(state.top_text_line);
@@ -3608,12 +3701,28 @@ function (_Modifier) {
       };
     }
   }, {
+    key: "superSubRatio",
+    get: function get() {
+      return ChordSymbol.chordSymbolMetrics.global.superSubRatio;
+    }
+  }, {
     key: "DEBUG",
     get: function get() {
       return ChordSymbol.debug;
-    },
+    } // ### NOTEXTFORMAT
+    // used to globally turn off text formatting, if the built-in formatting does not
+    // work for your font..
+    ,
     set: function set(val) {
       ChordSymbol.debug = val;
+    }
+  }, {
+    key: "NOTEXTFORMAT",
+    get: function get() {
+      return typeof ChordSymbol.noFormat === 'undefined' ? false : ChordSymbol.noFormat;
+    },
+    set: function set(val) {
+      ChordSymbol.noFormat = val;
     }
   }, {
     key: "verticalJustifyString",
@@ -3624,6 +3733,40 @@ function (_Modifier) {
         below: ChordSymbol.verticalJustify.BOTTOM,
         bottom: ChordSymbol.verticalJustify.BOTTOM
       };
+    }
+  }, {
+    key: "textMetricsForEngravingFont",
+    get: function get() {
+      if (_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DEFAULT_FONT_STACK[0].name === 'Petaluma') {
+        return _fonts_petalumaScript_metrics__WEBPACK_IMPORTED_MODULE_4__["PetalumaScriptMetrics"];
+      } else {
+        return _fonts_robotoSlab_metrics__WEBPACK_IMPORTED_MODULE_5__["RobotoSlabMetrics"];
+      }
+    }
+  }, {
+    key: "engravingFontResolution",
+    get: function get() {
+      return _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DEFAULT_FONT_STACK[0].getResolution();
+    }
+  }, {
+    key: "spacingBetweenBlocks",
+    get: function get() {
+      return ChordSymbol.chordSymbolMetrics.global.spacing / ChordSymbol.engravingFontResolution;
+    }
+  }, {
+    key: "superscriptOffset",
+    get: function get() {
+      return ChordSymbol.chordSymbolMetrics.global.superscriptOffset / ChordSymbol.engravingFontResolution;
+    }
+  }, {
+    key: "subscriptOffset",
+    get: function get() {
+      return ChordSymbol.chordSymbolMetrics.global.subscriptOffset / ChordSymbol.engravingFontResolution;
+    }
+  }, {
+    key: "kerningOffset",
+    get: function get() {
+      return ChordSymbol.chordSymbolMetrics.global.kerningOffset / ChordSymbol.engravingFontResolution;
     } // Glyph data
 
   }, {
@@ -3718,12 +3861,12 @@ function (_Modifier) {
   }, {
     key: "lowerKerningText",
     get: function get() {
-      return ['D', 'F', 'I', 'P', 'T', 'V', 'Y'];
+      return _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.chordSymbol.global.lowerKerningText;
     }
   }, {
     key: "upperKerningText",
     get: function get() {
-      return ['A', 'I', 'L'];
+      return _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.chordSymbol.global.upperKerningText;
     }
   }]);
 
@@ -3739,29 +3882,64 @@ function (_Modifier) {
     _this.note = null;
     _this.index = null;
     _this.symbolBlocks = [];
-    _this.horizontal = ChordSymbol.horizontalJustify.CENTER_STEM;
+    _this.horizontal = ChordSymbol.horizontalJustify.LEFT;
     _this.vertical = ChordSymbol.verticalJustify.TOP;
     _this.useKerning = true;
     var fontFamily = 'Arial';
 
     if (_this.musicFont.name === 'Petaluma') {
-      fontFamily = 'Cursive';
+      fontFamily = 'petaluma_scriptregular,Arial';
+    } else {
+      fontFamily = 'robotoSlab,Times';
     }
 
     _this.font = {
       family: fontFamily,
-      size: 10,
+      size: 12,
       weight: ''
     };
     return _this;
-  }
+  } // ### pointsToPixels
+  // The font size is specified in points, convert to 'pixels' in the svg space
+
 
   _createClass(ChordSymbol, [{
-    key: "updateKerningAjustments",
-    value: function updateKerningAjustments() {
+    key: "updateOverBarAdjustments",
+    value: function updateOverBarAdjustments() {
+      var symIx = 0;
+      var barIx = this.symbolBlocks.findIndex(function (symbol) {
+        return symbol.symbolType === ChordSymbol.symbolTypes.GLYPH && symbol.glyph.code === 'csymDiagonalArrangementSlash';
+      });
+
+      if (barIx < 0) {
+        return;
+      }
+
+      var bar = this.symbolBlocks[barIx];
+      var xoff = bar.width / 4;
+      var yoff = 0.25 * this.pointsToPixels;
+
+      for (symIx === 0; symIx < barIx; ++symIx) {
+        var symbol = this.symbolBlocks[symIx];
+        symbol.xShift = symbol.xShift + xoff;
+        symbol.yShift = symbol.yShift - yoff;
+      }
+
+      for (symIx = barIx + 1; symIx < this.symbolBlocks.length; ++symIx) {
+        var _symbol = this.symbolBlocks[symIx];
+        _symbol.xShift = _symbol.xShift - xoff;
+        _symbol.yShift = _symbol.yShift + yoff;
+      }
+    }
+  }, {
+    key: "updateKerningAdjustments",
+    value: function updateKerningAdjustments() {
+      var accum = 0;
+
       for (var j = 0; j < this.symbolBlocks.length; ++j) {
         var symbol = this.symbolBlocks[j];
-        symbol.xShift += this.getKerningAdjustment(j);
+        accum += this.getKerningAdjustment(j);
+        symbol.xShift += accum;
       }
     } // ### getKerningAdjustment
     // Do some very basic kerning so that letter chords like 'A' don't have
@@ -3775,7 +3953,7 @@ function (_Modifier) {
       }
 
       var symbol = this.symbolBlocks[j];
-      var kernConst = ChordSymbol.chordSymbolMetrics.global.kerningOffset;
+      var kernConst = ChordSymbol.kerningOffset * this.pointsToPixels;
       var prevSymbol = j > 0 ? this.symbolBlocks[j - 1] : null;
       var rv = 0; // Move things into the '/' over bar
 
@@ -3833,31 +4011,35 @@ function (_Modifier) {
       var symbolModifier = parameters.symbolModifier ? parameters.symbolModifier : ChordSymbol.symbolModifiers.NONE;
       var xShift = 0;
       var yShift = 0;
+      var vAlign = 0;
       var rv = {
         text: text,
         symbolType: symbolType,
         symbolModifier: symbolModifier,
         xShift: xShift,
-        yShift: yShift
+        yShift: yShift,
+        vAlign: vAlign
       };
-      rv.width = 0;
+      rv.width = 0; // Note: all symbol widths are resolution and font-independent.  We convert to
+      // pixel values when we know what the font is.
 
       if (symbolType === ChordSymbol.symbolTypes.GLYPH && typeof parameters.glyph === 'string') {
         var glyphArgs = ChordSymbol.glyphs[parameters.glyph];
-        var glyphPoints = 20; // super and subscript are smaller
-
-        if (symbolModifier !== ChordSymbol.symbolModifiers.NONE) {
-          glyphPoints = glyphPoints / 1.3;
-        }
-
+        var glyphPoints = 20;
         rv.glyph = new _glyph__WEBPACK_IMPORTED_MODULE_2__["Glyph"](glyphArgs.code, glyphPoints, {
           category: 'chordSymbol'
         }); // Beware: glyph.metrics is not the same as glyph.getMetrics() !
-
-        rv.glyph.point = rv.glyph.point * rv.glyph.metrics.scale;
-        rv.width = rv.glyph.getMetrics().width * 3 / 2; // don't set yShift here, b/c we need to do it at formatting time after the font is set.
+        // rv.glyph.point = rv.glyph.point * rv.glyph.metrics.scale;
+        // rv.width = rv.glyph.getMetrics().width;
+        // don't set yShift here, b/c we need to do it at formatting time after the font is set.
       } else if (symbolType === ChordSymbol.symbolTypes.TEXT) {
-        rv.width = _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].textWidth(text);
+        var twidth = 0;
+
+        for (var i = 0; i < rv.text.length; ++i) {
+          twidth += ChordSymbol.getWidthForCharacter(rv.text[i]);
+        }
+
+        rv.width = twidth;
       } else if (symbolType === ChordSymbol.symbolTypes.LINE) {
         rv.width = parameters.width;
       }
@@ -4025,7 +4207,7 @@ function (_Modifier) {
     value: function getWidth() {
       var rv = 0;
       this.symbolBlocks.forEach(function (symbol) {
-        rv += symbol.width;
+        rv += symbol.vAlign ? 0 : symbol.width;
       });
       return rv;
     }
@@ -4093,7 +4275,7 @@ function (_Modifier) {
       if (this.horizontal === ChordSymbol.horizontalJustify.LEFT) {
         x = start.x;
       } else if (this.horizontal === ChordSymbol.horizontalJustify.RIGHT) {
-        x = start.x - this.getWidth();
+        x = start.x + this.getWidth();
       } else if (this.horizontal === ChordSymbol.horizontalJustify.CENTER) {
         x = start.x - this.getWidth() / 2;
       } else
@@ -4103,7 +4285,6 @@ function (_Modifier) {
         }
 
       L('Rendering ChordSymbol: ', this.text, x, y);
-      var fontAdj = this.font.size / 10;
       this.symbolBlocks.forEach(function (symbol) {
         var sp = _this2.isSuperscript(symbol);
 
@@ -4111,17 +4292,14 @@ function (_Modifier) {
 
         var curY = y;
         L('shift was ', symbol.xShift, symbol.yShift);
-        symbol.xShift *= fontAdj;
-        symbol.yShift *= fontAdj;
-        L('shift font adj ', symbol.xShift, symbol.yShift);
         L('curY pre sub ', curY);
 
         if (sp) {
-          curY += ChordSymbol.chordSymbolMetrics.global.superscriptOffset * fontAdj;
+          curY += _this2.superscriptOffset;
         }
 
         if (sub) {
-          curY += ChordSymbol.chordSymbolMetrics.global.subscriptOffset * fontAdj;
+          curY += _this2.subscriptOffset;
         }
 
         L('curY sup/sub ', curY);
@@ -4130,18 +4308,17 @@ function (_Modifier) {
           if (sp || sub) {
             _this2.context.save();
 
-            _this2.context.setFont(_this2.font.family, _this2.font.size / 1.3, _this2.font.weight);
+            _this2.context.setFont(_this2.font.family, _this2.font.size * ChordSymbol.superSubRatio, _this2.font.weight);
           } // We estimate the text width, fill it in with the empirical value so the
           // formatting is even.
 
+          /* const textDim = this.context.measureText(symbol.text);
+          symbol.width = textDim.width; */
 
-          var textDim = _this2.context.measureText(symbol.text);
 
-          symbol.width = textDim.width;
-          symbol.width = symbol.width * 4 / 3;
-          L('Rendering Text: ', symbol.text, x + symbol.xShift, curY);
+          L('Rendering Text: ', symbol.text, x + symbol.xShift, curY + symbol.yShift);
 
-          _this2.context.fillText(symbol.text, x + symbol.xShift, curY);
+          _this2.context.fillText(symbol.text, x + symbol.xShift, curY + symbol.yShift);
 
           if (sp || sub) {
             _this2.context.restore();
@@ -4165,10 +4342,29 @@ function (_Modifier) {
           _this2.context.stroke();
         }
 
-        x += symbol.width + symbol.xShift;
+        x += symbol.width;
+
+        if (symbol.vAlign) {
+          x += symbol.xShift;
+        }
       });
       this.context.closeGroup();
       this.context.restore();
+    }
+  }, {
+    key: "pointsToPixels",
+    get: function get() {
+      return this.font.size / 72 / (1 / 96);
+    }
+  }, {
+    key: "superscriptOffset",
+    get: function get() {
+      return ChordSymbol.superscriptOffset * this.pointsToPixels;
+    }
+  }, {
+    key: "subscriptOffset",
+    get: function get() {
+      return ChordSymbol.subscriptOffset * this.pointsToPixels;
     }
   }]);
 
@@ -8317,59 +8513,97 @@ var BravuraMetrics = {
     },
     chordSymbol: {
       global: {
-        superscriptOffset: -8,
-        subscriptOffset: 4,
-        kerningOffset: -2
+        superscriptOffset: -400,
+        subscriptOffset: 300,
+        kerningOffset: -250,
+        lowerKerningText: ['D', 'F', 'P', 'T', 'V', 'Y'],
+        upperKerningText: ['A', 'L'],
+        spacing: 100,
+        superSubRatio: 0.66
+      },
+      csymDiminished: {
+        scale: 1,
+        leftSideBearing: -32,
+        advanceWidth: 506,
+        yOffset: 0
+      },
+      csymHalfDiminished: {
+        scale: 1,
+        leftSideBearing: -32,
+        advanceWidth: 506,
+        yOffset: 0
       },
       csymAugmented: {
         scale: 1,
-        shiftY: -2,
-        shiftX: 0
+        leftSideBearing: 0,
+        advanceWidth: 530,
+        yOffset: 0
       },
       csymParensLeftTall: {
         scale: 0.8,
-        shiftY: 1,
-        shiftX: 0
+        leftSideBearing: -20,
+        advanceWidth: 184,
+        yOffset: 250
       },
       csymParensRightTall: {
         scale: 0.8,
-        shiftY: 1,
-        shiftX: 0
+        leftSideBearing: 0,
+        advanceWidth: 189,
+        yOffset: 250
       },
       csymBracketLeftTall: {
         scale: 0.8,
-        shiftY: 1,
-        shiftX: 0
+        leftSideBearing: 0,
+        advanceWidth: 328,
+        yOffset: 0
       },
       csymBracketRightTall: {
         scale: 0.8,
-        shiftY: 1,
-        shiftX: 0
+        leftSideBearing: 1,
+        advanceWidth: 600,
+        yOffset: 0
       },
       csymParensLeftVeryTall: {
-        scale: 0.8,
-        shiftY: 0,
-        shiftX: 0
+        scale: 0.9,
+        leftSideBearing: 0,
+        advanceWidth: 101,
+        yOffset: 350
       },
       csymParensRightVeryTall: {
-        scale: 0.8,
-        shiftY: 0,
-        shiftX: 0
+        scale: 0.9,
+        leftSideBearing: 50,
+        advanceWidth: 111,
+        yOffset: 350
       },
       csymDiagonalArrangementSlash: {
         scale: 0.6,
-        shiftY: 0,
-        shiftX: -2
+        leftSideBearing: -1,
+        advanceWidth: 990,
+        yOffset: 0
+      },
+      csymMinor: {
+        scale: 1,
+        leftSideBearing: 0,
+        advanceWidth: 482,
+        yOffset: 0
+      },
+      csymMajorSeventh: {
+        scale: 1,
+        leftSideBearing: 0,
+        yOffset: 0,
+        advanceWidth: 600
       },
       accidentalSharp: {
-        scale: 1,
-        shiftY: -3,
-        shiftX: 0
+        scale: 0.75,
+        leftSideBearing: 20,
+        advanceWidth: 250,
+        yOffset: -302
       },
       accidentalFlat: {
-        scale: 1,
-        shiftY: -2,
-        shiftX: 0
+        scale: 0.9,
+        leftSideBearing: -20,
+        advanceWidth: 226,
+        yOffset: -184
       }
     }
   }
@@ -9473,62 +9707,978 @@ var GonvilleMetrics = {
     },
     chordSymbol: {
       global: {
-        superscriptOffset: -8,
-        subscriptOffset: 4,
-        kerningOffset: -2
+        superscriptOffset: -400,
+        subscriptOffset: 300,
+        kerningOffset: -250,
+        lowerKerningText: ['D', 'F', 'P', 'T', 'V', 'Y'],
+        upperKerningText: ['A', 'L'],
+        spacing: 100,
+        superSubRatio: 0.66
+      },
+      csymDiminished: {
+        scale: 1,
+        leftSideBearing: 0,
+        advanceWidth: 506,
+        yOffset: 0
+      },
+      csymHalfDiminished: {
+        scale: 1,
+        leftSideBearing: -32,
+        advanceWidth: 506,
+        yOffset: 0
       },
       csymAugmented: {
         scale: 1,
-        shiftY: -2,
-        shiftX: 0
+        leftSideBearing: 0,
+        advanceWidth: 530,
+        yOffset: 0
       },
       csymParensLeftTall: {
         scale: 0.8,
-        shiftY: 1,
-        shiftX: 0
+        leftSideBearing: 0,
+        advanceWidth: 155,
+        yOffset: 250
       },
       csymParensRightTall: {
         scale: 0.8,
-        shiftY: 1,
-        shiftX: 0
+        leftSideBearing: -40,
+        advanceWidth: 189,
+        yOffset: 250
       },
       csymBracketLeftTall: {
         scale: 0.8,
-        shiftY: 1,
-        shiftX: 0
+        leftSideBearing: 0,
+        advanceWidth: 328,
+        yOffset: 0
       },
       csymBracketRightTall: {
         scale: 0.8,
-        shiftY: 1,
-        shiftX: 0
+        leftSideBearing: 1,
+        advanceWidth: 600,
+        yOffset: 0
       },
       csymParensLeftVeryTall: {
-        scale: 0.8,
-        shiftY: 0,
-        shiftX: 0
+        scale: 0.9,
+        leftSideBearing: 0,
+        advanceWidth: 101,
+        yOffset: 350
       },
       csymParensRightVeryTall: {
-        scale: 0.8,
-        shiftY: 0,
-        shiftX: 0
+        scale: 0.9,
+        leftSideBearing: 50,
+        advanceWidth: 111,
+        yOffset: 350
       },
       csymDiagonalArrangementSlash: {
         scale: 0.6,
-        shiftY: 0,
-        shiftX: -2
+        leftSideBearing: -1,
+        advanceWidth: 990,
+        yOffset: 0
+      },
+      csymMinor: {
+        scale: 1,
+        leftSideBearing: 0,
+        advanceWidth: 482,
+        yOffset: 0
+      },
+      csymMajorSeventh: {
+        scale: 1,
+        leftSideBearing: 0,
+        yOffset: 0,
+        advanceWidth: 600
       },
       accidentalSharp: {
-        scale: 1,
-        shiftY: -3,
-        shiftX: 0
+        scale: 0.75,
+        leftSideBearing: 40,
+        advanceWidth: 250,
+        yOffset: -402
       },
       accidentalFlat: {
-        scale: 1,
-        shiftY: -2,
-        shiftX: 0
+        scale: 0.9,
+        leftSideBearing: -50,
+        advanceWidth: 208,
+        yOffset: -184
       }
     }
   }
+};
+
+/***/ }),
+
+/***/ "./src/fonts/petalumaScript_metrics.js":
+/*!*********************************************!*\
+  !*** ./src/fonts/petalumaScript_metrics.js ***!
+  \*********************************************/
+/*! exports provided: PetalumaScriptMetrics */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PetalumaScriptMetrics", function() { return PetalumaScriptMetrics; });
+var PetalumaScriptMetrics = {
+  name: 'PetalumaScript',
+  smufl: false,
+  spacing: 50,
+  "glyphs": {
+    " ": {
+      "x_min": 0,
+      "x_max": 250,
+      "y_min": 0,
+      "y_max": 500,
+      "ha": 500,
+      "leftSideBearing": 0,
+      "advanceWidth": 250
+    },
+    "0": {
+      "x_min": 33,
+      "x_max": 534,
+      "y_min": -13,
+      "y_max": 751,
+      "ha": 764,
+      "leftSideBearing": 33,
+      "advanceWidth": 570
+    },
+    "1": {
+      "x_min": 48,
+      "x_max": 235,
+      "y_min": -17,
+      "y_max": 734,
+      "ha": 751,
+      "leftSideBearing": 48,
+      "advanceWidth": 286
+    },
+    "2": {
+      "x_min": 56,
+      "x_max": 571,
+      "y_min": -19,
+      "y_max": 741,
+      "ha": 760,
+      "leftSideBearing": 56,
+      "advanceWidth": 626
+    },
+    "3": {
+      "x_min": 50,
+      "x_max": 528,
+      "y_min": -7,
+      "y_max": 731,
+      "ha": 738,
+      "leftSideBearing": 50,
+      "advanceWidth": 589
+    },
+    "4": {
+      "x_min": 38,
+      "x_max": 564,
+      "y_min": -13,
+      "y_max": 743,
+      "ha": 756,
+      "leftSideBearing": 38,
+      "advanceWidth": 614
+    },
+    "5": {
+      "x_min": 42,
+      "x_max": 601,
+      "y_min": -34,
+      "y_max": 743,
+      "ha": 777,
+      "leftSideBearing": 42,
+      "advanceWidth": 648
+    },
+    "6": {
+      "x_min": 47,
+      "x_max": 606,
+      "y_min": -16,
+      "y_max": 743,
+      "ha": 759,
+      "leftSideBearing": 47,
+      "advanceWidth": 667
+    },
+    "7": {
+      "x_min": 47,
+      "x_max": 567,
+      "y_min": 5,
+      "y_max": 739,
+      "ha": 734,
+      "leftSideBearing": 0,
+      "advanceWidth": 615
+    },
+    "8": {
+      "x_min": 40,
+      "x_max": 541,
+      "y_min": -15,
+      "y_max": 752,
+      "ha": 767,
+      "leftSideBearing": 40,
+      "advanceWidth": 585
+    },
+    "9": {
+      "x_min": 40,
+      "x_max": 537,
+      "y_min": -52,
+      "y_max": 736,
+      "ha": 788,
+      "leftSideBearing": 40,
+      "advanceWidth": 592
+    },
+    "!": {
+      "x_min": 49,
+      "x_max": 180,
+      "y_min": -7,
+      "y_max": 761,
+      "ha": 768,
+      "leftSideBearing": 49,
+      "advanceWidth": 230
+    },
+    "\"": {
+      "x_min": 39,
+      "x_max": 304,
+      "y_min": 596,
+      "y_max": 804,
+      "ha": 208,
+      "leftSideBearing": 39,
+      "advanceWidth": 353
+    },
+    "#": {
+      "x_min": 33,
+      "x_max": 599,
+      "y_min": -8,
+      "y_max": 765,
+      "ha": 773,
+      "leftSideBearing": 33,
+      "advanceWidth": 648
+    },
+    "$": {
+      "x_min": 53,
+      "x_max": 495,
+      "y_min": -111,
+      "y_max": 823,
+      "ha": 934,
+      "leftSideBearing": 53,
+      "advanceWidth": 560
+    },
+    "%": {
+      "x_min": 35,
+      "x_max": 656,
+      "y_min": -128,
+      "y_max": 808,
+      "ha": 936,
+      "leftSideBearing": 35,
+      "advanceWidth": 711
+    },
+    "&": {
+      "x_min": 53,
+      "x_max": 441,
+      "y_min": -3,
+      "y_max": 753,
+      "ha": 756,
+      "leftSideBearing": 53,
+      "advanceWidth": 500
+    },
+    "'": {
+      "x_min": 43,
+      "x_max": 161,
+      "y_min": 590,
+      "y_max": 811,
+      "ha": 221,
+      "leftSideBearing": 43,
+      "advanceWidth": 217
+    },
+    "(": {
+      "x_min": 41,
+      "x_max": 311,
+      "y_min": -36,
+      "y_max": 845,
+      "ha": 881,
+      "leftSideBearing": 41,
+      "advanceWidth": 308
+    },
+    ")": {
+      "x_min": -8,
+      "x_max": 257,
+      "y_min": -21,
+      "y_max": 852,
+      "ha": 873,
+      "leftSideBearing": -8,
+      "advanceWidth": 280
+    },
+    "*": {
+      "x_min": 59,
+      "x_max": 539,
+      "y_min": 175,
+      "y_max": 589,
+      "ha": 414,
+      "leftSideBearing": 59,
+      "advanceWidth": 601
+    },
+    "+": {
+      "x_min": 33,
+      "x_max": 361,
+      "y_min": 180,
+      "y_max": 587,
+      "ha": 407,
+      "leftSideBearing": 33,
+      "advanceWidth": 400
+    },
+    ",": {
+      "x_min": 15,
+      "x_max": 176,
+      "y_min": -129,
+      "y_max": 92,
+      "ha": 221,
+      "leftSideBearing": 15,
+      "advanceWidth": 205
+    },
+    "-": {
+      "x_min": 40,
+      "x_max": 380,
+      "y_min": 317,
+      "y_max": 452,
+      "ha": 135,
+      "leftSideBearing": 40,
+      "advanceWidth": 422
+    },
+    ".": {
+      "x_min": 48,
+      "x_max": 185,
+      "y_min": -56,
+      "y_max": 84,
+      "ha": 140,
+      "leftSideBearing": 48,
+      "advanceWidth": 227
+    },
+    "/": {
+      "x_min": -58,
+      "x_max": 654,
+      "y_min": -122,
+      "y_max": 844,
+      "ha": 966,
+      "leftSideBearing": -58,
+      "advanceWidth": 626
+    },
+    ":": {
+      "x_min": 65,
+      "x_max": 225,
+      "y_min": 97,
+      "y_max": 536,
+      "ha": 439,
+      "leftSideBearing": 65,
+      "advanceWidth": 302
+    },
+    ";": {
+      "x_min": 13,
+      "x_max": 295,
+      "y_min": -139,
+      "y_max": 536,
+      "ha": 675,
+      "leftSideBearing": 13,
+      "advanceWidth": 334
+    },
+    "<": {
+      "x_min": 28,
+      "x_max": 438,
+      "y_min": -1,
+      "y_max": 607,
+      "ha": 608,
+      "leftSideBearing": 28,
+      "advanceWidth": 475
+    },
+    "=": {
+      "x_min": 40,
+      "x_max": 383,
+      "y_min": 199.9598640852289,
+      "y_max": 541,
+      "ha": 341.0401359147711,
+      "leftSideBearing": 40,
+      "advanceWidth": 422
+    },
+    ">": {
+      "x_min": 35,
+      "x_max": 421,
+      "y_min": 28,
+      "y_max": 632,
+      "ha": 604,
+      "leftSideBearing": 35,
+      "advanceWidth": 466
+    },
+    "?": {
+      "x_min": 45,
+      "x_max": 548,
+      "y_min": -17,
+      "y_max": 767,
+      "ha": 784,
+      "leftSideBearing": 45,
+      "advanceWidth": 592
+    },
+    "@": {
+      "x_min": 51,
+      "x_max": 730,
+      "y_min": -78,
+      "y_max": 753,
+      "ha": 831,
+      "leftSideBearing": 51,
+      "advanceWidth": 781
+    },
+    "A": {
+      "x_min": 37,
+      "x_max": 554,
+      "y_min": -4,
+      "y_max": 746,
+      "ha": 750,
+      "leftSideBearing": 37,
+      "advanceWidth": 617
+    },
+    "B": {
+      "x_min": 37,
+      "x_max": 532,
+      "y_min": 3,
+      "y_max": 783,
+      "ha": 780,
+      "leftSideBearing": 37,
+      "advanceWidth": 579
+    },
+    "C": {
+      "x_min": 37,
+      "x_max": 583,
+      "y_min": -3,
+      "y_max": 775,
+      "ha": 778,
+      "leftSideBearing": 37,
+      "advanceWidth": 623
+    },
+    "D": {
+      "x_min": 50,
+      "x_max": 530,
+      "y_min": -15,
+      "y_max": 749,
+      "ha": 764,
+      "leftSideBearing": 50,
+      "advanceWidth": 579
+    },
+    "E": {
+      "x_min": 45,
+      "x_max": 531,
+      "y_min": -1,
+      "y_max": 743,
+      "ha": 744,
+      "leftSideBearing": 45,
+      "advanceWidth": 585
+    },
+    "F": {
+      "x_min": 45,
+      "x_max": 459,
+      "y_min": 23,
+      "y_max": 727,
+      "ha": 704,
+      "leftSideBearing": 45,
+      "advanceWidth": 510
+    },
+    "G": {
+      "x_min": 31,
+      "x_max": 577,
+      "y_min": -8,
+      "y_max": 733,
+      "ha": 741,
+      "leftSideBearing": 31,
+      "advanceWidth": 611
+    },
+    "H": {
+      "x_min": 37,
+      "x_max": 493,
+      "y_min": -22,
+      "y_max": 758,
+      "ha": 780,
+      "leftSideBearing": 37,
+      "advanceWidth": 535
+    },
+    "I": {
+      "x_min": 47,
+      "x_max": 501,
+      "y_min": -3,
+      "y_max": 731,
+      "ha": 734,
+      "leftSideBearing": 47,
+      "advanceWidth": 541
+    },
+    "J": {
+      "x_min": 33,
+      "x_max": 531,
+      "y_min": -23,
+      "y_max": 725,
+      "ha": 748,
+      "leftSideBearing": 33,
+      "advanceWidth": 573
+    },
+    "K": {
+      "x_min": 43,
+      "x_max": 505,
+      "y_min": -10,
+      "y_max": 740,
+      "ha": 750,
+      "leftSideBearing": 43,
+      "advanceWidth": 560
+    },
+    "L": {
+      "x_min": 49,
+      "x_max": 457,
+      "y_min": -2,
+      "y_max": 746,
+      "ha": 748,
+      "leftSideBearing": 49,
+      "advanceWidth": 510
+    },
+    "M": {
+      "x_min": 35,
+      "x_max": 699,
+      "y_min": 1,
+      "y_max": 744,
+      "ha": 743,
+      "leftSideBearing": 35,
+      "advanceWidth": 743
+    },
+    "N": {
+      "x_min": 34,
+      "x_max": 533,
+      "y_min": -17,
+      "y_max": 761,
+      "ha": 778,
+      "leftSideBearing": 34,
+      "advanceWidth": 579
+    },
+    "O": {
+      "x_min": 41,
+      "x_max": 608,
+      "y_min": -5,
+      "y_max": 735,
+      "ha": 740,
+      "leftSideBearing": 41,
+      "advanceWidth": 667
+    },
+    "P": {
+      "x_min": 53,
+      "x_max": 451,
+      "y_min": -18,
+      "y_max": 735,
+      "ha": 753,
+      "leftSideBearing": 53,
+      "advanceWidth": 497
+    },
+    "Q": {
+      "x_min": 40,
+      "x_max": 599,
+      "y_min": -67,
+      "y_max": 744,
+      "ha": 811,
+      "leftSideBearing": 40,
+      "advanceWidth": 648
+    },
+    "R": {
+      "x_min": 39,
+      "x_max": 487,
+      "y_min": 16,
+      "y_max": 735,
+      "ha": 719,
+      "leftSideBearing": 39,
+      "advanceWidth": 535
+    },
+    "S": {
+      "x_min": 35,
+      "x_max": 552,
+      "y_min": -47,
+      "y_max": 708,
+      "ha": 755,
+      "leftSideBearing": 35,
+      "advanceWidth": 604
+    },
+    "T": {
+      "x_min": 26,
+      "x_max": 656,
+      "y_min": -13,
+      "y_max": 718,
+      "ha": 731,
+      "leftSideBearing": 26,
+      "advanceWidth": 705
+    },
+    "U": {
+      "x_min": 41,
+      "x_max": 518,
+      "y_min": -20,
+      "y_max": 748,
+      "ha": 768,
+      "leftSideBearing": 41,
+      "advanceWidth": 567
+    },
+    "V": {
+      "x_min": 47,
+      "x_max": 509,
+      "y_min": -26,
+      "y_max": 744,
+      "ha": 770,
+      "leftSideBearing": 47,
+      "advanceWidth": 567
+    },
+    "W": {
+      "x_min": 44,
+      "x_max": 789,
+      "y_min": -35,
+      "y_max": 720,
+      "ha": 755,
+      "leftSideBearing": 44,
+      "advanceWidth": 833
+    },
+    "X": {
+      "x_min": 63,
+      "x_max": 635,
+      "y_min": -10,
+      "y_max": 745,
+      "ha": 755,
+      "leftSideBearing": 63,
+      "advanceWidth": 680
+    },
+    "Y": {
+      "x_min": 43,
+      "x_max": 503,
+      "y_min": -21,
+      "y_max": 734,
+      "ha": 755,
+      "leftSideBearing": 43,
+      "advanceWidth": 541
+    },
+    "Z": {
+      "x_min": 42,
+      "x_max": 584,
+      "y_min": -10,
+      "y_max": 739,
+      "ha": 749,
+      "leftSideBearing": 42,
+      "advanceWidth": 629
+    },
+    "[": {
+      "x_min": 46,
+      "x_max": 346,
+      "y_min": -150,
+      "y_max": 884,
+      "ha": 1034,
+      "leftSideBearing": 46,
+      "advanceWidth": 291
+    },
+    "\\": {
+      "x_min": 20,
+      "x_max": 616,
+      "y_min": -100,
+      "y_max": 797,
+      "ha": 897,
+      "leftSideBearing": 20,
+      "advanceWidth": 645
+    },
+    "]": {
+      "x_min": -76,
+      "x_max": 226,
+      "y_min": -150,
+      "y_max": 881,
+      "ha": 1031,
+      "leftSideBearing": -76,
+      "advanceWidth": 297
+    },
+    "^": {
+      "x_min": 43,
+      "x_max": 437,
+      "y_min": 517,
+      "y_max": 812,
+      "ha": 295,
+      "leftSideBearing": 43,
+      "advanceWidth": 478
+    },
+    "_": {
+      "x_min": 29,
+      "x_max": 563,
+      "y_min": -110,
+      "y_max": -1,
+      "ha": 109,
+      "leftSideBearing": 29,
+      "advanceWidth": 598
+    },
+    "`": {
+      "x_min": 54,
+      "x_max": 321,
+      "y_min": 540,
+      "y_max": 747,
+      "ha": 207,
+      "leftSideBearing": 54,
+      "advanceWidth": 368
+    },
+    "a": {
+      "x_min": 20,
+      "x_max": 447,
+      "y_min": -17,
+      "y_max": 495,
+      "ha": 512,
+      "leftSideBearing": 20,
+      "advanceWidth": 494
+    },
+    "b": {
+      "x_min": 37,
+      "x_max": 466,
+      "y_min": -27,
+      "y_max": 770,
+      "ha": 797,
+      "leftSideBearing": 37,
+      "advanceWidth": 510
+    },
+    "c": {
+      "x_min": 35,
+      "x_max": 456,
+      "y_min": -9,
+      "y_max": 507,
+      "ha": 516,
+      "leftSideBearing": 35,
+      "advanceWidth": 460
+    },
+    "d": {
+      "x_min": 45,
+      "x_max": 520,
+      "y_min": -15,
+      "y_max": 764,
+      "ha": 779,
+      "leftSideBearing": 45,
+      "advanceWidth": 560
+    },
+    "e": {
+      "x_min": 33,
+      "x_max": 370,
+      "y_min": -5,
+      "y_max": 501,
+      "ha": 506,
+      "leftSideBearing": 33,
+      "advanceWidth": 397
+    },
+    "f": {
+      "x_min": 35,
+      "x_max": 411,
+      "y_min": -13,
+      "y_max": 695,
+      "ha": 708,
+      "leftSideBearing": 35,
+      "advanceWidth": 453
+    },
+    "g": {
+      "x_min": 33,
+      "x_max": 551,
+      "y_min": -257,
+      "y_max": 505,
+      "ha": 762,
+      "leftSideBearing": 33,
+      "advanceWidth": 611
+    },
+    "h": {
+      "x_min": 32,
+      "x_max": 458,
+      "y_min": -29,
+      "y_max": 743,
+      "ha": 772,
+      "leftSideBearing": 32,
+      "advanceWidth": 491
+    },
+    "i": {
+      "x_min": 45,
+      "x_max": 167,
+      "y_min": -13,
+      "y_max": 631,
+      "ha": 644,
+      "leftSideBearing": 45,
+      "advanceWidth": 220
+    },
+    "j": {
+      "x_min": -127,
+      "x_max": 261,
+      "y_min": -231,
+      "y_max": 601,
+      "ha": 832,
+      "leftSideBearing": -127,
+      "advanceWidth": 308
+    },
+    "k": {
+      "x_min": 39,
+      "x_max": 443,
+      "y_min": -3,
+      "y_max": 700,
+      "ha": 703,
+      "leftSideBearing": 39,
+      "advanceWidth": 497
+    },
+    "l": {
+      "x_min": 58,
+      "x_max": 168,
+      "y_min": -8,
+      "y_max": 686,
+      "ha": 694,
+      "leftSideBearing": 58,
+      "advanceWidth": 227
+    },
+    "m": {
+      "x_min": 39,
+      "x_max": 688,
+      "y_min": -14,
+      "y_max": 501,
+      "ha": 515,
+      "leftSideBearing": 39,
+      "advanceWidth": 718
+    },
+    "n": {
+      "x_min": 45,
+      "x_max": 491,
+      "y_min": -32,
+      "y_max": 512,
+      "ha": 544,
+      "leftSideBearing": 45,
+      "advanceWidth": 541
+    },
+    "o": {
+      "x_min": 41,
+      "x_max": 424,
+      "y_min": -12,
+      "y_max": 493,
+      "ha": 505,
+      "leftSideBearing": 41,
+      "advanceWidth": 447
+    },
+    "p": {
+      "x_min": 25,
+      "x_max": 529,
+      "y_min": -260,
+      "y_max": 500,
+      "ha": 760,
+      "leftSideBearing": 25,
+      "advanceWidth": 573
+    },
+    "q": {
+      "x_min": 53,
+      "x_max": 603,
+      "y_min": -235,
+      "y_max": 514,
+      "ha": 749,
+      "leftSideBearing": 53,
+      "advanceWidth": 623
+    },
+    "r": {
+      "x_min": 32,
+      "x_max": 407,
+      "y_min": -7,
+      "y_max": 492,
+      "ha": 499,
+      "leftSideBearing": 32,
+      "advanceWidth": 460
+    },
+    "s": {
+      "x_min": 49,
+      "x_max": 416,
+      "y_min": -12,
+      "y_max": 519,
+      "ha": 531,
+      "leftSideBearing": 49,
+      "advanceWidth": 460
+    },
+    "t": {
+      "x_min": 32,
+      "x_max": 442,
+      "y_min": -5,
+      "y_max": 684,
+      "ha": 689,
+      "leftSideBearing": 32,
+      "advanceWidth": 469
+    },
+    "u": {
+      "x_min": 41,
+      "x_max": 487,
+      "y_min": -5,
+      "y_max": 507,
+      "ha": 512,
+      "leftSideBearing": 41,
+      "advanceWidth": 510
+    },
+    "v": {
+      "x_min": 16,
+      "x_max": 441,
+      "y_min": -20,
+      "y_max": 542,
+      "ha": 562,
+      "leftSideBearing": 16,
+      "advanceWidth": 456
+    },
+    "w": {
+      "x_min": 39,
+      "x_max": 639,
+      "y_min": -22,
+      "y_max": 505,
+      "ha": 527,
+      "leftSideBearing": 39,
+      "advanceWidth": 661
+    },
+    "x": {
+      "x_min": 15,
+      "x_max": 505,
+      "y_min": -39,
+      "y_max": 539,
+      "ha": 578,
+      "leftSideBearing": 15,
+      "advanceWidth": 541
+    },
+    "y": {
+      "x_min": -98,
+      "x_max": 501,
+      "y_min": -242,
+      "y_max": 511,
+      "ha": 753,
+      "leftSideBearing": -98,
+      "advanceWidth": 548
+    },
+    "z": {
+      "x_min": 27,
+      "x_max": 479,
+      "y_min": -3,
+      "y_max": 494,
+      "ha": 497,
+      "leftSideBearing": 27,
+      "advanceWidth": 494
+    },
+    "{": {
+      "x_min": 0,
+      "x_max": 0,
+      "y_min": 0,
+      "y_max": 0,
+      "ha": 0,
+      "leftSideBearing": 0,
+      "advanceWidth": 308
+    },
+    "|": {
+      "x_min": 0,
+      "x_max": 0,
+      "y_min": 0,
+      "y_max": 0,
+      "ha": 0,
+      "leftSideBearing": 0,
+      "advanceWidth": 308
+    },
+    "}": {
+      "x_min": 0,
+      "x_max": 0,
+      "y_min": 0,
+      "y_max": 0,
+      "ha": 0,
+      "leftSideBearing": 0,
+      "advanceWidth": 308
+    },
+    "~": {
+      "x_min": 0,
+      "x_max": 0,
+      "y_min": 0,
+      "y_max": 0,
+      "ha": 0,
+      "leftSideBearing": 0,
+      "advanceWidth": 308
+    }
+  },
+  "fontFamily": "Petaluma Script",
+  "resolution": 1000,
+  "generatedOn": "2020-06-14T18:33:25.407Z"
 };
 
 /***/ }),
@@ -11054,62 +12204,978 @@ var PetalumaMetrics = {
     },
     chordSymbol: {
       global: {
-        superscriptOffset: -8,
-        subscriptOffset: 4,
-        kerningOffset: -2
+        superscriptOffset: -400,
+        subscriptOffset: 300,
+        kerningOffset: -150,
+        lowerKerningText: ['D', 'F', 'P', 'T', 'V', 'Y'],
+        upperKerningText: ['L'],
+        spacing: 20,
+        superSubRatio: 0.73
+      },
+      csymDiminished: {
+        scale: 0.8,
+        leftSideBearing: -95,
+        advanceWidth: 506,
+        yOffset: 0
+      },
+      csymHalfDiminished: {
+        scale: 0.8,
+        leftSideBearing: -32,
+        advanceWidth: 506,
+        yOffset: 0
       },
       csymAugmented: {
         scale: 1,
-        shiftY: -2,
-        shiftX: 0
+        leftSideBearing: -25,
+        advanceWidth: 530,
+        yOffset: 0
       },
       csymParensLeftTall: {
         scale: 0.8,
-        shiftY: 1,
-        shiftX: 0
+        leftSideBearing: 0,
+        advanceWidth: 155,
+        yOffset: 150
       },
       csymParensRightTall: {
         scale: 0.8,
-        shiftY: 1,
-        shiftX: 0
+        leftSideBearing: 40,
+        advanceWidth: 189,
+        yOffset: 150
       },
       csymBracketLeftTall: {
         scale: 0.8,
-        shiftY: 1,
-        shiftX: 0
+        leftSideBearing: 0,
+        advanceWidth: 328,
+        yOffset: 0
       },
       csymBracketRightTall: {
         scale: 0.8,
-        shiftY: 1,
-        shiftX: 0
+        leftSideBearing: 1,
+        advanceWidth: 600,
+        yOffset: 0
       },
       csymParensLeftVeryTall: {
-        scale: 0.8,
-        shiftY: 0,
-        shiftX: 0
+        scale: 0.95,
+        leftSideBearing: 0,
+        advanceWidth: 200,
+        yOffset: 250
       },
       csymParensRightVeryTall: {
-        scale: 0.8,
-        shiftY: 0,
-        shiftX: 0
+        scale: 0.9,
+        leftSideBearing: -100,
+        advanceWidth: 111,
+        yOffset: 250
       },
       csymDiagonalArrangementSlash: {
         scale: 0.6,
-        shiftY: 0,
-        shiftX: -2
+        leftSideBearing: -1,
+        advanceWidth: 990,
+        yOffset: 0
+      },
+      csymMinor: {
+        scale: 0.8,
+        leftSideBearing: 0,
+        advanceWidth: 482,
+        yOffset: 0
+      },
+      csymMajorSeventh: {
+        scale: 1,
+        leftSideBearing: 0,
+        yOffset: 0,
+        advanceWidth: 600
       },
       accidentalSharp: {
-        scale: 1,
-        shiftY: -3,
-        shiftX: 0
+        scale: 0.7,
+        leftSideBearing: 0,
+        advanceWidth: 425,
+        yOffset: -422
       },
       accidentalFlat: {
-        scale: 1,
-        shiftY: -2,
-        shiftX: 0
+        scale: 0.8,
+        leftSideBearing: -10,
+        advanceWidth: 228,
+        yOffset: -284
       }
     }
   }
+};
+
+/***/ }),
+
+/***/ "./src/fonts/robotoSlab_metrics.js":
+/*!*****************************************!*\
+  !*** ./src/fonts/robotoSlab_metrics.js ***!
+  \*****************************************/
+/*! exports provided: RobotoSlabMetrics */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RobotoSlabMetrics", function() { return RobotoSlabMetrics; });
+var RobotoSlabMetrics = {
+  name: 'RobotoSlab',
+  smufl: false,
+  spacing: 50,
+  "glyphs": {
+    " ": {
+      "x_min": 0,
+      "x_max": 509,
+      "y_min": 0,
+      "y_max": 2000,
+      "ha": 2000,
+      "leftSideBearing": 0,
+      "advanceWidth": 509
+    },
+    "0": {
+      "x_min": 121,
+      "x_max": 1048,
+      "y_min": -21,
+      "y_max": 1477,
+      "ha": 1498,
+      "leftSideBearing": 121,
+      "advanceWidth": 1168
+    },
+    "1": {
+      "x_min": 117,
+      "x_max": 767,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 117,
+      "advanceWidth": 844
+    },
+    "2": {
+      "x_min": 75.8474576645637,
+      "x_max": 1040,
+      "y_min": 0,
+      "y_max": 1477,
+      "ha": 1477,
+      "leftSideBearing": 75,
+      "advanceWidth": 1131
+    },
+    "3": {
+      "x_min": 74.85365853658536,
+      "x_max": 994,
+      "y_min": -21,
+      "y_max": 1477,
+      "ha": 1498,
+      "leftSideBearing": 74,
+      "advanceWidth": 1106
+    },
+    "4": {
+      "x_min": 63,
+      "x_max": 1114,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 63,
+      "advanceWidth": 1187
+    },
+    "5": {
+      "x_min": 96.8448275474953,
+      "x_max": 982,
+      "y_min": -21,
+      "y_max": 1456,
+      "ha": 1477,
+      "leftSideBearing": 96,
+      "advanceWidth": 1081
+    },
+    "6": {
+      "x_min": 121,
+      "x_max": 1067,
+      "y_min": -21,
+      "y_max": 1477,
+      "ha": 1498,
+      "leftSideBearing": 121,
+      "advanceWidth": 1144
+    },
+    "7": {
+      "x_min": 76,
+      "x_max": 1060,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": -30,
+      "advanceWidth": 1128
+    },
+    "8": {
+      "x_min": 92,
+      "x_max": 1039,
+      "y_min": -21,
+      "y_max": 1477,
+      "ha": 1498,
+      "leftSideBearing": 92,
+      "advanceWidth": 1131
+    },
+    "9": {
+      "x_min": 84,
+      "x_max": 1026,
+      "y_min": -21,
+      "y_max": 1477,
+      "ha": 1498,
+      "leftSideBearing": 84,
+      "advanceWidth": 1154
+    },
+    "!": {
+      "x_min": 143,
+      "x_max": 340,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 143,
+      "advanceWidth": 483
+    },
+    "\"": {
+      "x_min": 166,
+      "x_max": 634,
+      "y_min": 1055,
+      "y_max": 1560,
+      "ha": 505,
+      "leftSideBearing": 166,
+      "advanceWidth": 770
+    },
+    "#": {
+      "x_min": 63,
+      "x_max": 1179,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 63,
+      "advanceWidth": 1246
+    },
+    "$": {
+      "x_min": 81.92156915727656,
+      "x_max": 1012,
+      "y_min": -208,
+      "y_max": 1693,
+      "ha": 1901,
+      "leftSideBearing": 81,
+      "advanceWidth": 1110
+    },
+    "%": {
+      "x_min": 77,
+      "x_max": 1384,
+      "y_min": -21,
+      "y_max": 1477,
+      "ha": 1498,
+      "leftSideBearing": 77,
+      "advanceWidth": 1460
+    },
+    "&": {
+      "x_min": 74,
+      "x_max": 1242,
+      "y_min": -21,
+      "y_max": 1477,
+      "ha": 1498,
+      "leftSideBearing": 74,
+      "advanceWidth": 1289
+    },
+    "'": {
+      "x_min": 166,
+      "x_max": 324,
+      "y_min": 1055,
+      "y_max": 1560,
+      "ha": 505,
+      "leftSideBearing": 166,
+      "advanceWidth": 460
+    },
+    "(": {
+      "x_min": 114,
+      "x_max": 650,
+      "y_min": -463,
+      "y_max": 1636,
+      "ha": 2099,
+      "leftSideBearing": 114,
+      "advanceWidth": 662
+    },
+    ")": {
+      "x_min": 11,
+      "x_max": 547,
+      "y_min": -463,
+      "y_max": 1636,
+      "ha": 2099,
+      "leftSideBearing": 11,
+      "advanceWidth": 654
+    },
+    "*": {
+      "x_min": 66,
+      "x_max": 893,
+      "y_min": 607,
+      "y_max": 1456,
+      "ha": 849,
+      "leftSideBearing": 66,
+      "advanceWidth": 958
+    },
+    "+": {
+      "x_min": 73,
+      "x_max": 1071,
+      "y_min": 146,
+      "y_max": 1206,
+      "ha": 1060,
+      "leftSideBearing": 73,
+      "advanceWidth": 1145
+    },
+    ",": {
+      "x_min": 23,
+      "x_max": 315,
+      "y_min": -311,
+      "y_max": 221,
+      "ha": 532,
+      "leftSideBearing": 23,
+      "advanceWidth": 404
+    },
+    "-": {
+      "x_min": 154,
+      "x_max": 643,
+      "y_min": 538,
+      "y_max": 692,
+      "ha": 154,
+      "leftSideBearing": 154,
+      "advanceWidth": 797
+    },
+    ".": {
+      "x_min": 145,
+      "x_max": 342,
+      "y_min": 0,
+      "y_max": 202,
+      "ha": 202,
+      "leftSideBearing": 145,
+      "advanceWidth": 493
+    },
+    "/": {
+      "x_min": 0,
+      "x_max": 774,
+      "y_min": -125,
+      "y_max": 1456,
+      "ha": 1581,
+      "leftSideBearing": 0,
+      "advanceWidth": 824
+    },
+    ":": {
+      "x_min": 145,
+      "x_max": 342,
+      "y_min": 0,
+      "y_max": 1082,
+      "ha": 1082,
+      "leftSideBearing": 145,
+      "advanceWidth": 419
+    },
+    ";": {
+      "x_min": 53,
+      "x_max": 345,
+      "y_min": -311,
+      "y_max": 1082,
+      "ha": 1393,
+      "leftSideBearing": 53,
+      "advanceWidth": 424
+    },
+    "<": {
+      "x_min": 76,
+      "x_max": 892,
+      "y_min": 107,
+      "y_max": 1013,
+      "ha": 906,
+      "leftSideBearing": 76,
+      "advanceWidth": 1017
+    },
+    "=": {
+      "x_min": 147,
+      "x_max": 981,
+      "y_min": 407,
+      "y_max": 987,
+      "ha": 580,
+      "leftSideBearing": 147,
+      "advanceWidth": 1127
+    },
+    ">": {
+      "x_min": 125,
+      "x_max": 980,
+      "y_min": 87,
+      "y_max": 993,
+      "ha": 906,
+      "leftSideBearing": 125,
+      "advanceWidth": 1060
+    },
+    "?": {
+      "x_min": 65.92660602419838,
+      "x_max": 890,
+      "y_min": 0,
+      "y_max": 1477,
+      "ha": 1477,
+      "leftSideBearing": 65,
+      "advanceWidth": 953
+    },
+    "@": {
+      "x_min": 84.3592218305664,
+      "x_max": 1705.2346925277395,
+      "y_min": -453,
+      "y_max": 1431,
+      "ha": 1884,
+      "leftSideBearing": 84,
+      "advanceWidth": 1821
+    },
+    "A": {
+      "x_min": 70,
+      "x_max": 1463,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 70,
+      "advanceWidth": 1533
+    },
+    "B": {
+      "x_min": 81,
+      "x_max": 1253,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 81,
+      "advanceWidth": 1322
+    },
+    "C": {
+      "x_min": 80,
+      "x_max": 1174,
+      "y_min": -21,
+      "y_max": 1477,
+      "ha": 1498,
+      "leftSideBearing": 80,
+      "advanceWidth": 1290
+    },
+    "D": {
+      "x_min": 81,
+      "x_max": 1291,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 81,
+      "advanceWidth": 1356
+    },
+    "E": {
+      "x_min": 81,
+      "x_max": 1190,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 81,
+      "advanceWidth": 1306
+    },
+    "F": {
+      "x_min": 81,
+      "x_max": 1176,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 81,
+      "advanceWidth": 1256
+    },
+    "G": {
+      "x_min": 80,
+      "x_max": 1226,
+      "y_min": -21,
+      "y_max": 1477,
+      "ha": 1498,
+      "leftSideBearing": 80,
+      "advanceWidth": 1346
+    },
+    "H": {
+      "x_min": 81,
+      "x_max": 1497,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 81,
+      "advanceWidth": 1578
+    },
+    "I": {
+      "x_min": 81,
+      "x_max": 604,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 81,
+      "advanceWidth": 685
+    },
+    "J": {
+      "x_min": 60,
+      "x_max": 1100,
+      "y_min": -21,
+      "y_max": 1456,
+      "ha": 1477,
+      "leftSideBearing": 60,
+      "advanceWidth": 1169
+    },
+    "K": {
+      "x_min": 81,
+      "x_max": 1427,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 81,
+      "advanceWidth": 1501
+    },
+    "L": {
+      "x_min": 81,
+      "x_max": 1130,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 81,
+      "advanceWidth": 1210
+    },
+    "M": {
+      "x_min": 94,
+      "x_max": 1888,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 94,
+      "advanceWidth": 1982
+    },
+    "N": {
+      "x_min": 83,
+      "x_max": 1509,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 83,
+      "advanceWidth": 1592
+    },
+    "O": {
+      "x_min": 70,
+      "x_max": 1281,
+      "y_min": -21,
+      "y_max": 1477,
+      "ha": 1498,
+      "leftSideBearing": 70,
+      "advanceWidth": 1351
+    },
+    "P": {
+      "x_min": 81,
+      "x_max": 1242,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 81,
+      "advanceWidth": 1297
+    },
+    "Q": {
+      "x_min": 70,
+      "x_max": 1348,
+      "y_min": -245,
+      "y_max": 1477,
+      "ha": 1722,
+      "leftSideBearing": 70,
+      "advanceWidth": 1376
+    },
+    "R": {
+      "x_min": 81,
+      "x_max": 1285,
+      "y_min": 0,
+      "y_max": 1455,
+      "ha": 1455,
+      "leftSideBearing": 81,
+      "advanceWidth": 1385
+    },
+    "S": {
+      "x_min": 115,
+      "x_max": 1116,
+      "y_min": -21,
+      "y_max": 1477,
+      "ha": 1498,
+      "leftSideBearing": 115,
+      "advanceWidth": 1206
+    },
+    "T": {
+      "x_min": 96,
+      "x_max": 1306,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 96,
+      "advanceWidth": 1406
+    },
+    "U": {
+      "x_min": 70,
+      "x_max": 1452,
+      "y_min": -21,
+      "y_max": 1456,
+      "ha": 1477,
+      "leftSideBearing": 70,
+      "advanceWidth": 1522
+    },
+    "V": {
+      "x_min": 65,
+      "x_max": 1443,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 65,
+      "advanceWidth": 1508
+    },
+    "W": {
+      "x_min": 72,
+      "x_max": 2057,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 72,
+      "advanceWidth": 2129
+    },
+    "X": {
+      "x_min": 80,
+      "x_max": 1449,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 80,
+      "advanceWidth": 1529
+    },
+    "Y": {
+      "x_min": 65,
+      "x_max": 1396,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 65,
+      "advanceWidth": 1461
+    },
+    "Z": {
+      "x_min": 90,
+      "x_max": 1107,
+      "y_min": 0,
+      "y_max": 1456,
+      "ha": 1456,
+      "leftSideBearing": 90,
+      "advanceWidth": 1197
+    },
+    "[": {
+      "x_min": 157,
+      "x_max": 541,
+      "y_min": -312,
+      "y_max": 1664,
+      "ha": 1976,
+      "leftSideBearing": 157,
+      "advanceWidth": 573
+    },
+    "\\": {
+      "x_min": 36,
+      "x_max": 830,
+      "y_min": -125,
+      "y_max": 1456,
+      "ha": 1581,
+      "leftSideBearing": 36,
+      "advanceWidth": 841
+    },
+    "]": {
+      "x_min": 23,
+      "x_max": 408,
+      "y_min": -312,
+      "y_max": 1664,
+      "ha": 1976,
+      "leftSideBearing": 23,
+      "advanceWidth": 552
+    },
+    "^": {
+      "x_min": 71,
+      "x_max": 802,
+      "y_min": 729,
+      "y_max": 1456,
+      "ha": 727,
+      "leftSideBearing": 71,
+      "advanceWidth": 864
+    },
+    "_": {
+      "x_min": 119,
+      "x_max": 1041,
+      "y_min": -154,
+      "y_max": 0,
+      "ha": 154,
+      "leftSideBearing": 119,
+      "advanceWidth": 1168
+    },
+    "`": {
+      "x_min": 40,
+      "x_max": 456,
+      "y_min": 1288,
+      "y_max": 1560,
+      "ha": 272,
+      "leftSideBearing": 40,
+      "advanceWidth": 496
+    },
+    "a": {
+      "x_min": 79,
+      "x_max": 1053,
+      "y_min": -21,
+      "y_max": 1102,
+      "ha": 1123,
+      "leftSideBearing": 79,
+      "advanceWidth": 1132
+    },
+    "b": {
+      "x_min": -16,
+      "x_max": 1071,
+      "y_min": -21,
+      "y_max": 1560,
+      "ha": 1581,
+      "leftSideBearing": -16,
+      "advanceWidth": 1145
+    },
+    "c": {
+      "x_min": 78,
+      "x_max": 988,
+      "y_min": -21,
+      "y_max": 1102,
+      "ha": 1123,
+      "leftSideBearing": 78,
+      "advanceWidth": 1067
+    },
+    "d": {
+      "x_min": 78,
+      "x_max": 1156,
+      "y_min": -21,
+      "y_max": 1560,
+      "ha": 1581,
+      "leftSideBearing": 78,
+      "advanceWidth": 1218
+    },
+    "e": {
+      "x_min": 74,
+      "x_max": 980,
+      "y_min": -21,
+      "y_max": 1102,
+      "ha": 1123,
+      "leftSideBearing": 74,
+      "advanceWidth": 1059
+    },
+    "f": {
+      "x_min": 64,
+      "x_max": 731,
+      "y_min": 0,
+      "y_max": 1581,
+      "ha": 1581,
+      "leftSideBearing": 64,
+      "advanceWidth": 725
+    },
+    "g": {
+      "x_min": 78,
+      "x_max": 1133,
+      "y_min": -437,
+      "y_max": 1102,
+      "ha": 1539,
+      "leftSideBearing": 78,
+      "advanceWidth": 1157
+    },
+    "h": {
+      "x_min": 49,
+      "x_max": 1255,
+      "y_min": 0,
+      "y_max": 1560,
+      "ha": 1560,
+      "leftSideBearing": 49,
+      "advanceWidth": 1315
+    },
+    "i": {
+      "x_min": 67,
+      "x_max": 590,
+      "y_min": 0,
+      "y_max": 1560,
+      "ha": 1560,
+      "leftSideBearing": 67,
+      "advanceWidth": 652
+    },
+    "j": {
+      "x_min": -56,
+      "x_max": 381,
+      "y_min": -437,
+      "y_max": 1560,
+      "ha": 1997,
+      "leftSideBearing": -56,
+      "advanceWidth": 525
+    },
+    "k": {
+      "x_min": 64,
+      "x_max": 1248,
+      "y_min": 0,
+      "y_max": 1560,
+      "ha": 1560,
+      "leftSideBearing": 64,
+      "advanceWidth": 1287
+    },
+    "l": {
+      "x_min": 64,
+      "x_max": 587,
+      "y_min": 0,
+      "y_max": 1560,
+      "ha": 1560,
+      "leftSideBearing": 64,
+      "advanceWidth": 653
+    },
+    "m": {
+      "x_min": 74,
+      "x_max": 1905,
+      "y_min": 0,
+      "y_max": 1102,
+      "ha": 1102,
+      "leftSideBearing": 74,
+      "advanceWidth": 1977
+    },
+    "n": {
+      "x_min": 74,
+      "x_max": 1278,
+      "y_min": 0,
+      "y_max": 1102,
+      "ha": 1102,
+      "leftSideBearing": 74,
+      "advanceWidth": 1343
+    },
+    "o": {
+      "x_min": 78,
+      "x_max": 1046,
+      "y_min": -21,
+      "y_max": 1102,
+      "ha": 1123,
+      "leftSideBearing": 78,
+      "advanceWidth": 1124
+    },
+    "p": {
+      "x_min": 34,
+      "x_max": 1119,
+      "y_min": -416,
+      "y_max": 1102,
+      "ha": 1518,
+      "leftSideBearing": 34,
+      "advanceWidth": 1197
+    },
+    "q": {
+      "x_min": 78,
+      "x_max": 1135,
+      "y_min": -416,
+      "y_max": 1102,
+      "ha": 1518,
+      "leftSideBearing": 78,
+      "advanceWidth": 1139
+    },
+    "r": {
+      "x_min": 72,
+      "x_max": 808,
+      "y_min": 0,
+      "y_max": 1102,
+      "ha": 1102,
+      "leftSideBearing": 72,
+      "advanceWidth": 854
+    },
+    "s": {
+      "x_min": 104,
+      "x_max": 933,
+      "y_min": -21,
+      "y_max": 1102,
+      "ha": 1123,
+      "leftSideBearing": 104,
+      "advanceWidth": 1022
+    },
+    "t": {
+      "x_min": 24,
+      "x_max": 678,
+      "y_min": -17,
+      "y_max": 1343,
+      "ha": 1360,
+      "leftSideBearing": 24,
+      "advanceWidth": 730
+    },
+    "u": {
+      "x_min": 52,
+      "x_max": 1181,
+      "y_min": -21,
+      "y_max": 1082,
+      "ha": 1103,
+      "leftSideBearing": 52,
+      "advanceWidth": 1245
+    },
+    "v": {
+      "x_min": 26,
+      "x_max": 1176,
+      "y_min": 0,
+      "y_max": 1082,
+      "ha": 1082,
+      "leftSideBearing": 26,
+      "advanceWidth": 1206
+    },
+    "w": {
+      "x_min": 52,
+      "x_max": 1777,
+      "y_min": 0,
+      "y_max": 1082,
+      "ha": 1082,
+      "leftSideBearing": 52,
+      "advanceWidth": 1823
+    },
+    "x": {
+      "x_min": 42,
+      "x_max": 1163,
+      "y_min": 0,
+      "y_max": 1082,
+      "ha": 1082,
+      "leftSideBearing": 42,
+      "advanceWidth": 1203
+    },
+    "y": {
+      "x_min": 24,
+      "x_max": 1172,
+      "y_min": -437,
+      "y_max": 1082,
+      "ha": 1519,
+      "leftSideBearing": 24,
+      "advanceWidth": 1192
+    },
+    "z": {
+      "x_min": 88,
+      "x_max": 960,
+      "y_min": 0,
+      "y_max": 1082,
+      "ha": 1082,
+      "leftSideBearing": 88,
+      "advanceWidth": 1032
+    },
+    "{": {
+      "x_min": 63,
+      "x_max": 671,
+      "y_min": -364,
+      "y_max": 1597,
+      "ha": 1961,
+      "leftSideBearing": 63,
+      "advanceWidth": 701
+    },
+    "|": {
+      "x_min": 150,
+      "x_max": 307,
+      "y_min": -270,
+      "y_max": 1456,
+      "ha": 1726,
+      "leftSideBearing": 150,
+      "advanceWidth": 451
+    },
+    "}": {
+      "x_min": 27,
+      "x_max": 635,
+      "y_min": -364,
+      "y_max": 1597,
+      "ha": 1961,
+      "leftSideBearing": 27,
+      "advanceWidth": 701
+    },
+    "~": {
+      "x_min": 121,
+      "x_max": 1257,
+      "y_min": 401,
+      "y_max": 803,
+      "ha": 402,
+      "leftSideBearing": 121,
+      "advanceWidth": 1386
+    }
+  },
+  "fontFamily": "Roboto Slab",
+  "resolution": 2048,
+  "generatedOn": "2020-06-15T19:12:58.120Z"
 };
 
 /***/ }),
@@ -13286,6 +15352,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.js");
 /* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stem */ "./src/stem.js");
 /* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tables */ "./src/tables.js");
+/* harmony import */ var _notehead__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./notehead */ "./src/notehead.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -13311,6 +15378,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+
 
 
 
@@ -13378,6 +15446,72 @@ function (_StaveNote) {
       }
 
       return 0;
+    } // Builds a `NoteHead` for each key in the note
+
+  }, {
+    key: "buildNoteHeads",
+    value: function buildNoteHeads() {
+      this.note_heads = [];
+      var stemDirection = this.getStemDirection();
+      var keys = this.getKeys();
+      var lastLine = null;
+      var lineDiff = null;
+      var displaced = false; // Draw notes from bottom to top.
+      // For down-stem notes, we draw from top to bottom.
+
+      var start;
+      var end;
+      var step;
+
+      if (stemDirection === _stem__WEBPACK_IMPORTED_MODULE_1__["Stem"].UP) {
+        start = 0;
+        end = keys.length;
+        step = 1;
+      } else if (stemDirection === _stem__WEBPACK_IMPORTED_MODULE_1__["Stem"].DOWN) {
+        start = keys.length - 1;
+        end = -1;
+        step = -1;
+      }
+
+      for (var i = start; i !== end; i += step) {
+        var noteProps = this.keyProps[i];
+        var line = noteProps.line; // Keep track of last line with a note head, so that consecutive heads
+        // are correctly displaced.
+
+        if (lastLine === null) {
+          lastLine = line;
+        } else {
+          lineDiff = Math.abs(lastLine - line);
+
+          if (lineDiff === 0 || lineDiff === 0.5) {
+            displaced = !displaced;
+          } else {
+            displaced = false;
+            this.use_default_head_x = true;
+          }
+        }
+
+        lastLine = line;
+        var noteheadScale = this.render_options.glyph_font_scale;
+
+        if (_tables__WEBPACK_IMPORTED_MODULE_2__["Flow"].DEFAULT_FONT_STACK[0].name === 'Petaluma') {
+          noteheadScale = noteheadScale * 0.2;
+        }
+
+        var notehead = new _notehead__WEBPACK_IMPORTED_MODULE_3__["NoteHead"]({
+          duration: this.duration,
+          note_type: this.noteType,
+          displaced: displaced,
+          stem_direction: stemDirection,
+          custom_glyph_code: noteProps.code,
+          glyph_font_scale: noteheadScale,
+          x_shift: noteProps.shift_right,
+          stem_up_x_offset: noteProps.stem_up_x_offset,
+          stem_down_x_offset: noteProps.stem_down_x_offset,
+          line: noteProps.line
+        });
+        this.note_heads[i] = notehead;
+      }
     }
   }, {
     key: "getCategory",
@@ -31591,3 +33725,4 @@ function (_Element) {
 
 /******/ })["default"];
 });
+//# sourceMappingURL=vexflow-debug.js.map
