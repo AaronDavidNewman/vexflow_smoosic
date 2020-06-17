@@ -3888,7 +3888,7 @@ function (_Modifier) {
     var fontFamily = 'Arial';
 
     if (_this.musicFont.name === 'Petaluma') {
-      fontFamily = 'petaluma_scriptregular,Arial';
+      fontFamily = 'petaluma_script,Arial';
     } else {
       fontFamily = 'robotoSlab,Times';
     }
@@ -9794,7 +9794,7 @@ var GonvilleMetrics = {
         yOffset: -402
       },
       accidentalFlat: {
-        scale: 0.9,
+        scale: 0.95,
         leftSideBearing: -50,
         advanceWidth: 208,
         yOffset: -184
