@@ -372,7 +372,7 @@ export class ChordSymbol extends Modifier {
 
     let fontFamily = 'Arial';
     if (this.musicFont.name === 'Petaluma') {
-      fontFamily = 'petaluma_script,Arial';
+      fontFamily = 'petalumaScript,Arial';
     } else {
       fontFamily = 'robotoSlab,Times';
     }

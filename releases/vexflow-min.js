@@ -3888,7 +3888,7 @@ function (_Modifier) {
     var fontFamily = 'Arial';
 
     if (_this.musicFont.name === 'Petaluma') {
-      fontFamily = 'petaluma_script,Arial';
+      fontFamily = 'petalumaScript,Arial';
     } else {
       fontFamily = 'robotoSlab,Times';
     }
