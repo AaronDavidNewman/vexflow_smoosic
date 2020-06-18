@@ -3580,6 +3580,7 @@ function (_Modifier) {
       if (!instances || instances.length === 0) return false;
       var width = 0;
       var nonSuperWidth = 0;
+      var reportedWidths = [];
 
       for (var i = 0; i < instances.length; ++i) {
         var instance = instances[i];
@@ -3656,8 +3657,17 @@ function (_Modifier) {
           instance.setTextLine(state.text_line + 1);
           state.text_line += lineSpaces + 1;
         }
+
+        if (instance.reportWidth) {
+          reportedWidths.push(width);
+        } else {
+          reportedWidths.push(0);
+        }
       }
 
+      width = reportedWidths.reduce(function (a, b) {
+        return a + b;
+      });
       state.left_shift += width / 2;
       state.right_shift += width / 2;
       return true;
@@ -3885,6 +3895,7 @@ function (_Modifier) {
     _this.horizontal = ChordSymbol.horizontalJustify.LEFT;
     _this.vertical = ChordSymbol.verticalJustify.TOP;
     _this.useKerning = true;
+    _this.reportWidth = true;
     var fontFamily = 'Arial';
 
     if (_this.musicFont.name === 'Petaluma') {

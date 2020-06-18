@@ -1,5 +1,5 @@
 /**!
- * VexFlow 3.0.9 built on 2020-06-17.
+ * VexFlow 3.0.9 built on 2020-06-18.
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  *
  * http://www.vexflow.com  http://github.com/0xfe/vexflow
