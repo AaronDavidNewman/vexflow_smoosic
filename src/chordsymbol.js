@@ -275,6 +275,7 @@ export class ChordSymbol extends Modifier {
 
     let width = 0;
     let nonSuperWidth = 0;
+    const reportedWidths = [];
 
     for (let i = 0; i < instances.length; ++i) {
       const instance = instances[i];
@@ -349,7 +350,14 @@ export class ChordSymbol extends Modifier {
         instance.setTextLine(state.text_line + 1);
         state.text_line += lineSpaces + 1;
       }
+      if (instance.reportWidth) {
+        reportedWidths.push(width);
+      } else {
+        reportedWidths.push(0);
+      }
     }
+
+    width = reportedWidths.reduce((a, b) => a + b);
 
     state.left_shift += width / 2;
     state.right_shift += width / 2;
@@ -369,6 +377,7 @@ export class ChordSymbol extends Modifier {
     this.horizontal = ChordSymbol.horizontalJustify.LEFT;
     this.vertical = ChordSymbol.verticalJustify.TOP;
     this.useKerning = true;
+    this.reportWidth = true;
 
     let fontFamily = 'Arial';
     if (this.musicFont.name === 'Petaluma') {
