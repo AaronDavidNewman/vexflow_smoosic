@@ -350,7 +350,7 @@ export class ChordSymbol extends Modifier {
         instance.setTextLine(state.text_line + 1);
         state.text_line += lineSpaces + 1;
       }
-      if (instance.reportWidth) {
+      if (instance.getReportWidth()) {
         reportedWidths.push(width);
       } else {
         reportedWidths.push(0);
@@ -404,6 +404,15 @@ export class ChordSymbol extends Modifier {
 
   get subscriptOffset() {
     return ChordSymbol.subscriptOffset * this.pointsToPixels;
+  }
+
+  setReportWidth(value) {
+    this.reportWidth = value;
+    return this;
+  }
+
+  getReportWidth() {
+    return this.reportWidth;
   }
 
   updateOverBarAdjustments() {

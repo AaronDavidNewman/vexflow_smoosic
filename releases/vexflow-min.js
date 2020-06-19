@@ -3658,7 +3658,7 @@ function (_Modifier) {
           state.text_line += lineSpaces + 1;
         }
 
-        if (instance.reportWidth) {
+        if (instance.getReportWidth()) {
           reportedWidths.push(width);
         } else {
           reportedWidths.push(0);
@@ -3915,6 +3915,17 @@ function (_Modifier) {
 
 
   _createClass(ChordSymbol, [{
+    key: "setReportWidth",
+    value: function setReportWidth(value) {
+      this.reportWidth = value;
+      return this;
+    }
+  }, {
+    key: "getReportWidth",
+    value: function getReportWidth() {
+      return this.reportWidth;
+    }
+  }, {
     key: "updateOverBarAdjustments",
     value: function updateOverBarAdjustments() {
       var symIx = 0;
