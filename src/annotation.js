@@ -61,9 +61,16 @@ export class Annotation extends Modifier {
     if (!annotations || annotations.length === 0) return false;
 
     let width = 0;
+    const reportedWidths = [];
     for (let i = 0; i < annotations.length; ++i) {
       const annotation = annotations[i];
       width = Math.max(annotation.getWidth(), width);
+      if (annotation.getReportWidth()) {
+        reportedWidths.push(width);
+      } else {
+        reportedWidths.push(0);
+      }
+
       if (annotation.getPosition() === Modifier.Position.ABOVE) {
         annotation.setTextLine(state.top_text_line);
         state.top_text_line++;
@@ -72,6 +79,7 @@ export class Annotation extends Modifier {
         state.text_line++;
       }
     }
+    width = reportedWidths.reduce((a, b) => a + b);
 
     state.left_shift += width / 2;
     state.right_shift += width / 2;
@@ -89,6 +97,7 @@ export class Annotation extends Modifier {
 
     this.note = null;
     this.index = null;
+    this.reportWidth = true;
     this.text = text;
     this.justification = Annotation.Justify.CENTER;
     this.vert_justification = Annotation.VerticalJustify.TOP;
@@ -103,6 +112,14 @@ export class Annotation extends Modifier {
   }
 
   getCategory() { return Annotation.CATEGORY; }
+  setReportWidth(value) {
+    this.reportWidth = value;
+    return this;
+  }
+
+  getReportWidth() {
+    return this.reportWidth;
+  }
 
   // Set font family, size, and weight. E.g., `Arial`, `10pt`, `Bold`.
   setFont(family, size, weight) {

@@ -803,10 +803,17 @@ function (_Modifier) {
     value: function format(annotations, state) {
       if (!annotations || annotations.length === 0) return false;
       var width = 0;
+      var reportedWidths = [];
 
       for (var i = 0; i < annotations.length; ++i) {
         var annotation = annotations[i];
         width = Math.max(annotation.getWidth(), width);
+
+        if (annotation.getReportWidth()) {
+          reportedWidths.push(width);
+        } else {
+          reportedWidths.push(0);
+        }
 
         if (annotation.getPosition() === _modifier__WEBPACK_IMPORTED_MODULE_2__["Modifier"].Position.ABOVE) {
           annotation.setTextLine(state.top_text_line);
@@ -817,6 +824,9 @@ function (_Modifier) {
         }
       }
 
+      width = reportedWidths.reduce(function (a, b) {
+        return a + b;
+      });
       state.left_shift += width / 2;
       state.right_shift += width / 2;
       return true;
@@ -887,6 +897,7 @@ function (_Modifier) {
 
     _this.note = null;
     _this.index = null;
+    _this.reportWidth = true;
     _this.text = text;
     _this.justification = Annotation.Justify.CENTER;
     _this.vert_justification = Annotation.VerticalJustify.TOP;
@@ -905,6 +916,17 @@ function (_Modifier) {
     key: "getCategory",
     value: function getCategory() {
       return Annotation.CATEGORY;
+    }
+  }, {
+    key: "setReportWidth",
+    value: function setReportWidth(value) {
+      this.reportWidth = value;
+      return this;
+    }
+  }, {
+    key: "getReportWidth",
+    value: function getReportWidth() {
+      return this.reportWidth;
     } // Set font family, size, and weight. E.g., `Arial`, `10pt`, `Bold`.
 
   }, {
