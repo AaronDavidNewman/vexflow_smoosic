@@ -13,6 +13,7 @@ import { Accidental } from './accidental';
 import { Articulation } from './articulation';
 import { Annotation } from './annotation';
 import { ChordSymbol } from './chordsymbol';
+import { JazzTechnique } from './jazztechnique';
 import { Formatter } from './formatter';
 import { FretHandFinger } from './frethandfinger';
 import { StringNumber } from './stringnumber';
@@ -319,6 +320,11 @@ export class Factory {
     chordSymbol.setFont(params.fontFamily, params.fontSize, params.fontWeight);
     chordSymbol.setContext(this.context);
     return chordSymbol;
+  }
+
+  JazzTechnique(params) {
+    const jazz = new JazzTechnique(params.type);
+    return jazz;
   }
 
   Articulation(params) {

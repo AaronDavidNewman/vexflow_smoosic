@@ -209,6 +209,17 @@ module.exports = {
   csymParensLeftVeryTall:null,
   csymParensRightVeryTall:null,
 
-  csymDiagonalArrangementSlash:null
+  csymDiagonalArrangementSlash:null,
 
+  brassScoop:null,
+  brassDoitMedium:null,
+  brassFallLipShort:null,
+  brassLiftMedium:null,
+  brassFallRoughMedium:null,
+  brassBend:null,
+  brassMuteClosed:null,
+  brassMuteOpen:null,
+  brassFlip:null,
+  brassJazzTurn:null,
+  brassSmear:null
 };
