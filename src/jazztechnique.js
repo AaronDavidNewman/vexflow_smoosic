@@ -39,6 +39,17 @@ export class JazzTechnique extends Modifier {
     return [JazzTechnique.Type.FLIP, JazzTechnique.Type.TURN, JazzTechnique.Type.SMEAR];
   }
 
+  static get LeftPosition() {
+    return [JazzTechnique.Type.SCOOP];
+  }
+
+  static get RightPosition() {
+    return [
+      JazzTechnique.Type.DOIT, JazzTechnique.Type.FALL_SHORT, JazzTechnique.Type.FALL_LONG, JazzTechnique.Type.FLIP,
+      JazzTechnique.Type.TURN, JazzTechnique.Type.SMEAR
+    ];
+  }
+
   static get TypeToCode() {
     return {
       1: 'brassScoop',
@@ -69,12 +80,15 @@ export class JazzTechnique extends Modifier {
 
     techniques.forEach((technique) => {
       const width = technique.metrics.reportedWidth;
-      if (technique.xOffset > 0) {
+      if (JazzTechnique.RightPosition.indexOf(technique.type) >= 0) {
+        technique.xOffset += (right_shift + 2);
+      }
+      if (JazzTechnique.LeftPosition.indexOf(technique.type) >= 0) {
+        technique.xOffset -= (left_shift + 2);
+      }
+      if (technique.xOffset < 0) {
         left_shift += width;
-      } else if (technique.xOffset === 0) {
-        left_shift += width / 2;
-        right_shift += width / 2;
-      } else {
+      } else if (technique.xOffset > 0) {
         right_shift += width;
       }
     });

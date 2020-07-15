@@ -412,7 +412,7 @@ export const BravuraMetrics = {
         scale: 1.0,
         xOffset: 16,
         yOffset: 0,
-        reportedWidth: 5
+        reportedWidth:15
       },
       brassFallLipShort: {
         scale: 1.0,

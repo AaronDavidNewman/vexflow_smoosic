@@ -8779,7 +8779,7 @@ var BravuraMetrics = {
         scale: 1.0,
         xOffset: 16,
         yOffset: 0,
-        reportedWidth: 5
+        reportedWidth: 15
       },
       brassFallLipShort: {
         scale: 1.0,
@@ -16882,12 +16882,17 @@ function (_Modifier) {
       techniques.forEach(function (technique) {
         var width = technique.metrics.reportedWidth;
 
-        if (technique.xOffset > 0) {
+        if (JazzTechnique.RightPosition.indexOf(technique.type) >= 0) {
+          technique.xOffset += right_shift + 2;
+        }
+
+        if (JazzTechnique.LeftPosition.indexOf(technique.type) >= 0) {
+          technique.xOffset -= left_shift + 2;
+        }
+
+        if (technique.xOffset < 0) {
           left_shift += width;
-        } else if (technique.xOffset === 0) {
-          left_shift += width / 2;
-          right_shift += width / 2;
-        } else {
+        } else if (technique.xOffset > 0) {
           right_shift += width;
         }
       });
@@ -16933,6 +16938,16 @@ function (_Modifier) {
     key: "StaffPosition",
     get: function get() {
       return [JazzTechnique.Type.FLIP, JazzTechnique.Type.TURN, JazzTechnique.Type.SMEAR];
+    }
+  }, {
+    key: "LeftPosition",
+    get: function get() {
+      return [JazzTechnique.Type.SCOOP];
+    }
+  }, {
+    key: "RightPosition",
+    get: function get() {
+      return [JazzTechnique.Type.DOIT, JazzTechnique.Type.FALL_SHORT, JazzTechnique.Type.FALL_LONG, JazzTechnique.Type.FLIP, JazzTechnique.Type.TURN, JazzTechnique.Type.SMEAR];
     }
   }, {
     key: "TypeToCode",

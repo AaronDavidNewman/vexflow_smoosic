@@ -1,5 +1,5 @@
 /**!
- * VexFlow 3.0.9 built on 2020-07-13.
+ * VexFlow 3.0.9 built on 2020-07-14.
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  *
  * http://www.vexflow.com  http://github.com/0xfe/vexflow
@@ -6926,7 +6926,14 @@ VF.Test.JazzTechnique = (function() {
       ctx.scale(1, 1); ctx.fillStyle = '#221'; ctx.strokeStyle = '#221';
 
       function newNote(keys, duration, modifier) {
-        return new VF.StaveNote({ keys, duration }).addModifier(0, modifier);
+        const dot = duration.indexOf('d') >= 0;
+        const rv =  new VF.StaveNote({ keys, duration })
+          .addModifier(0, modifier)
+          .addAccidental(0, new VF.Accidental('b'));
+        if (dot) {
+          rv.addDotToAll();
+        }
+        return rv;
       }
 
       var xStart = 10;
@@ -6940,13 +6947,21 @@ VF.Test.JazzTechnique = (function() {
         var stave = new VF.Stave(x, y, width)
           .addClef('treble').setContext(ctx).draw();
 
-        notes.push(newNote(keys, 'q', modifiers[0]));
-        notes.push(newNote(keys, 'q', modifiers[1]));
-        notes.push(newNote(keys, 'q', modifiers[2]));
-        notes.push(newNote(keys, 'q', modifiers[3]));
+        notes.push(newNote(keys, '4d', modifiers[0]));
+        notes.push(newNote(keys, '8', modifiers[1]));
+        notes.push(newNote(keys, '4d', modifiers[2]));
+        notes.push(newNote(keys, '8', modifiers[3]));
 
         VF.Beam.generateBeams(notes);
-        VF.Formatter.FormatAndDraw(ctx, stave, notes);
+        const voice = new VF.Voice({
+          num_beats: 4,
+          beat_value: 4
+        }).setMode(VF.Voice.Mode.SOFT);
+        voice.addTickables(notes);
+        const formatter = new VF.Formatter({ softmaxFactor: 2 }).joinVoices([voice]);
+        formatter.format([voice], xWidth);
+        stave.setContext(ctx).draw();
+        voice.draw(ctx, stave);
       }
       /*
       SCOOP: 1,
