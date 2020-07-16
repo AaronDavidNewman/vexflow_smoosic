@@ -462,7 +462,7 @@ export const PetalumaMetrics = {
       brassBend: {
         scale: 1.0,
         xOffset: 0,
-        yOffset: -3,
+        yOffset: -8,
         reportedWidth: 5
       },
       brassMuteClosed: {

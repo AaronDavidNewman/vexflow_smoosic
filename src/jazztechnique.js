@@ -173,6 +173,10 @@ export class JazzTechnique extends Modifier {
         if (JazzTechnique.ArticulationPosition.indexOf(this.type) >= 0) {
           const bbox = this.note.getBoundingBox();
           y = bbox.y + bbox.h + 20;
+          // bend requires more space if on bottom
+          if (this.type === JazzTechnique.Type.BEND) {
+            y += 2;
+          }
         }
       }
     }
