@@ -54,99 +54,87 @@ VF.Test.JazzTechnique = (function() {
         stave.setContext(ctx).draw();
         voice.draw(ctx, stave);
       }
-      /*
-      SCOOP: 1,
-      DOIT: 2,
-      FALL_SHORT: 3,
-      LIFT: 4,
-      FALL_LONG: 5,
-      BEND: 6,
-      MUTE_CLOSED: 7,
-      MUTE_OPEN: 8,
-      FLIP: 9,
-      TURN: 10,
-      SMEAR: 11*/
       var mods = [];
       var curX = xStart;
       var curY = yStart;
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.SCOOP));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.DOIT));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.FALL_SHORT));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.LIFT));
+      mods.push(new VF.JazzTechnique('scoop'));
+      mods.push(new VF.JazzTechnique('doit'));
+      mods.push(new VF.JazzTechnique('fall'));
+      mods.push(new VF.JazzTechnique('doitLong'));
 
       draw(mods, ['a/5'], curX, xWidth, curY);
       curX += xWidth;
 
       mods = [];
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.FALL_LONG));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.BEND));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.MUTE_CLOSED));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.MUTE_OPEN));
+      mods.push(new VF.JazzTechnique('fallLong'));
+      mods.push(new VF.JazzTechnique('bend'));
+      mods.push(new VF.JazzTechnique('plungerClosed'));
+      mods.push(new VF.JazzTechnique('plungerOpen'));
       draw(mods, ['a/5'], curX, xWidth, curY);
       curX += xWidth;
 
       mods = [];
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.FLIP));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.TURN));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.SMEAR));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.DOIT));
+      mods.push(new VF.JazzTechnique('flip'));
+      mods.push(new VF.JazzTechnique('turn'));
+      mods.push(new VF.JazzTechnique('smear'));
+      mods.push(new VF.JazzTechnique('doit'));
       draw(mods, ['a/5'], curX, xWidth, curY);
 
       curX = xStart;
       curY += staffHeight;
 
       mods = [];
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.SCOOP));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.DOIT));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.FALL_SHORT));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.LIFT));
+      mods.push(new VF.JazzTechnique('scoop'));
+      mods.push(new VF.JazzTechnique('doit'));
+      mods.push(new VF.JazzTechnique('fall'));
+      mods.push(new VF.JazzTechnique('doitLong'));
 
       draw(mods, ['e/5'], curX, xWidth, curY);
       curX += xWidth;
 
       mods = [];
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.FALL_LONG));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.BEND));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.MUTE_CLOSED));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.MUTE_OPEN));
+      mods.push(new VF.JazzTechnique('fallLong'));
+      mods.push(new VF.JazzTechnique('bend'));
+      mods.push(new VF.JazzTechnique('plungerClosed'));
+      mods.push(new VF.JazzTechnique('plungerOpen'));
       draw(mods, ['e/5'], curX, xWidth, curY);
       curX += xWidth;
 
       mods = [];
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.FLIP));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.TURN));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.SMEAR));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.DOIT));
+      mods.push(new VF.JazzTechnique('flip'));
+      mods.push(new VF.JazzTechnique('turn'));
+      mods.push(new VF.JazzTechnique('smear'));
+      mods.push(new VF.JazzTechnique('doit'));
       draw(mods, ['e/5'], curX, xWidth, curY);
 
       curX = xStart;
       curY += staffHeight;
 
       mods = [];
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.SCOOP));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.DOIT));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.FALL_SHORT));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.LIFT));
+      mods.push(new VF.JazzTechnique('scoop'));
+      mods.push(new VF.JazzTechnique('doit'));
+      mods.push(new VF.JazzTechnique('fall'));
+      mods.push(new VF.JazzTechnique('doitLong'));
 
       draw(mods, ['e/4'], curX, xWidth, curY);
       curX += xWidth;
 
       mods = [];
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.FALL_LONG));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.BEND));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.MUTE_CLOSED));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.MUTE_OPEN));
+      mods.push(new VF.JazzTechnique('fallLong'));
+      mods.push(new VF.JazzTechnique('bend'));
+      mods.push(new VF.JazzTechnique('plungerClosed'));
+      mods.push(new VF.JazzTechnique('plungerOpen'));
       draw(mods, ['e/4'], curX, xWidth, curY);
       curX += xWidth;
 
       mods = [];
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.FLIP));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.TURN));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.SMEAR));
-      mods.push(new VF.JazzTechnique(VF.JazzTechnique.Type.DOIT));
+      mods.push(new VF.JazzTechnique('flip'));
+      mods.push(new VF.JazzTechnique('turn'));
+      mods.push(new VF.JazzTechnique('smear'));
+      mods.push(new VF.JazzTechnique('doit'));
       draw(mods, ['e/4'], curX, xWidth, curY);
 
-      ok(true, 'Jazz Technique');
+      ok(true, 'Jazz Ornaments');
     },
   };
   return JazzTechnique;

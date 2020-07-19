@@ -13,9 +13,6 @@ export class JazzTechnique extends Modifier {
   static get CATEGORY() { return 'jazztechnique'; }
   // regardless of actual width, this is what we reports.  These symbols
   // tend to overlap the next notes
-  static get ReportedWidth() {
-    return 5;
-  }
   static get Type() {
     return {
       SCOOP: 1,
@@ -32,22 +29,31 @@ export class JazzTechnique extends Modifier {
     };
   }
 
-  static get ArticulationPosition() {
-    return [JazzTechnique.Type.BEND, JazzTechnique.Type.MUTE_CLOSED, JazzTechnique.Type.MUTE_OPEN];
-  }
-  static get StaffPosition() {
-    return [JazzTechnique.Type.FLIP, JazzTechnique.Type.TURN, JazzTechnique.Type.SMEAR];
-  }
-
-  static get LeftPosition() {
-    return [JazzTechnique.Type.SCOOP];
+  // ### staffPosition
+  // means the jazz ornament is typically placed just above the staff, or above
+  // the note if the note has top ledger lines.
+  static get staffPosition() {
+    return ['flip', 'turn', 'smear'];
   }
 
-  static get RightPosition() {
+  // ### LeftPosition
+  // means the jazz ornament is placed before the note
+  static get leftPosition() {
+    return ['scoop'];
+  }
+
+  // ### rightPosition
+  // means the jazz ornament is typically placed just to the right of the note.
+  static get rightPosition() {
     return [
-      JazzTechnique.Type.DOIT, JazzTechnique.Type.FALL_SHORT, JazzTechnique.Type.FALL_LONG, JazzTechnique.Type.FLIP,
-      JazzTechnique.Type.TURN, JazzTechnique.Type.SMEAR
+      'doit', 'fall', 'fallLong', 'doitLong', 'turn', 'smear', 'flip'
     ];
+  }
+
+  // ### articulationPosition
+  // ornaments that are typically just above or below the note
+  static get articulationPosition() {
+    return ['bend', 'plungerClosed', 'plungerOpen'];
   }
 
   static get TypeToCode() {
@@ -66,8 +72,24 @@ export class JazzTechnique extends Modifier {
     };
   }
 
+  static get jazzOrnamentCodes() {
+    return {
+      'scoop': { code: 'brassScoop' },
+      'doit': { code: 'brassDoitMedium' },
+      'fall': { code: 'brassFallLipShort' },
+      'doitLong': { code: 'brassLiftMedium' },
+      'fallLong': { code: 'brassFallRoughMedium' },
+      'bend': { code: 'brassBend' },
+      'plungerClosed': { code: 'brassMuteClosed' },
+      'plungerOpen': { code: 'brassMuteOpen' },
+      'flip': { code: 'brassFlip' },
+      'turn': { code: 'brassJazzTurn' },
+      'smear': { code: 'brassSmear' }
+    };
+  }
+
   static get glyphMetrics() {
-    return Vex.Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.jazztechnique;
+    return Vex.Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.jazzOrnaments;
   }
 
 
@@ -80,10 +102,10 @@ export class JazzTechnique extends Modifier {
 
     techniques.forEach((technique) => {
       const width = technique.metrics.reportedWidth;
-      if (JazzTechnique.RightPosition.indexOf(technique.type) >= 0) {
+      if (JazzTechnique.rightPosition.indexOf(technique.type) >= 0) {
         technique.xOffset += (right_shift + 2);
       }
-      if (JazzTechnique.LeftPosition.indexOf(technique.type) >= 0) {
+      if (JazzTechnique.leftPosition.indexOf(technique.type) >= 0) {
         technique.xOffset -= (left_shift + 2);
       }
       if (technique.xOffset < 0) {
@@ -99,7 +121,7 @@ export class JazzTechnique extends Modifier {
   }
 
   get metrics() {
-    return JazzTechnique.glyphMetrics[this.glyphCode];
+    return JazzTechnique.glyphMetrics[this.ornament.code];
   }
 
   constructor(type, options) {
@@ -109,9 +131,16 @@ export class JazzTechnique extends Modifier {
     this.note = null;
     this.options = Vex.Merge({}, options);
 
+    // backwards compatibilty for smoosic
+    if (typeof(type) === 'number') {
+      type = JazzTechnique.TypeToCode[type];
+      type = Object.keys(JazzTechnique.jazzOrnamentCodes).find((zz) =>
+        JazzTechnique.jazzOrnamentCodes[zz].code === type);
+    }
+
     // multi voice - end note of stroke, set in draw()
     this.type = type;
-    this.glyphCode = JazzTechnique.TypeToCode[this.type];
+    this.ornament = JazzTechnique.jazzOrnamentCodes[type];
     const metrics = this.metrics;
     this.position = Modifier.Position.LEFT;
     this.xOffset = metrics.xOffset;
@@ -129,8 +158,6 @@ export class JazzTechnique extends Modifier {
       this.scale *= this.options.scaleAdjust;
     }
 
-    this.width = JazzTechnique.reportedWidth;
-
     this.render_options = {
       font_scale: 38,
       stroke_px: 3,
@@ -142,6 +169,8 @@ export class JazzTechnique extends Modifier {
       size: 10,
       weight: 'bold italic',
     };
+
+    this.glyph = new Glyph(this.ornament.code, this.render_options.font_scale * this.scale, { category: `jazztechnique.${this.ornament.code}` });
 
     this.setXShift(0);
     this.setWidth(10);
@@ -167,29 +196,21 @@ export class JazzTechnique extends Modifier {
     const start = this.note.getModifierStartXY(this.position, this.index);
     let y = start.y;
     const x = start.x;
+    const metrics = this.metrics;
 
     if (this.note.hasStem()) {
       if (this.note.getStemDirection() === 1) {
-        if (JazzTechnique.ArticulationPosition.indexOf(this.type) >= 0) {
-          const bbox = this.note.getBoundingBox();
-          y = bbox.y + bbox.h + 20;
-          // bend requires more space if on bottom
-          if (this.type === JazzTechnique.Type.BEND) {
-            y += 2;
-          }
-        }
+        y += metrics.stemUpYOffset;
       }
     }
-    if (this.note.getLineNumber() < 5 && JazzTechnique.StaffPosition.indexOf(this.type) >= 0) {
+    if (this.note.getLineNumber() < 5 && JazzTechnique.staffPosition.indexOf(this.type) >= 0) {
       y = this.note.getStave().getBoundingBox().y + 40;
     }
 
-    Glyph.renderGlyph(
+    this.glyph.render(
       this.context,
       x + this.xOffset,
-      y + this.yOffset,
-      this.render_options.font_scale * this.scale,
-      this.glyphCode
+      y + this.yOffset
     );
 
     this.context.closeGroup();
