@@ -439,7 +439,7 @@ export const BravuraMetrics = {
       },
       brassBend: {
         scale: 1.0,
-        xOffset: 0,
+        xOffset: 2,
         yOffset: -8,
         stemUpYOffset: 25,
         reportedWidth: 5

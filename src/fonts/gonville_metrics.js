@@ -301,7 +301,7 @@ export const GonvilleMetrics = {
       },
       brassBend: {
         scale: 1.0,
-        xOffset: 0,
+        xOffset: 2,
         yOffset: -8,
         stemUpYOffset: 24,
         reportedWidth: 5

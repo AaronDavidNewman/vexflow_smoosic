@@ -227,7 +227,7 @@ VF.Test.Ornament = (function() {
 
     jazzOrnaments: function(options) {
       expect(0);
-      var vf = VF.Test.makeFactory(options, 900, 400);
+      var vf = VF.Test.makeFactory(options, 950, 400);
       var ctx = vf.getContext();
       ctx.scale(1, 1); ctx.fillStyle = '#221'; ctx.strokeStyle = '#221';
 
@@ -257,6 +257,9 @@ VF.Test.Ornament = (function() {
         notes.push(newNote(keys, '8', modifiers[1]));
         notes.push(newNote(keys, '4d', modifiers[2]));
         notes.push(newNote(keys, '8', modifiers[3]));
+        if (modifiers.length > 4) {
+          notes[3].addModifier(0, modifiers[4]);
+        }
 
         VF.Beam.generateBeams(notes);
         const voice = new VF.Voice({
@@ -285,6 +288,7 @@ VF.Test.Ornament = (function() {
       mods.push(new VF.Ornament('bend'));
       mods.push(new VF.Ornament('plungerClosed'));
       mods.push(new VF.Ornament('plungerOpen'));
+      mods.push(new VF.Ornament('bend'));
       draw(mods, ['a/5'], curX, xWidth, curY);
       curX += xWidth;
 
@@ -312,6 +316,7 @@ VF.Test.Ornament = (function() {
       mods.push(new VF.Ornament('bend'));
       mods.push(new VF.Ornament('plungerClosed'));
       mods.push(new VF.Ornament('plungerOpen'));
+      mods.push(new VF.Ornament('bend'));
       draw(mods, ['e/5'], curX, xWidth, curY);
       curX += xWidth;
 
@@ -339,6 +344,7 @@ VF.Test.Ornament = (function() {
       mods.push(new VF.Ornament('bend'));
       mods.push(new VF.Ornament('plungerClosed'));
       mods.push(new VF.Ornament('plungerOpen'));
+      mods.push(new VF.Ornament('bend'));
       draw(mods, ['e/4'], curX, xWidth, curY);
       curX += xWidth;
 

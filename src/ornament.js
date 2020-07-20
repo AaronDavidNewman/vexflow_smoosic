@@ -30,17 +30,20 @@ export class Ornament extends Modifier {
     let width = 0;  // width is used by ornaments, which are always centered on the note head
     let right_shift = state.right_shift;  // jazz ornaments calculate r/l shift separately
     let left_shift = state.left_shift;
+    let yOffset = 0;
 
     for (let i = 0; i < ornaments.length; ++i) {
       const ornament = ornaments[i];
       const increment = 2;
 
+      // Jazz ornaments have their own metrics, and their position depends generally on
+      // the ornament.  So we calculate their position differently.
       if (ornament.jazzMetrics) {
         const reportedWidth = ornament.metrics.reportedWidth;
-        if (Ornament.rightPosition.indexOf(ornament.type) >= 0) {
+        if (Ornament.ornamentRelease.indexOf(ornament.type) >= 0) {
           ornament.render_options.xOffset += (right_shift + 2);
         }
-        if (Ornament.leftPosition.indexOf(ornament.type) >= 0) {
+        if (Ornament.ornamentAttack.indexOf(ornament.type) >= 0) {
           ornament.render_options.xOffset -= (left_shift + 2);
         }
         if (ornament.render_options.xOffset < 0) {
@@ -48,7 +51,22 @@ export class Ornament extends Modifier {
         } else if (ornament.render_options.xOffset > 0) {
           right_shift += reportedWidth;
         }
-      } else {
+
+        // articulations above/below the line can be stacked.
+        if (Ornament.ornamentArticulation.indexOf(ornament.type) >= 0) {
+          // Unfortunately we con't know the stem direction.  So we base it
+          // on the line number, but also allow it to be overridden.
+          if (ornament.note.getLineNumber() >= 3 || ornament.getPosition() === Modifier.Position.ABOVE) {
+            state.top_text_line += increment;
+            ornament.render_options.yOffset += yOffset;
+            yOffset -= ornament.glyph.bbox.h;
+          } else {
+            state.text_line += increment;
+            ornament.render_options.yOffset += yOffset;
+            yOffset += ornament.glyph.bbox.h;
+          }
+        }
+      } else { // logic for classical ornament formatting.
         width = Math.max(ornament.getWidth(), width);
         if (ornament.getPosition() === Modifier.Position.ABOVE) {
           ornament.setTextLine(state.top_text_line);
@@ -66,49 +84,32 @@ export class Ornament extends Modifier {
     return true;
   }
 
-  // NOTE: other ornamenct codes are in tables.js.  I think
-  // that is not the way we do things now, so these jazz codes are here
-  // and we union them to figure out which set we want based on the type
-  static get jazzOrnamentCodes() {
-    return {
-      'scoop': { code: 'brassScoop' },
-      'doit': { code: 'brassDoitMedium' },
-      'fall': { code: 'brassFallLipShort' },
-      'doitLong': { code: 'brassLiftMedium' },
-      'fallLong': { code: 'brassFallRoughMedium' },
-      'bend': { code: 'brassBend' },
-      'plungerClosed': { code: 'brassMuteClosed' },
-      'plungerOpen': { code: 'brassMuteOpen' },
-      'flip': { code: 'brassFlip' },
-      'jazzTurn': { code: 'brassJazzTurn' },
-      'smear': { code: 'brassSmear' }
-    };
-  }
-
-  // ### staffPosition
-  // means the jazz ornament is typically placed just above the staff, or above
-  // the note if the note has top ledger lines.
-  static get staffPosition() {
+  // ### ornamentNoteTransition
+  // means the jazz ornament represents an effect from one note to another,
+  // these are generally on the top of the staff.
+  static get ornamentNoteTransition() {
     return ['flip', 'jazzTurn', 'smear'];
   }
 
-  // ### LeftPosition
-  // means the jazz ornament is placed before the note
-  static get leftPosition() {
+  // ### ornamentAttack
+  // Indicates something that happens in the attach, placed before the note and
+  // any accidentals
+  static get ornamentAttack() {
     return ['scoop'];
   }
 
-  // ### rightPosition
-  // means the jazz ornament is typically placed just to the right of the note.
-  static get rightPosition() {
+  // ### ornamentRelease
+  // An ornament that happens on the release of the note, generally placed after the
+  // note and overlapping the next beat/measure..
+  static get ornamentRelease() {
     return [
       'doit', 'fall', 'fallLong', 'doitLong', 'jazzTurn', 'smear', 'flip'
     ];
   }
 
-  // ### articulationPosition
-  // ornaments that are typically just above or below the note
-  static get articulationPosition() {
+  // ### ornamentArticulation
+  // goes above/below the note based on space availablity
+  static get ornamentArticulation() {
     return ['bend', 'plungerClosed', 'plungerOpen'];
   }
 
@@ -142,9 +143,7 @@ export class Ornament extends Modifier {
       yOffset: 0
     };
 
-    this.ornament = Flow.ornamentCodes(this.type) ?
-      Flow.ornamentCodes(this.type) :
-      Ornament.jazzOrnamentCodes[this.type];
+    this.ornament = Flow.ornamentCodes(this.type);
 
     // Jazz ornaments have different metrics used to place them correctly
     this.jazzMetrics = this.metrics;
@@ -159,7 +158,7 @@ export class Ornament extends Modifier {
     this.glyph = new Glyph(this.ornament.code, this.render_options.font_scale, { category: `ornament.${this.ornament.code}` });
 
     // Is this a jazz ornament that goes between this note and the next note.
-    if (Ornament.staffPosition.indexOf(this.type) >= 0) {
+    if (Ornament.ornamentNoteTransition.indexOf(this.type) >= 0) {
       this.delayed = true;
     }
 
@@ -276,7 +275,7 @@ export class Ornament extends Modifier {
           glyphY += this.jazzMetrics.stemUpYOffset;
         }
       }
-      if (this.note.getLineNumber() < 5 && Ornament.staffPosition.indexOf(this.type) >= 0) {
+      if (this.note.getLineNumber() < 5 && Ornament.ornamentNoteTransition.indexOf(this.type) >= 0) {
         glyphY = this.note.getStave().getBoundingBox().y + 40;
       }
     }
