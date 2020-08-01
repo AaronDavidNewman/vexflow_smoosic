@@ -8768,71 +8768,82 @@ var BravuraMetrics = {
         yOffset: -184
       }
     },
-    jazztechnique: {
+    jazzOrnaments: {
       brassScoop: {
         scale: 1.0,
         xOffset: -12,
         yOffset: 0,
+        stemUpYOffset: 0,
         reportedWidth: 10
       },
       brassDoitMedium: {
         scale: 1.0,
         xOffset: 16,
         yOffset: 0,
+        stemUpYOffset: 0,
         reportedWidth: 15
       },
       brassFallLipShort: {
         scale: 1.0,
         xOffset: 16,
         yOffset: 0,
+        stemUpYOffset: 0,
         reportedWidth: 5
       },
       brassLiftMedium: {
         scale: 1.0,
         xOffset: 16,
         yOffset: 5,
+        stemUpYOffset: 0,
         reportedWidth: 5
       },
       brassFallRoughMedium: {
         scale: 1.0,
         xOffset: 16,
         yOffset: 28,
+        stemUpYOffset: 0,
         reportedWidth: 5
       },
       brassBend: {
         scale: 1.0,
-        xOffset: 0,
+        xOffset: 2,
         yOffset: -8,
+        stemUpYOffset: 25,
         reportedWidth: 5
       },
       brassMuteClosed: {
         scale: 1.0,
-        xOffset: 5,
+        xOffset: 3,
         yOffset: -8,
+        stemUpYOffset: 25,
         reportedWidth: 5
       },
       brassMuteOpen: {
         scale: 1.0,
-        xOffset: 5,
-        yOffset: -8,
+        xOffset: 3,
+        yOffset: -7,
+        stemUpYOffset: 25,
         reportedWidth: 5
       },
       brassFlip: {
         scale: 1.0,
-        xOffset: 18,
+        xOffset: 10,
         yOffset: -4,
+        stemUpYOffset: 0,
         reportedWidth: 5
       },
       brassJazzTurn: {
         scale: 1.0,
-        xOffset: 18,
+        xOffset: 6,
         yOffset: -4,
+        stemUpYOffset: 0,
         reportedWidth: 5
       },
       brassSmear: {
         scale: 1.0,
-        xOffset: 18,
+        xOffset: 10,
         yOffset: -4,
+        stemUpYOffset: 0,
         reportedWidth: 5
       }
     }
@@ -10140,71 +10151,82 @@ var GonvilleMetrics = {
         yOffset: -184
       }
     },
-    jazztechnique: {
+    jazzOrnaments: {
       brassScoop: {
         scale: 1.0,
         xOffset: -12,
         yOffset: 0,
+        stemUpYOffset: 0,
         reportedWidth: 10
       },
       brassDoitMedium: {
         scale: 1.0,
         xOffset: 16,
         yOffset: 0,
+        stemUpYOffset: 0,
         reportedWidth: 5
       },
       brassFallLipShort: {
         scale: 1.0,
         xOffset: 17,
         yOffset: 0,
+        stemUpYOffset: 0,
         reportedWidth: 5
       },
       brassLiftMedium: {
         scale: 1.0,
         xOffset: 16,
         yOffset: 5,
+        stemUpYOffset: 0,
         reportedWidth: 5
       },
       brassFallRoughMedium: {
         scale: 1.0,
         xOffset: 16,
         yOffset: 28,
+        stemUpYOffset: 0,
         reportedWidth: 5
       },
       brassBend: {
         scale: 1.0,
-        xOffset: 0,
+        xOffset: 2,
         yOffset: -8,
+        stemUpYOffset: 24,
         reportedWidth: 5
       },
       brassMuteClosed: {
         scale: 1.0,
-        xOffset: 5,
-        yOffset: -8,
+        xOffset: 3,
+        yOffset: -9,
+        stemUpYOffset: 24,
         reportedWidth: 5
       },
       brassMuteOpen: {
         scale: 1.0,
-        xOffset: 5,
-        yOffset: -8,
+        xOffset: 3,
+        yOffset: -7,
+        stemUpYOffset: 25,
         reportedWidth: 5
       },
       brassFlip: {
         scale: 1.0,
-        xOffset: 18,
+        xOffset: 10,
         yOffset: -4,
+        stemUpYOffset: 0,
         reportedWidth: 5
       },
       brassJazzTurn: {
         scale: 1.0,
-        xOffset: 18,
+        xOffset: 6,
         yOffset: -4,
+        stemUpYOffset: 0,
         reportedWidth: 5
       },
       brassSmear: {
         scale: 1.0,
-        xOffset: 18,
+        xOffset: 10,
         yOffset: -4,
+        stemUpYOffset: 0,
         reportedWidth: 5
       }
     }
@@ -12815,71 +12837,82 @@ var PetalumaMetrics = {
         yOffset: -284
       }
     },
-    jazztechnique: {
+    jazzOrnaments: {
       brassScoop: {
         scale: 1.0,
         xOffset: -12,
         yOffset: 0,
+        stemUpYOffset: 0,
         reportedWidth: 10
       },
       brassDoitMedium: {
         scale: 1.0,
         xOffset: 16,
         yOffset: 0,
+        stemUpYOffset: 0,
         reportedWidth: 5
       },
       brassFallLipShort: {
         scale: 1.0,
         xOffset: 16,
         yOffset: 0,
+        stemUpYOffset: 0,
         reportedWidth: 5
       },
       brassLiftMedium: {
         scale: 1.0,
         xOffset: 16,
         yOffset: 5,
+        stemUpYOffset: 0,
         reportedWidth: 5
       },
       brassFallRoughMedium: {
         scale: 1.0,
         xOffset: 16,
         yOffset: 26,
+        stemUpYOffset: 0,
         reportedWidth: 5
       },
       brassBend: {
         scale: 1.0,
-        xOffset: 0,
-        yOffset: -3,
+        xOffset: 3,
+        yOffset: -8,
+        stemUpYOffset: 28,
         reportedWidth: 5
       },
       brassMuteClosed: {
         scale: 1.0,
-        xOffset: 5,
+        xOffset: 3,
         yOffset: -8,
+        stemUpYOffset: 26,
         reportedWidth: 5
       },
       brassMuteOpen: {
         scale: 1.0,
-        xOffset: 5,
+        xOffset: 4,
         yOffset: -8,
+        stemUpYOffset: 27,
         reportedWidth: 5
       },
       brassFlip: {
         scale: 1.0,
-        xOffset: 18,
+        xOffset: 10,
         yOffset: -4,
+        stemUpYOffset: 0,
         reportedWidth: 5
       },
       brassJazzTurn: {
         scale: 1.0,
-        xOffset: 18,
+        xOffset: 6,
         yOffset: -4,
+        stemUpYOffset: 0,
         reportedWidth: 5
       },
       brassSmear: {
-        scale: 1.2,
-        xOffset: 18,
+        scale: 1.0,
+        xOffset: 10,
         yOffset: -4,
+        stemUpYOffset: 0,
         reportedWidth: 5
       }
     }
@@ -16870,7 +16903,7 @@ function (_Modifier) {
   _createClass(JazzTechnique, [{
     key: "metrics",
     get: function get() {
-      return JazzTechnique.glyphMetrics[this.glyphCode];
+      return JazzTechnique.glyphMetrics[this.ornament.code];
     }
   }], [{
     key: "format",
@@ -16882,11 +16915,11 @@ function (_Modifier) {
       techniques.forEach(function (technique) {
         var width = technique.metrics.reportedWidth;
 
-        if (JazzTechnique.RightPosition.indexOf(technique.type) >= 0) {
+        if (JazzTechnique.rightPosition.indexOf(technique.type) >= 0) {
           technique.xOffset += right_shift + 2;
         }
 
-        if (JazzTechnique.LeftPosition.indexOf(technique.type) >= 0) {
+        if (JazzTechnique.leftPosition.indexOf(technique.type) >= 0) {
           technique.xOffset -= left_shift + 2;
         }
 
@@ -16908,11 +16941,6 @@ function (_Modifier) {
     // tend to overlap the next notes
 
   }, {
-    key: "ReportedWidth",
-    get: function get() {
-      return 5;
-    }
-  }, {
     key: "Type",
     get: function get() {
       return {
@@ -16928,26 +16956,35 @@ function (_Modifier) {
         TURN: 10,
         SMEAR: 11
       };
-    }
+    } // ### staffPosition
+    // means the jazz ornament is typically placed just above the staff, or above
+    // the note if the note has top ledger lines.
+
   }, {
-    key: "ArticulationPosition",
+    key: "staffPosition",
     get: function get() {
-      return [JazzTechnique.Type.BEND, JazzTechnique.Type.MUTE_CLOSED, JazzTechnique.Type.MUTE_OPEN];
-    }
+      return ['flip', 'turn', 'smear'];
+    } // ### LeftPosition
+    // means the jazz ornament is placed before the note
+
   }, {
-    key: "StaffPosition",
+    key: "leftPosition",
     get: function get() {
-      return [JazzTechnique.Type.FLIP, JazzTechnique.Type.TURN, JazzTechnique.Type.SMEAR];
-    }
+      return ['scoop'];
+    } // ### rightPosition
+    // means the jazz ornament is typically placed just to the right of the note.
+
   }, {
-    key: "LeftPosition",
+    key: "rightPosition",
     get: function get() {
-      return [JazzTechnique.Type.SCOOP];
-    }
+      return ['doit', 'fall', 'fallLong', 'doitLong', 'turn', 'smear', 'flip'];
+    } // ### articulationPosition
+    // ornaments that are typically just above or below the note
+
   }, {
-    key: "RightPosition",
+    key: "articulationPosition",
     get: function get() {
-      return [JazzTechnique.Type.DOIT, JazzTechnique.Type.FALL_SHORT, JazzTechnique.Type.FALL_LONG, JazzTechnique.Type.FLIP, JazzTechnique.Type.TURN, JazzTechnique.Type.SMEAR];
+      return ['bend', 'plungerClosed', 'plungerOpen'];
     }
   }, {
     key: "TypeToCode",
@@ -16967,9 +17004,48 @@ function (_Modifier) {
       };
     }
   }, {
+    key: "jazzOrnamentCodes",
+    get: function get() {
+      return {
+        'scoop': {
+          code: 'brassScoop'
+        },
+        'doit': {
+          code: 'brassDoitMedium'
+        },
+        'fall': {
+          code: 'brassFallLipShort'
+        },
+        'doitLong': {
+          code: 'brassLiftMedium'
+        },
+        'fallLong': {
+          code: 'brassFallRoughMedium'
+        },
+        'bend': {
+          code: 'brassBend'
+        },
+        'plungerClosed': {
+          code: 'brassMuteClosed'
+        },
+        'plungerOpen': {
+          code: 'brassMuteOpen'
+        },
+        'flip': {
+          code: 'brassFlip'
+        },
+        'turn': {
+          code: 'brassJazzTurn'
+        },
+        'smear': {
+          code: 'brassSmear'
+        }
+      };
+    }
+  }, {
     key: "glyphMetrics",
     get: function get() {
-      return _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.jazztechnique;
+      return _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.jazzOrnaments;
     }
   }]);
 
@@ -16983,10 +17059,18 @@ function (_Modifier) {
     _this.setAttribute('type', 'JazzTechnique');
 
     _this.note = null;
-    _this.options = _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Merge({}, options); // multi voice - end note of stroke, set in draw()
+    _this.options = _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Merge({}, options); // backwards compatibilty for smoosic
+
+    if (typeof type === 'number') {
+      type = JazzTechnique.TypeToCode[type];
+      type = Object.keys(JazzTechnique.jazzOrnamentCodes).find(function (zz) {
+        return JazzTechnique.jazzOrnamentCodes[zz].code === type;
+      });
+    } // multi voice - end note of stroke, set in draw()
+
 
     _this.type = type;
-    _this.glyphCode = JazzTechnique.TypeToCode[_this.type];
+    _this.ornament = JazzTechnique.jazzOrnamentCodes[type];
     var metrics = _this.metrics;
     _this.position = _modifier__WEBPACK_IMPORTED_MODULE_1__["Modifier"].Position.LEFT;
     _this.xOffset = metrics.xOffset;
@@ -17005,7 +17089,6 @@ function (_Modifier) {
       _this.scale *= _this.options.scaleAdjust;
     }
 
-    _this.width = JazzTechnique.reportedWidth;
     _this.render_options = {
       font_scale: 38,
       stroke_px: 3,
@@ -17016,6 +17099,9 @@ function (_Modifier) {
       size: 10,
       weight: 'bold italic'
     };
+    _this.glyph = new _glyph__WEBPACK_IMPORTED_MODULE_2__["Glyph"](_this.ornament.code, _this.render_options.font_scale * _this.scale, {
+      category: "jazztechnique.".concat(_this.ornament.code)
+    });
 
     _this.setXShift(0);
 
@@ -17057,21 +17143,19 @@ function (_Modifier) {
       var start = this.note.getModifierStartXY(this.position, this.index);
       var y = start.y;
       var x = start.x;
+      var metrics = this.metrics;
 
       if (this.note.hasStem()) {
         if (this.note.getStemDirection() === 1) {
-          if (JazzTechnique.ArticulationPosition.indexOf(this.type) >= 0) {
-            var bbox = this.note.getBoundingBox();
-            y = bbox.y + bbox.h + 20;
-          }
+          y += metrics.stemUpYOffset;
         }
       }
 
-      if (this.note.getLineNumber() < 5 && JazzTechnique.StaffPosition.indexOf(this.type) >= 0) {
+      if (this.note.getLineNumber() < 5 && JazzTechnique.staffPosition.indexOf(this.type) >= 0) {
         y = this.note.getStave().getBoundingBox().y + 40;
       }
 
-      _glyph__WEBPACK_IMPORTED_MODULE_2__["Glyph"].renderGlyph(this.context, x + this.xOffset, y + this.yOffset, this.render_options.font_scale * this.scale, this.glyphCode);
+      this.glyph.render(this.context, x + this.xOffset, y + this.yOffset);
       this.context.closeGroup();
     }
   }]);
@@ -20184,38 +20268,122 @@ var Ornament =
 function (_Modifier) {
   _inherits(Ornament, _Modifier);
 
-  _createClass(Ornament, null, [{
+  _createClass(Ornament, [{
+    key: "getMetrics",
+    // ### getMetrics
+    // legacy ornaments have hard-coded metrics.  If additional ornament types are
+    // added, get their metrics here.
+    value: function getMetrics() {
+      return this.getFontStack()[0].metrics.glyphs.jazzOrnaments[this.ornament.code];
+    } // Create a new ornament of type `type`, which is an entry in
+    // `Vex.Flow.ornamentCodes` in `tables.js`.
+
+  }], [{
     key: "format",
     // ## Static Methods
     // Arrange ornaments inside `ModifierContext`
     value: function format(ornaments, state) {
       if (!ornaments || ornaments.length === 0) return false;
-      var width = 0;
+      var width = 0; // width is used by ornaments, which are always centered on the note head
+
+      var right_shift = state.right_shift; // jazz ornaments calculate r/l shift separately
+
+      var left_shift = state.left_shift;
+      var yOffset = 0;
 
       for (var i = 0; i < ornaments.length; ++i) {
         var ornament = ornaments[i];
         var increment = 2;
-        width = Math.max(ornament.getWidth(), width);
 
-        if (ornament.getPosition() === _modifier__WEBPACK_IMPORTED_MODULE_2__["Modifier"].Position.ABOVE) {
-          ornament.setTextLine(state.top_text_line);
-          state.top_text_line += increment;
-        } else {
-          ornament.setTextLine(state.text_line);
-          state.text_line += increment;
+        if (Ornament.ornamentRelease.indexOf(ornament.type) >= 0) {
+          ornament.x_shift += right_shift + 2;
         }
-      }
 
-      state.left_shift += width / 2;
-      state.right_shift += width / 2;
+        if (Ornament.ornamentAttack.indexOf(ornament.type) >= 0) {
+          ornament.x_shift -= left_shift + 2;
+        }
+
+        if (ornament.reportedWidth && ornament.x_shift < 0) {
+          left_shift += ornament.reportedWidth;
+        } else if (ornament.reportedWidth && ornament.x_shift > 0) {
+          right_shift += ornament.reportedWidth;
+        } else {
+          width = Math.max(ornament.getWidth(), width);
+        } // articulations above/below the line can be stacked.
+
+
+        if (Ornament.ornamentArticulation.indexOf(ornament.type) >= 0) {
+          // Unfortunately we don't know the stem direction.  So we base it
+          // on the line number, but also allow it to be overridden.
+          if (ornament.note.getLineNumber() >= 3 || ornament.getPosition() === _modifier__WEBPACK_IMPORTED_MODULE_2__["Modifier"].Position.ABOVE) {
+            state.top_text_line += increment;
+            ornament.y_shift += yOffset;
+            yOffset -= ornament.glyph.bbox.h;
+          } else {
+            state.text_line += increment;
+            ornament.y_shift += yOffset;
+            yOffset += ornament.glyph.bbox.h;
+          }
+        } else {
+          if (ornament.getPosition() === _modifier__WEBPACK_IMPORTED_MODULE_2__["Modifier"].Position.ABOVE) {
+            ornament.setTextLine(state.top_text_line);
+            state.top_text_line += increment;
+          } else {
+            ornament.setTextLine(state.text_line);
+            state.text_line += increment;
+          }
+        }
+      } // Note: 'legit' ornaments don't consider other modifiers when calculating their
+      // X position, but jazz ornaments sometimes need to.
+
+
+      state.left_shift = left_shift + width / 2;
+      state.right_shift = right_shift + width / 2;
       return true;
-    } // Create a new ornament of type `type`, which is an entry in
-    // `Vex.Flow.ornamentCodes` in `tables.js`.
+    } // ### ornamentNoteTransition
+    // means the jazz ornament represents an effect from one note to another,
+    // these are generally on the top of the staff.
 
   }, {
     key: "CATEGORY",
     get: function get() {
       return 'ornaments';
+    }
+  }, {
+    key: "ornamentNoteTransition",
+    get: function get() {
+      return ['flip', 'jazzTurn', 'smear'];
+    } // ### ornamentAttack
+    // Indicates something that happens in the attach, placed before the note and
+    // any accidentals
+
+  }, {
+    key: "ornamentAttack",
+    get: function get() {
+      return ['scoop'];
+    } // ### ornamentAlignWithNoteHead
+    // The ornament is aligned based on the note head, but without regard to whether the
+    // stem goes up or down.
+
+  }, {
+    key: "ornamentAlignWithNoteHead",
+    get: function get() {
+      return ['doit', 'fall', 'fallLong', 'doitLong', 'bend', 'plungerClosed', 'plungerOpen', 'scoop'];
+    } // ### ornamentRelease
+    // An ornament that happens on the release of the note, generally placed after the
+    // note and overlapping the next beat/measure..
+
+  }, {
+    key: "ornamentRelease",
+    get: function get() {
+      return ['doit', 'fall', 'fallLong', 'doitLong', 'jazzTurn', 'smear', 'flip'];
+    } // ### ornamentArticulation
+    // goes above/below the note based on space availablity
+
+  }, {
+    key: "ornamentArticulation",
+    get: function get() {
+      return ['bend', 'plungerClosed', 'plungerOpen'];
     }
   }]);
 
@@ -20231,7 +20399,6 @@ function (_Modifier) {
     _this.note = null;
     _this.index = null;
     _this.type = type;
-    _this.position = _modifier__WEBPACK_IMPORTED_MODULE_2__["Modifier"].Position.ABOVE;
     _this.delayed = false;
     _this.accidentalUpper = null;
     _this.accidentalLower = null;
@@ -20240,18 +20407,40 @@ function (_Modifier) {
       accidentalLowerPadding: 3,
       accidentalUpperPadding: 3
     };
-    _this.ornament = _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].ornamentCodes(_this.type);
+    _this.ornament = _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].ornamentCodes(_this.type); // new ornaments have their origin at the origin, and have more specific
+    // metrics.  Legacy ornaments do some
+    // x scaling, and have hard-coded metrics
+
+    var metrics = _this.getMetrics(); // some jazz ornaments are above or below depending on stem direction.
+
+
+    _this.adjustForStemDirection = false; // some jazz ornaments like falls are supposed to overlap with future bars
+    // and so we report a different width than they actually take up.
+
+    _this.reportedWidth = metrics && metrics.reportedWidth ? metrics.reportedWidth : 0;
+    _this.stemUpYOffset = metrics && metrics.stemUpYOffset ? metrics.stemUpYOffset : 0;
+    _this.ornamentAlignWithNoteHead = Ornament.ornamentAlignWithNoteHead.indexOf(_this.type) >= 0;
 
     if (!_this.ornament) {
       throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('ArgumentError', "Ornament not found: '".concat(_this.type, "'"));
     }
 
+    _this.x_shift = metrics ? metrics.xOffset : 0;
+    _this.y_shift = metrics ? metrics.yOffset : 0;
     _this.glyph = new _glyph__WEBPACK_IMPORTED_MODULE_5__["Glyph"](_this.ornament.code, _this.render_options.font_scale, {
       category: "ornament.".concat(_this.ornament.code)
-    });
+    }); // Is this a jazz ornament that goes between this note and the next note.
 
-    _this.glyph.setOrigin(0.5, 1.0); // FIXME: SMuFL won't require a vertical origin shift
+    if (Ornament.ornamentNoteTransition.indexOf(_this.type) >= 0) {
+      _this.delayed = true;
+    } // Legacy ornaments need this.  I don't know why, but horizontal spacing issues
+    // happen if I don't set it.
 
+
+    if (!metrics) {
+      _this.glyph.setOrigin(0.5, 1.0); // FIXME: SMuFL won't require a vertical origin shift
+
+    }
 
     return _this;
   }
@@ -20330,12 +20519,15 @@ function (_Modifier) {
       var glyphYBetweenLines = y - totalSpacing; // Get initial coordinates for the modifier position
 
       var start = this.note.getModifierStartXY(this.position, this.index);
-      var glyphX = start.x;
-      var glyphY = Math.min(stave.getYForTopText(this.text_line), glyphYBetweenLines);
+      var glyphX = start.x; // If the ornament is aligned with the note head, don't consider the stave y
+      // but use the 'natural' modifier y
+
+      var glyphY = this.ornamentAlignWithNoteHead ? start.y : Math.min(stave.getYForTopText(this.text_line), glyphYBetweenLines);
       glyphY += this.y_shift; // Ajdust x position if ornament is delayed
 
       if (this.delayed) {
         var delayXShift = 0;
+        var startX = glyphX - (stave.getX() - 10);
 
         if (this.delayXShift !== undefined) {
           delayXShift = this.delayXShift;
@@ -20344,9 +20536,9 @@ function (_Modifier) {
           var nextContext = _tickcontext__WEBPACK_IMPORTED_MODULE_3__["TickContext"].getNextContext(this.note.getTickContext());
 
           if (nextContext) {
-            delayXShift += (nextContext.getX() - glyphX) * 0.5;
+            delayXShift += (nextContext.getX() - startX) * 0.5;
           } else {
-            delayXShift += (stave.x + stave.width - glyphX) * 0.5;
+            delayXShift += (stave.x + stave.width - startX) * 0.5;
           }
 
           this.delayXShift = delayXShift;
@@ -20363,11 +20555,18 @@ function (_Modifier) {
         glyphY -= this.render_options.accidentalLowerPadding;
       }
 
-      this.glyph.render(ctx, glyphX, glyphY);
-      glyphY -= this.glyph.getMetrics().height;
+      if (this.stemUpYOffset && this.note.hasStem() && this.note.getStemDirection() === 1) {
+        glyphY += this.stemUpYOffset;
+      }
+
+      if (this.note.getLineNumber() < 5 && Ornament.ornamentNoteTransition.indexOf(this.type) >= 0) {
+        glyphY = this.note.getStave().getBoundingBox().y + 40;
+      }
+
+      this.glyph.render(ctx, glyphX + this.x_shift, glyphY);
 
       if (this.accidentalUpper) {
-        glyphY -= this.render_options.accidentalUpperPadding;
+        glyphY -= this.glyph.getMetrics().height + this.render_options.accidentalUpperPadding;
         this.accidentalUpper.render(ctx, glyphX, glyphY);
       }
 
@@ -29524,6 +29723,39 @@ Flow.ornamentCodes.ornaments = {
   },
   'prallprall': {
     code: 'ornamentTremblement'
+  },
+  'scoop': {
+    code: 'brassScoop'
+  },
+  'doit': {
+    code: 'brassDoitMedium'
+  },
+  'fall': {
+    code: 'brassFallLipShort'
+  },
+  'doitLong': {
+    code: 'brassLiftMedium'
+  },
+  'fallLong': {
+    code: 'brassFallRoughMedium'
+  },
+  'bend': {
+    code: 'brassBend'
+  },
+  'plungerClosed': {
+    code: 'brassMuteClosed'
+  },
+  'plungerOpen': {
+    code: 'brassMuteOpen'
+  },
+  'flip': {
+    code: 'brassFlip'
+  },
+  'jazzTurn': {
+    code: 'brassJazzTurn'
+  },
+  'smear': {
+    code: 'brassSmear'
   }
 };
 
