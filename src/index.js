@@ -76,6 +76,9 @@ import { Registry } from './registry';
 import { StaveText } from './stavetext';
 import { GlyphNote } from './glyphnote';
 import { RepeatNote } from './repeatnote';
+import { PetalumaScriptMetrics } from './fonts/petalumaScript_metrics';
+import { RobotoSlabMetrics } from './fonts/robotoSlab_metrics';
+
 
 import { Font, Fonts, DefaultFontStack } from './smufl';
 
@@ -158,5 +161,7 @@ Vex.Flow.RepeatNote = RepeatNote;
 Vex.Flow.Font = Font;
 Vex.Flow.Fonts = Fonts;
 Vex.Flow.DefaultFontStack = DefaultFontStack;
+Vex.Flow.PetalumaScriptMetrics = PetalumaScriptMetrics;
+Vex.Flow.RobotoSlabMetrics = RobotoSlabMetrics;
 
 export default Vex;

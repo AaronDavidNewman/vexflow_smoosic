@@ -16694,8 +16694,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _stavetext__WEBPACK_IMPORTED_MODULE_73__ = __webpack_require__(/*! ./stavetext */ "./src/stavetext.js");
 /* harmony import */ var _glyphnote__WEBPACK_IMPORTED_MODULE_74__ = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.js");
 /* harmony import */ var _repeatnote__WEBPACK_IMPORTED_MODULE_75__ = __webpack_require__(/*! ./repeatnote */ "./src/repeatnote.js");
-/* harmony import */ var _smufl__WEBPACK_IMPORTED_MODULE_76__ = __webpack_require__(/*! ./smufl */ "./src/smufl.js");
+/* harmony import */ var _fonts_petalumaScript_metrics__WEBPACK_IMPORTED_MODULE_76__ = __webpack_require__(/*! ./fonts/petalumaScript_metrics */ "./src/fonts/petalumaScript_metrics.js");
+/* harmony import */ var _fonts_robotoSlab_metrics__WEBPACK_IMPORTED_MODULE_77__ = __webpack_require__(/*! ./fonts/robotoSlab_metrics */ "./src/fonts/robotoSlab_metrics.js");
+/* harmony import */ var _smufl__WEBPACK_IMPORTED_MODULE_78__ = __webpack_require__(/*! ./smufl */ "./src/smufl.js");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+
+
 
 
 
@@ -16848,9 +16852,11 @@ _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Registry = _registry__WEBPACK_IMPO
 _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.StaveText = _stavetext__WEBPACK_IMPORTED_MODULE_73__["StaveText"];
 _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.GlyphNote = _glyphnote__WEBPACK_IMPORTED_MODULE_74__["GlyphNote"];
 _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.RepeatNote = _repeatnote__WEBPACK_IMPORTED_MODULE_75__["RepeatNote"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Font = _smufl__WEBPACK_IMPORTED_MODULE_76__["Font"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Fonts = _smufl__WEBPACK_IMPORTED_MODULE_76__["Fonts"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DefaultFontStack = _smufl__WEBPACK_IMPORTED_MODULE_76__["DefaultFontStack"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Font = _smufl__WEBPACK_IMPORTED_MODULE_78__["Font"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Fonts = _smufl__WEBPACK_IMPORTED_MODULE_78__["Fonts"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DefaultFontStack = _smufl__WEBPACK_IMPORTED_MODULE_78__["DefaultFontStack"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.PetalumaScriptMetrics = _fonts_petalumaScript_metrics__WEBPACK_IMPORTED_MODULE_76__["PetalumaScriptMetrics"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.RobotoSlabMetrics = _fonts_robotoSlab_metrics__WEBPACK_IMPORTED_MODULE_77__["RobotoSlabMetrics"];
 /* harmony default export */ __webpack_exports__["default"] = (_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"]);
 
 /***/ }),
