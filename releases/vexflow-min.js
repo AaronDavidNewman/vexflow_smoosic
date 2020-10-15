@@ -10249,6 +10249,9 @@ var PetalumaScriptMetrics = {
   name: 'PetalumaScript',
   smufl: false,
   spacing: 50,
+  serifs: false,
+  description: 'Default sans-serif text font to pair with Petaluma engraving font',
+  monospaced: false,
   "glyphs": {
     " ": {
       "x_min": 0,
