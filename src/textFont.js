@@ -39,7 +39,7 @@ export class TextFont  {
         description: 'Default sans-serif text font to pair with Petaluma engraving font',
       }, true);
       TextFont.registerFont({
-        name: 'RobotoSlabMetrics',
+        name: 'RobotoSlab',
         resolution: RobotoSlabMetrics.resolution,
         glyphs: RobotoSlabMetrics.glyphs,
         fontFamily: RobotoSlabMetrics.fontFamily,
@@ -103,6 +103,19 @@ export class TextFont  {
       return this.glyphs[c];
     }
     return this.glyphs[this.maxSizeGlyph];
+  }
+
+  get maxHeight() {
+    const glyph = this.getMetricForCharacter(this.maxSizeGlyph);
+    return  (glyph.ha / this.resolution) *  this.pointsToPixels;
+  }
+
+  getWidthForCharacter(c) {
+    const metric = this.getMetricForCharacter(c);
+    if (!metric) {
+      return 0.65 * this.pointsToPixels;
+    }
+    return (metric.advanceWidth / this.resolution) * this.pointsToPixels;
   }
 
   // ### pointsToPixels
