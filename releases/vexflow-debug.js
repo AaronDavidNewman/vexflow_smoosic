@@ -6322,42 +6322,42 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _articulation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./articulation */ "./src/articulation.js");
 /* harmony import */ var _annotation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./annotation */ "./src/annotation.js");
 /* harmony import */ var _chordsymbol__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.js");
-/* harmony import */ var _jazztechnique__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./jazztechnique */ "./src/jazztechnique.js");
-/* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./formatter */ "./src/formatter.js");
-/* harmony import */ var _frethandfinger__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.js");
-/* harmony import */ var _stringnumber__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.js");
-/* harmony import */ var _textdynamics__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./textdynamics */ "./src/textdynamics.js");
-/* harmony import */ var _modifiercontext__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modifiercontext */ "./src/modifiercontext.js");
-/* harmony import */ var _multimeasurerest__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./multimeasurerest */ "./src/multimeasurerest.js");
-/* harmony import */ var _renderer__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./renderer */ "./src/renderer.js");
-/* harmony import */ var _stave__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./stave */ "./src/stave.js");
-/* harmony import */ var _stavetie__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./stavetie */ "./src/stavetie.js");
-/* harmony import */ var _staveline__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./staveline */ "./src/staveline.js");
-/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.js");
-/* harmony import */ var _glyphnote__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.js");
-/* harmony import */ var _repeatnote__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./repeatnote */ "./src/repeatnote.js");
-/* harmony import */ var _staveconnector__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./staveconnector */ "./src/staveconnector.js");
-/* harmony import */ var _system__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./system */ "./src/system.js");
-/* harmony import */ var _tickcontext__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.js");
-/* harmony import */ var _tuplet__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./tuplet */ "./src/tuplet.js");
-/* harmony import */ var _voice__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./voice */ "./src/voice.js");
-/* harmony import */ var _beam__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./beam */ "./src/beam.js");
-/* harmony import */ var _curve__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./curve */ "./src/curve.js");
-/* harmony import */ var _gracenote__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./gracenote */ "./src/gracenote.js");
-/* harmony import */ var _gracenotegroup__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.js");
-/* harmony import */ var _notesubgroup__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.js");
-/* harmony import */ var _easyscore__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./easyscore */ "./src/easyscore.js");
-/* harmony import */ var _timesignote__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./timesignote */ "./src/timesignote.js");
-/* harmony import */ var _keysignote__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./keysignote */ "./src/keysignote.js");
-/* harmony import */ var _clefnote__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./clefnote */ "./src/clefnote.js");
-/* harmony import */ var _pedalmarking__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./pedalmarking */ "./src/pedalmarking.js");
-/* harmony import */ var _textbracket__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./textbracket */ "./src/textbracket.js");
-/* harmony import */ var _vibratobracket__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./vibratobracket */ "./src/vibratobracket.js");
-/* harmony import */ var _ghostnote__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./ghostnote */ "./src/ghostnote.js");
-/* harmony import */ var _barnote__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./barnote */ "./src/barnote.js");
-/* harmony import */ var _tabnote__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./tabnote */ "./src/tabnote.js");
-/* harmony import */ var _tabstave__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./tabstave */ "./src/tabstave.js");
-/* harmony import */ var _textnote__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./textnote */ "./src/textnote.js");
+/* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./formatter */ "./src/formatter.js");
+/* harmony import */ var _frethandfinger__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.js");
+/* harmony import */ var _stringnumber__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.js");
+/* harmony import */ var _textdynamics__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./textdynamics */ "./src/textdynamics.js");
+/* harmony import */ var _modifiercontext__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modifiercontext */ "./src/modifiercontext.js");
+/* harmony import */ var _multimeasurerest__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./multimeasurerest */ "./src/multimeasurerest.js");
+/* harmony import */ var _renderer__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./renderer */ "./src/renderer.js");
+/* harmony import */ var _stave__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./stave */ "./src/stave.js");
+/* harmony import */ var _stavetie__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./stavetie */ "./src/stavetie.js");
+/* harmony import */ var _staveline__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./staveline */ "./src/staveline.js");
+/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.js");
+/* harmony import */ var _glyphnote__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.js");
+/* harmony import */ var _repeatnote__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./repeatnote */ "./src/repeatnote.js");
+/* harmony import */ var _staveconnector__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./staveconnector */ "./src/staveconnector.js");
+/* harmony import */ var _system__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./system */ "./src/system.js");
+/* harmony import */ var _tickcontext__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.js");
+/* harmony import */ var _tuplet__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./tuplet */ "./src/tuplet.js");
+/* harmony import */ var _voice__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./voice */ "./src/voice.js");
+/* harmony import */ var _beam__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./beam */ "./src/beam.js");
+/* harmony import */ var _curve__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./curve */ "./src/curve.js");
+/* harmony import */ var _gracenote__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./gracenote */ "./src/gracenote.js");
+/* harmony import */ var _gracenotegroup__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.js");
+/* harmony import */ var _notesubgroup__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.js");
+/* harmony import */ var _easyscore__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./easyscore */ "./src/easyscore.js");
+/* harmony import */ var _timesignote__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./timesignote */ "./src/timesignote.js");
+/* harmony import */ var _keysignote__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./keysignote */ "./src/keysignote.js");
+/* harmony import */ var _clefnote__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./clefnote */ "./src/clefnote.js");
+/* harmony import */ var _pedalmarking__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./pedalmarking */ "./src/pedalmarking.js");
+/* harmony import */ var _textbracket__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./textbracket */ "./src/textbracket.js");
+/* harmony import */ var _vibratobracket__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./vibratobracket */ "./src/vibratobracket.js");
+/* harmony import */ var _ghostnote__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./ghostnote */ "./src/ghostnote.js");
+/* harmony import */ var _barnote__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./barnote */ "./src/barnote.js");
+/* harmony import */ var _tabnote__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./tabnote */ "./src/tabnote.js");
+/* harmony import */ var _tabstave__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./tabstave */ "./src/tabstave.js");
+/* harmony import */ var _textnote__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./textnote */ "./src/textnote.js");
+/* harmony import */ var _textFont__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./textFont */ "./src/textFont.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -6450,7 +6450,7 @@ function () {
       renderer: {
         context: null,
         elementId: '',
-        backend: _renderer__WEBPACK_IMPORTED_MODULE_12__["Renderer"].Backends.SVG,
+        backend: _renderer__WEBPACK_IMPORTED_MODULE_11__["Renderer"].Backends.SVG,
         width: 500,
         height: 200,
         background: '#FFF'
@@ -6508,7 +6508,7 @@ function () {
         throw new X('HTML DOM element not set in Factory');
       }
 
-      this.context = _renderer__WEBPACK_IMPORTED_MODULE_12__["Renderer"].buildContext(elementId, backend, width, height, background);
+      this.context = _renderer__WEBPACK_IMPORTED_MODULE_11__["Renderer"].buildContext(elementId, backend, width, height, background);
     }
   }, {
     key: "getContext",
@@ -6548,7 +6548,7 @@ function () {
           spacing_between_lines_px: this.options.stave.space
         }
       });
-      var stave = new _stave__WEBPACK_IMPORTED_MODULE_13__["Stave"](params.x, params.y, params.width, params.options);
+      var stave = new _stave__WEBPACK_IMPORTED_MODULE_12__["Stave"](params.x, params.y, params.width, params.options);
       this.staves.push(stave);
       stave.setContext(this.context);
       this.stave = stave;
@@ -6565,7 +6565,7 @@ function () {
           spacing_between_lines_px: this.options.stave.space * 1.3
         }
       });
-      var stave = new _tabstave__WEBPACK_IMPORTED_MODULE_39__["TabStave"](params.x, params.y, params.width, params.options);
+      var stave = new _tabstave__WEBPACK_IMPORTED_MODULE_38__["TabStave"](params.x, params.y, params.width, params.options);
       this.staves.push(stave);
       stave.setContext(this.context);
       this.stave = stave;
@@ -6574,7 +6574,7 @@ function () {
   }, {
     key: "StaveNote",
     value: function StaveNote(noteStruct) {
-      var note = new _stavenote__WEBPACK_IMPORTED_MODULE_16__["StaveNote"](noteStruct);
+      var note = new _stavenote__WEBPACK_IMPORTED_MODULE_15__["StaveNote"](noteStruct);
       if (this.stave) note.setStave(this.stave);
       note.setContext(this.context);
       this.renderQ.push(note);
@@ -6583,7 +6583,7 @@ function () {
   }, {
     key: "GlyphNote",
     value: function GlyphNote(glyph, noteStruct, options) {
-      var note = new _glyphnote__WEBPACK_IMPORTED_MODULE_17__["GlyphNote"](glyph, noteStruct, options);
+      var note = new _glyphnote__WEBPACK_IMPORTED_MODULE_16__["GlyphNote"](glyph, noteStruct, options);
       if (this.stave) note.setStave(this.stave);
       note.setContext(this.context);
       this.renderQ.push(note);
@@ -6592,7 +6592,7 @@ function () {
   }, {
     key: "RepeatNote",
     value: function RepeatNote(type, noteStruct, options) {
-      var note = new _repeatnote__WEBPACK_IMPORTED_MODULE_18__["RepeatNote"](type, noteStruct, options);
+      var note = new _repeatnote__WEBPACK_IMPORTED_MODULE_17__["RepeatNote"](type, noteStruct, options);
       if (this.stave) note.setStave(this.stave);
       note.setContext(this.context);
       this.renderQ.push(note);
@@ -6601,7 +6601,7 @@ function () {
   }, {
     key: "GhostNote",
     value: function GhostNote(noteStruct) {
-      var ghostNote = new _ghostnote__WEBPACK_IMPORTED_MODULE_36__["GhostNote"](noteStruct);
+      var ghostNote = new _ghostnote__WEBPACK_IMPORTED_MODULE_35__["GhostNote"](noteStruct);
       if (this.stave) ghostNote.setStave(this.stave);
       ghostNote.setContext(this.context);
       this.renderQ.push(ghostNote);
@@ -6610,7 +6610,7 @@ function () {
   }, {
     key: "TextNote",
     value: function TextNote(textNoteStruct) {
-      var textNote = new _textnote__WEBPACK_IMPORTED_MODULE_40__["TextNote"](textNoteStruct);
+      var textNote = new _textnote__WEBPACK_IMPORTED_MODULE_39__["TextNote"](textNoteStruct);
       if (this.stave) textNote.setStave(this.stave);
       textNote.setContext(this.context);
       this.renderQ.push(textNote);
@@ -6623,7 +6623,7 @@ function () {
         type: 'single',
         options: {}
       });
-      var barNote = new _barnote__WEBPACK_IMPORTED_MODULE_37__["BarNote"](params.type);
+      var barNote = new _barnote__WEBPACK_IMPORTED_MODULE_36__["BarNote"](params.type);
       if (this.stave) barNote.setStave(this.stave);
       barNote.setContext(this.context);
       this.renderQ.push(barNote);
@@ -6638,7 +6638,7 @@ function () {
           size: 'default'
         }
       });
-      var clefNote = new _clefnote__WEBPACK_IMPORTED_MODULE_32__["ClefNote"](params.type, params.options.size, params.options.annotation);
+      var clefNote = new _clefnote__WEBPACK_IMPORTED_MODULE_31__["ClefNote"](params.type, params.options.size, params.options.annotation);
       if (this.stave) clefNote.setStave(this.stave);
       clefNote.setContext(this.context);
       this.renderQ.push(clefNote);
@@ -6651,7 +6651,7 @@ function () {
         time: '4/4',
         options: {}
       });
-      var timeSigNote = new _timesignote__WEBPACK_IMPORTED_MODULE_30__["TimeSigNote"](params.time);
+      var timeSigNote = new _timesignote__WEBPACK_IMPORTED_MODULE_29__["TimeSigNote"](params.time);
       if (this.stave) timeSigNote.setStave(this.stave);
       timeSigNote.setContext(this.context);
       this.renderQ.push(timeSigNote);
@@ -6660,7 +6660,7 @@ function () {
   }, {
     key: "KeySigNote",
     value: function KeySigNote(params) {
-      var keySigNote = new _keysignote__WEBPACK_IMPORTED_MODULE_31__["KeySigNote"](params.key, params.cancelKey, params.alterKey);
+      var keySigNote = new _keysignote__WEBPACK_IMPORTED_MODULE_30__["KeySigNote"](params.key, params.cancelKey, params.alterKey);
       if (this.stave) keySigNote.setStave(this.stave);
       keySigNote.setContext(this.context);
       this.renderQ.push(keySigNote);
@@ -6669,7 +6669,7 @@ function () {
   }, {
     key: "TabNote",
     value: function TabNote(noteStruct) {
-      var note = new _tabnote__WEBPACK_IMPORTED_MODULE_38__["TabNote"](noteStruct);
+      var note = new _tabnote__WEBPACK_IMPORTED_MODULE_37__["TabNote"](noteStruct);
       if (this.stave) note.setStave(this.stave);
       note.setContext(this.context);
       this.renderQ.push(note);
@@ -6678,7 +6678,7 @@ function () {
   }, {
     key: "GraceNote",
     value: function GraceNote(noteStruct) {
-      var note = new _gracenote__WEBPACK_IMPORTED_MODULE_26__["GraceNote"](noteStruct);
+      var note = new _gracenote__WEBPACK_IMPORTED_MODULE_25__["GraceNote"](noteStruct);
       if (this.stave) note.setStave(this.stave);
       note.setContext(this.context);
       return note;
@@ -6686,7 +6686,7 @@ function () {
   }, {
     key: "GraceNoteGroup",
     value: function GraceNoteGroup(params) {
-      var group = new _gracenotegroup__WEBPACK_IMPORTED_MODULE_27__["GraceNoteGroup"](params.notes, params.slur);
+      var group = new _gracenotegroup__WEBPACK_IMPORTED_MODULE_26__["GraceNoteGroup"](params.notes, params.slur);
       group.setContext(this.context);
       return group;
     }
@@ -6740,12 +6740,6 @@ function () {
       return chordSymbol;
     }
   }, {
-    key: "JazzTechnique",
-    value: function JazzTechnique(params) {
-      var jazz = new _jazztechnique__WEBPACK_IMPORTED_MODULE_5__["JazzTechnique"](params.type);
-      return jazz;
-    }
-  }, {
     key: "Articulation",
     value: function Articulation(params) {
       params = setDefaults(params, {
@@ -6768,7 +6762,7 @@ function () {
         line: 0,
         options: {}
       });
-      var text = new _textdynamics__WEBPACK_IMPORTED_MODULE_9__["TextDynamics"]({
+      var text = new _textdynamics__WEBPACK_IMPORTED_MODULE_8__["TextDynamics"]({
         text: params.text,
         line: params.line,
         duration: params.duration,
@@ -6787,7 +6781,7 @@ function () {
         position: 'left',
         options: {}
       });
-      var fingering = new _frethandfinger__WEBPACK_IMPORTED_MODULE_7__["FretHandFinger"](params.number);
+      var fingering = new _frethandfinger__WEBPACK_IMPORTED_MODULE_6__["FretHandFinger"](params.number);
       fingering.setPosition(params.position);
       fingering.setContext(this.context);
       return fingering;
@@ -6800,7 +6794,7 @@ function () {
         position: 'left',
         options: {}
       });
-      var stringNumber = new _stringnumber__WEBPACK_IMPORTED_MODULE_8__["StringNumber"](params.number);
+      var stringNumber = new _stringnumber__WEBPACK_IMPORTED_MODULE_7__["StringNumber"](params.number);
       stringNumber.setPosition(params.position);
       stringNumber.setContext(this.context);
       return stringNumber;
@@ -6808,17 +6802,17 @@ function () {
   }, {
     key: "TickContext",
     value: function TickContext() {
-      return new _tickcontext__WEBPACK_IMPORTED_MODULE_21__["TickContext"]().setContext(this.context);
+      return new _tickcontext__WEBPACK_IMPORTED_MODULE_20__["TickContext"]().setContext(this.context);
     }
   }, {
     key: "ModifierContext",
     value: function ModifierContext() {
-      return new _modifiercontext__WEBPACK_IMPORTED_MODULE_10__["ModifierContext"]();
+      return new _modifiercontext__WEBPACK_IMPORTED_MODULE_9__["ModifierContext"]();
     }
   }, {
     key: "MultiMeasureRest",
     value: function MultiMeasureRest(params) {
-      var multimeasurerest = new _multimeasurerest__WEBPACK_IMPORTED_MODULE_11__["MultiMeasureRest"](params.number_of_measures, params);
+      var multimeasurerest = new _multimeasurerest__WEBPACK_IMPORTED_MODULE_10__["MultiMeasureRest"](params.number_of_measures, params);
       multimeasurerest.setContext(this.context);
       this.renderQ.push(multimeasurerest);
       return multimeasurerest;
@@ -6830,7 +6824,7 @@ function () {
         time: '4/4',
         options: {}
       });
-      var voice = new _voice__WEBPACK_IMPORTED_MODULE_23__["Voice"](params.time, params.options);
+      var voice = new _voice__WEBPACK_IMPORTED_MODULE_22__["Voice"](params.time, params.options);
       this.voices.push(voice);
       return voice;
     }
@@ -6843,7 +6837,7 @@ function () {
         type: 'double',
         options: {}
       });
-      var connector = new _staveconnector__WEBPACK_IMPORTED_MODULE_19__["StaveConnector"](params.top_stave, params.bottom_stave);
+      var connector = new _staveconnector__WEBPACK_IMPORTED_MODULE_18__["StaveConnector"](params.top_stave, params.bottom_stave);
       connector.setType(params.type).setContext(this.context);
       this.renderQ.push(connector);
       return connector;
@@ -6851,7 +6845,7 @@ function () {
   }, {
     key: "Formatter",
     value: function Formatter() {
-      return new _formatter__WEBPACK_IMPORTED_MODULE_6__["Formatter"]();
+      return new _formatter__WEBPACK_IMPORTED_MODULE_5__["Formatter"]();
     }
   }, {
     key: "Tuplet",
@@ -6860,7 +6854,7 @@ function () {
         notes: [],
         options: {}
       });
-      var tuplet = new _tuplet__WEBPACK_IMPORTED_MODULE_22__["Tuplet"](params.notes, params.options).setContext(this.context);
+      var tuplet = new _tuplet__WEBPACK_IMPORTED_MODULE_21__["Tuplet"](params.notes, params.options).setContext(this.context);
       this.renderQ.push(tuplet);
       return tuplet;
     }
@@ -6874,7 +6868,7 @@ function () {
           secondaryBeamBreaks: []
         }
       });
-      var beam = new _beam__WEBPACK_IMPORTED_MODULE_24__["Beam"](params.notes, params.options.autoStem).setContext(this.context);
+      var beam = new _beam__WEBPACK_IMPORTED_MODULE_23__["Beam"](params.notes, params.options.autoStem).setContext(this.context);
       beam.breakSecondaryAt(params.options.secondaryBeamBreaks);
       this.renderQ.push(beam);
       return beam;
@@ -6887,7 +6881,7 @@ function () {
         to: null,
         options: {}
       });
-      var curve = new _curve__WEBPACK_IMPORTED_MODULE_25__["Curve"](params.from, params.to, params.options).setContext(this.context);
+      var curve = new _curve__WEBPACK_IMPORTED_MODULE_24__["Curve"](params.from, params.to, params.options).setContext(this.context);
       this.renderQ.push(curve);
       return curve;
     }
@@ -6904,7 +6898,7 @@ function () {
           direction: undefined
         }
       });
-      var tie = new _stavetie__WEBPACK_IMPORTED_MODULE_14__["StaveTie"]({
+      var tie = new _stavetie__WEBPACK_IMPORTED_MODULE_13__["StaveTie"]({
         first_note: params.from,
         last_note: params.to,
         first_indices: params.first_indices,
@@ -6925,7 +6919,7 @@ function () {
         last_indices: [0],
         options: {}
       });
-      var line = new _staveline__WEBPACK_IMPORTED_MODULE_15__["StaveLine"]({
+      var line = new _staveline__WEBPACK_IMPORTED_MODULE_14__["StaveLine"]({
         first_note: params.from,
         last_note: params.to,
         first_indices: params.first_indices,
@@ -6947,7 +6941,7 @@ function () {
           harsh: false
         }
       });
-      var vibratoBracket = new _vibratobracket__WEBPACK_IMPORTED_MODULE_35__["VibratoBracket"]({
+      var vibratoBracket = new _vibratobracket__WEBPACK_IMPORTED_MODULE_34__["VibratoBracket"]({
         start: params.from,
         stop: params.to
       });
@@ -6969,7 +6963,7 @@ function () {
           position: 1
         }
       });
-      var textBracket = new _textbracket__WEBPACK_IMPORTED_MODULE_34__["TextBracket"]({
+      var textBracket = new _textbracket__WEBPACK_IMPORTED_MODULE_33__["TextBracket"]({
         start: params.from,
         stop: params.to,
         text: params.text,
@@ -6987,7 +6981,7 @@ function () {
     value: function System() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       params.factory = this;
-      var system = new _system__WEBPACK_IMPORTED_MODULE_20__["System"](params).setContext(this.context);
+      var system = new _system__WEBPACK_IMPORTED_MODULE_19__["System"](params).setContext(this.context);
       this.systems.push(system);
       return system;
     }
@@ -6996,7 +6990,7 @@ function () {
     value: function EasyScore() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       params.factory = this;
-      return new _easyscore__WEBPACK_IMPORTED_MODULE_29__["EasyScore"](params);
+      return new _easyscore__WEBPACK_IMPORTED_MODULE_28__["EasyScore"](params);
     }
   }, {
     key: "PedalMarking",
@@ -7008,8 +7002,8 @@ function () {
           style: 'mixed'
         }
       });
-      var pedal = new _pedalmarking__WEBPACK_IMPORTED_MODULE_33__["PedalMarking"](params.notes);
-      pedal.setStyle(_pedalmarking__WEBPACK_IMPORTED_MODULE_33__["PedalMarking"].StylesString[params.options.style]);
+      var pedal = new _pedalmarking__WEBPACK_IMPORTED_MODULE_32__["PedalMarking"](params.notes);
+      pedal.setStyle(_pedalmarking__WEBPACK_IMPORTED_MODULE_32__["PedalMarking"].StylesString[params.options.style]);
       pedal.setContext(this.context);
       this.renderQ.push(pedal);
       return pedal;
@@ -7022,9 +7016,17 @@ function () {
         notes: [],
         options: {}
       });
-      var group = new _notesubgroup__WEBPACK_IMPORTED_MODULE_28__["NoteSubGroup"](params.notes);
+      var group = new _notesubgroup__WEBPACK_IMPORTED_MODULE_27__["NoteSubGroup"](params.notes);
       group.setContext(this.context);
       return group;
+    }
+  }, {
+    key: "TextFont",
+    value: function TextFont() {
+      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      params.factory = this;
+      var textFont = new _textFont__WEBPACK_IMPORTED_MODULE_40__["TextFont"](params);
+      return textFont;
     }
   }, {
     key: "draw",
@@ -31568,13 +31570,30 @@ function () {
       return TextFont.fontRegistry[fontName];
     }
   }, {
+    key: "getFontsInFamily",
+    value: function getFontsInFamily(fontFamily) {
+      return TextFont.fontRegistry.filter(function (fd) {
+        return fd.fontFamily === fontFamily;
+      });
+    }
+  }, {
     key: "registerFont",
     value: function registerFont(fontData, overwrite) {
+      // Get via external reference to make sure initial object is created
       var reg = TextFont.fontRegistry;
+      var exists = reg.find(function (td) {
+        return fontData.name === td.name;
+      });
 
-      if (overwrite || !reg[fontData.name]) {
+      if (exists && overwrite) {
+        TextFont.registryInstance = TextFont.fontRegistry.filter(function (fd) {
+          return fd.name !== exists.name;
+        });
+      }
+
+      if (!exists) {
         L('registering font ' + fontData.name);
-        reg[fontData.name] = fontData;
+        TextFont.registryInstance.push(fontData);
       }
     } // ## Prototype Methods
     //
@@ -31598,31 +31617,35 @@ function () {
     key: "fontRegistry",
     get: function get() {
       if (!TextFont.registryInstance) {
-        TextFont.registryInstance = {};
-        TextFont.registerFont({
+        TextFont.registryInstance = [];
+        TextFont.registryInstance.push({
           name: 'PetalumaScript',
           resolution: _fonts_petalumaScript_metrics__WEBPACK_IMPORTED_MODULE_1__["PetalumaScriptMetrics"].resolution,
           glyphs: _fonts_petalumaScript_metrics__WEBPACK_IMPORTED_MODULE_1__["PetalumaScriptMetrics"].glyphs,
           fontFamily: _fonts_petalumaScript_metrics__WEBPACK_IMPORTED_MODULE_1__["PetalumaScriptMetrics"].fontFamily,
           serifs: false,
           monospaced: false,
+          italic: false,
+          bold: false,
           maxSizeGlyph: 'H',
           superscriptOffset: 0.66,
           subscriptOffset: 0.66,
           description: 'Default sans-serif text font to pair with Petaluma engraving font'
-        }, true);
-        TextFont.registerFont({
+        });
+        TextFont.registryInstance.push({
           name: 'RobotoSlab',
           resolution: _fonts_robotoSlab_metrics__WEBPACK_IMPORTED_MODULE_2__["RobotoSlabMetrics"].resolution,
           glyphs: _fonts_robotoSlab_metrics__WEBPACK_IMPORTED_MODULE_2__["RobotoSlabMetrics"].glyphs,
           fontFamily: _fonts_robotoSlab_metrics__WEBPACK_IMPORTED_MODULE_2__["RobotoSlabMetrics"].fontFamily,
           serifs: true,
           monospaced: false,
+          italic: false,
+          bold: false,
           maxSizeGlyph: 'H',
           superscriptOffset: 0.66,
           subscriptOffset: 0.66,
           description: 'Default serif text font to pair with Bravura/Gonville engraving font'
-        }, true);
+        });
       }
 
       return TextFont.registryInstance;
@@ -31643,7 +31666,7 @@ function () {
       _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('BadArgument', 'Font constructor must specify a name');
     }
 
-    var fontData = TextFont.getFontDataByName[name];
+    var fontData = TextFont.getFontDataByName(params.name);
 
     if (!fontData) {
       if (params.glyphs && params.resolution) {

@@ -13,7 +13,6 @@ import { Accidental } from './accidental';
 import { Articulation } from './articulation';
 import { Annotation } from './annotation';
 import { ChordSymbol } from './chordsymbol';
-import { JazzTechnique } from './jazztechnique';
 import { Formatter } from './formatter';
 import { FretHandFinger } from './frethandfinger';
 import { StringNumber } from './stringnumber';
@@ -49,6 +48,7 @@ import { BarNote } from './barnote';
 import { TabNote } from './tabnote';
 import { TabStave } from './tabstave';
 import { TextNote } from './textnote';
+import { TextFont } from './textFont';
 
 // To enable logging for this class. Set `Vex.Flow.Factory.DEBUG` to `true`.
 function L(...args) { if (Factory.DEBUG) Vex.L('Vex.Flow.Factory', args); }
@@ -320,11 +320,6 @@ export class Factory {
     chordSymbol.setFont(params.fontFamily, params.fontSize, params.fontWeight);
     chordSymbol.setContext(this.context);
     return chordSymbol;
-  }
-
-  JazzTechnique(params) {
-    const jazz = new JazzTechnique(params.type);
-    return jazz;
   }
 
   Articulation(params) {
@@ -604,6 +599,13 @@ export class Factory {
     group.setContext(this.context);
     return group;
   }
+
+  TextFont(params = {}) {
+    params.factory = this;
+    const textFont = new TextFont(params);
+    return textFont;
+  }
+
 
   draw() {
     this.systems.forEach(i => i.setContext(this.context).format());

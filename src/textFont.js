@@ -25,31 +25,35 @@ export class TextFont  {
 
   static get fontRegistry() {
     if (!TextFont.registryInstance) {
-      TextFont.registryInstance = {};
-      TextFont.registerFont({
+      TextFont.registryInstance = [];
+      TextFont.registryInstance.push({
         name: 'PetalumaScript',
         resolution: PetalumaScriptMetrics.resolution,
         glyphs: PetalumaScriptMetrics.glyphs,
         fontFamily: PetalumaScriptMetrics.fontFamily,
         serifs: false,
         monospaced: false,
+        italic: false,
+        bold: false,
         maxSizeGlyph: 'H',
         superscriptOffset: 0.66,
         subscriptOffset: 0.66,
         description: 'Default sans-serif text font to pair with Petaluma engraving font',
-      }, true);
-      TextFont.registerFont({
+      });
+      TextFont.registryInstance.push({
         name: 'RobotoSlab',
         resolution: RobotoSlabMetrics.resolution,
         glyphs: RobotoSlabMetrics.glyphs,
         fontFamily: RobotoSlabMetrics.fontFamily,
         serifs: true,
         monospaced: false,
+        italic: false,
+        bold: false,
         maxSizeGlyph: 'H',
         superscriptOffset: 0.66,
         subscriptOffset: 0.66,
         description: 'Default serif text font to pair with Bravura/Gonville engraving font',
-      }, true);
+      });
     }
     return TextFont.registryInstance;
   }
@@ -61,11 +65,20 @@ export class TextFont  {
     return TextFont.fontRegistry[fontName];
   }
 
+  static getFontsInFamily(fontFamily) {
+    return TextFont.fontRegistry.filter((fd) => fd.fontFamily === fontFamily);
+  }
+
   static registerFont(fontData, overwrite) {
+    // Get via external reference to make sure initial object is created
     const reg = TextFont.fontRegistry;
-    if (overwrite || !reg[fontData.name]) {
+    const exists = reg.find((td) => fontData.name === td.name);
+    if (exists && overwrite) {
+      TextFont.registryInstance = TextFont.fontRegistry.filter((fd) => fd.name !== exists.name);
+    }
+    if (!exists) {
       L('registering font ' + fontData.name);
-      reg[fontData.name] = fontData;
+      TextFont.registryInstance.push(fontData);
     }
   }
 
@@ -78,7 +91,7 @@ export class TextFont  {
     if (!params.name) {
       Vex.RERR('BadArgument', 'Font constructor must specify a name');
     }
-    const fontData = TextFont.getFontDataByName[name];
+    const fontData = TextFont.getFontDataByName(params.name);
     if (!fontData) {
       if (params.glyphs && params.resolution) {
         TextFont.registerFont(params);
