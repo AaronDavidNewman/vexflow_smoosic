@@ -23,6 +23,10 @@ export class TextFont  {
     TextFont.debug = val;
   }
 
+  // ### fontRegistry
+  // Getter of an array of available fonts.  Applications may register their
+  // own fonts and the metrics for those fonts will be available to the
+  // application.
   static get fontRegistry() {
     if (!TextFont.registryInstance) {
       TextFont.registryInstance = [];
@@ -58,21 +62,36 @@ export class TextFont  {
     return TextFont.registryInstance;
   }
 
-  static get availableFonts() {
-    return Object.keys(TextFont.fontRegistry);
-  }
-
-  static getFontDataByName(fontName)  {
-    return TextFont.fontRegistry.find((fd) => fd.name === fontName);
-  }
-
-  static getFontsInFamily(fontFamily) {
-    return TextFont.fontRegistry.filter((fd) => fd.fontFamily === fontFamily);
+  // ### getFontFamilies
+  // Web font files are generally distributed per weight and style (bold, italic).
+  // return the family with the attributes that are available for that font.
+  // We assume descriptions are the same for different weights/styles.
+  static getFontFamilies() {
+    const hash = {};
+    const rv = [];
+    TextFont.fontRegistry.forEach((font) => {
+      if (!hash[font.family]) {
+        hash[font.family] = { family: font.family, description: font.description,
+          bold: font.bold, serifs: font.serifs, italic: font.italic };
+      } else {
+        ['bold', 'italic', 'monospaced', 'serifs'].forEach((attr) => {
+          if (font[attr]) {
+            hash[font.family][attr] = true;
+          }
+        });
+      }
+    });
+    const keys = Object.keys(hash);
+    keys.forEach((key) => {
+      rv.push(hash[key]);
+    });
+    return rv;
   }
 
   // ### fontWeightToBold
   // return true if the font weight indicates we desire a 'bold'
-  static  fontWeightToBold(fw) {
+  // used in getTextFontFromVexFontData
+  static fontWeightToBold(fw) {
     if (!fw) {
       return false;
     }
@@ -85,12 +104,15 @@ export class TextFont  {
 
   // ### fontStyleToItalic
   // return true if the font style indicates we desire 'italic' style
+  // used in getTextFontFromVexFontData
   static  fontStyleToItalic(fs) {
     return (fs && typeof(fs) === 'string' && fs.toLowerCase() === 'italic');
   }
 
   // ### getTextFontFromVexFontData
   // Find the font that most closely matches the parameters from the given font data.
+  // Primarily we look for font family, also bold and italic attributes.  This
+  // method will always return a fallback font if there are no matches.
   static getTextFontFromVexFontData(fd) {
     let i = 0;
     const fallback = TextFont.fontRegistry[0];
@@ -123,6 +145,15 @@ export class TextFont  {
     return new TextFont(candidates[0]);
   }
 
+  static getFontDataByName(fontName)  {
+    return TextFont.fontRegistry.find((fd) => fd.name === fontName);
+  }
+
+  // ### registerFont
+  // Applications may register their own fonts and the metrics, and those metrics
+  // will be available to the application for formatting.  See fontRegistry
+  // for format of font metrics.  Metrics can be generated from any font file
+  // using font_fontgen.js in the tools/smufl directory.
   static registerFont(fontData, overwrite) {
     // Get via external reference to make sure initial object is created
     const reg = TextFont.fontRegistry;
@@ -138,14 +169,15 @@ export class TextFont  {
 
   // ## Prototype Methods
   //
-  // create a font instance.  Params should include name and size, if this is a
-  // pre-registered font.
+  // create a font instance.
+  // The preferred method for returning an instance of this class is via
+  // getTextFontFromVexFontData
   constructor(params) {
     this.attrs = { 'type': 'TextFont' };
     if (!params.name) {
       Vex.RERR('BadArgument', 'Font constructor must specify a name');
     }
-    const fontData = TextFont.getFontDataByName(params.name);
+    const fontData = params.glyphs ? params : TextFont.getFontDataByName(params.name);
     if (!fontData) {
       if (params.glyphs && params.resolution) {
         TextFont.registerFont(params);

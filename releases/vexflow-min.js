@@ -31537,20 +31537,39 @@ var TextFont =
 /*#__PURE__*/
 function () {
   _createClass(TextFont, null, [{
-    key: "getFontDataByName",
-    value: function getFontDataByName(fontName) {
-      return TextFont.fontRegistry.find(function (fd) {
-        return fd.name === fontName;
+    key: "getFontFamilies",
+    // ### getFontFamilies
+    // Web font files are generally distributed per weight and style (bold, italic).
+    // return the family with the attributes that are available for that font.
+    // We assume descriptions are the same for different weights/styles.
+    value: function getFontFamilies() {
+      var hash = {};
+      var rv = [];
+      TextFont.fontRegistry.forEach(function (font) {
+        if (!hash[font.family]) {
+          hash[font.family] = {
+            family: font.family,
+            description: font.description,
+            bold: font.bold,
+            serifs: font.serifs,
+            italic: font.italic
+          };
+        } else {
+          ['bold', 'italic', 'monospaced', 'serifs'].forEach(function (attr) {
+            if (font[attr]) {
+              hash[font.family][attr] = true;
+            }
+          });
+        }
       });
-    }
-  }, {
-    key: "getFontsInFamily",
-    value: function getFontsInFamily(fontFamily) {
-      return TextFont.fontRegistry.filter(function (fd) {
-        return fd.fontFamily === fontFamily;
+      var keys = Object.keys(hash);
+      keys.forEach(function (key) {
+        rv.push(hash[key]);
       });
+      return rv;
     } // ### fontWeightToBold
     // return true if the font weight indicates we desire a 'bold'
+    // used in getTextFontFromVexFontData
 
   }, {
     key: "fontWeightToBold",
@@ -31567,6 +31586,7 @@ function () {
       return parseInt(fw, 10) >= 600;
     } // ### fontStyleToItalic
     // return true if the font style indicates we desire 'italic' style
+    // used in getTextFontFromVexFontData
 
   }, {
     key: "fontStyleToItalic",
@@ -31574,6 +31594,8 @@ function () {
       return fs && typeof fs === 'string' && fs.toLowerCase() === 'italic';
     } // ### getTextFontFromVexFontData
     // Find the font that most closely matches the parameters from the given font data.
+    // Primarily we look for font family, also bold and italic attributes.  This
+    // method will always return a fallback font if there are no matches.
 
   }, {
     key: "getTextFontFromVexFontData",
@@ -31629,6 +31651,18 @@ function () {
       return new TextFont(candidates[0]);
     }
   }, {
+    key: "getFontDataByName",
+    value: function getFontDataByName(fontName) {
+      return TextFont.fontRegistry.find(function (fd) {
+        return fd.name === fontName;
+      });
+    } // ### registerFont
+    // Applications may register their own fonts and the metrics, and those metrics
+    // will be available to the application for formatting.  See fontRegistry
+    // for format of font metrics.  Metrics can be generated from any font file
+    // using font_fontgen.js in the tools/smufl directory.
+
+  }, {
     key: "registerFont",
     value: function registerFont(fontData, overwrite) {
       // Get via external reference to make sure initial object is created
@@ -31649,8 +31683,9 @@ function () {
       }
     } // ## Prototype Methods
     //
-    // create a font instance.  Params should include name and size, if this is a
-    // pre-registered font.
+    // create a font instance.
+    // The preferred method for returning an instance of this class is via
+    // getTextFontFromVexFontData
 
   }, {
     key: "CATEGORY",
@@ -31664,7 +31699,11 @@ function () {
     },
     set: function set(val) {
       TextFont.debug = val;
-    }
+    } // ### fontRegistry
+    // Getter of an array of available fonts.  Applications may register their
+    // own fonts and the metrics for those fonts will be available to the
+    // application.
+
   }, {
     key: "fontRegistry",
     get: function get() {
@@ -31702,11 +31741,6 @@ function () {
 
       return TextFont.registryInstance;
     }
-  }, {
-    key: "availableFonts",
-    get: function get() {
-      return Object.keys(TextFont.fontRegistry);
-    }
   }]);
 
   function TextFont(params) {
@@ -31720,7 +31754,7 @@ function () {
       _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('BadArgument', 'Font constructor must specify a name');
     }
 
-    var fontData = TextFont.getFontDataByName(params.name);
+    var fontData = params.glyphs ? params : TextFont.getFontDataByName(params.name);
 
     if (!fontData) {
       if (params.glyphs && params.resolution) {
