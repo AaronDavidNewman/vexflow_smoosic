@@ -27,46 +27,100 @@ export class TextFont  {
     if (!TextFont.registryInstance) {
       TextFont.registryInstance = [];
       TextFont.registryInstance.push({
-        name: 'PetalumaScript',
-        resolution: PetalumaScriptMetrics.resolution,
-        glyphs: PetalumaScriptMetrics.glyphs,
-        fontFamily: PetalumaScriptMetrics.fontFamily,
-        serifs: false,
-        monospaced: false,
-        italic: false,
-        bold: false,
-        maxSizeGlyph: 'H',
-        superscriptOffset: 0.66,
-        subscriptOffset: 0.66,
-        description: 'Default sans-serif text font to pair with Petaluma engraving font',
-      });
-      TextFont.registryInstance.push({
         name: 'RobotoSlab',
         resolution: RobotoSlabMetrics.resolution,
         glyphs: RobotoSlabMetrics.glyphs,
-        fontFamily: RobotoSlabMetrics.fontFamily,
-        serifs: true,
-        monospaced: false,
-        italic: false,
+        family: RobotoSlabMetrics.fontFamily,
+        hasSerifs: true,
+        isMonospaced: false,
+        isItalic: false,
         bold: false,
         maxSizeGlyph: 'H',
         superscriptOffset: 0.66,
         subscriptOffset: 0.66,
         description: 'Default serif text font to pair with Bravura/Gonville engraving font',
       });
+      TextFont.registryInstance.push({
+        name: 'PetalumaScript',
+        resolution: PetalumaScriptMetrics.resolution,
+        glyphs: PetalumaScriptMetrics.glyphs,
+        family: PetalumaScriptMetrics.fontFamily,
+        hasSerifs: false,
+        isMonospaced: false,
+        isItalic: false,
+        bold: false,
+        maxSizeGlyph: 'H',
+        superscriptOffset: 0.66,
+        subscriptOffset: 0.66,
+        description: 'Default sans-serif text font to pair with Petaluma engraving font',
+      });
     }
     return TextFont.registryInstance;
   }
+
   static get availableFonts() {
     return Object.keys(TextFont.fontRegistry);
   }
 
   static getFontDataByName(fontName)  {
-    return TextFont.fontRegistry[fontName];
+    return TextFont.fontRegistry.find((fd) => fd.name === fontName);
   }
 
   static getFontsInFamily(fontFamily) {
     return TextFont.fontRegistry.filter((fd) => fd.fontFamily === fontFamily);
+  }
+
+  // ### fontWeightToBold
+  // return true if the font weight indicates we desire a 'bold'
+  static  fontWeightToBold(fw) {
+    if (!fw) {
+      return false;
+    }
+    if (isNaN(parseInt(fw, 10))) {
+      return fw.toLowerCase() === 'bold';
+    }
+    // very subjective...
+    return parseInt(fw, 10) >= 600;
+  }
+
+  // ### fontStyleToItalic
+  // return true if the font style indicates we desire 'italic' style
+  static  fontStyleToItalic(fs) {
+    return (fs && typeof(fs) === 'string' && fs.toLowerCase() === 'italic');
+  }
+
+  // ### getTextFontFromVexFontData
+  // Find the font that most closely matches the parameters from the given font data.
+  static getTextFontFromVexFontData(fd) {
+    let i = 0;
+    const fallback = TextFont.fontRegistry[0];
+    let candidates = [];
+    const families = fd.family.split(',');
+    for (i = 0; i < families.length; ++i) {
+      const famliy = families[i];
+      candidates = TextFont.fontRegistry.filter((font) => font.family === famliy);
+      if (candidates.length) {
+        break;
+      }
+    }
+    if (candidates.length === 0) {
+      return new TextFont(fallback);
+    }
+    if (candidates.length === 1) {
+      return new TextFont(candidates[0]);
+    }
+    const bold = TextFont.fontWeightToBold(fd.weight);
+    const italic = TextFont.fontStyleToItalic(fd.style);
+
+    const perfect = candidates.find((font) => font.bold === bold && font.italic === italic);
+    if (perfect) {
+      return new TextFont(perfect);
+    }
+    const ok = candidates.find((font) => font.italic === italic || font.bold === bold);
+    if (ok) {
+      return new TextFont(ok);
+    }
+    return new TextFont(candidates[0]);
   }
 
   static registerFont(fontData, overwrite) {
@@ -87,7 +141,7 @@ export class TextFont  {
   // create a font instance.  Params should include name and size, if this is a
   // pre-registered font.
   constructor(params) {
-    this.setAttribute('type', 'TextFont');
+    this.attrs = { 'type': 'TextFont' };
     if (!params.name) {
       Vex.RERR('BadArgument', 'Font constructor must specify a name');
     }
@@ -135,13 +189,6 @@ export class TextFont  {
   // The font size is specified in points, convert to 'pixels' in the svg space
   get pointsToPixels() {
     return (this.size / 72) / (1 / 96);
-  }
-
-  get superscriptOffset() {
-    return this.superscriptOffset * this.pointsToPixels;
-  }
-  get subscriptOffset() {
-    return this.subscriptOffset * this.pointsToPixels;
   }
 
   setFontSize(size) {

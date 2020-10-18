@@ -11,9 +11,8 @@
 import { Vex } from './vex';
 import { Flow } from './tables';
 import { Glyph } from './glyph';
+import { TextFont } from './textFont';
 import { Modifier } from './modifier';
-import { PetalumaScriptMetrics } from './fonts/petalumaScript_metrics';
-import { RobotoSlabMetrics } from './fonts/robotoSlab_metrics';
 
 // To enable logging for this class. Set `Vex.Flow.ChordSymbol.DEBUG` to `true`.
 function L(...args) { if (ChordSymbol.DEBUG) Vex.L('Vex.Flow.ChordSymbol', args); }
@@ -86,30 +85,12 @@ export class ChordSymbol extends Modifier {
     return null;
   }
 
-  static get textMetricsForEngravingFont() {
-    if (Vex.Flow.DEFAULT_FONT_STACK[0].name === 'Petaluma') {
-      return PetalumaScriptMetrics;
-    } else {
-      return RobotoSlabMetrics;
-    }
-  }
-
-  static getMetricForCharacter(c) {
-    if (ChordSymbol.NOTEXTFORMAT) {
-      return null;
-    }
-    if (ChordSymbol.textMetricsForEngravingFont.glyphs[c]) {
-      return ChordSymbol.textMetricsForEngravingFont.glyphs[c];
-    }
-    return null;
-  }
-
-  static getYOffsetForText(text) {
+  getYOffsetForText(text) {
     let acc = 0;
     let ix = 0;
-    const resolution = ChordSymbol.textMetricsForEngravingFont.resolution;
+    const resolution = this.textFont.resolution;
     for (ix = 0; ix < text.length; ++ix) {
-      const metric = ChordSymbol.getMetricForCharacter(text[ix]);
+      const metric = this.textFont.getMetricForCharacter(text[ix]);
 
       if (metric) {
         acc = metric.y < acc ? metric.y : acc;
@@ -127,13 +108,8 @@ export class ChordSymbol extends Modifier {
     return ChordSymbol.chordSymbolMetrics.global.spacing / ChordSymbol.engravingFontResolution;
   }
 
-  static getWidthForCharacter(c) {
-    const resolution = ChordSymbol.textMetricsForEngravingFont.resolution;
-    const metric = ChordSymbol.getMetricForCharacter(c);
-    if (!metric) {
-      return 0.65;
-    }
-    return metric.advanceWidth / resolution;
+  getWidthForCharacter(c) {
+    return this.textFont.getMetricForCharacter(c).advanceWidth / this.textFont.resolution;
   }
 
   static getWidthForGlyph(glyph) {
@@ -305,8 +281,8 @@ export class ChordSymbol extends Modifier {
           symbol.glyph.scale = symbol.glyph.scale * adj;
           symbol.width = ChordSymbol.getWidthForGlyph(symbol.glyph) * instance.pointsToPixels * subAdj;
         } else if (symbol.symbolType === ChordSymbol.symbolTypes.TEXT) {
-          symbol.width = symbol.width * instance.pointsToPixels * subAdj;
-          symbol.yShift += ChordSymbol.getYOffsetForText(symbol.text) * adj;
+          symbol.width = symbol.width * instance.textFont.pointsToPixels * subAdj;
+          symbol.yShift += instance.getYOffsetForText(symbol.text) * adj;
         }
 
         if (symbol.symbolType === ChordSymbol.symbolTypes.GLYPH &&
@@ -381,21 +357,22 @@ export class ChordSymbol extends Modifier {
 
     let fontFamily = 'Arial';
     if (this.musicFont.name === 'Petaluma') {
-      fontFamily = 'petalumaScript,Arial';
+      fontFamily = 'Petaluma Script,Arial';
     } else {
-      fontFamily = 'robotoSlab,Times';
+      fontFamily = 'Roboto Slab,Times';
     }
     this.font = {
       family: fontFamily,
       size: 12,
       weight: '',
     };
+    this.textFont = TextFont.getTextFontFromVexFontData(this.font);
   }
 
   // ### pointsToPixels
   // The font size is specified in points, convert to 'pixels' in the svg space
   get pointsToPixels() {
-    return (this.font.size / 72) / (1 / 96);
+    return this.textFont.pointsToPixels;
   }
 
   get superscriptOffset() {
@@ -530,7 +507,7 @@ export class ChordSymbol extends Modifier {
     } else if (symbolType === ChordSymbol.symbolTypes.TEXT) {
       let twidth = 0;
       for (let i = 0; i < rv.text.length; ++i) {
-        twidth += ChordSymbol.getWidthForCharacter(rv.text[i]);
+        twidth += this.getWidthForCharacter(rv.text[i]);
       }
       rv.width = twidth;
     } else if (symbolType === ChordSymbol.symbolTypes.LINE) {
@@ -628,11 +605,13 @@ export class ChordSymbol extends Modifier {
   // Set font family, size, and weight. E.g., `Arial`, `10pt`, `Bold`.
   setFont(family, size, weight) {
     this.font = { family, size, weight };
+    this.textFont = TextFont.getTextFontFromVexFontData(this.font);
     return this;
   }
 
   setFontSize(size) {
     this.font.size = size;
+    this.textFont.setFontSize(size);
     return this;
   }
 

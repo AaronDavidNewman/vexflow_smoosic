@@ -3458,9 +3458,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _vex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vex */ "./src/vex.js");
 /* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tables */ "./src/tables.js");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./glyph */ "./src/glyph.js");
-/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modifier */ "./src/modifier.js");
-/* harmony import */ var _fonts_petalumaScript_metrics__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./fonts/petalumaScript_metrics */ "./src/fonts/petalumaScript_metrics.js");
-/* harmony import */ var _fonts_robotoSlab_metrics__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./fonts/robotoSlab_metrics */ "./src/fonts/robotoSlab_metrics.js");
+/* harmony import */ var _textFont__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./textFont */ "./src/textFont.js");
+/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modifier */ "./src/modifier.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3492,7 +3491,6 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-
  // To enable logging for this class. Set `Vex.Flow.ChordSymbol.DEBUG` to `true`.
 
 function L() {
@@ -3508,37 +3506,15 @@ var ChordSymbol =
 function (_Modifier) {
   _inherits(ChordSymbol, _Modifier);
 
-  _createClass(ChordSymbol, null, [{
-    key: "getMetricForGlyph",
-    value: function getMetricForGlyph(glyphCode) {
-      if (ChordSymbol.chordSymbolMetrics[glyphCode]) {
-        return ChordSymbol.chordSymbolMetrics[glyphCode];
-      }
-
-      return null;
-    }
-  }, {
-    key: "getMetricForCharacter",
-    value: function getMetricForCharacter(c) {
-      if (ChordSymbol.NOTEXTFORMAT) {
-        return null;
-      }
-
-      if (ChordSymbol.textMetricsForEngravingFont.glyphs[c]) {
-        return ChordSymbol.textMetricsForEngravingFont.glyphs[c];
-      }
-
-      return null;
-    }
-  }, {
+  _createClass(ChordSymbol, [{
     key: "getYOffsetForText",
     value: function getYOffsetForText(text) {
       var acc = 0;
       var ix = 0;
-      var resolution = ChordSymbol.textMetricsForEngravingFont.resolution;
+      var resolution = this.textFont.resolution;
 
       for (ix = 0; ix < text.length; ++ix) {
-        var metric = ChordSymbol.getMetricForCharacter(text[ix]);
+        var metric = this.textFont.getMetricForCharacter(text[ix]);
 
         if (metric) {
           acc = metric.y < acc ? metric.y : acc;
@@ -3550,14 +3526,16 @@ function (_Modifier) {
   }, {
     key: "getWidthForCharacter",
     value: function getWidthForCharacter(c) {
-      var resolution = ChordSymbol.textMetricsForEngravingFont.resolution;
-      var metric = ChordSymbol.getMetricForCharacter(c);
-
-      if (!metric) {
-        return 0.65;
+      return this.textFont.getMetricForCharacter(c).advanceWidth / this.textFont.resolution;
+    }
+  }], [{
+    key: "getMetricForGlyph",
+    value: function getMetricForGlyph(glyphCode) {
+      if (ChordSymbol.chordSymbolMetrics[glyphCode]) {
+        return ChordSymbol.chordSymbolMetrics[glyphCode];
       }
 
-      return metric.advanceWidth / resolution;
+      return null;
     }
   }, {
     key: "getWidthForGlyph",
@@ -3631,8 +3609,8 @@ function (_Modifier) {
             symbol.glyph.scale = symbol.glyph.scale * adj;
             symbol.width = ChordSymbol.getWidthForGlyph(symbol.glyph) * instance.pointsToPixels * subAdj;
           } else if (symbol.symbolType === ChordSymbol.symbolTypes.TEXT) {
-            symbol.width = symbol.width * instance.pointsToPixels * subAdj;
-            symbol.yShift += ChordSymbol.getYOffsetForText(symbol.text) * adj;
+            symbol.width = symbol.width * instance.textFont.pointsToPixels * subAdj;
+            symbol.yShift += instance.getYOffsetForText(symbol.text) * adj;
           }
 
           if (symbol.symbolType === ChordSymbol.symbolTypes.GLYPH && symbol.glyph.code === ChordSymbol.glyphs.over.code) {
@@ -3765,15 +3743,6 @@ function (_Modifier) {
         below: ChordSymbol.verticalJustify.BOTTOM,
         bottom: ChordSymbol.verticalJustify.BOTTOM
       };
-    }
-  }, {
-    key: "textMetricsForEngravingFont",
-    get: function get() {
-      if (_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DEFAULT_FONT_STACK[0].name === 'Petaluma') {
-        return _fonts_petalumaScript_metrics__WEBPACK_IMPORTED_MODULE_4__["PetalumaScriptMetrics"];
-      } else {
-        return _fonts_robotoSlab_metrics__WEBPACK_IMPORTED_MODULE_5__["RobotoSlabMetrics"];
-      }
     }
   }, {
     key: "engravingFontResolution",
@@ -3921,9 +3890,9 @@ function (_Modifier) {
     var fontFamily = 'Arial';
 
     if (_this.musicFont.name === 'Petaluma') {
-      fontFamily = 'petalumaScript,Arial';
+      fontFamily = 'Petaluma Script,Arial';
     } else {
-      fontFamily = 'robotoSlab,Times';
+      fontFamily = 'Roboto Slab,Times';
     }
 
     _this.font = {
@@ -3931,6 +3900,7 @@ function (_Modifier) {
       size: 12,
       weight: ''
     };
+    _this.textFont = _textFont__WEBPACK_IMPORTED_MODULE_3__["TextFont"].getTextFontFromVexFontData(_this.font);
     return _this;
   } // ### pointsToPixels
   // The font size is specified in points, convert to 'pixels' in the svg space
@@ -4080,7 +4050,7 @@ function (_Modifier) {
         var twidth = 0;
 
         for (var i = 0; i < rv.text.length; ++i) {
-          twidth += ChordSymbol.getWidthForCharacter(rv.text[i]);
+          twidth += this.getWidthForCharacter(rv.text[i]);
         }
 
         rv.width = twidth;
@@ -4211,12 +4181,14 @@ function (_Modifier) {
         size: size,
         weight: weight
       };
+      this.textFont = _textFont__WEBPACK_IMPORTED_MODULE_3__["TextFont"].getTextFontFromVexFontData(this.font);
       return this;
     }
   }, {
     key: "setFontSize",
     value: function setFontSize(size) {
       this.font.size = size;
+      this.textFont.setFontSize(size);
       return this;
     }
   }, {
@@ -4282,7 +4254,7 @@ function (_Modifier) {
       this.context.save();
       var classString = Object.keys(this.getAttribute('classes')).join(' ');
       this.context.openGroup(classString, this.getAttribute('id'));
-      var start = this.note.getModifierStartXY(_modifier__WEBPACK_IMPORTED_MODULE_3__["Modifier"].Position.ABOVE, this.index);
+      var start = this.note.getModifierStartXY(_modifier__WEBPACK_IMPORTED_MODULE_4__["Modifier"].Position.ABOVE, this.index);
       this.context.setFont(this.font.family, this.font.size, this.font.weight);
       var y;
       var stem_ext;
@@ -4398,7 +4370,7 @@ function (_Modifier) {
   }, {
     key: "pointsToPixels",
     get: function get() {
-      return this.font.size / 72 / (1 / 96);
+      return this.textFont.pointsToPixels;
     }
   }, {
     key: "superscriptOffset",
@@ -4413,7 +4385,7 @@ function (_Modifier) {
   }]);
 
   return ChordSymbol;
-}(_modifier__WEBPACK_IMPORTED_MODULE_3__["Modifier"]);
+}(_modifier__WEBPACK_IMPORTED_MODULE_4__["Modifier"]);
 
 /***/ }),
 
@@ -31567,7 +31539,9 @@ function () {
   _createClass(TextFont, null, [{
     key: "getFontDataByName",
     value: function getFontDataByName(fontName) {
-      return TextFont.fontRegistry[fontName];
+      return TextFont.fontRegistry.find(function (fd) {
+        return fd.name === fontName;
+      });
     }
   }, {
     key: "getFontsInFamily",
@@ -31575,6 +31549,84 @@ function () {
       return TextFont.fontRegistry.filter(function (fd) {
         return fd.fontFamily === fontFamily;
       });
+    } // ### fontWeightToBold
+    // return true if the font weight indicates we desire a 'bold'
+
+  }, {
+    key: "fontWeightToBold",
+    value: function fontWeightToBold(fw) {
+      if (!fw) {
+        return false;
+      }
+
+      if (isNaN(parseInt(fw, 10))) {
+        return fw.toLowerCase() === 'bold';
+      } // very subjective...
+
+
+      return parseInt(fw, 10) >= 600;
+    } // ### fontStyleToItalic
+    // return true if the font style indicates we desire 'italic' style
+
+  }, {
+    key: "fontStyleToItalic",
+    value: function fontStyleToItalic(fs) {
+      return fs && typeof fs === 'string' && fs.toLowerCase() === 'italic';
+    } // ### getTextFontFromVexFontData
+    // Find the font that most closely matches the parameters from the given font data.
+
+  }, {
+    key: "getTextFontFromVexFontData",
+    value: function getTextFontFromVexFontData(fd) {
+      var i = 0;
+      var fallback = TextFont.fontRegistry[0];
+      var candidates = [];
+      var families = fd.family.split(',');
+
+      var _loop = function _loop() {
+        var famliy = families[i];
+        candidates = TextFont.fontRegistry.filter(function (font) {
+          return font.family === famliy;
+        });
+
+        if (candidates.length) {
+          return "break";
+        }
+      };
+
+      for (i = 0; i < families.length; ++i) {
+        var _ret = _loop();
+
+        if (_ret === "break") break;
+      }
+
+      if (candidates.length === 0) {
+        return new TextFont(fallback);
+      }
+
+      if (candidates.length === 1) {
+        return new TextFont(candidates[0]);
+      }
+
+      var bold = TextFont.fontWeightToBold(fd.weight);
+      var italic = TextFont.fontStyleToItalic(fd.style);
+      var perfect = candidates.find(function (font) {
+        return font.bold === bold && font.italic === italic;
+      });
+
+      if (perfect) {
+        return new TextFont(perfect);
+      }
+
+      var ok = candidates.find(function (font) {
+        return font.italic === italic || font.bold === bold;
+      });
+
+      if (ok) {
+        return new TextFont(ok);
+      }
+
+      return new TextFont(candidates[0]);
     }
   }, {
     key: "registerFont",
@@ -31619,32 +31671,32 @@ function () {
       if (!TextFont.registryInstance) {
         TextFont.registryInstance = [];
         TextFont.registryInstance.push({
-          name: 'PetalumaScript',
-          resolution: _fonts_petalumaScript_metrics__WEBPACK_IMPORTED_MODULE_1__["PetalumaScriptMetrics"].resolution,
-          glyphs: _fonts_petalumaScript_metrics__WEBPACK_IMPORTED_MODULE_1__["PetalumaScriptMetrics"].glyphs,
-          fontFamily: _fonts_petalumaScript_metrics__WEBPACK_IMPORTED_MODULE_1__["PetalumaScriptMetrics"].fontFamily,
-          serifs: false,
-          monospaced: false,
-          italic: false,
-          bold: false,
-          maxSizeGlyph: 'H',
-          superscriptOffset: 0.66,
-          subscriptOffset: 0.66,
-          description: 'Default sans-serif text font to pair with Petaluma engraving font'
-        });
-        TextFont.registryInstance.push({
           name: 'RobotoSlab',
           resolution: _fonts_robotoSlab_metrics__WEBPACK_IMPORTED_MODULE_2__["RobotoSlabMetrics"].resolution,
           glyphs: _fonts_robotoSlab_metrics__WEBPACK_IMPORTED_MODULE_2__["RobotoSlabMetrics"].glyphs,
-          fontFamily: _fonts_robotoSlab_metrics__WEBPACK_IMPORTED_MODULE_2__["RobotoSlabMetrics"].fontFamily,
-          serifs: true,
-          monospaced: false,
-          italic: false,
+          family: _fonts_robotoSlab_metrics__WEBPACK_IMPORTED_MODULE_2__["RobotoSlabMetrics"].fontFamily,
+          hasSerifs: true,
+          isMonospaced: false,
+          isItalic: false,
           bold: false,
           maxSizeGlyph: 'H',
           superscriptOffset: 0.66,
           subscriptOffset: 0.66,
           description: 'Default serif text font to pair with Bravura/Gonville engraving font'
+        });
+        TextFont.registryInstance.push({
+          name: 'PetalumaScript',
+          resolution: _fonts_petalumaScript_metrics__WEBPACK_IMPORTED_MODULE_1__["PetalumaScriptMetrics"].resolution,
+          glyphs: _fonts_petalumaScript_metrics__WEBPACK_IMPORTED_MODULE_1__["PetalumaScriptMetrics"].glyphs,
+          family: _fonts_petalumaScript_metrics__WEBPACK_IMPORTED_MODULE_1__["PetalumaScriptMetrics"].fontFamily,
+          hasSerifs: false,
+          isMonospaced: false,
+          isItalic: false,
+          bold: false,
+          maxSizeGlyph: 'H',
+          superscriptOffset: 0.66,
+          subscriptOffset: 0.66,
+          description: 'Default sans-serif text font to pair with Petaluma engraving font'
         });
       }
 
@@ -31660,7 +31712,9 @@ function () {
   function TextFont(params) {
     _classCallCheck(this, TextFont);
 
-    this.setAttribute('type', 'TextFont');
+    this.attrs = {
+      'type': 'TextFont'
+    };
 
     if (!params.name) {
       _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('BadArgument', 'Font constructor must specify a name');
@@ -31727,16 +31781,6 @@ function () {
     key: "pointsToPixels",
     get: function get() {
       return this.size / 72 / (1 / 96);
-    }
-  }, {
-    key: "superscriptOffset",
-    get: function get() {
-      return this.superscriptOffset * this.pointsToPixels;
-    }
-  }, {
-    key: "subscriptOffset",
-    get: function get() {
-      return this.subscriptOffset * this.pointsToPixels;
     }
   }]);
 
