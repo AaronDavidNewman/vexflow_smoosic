@@ -8658,13 +8658,13 @@ var BravuraMetrics = {
         superSubRatio: 0.66
       },
       csymDiminished: {
-        scale: 1,
+        scale: 0.8,
         leftSideBearing: -32,
         advanceWidth: 506,
         yOffset: 0
       },
       csymHalfDiminished: {
-        scale: 1,
+        scale: 0.8,
         leftSideBearing: -32,
         advanceWidth: 506,
         yOffset: 0
@@ -8701,13 +8701,13 @@ var BravuraMetrics = {
       },
       csymParensLeftVeryTall: {
         scale: 0.9,
-        leftSideBearing: 0,
-        advanceWidth: 101,
+        leftSideBearing: 50,
+        advanceWidth: 121,
         yOffset: 350
       },
       csymParensRightVeryTall: {
         scale: 0.9,
-        leftSideBearing: 50,
+        leftSideBearing: 0,
         advanceWidth: 111,
         yOffset: 350
       },
@@ -8718,14 +8718,14 @@ var BravuraMetrics = {
         yOffset: 0
       },
       csymMinor: {
-        scale: 1,
+        scale: 0.8,
         leftSideBearing: 0,
         advanceWidth: 482,
         yOffset: 0
       },
       csymMajorSeventh: {
-        scale: 1,
-        leftSideBearing: 0,
+        scale: 0.9,
+        leftSideBearing: 200,
         yOffset: 0,
         advanceWidth: 600
       },
@@ -10041,13 +10041,13 @@ var GonvilleMetrics = {
         superSubRatio: 0.66
       },
       csymDiminished: {
-        scale: 1,
+        scale: 0.8,
         leftSideBearing: 0,
         advanceWidth: 506,
         yOffset: 0
       },
       csymHalfDiminished: {
-        scale: 1,
+        scale: 0.8,
         leftSideBearing: -32,
         advanceWidth: 506,
         yOffset: 0
@@ -10085,7 +10085,7 @@ var GonvilleMetrics = {
       csymParensLeftVeryTall: {
         scale: 0.9,
         leftSideBearing: 0,
-        advanceWidth: 101,
+        advanceWidth: 121,
         yOffset: 350
       },
       csymParensRightVeryTall: {
@@ -10101,14 +10101,14 @@ var GonvilleMetrics = {
         yOffset: 0
       },
       csymMinor: {
-        scale: 1,
+        scale: 0.8,
         leftSideBearing: 0,
         advanceWidth: 482,
         yOffset: 0
       },
       csymMajorSeventh: {
-        scale: 1,
-        leftSideBearing: 0,
+        scale: 0.9,
+        leftSideBearing: 200,
         yOffset: 0,
         advanceWidth: 600
       },
@@ -12771,7 +12771,7 @@ var PetalumaMetrics = {
       csymParensLeftVeryTall: {
         scale: 0.95,
         leftSideBearing: 0,
-        advanceWidth: 200,
+        advanceWidth: 210,
         yOffset: 250
       },
       csymParensRightVeryTall: {
@@ -12787,14 +12787,14 @@ var PetalumaMetrics = {
         yOffset: 0
       },
       csymMinor: {
-        scale: 0.8,
+        scale: 0.7,
         leftSideBearing: 0,
         advanceWidth: 482,
         yOffset: 0
       },
       csymMajorSeventh: {
-        scale: 1,
-        leftSideBearing: 0,
+        scale: 0.8,
+        leftSideBearing: 100,
         yOffset: 0,
         advanceWidth: 600
       },
