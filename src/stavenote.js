@@ -81,7 +81,7 @@ export class StaveNote extends StemmableNote {
       let minL = props[props.length - 1].line;
       const stemDirection = notes[i].getStemDirection();
       const stemMax = notes[i].getStemLength() / 10;
-      const stemMin = notes[i].getStemMinumumLength() / 10;
+      const stemMin = notes[i].getStemMinimumLength() / 10;
 
       let maxL;
       if (notes[i].isRest()) {
@@ -327,6 +327,7 @@ export class StaveNote extends StemmableNote {
     // Drawing
     this.note_heads = [];
     this.modifiers = [];
+    this.ledgerLineStyle = {};
 
     Vex.Merge(this.render_options, {
       // font size for note heads and rests
@@ -1009,7 +1010,16 @@ export class StaveNote extends StemmableNote {
       ctx.stroke();
     };
 
-    const style = { ...stave.getStyle() || {}, ...this.getLedgerLineStyle() || {} };
+    const ledger_line_style = this.getLedgerLineStyle();
+    const style = { ...stave.getStyle() || {}, ...ledger_line_style };
+
+    // if lineWidth is not specified in getLedgerLineStyle will use
+    // twice stave.getStyle() lineWidth
+    if (ledger_line_style.lineWidth === undefined && style.lineWidth !== undefined) {
+      style.lineWidth *= Flow.LEDGER_LINE_THICKNESS_MULTIPLIER;
+    } else if (style.lineWidth === undefined) {
+      style.lineWidth = Flow.STAVE_LINE_THICKNESS * Flow.LEDGER_LINE_THICKNESS_MULTIPLIER;
+    }
     this.applyStyle(ctx, style);
 
     // Draw ledger lines below the staff:

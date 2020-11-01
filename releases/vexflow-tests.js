@@ -1,5 +1,5 @@
 /**!
- * VexFlow 3.0.9 built on 2020-08-01.
+ * VexFlow 3.0.9 built on 2020-11-01.
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  *
  * http://www.vexflow.com  http://github.com/0xfe/vexflow
@@ -16320,7 +16320,6 @@ VF.Test.run = function() {
   VF.Test.VibratoBracket.Start();
   VF.Test.Annotation.Start();
   VF.Test.ChordSymbol.Start();
-  VF.Test.JazzTechnique.Start();
   VF.Test.Tuning.Start();
   VF.Test.Music.Start();
   VF.Test.KeyManager.Start();

@@ -24551,7 +24551,7 @@ function (_StemmableNote) {
         var minL = props[props.length - 1].line;
         var stemDirection = notes[i].getStemDirection();
         var stemMax = notes[i].getStemLength() / 10;
-        var stemMin = notes[i].getStemMinumumLength() / 10;
+        var stemMin = notes[i].getStemMinimumLength() / 10;
         var maxL = void 0;
 
         if (notes[i].isRest()) {
@@ -24814,6 +24814,7 @@ function (_StemmableNote) {
 
     _this.note_heads = [];
     _this.modifiers = [];
+    _this.ledgerLineStyle = {};
     _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Merge(_this.render_options, {
       // font size for note heads and rests
       glyph_font_scale: noteStruct.glyph_font_scale || _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].DEFAULT_NOTATION_FONT_SCALE,
@@ -25573,7 +25574,17 @@ function (_StemmableNote) {
         ctx.stroke();
       };
 
-      var style = _objectSpread({}, stave.getStyle() || {}, {}, this.getLedgerLineStyle() || {});
+      var ledger_line_style = this.getLedgerLineStyle();
+
+      var style = _objectSpread({}, stave.getStyle() || {}, {}, ledger_line_style); // if lineWidth is not specified in getLedgerLineStyle will use
+      // twice stave.getStyle() lineWidth
+
+
+      if (ledger_line_style.lineWidth === undefined && style.lineWidth !== undefined) {
+        style.lineWidth *= _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].LEDGER_LINE_THICKNESS_MULTIPLIER;
+      } else if (style.lineWidth === undefined) {
+        style.lineWidth = _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].STAVE_LINE_THICKNESS * _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].LEDGER_LINE_THICKNESS_MULTIPLIER;
+      }
 
       this.applyStyle(ctx, style); // Draw ledger lines below the staff:
 
@@ -26977,9 +26988,10 @@ function (_Element) {
   }, {
     key: "getHeight",
     value: function getHeight() {
-      var y_offset = this.stem_direction === Stem.UP ? this.stem_up_y_offset : this.stem_down_y_offset; // eslint-disable-line max-len
+      var y_offset = this.stem_direction === Stem.UP ? this.stem_up_y_offset : this.stem_down_y_offset;
+      var unsigned_height = this.y_bottom - this.y_top + (Stem.HEIGHT - y_offset + this.stem_extension); // parentheses just for grouping.
 
-      return (this.y_bottom - this.y_top) * this.stem_direction + (Stem.HEIGHT - y_offset + this.stem_extension) * this.stem_direction;
+      return unsigned_height * this.stem_direction;
     }
   }, {
     key: "getBoundingBox",
@@ -27119,7 +27131,7 @@ function (_Note) {
     _this.setAttribute('type', 'StemmableNote');
 
     _this.stem = null;
-    _this.stemExtensionOverride = null;
+    _this.stem_extension_override = null;
     _this.beam = null;
     return _this;
   } // Get and set the note's `Stem`
@@ -27189,8 +27201,8 @@ function (_Note) {
     } // Get the minimum length of stem
 
   }, {
-    key: "getStemMinumumLength",
-    value: function getStemMinumumLength() {
+    key: "getStemMinimumLength",
+    value: function getStemMinimumLength() {
       var frac = _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].durationToFraction(this.duration);
       var length = frac.value() <= 1 ? 0 : 20; // if note is flagged, cannot shorten beam
 
@@ -29044,6 +29056,8 @@ var Flow = {
   STEM_WIDTH: 1.5,
   STEM_HEIGHT: 35,
   STAVE_LINE_THICKNESS: 1,
+  LEDGER_LINE_THICKNESS_MULTIPLIER: 2,
+  // Gould, Behind Bars: "about twice as thick"
   RESOLUTION: 16384,
   DEFAULT_FONT_STACK: _smufl__WEBPACK_IMPORTED_MODULE_3__["DefaultFontStack"],
   DEFAULT_NOTATION_FONT_SCALE: 39,
@@ -31778,6 +31792,24 @@ function () {
   }
 
   _createClass(TextFont, [{
+    key: "measureText",
+    value: function measureText(text) {
+      var bbox = {
+        x: 0,
+        y: 0,
+        width: 0,
+        height: this.maxHeight()
+      };
+      var i = 0;
+
+      for (i = 0; i < text.length; ++i) {
+        var _char = text[i];
+        bbox.width += this.getWidthForCharacter(_char);
+      }
+
+      return bbox;
+    }
+  }, {
     key: "getMetricForCharacter",
     value: function getMetricForCharacter(c) {
       if (this.glyphs[c]) {

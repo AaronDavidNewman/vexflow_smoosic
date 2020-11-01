@@ -16,7 +16,7 @@ export class StemmableNote extends Note {
     this.setAttribute('type', 'StemmableNote');
 
     this.stem = null;
-    this.stemExtensionOverride = null;
+    this.stem_extension_override = null;
     this.beam = null;
   }
 
@@ -70,7 +70,7 @@ export class StemmableNote extends Note {
   }
 
   // Get the minimum length of stem
-  getStemMinumumLength() {
+  getStemMinimumLength() {
     const frac = Flow.durationToFraction(this.duration);
     let length = frac.value() <= 1 ? 0 : 20;
     // if note is flagged, cannot shorten beam

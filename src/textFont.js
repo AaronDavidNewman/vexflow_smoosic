@@ -197,6 +197,22 @@ export class TextFont  {
     }
   }
 
+  measureText(text) {
+    const bbox = {
+      x: 0,
+      y: 0,
+      width: 0,
+      height: this.maxHeight()
+    };
+    let i = 0;
+    for (i = 0; i < text.length; ++i) {
+      const char = text[i];
+      bbox.width += this.getWidthForCharacter(char);
+    }
+
+    return bbox;
+  }
+
   getMetricForCharacter(c) {
     if (this.glyphs[c]) {
       return this.glyphs[c];
