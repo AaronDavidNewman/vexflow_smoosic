@@ -5,6 +5,8 @@ import { GonvilleFont  } from './fonts/gonville_glyphs';
 import { GonvilleMetrics } from './fonts/gonville_metrics';
 import { PetalumaFont  } from './fonts/petaluma_glyphs';
 import { PetalumaMetrics } from './fonts/petaluma_metrics';
+import { LelandFont  } from './fonts/leland_glyphs';
+import { LelandMetrics } from './fonts/leland_metrics';
 import { CustomFont  } from './fonts/custom_glyphs';
 import { CustomMetrics  } from './fonts/custom_metrics';
 
@@ -69,6 +71,7 @@ const Fonts = {
   Bravura: new Font('Bravura', BravuraMetrics, BravuraFont),
   Gonville: new Font('Gonville', GonvilleMetrics, GonvilleFont),
   Petaluma: new Font('Petaluma', PetalumaMetrics, PetalumaFont),
+  Leland: new Font('Leland', LelandMetrics, LelandFont),
   Custom: new Font('Custom', CustomMetrics, CustomFont),
 };
 
