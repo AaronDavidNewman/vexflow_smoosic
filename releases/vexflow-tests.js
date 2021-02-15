@@ -1,5 +1,5 @@
 /**!
- * VexFlow 3.0.9 built on 2021-02-14.
+ * VexFlow 3.0.9 built on 2021-02-15.
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  *
  * http://www.vexflow.com  http://github.com/0xfe/vexflow
@@ -205,7 +205,7 @@ VF.Test = (function () {
 
       const fontStacks = {
         Bravura: [VF.Fonts.Bravura, VF.Fonts.Gonville, VF.Fonts.Custom],
-        Leland: [VF.Fonts.Leland, VF.Fonts.Gonville, VF.Fonts.Custom],
+        Leland: [VF.Fonts.Leland, VF.Fonts.Gonville, VF.Fonts.Bravura, VF.Fonts.Custom],
         Gonville: [VF.Fonts.Gonville, VF.Fonts.Bravura, VF.Fonts.Custom],
         Petaluma: [VF.Fonts.Petaluma, VF.Fonts.Gonville, VF.Fonts.Custom],
       }

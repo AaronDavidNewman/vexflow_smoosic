@@ -20,26 +20,6 @@ export const LelandFont = {
       "advanceWidth": 491,
       "o": "m 697 -399 b 707 -382 703 -395 707 -389 b 706 -374 707 -379 706 -376 b 176 0 704 -370 619 0 l 0 0 l 0 -20 l 0 -150 b 20 -168 0 -161 9 -168 l 249 -168 b 671 -395 524 -168 668 -390 b 687 -402 674 -400 681 -402 b 697 -399 690 -402 694 -400 z"
     },
-    "barlineTick": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "breathMarkTick": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
     "segno": {
       "x_min": 0,
       "x_max": 654,
@@ -270,26 +250,6 @@ export const LelandFont = {
       "advanceWidth": 325,
       "o": "m 454 117 b 307 190 428 164 373 190 b 153 148 258 190 204 176 b 0 -60 58 98 0 13 b 14 -120 0 -81 4 -101 b 161 -192 40 -167 95 -192 b 315 -151 210 -192 264 -179 b 468 58 410 -101 468 -16 b 454 117 468 78 464 98 z"
     },
-    "noteheadXWhole": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "noteheadXHalf": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
     "noteheadXBlack": {
       "x_min": 0,
       "x_max": 325,
@@ -310,46 +270,6 @@ export const LelandFont = {
       "advanceWidth": 325,
       "o": "m 387 -115 l 265 0 l 395 105 b 426 0 415 75 426 39 b 387 -115 426 -43 412 -84 z m 99 -137 l 233 -27 l 360 -145 b 235 -192 327 -174 282 -192 b 99 -137 183 -192 134 -171 z m 81 115 l 202 1 l 73 -105 b 42 0 53 -75 42 -39 b 81 115 42 43 56 84 z m 369 138 l 235 29 l 108 145 b 233 193 141 174 186 193 b 369 138 285 193 334 173 z m 233 235 b 0 0 104 235 0 130 b 233 -233 0 -130 104 -233 b 468 0 363 -233 468 -130 b 233 235 468 130 363 235 z"
     },
-    "noteheadTriangleUpWhole": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "noteheadTriangleUpHalf": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "noteheadTriangleUpBlack": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "noteheadDiamondWhole": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
     "noteheadDiamondHalf": {
       "x_min": 0,
       "x_max": 325,
@@ -369,26 +289,6 @@ export const LelandFont = {
       "leftSideBearing": 0,
       "advanceWidth": 325,
       "o": "m 461 14 l 246 199 b 235 204 243 202 239 204 b 222 199 230 204 225 202 l 7 14 b 0 0 3 12 0 6 b 7 -14 0 -6 3 -12 l 222 -197 b 235 -202 225 -200 230 -202 b 246 -197 239 -202 243 -200 l 461 -14 b 468 0 465 -12 468 -6 b 461 14 468 6 465 12 z"
-    },
-    "noteheadSquareWhite": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "noteheadSquareBlack": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
     },
     "augmentationDot": {
       "x_min": 0,
@@ -640,16 +540,6 @@ export const LelandFont = {
       "advanceWidth": 277,
       "o": "m 396 115 b 279 225 387 173 354 225 b 158 171 204 225 164 179 l 161 348 l 336 452 l 336 516 l 161 413 l 164 634 b 144 654 164 645 156 654 l 127 654 b 107 634 115 654 107 645 l 109 382 l 0 318 l 0 255 l 109 318 l 114 -235 b 134 -253 114 -246 122 -253 b 145 -251 138 -253 143 -252 b 323 -114 145 -251 242 -204 b 399 79 377 -52 399 20 b 396 115 399 92 397 104 z m 297 58 b 255 -85 297 36 291 -30 b 156 -184 230 -122 183 -163 l 158 96 b 240 153 161 109 181 153 b 297 73 292 153 297 104 z"
     },
-    "accidentalKomaSharp": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
     "accidentalKucukMucennebSharp": {
       "x_min": 0,
       "x_max": 348,
@@ -659,26 +549,6 @@ export const LelandFont = {
       "leftSideBearing": 0,
       "advanceWidth": 348,
       "o": "m 494 121 b 482 125 491 124 487 125 b 478 124 481 125 480 124 l 269 68 l 269 127 l 412 164 b 425 181 420 167 425 173 l 425 266 b 418 282 425 272 422 279 b 406 285 415 285 410 285 l 402 285 l 269 249 l 269 458 l 232 458 l 232 239 l 89 200 b 76 181 81 197 76 190 l 76 98 b 84 84 76 92 79 86 b 95 79 86 81 91 79 b 99 81 96 79 98 81 l 232 115 l 232 58 l 14 -3 b 0 -20 6 -6 0 -12 l 0 -104 b 7 -118 0 -109 3 -115 b 19 -122 10 -121 14 -122 l 23 -122 l 232 -66 l 232 -124 l 89 -163 b 76 -180 81 -166 76 -171 l 76 -264 b 84 -279 76 -269 79 -276 b 95 -282 86 -282 91 -282 l 99 -282 l 232 -246 l 232 -455 l 269 -455 l 269 -236 l 412 -199 b 425 -180 420 -196 425 -189 l 425 -95 b 418 -81 425 -89 422 -84 b 406 -76 415 -78 410 -76 b 402 -78 405 -76 403 -78 l 269 -114 l 269 -55 l 487 4 b 501 22 495 7 501 13 l 501 107 b 494 121 501 112 498 118 z"
-    },
-    "accidentalKoron": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "accidentalSori": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
     },
     "articAccentAbove": {
       "x_min": 0,
@@ -799,26 +669,6 @@ export const LelandFont = {
       "leftSideBearing": 0,
       "advanceWidth": 622,
       "o": "m 778 -374 b 896 -65 848 -298 896 -143 b 876 -19 896 -36 890 -19 b 734 -265 835 -19 855 -143 b 451 -373 628 -372 485 -373 l 448 -373 l 445 -373 b 161 -265 410 -373 268 -372 b 20 -19 40 -143 60 -19 b 0 -65 6 -19 0 -37 b 120 -374 0 -143 49 -297 b 448 -530 255 -521 373 -530 b 778 -374 523 -530 642 -521 z m 348 -99 b 448 -199 348 -154 393 -199 b 547 -99 503 -199 547 -154 b 448 0 547 -45 503 0 b 348 -99 393 0 348 -45 z"
-    },
-    "breathMarkComma": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "breathMarkUpbow": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
     },
     "caesura": {
       "x_min": 0,
@@ -1100,26 +950,6 @@ export const LelandFont = {
       "advanceWidth": 662,
       "o": "m 904 575 b 887 585 901 580 893 585 b 877 582 884 585 880 583 b 867 564 871 579 867 570 b 870 554 867 562 868 557 b 850 213 932 448 926 340 l 822 167 l 714 348 b 697 357 711 354 703 357 b 680 348 691 357 683 354 l 575 168 l 462 348 b 445 357 459 354 451 357 b 428 348 439 357 431 354 l 315 167 l 203 348 b 186 357 200 354 192 357 b 168 348 180 357 171 354 l 0 76 l 35 55 l 120 192 l 233 10 b 249 0 238 4 240 0 b 266 10 255 0 264 4 l 294 55 l 379 192 l 492 9 b 498 3 494 6 495 4 b 508 0 501 1 505 0 b 526 10 514 0 523 4 l 631 186 l 737 13 b 746 3 739 10 743 4 b 756 0 749 1 753 0 b 773 9 762 0 770 3 l 884 193 b 904 575 969 333 975 454 z"
     },
-    "ornamentPrecompDoubleCadenceUpperPrefix": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "ornamentPrecompDoubleCadenceUpperPrefixTurn": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
     "ornamentPrecompTrillLowerSuffix": {
       "x_min": 0,
       "x_max": 721.4072261045861,
@@ -1180,16 +1010,6 @@ export const LelandFont = {
       "advanceWidth": 269,
       "o": "m 214 175 b 387 367 311 184 387 267 b 194 560 387 473 301 560 b 0 367 87 560 0 473 b 174 175 0 267 76 184 l 174 20 b 194 0 174 9 183 0 b 214 20 205 0 214 9 z m 194 520 b 347 367 278 520 347 452 b 214 215 347 289 289 224 l 214 367 b 194 387 214 378 205 387 b 174 367 183 387 174 378 l 174 215 b 40 367 98 224 40 289 b 194 520 40 452 109 520 z"
     },
-    "pluckedLeftHandPizzicato": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
     "keyboardPedalPed": {
       "x_min": 0,
       "x_max": 981,
@@ -1210,16 +1030,6 @@ export const LelandFont = {
       "advanceWidth": 473,
       "o": "m 99 99 b 164 69 120 79 143 69 b 199 82 177 69 190 73 b 210 114 206 89 210 102 b 206 137 210 122 209 130 b 200 160 203 145 200 154 b 210 179 200 166 203 171 l 245 215 b 285 213 255 225 272 219 l 287 213 l 288 212 b 318 183 301 206 318 196 l 318 134 b 291 102 318 112 308 112 b 258 58 274 92 258 76 b 340 0 258 26 294 0 b 423 58 386 0 423 26 b 390 102 423 76 408 92 b 361 134 373 112 361 112 l 361 183 b 392 212 361 196 379 206 b 395 213 393 212 393 213 b 436 215 408 219 426 225 l 471 179 b 480 161 478 171 480 167 b 474 137 480 154 477 147 b 471 115 472 130 471 122 b 482 82 471 102 474 91 b 517 69 491 73 504 69 b 582 99 539 69 562 79 b 612 164 602 120 612 143 b 599 199 612 177 608 190 b 567 210 592 206 579 210 b 544 206 559 210 552 209 b 521 200 536 203 528 200 b 501 210 514 200 508 203 l 467 245 b 468 285 456 255 462 272 l 468 287 b 469 288 468 287 469 287 b 498 318 475 301 485 318 l 547 318 b 579 291 569 318 569 308 b 624 258 589 274 605 258 b 681 340 655 258 681 294 b 624 423 681 386 655 423 b 579 390 605 423 589 408 b 547 361 569 373 569 361 l 498 361 b 469 392 485 361 475 379 b 468 395 469 393 468 393 b 467 436 462 408 456 426 l 501 471 b 520 480 508 478 514 480 b 544 474 527 480 534 477 b 566 471 552 472 559 471 b 599 482 579 471 590 474 b 612 516 608 491 612 503 b 582 580 612 536 602 560 b 516 612 562 600 537 612 b 482 599 503 612 491 608 b 471 566 474 590 471 579 b 474 544 471 559 472 552 b 480 520 477 534 480 527 b 471 501 480 514 478 508 l 436 467 b 395 468 426 456 408 462 b 392 469 393 468 393 469 b 361 498 379 475 361 485 l 361 547 b 390 579 361 569 373 569 b 423 624 408 589 423 605 b 340 681 423 655 386 681 b 258 624 294 681 258 655 b 291 579 258 605 274 589 b 318 547 308 569 318 569 l 318 498 b 288 469 318 485 301 475 l 287 468 l 285 468 b 245 467 272 462 255 456 l 210 501 b 200 521 203 508 200 514 b 206 544 200 528 203 536 b 210 567 209 552 210 559 b 199 599 210 579 206 592 b 164 612 190 608 177 612 b 99 582 143 612 120 602 b 69 517 79 562 69 539 b 82 482 69 504 73 491 b 115 471 91 474 102 471 b 137 474 122 471 130 472 b 161 480 147 477 154 480 b 180 471 167 480 173 478 l 215 436 b 213 395 225 426 219 408 b 212 392 213 393 212 393 b 183 361 206 379 196 361 l 134 361 b 102 390 112 361 112 373 b 58 423 92 408 76 423 b 0 340 26 423 0 386 b 58 258 0 294 26 258 b 102 291 76 258 92 274 b 134 318 112 308 112 318 l 183 318 b 212 288 196 318 206 301 b 213 287 212 287 213 288 l 213 285 b 215 245 219 272 225 255 l 179 210 b 160 200 171 203 166 200 b 137 206 154 200 145 203 b 114 210 130 209 122 210 b 82 199 102 210 89 206 b 69 164 73 190 69 177 b 99 99 69 143 79 120 z m 276 276 b 249 340 262 291 249 320 b 340 432 249 390 289 432 b 432 340 390 432 432 390 b 405 276 432 320 419 291 b 340 249 390 262 360 249 b 276 276 320 249 291 262 z"
     },
-    "pictChokeCymbal": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
     "wiggleArpeggiatoUp": {
       "x_min": -22,
       "x_max": 242,
@@ -1230,266 +1040,6 @@ export const LelandFont = {
       "advanceWidth": 220,
       "o": "m 343 122 b 323 143 343 122 334 132 b 308 148 318 147 312 148 b 298 144 304 148 301 147 l 282 128 b 274 124 279 125 276 124 b 265 128 268 124 265 128 b 158 220 265 128 173 207 b 112 236 143 232 127 236 b 43 206 82 236 55 219 l -26 137 b -32 125 -30 132 -32 130 b -26 112 -32 118 -26 112 b -6 92 -26 112 -17 102 b 7 86 -1 88 3 86 b 17 91 12 86 14 88 l 33 107 b 42 111 36 109 39 111 b 52 107 48 111 52 107 b 158 16 52 107 144 29 b 204 0 174 4 190 0 b 274 30 235 0 262 17 l 343 99 b 348 111 347 104 348 108 b 343 122 348 118 343 122 z"
     },
-    "arrowheadBlackUp": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "arrowheadBlackDown": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "arpeggiatoUp": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "arpeggiatoDown": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "repeat1Bar": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "repeat2Bars": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "repeat4Bars": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "repeatBarSlash": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "csymDiminished": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "csymHalfDiminished": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "csymAugmented": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "csymMajorSeventh": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "csymMinor": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "csymParensLeftTall": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "csymParensRightTall": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "csymBracketLeftTall": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "csymBracketRightTall": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "csymParensLeftVeryTall": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "csymParensRightVeryTall": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "csymDiagonalArrangementSlash": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "brassScoop": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "brassDoitMedium": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "brassFallLipShort": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "brassLiftMedium": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "brassFallRoughMedium": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "brassBend": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
     "brassMuteClosed": {
       "x_min": 0,
       "x_max": 312,
@@ -1499,49 +1049,9 @@ export const LelandFont = {
       "leftSideBearing": 0,
       "advanceWidth": 312,
       "o": "m 22 256 b 0 225 7 256 0 240 b 22 193 0 209 7 193 l 193 193 l 193 22 b 225 0 193 7 209 0 b 256 22 240 0 256 7 l 256 193 l 428 193 b 449 225 442 193 449 209 b 428 256 449 240 442 256 l 256 256 l 256 428 b 225 449 256 442 240 449 b 193 428 209 449 193 442 l 193 256 z"
-    },
-    "brassMuteOpen": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "brassFlip": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "brassJazzTurn": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
-    },
-    "brassSmear": {
-      "x_min": 50,
-      "x_max": 450,
-      "y_min": 0,
-      "y_max": 533,
-      "ha": 533,
-      "leftSideBearing": 0,
-      "advanceWidth": 500,
-      "o": "m 72 0 l 648 0 l 648 768 l 72 768 z m 144 72 l 144 696 l 576 696 l 576 72 z"
     }
   },
   "fontFamily": "Leland",
   "resolution": 1000,
-  "generatedOn": "2021-02-14T19:01:37.241Z"
+  "generatedOn": "2021-02-15T19:00:18.664Z"
 };

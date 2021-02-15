@@ -200,7 +200,7 @@ VF.Test = (function () {
 
       const fontStacks = {
         Bravura: [VF.Fonts.Bravura, VF.Fonts.Gonville, VF.Fonts.Custom],
-        Leland: [VF.Fonts.Leland, VF.Fonts.Gonville, VF.Fonts.Custom],
+        Leland: [VF.Fonts.Leland, VF.Fonts.Gonville, VF.Fonts.Bravura, VF.Fonts.Custom],
         Gonville: [VF.Fonts.Gonville, VF.Fonts.Bravura, VF.Fonts.Custom],
         Petaluma: [VF.Fonts.Petaluma, VF.Fonts.Gonville, VF.Fonts.Custom],
       }
