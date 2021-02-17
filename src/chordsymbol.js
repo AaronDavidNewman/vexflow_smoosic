@@ -11,7 +11,7 @@
 import { Vex } from './vex';
 import { Flow } from './tables';
 import { Glyph } from './glyph';
-import { TextFont } from './textFont';
+import { TextFont } from './textfont';
 import { Modifier } from './modifier';
 
 // To enable logging for this class. Set `Vex.Flow.ChordSymbol.DEBUG` to `true`.
@@ -38,7 +38,6 @@ export class ChordSymbol extends Modifier {
       centerStem: ChordSymbol.horizontalJustify.CENTER_STEM,
     };
   }
-
 
   static get verticalJustify() {
     return {
@@ -437,7 +436,6 @@ export class ChordSymbol extends Modifier {
     const kernConst = ChordSymbol.kerningOffset * this.pointsToPixels;
     const prevSymbol = j > 0 ? this.symbolBlocks[j - 1] : null;
     let rv = 0;
-
 
     // Move things into the '/' over bar
     if (symbol.symbolType === ChordSymbol.symbolTypes.GLYPH &&

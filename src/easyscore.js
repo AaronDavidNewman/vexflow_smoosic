@@ -9,6 +9,7 @@ import { Vex } from './vex';
 import { StaveNote } from './stavenote';
 import { Parser } from './parser';
 import { Articulation } from './articulation';
+import { FretHandFinger } from './frethandfinger';
 
 // To enable logging for this class. Set `Vex.Flow.EasyScore.DEBUG` to `true`.
 function L(...args) { if (EasyScore.DEBUG) Vex.L('Vex.Flow.EasyScore', args); }
@@ -84,7 +85,7 @@ class Grammar {
     return {
       expect: [this.DOT],
       zeroOrMore: true,
-      run: (state) => this.builder.setNoteDots(state.matches[0]),
+      run: (state) => this.builder.setNoteDots(state.matches),
     };
   }
   TYPE() {
@@ -279,7 +280,6 @@ function setId({ id }, note) {
   note.setAttribute('id', id);
 }
 
-
 function setClass(options, note) {
   if (!options.class) return;
 
@@ -313,6 +313,7 @@ export class EasyScore {
         setId,
         setClass,
         Articulation.easyScoreHook,
+        FretHandFinger.easyScoreHook,
       ],
       throwOnError: false, ...options
     };

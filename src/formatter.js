@@ -386,7 +386,9 @@ export class Formatter {
       .map(tick => {
         const context = contextMap[tick];
         context.preFormat();
-        return context.getWidth();
+        const width =  context.getWidth();
+        const metrics = context.getMetrics();
+        return width + metrics.totalLeftPx;
       })
       .reduce((a, b) => a + b, 0);
 
@@ -487,7 +489,6 @@ export class Formatter {
 
     // No justification needed. End formatting.
     if (justifyWidth <= 0) return this.evaluate();
-
 
     // Start justification. Subtract the right extra pixels of the final context because the formatter
     // justifies based on the context's X position, which is the left-most part of the note head.
