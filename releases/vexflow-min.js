@@ -1321,7 +1321,8 @@ function (_Modifier) {
       if (!articulations) return;
       var articNameToCode = {
         staccato: 'a.',
-        tenuto: 'a-'
+        tenuto: 'a-',
+        accent: 'a>'
       };
       articulations.split(',').map(function (articString) {
         return articString.trim().split('.');
@@ -1811,7 +1812,9 @@ function (_Element) {
       }
 
       function createGroups() {
-        var nextGroup = [];
+        var nextGroup = []; // number of ticks in current group
+
+        var currentGroupTotalTicks = new _fraction__WEBPACK_IMPORTED_MODULE_3__["Fraction"](0, 1);
         unprocessedNotes.forEach(function (unprocessedNote) {
           nextGroup = [];
 
@@ -1823,7 +1826,7 @@ function (_Element) {
 
           currentGroup.push(unprocessedNote);
           var ticksPerGroup = tickGroups[currentTickGroup].clone();
-          var totalTicks = getTotalTicks(currentGroup); // Double the amount of ticks in a group, if it's an unbeamable tuplet
+          var totalTicks = getTotalTicks(currentGroup).add(currentGroupTotalTicks); // Double the amount of ticks in a group, if it's an unbeamable tuplet
 
           var unbeamable = _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].durationToNumber(unprocessedNote.duration) < 8;
 
@@ -1839,15 +1842,24 @@ function (_Element) {
               nextGroup.push(currentGroup.pop());
             }
 
-            noteGroups.push(currentGroup);
+            noteGroups.push(currentGroup); // We have overflown, so we're going to next tick group. As we might have
+            // overflown by more than 1 group, we need to go forward as many times as
+            // needed, decreasing currentGroupTotalTicks by as many ticks as there are
+            // in current groups as we go forward.
+
+            do {
+              currentGroupTotalTicks = totalTicks.subtract(tickGroups[currentTickGroup]);
+              nextTickGroup();
+            } while (currentGroupTotalTicks.greaterThanEquals(tickGroups[currentTickGroup]));
+
             currentGroup = nextGroup;
-            nextTickGroup();
           } else if (totalTicks.equals(ticksPerGroup)) {
             noteGroups.push(currentGroup);
+            currentGroupTotalTicks = new _fraction__WEBPACK_IMPORTED_MODULE_3__["Fraction"](0, 1);
             currentGroup = nextGroup;
             nextTickGroup();
           }
-        }); // Adds any remainder notes
+        }); // Adds any remainder notes beam
 
         if (currentGroup.length > 0) {
           noteGroups.push(currentGroup);
@@ -3458,7 +3470,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _vex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vex */ "./src/vex.js");
 /* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tables */ "./src/tables.js");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./glyph */ "./src/glyph.js");
-/* harmony import */ var _textFont__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./textFont */ "./src/textFont.js");
+/* harmony import */ var _textfont__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./textfont */ "./src/textfont.js");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modifier */ "./src/modifier.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -3900,7 +3912,7 @@ function (_Modifier) {
       size: 12,
       weight: ''
     };
-    _this.textFont = _textFont__WEBPACK_IMPORTED_MODULE_3__["TextFont"].getTextFontFromVexFontData(_this.font);
+    _this.textFont = _textfont__WEBPACK_IMPORTED_MODULE_3__["TextFont"].getTextFontFromVexFontData(_this.font);
     return _this;
   } // ### pointsToPixels
   // The font size is specified in points, convert to 'pixels' in the svg space
@@ -4181,7 +4193,7 @@ function (_Modifier) {
         size: size,
         weight: weight
       };
-      this.textFont = _textFont__WEBPACK_IMPORTED_MODULE_3__["TextFont"].getTextFontFromVexFontData(this.font);
+      this.textFont = _textfont__WEBPACK_IMPORTED_MODULE_3__["TextFont"].getTextFontFromVexFontData(this.font);
       return this;
     }
   }, {
@@ -5382,6 +5394,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.js");
 /* harmony import */ var _parser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./parser */ "./src/parser.js");
 /* harmony import */ var _articulation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./articulation */ "./src/articulation.js");
+/* harmony import */ var _frethandfinger__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -5412,6 +5425,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 // VexFlow objects.
 
 /* eslint max-classes-per-file: "off" */
+
 
 
 
@@ -5539,7 +5553,7 @@ function () {
         expect: [this.DOT],
         zeroOrMore: true,
         run: function run(state) {
-          return _this4.builder.setNoteDots(state.matches[0]);
+          return _this4.builder.setNoteDots(state.matches);
         }
       };
     }
@@ -5956,7 +5970,7 @@ function () {
       this.options = _objectSpread({
         factory: null,
         builder: null,
-        commitHooks: [setId, setClass, _articulation__WEBPACK_IMPORTED_MODULE_3__["Articulation"].easyScoreHook],
+        commitHooks: [setId, setClass, _articulation__WEBPACK_IMPORTED_MODULE_3__["Articulation"].easyScoreHook, _frethandfinger__WEBPACK_IMPORTED_MODULE_4__["FretHandFinger"].easyScoreHook],
         throwOnError: false
       }, options);
       this.factory = this.options.factory;
@@ -6329,7 +6343,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tabnote__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./tabnote */ "./src/tabnote.js");
 /* harmony import */ var _tabstave__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./tabstave */ "./src/tabstave.js");
 /* harmony import */ var _textnote__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./textnote */ "./src/textnote.js");
-/* harmony import */ var _textFont__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./textFont */ "./src/textFont.js");
+/* harmony import */ var _textfont__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./textfont */ "./src/textfont.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -6997,7 +7011,7 @@ function () {
     value: function TextFont() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       params.factory = this;
-      var textFont = new _textFont__WEBPACK_IMPORTED_MODULE_40__["TextFont"](params);
+      var textFont = new _textfont__WEBPACK_IMPORTED_MODULE_40__["TextFont"](params);
       return textFont;
     }
   }, {
@@ -8307,11 +8321,1931 @@ var BravuraFont = {
       "leftSideBearing": 1,
       "advanceWidth": 307,
       "o": "m 7 107 b 36 122 13 107 22 112 b 92 151 55 137 65 151 b 183 89 125 151 161 112 b 189 84 184 88 187 86 l 193 79 b 308 0 219 50 264 0 b 439 117 396 0 438 102 b 441 128 439 121 441 124 b 433 141 441 135 439 141 b 416 130 429 141 423 137 b 343 94 390 107 370 94 b 269 153 315 94 294 121 l 265 158 b 144 245 239 190 180 245 b 6 134 62 245 10 143 b 1 114 3 125 1 118 b 7 107 1 108 4 107 z"
+    },
+    "accSagittal5v7KleismaUp": {
+      "x_min": 0,
+      "x_max": 156,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -517 l 45 -517 l 45 -35 b 135 -112 68 -86 99 -112 b 225 68 194 -112 225 -53 l 180 68 b 144 -4 180 20 168 -4 b 122 0 138 -4 131 -3 b 23 248 86 14 52 96 l 0 248 z"
+    },
+    "accSagittal5v7KleismaDown": {
+      "x_min": 0,
+      "x_max": 156,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 517 l 45 517 l 45 35 b 135 112 68 86 99 112 b 225 -68 194 112 225 53 l 180 -68 b 144 4 180 -20 168 4 b 122 0 138 4 131 3 b 23 -248 86 -14 52 -96 l 0 -248 z"
+    },
+    "accSagittal5CommaUp": {
+      "x_min": 0,
+      "x_max": 156,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 225 -517 l 225 248 l 203 248 l 0 -112 l 0 -284 l 180 33 l 180 -517 z"
+    },
+    "accSagittal5CommaDown": {
+      "x_min": 0,
+      "x_max": 156,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 225 517 l 225 -248 l 203 -248 l 0 112 l 0 284 l 180 -33 l 180 517 z"
+    },
+    "accSagittal7CommaUp": {
+      "x_min": 0,
+      "x_max": 156,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 248 l 0 -517 l 45 -517 l 45 112 l 89 112 b 180 -68 150 112 180 53 l 180 -248 l 225 -248 l 225 68 b 135 248 225 187 194 248 z"
+    },
+    "accSagittal7CommaDown": {
+      "x_min": 0,
+      "x_max": 156,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 -248 l 0 517 l 45 517 l 45 -112 l 89 -112 b 180 68 150 -112 180 -53 l 180 248 l 225 248 l 225 -68 b 135 -248 225 -187 194 -248 z"
+    },
+    "accSagittal25SmallDiesisUp": {
+      "x_min": 0,
+      "x_max": 250,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -157 l 0 -259 l 315 -89 l 315 -517 l 360 -517 l 360 248 l 337 248 l 0 68 l 0 -33 l 315 135 l 315 10 z"
+    },
+    "accSagittal25SmallDiesisDown": {
+      "x_min": 0,
+      "x_max": 250,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 157 l 0 259 l 315 89 l 315 517 l 360 517 l 360 -248 l 337 -248 l 0 -68 l 0 33 l 315 -135 l 315 -10 z"
+    },
+    "accSagittal35MediumDiesisUp": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -284 l 180 33 l 180 -517 l 225 -517 l 225 112 l 271 112 b 360 -68 330 112 360 53 l 360 -248 l 405 -248 l 405 68 b 315 248 405 187 374 248 l 203 248 l 0 -112 z"
+    },
+    "accSagittal35MediumDiesisDown": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 284 l 180 -33 l 180 517 l 225 517 l 225 -112 l 271 -112 b 360 68 330 -112 360 -53 l 360 248 l 405 248 l 405 -68 b 315 -248 405 -187 374 -248 l 203 -248 l 0 112 z"
+    },
+    "accSagittal11MediumDiesisUp": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 225 53 l 225 -517 l 271 -517 l 271 53 l 495 -248 l 495 -89 l 248 248 l 0 -89 l 0 -248 z"
+    },
+    "accSagittal11MediumDiesisDown": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 225 -53 l 225 517 l 271 517 l 271 -53 l 495 248 l 495 89 l 248 -248 l 0 89 l 0 248 z"
+    },
+    "accSagittal11LargeDiesisUp": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 68 l 0 -248 l 45 -248 l 45 -68 b 180 112 45 53 89 112 l 225 112 l 225 -517 l 271 -517 l 271 112 l 315 112 b 449 -68 405 112 449 53 l 449 -248 l 495 -248 l 495 68 b 360 248 495 187 449 248 l 135 248 b 0 68 45 248 0 187 z"
+    },
+    "accSagittal11LargeDiesisDown": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 -68 l 0 248 l 45 248 l 45 68 b 180 -112 45 -53 89 -112 l 225 -112 l 225 517 l 271 517 l 271 -112 l 315 -112 b 449 68 405 -112 449 -53 l 449 248 l 495 248 l 495 -68 b 360 -248 495 -187 449 -248 l 135 -248 b 0 -68 45 -248 0 -187 z"
+    },
+    "accSagittal35LargeDiesisUp": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -248 l 45 -248 l 45 -68 b 180 112 45 53 89 112 l 225 112 l 225 -517 l 271 -517 l 271 58 l 540 -274 l 540 -112 l 248 248 l 135 248 b 0 68 45 248 0 187 z"
+    },
+    "accSagittal35LargeDiesisDown": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 248 l 45 248 l 45 68 b 180 -112 45 -53 89 -112 l 225 -112 l 225 517 l 271 517 l 271 -58 l 540 274 l 540 112 l 248 -248 l 135 -248 b 0 -68 45 -248 0 -187 z"
+    },
+    "accSagittalSharp25SDown": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 68 b 112 -112 0 -53 36 -112 l 135 -112 l 135 -517 l 180 -517 l 180 -89 b 248 26 206 -65 229 -27 b 315 -89 264 -27 287 -65 l 315 -517 l 360 -517 l 360 -112 l 383 -112 b 495 68 458 -112 495 -53 l 449 68 b 399 -4 449 20 433 -4 b 248 248 297 -4 261 171 b 122 0 216 96 176 14 b 94 -4 112 -3 102 -4 b 45 68 60 -4 45 20 z"
+    },
+    "accSagittalFlat25SUp": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 -68 b 112 112 0 53 36 112 l 135 112 l 135 517 l 180 517 l 180 89 b 248 -26 206 65 229 27 b 315 89 264 27 287 65 l 315 517 l 360 517 l 360 112 l 383 112 b 495 -68 458 112 495 53 l 449 -68 b 399 4 449 -20 433 4 b 248 -248 297 4 261 -171 b 122 0 216 -96 176 -14 b 94 4 112 3 102 4 b 45 -68 60 4 45 -20 z"
+    },
+    "accSagittalSharp7CDown": {
+      "x_min": 0,
+      "x_max": 250,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -517 l 45 -517 l 45 112 l 89 112 b 180 104 124 112 154 109 l 180 -517 l 225 -517 l 225 89 b 315 -68 285 60 315 9 l 315 -248 l 360 -248 l 360 68 b 135 248 360 187 285 248 l 0 248 z"
+    },
+    "accSagittalFlat7CUp": {
+      "x_min": 0,
+      "x_max": 250,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 517 l 45 517 l 45 -112 l 89 -112 b 180 -104 124 -112 154 -109 l 180 517 l 225 517 l 225 -89 b 315 68 285 -60 315 -9 l 315 248 l 360 248 l 360 -68 b 135 -248 360 -187 285 -248 l 0 -248 z"
+    },
+    "accSagittalSharp5CDown": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -517 l 45 71 l 180 -56 l 180 -517 l 225 -517 l 225 -98 l 405 -268 l 405 -112 l 23 248 l 0 248 l 0 -517 z"
+    },
+    "accSagittalFlat5CUp": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 45 517 l 45 -71 l 180 56 l 180 517 l 225 517 l 225 98 l 405 268 l 405 112 l 23 -248 l 0 -248 l 0 517 z"
+    },
+    "accSagittalSharp5v7kDown": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -112 l 0 -276 l 135 -82 l 135 -517 l 180 -517 l 180 -17 l 271 112 l 315 112 l 315 -517 l 360 -517 l 360 107 b 449 -68 420 89 449 30 l 449 -248 l 495 -248 l 495 68 b 360 248 495 189 449 248 l 248 248 z"
+    },
+    "accSagittalFlat5v7kUp": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 112 l 0 276 l 135 82 l 135 517 l 180 517 l 180 17 l 271 -112 l 315 -112 l 315 517 l 360 517 l 360 -107 b 449 68 420 -89 449 -30 l 449 248 l 495 248 l 495 -68 b 360 -248 495 -189 449 -248 l 248 -248 z"
+    },
+    "accSagittalSharp": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 180 -53 l 180 -517 l 225 -517 l 225 0 l 292 85 l 360 0 l 360 -517 l 405 -517 l 405 -53 l 585 -274 l 585 -112 l 292 248 l 0 -112 l 0 -274 z"
+    },
+    "accSagittalFlat": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 180 53 l 180 517 l 225 517 l 225 0 l 292 -85 l 360 0 l 360 517 l 405 517 l 405 53 l 585 274 l 585 112 l 292 -248 l 0 112 l 0 274 z"
+    },
+    "accSagittalSharp5v7kUp": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -361,
+      "y_max": 172,
+      "ha": 533,
+      "o": "m 45 -517 l 45 -10 b 135 -92 68 -48 98 -75 l 135 -520 l 180 -520 l 180 -108 b 248 -115 203 -112 225 -115 b 271 -112 256 -115 264 -115 l 271 -517 l 315 -517 l 315 -107 b 449 68 405 -89 449 -30 l 405 68 b 297 -4 405 19 369 -4 b 23 248 131 -4 56 85 l 0 248 l 0 -517 z"
+    },
+    "accSagittalFlat5v7kDown": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -172,
+      "y_max": 361,
+      "ha": 533,
+      "o": "m 45 517 l 45 10 b 135 92 68 48 98 75 l 135 520 l 180 520 l 180 108 b 248 115 203 112 225 115 b 271 112 256 115 264 115 l 271 517 l 315 517 l 315 107 b 449 -68 405 89 449 30 l 405 -68 b 297 4 405 -19 369 4 b 23 -248 131 4 56 -85 l 0 -248 l 0 517 z"
+    },
+    "accSagittalSharp5CUp": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -266 l 135 -153 l 135 -517 l 180 -517 l 180 -115 l 271 -39 l 271 -517 l 315 -517 l 315 0 l 405 75 l 405 -517 l 449 -517 l 449 248 l 428 248 l 0 -112 z"
+    },
+    "accSagittalFlat5CDown": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 266 l 135 153 l 135 517 l 180 517 l 180 115 l 271 39 l 271 517 l 315 517 l 315 0 l 405 -75 l 405 517 l 449 517 l 449 -248 l 428 -248 l 0 112 z"
+    },
+    "accSagittalSharp7CUp": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -517 l 45 -517 l 45 112 l 135 112 l 135 -517 l 180 -517 l 180 108 b 271 89 213 105 243 99 l 271 -517 l 315 -517 l 315 73 b 405 -68 374 45 405 -3 l 405 -248 l 449 -248 l 449 68 b 135 248 449 187 346 248 l 0 248 z"
+    },
+    "accSagittalFlat7CDown": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 517 l 45 517 l 45 -112 l 135 -112 l 135 517 l 180 517 l 180 -108 b 271 -89 213 -105 243 -99 l 271 517 l 315 517 l 315 -73 b 405 68 374 -45 405 3 l 405 248 l 449 248 l 449 -68 b 135 -248 449 -187 346 -248 l 0 -248 z"
+    },
+    "accSagittalSharp25SUp": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -30 l 495 143 l 495 14 l 0 -157 l 0 -255 l 225 -177 l 225 -517 l 271 -517 l 271 -161 l 360 -130 l 360 -517 l 405 -517 l 405 -115 l 495 -84 l 495 -517 l 540 -517 l 540 248 l 517 248 l 0 68 z"
+    },
+    "accSagittalFlat25SDown": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 30 l 495 -143 l 495 -14 l 0 157 l 0 255 l 225 177 l 225 517 l 271 517 l 271 161 l 360 130 l 360 517 l 405 517 l 405 115 l 495 84 l 495 517 l 540 517 l 540 -248 l 517 -248 l 0 -68 z"
+    },
+    "accSagittalSharp35MUp": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -112 l 0 -274 l 135 -108 l 135 -517 l 180 -517 l 180 -53 l 271 58 l 271 -517 l 315 -517 l 315 112 l 360 112 b 405 109 376 112 390 112 l 405 -517 l 449 -517 l 449 96 b 540 -68 510 72 540 17 l 540 -248 l 585 -248 l 585 68 b 405 248 585 187 526 248 l 292 248 z"
+    },
+    "accSagittalFlat35MDown": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 112 l 0 274 l 135 108 l 135 517 l 180 517 l 180 53 l 271 -58 l 271 517 l 315 517 l 315 -112 l 360 -112 b 405 -109 376 -112 390 -112 l 405 517 l 449 517 l 449 -96 b 540 68 510 -72 540 -17 l 540 248 l 585 248 l 585 -68 b 405 -248 585 -187 526 -248 l 292 -248 z"
+    },
+    "accSagittalSharp11MUp": {
+      "x_min": 0,
+      "x_max": 469,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -112 l 0 -271 l 180 -79 l 180 -517 l 225 -517 l 225 -30 l 315 65 l 315 -517 l 360 -517 l 360 65 l 449 -30 l 449 -517 l 495 -517 l 495 -79 l 675 -271 l 675 -112 l 337 248 z"
+    },
+    "accSagittalFlat11MDown": {
+      "x_min": 0,
+      "x_max": 469,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 112 l 0 271 l 180 79 l 180 517 l 225 517 l 225 30 l 315 -65 l 315 517 l 360 517 l 360 -65 l 449 30 l 449 517 l 495 517 l 495 79 l 675 271 l 675 112 l 337 -248 z"
+    },
+    "accSagittalSharp11LUp": {
+      "x_min": 0,
+      "x_max": 469,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 68 l 0 -248 l 45 -248 l 45 -68 b 180 104 45 26 89 82 l 180 -517 l 225 -517 l 225 112 l 271 112 l 315 112 l 315 -517 l 360 -517 l 360 112 l 405 112 l 449 112 l 449 -517 l 495 -517 l 495 104 b 631 -68 585 82 631 26 l 631 -248 l 675 -248 l 675 68 b 449 248 675 187 600 248 l 225 248 b 0 68 75 248 0 187 z"
+    },
+    "accSagittalFlat11LDown": {
+      "x_min": 0,
+      "x_max": 469,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 -68 l 0 248 l 45 248 l 45 68 b 180 -104 45 -26 89 -82 l 180 517 l 225 517 l 225 -112 l 271 -112 l 315 -112 l 315 517 l 360 517 l 360 -112 l 405 -112 l 449 -112 l 449 517 l 495 517 l 495 -104 b 631 68 585 -82 631 -26 l 631 248 l 675 248 l 675 -68 b 449 -248 675 -187 600 -248 l 225 -248 b 0 -68 75 -248 0 -187 z"
+    },
+    "accSagittalSharp35LUp": {
+      "x_min": 0,
+      "x_max": 500,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -248 l 45 -248 l 45 -68 b 180 104 45 26 89 82 l 180 -517 l 225 -517 l 225 112 l 271 112 l 315 112 l 315 -517 l 360 -517 l 360 71 l 452 -17 l 452 -517 l 495 -517 l 495 -56 l 720 -268 l 720 -112 l 337 248 l 225 248 b 0 68 75 248 0 187 z"
+    },
+    "accSagittalFlat35LDown": {
+      "x_min": 0,
+      "x_max": 500,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 248 l 45 248 l 45 68 b 180 -104 45 -26 89 -82 l 180 517 l 225 517 l 225 -112 l 271 -112 l 315 -112 l 315 517 l 360 517 l 360 -71 l 452 17 l 452 517 l 495 517 l 495 56 l 720 268 l 720 112 l 337 -248 l 225 -248 b 0 -68 75 -248 0 -187 z"
+    },
+    "accSagittalDoubleSharp25SDown": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 68 b 135 -112 0 -53 45 -112 b 243 -62 180 -112 215 -95 l 89 -503 l 143 -517 l 292 -82 l 445 -517 l 495 -503 l 343 -62 b 449 -112 372 -95 408 -112 b 585 68 540 -112 585 -53 l 540 68 b 475 -4 540 20 517 -4 b 292 248 350 -4 315 148 b 112 -4 274 148 236 -4 b 45 68 68 -4 45 20 z"
+    },
+    "accSagittalDoubleFlat25SUp": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 -68 b 135 112 0 53 45 112 b 243 62 180 112 215 95 l 89 503 l 143 517 l 292 82 l 445 517 l 495 503 l 343 62 b 449 112 372 95 408 112 b 585 -68 540 112 585 53 l 540 -68 b 475 4 540 -20 517 4 b 292 -248 350 4 315 -148 b 112 4 274 -148 236 4 b 45 -68 68 4 45 -20 z"
+    },
+    "accSagittalDoubleSharp7CDown": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 213 112 l 203 82 l 192 112 z m 0 -503 l 52 -517 l 203 -82 l 354 -517 l 405 -503 l 230 0 l 271 108 b 495 -68 420 92 495 35 l 495 -248 l 540 -248 l 540 68 b 225 248 540 187 435 248 l 89 248 l 89 112 l 135 112 l 174 0 z"
+    },
+    "accSagittalDoubleFlat7CUp": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 503 l 52 517 l 203 82 l 354 517 l 405 503 l 230 0 l 271 -108 b 495 68 420 -92 495 -35 l 495 248 l 540 248 l 540 -68 b 225 -248 540 -187 435 -248 l 89 -248 l 89 -112 l 135 -112 l 174 0 z m 213 -112 l 203 -82 l 192 -112 z"
+    },
+    "accSagittalDoubleSharp5CDown": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 405 -503 l 230 0 l 232 4 l 585 -264 l 585 -112 l 112 248 l 89 248 l 89 112 l 151 68 l 174 0 l 0 -503 l 52 -517 l 203 -82 l 354 -517 z"
+    },
+    "accSagittalDoubleFlat5CUp": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 405 503 l 230 0 l 232 -4 l 585 264 l 585 112 l 112 -248 l 89 -248 l 89 -112 l 151 -68 l 174 0 l 0 503 l 52 517 l 203 82 l 354 517 z"
+    },
+    "accSagittalDoubleSharp5v7kDown": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -274 l 252 35 l 265 0 l 89 -503 l 141 -517 l 292 -82 l 444 -517 l 495 -503 l 321 0 l 360 112 b 540 -68 480 112 540 53 l 540 -248 l 585 -248 l 585 68 b 405 248 585 187 526 248 l 292 248 l 0 -112 z"
+    },
+    "accSagittalDoubleFlat5v7kUp": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 274 l 252 -35 l 265 0 l 89 503 l 141 517 l 292 82 l 444 517 l 495 503 l 321 0 l 360 -112 b 540 68 480 -112 540 -53 l 540 248 l 585 248 l 585 -68 b 405 -248 585 -187 526 -248 l 292 -248 l 0 112 z"
+    },
+    "accSagittalDoubleSharp": {
+      "x_min": 0,
+      "x_max": 469,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 540 -503 l 366 0 l 380 45 l 675 -271 l 675 -112 l 337 248 l 0 -112 l 0 -271 l 295 45 l 310 0 l 135 -503 l 186 -517 l 337 -82 l 488 -517 z"
+    },
+    "accSagittalDoubleFlat": {
+      "x_min": 0,
+      "x_max": 469,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 540 503 l 366 0 l 380 -45 l 675 271 l 675 112 l 337 -248 l 0 112 l 0 271 l 295 -45 l 310 0 l 135 503 l 186 517 l 337 82 l 488 517 z"
+    },
+    "accSagittal7v11KleismaUp": {
+      "x_min": 0,
+      "x_max": 219,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 68 -112 b 135 -45 89 -112 112 -89 l 135 -517 l 180 -517 l 180 -45 b 248 -112 200 -89 225 -112 b 315 68 292 -112 315 -53 l 271 68 b 248 -4 271 20 264 -4 b 236 0 245 -4 240 -3 b 157 248 213 14 187 96 b 78 0 127 96 101 14 b 65 -4 73 -3 68 -4 b 45 68 50 -4 45 20 l 0 68 b 68 -112 0 -53 23 -112 z"
+    },
+    "accSagittal7v11KleismaDown": {
+      "x_min": 0,
+      "x_max": 219,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 68 112 b 135 45 89 112 112 89 l 135 517 l 180 517 l 180 45 b 248 112 200 89 225 112 b 315 -68 292 112 315 53 l 271 -68 b 248 4 271 -20 264 4 b 236 0 245 4 240 3 b 157 -248 213 -14 187 -96 b 78 0 127 -96 101 -14 b 65 4 73 3 68 4 b 45 -68 50 4 45 -20 l 0 -68 b 68 112 0 53 23 112 z"
+    },
+    "accSagittal17CommaUp": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -203 b 89 -23 45 -82 60 -23 l 157 -23 b 180 -4 164 -23 173 -17 l 180 -517 l 225 -517 l 225 -40 b 315 -118 248 -92 279 -118 b 405 62 374 -118 405 -59 l 360 62 b 324 -10 360 14 348 -10 b 302 -6 318 -10 311 -9 b 206 217 268 9 235 84 l 203 248 b 135 68 177 127 154 68 l 68 68 b 0 -203 23 68 0 -23 z"
+    },
+    "accSagittal17CommaDown": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 45 203 b 89 23 45 82 60 23 l 157 23 b 180 4 164 23 173 17 l 180 517 l 225 517 l 225 40 b 315 118 248 92 279 118 b 405 -62 374 118 405 59 l 360 -62 b 324 10 360 -14 348 10 b 302 6 318 10 311 9 b 206 -217 268 -9 235 -84 l 203 -248 b 135 -68 177 -127 154 -68 l 68 -68 b 0 203 23 -68 0 23 z"
+    },
+    "accSagittal55CommaUp": {
+      "x_min": 0,
+      "x_max": 219,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 248 l 0 -517 l 45 -517 l 45 58 l 315 -274 l 315 -112 l 23 248 z"
+    },
+    "accSagittal55CommaDown": {
+      "x_min": 0,
+      "x_max": 219,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 -248 l 0 517 l 45 517 l 45 -58 l 315 274 l 315 112 l 23 -248 z"
+    },
+    "accSagittal7v11CommaUp": {
+      "x_min": 0,
+      "x_max": 188,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -248 l 45 -248 l 45 -68 b 180 112 45 53 89 112 l 225 112 l 225 -517 l 271 -517 l 271 248 l 135 248 b 0 68 45 248 0 187 z"
+    },
+    "accSagittal7v11CommaDown": {
+      "x_min": 0,
+      "x_max": 188,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 248 l 45 248 l 45 68 b 180 -112 45 -53 89 -112 l 225 -112 l 225 517 l 271 517 l 271 -248 l 135 -248 b 0 -68 45 -248 0 -187 z"
+    },
+    "accSagittal5v11SmallDiesisUp": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 73 l 0 -248 l 45 -248 l 45 -68 b 180 112 45 53 89 112 l 225 112 l 225 -517 l 271 -517 l 271 -40 b 360 -118 295 -92 325 -118 b 449 62 420 -118 449 -59 l 405 62 b 369 -10 405 14 393 -10 b 348 -6 363 -10 356 -9 b 251 217 312 9 279 84 l 248 248 l 135 248 b 0 73 45 248 0 189 z"
+    },
+    "accSagittal5v11SmallDiesisDown": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 -73 l 0 248 l 45 248 l 45 68 b 180 -112 45 -53 89 -112 l 225 -112 l 225 517 l 271 517 l 271 40 b 360 118 295 92 325 118 b 449 -62 420 118 449 59 l 405 -62 b 369 10 405 -14 393 10 b 348 6 363 10 356 9 b 251 -217 312 -9 279 -84 l 248 -248 l 135 -248 b 0 -73 45 -248 0 -189 z"
+    },
+    "accSagittalSharp5v11SDown": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -203 b 112 -23 45 -84 68 -23 l 135 -23 l 135 -517 l 180 -517 l 180 -23 b 242 37 203 -23 225 -3 b 315 -89 262 -23 285 -63 l 315 -517 l 360 -517 l 360 -112 l 383 -112 b 495 68 458 -112 495 -53 l 449 68 b 399 -4 449 20 433 -4 b 248 248 297 -4 261 171 b 157 68 222 127 192 68 l 89 68 b 0 -203 30 68 0 -23 z"
+    },
+    "accSagittalFlat5v11SUp": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 45 203 b 112 23 45 84 68 23 l 135 23 l 135 517 l 180 517 l 180 23 b 242 -37 203 23 225 3 b 315 89 262 23 285 63 l 315 517 l 360 517 l 360 112 l 383 112 b 495 -68 458 112 495 53 l 449 -68 b 399 4 449 -20 433 4 b 248 -248 297 4 261 -171 b 157 -68 222 -127 192 -68 l 89 -68 b 0 203 30 -68 0 23 z"
+    },
+    "accSagittalSharp7v11CDown": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 89 -112 l 89 -517 l 135 -517 l 135 -95 b 206 37 163 -73 187 -30 b 271 -23 225 -3 248 -23 l 271 -517 l 315 -517 l 315 -23 l 383 -23 b 449 -203 428 -23 449 -84 l 495 -203 b 405 68 495 -23 465 68 l 292 68 b 203 248 258 68 228 127 b 101 0 173 98 138 16 b 81 -3 94 0 86 -3 b 45 68 56 -3 45 20 l 0 68 b 89 -112 0 -52 30 -112 z"
+    },
+    "accSagittalFlat7v11CUp": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 89 112 l 89 517 l 135 517 l 135 95 b 206 -37 163 73 187 30 b 271 23 225 3 248 23 l 271 517 l 315 517 l 315 23 l 383 23 b 449 203 428 23 449 84 l 495 203 b 405 -68 495 23 465 -68 l 292 -68 b 203 -248 258 -68 228 -127 b 101 0 173 -98 138 -16 b 81 3 94 0 86 3 b 45 -68 56 3 45 -20 l 0 -68 b 89 112 0 52 30 112 z"
+    },
+    "accSagittalSharp55CDown": {
+      "x_min": 0,
+      "x_max": 250,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -271 l 135 -125 l 135 -517 l 180 -517 l 180 -78 l 315 65 l 315 -517 l 360 -517 l 360 248 l 337 248 l 0 -112 z"
+    },
+    "accSagittalFlat55CUp": {
+      "x_min": 0,
+      "x_max": 250,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 271 l 135 125 l 135 517 l 180 517 l 180 78 l 315 -65 l 315 517 l 360 517 l 360 -248 l 337 -248 l 0 112 z"
+    },
+    "accSagittalSharp17CDown": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -248 l 45 -68 b 180 109 45 36 89 95 l 180 -517 l 225 -517 l 225 112 l 271 112 b 360 -89 292 13 321 -55 l 360 -517 l 405 -517 l 405 -112 l 428 -112 b 540 68 504 -112 540 -53 l 495 68 b 445 -4 495 20 480 -4 b 292 248 343 -4 307 171 l 180 248 b 0 68 60 248 0 187 l 0 -248 z"
+    },
+    "accSagittalFlat17CUp": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 45 248 l 45 68 b 180 -109 45 -36 89 -95 l 180 517 l 225 517 l 225 -112 l 271 -112 b 360 89 292 -13 321 55 l 360 517 l 405 517 l 405 112 l 428 112 b 540 -68 504 112 540 53 l 495 -68 b 445 4 495 -20 480 4 b 292 -248 343 4 307 -171 l 180 -248 b 0 -68 60 -248 0 -187 l 0 248 z"
+    },
+    "accSagittalSharp7v11kDown": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -32 l 405 138 l 405 13 l 0 -157 l 0 -256 l 225 -161 l 225 -517 l 271 -517 l 271 -144 l 405 -86 l 405 -517 l 449 -517 l 449 248 l 428 248 l 0 68 z"
+    },
+    "accSagittalFlat7v11kUp": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 32 l 405 -138 l 405 -13 l 0 157 l 0 256 l 225 161 l 225 517 l 271 517 l 271 144 l 405 86 l 405 517 l 449 517 l 449 -248 l 428 -248 l 0 -68 z"
+    },
+    "accSagittalSharp7v11kUp": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 135 -112 l 135 -517 l 180 -517 l 180 -105 b 271 -23 217 -94 248 -65 l 271 -517 l 315 -517 l 315 -23 b 405 -105 337 -65 369 -94 l 405 -517 l 449 -517 l 449 -112 b 585 68 540 -112 585 -53 l 540 68 b 475 -4 540 20 517 -4 b 292 248 350 -4 315 148 b 112 -4 274 148 236 -4 b 45 68 68 -4 45 20 l 0 68 b 135 -112 0 -53 45 -112 z"
+    },
+    "accSagittalFlat7v11kDown": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 135 112 l 135 517 l 180 517 l 180 105 b 271 23 217 94 248 65 l 271 517 l 315 517 l 315 23 b 405 105 337 65 369 94 l 405 517 l 449 517 l 449 112 b 585 -68 540 112 585 53 l 540 -68 b 475 4 540 -20 517 4 b 292 -248 350 4 315 -148 b 112 4 274 -148 236 4 b 45 -68 68 4 45 -20 l 0 -68 b 135 112 0 53 45 112 z"
+    },
+    "accSagittalSharp17CUp": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -203 b 135 -23 45 -84 75 -23 l 135 -517 l 180 -517 l 180 -23 l 203 -23 b 271 14 229 -23 251 -10 l 271 -517 l 315 -517 l 315 -23 b 405 -105 337 -65 369 -94 l 405 -517 l 449 -517 l 449 -112 b 585 68 540 -112 585 -53 l 540 68 b 475 -4 540 20 517 -4 b 292 248 350 -4 312 150 b 180 68 268 127 230 68 l 112 68 b 0 -203 37 68 0 -23 z"
+    },
+    "accSagittalFlat17CDown": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 45 203 b 135 23 45 84 75 23 l 135 517 l 180 517 l 180 23 l 203 23 b 271 -14 229 23 251 10 l 271 517 l 315 517 l 315 23 b 405 105 337 65 369 94 l 405 517 l 449 517 l 449 112 b 585 -68 540 112 585 53 l 540 -68 b 475 4 540 -20 517 4 b 292 -248 350 4 312 -150 b 180 -68 268 -127 230 -68 l 112 -68 b 0 203 37 -68 0 23 z"
+    },
+    "accSagittalSharp55CUp": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -517 l 45 78 l 135 10 l 135 -517 l 180 -517 l 180 -23 l 271 -92 l 271 -517 l 315 -517 l 315 -127 l 495 -264 l 495 -112 l 23 248 l 0 248 l 0 -517 z"
+    },
+    "accSagittalFlat55CDown": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 45 517 l 45 -78 l 135 -10 l 135 517 l 180 517 l 180 23 l 271 92 l 271 517 l 315 517 l 315 127 l 495 264 l 495 112 l 23 -248 l 0 -248 l 0 517 z"
+    },
+    "accSagittalSharp7v11CUp": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 68 l 0 -248 l 45 -248 l 45 -68 b 180 86 45 6 89 58 l 180 -517 l 225 -517 l 225 98 b 315 109 252 104 282 108 l 315 -517 l 360 -517 l 360 112 l 405 112 l 449 112 l 449 -517 l 495 -517 l 495 248 l 360 248 b 0 68 121 248 0 189 z"
+    },
+    "accSagittalFlat7v11CDown": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 -68 l 0 248 l 45 248 l 45 68 b 180 -86 45 -6 89 -58 l 180 517 l 225 517 l 225 -98 b 315 -109 252 -104 282 -108 l 315 517 l 360 517 l 360 -112 l 405 -112 l 449 -112 l 449 517 l 495 517 l 495 -248 l 360 -248 b 0 -68 121 -248 0 -189 z"
+    },
+    "accSagittalSharp5v11SUp": {
+      "x_min": 0,
+      "x_max": 438,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -248 l 45 -248 l 45 -68 b 180 104 45 26 89 82 l 180 -517 l 225 -517 l 225 112 l 271 112 l 315 112 l 315 -517 l 360 -517 l 360 -23 b 449 -105 383 -65 415 -94 l 449 -517 l 495 -517 l 495 -112 b 631 68 585 -112 631 -53 l 585 68 b 520 -4 585 20 563 -4 b 337 248 396 -4 360 150 l 225 248 b 0 68 76 248 0 187 z"
+    },
+    "accSagittalFlat5v11SDown": {
+      "x_min": 0,
+      "x_max": 438,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 248 l 45 248 l 45 68 b 180 -104 45 -26 89 -82 l 180 517 l 225 517 l 225 -112 l 271 -112 l 315 -112 l 315 517 l 360 517 l 360 23 b 449 105 383 65 415 94 l 449 517 l 495 517 l 495 112 b 631 -68 585 112 631 53 l 585 -68 b 520 4 585 -20 563 4 b 337 -248 396 4 360 -150 l 225 -248 b 0 -68 76 -248 0 -187 z"
+    },
+    "accSagittalDoubleSharp5v11SDown": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -203 b 135 -23 45 -84 75 -23 l 203 -23 b 262 4 225 -23 245 -13 l 265 0 l 89 -503 l 141 -517 l 292 -82 l 444 -517 l 495 -503 l 341 -60 b 449 -112 370 -95 405 -112 b 585 68 540 -112 585 -53 l 540 68 b 475 -4 540 20 517 -4 b 292 248 350 -4 312 150 b 180 68 268 127 230 68 l 112 68 b 0 -203 37 68 0 -23 z"
+    },
+    "accSagittalDoubleFlat5v11SUp": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 45 203 b 135 23 45 84 75 23 l 203 23 b 262 -4 225 23 245 13 l 265 0 l 89 503 l 141 517 l 292 82 l 444 517 l 495 503 l 341 60 b 449 112 370 95 405 112 b 585 -68 540 112 585 53 l 540 -68 b 475 4 540 -20 517 4 b 292 -248 350 4 312 -150 b 180 -68 268 -127 230 -68 l 112 -68 b 0 203 37 -68 0 23 z"
+    },
+    "accSagittalDoubleSharp7v11CDown": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 112 -112 b 193 -73 143 -112 170 -99 l 45 -501 l 95 -517 l 248 -81 l 397 -517 l 449 -503 l 275 0 l 278 4 b 337 -23 295 -13 315 -23 l 405 -23 b 495 -203 465 -23 495 -84 l 540 -203 b 428 68 540 -23 503 68 l 360 68 b 248 248 310 68 271 127 b 122 0 217 98 176 16 b 95 -3 112 0 104 -3 b 45 68 60 -3 45 20 l 0 68 b 112 -112 0 -52 36 -112 z"
+    },
+    "accSagittalDoubleFlat7v11CUp": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 112 112 b 193 73 143 112 170 99 l 45 501 l 95 517 l 248 81 l 397 517 l 449 503 l 275 0 l 278 -4 b 337 23 295 13 315 23 l 405 23 b 495 203 465 23 495 84 l 540 203 b 428 -68 540 23 503 -68 l 360 -68 b 248 -248 310 -68 271 -127 b 122 0 217 -98 176 -16 b 95 3 112 0 104 3 b 45 -68 60 3 45 -20 l 0 -68 b 112 112 0 52 36 112 z"
+    },
+    "accSagittalDoubleSharp55CDown": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 428 248 l 0 -112 l 0 -266 l 307 -7 l 135 -503 l 186 -517 l 337 -82 l 488 -517 l 540 -503 l 366 0 l 386 59 l 449 112 l 449 248 z"
+    },
+    "accSagittalDoubleFlat55CUp": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 428 -248 l 0 112 l 0 266 l 307 7 l 135 503 l 186 517 l 337 82 l 488 517 l 540 503 l 366 0 l 386 -59 l 449 -112 l 449 -248 z"
+    },
+    "accSagittalDoubleSharp17CDown": {
+      "x_min": 0,
+      "x_max": 438,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -248 l 45 -68 b 271 112 45 53 120 112 l 310 0 l 135 -503 l 186 -517 l 337 -82 l 488 -517 l 540 -503 l 387 -62 b 495 -112 416 -95 452 -112 b 631 68 585 -112 631 -53 l 585 68 b 520 -4 585 20 563 -4 b 337 248 396 -4 360 150 l 225 248 b 0 68 76 248 0 187 l 0 -248 z"
+    },
+    "accSagittalDoubleFlat17CUp": {
+      "x_min": 0,
+      "x_max": 438,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 45 248 l 45 68 b 271 -112 45 -53 120 -112 l 310 0 l 135 503 l 186 517 l 337 82 l 488 517 l 540 503 l 387 62 b 495 112 416 95 452 112 b 631 -68 585 112 631 53 l 585 -68 b 520 4 585 -20 563 4 b 337 -248 396 4 360 -150 l 225 -248 b 0 -68 76 -248 0 -187 l 0 248 z"
+    },
+    "accSagittalDoubleSharp7v11kDown": {
+      "x_min": 0,
+      "x_max": 438,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 416 115 l 442 124 l 428 82 z m 0 68 l 0 -30 l 366 96 l 399 0 l 392 -23 l 0 -157 l 0 -255 l 353 -135 l 225 -503 l 276 -517 l 428 -82 l 579 -517 l 631 -503 l 455 0 l 507 145 l 540 157 l 540 248 l 517 248 z"
+    },
+    "accSagittalDoubleFlat7v11kUp": {
+      "x_min": 0,
+      "x_max": 438,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 -68 l 0 30 l 366 -96 l 399 0 l 392 23 l 0 157 l 0 255 l 353 135 l 225 503 l 276 517 l 428 82 l 579 517 l 631 503 l 455 0 l 507 -145 l 540 -157 l 540 -248 l 517 -248 z m 416 -115 l 442 -124 l 428 -82 z"
+    },
+    "accSagittal23CommaUp": {
+      "x_min": 0,
+      "x_max": 188,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -517 l 45 -517 l 45 -4 b 68 -23 53 -17 60 -23 l 180 -23 b 225 -203 210 -23 225 -82 l 271 -203 b 206 68 271 -23 248 68 l 89 68 b 23 248 71 68 48 127 l 0 248 z"
+    },
+    "accSagittal23CommaDown": {
+      "x_min": 0,
+      "x_max": 188,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 517 l 45 517 l 45 4 b 68 23 53 17 60 23 l 180 23 b 225 203 210 23 225 82 l 271 203 b 206 -68 271 23 248 -68 l 89 -68 b 23 -248 71 -68 48 -127 l 0 -248 z"
+    },
+    "accSagittal5v19CommaUp": {
+      "x_min": 0,
+      "x_max": 156,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -284 l 180 33 l 180 -517 l 225 -517 l 225 248 l 203 248 b 86 112 151 157 112 112 b 45 157 59 112 45 127 l 0 157 b 76 23 0 72 26 27 l 0 -112 z"
+    },
+    "accSagittal5v19CommaDown": {
+      "x_min": 0,
+      "x_max": 156,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 284 l 180 -33 l 180 517 l 225 517 l 225 -248 l 203 -248 b 86 -112 151 -157 112 -112 b 45 -157 59 -112 45 -127 l 0 -157 b 76 -23 0 -72 26 -27 l 0 112 z"
+    },
+    "accSagittal5v23SmallDiesisUp": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -284 l 180 33 l 180 -517 l 225 -517 l 225 -4 b 248 -23 233 -17 240 -23 l 360 -23 b 405 -203 390 -23 405 -82 l 449 -203 b 386 68 449 -23 428 68 l 271 68 b 203 248 251 68 228 127 l 0 -112 z"
+    },
+    "accSagittal5v23SmallDiesisDown": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 284 l 180 -33 l 180 517 l 225 517 l 225 4 b 248 23 233 17 240 23 l 360 23 b 405 203 390 23 405 82 l 449 203 b 386 -68 449 23 428 -68 l 271 -68 b 203 -248 251 -68 228 -127 l 0 112 z"
+    },
+    "accSagittalSharp5v23SDown": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -517 l 45 -517 l 45 6 b 89 -23 59 -13 73 -23 l 180 -23 l 180 -517 l 225 -517 l 225 -23 l 292 -23 b 360 -203 337 -23 360 -84 l 405 -203 b 315 68 405 -23 374 68 l 112 68 b 23 248 78 68 48 127 l 0 248 z"
+    },
+    "accSagittalFlat5v23SUp": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 517 l 45 517 l 45 -6 b 89 23 59 13 73 23 l 180 23 l 180 517 l 225 517 l 225 23 l 292 23 b 360 203 337 23 360 84 l 405 203 b 315 -68 405 23 374 -68 l 112 -68 b 23 -248 78 -68 48 -127 l 0 -248 z"
+    },
+    "accSagittalSharp5v19CDown": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 68 b 89 -112 0 -52 30 -112 l 89 -517 l 135 -517 l 135 -95 b 225 112 173 -65 203 4 l 271 112 l 271 -517 l 315 -517 l 315 107 b 405 -68 374 89 405 30 l 405 -248 l 449 -248 l 449 68 b 315 248 449 189 405 248 l 203 248 b 101 0 173 98 138 16 b 81 -3 94 0 86 -3 b 45 68 56 -3 45 23 z"
+    },
+    "accSagittalFlat5v19CUp": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 -68 b 89 112 0 52 30 112 l 89 517 l 135 517 l 135 95 b 225 -112 173 65 203 -4 l 271 -112 l 271 517 l 315 517 l 315 -107 b 405 68 374 -89 405 -30 l 405 248 l 449 248 l 449 -68 b 315 -248 449 -189 405 -248 l 203 -248 b 101 0 173 -98 138 -16 b 81 3 94 0 86 3 b 45 -68 56 3 45 -23 z"
+    },
+    "accSagittalSharp23CDown": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 135 -82 l 135 -517 l 180 -517 l 180 -17 l 239 68 b 315 -23 261 7 287 -23 l 315 -517 l 360 -517 l 360 -23 l 428 -23 b 495 -203 472 -23 495 -84 l 540 -203 b 449 68 540 -23 510 68 l 337 68 b 248 248 302 68 271 127 l 0 -112 l 0 -276 z"
+    },
+    "accSagittalFlat23CUp": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 135 82 l 135 517 l 180 517 l 180 17 l 239 -68 b 315 23 261 -7 287 23 l 315 517 l 360 517 l 360 23 l 428 23 b 495 203 472 23 495 84 l 540 203 b 449 -68 540 23 510 -68 l 337 -68 b 248 -248 302 -68 271 -127 l 0 112 l 0 276 z"
+    },
+    "accSagittalSharp23CUp": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -517 l 45 -517 l 45 14 b 112 -23 63 -10 86 -23 l 135 -23 l 135 -517 l 180 -517 l 180 -23 l 271 -23 l 271 -517 l 315 -517 l 315 -23 l 360 -23 b 449 -203 420 -23 449 -84 l 495 -203 b 383 68 495 -23 458 68 l 135 68 b 23 248 85 68 48 127 l 0 248 z"
+    },
+    "accSagittalFlat23CDown": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 517 l 45 517 l 45 -14 b 112 23 63 10 86 23 l 135 23 l 135 517 l 180 517 l 180 23 l 271 23 l 271 517 l 315 517 l 315 23 l 360 23 b 449 203 420 23 449 84 l 495 203 b 383 -68 495 23 458 -68 l 135 -68 b 23 -248 85 -68 48 -127 l 0 -248 z"
+    },
+    "accSagittalSharp5v19CUp": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -112 l 0 -266 l 135 -153 l 135 -517 l 180 -517 l 180 -115 l 271 -39 l 271 -517 l 315 -517 l 315 0 l 405 75 l 405 -517 l 449 -517 l 449 248 l 428 248 b 130 68 285 127 186 68 b 45 157 73 68 45 98 l 0 157 b 112 -20 0 53 37 -6 z"
+    },
+    "accSagittalFlat5v19CDown": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 112 l 0 266 l 135 153 l 135 517 l 180 517 l 180 115 l 271 39 l 271 517 l 315 517 l 315 0 l 405 -75 l 405 517 l 449 517 l 449 -248 l 428 -248 b 130 -68 285 -127 186 -68 b 45 -157 73 -68 45 -98 l 0 -157 b 112 20 0 -53 37 6 z"
+    },
+    "accSagittalSharp5v23SUp": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 135 -108 l 135 -517 l 180 -517 l 180 -53 l 271 58 l 271 -517 l 315 -517 l 315 14 b 383 -23 334 -10 357 -23 l 405 -23 l 405 -517 l 449 -517 l 449 -23 b 540 -203 510 -23 540 -84 l 585 -203 b 472 68 585 -23 547 68 l 405 68 b 292 248 356 68 318 127 l 0 -112 l 0 -274 z"
+    },
+    "accSagittalFlat5v23SDown": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 135 108 l 135 517 l 180 517 l 180 53 l 271 -58 l 271 517 l 315 517 l 315 -14 b 383 23 334 10 357 23 l 405 23 l 405 517 l 449 517 l 449 23 b 540 203 510 23 540 84 l 585 203 b 472 -68 585 23 547 -68 l 405 -68 b 292 -248 356 -68 318 -127 l 0 112 l 0 274 z"
+    },
+    "accSagittalDoubleSharp5v23SDown": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 52 -517 l 203 -81 l 354 -517 l 405 -503 l 239 -23 l 449 -23 b 540 -203 510 -23 540 -84 l 585 -203 b 472 68 585 -23 547 68 l 225 68 b 112 248 176 68 138 127 l 89 248 l 89 112 b 170 -14 109 45 135 0 l 0 -501 z"
+    },
+    "accSagittalDoubleFlat5v23SUp": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 52 517 l 203 81 l 354 517 l 405 503 l 239 23 l 449 23 b 540 203 510 23 540 84 l 585 203 b 472 -68 585 23 547 -68 l 225 -68 b 112 -248 176 -68 138 -127 l 89 -248 l 89 -112 b 170 14 109 -45 135 0 l 0 501 z"
+    },
+    "accSagittalDoubleSharp5v19CDown": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 68 b 112 -112 0 -52 36 -112 b 193 -73 143 -112 170 -99 l 45 -501 l 95 -517 l 248 -81 l 397 -517 l 449 -501 l 275 0 l 315 112 b 495 -68 435 112 495 53 l 495 -248 l 540 -248 l 540 68 b 360 248 540 189 480 248 l 248 248 b 122 0 217 98 176 16 b 95 -3 112 0 104 -3 b 45 68 60 -3 45 20 z"
+    },
+    "accSagittalDoubleFlat5v19CUp": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 -68 b 112 112 0 52 36 112 b 193 73 143 112 170 99 l 45 501 l 95 517 l 248 81 l 397 517 l 449 501 l 275 0 l 315 -112 b 495 68 435 -112 495 -53 l 495 248 l 540 248 l 540 -68 b 360 -248 540 -189 480 -248 l 248 -248 b 122 0 217 -98 176 -16 b 95 3 112 0 104 3 b 45 -68 60 3 45 -20 z"
+    },
+    "accSagittalDoubleSharp23CDown": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 252 35 l 265 0 l 89 -503 l 141 -517 l 292 -82 l 444 -517 l 495 -503 l 321 0 l 323 4 b 383 -23 340 -13 360 -23 l 449 -23 b 540 -203 510 -23 540 -84 l 585 -203 b 472 68 585 -23 547 68 l 405 68 b 292 248 356 68 318 127 l 0 -112 l 0 -274 z"
+    },
+    "accSagittalDoubleFlat23CUp": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 252 -35 l 265 0 l 89 503 l 141 517 l 292 82 l 444 517 l 495 503 l 321 0 l 323 -4 b 383 23 340 13 360 23 l 449 23 b 540 203 510 23 540 84 l 585 203 b 472 -68 585 23 547 -68 l 405 -68 b 292 -248 356 -68 318 -127 l 0 112 l 0 274 z"
+    },
+    "accSagittal19SchismaUp": {
+      "x_min": 0,
+      "x_max": 125,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 68 -112 b 135 -45 89 -112 112 -89 l 135 -517 l 180 -517 l 180 248 l 157 248 b 79 0 127 98 101 16 b 68 -3 73 0 68 -3 b 45 68 52 -3 45 20 l 0 68 b 68 -112 0 -52 23 -112 z"
+    },
+    "accSagittal19SchismaDown": {
+      "x_min": 0,
+      "x_max": 125,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 68 112 b 135 45 89 112 112 89 l 135 517 l 180 517 l 180 -248 l 157 -248 b 79 0 127 -98 101 -16 b 68 3 73 0 68 3 b 45 -68 52 3 45 -20 l 0 -68 b 68 112 0 52 23 112 z"
+    },
+    "accSagittal17KleismaUp": {
+      "x_min": 0,
+      "x_max": 156,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -203 b 89 -23 45 -82 60 -23 l 157 -23 b 180 -4 164 -23 173 -17 l 180 -517 l 225 -517 l 225 248 l 203 248 b 135 68 177 127 154 68 l 68 68 b 0 -203 23 68 0 -23 z"
+    },
+    "accSagittal17KleismaDown": {
+      "x_min": 0,
+      "x_max": 156,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 45 203 b 89 23 45 82 60 23 l 157 23 b 180 4 164 23 173 17 l 180 517 l 225 517 l 225 -248 l 203 -248 b 135 -68 177 -127 154 -68 l 68 -68 b 0 203 23 -68 0 23 z"
+    },
+    "accSagittal143CommaUp": {
+      "x_min": 0,
+      "x_max": 156,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -203 l 45 -203 b 89 -23 45 -82 60 -23 l 157 -23 b 180 -4 164 -23 173 -17 l 180 -517 l 225 -517 l 225 248 l 203 248 b 135 68 177 127 154 68 l 105 68 b 45 157 65 68 45 98 l 0 157 b 23 20 0 95 7 50 b 0 -203 7 -23 0 -98 z"
+    },
+    "accSagittal143CommaDown": {
+      "x_min": 0,
+      "x_max": 156,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 203 l 45 203 b 89 23 45 82 60 23 l 157 23 b 180 4 164 23 173 17 l 180 517 l 225 517 l 225 -248 l 203 -248 b 135 -68 177 -127 154 -68 l 105 -68 b 45 -157 65 -68 45 -98 l 0 -157 b 23 -20 0 -95 7 -50 b 0 203 7 23 0 98 z"
+    },
+    "accSagittal11v49CommaUp": {
+      "x_min": 0,
+      "x_max": 188,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -292 b 89 -157 45 -203 60 -157 l 203 -157 b 225 -143 210 -157 217 -153 l 225 -517 l 271 -517 l 271 248 l 248 248 b 180 157 233 187 210 157 l 68 157 b 0 -68 23 157 0 82 l 45 -68 b 89 68 45 23 60 68 l 203 68 b 225 84 209 68 216 72 l 225 -36 b 180 -68 213 -58 199 -68 l 68 -68 b 0 -292 23 -68 0 -143 z"
+    },
+    "accSagittal11v49CommaDown": {
+      "x_min": 0,
+      "x_max": 188,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 45 292 b 89 157 45 203 60 157 l 203 157 b 225 143 210 157 217 153 l 225 517 l 271 517 l 271 -248 l 248 -248 b 180 -157 233 -187 210 -157 l 68 -157 b 0 68 23 -157 0 -82 l 45 68 b 89 -68 45 -23 60 -68 l 203 -68 b 225 -84 209 -68 216 -72 l 225 36 b 180 68 213 58 199 68 l 68 68 b 0 292 23 68 0 143 z"
+    },
+    "accSagittal19CommaUp": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 68 b 68 -112 0 -52 23 -112 b 135 -45 89 -112 112 -89 l 135 -517 l 180 -517 l 180 -4 b 203 -23 187 -17 196 -23 l 315 -23 b 360 -203 346 -23 360 -82 l 405 -203 b 341 68 405 -23 383 68 l 225 68 b 157 248 206 68 183 127 b 79 0 127 98 101 16 b 68 -3 73 0 68 -3 b 45 68 52 -3 45 20 z"
+    },
+    "accSagittal19CommaDown": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 -68 b 68 112 0 52 23 112 b 135 45 89 112 112 89 l 135 517 l 180 517 l 180 4 b 203 23 187 17 196 23 l 315 23 b 360 203 346 23 360 82 l 405 203 b 341 -68 405 23 383 -68 l 225 -68 b 157 -248 206 -68 183 -127 b 79 0 127 -98 101 -16 b 68 3 73 0 68 3 b 45 -68 52 3 45 -20 z"
+    },
+    "accSagittal7v19CommaUp": {
+      "x_min": 0,
+      "x_max": 250,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 68 b 68 -112 0 -52 23 -112 b 135 -45 89 -112 112 -89 l 135 -517 l 180 -517 l 180 112 l 225 112 b 315 -68 285 112 315 53 l 315 -248 l 360 -248 l 360 68 b 271 248 360 187 330 248 l 157 248 b 79 0 127 98 101 16 b 68 -3 73 0 68 -3 b 45 68 52 -3 45 20 z"
+    },
+    "accSagittal7v19CommaDown": {
+      "x_min": 0,
+      "x_max": 250,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 -68 b 68 112 0 52 23 112 b 135 45 89 112 112 89 l 135 517 l 180 517 l 180 -112 l 225 -112 b 315 68 285 -112 315 -53 l 315 248 l 360 248 l 360 -68 b 271 -248 360 -187 330 -248 l 157 -248 b 79 0 127 -98 101 -16 b 68 3 73 0 68 3 b 45 -68 52 3 45 -20 z"
+    },
+    "accSagittal49SmallDiesisUp": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -203 l 45 -203 b 89 -23 45 -82 60 -23 l 157 -23 b 180 -4 164 -23 173 -17 l 180 -517 l 225 -517 l 225 112 l 271 112 b 360 -68 330 112 360 53 l 360 -248 l 405 -248 l 405 68 b 315 248 405 187 374 248 l 203 248 b 135 68 177 127 154 68 l 68 68 b 0 -203 23 68 0 -23 z"
+    },
+    "accSagittal49SmallDiesisDown": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 203 l 45 203 b 89 23 45 82 60 23 l 157 23 b 180 4 164 23 173 17 l 180 517 l 225 517 l 225 -112 l 271 -112 b 360 68 330 -112 360 -53 l 360 248 l 405 248 l 405 -68 b 315 -248 405 -187 374 -248 l 203 -248 b 135 -68 177 -127 154 -68 l 68 -68 b 0 203 23 -68 0 23 z"
+    },
+    "accSagittal23SmallDiesisUp": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -203 b 89 -23 45 -82 60 -23 l 157 -23 b 180 -4 164 -23 173 -17 l 180 -517 l 225 -517 l 225 58 l 495 -274 l 495 -112 l 203 248 b 135 68 177 127 154 68 l 68 68 b 0 -203 23 68 0 -23 z"
+    },
+    "accSagittal23SmallDiesisDown": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 45 203 b 89 23 45 82 60 23 l 157 23 b 180 4 164 23 173 17 l 180 517 l 225 517 l 225 -58 l 495 274 l 495 112 l 203 -248 b 135 -68 177 -127 154 -68 l 68 -68 b 0 203 23 -68 0 23 z"
+    },
+    "accSagittal5v13MediumDiesisUp": {
+      "x_min": 0,
+      "x_max": 250,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -259 l 315 -89 l 315 -517 l 360 -517 l 360 248 l 337 248 b 128 180 253 203 184 180 b 45 248 73 180 45 203 l 0 248 b 52 95 0 170 17 120 l 0 68 l 0 -33 l 315 135 l 315 10 l 0 -157 z"
+    },
+    "accSagittal5v13MediumDiesisDown": {
+      "x_min": 0,
+      "x_max": 250,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 259 l 315 89 l 315 517 l 360 517 l 360 -248 l 337 -248 b 128 -180 253 -203 184 -180 b 45 -248 73 -180 45 -203 l 0 -248 b 52 -95 0 -170 17 -120 l 0 -68 l 0 33 l 315 -135 l 315 -10 l 0 157 z"
+    },
+    "accSagittal11v19MediumDiesisUp": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -248 l 45 -68 b 180 112 45 53 89 112 l 225 112 l 225 -517 l 271 -517 l 271 -4 b 292 -23 278 -17 285 -23 l 405 -23 b 449 -203 435 -23 449 -82 l 495 -203 b 431 68 495 -23 472 68 l 315 68 b 248 248 295 68 271 127 l 135 248 b 0 68 45 248 0 187 l 0 -248 z"
+    },
+    "accSagittal11v19MediumDiesisDown": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 45 248 l 45 68 b 180 -112 45 -53 89 -112 l 225 -112 l 225 517 l 271 517 l 271 4 b 292 23 278 17 285 23 l 405 23 b 449 203 435 23 449 82 l 495 203 b 431 -68 495 23 472 -68 l 315 -68 b 248 -248 295 -68 271 -127 l 135 -248 b 0 -68 45 -248 0 -187 l 0 248 z"
+    },
+    "accSagittal49MediumDiesisUp": {
+      "x_min": 0,
+      "x_max": 250,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -68 b 225 112 45 53 105 112 l 315 112 l 315 10 l 45 -145 z m 0 -68 l 0 -248 l 45 -248 l 315 -94 l 315 -517 l 360 -517 l 360 248 l 225 248 b 0 -68 75 248 0 143 z"
+    },
+    "accSagittal49MediumDiesisDown": {
+      "x_min": 0,
+      "x_max": 250,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 68 l 0 248 l 45 248 l 315 94 l 315 517 l 360 517 l 360 -248 l 225 -248 b 0 68 75 -248 0 -143 z m 45 68 b 225 -112 45 -53 105 -112 l 315 -112 l 315 -10 l 45 145 z"
+    },
+    "accSagittal5v49MediumDiesisUp": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -89 l 0 -248 l 225 53 l 225 -517 l 271 -517 l 271 53 l 495 -248 l 495 -89 l 248 248 b 89 89 170 143 118 89 b 45 157 60 89 45 112 l 0 157 b 68 3 0 68 23 16 z"
+    },
+    "accSagittal5v49MediumDiesisDown": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 89 l 0 248 l 225 -53 l 225 517 l 271 517 l 271 -53 l 495 248 l 495 89 l 248 -248 b 89 -89 170 -143 118 -89 b 45 -157 60 -89 45 -112 l 0 -157 b 68 -3 0 -68 23 -16 z"
+    },
+    "accSagittal49LargeDiesisUp": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 12 l 45 112 l 180 112 b 360 -68 300 112 360 53 l 360 -147 z m 0 -517 l 45 -517 l 45 -89 l 360 -248 l 405 -248 l 405 -68 b 180 248 405 143 330 248 l 0 248 z"
+    },
+    "accSagittal49LargeDiesisDown": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 517 l 45 517 l 45 89 l 360 248 l 405 248 l 405 68 b 180 -248 405 -143 330 -248 l 0 -248 z m 45 -12 l 45 -112 l 180 -112 b 360 68 300 -112 360 -53 l 360 147 z"
+    },
+    "accSagittal11v19LargeDiesisUp": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -517 l 45 -517 l 45 -86 l 449 -256 l 449 -157 l 45 13 l 45 138 l 449 -30 l 449 68 l 23 248 l 0 248 z"
+    },
+    "accSagittal11v19LargeDiesisDown": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 517 l 45 517 l 45 86 l 449 256 l 449 157 l 45 -13 l 45 -138 l 449 30 l 449 -68 l 23 -248 l 0 -248 z"
+    },
+    "accSagittal5v13LargeDiesisUp": {
+      "x_min": 0,
+      "x_max": 438,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 68 b 89 -112 0 -52 30 -112 b 180 -35 125 -112 157 -86 l 180 -517 l 225 -517 l 225 -86 l 631 -256 l 631 -157 l 225 13 l 225 138 l 631 -30 l 631 68 l 203 248 b 101 0 173 98 138 16 b 81 -3 94 0 86 -3 b 45 68 56 -3 45 20 z"
+    },
+    "accSagittal5v13LargeDiesisDown": {
+      "x_min": 0,
+      "x_max": 438,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 -68 b 89 112 0 52 30 112 b 180 35 125 112 157 86 l 180 517 l 225 517 l 225 86 l 631 256 l 631 157 l 225 -13 l 225 -138 l 631 30 l 631 -68 l 203 -248 b 101 0 173 -98 138 -16 b 81 3 94 0 86 3 b 45 -68 56 3 45 -20 z"
+    },
+    "accSagittalSharp23SDown": {
+      "x_min": 0,
+      "x_max": 250,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -203 l 45 -203 b 112 -23 45 -84 68 -23 l 135 -23 l 135 -517 l 180 -517 l 180 -23 l 271 -23 b 315 6 287 -23 301 -13 l 315 -517 l 360 -517 l 360 248 l 337 248 b 248 68 312 127 282 68 l 194 68 b 89 157 125 68 89 98 l 45 157 b 60 59 45 118 50 85 b 0 -203 20 30 0 -56 z"
+    },
+    "accSagittalFlat23SUp": {
+      "x_min": 0,
+      "x_max": 250,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 203 l 45 203 b 112 23 45 84 68 23 l 135 23 l 135 517 l 180 517 l 180 23 l 271 23 b 315 -6 287 23 301 13 l 315 517 l 360 517 l 360 -248 l 337 -248 b 248 -68 312 -127 282 -68 l 194 -68 b 89 -157 125 -68 89 -98 l 45 -157 b 60 -59 45 -118 50 -85 b 0 203 20 -30 0 56 z"
+    },
+    "accSagittalSharp49SDown": {
+      "x_min": 0,
+      "x_max": 250,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -292 l 45 -292 b 112 -157 45 -203 68 -157 l 135 -157 l 135 -517 l 180 -517 l 180 -157 l 271 -157 b 315 -135 285 -157 300 -150 l 315 -517 l 360 -517 l 360 248 l 337 248 b 248 157 323 187 292 157 l 89 157 b 0 -68 30 157 0 82 l 45 -68 b 112 68 45 23 68 68 l 271 68 b 315 89 284 68 300 75 l 315 -32 b 248 -68 298 -56 275 -68 l 89 -68 b 0 -292 29 -68 0 -143 z"
+    },
+    "accSagittalFlat49SUp": {
+      "x_min": 0,
+      "x_max": 250,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 292 l 45 292 b 112 157 45 203 68 157 l 135 157 l 135 517 l 180 517 l 180 157 l 271 157 b 315 135 285 157 300 150 l 315 517 l 360 517 l 360 -248 l 337 -248 b 248 -157 323 -187 292 -157 l 89 -157 b 0 68 30 -157 0 -82 l 45 68 b 112 -68 45 -23 68 -68 l 271 -68 b 315 -89 284 -68 300 -75 l 315 32 b 248 68 298 56 275 68 l 89 68 b 0 292 29 68 0 143 z"
+    },
+    "accSagittalSharp7v19CDown": {
+      "x_min": 0,
+      "x_max": 250,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -112 l 0 -271 l 135 -125 l 135 -517 l 180 -517 l 180 -78 l 315 65 l 315 -517 l 360 -517 l 360 248 l 337 248 b 118 89 239 143 166 89 b 45 157 68 89 45 112 l 0 157 b 89 -20 0 53 29 -6 z"
+    },
+    "accSagittalFlat7v19CUp": {
+      "x_min": 0,
+      "x_max": 250,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 112 l 0 271 l 135 125 l 135 517 l 180 517 l 180 78 l 315 -65 l 315 517 l 360 517 l 360 -248 l 337 -248 b 118 -89 239 -143 166 -89 b 45 -157 68 -89 45 -112 l 0 -157 b 89 20 0 -53 29 6 z"
+    },
+    "accSagittalSharp19CDown": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -248 l 45 -248 l 45 -68 b 180 96 45 17 89 72 l 180 -517 l 225 -517 l 225 107 b 315 112 252 112 282 112 l 360 112 l 360 -517 l 405 -517 l 405 248 l 271 248 b 0 68 89 248 0 187 z"
+    },
+    "accSagittalFlat19CUp": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 248 l 45 248 l 45 68 b 180 -96 45 -17 89 -72 l 180 517 l 225 517 l 225 -107 b 315 -112 252 -112 282 -112 l 360 -112 l 360 517 l 405 517 l 405 -248 l 271 -248 b 0 -68 89 -248 0 -187 z"
+    },
+    "accSagittalSharp11v49CDown": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -203 b 112 -23 45 -82 68 -23 l 135 -23 l 135 -517 l 180 -517 l 180 -23 b 271 112 215 -23 245 23 l 315 112 l 315 -517 l 360 -517 l 360 107 b 449 -68 420 89 449 30 l 449 -248 l 495 -248 l 495 68 b 360 248 495 189 449 248 l 248 248 b 157 68 222 128 192 68 l 89 68 b 0 -203 30 68 0 -23 z"
+    },
+    "accSagittalFlat11v49CUp": {
+      "x_min": 0,
+      "x_max": 344,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 45 203 b 112 23 45 82 68 23 l 135 23 l 135 517 l 180 517 l 180 23 b 271 -112 215 23 245 -23 l 315 -112 l 315 517 l 360 517 l 360 -107 b 449 68 420 -89 449 -30 l 449 248 l 495 248 l 495 -68 b 360 -248 495 -189 449 -248 l 248 -248 b 157 -68 222 -128 192 -68 l 89 -68 b 0 203 30 -68 0 23 z"
+    },
+    "accSagittalSharp143CDown": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -203 b 112 -23 45 -84 68 -23 l 135 -23 l 135 -517 l 180 -517 l 180 -23 b 259 76 210 -23 236 10 l 315 17 l 315 -517 l 360 -517 l 360 -30 l 585 -271 l 585 -112 l 248 248 b 157 68 222 127 192 68 l 89 68 b 0 -203 30 68 0 -23 z"
+    },
+    "accSagittalFlat143CUp": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 45 203 b 112 23 45 84 68 23 l 135 23 l 135 517 l 180 517 l 180 23 b 259 -76 210 23 236 -10 l 315 -17 l 315 517 l 360 517 l 360 30 l 585 271 l 585 112 l 248 -248 b 157 -68 222 -127 192 -68 l 89 -68 b 0 203 30 -68 0 23 z"
+    },
+    "accSagittalSharp17kDown": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -157 l 0 -256 l 225 -161 l 225 -517 l 271 -517 l 271 -144 l 405 -86 l 405 -517 l 449 -517 l 449 248 l 428 248 b 145 171 305 196 210 171 b 45 248 78 171 45 196 l 0 248 b 79 101 0 170 26 121 l 0 68 l 0 -32 l 405 138 l 405 13 z"
+    },
+    "accSagittalFlat17kUp": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 157 l 0 256 l 225 161 l 225 517 l 271 517 l 271 144 l 405 86 l 405 517 l 449 517 l 449 -248 l 428 -248 b 145 -171 305 -196 210 -171 b 45 -248 78 -171 45 -196 l 0 -248 b 79 -101 0 -170 26 -121 l 0 -68 l 0 32 l 405 -138 l 405 -13 z"
+    },
+    "accSagittalSharp19sDown": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -248 l 45 -248 l 45 -68 b 180 109 45 36 89 95 l 180 -517 l 225 -517 l 225 112 l 271 112 b 360 -23 295 23 325 -23 l 360 -517 l 405 -517 l 405 -23 l 472 -23 b 540 -203 517 -23 540 -84 l 585 -203 b 495 68 585 -23 554 68 l 383 68 b 292 248 348 68 318 127 l 180 248 b 0 68 60 248 0 187 z"
+    },
+    "accSagittalFlat19sUp": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 248 l 45 248 l 45 68 b 180 -109 45 -36 89 -95 l 180 517 l 225 517 l 225 -112 l 271 -112 b 360 23 295 -23 325 23 l 360 517 l 405 517 l 405 23 l 472 23 b 540 203 517 23 540 84 l 585 203 b 495 -68 585 23 554 -68 l 383 -68 b 292 -248 348 -68 318 -127 l 180 -248 b 0 -68 60 -248 0 -187 z"
+    },
+    "accSagittalSharp19sUp": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 89 -96 l 89 -517 l 135 -517 l 135 -108 b 180 -112 148 -112 163 -112 b 225 -108 196 -112 210 -112 l 225 -517 l 271 -517 l 271 -94 b 360 -12 305 -78 337 -50 l 360 -517 l 405 -517 l 405 248 l 383 248 b 190 0 353 98 288 16 b 138 -3 171 0 153 -3 b 45 68 75 -3 45 20 l 0 68 b 89 -96 0 -17 30 -72 z"
+    },
+    "accSagittalFlat19sDown": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 89 96 l 89 517 l 135 517 l 135 108 b 180 112 148 112 163 112 b 225 108 196 112 210 112 l 225 517 l 271 517 l 271 94 b 360 12 305 78 337 50 l 360 517 l 405 517 l 405 -248 l 383 -248 b 190 0 353 -98 288 -16 b 138 3 171 0 153 3 b 45 -68 75 3 45 -20 l 0 -68 b 89 96 0 17 30 72 z"
+    },
+    "accSagittalSharp17kUp": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -203 b 135 -23 45 -84 75 -23 l 135 -517 l 180 -517 l 180 -23 l 271 -23 l 271 -517 l 315 -517 l 315 -23 l 337 -23 b 405 14 363 -23 386 -10 l 405 -517 l 449 -517 l 449 248 l 428 248 b 315 68 402 127 364 68 l 112 68 b 0 -203 37 68 0 -23 z"
+    },
+    "accSagittalFlat17kDown": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 45 203 b 135 23 45 84 75 23 l 135 517 l 180 517 l 180 23 l 271 23 l 271 517 l 315 517 l 315 23 l 337 23 b 405 -14 363 23 386 10 l 405 517 l 449 517 l 449 -248 l 428 -248 b 315 -68 402 -127 364 -68 l 112 -68 b 0 203 37 -68 0 23 z"
+    },
+    "accSagittalSharp143CUp": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -203 b 135 -23 45 -84 75 -23 l 135 -517 l 180 -517 l 180 -23 l 271 -23 l 271 -517 l 315 -517 l 315 -23 l 337 -23 b 405 14 363 -23 386 -10 l 405 -517 l 449 -517 l 449 248 l 428 248 b 315 68 402 127 364 68 l 240 68 b 89 157 140 68 89 98 l 45 157 b 68 53 45 115 52 81 b 0 -203 23 23 0 -63 z"
+    },
+    "accSagittalFlat143CDown": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 45 203 b 135 23 45 84 75 23 l 135 517 l 180 517 l 180 23 l 271 23 l 271 517 l 315 517 l 315 23 l 337 23 b 405 -14 363 23 386 10 l 405 517 l 449 517 l 449 -248 l 428 -248 b 315 -68 402 -127 364 -68 l 240 -68 b 89 -157 140 -68 89 -98 l 45 -157 b 68 -53 45 -115 52 -81 b 0 203 23 -23 0 63 z"
+    },
+    "accSagittalSharp11v49CUp": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -68 b 135 68 45 23 76 68 l 337 68 b 405 95 363 68 386 76 l 405 -27 b 315 -68 386 -55 356 -68 l 112 -68 b 0 -292 37 -68 0 -143 l 45 -292 b 135 -157 45 -203 75 -157 l 135 -517 l 180 -517 l 180 -157 l 271 -157 l 271 -517 l 315 -517 l 315 -157 l 337 -157 b 405 -130 360 -157 383 -148 l 405 -517 l 449 -517 l 449 248 l 428 248 b 315 157 413 187 376 157 l 112 157 b 0 -68 37 157 0 82 z"
+    },
+    "accSagittalFlat11v49CDown": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 45 68 b 135 -68 45 -23 76 -68 l 337 -68 b 405 -95 363 -68 386 -76 l 405 27 b 315 68 386 55 356 68 l 112 68 b 0 292 37 68 0 143 l 45 292 b 135 157 45 203 75 157 l 135 517 l 180 517 l 180 157 l 271 157 l 271 517 l 315 517 l 315 157 l 337 157 b 405 130 360 157 383 148 l 405 517 l 449 517 l 449 -248 l 428 -248 b 315 -157 413 -187 376 -157 l 112 -157 b 0 68 37 -157 0 -82 z"
+    },
+    "accSagittalSharp19CUp": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 89 -109 l 89 -517 l 135 -517 l 135 -109 b 225 -27 170 -102 200 -75 l 225 -517 l 271 -517 l 271 14 b 337 -23 289 -10 311 -23 l 360 -23 l 360 -517 l 405 -517 l 405 -23 b 495 -203 465 -23 495 -82 l 540 -203 b 428 68 540 -23 503 68 l 360 68 b 248 248 310 68 271 128 b 122 0 217 98 176 16 b 95 -3 112 0 104 -3 b 45 68 60 -3 45 20 l 0 68 b 89 -109 0 -39 30 -98 z"
+    },
+    "accSagittalFlat19CDown": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 89 109 l 89 517 l 135 517 l 135 109 b 225 27 170 102 200 75 l 225 517 l 271 517 l 271 -14 b 337 23 289 10 311 23 l 360 23 l 360 517 l 405 517 l 405 23 b 495 203 465 23 495 82 l 540 203 b 428 -68 540 23 503 -68 l 360 -68 b 248 -248 310 -68 271 -128 b 122 0 217 -98 176 -16 b 95 3 112 0 104 3 b 45 -68 60 3 45 -20 l 0 -68 b 89 109 0 39 30 98 z"
+    },
+    "accSagittalSharp7v19CUp": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 89 -109 l 89 -517 l 135 -517 l 135 -109 b 225 -27 170 -102 200 -75 l 225 -517 l 271 -517 l 271 112 l 315 112 b 360 109 331 112 346 112 l 360 -517 l 405 -517 l 405 98 b 495 -68 465 73 495 19 l 495 -248 l 540 -248 l 540 68 b 360 248 540 189 480 248 l 248 248 b 122 0 217 98 176 16 b 95 -3 112 0 104 -3 b 45 68 60 -3 45 20 l 0 68 b 89 -109 0 -39 30 -98 z"
+    },
+    "accSagittalFlat7v19CDown": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 89 109 l 89 517 l 135 517 l 135 109 b 225 27 170 102 200 75 l 225 517 l 271 517 l 271 -112 l 315 -112 b 360 -109 331 -112 346 -112 l 360 517 l 405 517 l 405 -98 b 495 68 465 -73 495 -19 l 495 248 l 540 248 l 540 -68 b 360 -248 540 -189 480 -248 l 248 -248 b 122 0 217 -98 176 -16 b 95 3 112 0 104 3 b 45 -68 60 3 45 -20 l 0 -68 b 89 109 0 39 30 98 z"
+    },
+    "accSagittalSharp49SUp": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -203 b 135 -23 45 -84 75 -23 l 135 -517 l 180 -517 l 180 -23 l 203 -23 b 271 14 229 -23 251 -10 l 271 -517 l 315 -517 l 315 112 l 360 112 b 405 109 376 112 390 112 l 405 -517 l 449 -517 l 449 96 b 540 -68 510 72 540 17 l 540 -248 l 585 -248 l 585 68 b 405 248 585 187 526 248 l 292 248 b 180 68 268 127 230 68 l 112 68 b 0 -203 37 68 0 -23 z"
+    },
+    "accSagittalFlat49SDown": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 45 203 b 135 23 45 84 75 23 l 135 517 l 180 517 l 180 23 l 203 23 b 271 -14 229 23 251 10 l 271 517 l 315 517 l 315 -112 l 360 -112 b 405 -109 376 -112 390 -112 l 405 517 l 449 517 l 449 -96 b 540 68 510 -72 540 -17 l 540 248 l 585 248 l 585 -68 b 405 -248 585 -187 526 -248 l 292 -248 b 180 -68 268 -127 230 -68 l 112 -68 b 0 203 37 -68 0 23 z"
+    },
+    "accSagittalSharp23SUp": {
+      "x_min": 0,
+      "x_max": 469,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -203 b 135 -23 45 -84 75 -23 l 135 -517 l 180 -517 l 180 -23 l 203 -23 b 271 14 229 -23 251 -10 l 271 -517 l 315 -517 l 315 71 l 405 -14 l 405 -517 l 449 -517 l 449 -56 l 675 -268 l 675 -112 l 292 248 b 180 68 268 127 230 68 l 112 68 b 0 -203 37 68 0 -23 z"
+    },
+    "accSagittalFlat23SDown": {
+      "x_min": 0,
+      "x_max": 469,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 45 203 b 135 23 45 84 75 23 l 135 517 l 180 517 l 180 23 l 203 23 b 271 -14 229 23 251 10 l 271 517 l 315 517 l 315 -71 l 405 14 l 405 517 l 449 517 l 449 56 l 675 268 l 675 112 l 292 -248 b 180 -68 268 -127 230 -68 l 112 -68 b 0 203 37 -68 0 23 z"
+    },
+    "accSagittalSharp5v13MUp": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 495 141 l 495 14 l 0 -157 l 0 -256 l 225 -180 l 225 -517 l 271 -517 l 271 -161 l 360 -130 l 360 -517 l 405 -517 l 405 -115 l 495 -84 l 495 -517 l 540 -517 l 540 248 l 517 248 b 167 168 366 194 248 168 b 45 248 85 168 45 194 l 0 248 b 95 99 0 170 30 120 l 0 68 l 0 -30 z"
+    },
+    "accSagittalFlat5v13MDown": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 495 -141 l 495 -14 l 0 157 l 0 256 l 225 180 l 225 517 l 271 517 l 271 161 l 360 130 l 360 517 l 405 517 l 405 115 l 495 84 l 495 517 l 540 517 l 540 -248 l 517 -248 b 167 -168 366 -194 248 -168 b 45 -248 85 -168 45 -194 l 0 -248 b 95 -99 0 -170 30 -120 l 0 -68 l 0 30 z"
+    },
+    "accSagittalSharp11v19MUp": {
+      "x_min": 0,
+      "x_max": 438,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 68 l 0 -248 l 45 -248 l 45 -68 b 180 104 45 26 89 82 l 180 -517 l 225 -517 l 225 112 l 271 112 l 315 112 l 315 -517 l 360 -517 l 360 14 b 428 -23 379 -10 402 -23 l 449 -23 l 449 -517 l 495 -517 l 495 -23 b 585 -203 554 -23 585 -84 l 631 -203 b 517 68 631 -23 593 68 l 449 68 b 337 248 400 68 363 127 l 225 248 b 0 68 75 248 0 187 z"
+    },
+    "accSagittalFlat11v19MDown": {
+      "x_min": 0,
+      "x_max": 438,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 -68 l 0 248 l 45 248 l 45 68 b 180 -104 45 -26 89 -82 l 180 517 l 225 517 l 225 -112 l 271 -112 l 315 -112 l 315 517 l 360 517 l 360 -14 b 428 23 379 10 402 23 l 449 23 l 449 517 l 495 517 l 495 23 b 585 203 554 23 585 84 l 631 203 b 517 -68 631 23 593 -68 l 449 -68 b 337 -248 400 -68 363 -127 l 225 -248 b 0 -68 75 -248 0 -187 z"
+    },
+    "accSagittalSharp49MUp": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -145 l 45 -68 b 360 112 45 53 150 112 l 495 112 l 495 14 z m 0 -248 l 45 -248 l 225 -180 l 225 -517 l 271 -517 l 271 -166 l 360 -132 l 360 -517 l 405 -517 l 405 -117 l 495 -84 l 495 -517 l 540 -517 l 540 248 l 360 248 b 0 -68 120 248 0 143 z"
+    },
+    "accSagittalFlat49MDown": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 248 l 45 248 l 225 180 l 225 517 l 271 517 l 271 166 l 360 132 l 360 517 l 405 517 l 405 117 l 495 84 l 495 517 l 540 517 l 540 -248 l 360 -248 b 0 68 120 -248 0 -143 z m 45 145 l 45 68 b 360 -112 45 -53 150 -112 l 495 -112 l 495 -14 z"
+    },
+    "accSagittalSharp5v49MUp": {
+      "x_min": 0,
+      "x_max": 469,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -271 l 180 -79 l 180 -517 l 225 -517 l 225 -30 l 315 65 l 315 -517 l 360 -517 l 360 65 l 449 -30 l 449 -517 l 495 -517 l 495 -79 l 675 -271 l 675 -112 l 337 248 b 118 89 239 143 166 89 b 45 157 68 89 45 112 l 0 157 b 107 0 0 62 36 10 l 0 -112 z"
+    },
+    "accSagittalFlat5v49MDown": {
+      "x_min": 0,
+      "x_max": 469,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 271 l 180 79 l 180 517 l 225 517 l 225 30 l 315 -65 l 315 517 l 360 517 l 360 -65 l 449 30 l 449 517 l 495 517 l 495 79 l 675 271 l 675 112 l 337 -248 b 118 -89 239 -143 166 -89 b 45 -157 68 -89 45 -112 l 0 -157 b 107 0 0 -62 36 -10 l 0 112 z"
+    },
+    "accSagittalSharp49LUp": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 112 l 180 112 b 540 -68 420 112 540 53 l 540 -145 l 45 16 z m 0 -517 l 45 -517 l 45 -82 l 135 -112 l 135 -517 l 180 -517 l 180 -127 l 271 -157 l 271 -517 l 315 -517 l 315 -173 l 540 -248 l 585 -248 l 585 -68 b 180 248 585 143 449 248 l 0 248 z"
+    },
+    "accSagittalFlat49LDown": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 517 l 45 517 l 45 82 l 135 112 l 135 517 l 180 517 l 180 127 l 271 157 l 271 517 l 315 517 l 315 173 l 540 248 l 585 248 l 585 68 b 180 -248 585 -143 449 -248 l 0 -248 z m 45 -112 l 180 -112 b 540 68 420 -112 540 -53 l 540 145 l 45 -16 z"
+    },
+    "accSagittalSharp11v19LUp": {
+      "x_min": 0,
+      "x_max": 438,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -517 l 45 -517 l 45 -81 l 135 -108 l 135 -517 l 180 -517 l 180 -121 l 271 -148 l 271 -517 l 315 -517 l 315 -161 l 631 -255 l 631 -157 l 45 16 l 45 144 l 631 -30 l 631 68 l 23 248 l 0 248 z"
+    },
+    "accSagittalFlat11v19LDown": {
+      "x_min": 0,
+      "x_max": 438,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 517 l 45 517 l 45 81 l 135 108 l 135 517 l 180 517 l 180 121 l 271 148 l 271 517 l 315 517 l 315 161 l 631 255 l 631 157 l 45 -16 l 45 -144 l 631 30 l 631 -68 l 23 -248 l 0 -248 z"
+    },
+    "accSagittalSharp5v13LUp": {
+      "x_min": 0,
+      "x_max": 500,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 89 -109 l 89 -517 l 135 -517 l 135 -109 b 225 -27 170 -102 200 -75 l 225 -517 l 271 -517 l 271 -85 l 360 -120 l 360 -517 l 405 -517 l 405 -135 l 720 -256 l 720 -157 l 271 14 l 271 141 l 720 -30 l 720 68 l 248 248 b 122 0 217 98 176 16 b 95 -3 112 0 104 -3 b 45 68 60 -3 45 20 l 0 68 b 89 -109 0 -39 30 -98 z"
+    },
+    "accSagittalFlat5v13LDown": {
+      "x_min": 0,
+      "x_max": 500,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 89 109 l 89 517 l 135 517 l 135 109 b 225 27 170 102 200 75 l 225 517 l 271 517 l 271 85 l 360 120 l 360 517 l 405 517 l 405 135 l 720 256 l 720 157 l 271 -14 l 271 -141 l 720 30 l 720 -68 l 248 -248 b 122 0 217 -98 176 -16 b 95 3 112 0 104 3 b 45 -68 60 3 45 -20 l 0 -68 b 89 109 0 39 30 98 z"
+    },
+    "accSagittalDoubleSharp23SDown": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -203 l 45 -203 b 135 -23 45 -82 76 -23 l 301 -23 l 135 -503 l 186 -517 l 337 -82 l 488 -517 l 540 -503 l 370 -14 b 449 112 423 10 449 53 l 449 248 l 428 248 b 315 68 402 127 364 68 l 240 68 b 89 157 140 68 89 98 l 45 157 b 68 53 45 115 52 81 b 0 -203 23 23 0 -63 z"
+    },
+    "accSagittalDoubleFlat23SUp": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 203 l 45 203 b 135 23 45 82 76 23 l 301 23 l 135 503 l 186 517 l 337 82 l 488 517 l 540 503 l 370 14 b 449 -112 423 -10 449 -53 l 449 -248 l 428 -248 b 315 -68 402 -127 364 -68 l 240 -68 b 89 -157 140 -68 89 -98 l 45 -157 b 68 -53 45 -115 52 -81 b 0 203 23 -23 0 63 z"
+    },
+    "accSagittalDoubleSharp49SDown": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -292 l 45 -292 b 112 -157 45 -203 68 -157 l 256 -157 l 135 -503 l 187 -517 l 337 -82 l 490 -517 l 540 -503 l 366 0 l 396 89 b 449 157 416 102 435 125 l 449 248 l 428 248 b 315 157 413 187 376 157 l 112 157 b 0 -68 39 157 0 82 l 45 -68 b 135 68 45 23 76 68 l 287 68 l 311 0 l 288 -68 l 89 -68 b 0 -292 32 -68 0 -144 z"
+    },
+    "accSagittalDoubleFlat49SUp": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 292 l 45 292 b 112 157 45 203 68 157 l 256 157 l 135 503 l 187 517 l 337 82 l 490 517 l 540 503 l 366 0 l 396 -89 b 449 -157 416 -102 435 -125 l 449 -248 l 428 -248 b 315 -157 413 -187 376 -157 l 112 -157 b 0 68 39 -157 0 -82 l 45 68 b 135 -68 45 -23 76 -68 l 287 -68 l 311 0 l 288 68 l 89 68 b 0 292 32 68 0 144 z"
+    },
+    "accSagittalDoubleSharp7v19CDown": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -112 l 0 -266 l 307 -7 l 135 -503 l 186 -517 l 337 -82 l 488 -517 l 540 -503 l 366 0 l 386 59 l 449 112 l 449 248 l 428 248 b 130 68 285 127 186 68 b 45 157 73 68 45 98 l 0 157 b 112 -20 0 53 37 -6 z"
+    },
+    "accSagittalDoubleFlat7v19CUp": {
+      "x_min": 0,
+      "x_max": 375,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 112 l 0 266 l 307 7 l 135 503 l 186 517 l 337 82 l 488 517 l 540 503 l 366 0 l 386 -59 l 449 -112 l 449 -248 l 428 -248 b 130 -68 285 -127 186 -68 b 45 -157 73 -68 45 -98 l 0 -157 b 112 20 0 -53 37 6 z"
+    },
+    "accSagittalDoubleSharp19CDown": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 372 112 l 393 112 l 383 82 z m 0 68 l 0 -248 l 45 -248 l 45 -68 b 315 109 45 36 135 95 l 354 0 l 180 -503 l 232 -517 l 383 -82 l 534 -517 l 585 -503 l 410 0 l 449 112 l 495 112 l 495 248 l 360 248 b 0 68 120 248 0 187 z"
+    },
+    "accSagittalDoubleFlat19CUp": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 -68 l 0 248 l 45 248 l 45 68 b 315 -109 45 -36 135 -95 l 354 0 l 180 503 l 232 517 l 383 82 l 534 517 l 585 503 l 410 0 l 449 -112 l 495 -112 l 495 -248 l 360 -248 b 0 -68 120 -248 0 -187 z m 372 -112 l 393 -112 l 383 -82 z"
+    },
+    "accSagittalDoubleSharp11v49CDown": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -203 b 135 -23 45 -84 75 -23 l 203 -23 b 262 4 225 -23 245 -13 l 265 0 l 89 -503 l 141 -517 l 292 -82 l 444 -517 l 495 -503 l 321 0 l 360 112 b 540 -68 480 112 540 53 l 540 -248 l 585 -248 l 585 68 b 405 248 585 187 526 248 l 292 248 b 180 68 268 127 230 68 l 112 68 b 0 -203 37 68 0 -23 z"
+    },
+    "accSagittalDoubleFlat11v49CUp": {
+      "x_min": 0,
+      "x_max": 406,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 45 203 b 135 23 45 84 75 23 l 203 23 b 262 -4 225 23 245 13 l 265 0 l 89 503 l 141 517 l 292 82 l 444 517 l 495 503 l 321 0 l 360 -112 b 540 68 480 -112 540 -53 l 540 248 l 585 248 l 585 -68 b 405 -248 585 -187 526 -248 l 292 -248 b 180 -68 268 -127 230 -68 l 112 -68 b 0 203 37 -68 0 23 z"
+    },
+    "accSagittalDoubleSharp143CDown": {
+      "x_min": 0,
+      "x_max": 469,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 45 -203 b 135 -23 45 -84 75 -23 l 203 -23 b 262 4 225 -23 245 -13 l 265 0 l 89 -503 l 141 -517 l 292 -82 l 444 -517 l 495 -503 l 321 0 l 337 49 l 675 -268 l 675 -112 l 292 248 b 180 68 268 127 230 68 l 112 68 b 0 -203 37 68 0 -23 z"
+    },
+    "accSagittalDoubleFlat143CUp": {
+      "x_min": 0,
+      "x_max": 469,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 45 203 b 135 23 45 84 75 23 l 203 23 b 262 -4 225 23 245 13 l 265 0 l 89 503 l 141 517 l 292 82 l 444 517 l 495 503 l 321 0 l 337 -49 l 675 268 l 675 112 l 292 -248 b 180 -68 268 -127 230 -68 l 112 -68 b 0 203 37 -68 0 23 z"
+    },
+    "accSagittalDoubleSharp17kDown": {
+      "x_min": 0,
+      "x_max": 438,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 416 115 l 442 124 l 428 82 z m 0 248 b 95 101 0 170 30 121 l 0 68 l 0 -30 l 364 96 l 399 0 l 390 -23 l 0 -157 l 0 -255 l 353 -135 l 225 -503 l 275 -517 l 428 -82 l 577 -517 l 631 -503 l 455 0 l 507 145 l 540 157 l 540 248 l 517 248 b 167 168 366 194 248 168 b 45 248 85 168 45 194 z"
+    },
+    "accSagittalDoubleFlat17kUp": {
+      "x_min": 0,
+      "x_max": 438,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 -248 b 95 -101 0 -170 30 -121 l 0 -68 l 0 30 l 364 -96 l 399 0 l 390 23 l 0 157 l 0 255 l 353 135 l 225 503 l 275 517 l 428 82 l 577 517 l 631 503 l 455 0 l 507 -145 l 540 -157 l 540 -248 l 517 -248 b 167 -168 366 -194 248 -168 b 45 -248 85 -168 45 -194 z m 416 -115 l 442 -124 l 428 -82 z"
+    },
+    "accSagittalDoubleSharp19sDown": {
+      "x_min": 0,
+      "x_max": 438,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 -248 l 45 -248 l 45 -68 b 271 112 45 53 120 112 l 310 0 l 135 -503 l 186 -517 l 337 -82 l 488 -517 l 540 -503 l 366 0 l 367 4 b 428 -23 386 -13 405 -23 l 495 -23 b 585 -203 554 -23 585 -84 l 631 -203 b 517 68 631 -23 593 68 l 449 68 b 337 248 400 68 363 127 l 225 248 b 0 68 75 248 0 187 z"
+    },
+    "accSagittalDoubleFlat19sUp": {
+      "x_min": 0,
+      "x_max": 438,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 248 l 45 248 l 45 68 b 271 -112 45 -53 120 -112 l 310 0 l 135 503 l 186 517 l 337 82 l 488 517 l 540 503 l 366 0 l 367 -4 b 428 23 386 13 405 23 l 495 23 b 585 203 554 23 585 84 l 631 203 b 517 -68 631 23 593 -68 l 449 -68 b 337 -248 400 -68 363 -127 l 225 -248 b 0 -68 75 -248 0 -187 z"
+    },
+    "accSagittalShaftUp": {
+      "x_min": 0,
+      "x_max": 31,
+      "y_min": -359,
+      "y_max": 172,
+      "ha": 531,
+      "o": "m 0 112 l 0 -517 l 45 -517 l 45 112 l 23 248 z"
+    },
+    "accSagittalShaftDown": {
+      "x_min": 0,
+      "x_max": 31,
+      "y_min": -172,
+      "y_max": 359,
+      "ha": 531,
+      "o": "m 0 -112 l 0 517 l 45 517 l 45 -112 l 23 -248 z"
+    },
+    "accSagittalAcute": {
+      "x_min": 0,
+      "x_max": 125,
+      "y_min": -62,
+      "y_max": 125,
+      "ha": 187,
+      "o": "m 0 0 l 0 -89 l 180 89 l 180 180 z"
+    },
+    "accSagittalGrave": {
+      "x_min": 0,
+      "x_max": 125,
+      "y_min": -125,
+      "y_max": 62,
+      "ha": 187,
+      "o": "m 0 0 l 0 89 l 180 -89 l 180 -180 z"
+    },
+    "accSagittal1MinaUp": {
+      "x_min": -7,
+      "x_max": 124,
+      "y_min": 16,
+      "y_max": 106.32667068233003,
+      "ha": 90.32667068233003,
+      "o": "m -10 23 l 43 23 b 72 65 43 23 65 55 b 135 23 104 108 136 148 l 179 23 b 134 150 179 112 163 135 b 68 130 116 158 85 150 b -10 23 43 101 13 58 z"
+    },
+    "accSagittal1MinaDown": {
+      "x_min": -7,
+      "x_max": 124,
+      "y_min": -106.32667068233003,
+      "y_max": -16,
+      "ha": 90.32667068233003,
+      "o": "m -10 -23 l 43 -23 b 72 -65 43 -23 65 -55 b 135 -23 104 -108 136 -148 l 179 -23 b 134 -150 179 -112 163 -135 b 68 -130 116 -158 85 -150 b -10 -23 43 -101 13 -58 z"
+    },
+    "accSagittal2MinasUp": {
+      "x_min": -7,
+      "x_max": 218,
+      "y_min": 16,
+      "y_max": 106.32679473178912,
+      "ha": 90.32679473178912,
+      "o": "m -10 23 l 43 23 b 72 65 43 23 65 55 b 135 23 104 108 136 148 l 179 23 b 207 65 179 23 200 55 b 271 23 240 108 272 148 l 314 23 b 269 150 314 112 299 135 b 203 130 252 158 220 150 b 173 93 191 115 182 104 b 134 150 167 127 153 140 b 68 130 116 158 85 150 b -10 23 43 101 13 58 z"
+    },
+    "accSagittal2MinasDown": {
+      "x_min": -7,
+      "x_max": 218,
+      "y_min": -106.32679473178912,
+      "y_max": -16,
+      "ha": 90.32679473178912,
+      "o": "m -10 -23 l 43 -23 b 72 -65 43 -23 65 -55 b 135 -23 104 -108 136 -148 l 179 -23 b 207 -65 179 -23 200 -55 b 271 -23 240 -108 272 -148 l 314 -23 b 269 -150 314 -112 299 -135 b 203 -130 252 -158 220 -150 b 173 -93 191 -115 182 -104 b 134 -150 167 -127 153 -140 b 68 -130 116 -158 85 -150 b -10 -23 43 -101 13 -58 z"
+    },
+    "accSagittal1TinaUp": {
+      "x_min": 0,
+      "x_max": 93,
+      "y_min": 16,
+      "y_max": 107,
+      "ha": 91,
+      "o": "m 134 154 l 91 154 b 81 76 91 101 90 86 b 0 68 73 69 48 68 l 0 23 b 112 45 50 23 92 27 b 134 154 129 59 134 73 z"
+    },
+    "accSagittal1TinaDown": {
+      "x_min": 0,
+      "x_max": 93,
+      "y_min": -107,
+      "y_max": -16,
+      "ha": 91,
+      "o": "m 134 -154 l 91 -154 b 81 -76 91 -101 90 -86 b 0 -68 73 -69 48 -68 l 0 -23 b 112 -45 50 -23 92 -27 b 134 -154 129 -59 134 -73 z"
+    },
+    "accSagittal2TinasUp": {
+      "x_min": 0,
+      "x_max": 94,
+      "y_min": 16,
+      "y_max": 107,
+      "ha": 91,
+      "o": "m 135 68 b 99 92 116 68 103 82 b 89 154 94 105 89 121 l 46 154 b 36 92 45 131 42 106 b 0 68 32 83 23 68 l 0 23 b 53 45 23 23 48 39 b 68 63 60 52 60 52 b 82 43 75 52 77 50 b 135 23 86 37 115 23 z"
+    },
+    "accSagittal2TinasDown": {
+      "x_min": 0,
+      "x_max": 94,
+      "y_min": -107,
+      "y_max": -16,
+      "ha": 91,
+      "o": "m 135 -68 b 99 -92 116 -68 103 -82 b 89 -154 94 -105 89 -121 l 46 -154 b 36 -92 45 -131 42 -106 b 0 -68 32 -83 23 -68 l 0 -23 b 53 -45 23 -23 48 -39 b 68 -63 60 -52 60 -52 b 82 -43 75 -52 77 -50 b 135 -23 86 -37 115 -23 z"
+    },
+    "accSagittal3TinasUp": {
+      "x_min": -7,
+      "x_max": 124,
+      "y_min": 16,
+      "y_max": 106.32667068233003,
+      "ha": 90.32667068233003,
+      "o": "m -10 23 l 43 23 b 72 65 43 23 65 55 b 135 23 104 108 136 148 l 179 23 b 134 150 179 112 163 135 b 68 130 116 158 85 150 b -10 23 43 101 13 58 z"
+    },
+    "accSagittal3TinasDown": {
+      "x_min": -7,
+      "x_max": 124,
+      "y_min": -106.32667068233003,
+      "y_max": -16,
+      "ha": 90.32667068233003,
+      "o": "m -10 -23 l 43 -23 b 72 -65 43 -23 65 -55 b 135 -23 104 -108 136 -148 l 179 -23 b 134 -150 179 -112 163 -135 b 68 -130 116 -158 85 -150 b -10 -23 43 -101 13 -58 z"
+    },
+    "accSagittal4TinasUp": {
+      "x_min": 0,
+      "x_max": 187,
+      "y_min": 16,
+      "y_max": 106.77773196082337,
+      "ha": 90.77773196082337,
+      "o": "m 0 68 l 0 23 b 143 45 105 23 123 26 b 226 23 158 62 228 189 l 269 23 b 225 150 269 112 254 135 b 160 132 207 159 182 153 b 115 81 139 112 123 88 b 0 68 104 71 94 68 z"
+    },
+    "accSagittal4TinasDown": {
+      "x_min": 0,
+      "x_max": 187,
+      "y_min": -106.77773196082337,
+      "y_max": -16,
+      "ha": 90.77773196082337,
+      "o": "m 0 -68 l 0 -23 b 143 -45 105 -23 123 -26 b 226 -23 158 -62 228 -189 l 269 -23 b 225 -150 269 -112 254 -135 b 160 -132 207 -159 182 -153 b 115 -81 139 -112 123 -88 b 0 -68 104 -71 94 -68 z"
+    },
+    "accSagittal5TinasUp": {
+      "x_min": 0,
+      "x_max": 218,
+      "y_min": 16,
+      "y_max": 107,
+      "ha": 91,
+      "o": "m 135 23 b 187 45 156 23 168 26 b 271 23 204 61 272 189 l 314 23 b 269 150 314 112 299 135 b 204 132 252 159 226 153 b 160 81 183 112 168 88 b 135 68 148 71 147 68 b 99 92 116 68 103 82 b 89 154 94 105 89 121 l 46 154 b 36 92 45 131 42 106 b 0 68 32 83 23 68 l 0 23 b 53 45 23 23 48 39 b 68 63 60 52 60 52 b 82 43 75 52 77 50 b 135 23 86 37 115 23 z"
+    },
+    "accSagittal5TinasDown": {
+      "x_min": 0,
+      "x_max": 218,
+      "y_min": -107,
+      "y_max": -16,
+      "ha": 91,
+      "o": "m 135 -23 b 187 -45 156 -23 168 -26 b 271 -23 204 -61 272 -189 l 314 -23 b 269 -150 314 -112 299 -135 b 204 -132 252 -159 226 -153 b 160 -81 183 -112 168 -88 b 135 -68 148 -71 147 -68 b 99 -92 116 -68 103 -82 b 89 -154 94 -105 89 -121 l 46 -154 b 36 -92 45 -131 42 -106 b 0 -68 32 -83 23 -68 l 0 -23 b 53 -45 23 -23 48 -39 b 68 -63 60 -52 60 -52 b 82 -43 75 -52 77 -50 b 135 -23 86 -37 115 -23 z"
+    },
+    "accSagittal6TinasUp": {
+      "x_min": -7,
+      "x_max": 218,
+      "y_min": 16,
+      "y_max": 106.32679473178912,
+      "ha": 90.32679473178912,
+      "o": "m -10 23 l 43 23 b 72 65 43 23 65 55 b 135 23 104 108 136 148 l 179 23 b 207 65 179 23 200 55 b 271 23 240 108 272 148 l 314 23 b 269 150 314 112 299 135 b 203 130 252 158 220 150 b 173 93 191 115 182 104 b 134 150 167 127 153 140 b 68 130 116 158 85 150 b -10 23 43 101 13 58 z"
+    },
+    "accSagittal6TinasDown": {
+      "x_min": -7,
+      "x_max": 218,
+      "y_min": -106.32679473178912,
+      "y_max": -16,
+      "ha": 90.32679473178912,
+      "o": "m -10 -23 l 43 -23 b 72 -65 43 -23 65 -55 b 135 -23 104 -108 136 -148 l 179 -23 b 207 -65 179 -23 200 -55 b 271 -23 240 -108 272 -148 l 314 -23 b 269 -150 314 -112 299 -135 b 203 -130 252 -158 220 -150 b 173 -93 191 -115 182 -104 b 134 -150 167 -127 153 -140 b 68 -130 116 -158 85 -150 b -10 -23 43 -101 13 -58 z"
+    },
+    "accSagittal7TinasUp": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": 16,
+      "y_max": 106.77773196082337,
+      "ha": 90.77773196082337,
+      "o": "m 269 23 z m 0 68 l 0 23 b 143 45 105 23 123 26 b 226 23 158 62 228 189 l 269 23 b 298 65 269 23 291 55 b 361 23 330 108 362 148 l 405 23 b 360 150 405 112 389 135 b 294 130 342 158 311 150 b 264 93 281 115 273 104 b 225 150 257 127 244 140 b 160 132 207 159 182 153 b 115 81 139 112 123 88 b 0 68 104 71 94 68 z"
+    },
+    "accSagittal7TinasDown": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": -106.77773196082337,
+      "y_max": -16,
+      "ha": 90.77773196082337,
+      "o": "m 0 -68 l 0 -23 b 143 -45 105 -23 123 -26 b 226 -23 158 -62 228 -189 l 269 -23 b 298 -65 269 -23 291 -55 b 361 -23 330 -108 362 -148 l 405 -23 b 360 -150 405 -112 389 -135 b 294 -130 342 -158 311 -150 b 264 -93 281 -115 273 -104 b 225 -150 257 -127 244 -140 b 160 -132 207 -159 182 -153 b 115 -81 139 -112 123 -88 b 0 -68 104 -71 94 -68 z"
+    },
+    "accSagittal8TinasUp": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": 16,
+      "y_max": 107,
+      "ha": 91,
+      "o": "m 314 23 z m 135 23 b 187 45 156 23 168 26 b 271 23 204 61 272 189 l 314 23 b 343 65 314 23 335 55 b 406 23 375 108 407 148 l 449 23 b 405 150 449 112 434 135 b 338 130 387 158 356 150 b 309 93 326 115 317 104 b 269 150 302 127 289 140 b 204 132 252 159 226 153 b 160 81 183 112 168 88 b 135 68 148 71 147 68 b 99 92 116 68 103 82 b 89 154 94 105 89 121 l 46 154 b 36 92 45 131 42 106 b 0 68 32 83 23 68 l 0 23 b 53 45 23 23 48 39 b 68 63 60 52 60 52 b 82 43 75 52 77 50 b 135 23 86 37 115 23 z"
+    },
+    "accSagittal8TinasDown": {
+      "x_min": 0,
+      "x_max": 312,
+      "y_min": -107,
+      "y_max": -16,
+      "ha": 91,
+      "o": "m 135 -23 b 187 -45 156 -23 168 -26 b 271 -23 204 -61 272 -189 l 314 -23 b 343 -65 314 -23 335 -55 b 406 -23 375 -108 407 -148 l 449 -23 b 405 -150 449 -112 434 -135 b 338 -130 387 -158 356 -150 b 309 -93 326 -115 317 -104 b 269 -150 302 -127 289 -140 b 204 -132 252 -159 226 -153 b 160 -81 183 -112 168 -88 b 135 -68 148 -71 147 -68 b 99 -92 116 -68 103 -82 b 89 -154 94 -105 89 -121 l 46 -154 b 36 -92 45 -131 42 -106 b 0 -68 32 -83 23 -68 l 0 -23 b 53 -45 23 -23 48 -39 b 68 -63 60 -52 60 -52 b 82 -43 75 -52 77 -50 b 135 -23 86 -37 115 -23 z"
+    },
+    "accSagittal9TinasUp": {
+      "x_min": -7,
+      "x_max": 312,
+      "y_min": 16,
+      "y_max": 106.32679473178912,
+      "ha": 90.32679473178912,
+      "o": "m 314 23 z m -10 23 l 43 23 b 72 65 43 23 65 55 b 135 23 104 108 136 148 l 179 23 b 207 65 179 23 200 55 b 271 23 240 108 272 148 l 314 23 b 343 65 314 23 335 55 b 406 23 375 108 407 148 l 449 23 b 405 150 449 112 434 135 b 338 130 387 158 356 150 b 309 93 326 115 317 104 b 269 150 302 127 289 140 b 203 130 252 158 220 150 b 173 93 191 115 182 104 b 134 150 167 127 153 140 b 68 130 116 158 85 150 b -10 23 43 101 13 58 z"
+    },
+    "accSagittal9TinasDown": {
+      "x_min": -7,
+      "x_max": 312,
+      "y_min": -106.32679473178912,
+      "y_max": -16,
+      "ha": 90.32679473178912,
+      "o": "m -10 -23 l 43 -23 b 72 -65 43 -23 65 -55 b 135 -23 104 -108 136 -148 l 179 -23 b 207 -65 179 -23 200 -55 b 271 -23 240 -108 272 -148 l 314 -23 b 343 -65 314 -23 335 -55 b 406 -23 375 -108 407 -148 l 449 -23 b 405 -150 449 -112 434 -135 b 338 -130 387 -158 356 -150 b 309 -93 326 -115 317 -104 b 269 -150 302 -127 289 -140 b 203 -130 252 -158 220 -150 b 173 -93 191 -115 182 -104 b 134 -150 167 -127 153 -140 b 68 -130 116 -158 85 -150 b -10 -23 43 -101 13 -58 z"
+    },
+    "accSagittalFractionalTinaUp": {
+      "x_min": -3,
+      "x_max": 35,
+      "y_min": 73,
+      "y_max": 111,
+      "ha": 38,
+      "o": "m -4 132 b 23 105 -4 118 9 105 b 50 132 37 105 50 118 b 23 160 50 147 37 160 b -4 132 9 160 -4 147 z"
+    },
+    "accSagittalFractionalTinaDown": {
+      "x_min": -3,
+      "x_max": 35,
+      "y_min": -111,
+      "y_max": -73,
+      "ha": 38,
+      "o": "m -4 -132 b 23 -105 -4 -118 9 -105 b 50 -132 37 -105 50 -118 b 23 -160 50 -147 37 -160 b -4 -132 9 -160 -4 -147 z"
+    },
+    "accidentalNarrowReversedFlat": {
+      "x_min": 0,
+      "x_max": 164,
+      "y_min": -194,
+      "y_max": 422,
+      "ha": 616,
+      "o": "m 112 -157 l 236 -279 l 236 608 l 192 608 l 192 180 b 85 243 150 222 112 243 b 0 84 23 243 0 135 b 112 -157 0 3 37 -78 z m 82 40 b 138 144 82 73 96 144 b 192 112 153 144 170 132 l 192 -163 l 135 -98 b 82 40 101 -50 82 -3 z"
+    },
+    "accidentalNarrowReversedFlatAndFlat": {
+      "x_min": 0,
+      "x_max": 414,
+      "y_min": -194,
+      "y_max": 422,
+      "ha": 616,
+      "o": "m 438 -157 b 596 84 547 -82 596 3 b 475 243 596 154 556 243 b 325 180 435 243 383 222 l 325 608 l 281 608 l 281 -268 z m 0 84 b 112 -157 0 3 37 -78 l 235 -279 l 235 608 l 190 608 l 190 180 b 85 243 148 222 112 243 b 12 157 52 243 27 215 b 0 84 3 135 0 108 z m 325 112 b 410 144 360 132 386 144 b 498 36 462 144 498 84 b 413 -107 498 -9 469 -58 l 325 -173 z m 89 94 b 135 144 102 127 118 144 b 192 112 153 144 170 132 l 192 -163 l 135 -98 b 81 40 99 -50 81 -3 b 89 94 81 59 84 76 z"
+    },
+    "accidentalWilsonPlus": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": -203,
+      "y_max": 203,
+      "ha": 406,
+      "o": "m 180 -98 l 180 -292 l 225 -292 l 225 -56 l 405 112 l 405 268 l 225 98 l 225 292 l 180 292 l 180 56 l 0 -112 l 0 -268 z"
+    },
+    "accidentalWilsonMinus": {
+      "x_min": 0,
+      "x_max": 281,
+      "y_min": -186,
+      "y_max": 186,
+      "ha": 372,
+      "o": "m 0 112 l 405 -268 l 405 -112 l 0 268 z"
     }
   },
   "fontFamily": "Bravura",
   "resolution": 1000,
-  "generatedOn": "2020-07-12T14:43:48.605Z"
+  "generatedOn": "2020-11-16T21:00:32.731Z"
 };
 
 /***/ }),
@@ -11789,884 +13723,6 @@ var LelandMetrics = {
 
 /***/ }),
 
-/***/ "./src/fonts/petalumaScript_metrics.js":
-/*!*********************************************!*\
-  !*** ./src/fonts/petalumaScript_metrics.js ***!
-  \*********************************************/
-/*! exports provided: PetalumaScriptMetrics */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PetalumaScriptMetrics", function() { return PetalumaScriptMetrics; });
-var PetalumaScriptMetrics = {
-  name: 'PetalumaScript',
-  smufl: false,
-  spacing: 50,
-  "glyphs": {
-    " ": {
-      "x_min": 0,
-      "x_max": 250,
-      "y_min": 0,
-      "y_max": 500,
-      "ha": 500,
-      "leftSideBearing": 0,
-      "advanceWidth": 250
-    },
-    "0": {
-      "x_min": 33,
-      "x_max": 534,
-      "y_min": -13,
-      "y_max": 751,
-      "ha": 764,
-      "leftSideBearing": 33,
-      "advanceWidth": 570
-    },
-    "1": {
-      "x_min": 48,
-      "x_max": 235,
-      "y_min": -17,
-      "y_max": 734,
-      "ha": 751,
-      "leftSideBearing": 48,
-      "advanceWidth": 286
-    },
-    "2": {
-      "x_min": 56,
-      "x_max": 571,
-      "y_min": -19,
-      "y_max": 741,
-      "ha": 760,
-      "leftSideBearing": 56,
-      "advanceWidth": 626
-    },
-    "3": {
-      "x_min": 50,
-      "x_max": 528,
-      "y_min": -7,
-      "y_max": 731,
-      "ha": 738,
-      "leftSideBearing": 50,
-      "advanceWidth": 589
-    },
-    "4": {
-      "x_min": 38,
-      "x_max": 564,
-      "y_min": -13,
-      "y_max": 743,
-      "ha": 756,
-      "leftSideBearing": 38,
-      "advanceWidth": 614
-    },
-    "5": {
-      "x_min": 42,
-      "x_max": 601,
-      "y_min": -34,
-      "y_max": 743,
-      "ha": 777,
-      "leftSideBearing": 42,
-      "advanceWidth": 648
-    },
-    "6": {
-      "x_min": 47,
-      "x_max": 606,
-      "y_min": -16,
-      "y_max": 743,
-      "ha": 759,
-      "leftSideBearing": 47,
-      "advanceWidth": 667
-    },
-    "7": {
-      "x_min": 47,
-      "x_max": 567,
-      "y_min": 5,
-      "y_max": 739,
-      "ha": 734,
-      "leftSideBearing": 0,
-      "advanceWidth": 615
-    },
-    "8": {
-      "x_min": 40,
-      "x_max": 541,
-      "y_min": -15,
-      "y_max": 752,
-      "ha": 767,
-      "leftSideBearing": 40,
-      "advanceWidth": 585
-    },
-    "9": {
-      "x_min": 40,
-      "x_max": 537,
-      "y_min": -52,
-      "y_max": 736,
-      "ha": 788,
-      "leftSideBearing": 40,
-      "advanceWidth": 592
-    },
-    "!": {
-      "x_min": 49,
-      "x_max": 180,
-      "y_min": -7,
-      "y_max": 761,
-      "ha": 768,
-      "leftSideBearing": 49,
-      "advanceWidth": 230
-    },
-    "\"": {
-      "x_min": 39,
-      "x_max": 304,
-      "y_min": 596,
-      "y_max": 804,
-      "ha": 208,
-      "leftSideBearing": 39,
-      "advanceWidth": 353
-    },
-    "#": {
-      "x_min": 33,
-      "x_max": 599,
-      "y_min": -8,
-      "y_max": 765,
-      "ha": 773,
-      "leftSideBearing": 33,
-      "advanceWidth": 648
-    },
-    "$": {
-      "x_min": 53,
-      "x_max": 495,
-      "y_min": -111,
-      "y_max": 823,
-      "ha": 934,
-      "leftSideBearing": 53,
-      "advanceWidth": 560
-    },
-    "%": {
-      "x_min": 35,
-      "x_max": 656,
-      "y_min": -128,
-      "y_max": 808,
-      "ha": 936,
-      "leftSideBearing": 35,
-      "advanceWidth": 711
-    },
-    "&": {
-      "x_min": 53,
-      "x_max": 441,
-      "y_min": -3,
-      "y_max": 753,
-      "ha": 756,
-      "leftSideBearing": 53,
-      "advanceWidth": 500
-    },
-    "'": {
-      "x_min": 43,
-      "x_max": 161,
-      "y_min": 590,
-      "y_max": 811,
-      "ha": 221,
-      "leftSideBearing": 43,
-      "advanceWidth": 217
-    },
-    "(": {
-      "x_min": 41,
-      "x_max": 311,
-      "y_min": -36,
-      "y_max": 845,
-      "ha": 881,
-      "leftSideBearing": 41,
-      "advanceWidth": 308
-    },
-    ")": {
-      "x_min": -8,
-      "x_max": 257,
-      "y_min": -21,
-      "y_max": 852,
-      "ha": 873,
-      "leftSideBearing": -8,
-      "advanceWidth": 280
-    },
-    "*": {
-      "x_min": 59,
-      "x_max": 539,
-      "y_min": 175,
-      "y_max": 589,
-      "ha": 414,
-      "leftSideBearing": 59,
-      "advanceWidth": 601
-    },
-    "+": {
-      "x_min": 33,
-      "x_max": 361,
-      "y_min": 180,
-      "y_max": 587,
-      "ha": 407,
-      "leftSideBearing": 33,
-      "advanceWidth": 400
-    },
-    ",": {
-      "x_min": 15,
-      "x_max": 176,
-      "y_min": -129,
-      "y_max": 92,
-      "ha": 221,
-      "leftSideBearing": 15,
-      "advanceWidth": 205
-    },
-    "-": {
-      "x_min": 40,
-      "x_max": 380,
-      "y_min": 317,
-      "y_max": 452,
-      "ha": 135,
-      "leftSideBearing": 40,
-      "advanceWidth": 422
-    },
-    ".": {
-      "x_min": 48,
-      "x_max": 185,
-      "y_min": -56,
-      "y_max": 84,
-      "ha": 140,
-      "leftSideBearing": 48,
-      "advanceWidth": 227
-    },
-    "/": {
-      "x_min": -58,
-      "x_max": 654,
-      "y_min": -122,
-      "y_max": 844,
-      "ha": 966,
-      "leftSideBearing": -58,
-      "advanceWidth": 626
-    },
-    ":": {
-      "x_min": 65,
-      "x_max": 225,
-      "y_min": 97,
-      "y_max": 536,
-      "ha": 439,
-      "leftSideBearing": 65,
-      "advanceWidth": 302
-    },
-    ";": {
-      "x_min": 13,
-      "x_max": 295,
-      "y_min": -139,
-      "y_max": 536,
-      "ha": 675,
-      "leftSideBearing": 13,
-      "advanceWidth": 334
-    },
-    "<": {
-      "x_min": 28,
-      "x_max": 438,
-      "y_min": -1,
-      "y_max": 607,
-      "ha": 608,
-      "leftSideBearing": 28,
-      "advanceWidth": 475
-    },
-    "=": {
-      "x_min": 40,
-      "x_max": 383,
-      "y_min": 199.9598640852289,
-      "y_max": 541,
-      "ha": 341.0401359147711,
-      "leftSideBearing": 40,
-      "advanceWidth": 422
-    },
-    ">": {
-      "x_min": 35,
-      "x_max": 421,
-      "y_min": 28,
-      "y_max": 632,
-      "ha": 604,
-      "leftSideBearing": 35,
-      "advanceWidth": 466
-    },
-    "?": {
-      "x_min": 45,
-      "x_max": 548,
-      "y_min": -17,
-      "y_max": 767,
-      "ha": 784,
-      "leftSideBearing": 45,
-      "advanceWidth": 592
-    },
-    "@": {
-      "x_min": 51,
-      "x_max": 730,
-      "y_min": -78,
-      "y_max": 753,
-      "ha": 831,
-      "leftSideBearing": 51,
-      "advanceWidth": 781
-    },
-    "A": {
-      "x_min": 37,
-      "x_max": 554,
-      "y_min": -4,
-      "y_max": 746,
-      "ha": 750,
-      "leftSideBearing": 37,
-      "advanceWidth": 617
-    },
-    "B": {
-      "x_min": 37,
-      "x_max": 532,
-      "y_min": 3,
-      "y_max": 783,
-      "ha": 780,
-      "leftSideBearing": 37,
-      "advanceWidth": 579
-    },
-    "C": {
-      "x_min": 37,
-      "x_max": 583,
-      "y_min": -3,
-      "y_max": 775,
-      "ha": 778,
-      "leftSideBearing": 37,
-      "advanceWidth": 623
-    },
-    "D": {
-      "x_min": 50,
-      "x_max": 530,
-      "y_min": -15,
-      "y_max": 749,
-      "ha": 764,
-      "leftSideBearing": 50,
-      "advanceWidth": 579
-    },
-    "E": {
-      "x_min": 45,
-      "x_max": 531,
-      "y_min": -1,
-      "y_max": 743,
-      "ha": 744,
-      "leftSideBearing": 45,
-      "advanceWidth": 585
-    },
-    "F": {
-      "x_min": 45,
-      "x_max": 459,
-      "y_min": 23,
-      "y_max": 727,
-      "ha": 704,
-      "leftSideBearing": 45,
-      "advanceWidth": 510
-    },
-    "G": {
-      "x_min": 31,
-      "x_max": 577,
-      "y_min": -8,
-      "y_max": 733,
-      "ha": 741,
-      "leftSideBearing": 31,
-      "advanceWidth": 611
-    },
-    "H": {
-      "x_min": 37,
-      "x_max": 493,
-      "y_min": -22,
-      "y_max": 758,
-      "ha": 780,
-      "leftSideBearing": 37,
-      "advanceWidth": 535
-    },
-    "I": {
-      "x_min": 47,
-      "x_max": 501,
-      "y_min": -3,
-      "y_max": 731,
-      "ha": 734,
-      "leftSideBearing": 47,
-      "advanceWidth": 541
-    },
-    "J": {
-      "x_min": 33,
-      "x_max": 531,
-      "y_min": -23,
-      "y_max": 725,
-      "ha": 748,
-      "leftSideBearing": 33,
-      "advanceWidth": 573
-    },
-    "K": {
-      "x_min": 43,
-      "x_max": 505,
-      "y_min": -10,
-      "y_max": 740,
-      "ha": 750,
-      "leftSideBearing": 43,
-      "advanceWidth": 560
-    },
-    "L": {
-      "x_min": 49,
-      "x_max": 457,
-      "y_min": -2,
-      "y_max": 746,
-      "ha": 748,
-      "leftSideBearing": 49,
-      "advanceWidth": 510
-    },
-    "M": {
-      "x_min": 35,
-      "x_max": 699,
-      "y_min": 1,
-      "y_max": 744,
-      "ha": 743,
-      "leftSideBearing": 35,
-      "advanceWidth": 743
-    },
-    "N": {
-      "x_min": 34,
-      "x_max": 533,
-      "y_min": -17,
-      "y_max": 761,
-      "ha": 778,
-      "leftSideBearing": 34,
-      "advanceWidth": 579
-    },
-    "O": {
-      "x_min": 41,
-      "x_max": 608,
-      "y_min": -5,
-      "y_max": 735,
-      "ha": 740,
-      "leftSideBearing": 41,
-      "advanceWidth": 667
-    },
-    "P": {
-      "x_min": 53,
-      "x_max": 451,
-      "y_min": -18,
-      "y_max": 735,
-      "ha": 753,
-      "leftSideBearing": 53,
-      "advanceWidth": 497
-    },
-    "Q": {
-      "x_min": 40,
-      "x_max": 599,
-      "y_min": -67,
-      "y_max": 744,
-      "ha": 811,
-      "leftSideBearing": 40,
-      "advanceWidth": 648
-    },
-    "R": {
-      "x_min": 39,
-      "x_max": 487,
-      "y_min": 16,
-      "y_max": 735,
-      "ha": 719,
-      "leftSideBearing": 39,
-      "advanceWidth": 535
-    },
-    "S": {
-      "x_min": 35,
-      "x_max": 552,
-      "y_min": -47,
-      "y_max": 708,
-      "ha": 755,
-      "leftSideBearing": 35,
-      "advanceWidth": 604
-    },
-    "T": {
-      "x_min": 26,
-      "x_max": 656,
-      "y_min": -13,
-      "y_max": 718,
-      "ha": 731,
-      "leftSideBearing": 26,
-      "advanceWidth": 705
-    },
-    "U": {
-      "x_min": 41,
-      "x_max": 518,
-      "y_min": -20,
-      "y_max": 748,
-      "ha": 768,
-      "leftSideBearing": 41,
-      "advanceWidth": 567
-    },
-    "V": {
-      "x_min": 47,
-      "x_max": 509,
-      "y_min": -26,
-      "y_max": 744,
-      "ha": 770,
-      "leftSideBearing": 47,
-      "advanceWidth": 567
-    },
-    "W": {
-      "x_min": 44,
-      "x_max": 789,
-      "y_min": -35,
-      "y_max": 720,
-      "ha": 755,
-      "leftSideBearing": 44,
-      "advanceWidth": 833
-    },
-    "X": {
-      "x_min": 63,
-      "x_max": 635,
-      "y_min": -10,
-      "y_max": 745,
-      "ha": 755,
-      "leftSideBearing": 63,
-      "advanceWidth": 680
-    },
-    "Y": {
-      "x_min": 43,
-      "x_max": 503,
-      "y_min": -21,
-      "y_max": 734,
-      "ha": 755,
-      "leftSideBearing": 43,
-      "advanceWidth": 541
-    },
-    "Z": {
-      "x_min": 42,
-      "x_max": 584,
-      "y_min": -10,
-      "y_max": 739,
-      "ha": 749,
-      "leftSideBearing": 42,
-      "advanceWidth": 629
-    },
-    "[": {
-      "x_min": 46,
-      "x_max": 346,
-      "y_min": -150,
-      "y_max": 884,
-      "ha": 1034,
-      "leftSideBearing": 46,
-      "advanceWidth": 291
-    },
-    "\\": {
-      "x_min": 20,
-      "x_max": 616,
-      "y_min": -100,
-      "y_max": 797,
-      "ha": 897,
-      "leftSideBearing": 20,
-      "advanceWidth": 645
-    },
-    "]": {
-      "x_min": -76,
-      "x_max": 226,
-      "y_min": -150,
-      "y_max": 881,
-      "ha": 1031,
-      "leftSideBearing": -76,
-      "advanceWidth": 297
-    },
-    "^": {
-      "x_min": 43,
-      "x_max": 437,
-      "y_min": 517,
-      "y_max": 812,
-      "ha": 295,
-      "leftSideBearing": 43,
-      "advanceWidth": 478
-    },
-    "_": {
-      "x_min": 29,
-      "x_max": 563,
-      "y_min": -110,
-      "y_max": -1,
-      "ha": 109,
-      "leftSideBearing": 29,
-      "advanceWidth": 598
-    },
-    "`": {
-      "x_min": 54,
-      "x_max": 321,
-      "y_min": 540,
-      "y_max": 747,
-      "ha": 207,
-      "leftSideBearing": 54,
-      "advanceWidth": 368
-    },
-    "a": {
-      "x_min": 20,
-      "x_max": 447,
-      "y_min": -17,
-      "y_max": 495,
-      "ha": 512,
-      "leftSideBearing": 20,
-      "advanceWidth": 494
-    },
-    "b": {
-      "x_min": 37,
-      "x_max": 466,
-      "y_min": -27,
-      "y_max": 770,
-      "ha": 797,
-      "leftSideBearing": 37,
-      "advanceWidth": 510
-    },
-    "c": {
-      "x_min": 35,
-      "x_max": 456,
-      "y_min": -9,
-      "y_max": 507,
-      "ha": 516,
-      "leftSideBearing": 35,
-      "advanceWidth": 460
-    },
-    "d": {
-      "x_min": 45,
-      "x_max": 520,
-      "y_min": -15,
-      "y_max": 764,
-      "ha": 779,
-      "leftSideBearing": 45,
-      "advanceWidth": 560
-    },
-    "e": {
-      "x_min": 33,
-      "x_max": 370,
-      "y_min": -5,
-      "y_max": 501,
-      "ha": 506,
-      "leftSideBearing": 33,
-      "advanceWidth": 397
-    },
-    "f": {
-      "x_min": 35,
-      "x_max": 411,
-      "y_min": -13,
-      "y_max": 695,
-      "ha": 708,
-      "leftSideBearing": 35,
-      "advanceWidth": 453
-    },
-    "g": {
-      "x_min": 33,
-      "x_max": 551,
-      "y_min": -257,
-      "y_max": 505,
-      "ha": 762,
-      "leftSideBearing": 33,
-      "advanceWidth": 611
-    },
-    "h": {
-      "x_min": 32,
-      "x_max": 458,
-      "y_min": -29,
-      "y_max": 743,
-      "ha": 772,
-      "leftSideBearing": 32,
-      "advanceWidth": 491
-    },
-    "i": {
-      "x_min": 45,
-      "x_max": 167,
-      "y_min": -13,
-      "y_max": 631,
-      "ha": 644,
-      "leftSideBearing": 45,
-      "advanceWidth": 220
-    },
-    "j": {
-      "x_min": -127,
-      "x_max": 261,
-      "y_min": -231,
-      "y_max": 601,
-      "ha": 832,
-      "leftSideBearing": -127,
-      "advanceWidth": 308
-    },
-    "k": {
-      "x_min": 39,
-      "x_max": 443,
-      "y_min": -3,
-      "y_max": 700,
-      "ha": 703,
-      "leftSideBearing": 39,
-      "advanceWidth": 497
-    },
-    "l": {
-      "x_min": 58,
-      "x_max": 168,
-      "y_min": -8,
-      "y_max": 686,
-      "ha": 694,
-      "leftSideBearing": 58,
-      "advanceWidth": 227
-    },
-    "m": {
-      "x_min": 39,
-      "x_max": 688,
-      "y_min": -14,
-      "y_max": 501,
-      "ha": 515,
-      "leftSideBearing": 39,
-      "advanceWidth": 718
-    },
-    "n": {
-      "x_min": 45,
-      "x_max": 491,
-      "y_min": -32,
-      "y_max": 512,
-      "ha": 544,
-      "leftSideBearing": 45,
-      "advanceWidth": 541
-    },
-    "o": {
-      "x_min": 41,
-      "x_max": 424,
-      "y_min": -12,
-      "y_max": 493,
-      "ha": 505,
-      "leftSideBearing": 41,
-      "advanceWidth": 447
-    },
-    "p": {
-      "x_min": 25,
-      "x_max": 529,
-      "y_min": -260,
-      "y_max": 500,
-      "ha": 760,
-      "leftSideBearing": 25,
-      "advanceWidth": 573
-    },
-    "q": {
-      "x_min": 53,
-      "x_max": 603,
-      "y_min": -235,
-      "y_max": 514,
-      "ha": 749,
-      "leftSideBearing": 53,
-      "advanceWidth": 623
-    },
-    "r": {
-      "x_min": 32,
-      "x_max": 407,
-      "y_min": -7,
-      "y_max": 492,
-      "ha": 499,
-      "leftSideBearing": 32,
-      "advanceWidth": 460
-    },
-    "s": {
-      "x_min": 49,
-      "x_max": 416,
-      "y_min": -12,
-      "y_max": 519,
-      "ha": 531,
-      "leftSideBearing": 49,
-      "advanceWidth": 460
-    },
-    "t": {
-      "x_min": 32,
-      "x_max": 442,
-      "y_min": -5,
-      "y_max": 684,
-      "ha": 689,
-      "leftSideBearing": 32,
-      "advanceWidth": 469
-    },
-    "u": {
-      "x_min": 41,
-      "x_max": 487,
-      "y_min": -5,
-      "y_max": 507,
-      "ha": 512,
-      "leftSideBearing": 41,
-      "advanceWidth": 510
-    },
-    "v": {
-      "x_min": 16,
-      "x_max": 441,
-      "y_min": -20,
-      "y_max": 542,
-      "ha": 562,
-      "leftSideBearing": 16,
-      "advanceWidth": 456
-    },
-    "w": {
-      "x_min": 39,
-      "x_max": 639,
-      "y_min": -22,
-      "y_max": 505,
-      "ha": 527,
-      "leftSideBearing": 39,
-      "advanceWidth": 661
-    },
-    "x": {
-      "x_min": 15,
-      "x_max": 505,
-      "y_min": -39,
-      "y_max": 539,
-      "ha": 578,
-      "leftSideBearing": 15,
-      "advanceWidth": 541
-    },
-    "y": {
-      "x_min": -98,
-      "x_max": 501,
-      "y_min": -242,
-      "y_max": 511,
-      "ha": 753,
-      "leftSideBearing": -98,
-      "advanceWidth": 548
-    },
-    "z": {
-      "x_min": 27,
-      "x_max": 479,
-      "y_min": -3,
-      "y_max": 494,
-      "ha": 497,
-      "leftSideBearing": 27,
-      "advanceWidth": 494
-    },
-    "{": {
-      "x_min": 0,
-      "x_max": 0,
-      "y_min": 0,
-      "y_max": 0,
-      "ha": 0,
-      "leftSideBearing": 0,
-      "advanceWidth": 308
-    },
-    "|": {
-      "x_min": 0,
-      "x_max": 0,
-      "y_min": 0,
-      "y_max": 0,
-      "ha": 0,
-      "leftSideBearing": 0,
-      "advanceWidth": 308
-    },
-    "}": {
-      "x_min": 0,
-      "x_max": 0,
-      "y_min": 0,
-      "y_max": 0,
-      "ha": 0,
-      "leftSideBearing": 0,
-      "advanceWidth": 308
-    },
-    "~": {
-      "x_min": 0,
-      "x_max": 0,
-      "y_min": 0,
-      "y_max": 0,
-      "ha": 0,
-      "leftSideBearing": 0,
-      "advanceWidth": 308
-    }
-  },
-  "fontFamily": "Petaluma Script",
-  "resolution": 1000,
-  "generatedOn": "2020-06-14T18:33:25.407Z"
-};
-
-/***/ }),
-
 /***/ "./src/fonts/petaluma_glyphs.js":
 /*!**************************************!*\
   !*** ./src/fonts/petaluma_glyphs.js ***!
@@ -13932,11 +14988,1931 @@ var PetalumaFont = {
       "leftSideBearing": 0,
       "advanceWidth": 334,
       "o": "m 321 0 b 475 125 390 0 436 43 b 481 143 478 131 481 137 b 475 154 481 147 480 151 b 449 148 468 158 458 154 b 395 132 432 137 413 132 b 343 140 377 132 360 137 b 229 194 301 148 266 173 b 168 217 206 209 186 217 b 109 192 148 217 130 209 b 0 26 59 148 32 89 b 59 63 32 29 45 48 b 98 84 72 78 84 84 b 130 73 108 84 118 81 b 213 26 157 58 183 37 b 321 0 255 9 289 0 z"
+    },
+    "accSagittal5v7KleismaUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal5v7KleismaDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal5CommaUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal5CommaDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal7CommaUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal7CommaDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal25SmallDiesisUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal25SmallDiesisDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal35MediumDiesisUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal35MediumDiesisDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal11MediumDiesisUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal11MediumDiesisDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal11LargeDiesisUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal11LargeDiesisDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal35LargeDiesisUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal35LargeDiesisDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp25SDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat25SUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp7CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat7CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp5CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat5CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp5v7kDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat5v7kUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp5v7kUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat5v7kDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp5CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat5CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp7CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat7CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp25SUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat25SDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp35MUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat35MDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp11MUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat11MDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp11LUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat11LDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp35LUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat35LDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleSharp25SDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleFlat25SUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleSharp7CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleFlat7CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleSharp5CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleFlat5CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleSharp5v7kDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleFlat5v7kUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleSharp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleFlat": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal7v11KleismaUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal7v11KleismaDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal17CommaUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal17CommaDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal55CommaUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal55CommaDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal7v11CommaUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal7v11CommaDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal5v11SmallDiesisUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal5v11SmallDiesisDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp5v11SDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat5v11SUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp7v11CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat7v11CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp55CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat55CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp17CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat17CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp7v11kDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat7v11kUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp7v11kUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat7v11kDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp17CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat17CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp55CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat55CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp7v11CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat7v11CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp5v11SUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat5v11SDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleSharp5v11SDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleFlat5v11SUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleSharp7v11CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleFlat7v11CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleSharp55CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleFlat55CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleSharp17CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleFlat17CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleSharp7v11kDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleFlat7v11kUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal23CommaUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal23CommaDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal5v19CommaUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal5v19CommaDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal5v23SmallDiesisUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal5v23SmallDiesisDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp5v23SDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat5v23SUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp5v19CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat5v19CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp23CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat23CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp23CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat23CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp5v19CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat5v19CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp5v23SUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat5v23SDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleSharp5v23SDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleFlat5v23SUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleSharp5v19CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleFlat5v19CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleSharp23CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleFlat23CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal19SchismaUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal19SchismaDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal17KleismaUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal17KleismaDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal143CommaUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal143CommaDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal11v49CommaUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal11v49CommaDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal19CommaUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal19CommaDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal7v19CommaUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal7v19CommaDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal49SmallDiesisUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal49SmallDiesisDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal23SmallDiesisUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal23SmallDiesisDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal5v13MediumDiesisUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal5v13MediumDiesisDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal11v19MediumDiesisUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal11v19MediumDiesisDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal49MediumDiesisUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal49MediumDiesisDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal5v49MediumDiesisUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal5v49MediumDiesisDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal49LargeDiesisUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal49LargeDiesisDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal11v19LargeDiesisUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal11v19LargeDiesisDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal5v13LargeDiesisUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal5v13LargeDiesisDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp23SDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat23SUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp49SDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat49SUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp7v19CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat7v19CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp19CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat19CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp11v49CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat11v49CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp143CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat143CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp17kDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat17kUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp19sDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat19sUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp19sUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat19sDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp17kUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat17kDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp143CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat143CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp11v49CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat11v49CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp19CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat19CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp7v19CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat7v19CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp49SUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat49SDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp23SUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat23SDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp5v13MUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat5v13MDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp11v19MUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat11v19MDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp49MUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat49MDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp5v49MUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat5v49MDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp49LUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat49LDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp11v19LUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat11v19LDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalSharp5v13LUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFlat5v13LDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleSharp23SDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleFlat23SUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleSharp49SDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleFlat49SUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleSharp7v19CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleFlat7v19CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleSharp19CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleFlat19CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleSharp11v49CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleFlat11v49CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleSharp143CDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleFlat143CUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleSharp17kDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleFlat17kUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleSharp19sDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalDoubleFlat19sUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalShaftUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalShaftDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalAcute": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalGrave": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal1MinaUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal1MinaDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal2MinasUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal2MinasDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal1TinaUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal1TinaDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal2TinasUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal2TinasDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal3TinasUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal3TinasDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal4TinasUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal4TinasDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal5TinasUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal5TinasDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal6TinasUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal6TinasDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal7TinasUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal7TinasDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal8TinasUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal8TinasDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal9TinasUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittal9TinasDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFractionalTinaUp": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accSagittalFractionalTinaDown": {
+      "x_min": 186,
+      "x_max": 820,
+      "y_min": -1000,
+      "y_max": 1000,
+      "ha": 2000,
+      "o": "m 1181 1440 l 268 1440 l 268 -1440 l 1181 -1440 z m 959 -524 l 959 -850 l 481 -850 l 481 -524 z m 864 -619 l 576 -619 l 576 -755 l 864 -755 z m 959 -26 l 959 -351 l 481 -351 l 481 -26 l 576 -26 l 576 -256 l 864 -256 l 864 -121 l 769 -121 l 769 -187 l 671 -187 l 671 -26 z m 959 325 l 959 37 l 481 37 l 481 135 l 864 135 l 864 325 z m 959 498 l 959 403 l 769 403 l 769 202 l 481 202 l 481 297 l 671 297 l 671 403 l 481 403 l 481 498 z m 671 778 l 576 778 l 576 674 l 671 674 z m 769 876 l 769 674 l 959 674 l 959 576 l 481 576 l 481 876 z m 959 1247 l 959 1152 l 769 1152 l 769 1045 l 959 1045 l 959 950 l 481 950 l 481 1045 l 671 1045 l 671 1152 l 484 1152 l 484 1247 z m 959 -916 l 959 -1011 l 867 -1011 l 665 -1146 l 959 -1146 l 959 -1241 l 481 -1241 l 481 -1146 l 683 -1011 l 481 -1011 l 481 -916 z"
+    },
+    "accidentalNarrowReversedFlat": {
+      "x_min": 0,
+      "x_max": 208,
+      "y_min": -231,
+      "y_max": 449,
+      "ha": 680,
+      "o": "m 272 -333 b 284 -320 278 -333 281 -328 b 300 -174 297 -272 300 -222 b 275 190 298 -52 279 68 b 268 445 272 275 268 360 l 268 490 b 264 612 269 530 265 572 b 236 647 264 632 252 645 l 235 647 b 217 618 220 647 220 628 b 207 526 210 588 207 556 b 210 432 207 494 210 464 b 216 268 213 377 215 323 l 216 230 l 215 232 b 154 256 194 240 174 251 b 111 264 138 261 124 264 b 3 153 50 264 10 223 b 0 94 0 132 0 114 b 194 -276 0 -63 68 -186 b 255 -323 215 -291 236 -307 b 272 -333 262 -330 268 -333 z m 233 -138 b 71 30 168 -92 105 -45 b 63 59 65 42 63 50 b 96 95 62 75 73 86 b 130 102 108 99 120 102 b 215 76 160 102 187 88 l 220 73 b 225 -22 220 42 222 10 b 233 -138 229 -62 230 -101 z"
+    },
+    "accidentalNarrowReversedFlatAndFlat": {
+      "x_min": 0,
+      "x_max": 335,
+      "y_min": -231,
+      "y_max": 449,
+      "ha": 680,
+      "o": "m 210 -333 b 228 -323 215 -333 220 -330 b 288 -276 246 -307 268 -291 b 482 94 415 -186 482 -63 b 480 153 482 114 482 132 b 372 264 472 223 432 264 b 328 256 359 264 344 261 b 268 232 308 251 288 240 l 266 230 l 266 268 b 272 432 266 323 269 377 b 275 526 272 464 275 494 b 265 618 275 556 272 588 b 248 647 262 628 262 647 l 246 647 b 219 612 230 645 219 632 b 215 490 217 572 213 530 l 215 445 b 207 190 215 360 210 275 b 183 -174 203 68 183 -52 b 199 -320 183 -222 186 -272 b 210 -333 202 -328 204 -333 z m 131 -138 b 40 30 95 -92 60 -43 b 36 59 36 42 36 50 b 55 95 35 75 42 86 b 73 102 60 99 68 102 b 121 76 89 102 105 88 l 124 73 b 127 -22 124 42 125 10 b 131 -138 128 -62 130 -101 z m 153 -333 b 160 -320 157 -333 158 -328 b 168 -174 167 -272 168 -222 b 154 190 168 -52 157 68 b 151 445 153 275 151 360 l 151 490 b 148 612 151 530 150 572 b 132 647 148 632 141 645 b 122 618 124 647 124 628 b 117 526 118 588 117 556 b 118 432 117 494 118 464 b 121 268 120 377 121 323 l 121 230 l 121 232 b 86 256 109 240 98 251 b 62 264 78 261 69 264 b 1 153 29 264 6 223 b 0 94 0 132 0 114 b 109 -276 0 -63 37 -186 b 144 -323 121 -291 132 -307 b 153 -333 147 -330 151 -333 z m 249 -138 b 258 -22 252 -101 253 -62 b 262 73 261 10 262 42 l 268 76 b 353 102 295 88 323 102 b 386 95 363 102 374 99 b 419 59 409 86 420 75 b 412 30 419 50 418 42 b 249 -138 374 -43 314 -92 z"
+    },
+    "accidentalWilsonPlus": {
+      "x_min": 0,
+      "x_max": 298,
+      "y_min": -218,
+      "y_max": 218,
+      "ha": 436,
+      "o": "m 232 -314 b 236 -301 236 -310 236 -305 l 236 -295 b 243 -52 239 -213 242 -132 l 369 62 b 429 200 413 101 425 147 b 416 243 429 216 428 236 b 383 225 406 251 393 232 l 377 220 b 246 98 336 177 291 138 b 249 242 248 145 246 193 b 225 304 251 265 242 287 b 209 314 220 308 215 314 b 204 312 207 314 206 312 b 196 292 196 310 196 300 b 193 184 194 256 194 220 b 187 48 192 140 190 94 b 46 -72 141 7 94 -32 b 0 -163 13 -98 0 -127 b 1 -187 0 -170 0 -179 b 10 -235 4 -203 6 -219 b 20 -255 12 -242 14 -251 b 36 -245 26 -259 30 -249 b 181 -109 85 -200 132 -154 b 176 -258 180 -158 176 -209 b 232 -314 176 -298 186 -307 z"
+    },
+    "accidentalWilsonMinus": {
+      "x_min": 0,
+      "x_max": 284.2093390143919,
+      "y_min": -163,
+      "y_max": 163,
+      "ha": 326,
+      "o": "m 386 -232 b 409 -163 415 -222 408 -180 b 382 -69 410 -120 408 -89 b 32 228 264 30 141 118 b 17 235 26 233 22 235 b 3 219 9 235 3 228 b 0 157 3 199 0 179 b 29 69 0 125 6 95 b 323 -194 115 -29 222 -111 b 374 -235 338 -206 353 -235 b 386 -232 377 -235 382 -233 z"
     }
   },
   "fontFamily": "Petaluma",
   "resolution": 1000,
-  "generatedOn": "2020-04-29T14:49:42.602Z"
+  "generatedOn": "2020-11-16T21:48:49.454Z"
 };
 
 /***/ }),
@@ -14475,17 +17451,895 @@ var PetalumaMetrics = {
 
 /***/ }),
 
-/***/ "./src/fonts/robotoSlab_metrics.js":
-/*!*****************************************!*\
-  !*** ./src/fonts/robotoSlab_metrics.js ***!
-  \*****************************************/
-/*! exports provided: RobotoSlabMetrics */
+/***/ "./src/fonts/petalumascript_textmetrics.js":
+/*!*************************************************!*\
+  !*** ./src/fonts/petalumascript_textmetrics.js ***!
+  \*************************************************/
+/*! exports provided: PetalumaScriptTextMetrics */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RobotoSlabMetrics", function() { return RobotoSlabMetrics; });
-var RobotoSlabMetrics = {
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PetalumaScriptTextMetrics", function() { return PetalumaScriptTextMetrics; });
+var PetalumaScriptTextMetrics = {
+  name: 'PetalumaScript',
+  smufl: false,
+  spacing: 50,
+  "glyphs": {
+    " ": {
+      "x_min": 0,
+      "x_max": 250,
+      "y_min": 0,
+      "y_max": 500,
+      "ha": 500,
+      "leftSideBearing": 0,
+      "advanceWidth": 250
+    },
+    "0": {
+      "x_min": 33,
+      "x_max": 534,
+      "y_min": -13,
+      "y_max": 751,
+      "ha": 764,
+      "leftSideBearing": 33,
+      "advanceWidth": 570
+    },
+    "1": {
+      "x_min": 48,
+      "x_max": 235,
+      "y_min": -17,
+      "y_max": 734,
+      "ha": 751,
+      "leftSideBearing": 48,
+      "advanceWidth": 286
+    },
+    "2": {
+      "x_min": 56,
+      "x_max": 571,
+      "y_min": -19,
+      "y_max": 741,
+      "ha": 760,
+      "leftSideBearing": 56,
+      "advanceWidth": 626
+    },
+    "3": {
+      "x_min": 50,
+      "x_max": 528,
+      "y_min": -7,
+      "y_max": 731,
+      "ha": 738,
+      "leftSideBearing": 50,
+      "advanceWidth": 589
+    },
+    "4": {
+      "x_min": 38,
+      "x_max": 564,
+      "y_min": -13,
+      "y_max": 743,
+      "ha": 756,
+      "leftSideBearing": 38,
+      "advanceWidth": 614
+    },
+    "5": {
+      "x_min": 42,
+      "x_max": 601,
+      "y_min": -34,
+      "y_max": 743,
+      "ha": 777,
+      "leftSideBearing": 42,
+      "advanceWidth": 648
+    },
+    "6": {
+      "x_min": 47,
+      "x_max": 606,
+      "y_min": -16,
+      "y_max": 743,
+      "ha": 759,
+      "leftSideBearing": 47,
+      "advanceWidth": 667
+    },
+    "7": {
+      "x_min": 47,
+      "x_max": 567,
+      "y_min": 5,
+      "y_max": 739,
+      "ha": 734,
+      "leftSideBearing": 0,
+      "advanceWidth": 615
+    },
+    "8": {
+      "x_min": 40,
+      "x_max": 541,
+      "y_min": -15,
+      "y_max": 752,
+      "ha": 767,
+      "leftSideBearing": 40,
+      "advanceWidth": 585
+    },
+    "9": {
+      "x_min": 40,
+      "x_max": 537,
+      "y_min": -52,
+      "y_max": 736,
+      "ha": 788,
+      "leftSideBearing": 40,
+      "advanceWidth": 592
+    },
+    "!": {
+      "x_min": 49,
+      "x_max": 180,
+      "y_min": -7,
+      "y_max": 761,
+      "ha": 768,
+      "leftSideBearing": 49,
+      "advanceWidth": 230
+    },
+    "\"": {
+      "x_min": 39,
+      "x_max": 304,
+      "y_min": 596,
+      "y_max": 804,
+      "ha": 208,
+      "leftSideBearing": 39,
+      "advanceWidth": 353
+    },
+    "#": {
+      "x_min": 33,
+      "x_max": 599,
+      "y_min": -8,
+      "y_max": 765,
+      "ha": 773,
+      "leftSideBearing": 33,
+      "advanceWidth": 648
+    },
+    "$": {
+      "x_min": 53,
+      "x_max": 495,
+      "y_min": -111,
+      "y_max": 823,
+      "ha": 934,
+      "leftSideBearing": 53,
+      "advanceWidth": 560
+    },
+    "%": {
+      "x_min": 35,
+      "x_max": 656,
+      "y_min": -128,
+      "y_max": 808,
+      "ha": 936,
+      "leftSideBearing": 35,
+      "advanceWidth": 711
+    },
+    "&": {
+      "x_min": 53,
+      "x_max": 441,
+      "y_min": -3,
+      "y_max": 753,
+      "ha": 756,
+      "leftSideBearing": 53,
+      "advanceWidth": 500
+    },
+    "'": {
+      "x_min": 43,
+      "x_max": 161,
+      "y_min": 590,
+      "y_max": 811,
+      "ha": 221,
+      "leftSideBearing": 43,
+      "advanceWidth": 217
+    },
+    "(": {
+      "x_min": 41,
+      "x_max": 311,
+      "y_min": -36,
+      "y_max": 845,
+      "ha": 881,
+      "leftSideBearing": 41,
+      "advanceWidth": 308
+    },
+    ")": {
+      "x_min": -8,
+      "x_max": 257,
+      "y_min": -21,
+      "y_max": 852,
+      "ha": 873,
+      "leftSideBearing": -8,
+      "advanceWidth": 280
+    },
+    "*": {
+      "x_min": 59,
+      "x_max": 539,
+      "y_min": 175,
+      "y_max": 589,
+      "ha": 414,
+      "leftSideBearing": 59,
+      "advanceWidth": 601
+    },
+    "+": {
+      "x_min": 33,
+      "x_max": 361,
+      "y_min": 180,
+      "y_max": 587,
+      "ha": 407,
+      "leftSideBearing": 33,
+      "advanceWidth": 400
+    },
+    ",": {
+      "x_min": 15,
+      "x_max": 176,
+      "y_min": -129,
+      "y_max": 92,
+      "ha": 221,
+      "leftSideBearing": 15,
+      "advanceWidth": 205
+    },
+    "-": {
+      "x_min": 40,
+      "x_max": 380,
+      "y_min": 317,
+      "y_max": 452,
+      "ha": 135,
+      "leftSideBearing": 40,
+      "advanceWidth": 422
+    },
+    ".": {
+      "x_min": 48,
+      "x_max": 185,
+      "y_min": -56,
+      "y_max": 84,
+      "ha": 140,
+      "leftSideBearing": 48,
+      "advanceWidth": 227
+    },
+    "/": {
+      "x_min": -58,
+      "x_max": 654,
+      "y_min": -122,
+      "y_max": 844,
+      "ha": 966,
+      "leftSideBearing": -58,
+      "advanceWidth": 626
+    },
+    ":": {
+      "x_min": 65,
+      "x_max": 225,
+      "y_min": 97,
+      "y_max": 536,
+      "ha": 439,
+      "leftSideBearing": 65,
+      "advanceWidth": 302
+    },
+    ";": {
+      "x_min": 13,
+      "x_max": 295,
+      "y_min": -139,
+      "y_max": 536,
+      "ha": 675,
+      "leftSideBearing": 13,
+      "advanceWidth": 334
+    },
+    "<": {
+      "x_min": 28,
+      "x_max": 438,
+      "y_min": -1,
+      "y_max": 607,
+      "ha": 608,
+      "leftSideBearing": 28,
+      "advanceWidth": 475
+    },
+    "=": {
+      "x_min": 40,
+      "x_max": 383,
+      "y_min": 199.9598640852289,
+      "y_max": 541,
+      "ha": 341.0401359147711,
+      "leftSideBearing": 40,
+      "advanceWidth": 422
+    },
+    ">": {
+      "x_min": 35,
+      "x_max": 421,
+      "y_min": 28,
+      "y_max": 632,
+      "ha": 604,
+      "leftSideBearing": 35,
+      "advanceWidth": 466
+    },
+    "?": {
+      "x_min": 45,
+      "x_max": 548,
+      "y_min": -17,
+      "y_max": 767,
+      "ha": 784,
+      "leftSideBearing": 45,
+      "advanceWidth": 592
+    },
+    "@": {
+      "x_min": 51,
+      "x_max": 730,
+      "y_min": -78,
+      "y_max": 753,
+      "ha": 831,
+      "leftSideBearing": 51,
+      "advanceWidth": 781
+    },
+    "A": {
+      "x_min": 37,
+      "x_max": 554,
+      "y_min": -4,
+      "y_max": 746,
+      "ha": 750,
+      "leftSideBearing": 37,
+      "advanceWidth": 617
+    },
+    "B": {
+      "x_min": 37,
+      "x_max": 532,
+      "y_min": 3,
+      "y_max": 783,
+      "ha": 780,
+      "leftSideBearing": 37,
+      "advanceWidth": 579
+    },
+    "C": {
+      "x_min": 37,
+      "x_max": 583,
+      "y_min": -3,
+      "y_max": 775,
+      "ha": 778,
+      "leftSideBearing": 37,
+      "advanceWidth": 623
+    },
+    "D": {
+      "x_min": 50,
+      "x_max": 530,
+      "y_min": -15,
+      "y_max": 749,
+      "ha": 764,
+      "leftSideBearing": 50,
+      "advanceWidth": 579
+    },
+    "E": {
+      "x_min": 45,
+      "x_max": 531,
+      "y_min": -1,
+      "y_max": 743,
+      "ha": 744,
+      "leftSideBearing": 45,
+      "advanceWidth": 585
+    },
+    "F": {
+      "x_min": 45,
+      "x_max": 459,
+      "y_min": 23,
+      "y_max": 727,
+      "ha": 704,
+      "leftSideBearing": 45,
+      "advanceWidth": 510
+    },
+    "G": {
+      "x_min": 31,
+      "x_max": 577,
+      "y_min": -8,
+      "y_max": 733,
+      "ha": 741,
+      "leftSideBearing": 31,
+      "advanceWidth": 611
+    },
+    "H": {
+      "x_min": 37,
+      "x_max": 493,
+      "y_min": -22,
+      "y_max": 758,
+      "ha": 780,
+      "leftSideBearing": 37,
+      "advanceWidth": 535
+    },
+    "I": {
+      "x_min": 47,
+      "x_max": 501,
+      "y_min": -3,
+      "y_max": 731,
+      "ha": 734,
+      "leftSideBearing": 47,
+      "advanceWidth": 541
+    },
+    "J": {
+      "x_min": 33,
+      "x_max": 531,
+      "y_min": -23,
+      "y_max": 725,
+      "ha": 748,
+      "leftSideBearing": 33,
+      "advanceWidth": 573
+    },
+    "K": {
+      "x_min": 43,
+      "x_max": 505,
+      "y_min": -10,
+      "y_max": 740,
+      "ha": 750,
+      "leftSideBearing": 43,
+      "advanceWidth": 560
+    },
+    "L": {
+      "x_min": 49,
+      "x_max": 457,
+      "y_min": -2,
+      "y_max": 746,
+      "ha": 748,
+      "leftSideBearing": 49,
+      "advanceWidth": 510
+    },
+    "M": {
+      "x_min": 35,
+      "x_max": 699,
+      "y_min": 1,
+      "y_max": 744,
+      "ha": 743,
+      "leftSideBearing": 35,
+      "advanceWidth": 743
+    },
+    "N": {
+      "x_min": 34,
+      "x_max": 533,
+      "y_min": -17,
+      "y_max": 761,
+      "ha": 778,
+      "leftSideBearing": 34,
+      "advanceWidth": 579
+    },
+    "O": {
+      "x_min": 41,
+      "x_max": 608,
+      "y_min": -5,
+      "y_max": 735,
+      "ha": 740,
+      "leftSideBearing": 41,
+      "advanceWidth": 667
+    },
+    "P": {
+      "x_min": 53,
+      "x_max": 451,
+      "y_min": -18,
+      "y_max": 735,
+      "ha": 753,
+      "leftSideBearing": 53,
+      "advanceWidth": 497
+    },
+    "Q": {
+      "x_min": 40,
+      "x_max": 599,
+      "y_min": -67,
+      "y_max": 744,
+      "ha": 811,
+      "leftSideBearing": 40,
+      "advanceWidth": 648
+    },
+    "R": {
+      "x_min": 39,
+      "x_max": 487,
+      "y_min": 16,
+      "y_max": 735,
+      "ha": 719,
+      "leftSideBearing": 39,
+      "advanceWidth": 535
+    },
+    "S": {
+      "x_min": 35,
+      "x_max": 552,
+      "y_min": -47,
+      "y_max": 708,
+      "ha": 755,
+      "leftSideBearing": 35,
+      "advanceWidth": 604
+    },
+    "T": {
+      "x_min": 26,
+      "x_max": 656,
+      "y_min": -13,
+      "y_max": 718,
+      "ha": 731,
+      "leftSideBearing": 26,
+      "advanceWidth": 705
+    },
+    "U": {
+      "x_min": 41,
+      "x_max": 518,
+      "y_min": -20,
+      "y_max": 748,
+      "ha": 768,
+      "leftSideBearing": 41,
+      "advanceWidth": 567
+    },
+    "V": {
+      "x_min": 47,
+      "x_max": 509,
+      "y_min": -26,
+      "y_max": 744,
+      "ha": 770,
+      "leftSideBearing": 47,
+      "advanceWidth": 567
+    },
+    "W": {
+      "x_min": 44,
+      "x_max": 789,
+      "y_min": -35,
+      "y_max": 720,
+      "ha": 755,
+      "leftSideBearing": 44,
+      "advanceWidth": 833
+    },
+    "X": {
+      "x_min": 63,
+      "x_max": 635,
+      "y_min": -10,
+      "y_max": 745,
+      "ha": 755,
+      "leftSideBearing": 63,
+      "advanceWidth": 680
+    },
+    "Y": {
+      "x_min": 43,
+      "x_max": 503,
+      "y_min": -21,
+      "y_max": 734,
+      "ha": 755,
+      "leftSideBearing": 43,
+      "advanceWidth": 541
+    },
+    "Z": {
+      "x_min": 42,
+      "x_max": 584,
+      "y_min": -10,
+      "y_max": 739,
+      "ha": 749,
+      "leftSideBearing": 42,
+      "advanceWidth": 629
+    },
+    "[": {
+      "x_min": 46,
+      "x_max": 346,
+      "y_min": -150,
+      "y_max": 884,
+      "ha": 1034,
+      "leftSideBearing": 46,
+      "advanceWidth": 291
+    },
+    "\\": {
+      "x_min": 20,
+      "x_max": 616,
+      "y_min": -100,
+      "y_max": 797,
+      "ha": 897,
+      "leftSideBearing": 20,
+      "advanceWidth": 645
+    },
+    "]": {
+      "x_min": -76,
+      "x_max": 226,
+      "y_min": -150,
+      "y_max": 881,
+      "ha": 1031,
+      "leftSideBearing": -76,
+      "advanceWidth": 297
+    },
+    "^": {
+      "x_min": 43,
+      "x_max": 437,
+      "y_min": 517,
+      "y_max": 812,
+      "ha": 295,
+      "leftSideBearing": 43,
+      "advanceWidth": 478
+    },
+    "_": {
+      "x_min": 29,
+      "x_max": 563,
+      "y_min": -110,
+      "y_max": -1,
+      "ha": 109,
+      "leftSideBearing": 29,
+      "advanceWidth": 598
+    },
+    "`": {
+      "x_min": 54,
+      "x_max": 321,
+      "y_min": 540,
+      "y_max": 747,
+      "ha": 207,
+      "leftSideBearing": 54,
+      "advanceWidth": 368
+    },
+    "a": {
+      "x_min": 20,
+      "x_max": 447,
+      "y_min": -17,
+      "y_max": 495,
+      "ha": 512,
+      "leftSideBearing": 20,
+      "advanceWidth": 494
+    },
+    "b": {
+      "x_min": 37,
+      "x_max": 466,
+      "y_min": -27,
+      "y_max": 770,
+      "ha": 797,
+      "leftSideBearing": 37,
+      "advanceWidth": 510
+    },
+    "c": {
+      "x_min": 35,
+      "x_max": 456,
+      "y_min": -9,
+      "y_max": 507,
+      "ha": 516,
+      "leftSideBearing": 35,
+      "advanceWidth": 460
+    },
+    "d": {
+      "x_min": 45,
+      "x_max": 520,
+      "y_min": -15,
+      "y_max": 764,
+      "ha": 779,
+      "leftSideBearing": 45,
+      "advanceWidth": 560
+    },
+    "e": {
+      "x_min": 33,
+      "x_max": 370,
+      "y_min": -5,
+      "y_max": 501,
+      "ha": 506,
+      "leftSideBearing": 33,
+      "advanceWidth": 397
+    },
+    "f": {
+      "x_min": 35,
+      "x_max": 411,
+      "y_min": -13,
+      "y_max": 695,
+      "ha": 708,
+      "leftSideBearing": 35,
+      "advanceWidth": 453
+    },
+    "g": {
+      "x_min": 33,
+      "x_max": 551,
+      "y_min": -257,
+      "y_max": 505,
+      "ha": 762,
+      "leftSideBearing": 33,
+      "advanceWidth": 611
+    },
+    "h": {
+      "x_min": 32,
+      "x_max": 458,
+      "y_min": -29,
+      "y_max": 743,
+      "ha": 772,
+      "leftSideBearing": 32,
+      "advanceWidth": 491
+    },
+    "i": {
+      "x_min": 45,
+      "x_max": 167,
+      "y_min": -13,
+      "y_max": 631,
+      "ha": 644,
+      "leftSideBearing": 45,
+      "advanceWidth": 220
+    },
+    "j": {
+      "x_min": -127,
+      "x_max": 261,
+      "y_min": -231,
+      "y_max": 601,
+      "ha": 832,
+      "leftSideBearing": -127,
+      "advanceWidth": 308
+    },
+    "k": {
+      "x_min": 39,
+      "x_max": 443,
+      "y_min": -3,
+      "y_max": 700,
+      "ha": 703,
+      "leftSideBearing": 39,
+      "advanceWidth": 497
+    },
+    "l": {
+      "x_min": 58,
+      "x_max": 168,
+      "y_min": -8,
+      "y_max": 686,
+      "ha": 694,
+      "leftSideBearing": 58,
+      "advanceWidth": 227
+    },
+    "m": {
+      "x_min": 39,
+      "x_max": 688,
+      "y_min": -14,
+      "y_max": 501,
+      "ha": 515,
+      "leftSideBearing": 39,
+      "advanceWidth": 718
+    },
+    "n": {
+      "x_min": 45,
+      "x_max": 491,
+      "y_min": -32,
+      "y_max": 512,
+      "ha": 544,
+      "leftSideBearing": 45,
+      "advanceWidth": 541
+    },
+    "o": {
+      "x_min": 41,
+      "x_max": 424,
+      "y_min": -12,
+      "y_max": 493,
+      "ha": 505,
+      "leftSideBearing": 41,
+      "advanceWidth": 447
+    },
+    "p": {
+      "x_min": 25,
+      "x_max": 529,
+      "y_min": -260,
+      "y_max": 500,
+      "ha": 760,
+      "leftSideBearing": 25,
+      "advanceWidth": 573
+    },
+    "q": {
+      "x_min": 53,
+      "x_max": 603,
+      "y_min": -235,
+      "y_max": 514,
+      "ha": 749,
+      "leftSideBearing": 53,
+      "advanceWidth": 623
+    },
+    "r": {
+      "x_min": 32,
+      "x_max": 407,
+      "y_min": -7,
+      "y_max": 492,
+      "ha": 499,
+      "leftSideBearing": 32,
+      "advanceWidth": 460
+    },
+    "s": {
+      "x_min": 49,
+      "x_max": 416,
+      "y_min": -12,
+      "y_max": 519,
+      "ha": 531,
+      "leftSideBearing": 49,
+      "advanceWidth": 460
+    },
+    "t": {
+      "x_min": 32,
+      "x_max": 442,
+      "y_min": -5,
+      "y_max": 684,
+      "ha": 689,
+      "leftSideBearing": 32,
+      "advanceWidth": 469
+    },
+    "u": {
+      "x_min": 41,
+      "x_max": 487,
+      "y_min": -5,
+      "y_max": 507,
+      "ha": 512,
+      "leftSideBearing": 41,
+      "advanceWidth": 510
+    },
+    "v": {
+      "x_min": 16,
+      "x_max": 441,
+      "y_min": -20,
+      "y_max": 542,
+      "ha": 562,
+      "leftSideBearing": 16,
+      "advanceWidth": 456
+    },
+    "w": {
+      "x_min": 39,
+      "x_max": 639,
+      "y_min": -22,
+      "y_max": 505,
+      "ha": 527,
+      "leftSideBearing": 39,
+      "advanceWidth": 661
+    },
+    "x": {
+      "x_min": 15,
+      "x_max": 505,
+      "y_min": -39,
+      "y_max": 539,
+      "ha": 578,
+      "leftSideBearing": 15,
+      "advanceWidth": 541
+    },
+    "y": {
+      "x_min": -98,
+      "x_max": 501,
+      "y_min": -242,
+      "y_max": 511,
+      "ha": 753,
+      "leftSideBearing": -98,
+      "advanceWidth": 548
+    },
+    "z": {
+      "x_min": 27,
+      "x_max": 479,
+      "y_min": -3,
+      "y_max": 494,
+      "ha": 497,
+      "leftSideBearing": 27,
+      "advanceWidth": 494
+    },
+    "{": {
+      "x_min": 0,
+      "x_max": 0,
+      "y_min": 0,
+      "y_max": 0,
+      "ha": 0,
+      "leftSideBearing": 0,
+      "advanceWidth": 308
+    },
+    "|": {
+      "x_min": 0,
+      "x_max": 0,
+      "y_min": 0,
+      "y_max": 0,
+      "ha": 0,
+      "leftSideBearing": 0,
+      "advanceWidth": 308
+    },
+    "}": {
+      "x_min": 0,
+      "x_max": 0,
+      "y_min": 0,
+      "y_max": 0,
+      "ha": 0,
+      "leftSideBearing": 0,
+      "advanceWidth": 308
+    },
+    "~": {
+      "x_min": 0,
+      "x_max": 0,
+      "y_min": 0,
+      "y_max": 0,
+      "ha": 0,
+      "leftSideBearing": 0,
+      "advanceWidth": 308
+    }
+  },
+  "fontFamily": "Petaluma Script",
+  "resolution": 1000,
+  "generatedOn": "2020-06-14T18:33:25.407Z"
+};
+
+/***/ }),
+
+/***/ "./src/fonts/robotoslab_textmetrics.js":
+/*!*********************************************!*\
+  !*** ./src/fonts/robotoslab_textmetrics.js ***!
+  \*********************************************/
+/*! exports provided: RobotoSlabTextMetrics */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RobotoSlabTextMetrics", function() { return RobotoSlabTextMetrics; });
+var RobotoSlabTextMetrics = {
   name: 'RobotoSlab',
   smufl: false,
   spacing: 50,
@@ -15773,7 +19627,9 @@ function () {
       this.minTotalWidth = contextList.map(function (tick) {
         var context = contextMap[tick];
         context.preFormat();
-        return context.getWidth();
+        var width = context.getWidth();
+        var metrics = context.getMetrics();
+        return width + metrics.totalLeftPx;
       }).reduce(function (a, b) {
         return a + b;
       }, 0);
@@ -16613,6 +20469,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
@@ -16736,6 +20600,27 @@ function (_Modifier) {
       state.left_shift += xWidthL;
       state.right_shift += xWidthR;
       return true;
+    }
+  }, {
+    key: "easyScoreHook",
+    value: function easyScoreHook(_ref, note, builder) {
+      var fingerings = _ref.fingerings;
+      if (!fingerings) return;
+      fingerings.split(',').map(function (fingeringString) {
+        return fingeringString.trim().split('.');
+      }).map(function (_ref2) {
+        var _ref3 = _slicedToArray(_ref2, 2),
+            number = _ref3[0],
+            position = _ref3[1];
+
+        var params = {
+          number: number
+        };
+        if (position) params.position = position;
+        return builder.getFactory().Fingering(params);
+      }).map(function (fingering, index) {
+        return note.addModifier(index, fingering);
+      });
     }
   }, {
     key: "CATEGORY",
@@ -17528,7 +21413,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _notehead__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./notehead */ "./src/notehead.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -17582,10 +21471,10 @@ function (_StaveNote) {
 
     _classCallCheck(this, GraceNote);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(GraceNote).call(this, _extends(note_struct, {
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(GraceNote).call(this, _objectSpread({
       glyph_font_scale: _tables__WEBPACK_IMPORTED_MODULE_2__["Flow"].DEFAULT_NOTATION_FONT_SCALE * GraceNote.SCALE,
       stroke_px: GraceNote.LEDGER_LINE_OFFSET
-    })));
+    }, note_struct)));
 
     _this.setAttribute('type', 'GraceNote');
 
@@ -18247,9 +22136,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _stavetext__WEBPACK_IMPORTED_MODULE_72__ = __webpack_require__(/*! ./stavetext */ "./src/stavetext.js");
 /* harmony import */ var _glyphnote__WEBPACK_IMPORTED_MODULE_73__ = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.js");
 /* harmony import */ var _repeatnote__WEBPACK_IMPORTED_MODULE_74__ = __webpack_require__(/*! ./repeatnote */ "./src/repeatnote.js");
-/* harmony import */ var _textFont__WEBPACK_IMPORTED_MODULE_75__ = __webpack_require__(/*! ./textFont */ "./src/textFont.js");
-/* harmony import */ var _fonts_petalumaScript_metrics__WEBPACK_IMPORTED_MODULE_76__ = __webpack_require__(/*! ./fonts/petalumaScript_metrics */ "./src/fonts/petalumaScript_metrics.js");
-/* harmony import */ var _fonts_robotoSlab_metrics__WEBPACK_IMPORTED_MODULE_77__ = __webpack_require__(/*! ./fonts/robotoSlab_metrics */ "./src/fonts/robotoSlab_metrics.js");
+/* harmony import */ var _textfont__WEBPACK_IMPORTED_MODULE_75__ = __webpack_require__(/*! ./textfont */ "./src/textfont.js");
+/* harmony import */ var _fonts_petalumascript_textmetrics__WEBPACK_IMPORTED_MODULE_76__ = __webpack_require__(/*! ./fonts/petalumascript_textmetrics */ "./src/fonts/petalumascript_textmetrics.js");
+/* harmony import */ var _fonts_robotoslab_textmetrics__WEBPACK_IMPORTED_MODULE_77__ = __webpack_require__(/*! ./fonts/robotoslab_textmetrics */ "./src/fonts/robotoslab_textmetrics.js");
 /* harmony import */ var _smufl__WEBPACK_IMPORTED_MODULE_78__ = __webpack_require__(/*! ./smufl */ "./src/smufl.js");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 
@@ -18407,321 +22296,11 @@ _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.GlyphNote = _glyphnote__WEBPACK_IM
 _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.RepeatNote = _repeatnote__WEBPACK_IMPORTED_MODULE_74__["RepeatNote"];
 _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Font = _smufl__WEBPACK_IMPORTED_MODULE_78__["Font"];
 _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Fonts = _smufl__WEBPACK_IMPORTED_MODULE_78__["Fonts"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TextFont = _textFont__WEBPACK_IMPORTED_MODULE_75__["TextFont"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TextFont = _textfont__WEBPACK_IMPORTED_MODULE_75__["TextFont"];
 _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DefaultFontStack = _smufl__WEBPACK_IMPORTED_MODULE_78__["DefaultFontStack"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.PetalumaScriptMetrics = _fonts_petalumaScript_metrics__WEBPACK_IMPORTED_MODULE_76__["PetalumaScriptMetrics"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.RobotoSlabMetrics = _fonts_robotoSlab_metrics__WEBPACK_IMPORTED_MODULE_77__["RobotoSlabMetrics"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.PetalumaScriptTextMetrics = _fonts_petalumascript_textmetrics__WEBPACK_IMPORTED_MODULE_76__["PetalumaScriptTextMetrics"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.RobotoSlabTextMetrics = _fonts_robotoslab_textmetrics__WEBPACK_IMPORTED_MODULE_77__["RobotoSlabTextMetrics"];
 /* harmony default export */ __webpack_exports__["default"] = (_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"]);
-
-/***/ }),
-
-/***/ "./src/jazztechnique.js":
-/*!******************************!*\
-  !*** ./src/jazztechnique.js ***!
-  \******************************/
-/*! exports provided: JazzTechnique */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "JazzTechnique", function() { return JazzTechnique; });
-/* harmony import */ var _vex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vex */ "./src/vex.js");
-/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.js");
-/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./glyph */ "./src/glyph.js");
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-// Author: Larry Kuhns
-//
-// ## Description
-// This file implements the `Stroke` class which renders chord strokes
-// that can be arpeggiated, brushed, rasquedo, etc.
-
-
-
-var JazzTechnique =
-/*#__PURE__*/
-function (_Modifier) {
-  _inherits(JazzTechnique, _Modifier);
-
-  _createClass(JazzTechnique, [{
-    key: "metrics",
-    get: function get() {
-      return JazzTechnique.glyphMetrics[this.ornament.code];
-    }
-  }], [{
-    key: "format",
-    // Arrange strokes inside `ModifierContext`
-    value: function format(techniques, state) {
-      var left_shift = state.left_shift;
-      var right_shift = state.right_shift;
-      if (!techniques || techniques.length === 0) return this;
-      techniques.forEach(function (technique) {
-        var width = technique.metrics.reportedWidth;
-
-        if (JazzTechnique.rightPosition.indexOf(technique.type) >= 0) {
-          technique.xOffset += right_shift + 2;
-        }
-
-        if (JazzTechnique.leftPosition.indexOf(technique.type) >= 0) {
-          technique.xOffset -= left_shift + 2;
-        }
-
-        if (technique.xOffset < 0) {
-          left_shift += width;
-        } else if (technique.xOffset > 0) {
-          right_shift += width;
-        }
-      });
-      state.left_shift = left_shift;
-      state.right_shift = right_shift;
-      return true;
-    }
-  }, {
-    key: "CATEGORY",
-    get: function get() {
-      return 'jazztechnique';
-    } // regardless of actual width, this is what we reports.  These symbols
-    // tend to overlap the next notes
-
-  }, {
-    key: "Type",
-    get: function get() {
-      return {
-        SCOOP: 1,
-        DOIT: 2,
-        FALL_SHORT: 3,
-        LIFT: 4,
-        FALL_LONG: 5,
-        BEND: 6,
-        MUTE_CLOSED: 7,
-        MUTE_OPEN: 8,
-        FLIP: 9,
-        TURN: 10,
-        SMEAR: 11
-      };
-    } // ### staffPosition
-    // means the jazz ornament is typically placed just above the staff, or above
-    // the note if the note has top ledger lines.
-
-  }, {
-    key: "staffPosition",
-    get: function get() {
-      return ['flip', 'turn', 'smear'];
-    } // ### LeftPosition
-    // means the jazz ornament is placed before the note
-
-  }, {
-    key: "leftPosition",
-    get: function get() {
-      return ['scoop'];
-    } // ### rightPosition
-    // means the jazz ornament is typically placed just to the right of the note.
-
-  }, {
-    key: "rightPosition",
-    get: function get() {
-      return ['doit', 'fall', 'fallLong', 'doitLong', 'turn', 'smear', 'flip'];
-    } // ### articulationPosition
-    // ornaments that are typically just above or below the note
-
-  }, {
-    key: "articulationPosition",
-    get: function get() {
-      return ['bend', 'plungerClosed', 'plungerOpen'];
-    }
-  }, {
-    key: "TypeToCode",
-    get: function get() {
-      return {
-        1: 'brassScoop',
-        2: 'brassDoitMedium',
-        3: 'brassFallLipShort',
-        4: 'brassLiftMedium',
-        5: 'brassFallRoughMedium',
-        6: 'brassBend',
-        7: 'brassMuteClosed',
-        8: 'brassMuteOpen',
-        9: 'brassFlip',
-        10: 'brassJazzTurn',
-        11: 'brassSmear'
-      };
-    }
-  }, {
-    key: "jazzOrnamentCodes",
-    get: function get() {
-      return {
-        'scoop': {
-          code: 'brassScoop'
-        },
-        'doit': {
-          code: 'brassDoitMedium'
-        },
-        'fall': {
-          code: 'brassFallLipShort'
-        },
-        'doitLong': {
-          code: 'brassLiftMedium'
-        },
-        'fallLong': {
-          code: 'brassFallRoughMedium'
-        },
-        'bend': {
-          code: 'brassBend'
-        },
-        'plungerClosed': {
-          code: 'brassMuteClosed'
-        },
-        'plungerOpen': {
-          code: 'brassMuteOpen'
-        },
-        'flip': {
-          code: 'brassFlip'
-        },
-        'turn': {
-          code: 'brassJazzTurn'
-        },
-        'smear': {
-          code: 'brassSmear'
-        }
-      };
-    }
-  }, {
-    key: "glyphMetrics",
-    get: function get() {
-      return _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.jazzOrnaments;
-    }
-  }]);
-
-  function JazzTechnique(type, options) {
-    var _this;
-
-    _classCallCheck(this, JazzTechnique);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(JazzTechnique).call(this));
-
-    _this.setAttribute('type', 'JazzTechnique');
-
-    _this.note = null;
-    _this.options = _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Merge({}, options); // backwards compatibilty for smoosic
-
-    if (typeof type === 'number') {
-      type = JazzTechnique.TypeToCode[type];
-      type = Object.keys(JazzTechnique.jazzOrnamentCodes).find(function (zz) {
-        return JazzTechnique.jazzOrnamentCodes[zz].code === type;
-      });
-    } // multi voice - end note of stroke, set in draw()
-
-
-    _this.type = type;
-    _this.ornament = JazzTechnique.jazzOrnamentCodes[type];
-    var metrics = _this.metrics;
-    _this.position = _modifier__WEBPACK_IMPORTED_MODULE_1__["Modifier"].Position.LEFT;
-    _this.xOffset = metrics.xOffset;
-    _this.yOffset = metrics.yOffset;
-    _this.scale = metrics.scale; // Allow user to pass in adjustments
-
-    if (_this.options.xAdjust) {
-      _this.xOffset += _this.options.xAdjust;
-    }
-
-    if (_this.options.yAdjust) {
-      _this.yOffset += _this.options.yAdjust;
-    }
-
-    if (_this.options.scaleAdjust) {
-      _this.scale *= _this.options.scaleAdjust;
-    }
-
-    _this.render_options = {
-      font_scale: 38,
-      stroke_px: 3,
-      stroke_spacing: 10
-    };
-    _this.font = {
-      family: 'serif',
-      size: 10,
-      weight: 'bold italic'
-    };
-    _this.glyph = new _glyph__WEBPACK_IMPORTED_MODULE_2__["Glyph"](_this.ornament.code, _this.render_options.font_scale * _this.scale, {
-      category: "jazztechnique.".concat(_this.ornament.code)
-    });
-
-    _this.setXShift(0);
-
-    _this.setWidth(10);
-
-    return _this;
-  }
-
-  _createClass(JazzTechnique, [{
-    key: "getCategory",
-    value: function getCategory() {
-      return JazzTechnique.CATEGORY;
-    }
-  }, {
-    key: "getPosition",
-    value: function getPosition() {
-      return this.position;
-    }
-  }, {
-    key: "addEndNote",
-    value: function addEndNote(note) {
-      this.note_end = note;
-      return this;
-    }
-  }, {
-    key: "draw",
-    value: function draw() {
-      this.checkContext();
-      this.setRendered(); // Allow the application to move/locate the glyph
-
-      this.context.save();
-      var classString = Object.keys(this.getAttribute('classes')).join(' ');
-      this.context.openGroup(classString, this.getAttribute('id'));
-
-      if (!(this.note && this.index != null)) {
-        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('NoAttachedNote', "Can't draw stroke without a note and index.");
-      }
-
-      var start = this.note.getModifierStartXY(this.position, this.index);
-      var y = start.y;
-      var x = start.x;
-      var metrics = this.metrics;
-
-      if (this.note.hasStem()) {
-        if (this.note.getStemDirection() === 1) {
-          y += metrics.stemUpYOffset;
-        }
-      }
-
-      if (this.note.getLineNumber() < 5 && JazzTechnique.staffPosition.indexOf(this.type) >= 0) {
-        y = this.note.getStave().getBoundingBox().y + 40;
-      }
-
-      this.glyph.render(this.context, x + this.xOffset, y + this.yOffset);
-      this.context.closeGroup();
-    }
-  }]);
-
-  return JazzTechnique;
-}(_modifier__WEBPACK_IMPORTED_MODULE_1__["Modifier"]);
 
 /***/ }),
 
@@ -19645,9 +23224,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ornament__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./ornament */ "./src/ornament.js");
 /* harmony import */ var _annotation__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./annotation */ "./src/annotation.js");
 /* harmony import */ var _chordsymbol__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.js");
-/* harmony import */ var _jazztechnique__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./jazztechnique */ "./src/jazztechnique.js");
-/* harmony import */ var _bend__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./bend */ "./src/bend.js");
-/* harmony import */ var _vibrato__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./vibrato */ "./src/vibrato.js");
+/* harmony import */ var _bend__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./bend */ "./src/bend.js");
+/* harmony import */ var _vibrato__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./vibrato */ "./src/vibrato.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -19660,7 +23238,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 //
 // This class implements various types of modifiers to notes (e.g. bends,
 // fingering positions etc.)
-
 
 
 
@@ -19706,7 +23283,7 @@ function () {
     }; // Add new modifiers to this array. The ordering is significant -- lower
     // modifiers are formatted and rendered before higher ones.
 
-    this.PREFORMAT = [_stavenote__WEBPACK_IMPORTED_MODULE_1__["StaveNote"], _dot__WEBPACK_IMPORTED_MODULE_2__["Dot"], _frethandfinger__WEBPACK_IMPORTED_MODULE_3__["FretHandFinger"], _accidental__WEBPACK_IMPORTED_MODULE_4__["Accidental"], _strokes__WEBPACK_IMPORTED_MODULE_7__["Stroke"], _gracenotegroup__WEBPACK_IMPORTED_MODULE_6__["GraceNoteGroup"], _notesubgroup__WEBPACK_IMPORTED_MODULE_5__["NoteSubGroup"], _stringnumber__WEBPACK_IMPORTED_MODULE_8__["StringNumber"], _articulation__WEBPACK_IMPORTED_MODULE_9__["Articulation"], _ornament__WEBPACK_IMPORTED_MODULE_10__["Ornament"], _annotation__WEBPACK_IMPORTED_MODULE_11__["Annotation"], _chordsymbol__WEBPACK_IMPORTED_MODULE_12__["ChordSymbol"], _jazztechnique__WEBPACK_IMPORTED_MODULE_13__["JazzTechnique"], _bend__WEBPACK_IMPORTED_MODULE_14__["Bend"], _vibrato__WEBPACK_IMPORTED_MODULE_15__["Vibrato"]]; // If post-formatting is required for an element, add it to this array.
+    this.PREFORMAT = [_stavenote__WEBPACK_IMPORTED_MODULE_1__["StaveNote"], _dot__WEBPACK_IMPORTED_MODULE_2__["Dot"], _frethandfinger__WEBPACK_IMPORTED_MODULE_3__["FretHandFinger"], _accidental__WEBPACK_IMPORTED_MODULE_4__["Accidental"], _strokes__WEBPACK_IMPORTED_MODULE_7__["Stroke"], _gracenotegroup__WEBPACK_IMPORTED_MODULE_6__["GraceNoteGroup"], _notesubgroup__WEBPACK_IMPORTED_MODULE_5__["NoteSubGroup"], _stringnumber__WEBPACK_IMPORTED_MODULE_8__["StringNumber"], _articulation__WEBPACK_IMPORTED_MODULE_9__["Articulation"], _ornament__WEBPACK_IMPORTED_MODULE_10__["Ornament"], _annotation__WEBPACK_IMPORTED_MODULE_11__["Annotation"], _chordsymbol__WEBPACK_IMPORTED_MODULE_12__["ChordSymbol"], _bend__WEBPACK_IMPORTED_MODULE_13__["Bend"], _vibrato__WEBPACK_IMPORTED_MODULE_14__["Vibrato"]]; // If post-formatting is required for an element, add it to this array.
 
     this.POSTFORMAT = [_stavenote__WEBPACK_IMPORTED_MODULE_1__["StaveNote"]];
   }
@@ -24066,6 +27643,11 @@ function (_Element) {
 
       if (this.getModifiers(_stavemodifier__WEBPACK_IMPORTED_MODULE_4__["StaveModifier"].Position.BEGIN).length === 1) {
         return 0;
+      } // for right position modifiers zero shift seems correct, see 'Volta + Modifier Measure Test'
+
+
+      if (this.modifiers[index].getPosition() === _stavemodifier__WEBPACK_IMPORTED_MODULE_4__["StaveModifier"].Position.RIGHT) {
+        return 0;
       }
 
       var start_x = this.start_x - this.x;
@@ -26533,13 +30115,18 @@ function (_StemmableNote) {
   }, {
     key: "autoStem",
     value: function autoStem() {
+      this.setStemDirection(this.calculateOptimalStemDirection());
+    }
+  }, {
+    key: "calculateOptimalStemDirection",
+    value: function calculateOptimalStemDirection() {
       // Figure out optimal stem direction based on given notes
       this.minLine = this.keyProps[0].line;
       this.maxLine = this.keyProps[this.keyProps.length - 1].line;
       var MIDDLE_LINE = 3;
       var decider = (this.minLine + this.maxLine) / 2;
       var stemDirection = decider < MIDDLE_LINE ? _stem__WEBPACK_IMPORTED_MODULE_3__["Stem"].UP : _stem__WEBPACK_IMPORTED_MODULE_3__["Stem"].DOWN;
-      this.setStemDirection(stemDirection);
+      return stemDirection;
     } // Calculates and stores the properties for each key in the note
 
   }, {
@@ -26660,8 +30247,8 @@ function (_StemmableNote) {
       }
 
       return new _boundingbox__WEBPACK_IMPORTED_MODULE_2__["BoundingBox"](x, minY, w, maxY - minY);
-    } // Gets the line number of the top or bottom note in the chord.
-    // If `isTopNote` is `true` then get the top note
+    } // Gets the line number of the bottom note in the chord.
+    // If `isTopNote` is `true` then get the top note's line number instead
 
   }, {
     key: "getLineNumber",
@@ -27284,6 +30871,57 @@ function (_StemmableNote) {
       });
       this.stem.setContext(this.context).draw();
       this.context.closeGroup();
+    }
+    /**
+     * Override stemmablenote stem extension to adjust for distance from middle line.
+     */
+
+  }, {
+    key: "getStemExtension",
+    value: function getStemExtension() {
+      var super_stem_extension = _get(_getPrototypeOf(StaveNote.prototype), "getStemExtension", this).call(this);
+
+      if (!this.glyph.stem) {
+        return super_stem_extension;
+      }
+
+      var stem_direction = this.getStemDirection();
+
+      if (stem_direction !== this.calculateOptimalStemDirection()) {
+        return super_stem_extension; // no adjustment for manually set stem direction.
+      }
+
+      var mid_line_distance;
+      var MIDDLE_LINE = 3;
+
+      if (stem_direction === _stem__WEBPACK_IMPORTED_MODULE_3__["Stem"].UP) {
+        // Note that the use of maxLine here instead of minLine might
+        // seem counterintuitive, but in the case of (say) treble clef
+        // chord(F2, E4) stem up, we do not want to extend the stem because
+        // of F2, when a normal octave-length stem above E4 is fine.
+        //
+        // maxLine and minLine are set in calculateOptimalStemDirection() so
+        // will be known.
+        mid_line_distance = MIDDLE_LINE - this.maxLine;
+      } else {
+        mid_line_distance = this.minLine - MIDDLE_LINE;
+      } // how many lines more than an octave is the relevant notehead?
+
+
+      var lines_over_octave_from_mid_line = mid_line_distance - 3.5;
+
+      if (lines_over_octave_from_mid_line <= 0) {
+        return super_stem_extension;
+      }
+
+      var stave = this.getStave();
+      var spacing_between_lines = 10;
+
+      if (stave != null) {
+        spacing_between_lines = stave.getSpacingBetweenLines();
+      }
+
+      return super_stem_extension + lines_over_octave_from_mid_line * spacing_between_lines;
     } // Draws all the `StaveNote` parts. This is the main drawing method.
 
   }, {
@@ -27310,9 +30948,7 @@ function (_StemmableNote) {
 
       var stemX = this.getStemX();
       this.stem.setNoteHeadXBounds(stemX, stemX);
-      L('Rendering ', this.isChord() ? 'chord :' : 'note :', this.keys); // Draw each part of the note
-
-      this.drawLedgerLines(); // Apply the overall style -- may be contradicted by local settings:
+      L('Rendering ', this.isChord() ? 'chord :' : 'note :', this.keys); // Apply the overall style -- may be contradicted by local settings:
 
       this.applyStyle();
       var snClass = 'stavenote';
@@ -27543,6 +31179,9 @@ function (_StaveModifier) {
         // Offset Coda text to right of stave beginning
         text_x = this.x + stave.options.vertical_bar_width;
         symbol_x = text_x + ctx.measureText(text).width + 12;
+      } else if (this.symbol_type === Repetition.type.DS) {
+        var modifierWidth = stave.start_x - this.x;
+        text_x = this.x + x + this.x_shift + stave.width - 5 - modifierWidth - ctx.measureText(text).width; // TODO this is weird. setting the x position should probably be refactored, parameters aren't clear here.
       } else {
         // Offset Signo text to left stave end
         symbol_x = this.x + x + stave.width - 5 + this.x_shift;
@@ -28364,7 +32003,8 @@ function (_StaveModifier) {
     value: function draw(stave, x) {
       var ctx = stave.checkContext();
       this.setRendered();
-      var width = stave.width;
+      var width = stave.width - x; // don't include x (offset) for width
+
       var top_y = stave.getYForTopText(stave.options.num_lines) + this.y_shift;
       var vert_height = 1.5 * stave.options.spacing_between_lines_px;
 
@@ -28898,12 +32538,12 @@ function (_Note) {
     value: function getStemExtension() {
       var glyph = this.getGlyph();
 
-      if (this.stemExtensionOverride != null) {
-        return this.stemExtensionOverride;
+      if (this.stem_extension_override != null) {
+        return this.stem_extension_override;
       }
 
       if (glyph) {
-        return this.getStemDirection() === 1 ? glyph.stem_up_extension : glyph.stem_down_extension;
+        return this.getStemDirection() === _stem__WEBPACK_IMPORTED_MODULE_2__["Stem"].UP ? glyph.stem_up_extension : glyph.stem_down_extension;
       }
 
       return 0;
@@ -28912,7 +32552,7 @@ function (_Note) {
   }, {
     key: "setStemLength",
     value: function setStemLength(height) {
-      this.stemExtensionOverride = height - _stem__WEBPACK_IMPORTED_MODULE_2__["Stem"].HEIGHT;
+      this.stem_extension_override = height - _stem__WEBPACK_IMPORTED_MODULE_2__["Stem"].HEIGHT;
       return this;
     } // Get the top and bottom `y` values of the stem.
 
@@ -31225,6 +34865,966 @@ Flow.accidentalCodes.accidentals = {
   'afhf': {
     code: 'vexAccidentalMicrotonal4',
     parenRightPaddingAdjustment: -1
+  },
+  'accSagittal5v7KleismaUp': {
+    code: 'accSagittal5v7KleismaUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal5v7KleismaDown': {
+    code: 'accSagittal5v7KleismaDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal5CommaUp': {
+    code: 'accSagittal5CommaUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal5CommaDown': {
+    code: 'accSagittal5CommaDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal7CommaUp': {
+    code: 'accSagittal7CommaUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal7CommaDown': {
+    code: 'accSagittal7CommaDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal25SmallDiesisUp': {
+    code: 'accSagittal25SmallDiesisUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal25SmallDiesisDown': {
+    code: 'accSagittal25SmallDiesisDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal35MediumDiesisUp': {
+    code: 'accSagittal35MediumDiesisUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal35MediumDiesisDown': {
+    code: 'accSagittal35MediumDiesisDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal11MediumDiesisUp': {
+    code: 'accSagittal11MediumDiesisUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal11MediumDiesisDown': {
+    code: 'accSagittal11MediumDiesisDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal11LargeDiesisUp': {
+    code: 'accSagittal11LargeDiesisUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal11LargeDiesisDown': {
+    code: 'accSagittal11LargeDiesisDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal35LargeDiesisUp': {
+    code: 'accSagittal35LargeDiesisUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal35LargeDiesisDown': {
+    code: 'accSagittal35LargeDiesisDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp25SDown': {
+    code: 'accSagittalSharp25SDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat25SUp': {
+    code: 'accSagittalFlat25SUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp7CDown': {
+    code: 'accSagittalSharp7CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat7CUp': {
+    code: 'accSagittalFlat7CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp5CDown': {
+    code: 'accSagittalSharp5CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat5CUp': {
+    code: 'accSagittalFlat5CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp5v7kDown': {
+    code: 'accSagittalSharp5v7kDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat5v7kUp': {
+    code: 'accSagittalFlat5v7kUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp': {
+    code: 'accSagittalSharp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat': {
+    code: 'accSagittalFlat',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp5v7kUp': {
+    code: 'accSagittalSharp5v7kUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat5v7kDown': {
+    code: 'accSagittalFlat5v7kDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp5CUp': {
+    code: 'accSagittalSharp5CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat5CDown': {
+    code: 'accSagittalFlat5CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp7CUp': {
+    code: 'accSagittalSharp7CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat7CDown': {
+    code: 'accSagittalFlat7CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp25SUp': {
+    code: 'accSagittalSharp25SUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat25SDown': {
+    code: 'accSagittalFlat25SDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp35MUp': {
+    code: 'accSagittalSharp35MUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat35MDown': {
+    code: 'accSagittalFlat35MDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp11MUp': {
+    code: 'accSagittalSharp11MUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat11MDown': {
+    code: 'accSagittalFlat11MDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp11LUp': {
+    code: 'accSagittalSharp11LUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat11LDown': {
+    code: 'accSagittalFlat11LDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp35LUp': {
+    code: 'accSagittalSharp35LUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat35LDown': {
+    code: 'accSagittalFlat35LDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleSharp25SDown': {
+    code: 'accSagittalDoubleSharp25SDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleFlat25SUp': {
+    code: 'accSagittalDoubleFlat25SUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleSharp7CDown': {
+    code: 'accSagittalDoubleSharp7CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleFlat7CUp': {
+    code: 'accSagittalDoubleFlat7CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleSharp5CDown': {
+    code: 'accSagittalDoubleSharp5CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleFlat5CUp': {
+    code: 'accSagittalDoubleFlat5CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleSharp5v7kDown': {
+    code: 'accSagittalDoubleSharp5v7kDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleFlat5v7kUp': {
+    code: 'accSagittalDoubleFlat5v7kUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleSharp': {
+    code: 'accSagittalDoubleSharp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleFlat': {
+    code: 'accSagittalDoubleFlat',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal7v11KleismaUp': {
+    code: 'accSagittal7v11KleismaUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal7v11KleismaDown': {
+    code: 'accSagittal7v11KleismaDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal17CommaUp': {
+    code: 'accSagittal17CommaUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal17CommaDown': {
+    code: 'accSagittal17CommaDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal55CommaUp': {
+    code: 'accSagittal55CommaUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal55CommaDown': {
+    code: 'accSagittal55CommaDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal7v11CommaUp': {
+    code: 'accSagittal7v11CommaUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal7v11CommaDown': {
+    code: 'accSagittal7v11CommaDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal5v11SmallDiesisUp': {
+    code: 'accSagittal5v11SmallDiesisUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal5v11SmallDiesisDown': {
+    code: 'accSagittal5v11SmallDiesisDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp5v11SDown': {
+    code: 'accSagittalSharp5v11SDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat5v11SUp': {
+    code: 'accSagittalFlat5v11SUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp7v11CDown': {
+    code: 'accSagittalSharp7v11CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat7v11CUp': {
+    code: 'accSagittalFlat7v11CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp55CDown': {
+    code: 'accSagittalSharp55CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat55CUp': {
+    code: 'accSagittalFlat55CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp17CDown': {
+    code: 'accSagittalSharp17CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat17CUp': {
+    code: 'accSagittalFlat17CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp7v11kDown': {
+    code: 'accSagittalSharp7v11kDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat7v11kUp': {
+    code: 'accSagittalFlat7v11kUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp7v11kUp': {
+    code: 'accSagittalSharp7v11kUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat7v11kDown': {
+    code: 'accSagittalFlat7v11kDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp17CUp': {
+    code: 'accSagittalSharp17CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat17CDown': {
+    code: 'accSagittalFlat17CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp55CUp': {
+    code: 'accSagittalSharp55CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat55CDown': {
+    code: 'accSagittalFlat55CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp7v11CUp': {
+    code: 'accSagittalSharp7v11CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat7v11CDown': {
+    code: 'accSagittalFlat7v11CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp5v11SUp': {
+    code: 'accSagittalSharp5v11SUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat5v11SDown': {
+    code: 'accSagittalFlat5v11SDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleSharp5v11SDown': {
+    code: 'accSagittalDoubleSharp5v11SDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleFlat5v11SUp': {
+    code: 'accSagittalDoubleFlat5v11SUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleSharp7v11CDown': {
+    code: 'accSagittalDoubleSharp7v11CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleFlat7v11CUp': {
+    code: 'accSagittalDoubleFlat7v11CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleSharp55CDown': {
+    code: 'accSagittalDoubleSharp55CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleFlat55CUp': {
+    code: 'accSagittalDoubleFlat55CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleSharp17CDown': {
+    code: 'accSagittalDoubleSharp17CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleFlat17CUp': {
+    code: 'accSagittalDoubleFlat17CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleSharp7v11kDown': {
+    code: 'accSagittalDoubleSharp7v11kDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleFlat7v11kUp': {
+    code: 'accSagittalDoubleFlat7v11kUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal23CommaUp': {
+    code: 'accSagittal23CommaUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal23CommaDown': {
+    code: 'accSagittal23CommaDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal5v19CommaUp': {
+    code: 'accSagittal5v19CommaUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal5v19CommaDown': {
+    code: 'accSagittal5v19CommaDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal5v23SmallDiesisUp': {
+    code: 'accSagittal5v23SmallDiesisUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal5v23SmallDiesisDown': {
+    code: 'accSagittal5v23SmallDiesisDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp5v23SDown': {
+    code: 'accSagittalSharp5v23SDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat5v23SUp': {
+    code: 'accSagittalFlat5v23SUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp5v19CDown': {
+    code: 'accSagittalSharp5v19CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat5v19CUp': {
+    code: 'accSagittalFlat5v19CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp23CDown': {
+    code: 'accSagittalSharp23CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat23CUp': {
+    code: 'accSagittalFlat23CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp23CUp': {
+    code: 'accSagittalSharp23CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat23CDown': {
+    code: 'accSagittalFlat23CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp5v19CUp': {
+    code: 'accSagittalSharp5v19CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat5v19CDown': {
+    code: 'accSagittalFlat5v19CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp5v23SUp': {
+    code: 'accSagittalSharp5v23SUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat5v23SDown': {
+    code: 'accSagittalFlat5v23SDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleSharp5v23SDown': {
+    code: 'accSagittalDoubleSharp5v23SDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleFlat5v23SUp': {
+    code: 'accSagittalDoubleFlat5v23SUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleSharp5v19CDown': {
+    code: 'accSagittalDoubleSharp5v19CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleFlat5v19CUp': {
+    code: 'accSagittalDoubleFlat5v19CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleSharp23CDown': {
+    code: 'accSagittalDoubleSharp23CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleFlat23CUp': {
+    code: 'accSagittalDoubleFlat23CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal19SchismaUp': {
+    code: 'accSagittal19SchismaUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal19SchismaDown': {
+    code: 'accSagittal19SchismaDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal17KleismaUp': {
+    code: 'accSagittal17KleismaUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal17KleismaDown': {
+    code: 'accSagittal17KleismaDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal143CommaUp': {
+    code: 'accSagittal143CommaUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal143CommaDown': {
+    code: 'accSagittal143CommaDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal11v49CommaUp': {
+    code: 'accSagittal11v49CommaUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal11v49CommaDown': {
+    code: 'accSagittal11v49CommaDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal19CommaUp': {
+    code: 'accSagittal19CommaUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal19CommaDown': {
+    code: 'accSagittal19CommaDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal7v19CommaUp': {
+    code: 'accSagittal7v19CommaUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal7v19CommaDown': {
+    code: 'accSagittal7v19CommaDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal49SmallDiesisUp': {
+    code: 'accSagittal49SmallDiesisUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal49SmallDiesisDown': {
+    code: 'accSagittal49SmallDiesisDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal23SmallDiesisUp': {
+    code: 'accSagittal23SmallDiesisUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal23SmallDiesisDown': {
+    code: 'accSagittal23SmallDiesisDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal5v13MediumDiesisUp': {
+    code: 'accSagittal5v13MediumDiesisUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal5v13MediumDiesisDown': {
+    code: 'accSagittal5v13MediumDiesisDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal11v19MediumDiesisUp': {
+    code: 'accSagittal11v19MediumDiesisUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal11v19MediumDiesisDown': {
+    code: 'accSagittal11v19MediumDiesisDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal49MediumDiesisUp': {
+    code: 'accSagittal49MediumDiesisUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal49MediumDiesisDown': {
+    code: 'accSagittal49MediumDiesisDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal5v49MediumDiesisUp': {
+    code: 'accSagittal5v49MediumDiesisUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal5v49MediumDiesisDown': {
+    code: 'accSagittal5v49MediumDiesisDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal49LargeDiesisUp': {
+    code: 'accSagittal49LargeDiesisUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal49LargeDiesisDown': {
+    code: 'accSagittal49LargeDiesisDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal11v19LargeDiesisUp': {
+    code: 'accSagittal11v19LargeDiesisUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal11v19LargeDiesisDown': {
+    code: 'accSagittal11v19LargeDiesisDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal5v13LargeDiesisUp': {
+    code: 'accSagittal5v13LargeDiesisUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal5v13LargeDiesisDown': {
+    code: 'accSagittal5v13LargeDiesisDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp23SDown': {
+    code: 'accSagittalSharp23SDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat23SUp': {
+    code: 'accSagittalFlat23SUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp49SDown': {
+    code: 'accSagittalSharp49SDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat49SUp': {
+    code: 'accSagittalFlat49SUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp7v19CDown': {
+    code: 'accSagittalSharp7v19CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat7v19CUp': {
+    code: 'accSagittalFlat7v19CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp19CDown': {
+    code: 'accSagittalSharp19CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat19CUp': {
+    code: 'accSagittalFlat19CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp11v49CDown': {
+    code: 'accSagittalSharp11v49CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat11v49CUp': {
+    code: 'accSagittalFlat11v49CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp143CDown': {
+    code: 'accSagittalSharp143CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat143CUp': {
+    code: 'accSagittalFlat143CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp17kDown': {
+    code: 'accSagittalSharp17kDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat17kUp': {
+    code: 'accSagittalFlat17kUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp19sDown': {
+    code: 'accSagittalSharp19sDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat19sUp': {
+    code: 'accSagittalFlat19sUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp19sUp': {
+    code: 'accSagittalSharp19sUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat19sDown': {
+    code: 'accSagittalFlat19sDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp17kUp': {
+    code: 'accSagittalSharp17kUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat17kDown': {
+    code: 'accSagittalFlat17kDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp143CUp': {
+    code: 'accSagittalSharp143CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat143CDown': {
+    code: 'accSagittalFlat143CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp11v49CUp': {
+    code: 'accSagittalSharp11v49CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat11v49CDown': {
+    code: 'accSagittalFlat11v49CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp19CUp': {
+    code: 'accSagittalSharp19CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat19CDown': {
+    code: 'accSagittalFlat19CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp7v19CUp': {
+    code: 'accSagittalSharp7v19CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat7v19CDown': {
+    code: 'accSagittalFlat7v19CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp49SUp': {
+    code: 'accSagittalSharp49SUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat49SDown': {
+    code: 'accSagittalFlat49SDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp23SUp': {
+    code: 'accSagittalSharp23SUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat23SDown': {
+    code: 'accSagittalFlat23SDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp5v13MUp': {
+    code: 'accSagittalSharp5v13MUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat5v13MDown': {
+    code: 'accSagittalFlat5v13MDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp11v19MUp': {
+    code: 'accSagittalSharp11v19MUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat11v19MDown': {
+    code: 'accSagittalFlat11v19MDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp49MUp': {
+    code: 'accSagittalSharp49MUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat49MDown': {
+    code: 'accSagittalFlat49MDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp5v49MUp': {
+    code: 'accSagittalSharp5v49MUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat5v49MDown': {
+    code: 'accSagittalFlat5v49MDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp49LUp': {
+    code: 'accSagittalSharp49LUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat49LDown': {
+    code: 'accSagittalFlat49LDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp11v19LUp': {
+    code: 'accSagittalSharp11v19LUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat11v19LDown': {
+    code: 'accSagittalFlat11v19LDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalSharp5v13LUp': {
+    code: 'accSagittalSharp5v13LUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFlat5v13LDown': {
+    code: 'accSagittalFlat5v13LDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleSharp23SDown': {
+    code: 'accSagittalDoubleSharp23SDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleFlat23SUp': {
+    code: 'accSagittalDoubleFlat23SUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleSharp49SDown': {
+    code: 'accSagittalDoubleSharp49SDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleFlat49SUp': {
+    code: 'accSagittalDoubleFlat49SUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleSharp7v19CDown': {
+    code: 'accSagittalDoubleSharp7v19CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleFlat7v19CUp': {
+    code: 'accSagittalDoubleFlat7v19CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleSharp19CDown': {
+    code: 'accSagittalDoubleSharp19CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleFlat19CUp': {
+    code: 'accSagittalDoubleFlat19CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleSharp11v49CDown': {
+    code: 'accSagittalDoubleSharp11v49CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleFlat11v49CUp': {
+    code: 'accSagittalDoubleFlat11v49CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleSharp143CDown': {
+    code: 'accSagittalDoubleSharp143CDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleFlat143CUp': {
+    code: 'accSagittalDoubleFlat143CUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleSharp17kDown': {
+    code: 'accSagittalDoubleSharp17kDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleFlat17kUp': {
+    code: 'accSagittalDoubleFlat17kUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleSharp19sDown': {
+    code: 'accSagittalDoubleSharp19sDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalDoubleFlat19sUp': {
+    code: 'accSagittalDoubleFlat19sUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalShaftUp': {
+    code: 'accSagittalShaftUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalShaftDown': {
+    code: 'accSagittalShaftDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalAcute': {
+    code: 'accSagittalAcute',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalGrave': {
+    code: 'accSagittalGrave',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal1MinaUp': {
+    code: 'accSagittal1MinaUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal1MinaDown': {
+    code: 'accSagittal1MinaDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal2MinasUp': {
+    code: 'accSagittal2MinasUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal2MinasDown': {
+    code: 'accSagittal2MinasDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal1TinaUp': {
+    code: 'accSagittal1TinaUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal1TinaDown': {
+    code: 'accSagittal1TinaDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal2TinasUp': {
+    code: 'accSagittal2TinasUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal2TinasDown': {
+    code: 'accSagittal2TinasDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal3TinasUp': {
+    code: 'accSagittal3TinasUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal3TinasDown': {
+    code: 'accSagittal3TinasDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal4TinasUp': {
+    code: 'accSagittal4TinasUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal4TinasDown': {
+    code: 'accSagittal4TinasDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal5TinasUp': {
+    code: 'accSagittal5TinasUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal5TinasDown': {
+    code: 'accSagittal5TinasDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal6TinasUp': {
+    code: 'accSagittal6TinasUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal6TinasDown': {
+    code: 'accSagittal6TinasDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal7TinasUp': {
+    code: 'accSagittal7TinasUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal7TinasDown': {
+    code: 'accSagittal7TinasDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal8TinasUp': {
+    code: 'accSagittal8TinasUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal8TinasDown': {
+    code: 'accSagittal8TinasDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal9TinasUp': {
+    code: 'accSagittal9TinasUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittal9TinasDown': {
+    code: 'accSagittal9TinasDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFractionalTinaUp': {
+    code: 'accSagittalFractionalTinaUp',
+    parenRightPaddingAdjustment: -1
+  },
+  'accSagittalFractionalTinaDown': {
+    code: 'accSagittalFractionalTinaDown',
+    parenRightPaddingAdjustment: -1
+  },
+  'accidentalNarrowReversedFlat': {
+    code: 'accidentalNarrowReversedFlat',
+    parenRightPaddingAdjustment: -1
+  },
+  'accidentalNarrowReversedFlatAndFlat': {
+    code: 'accidentalNarrowReversedFlatAndFlat',
+    parenRightPaddingAdjustment: -1
+  },
+  'accidentalWilsonPlus': {
+    code: 'accidentalWilsonPlus',
+    parenRightPaddingAdjustment: -1
+  },
+  'accidentalWilsonMinus': {
+    code: 'accidentalWilsonMinus',
+    parenRightPaddingAdjustment: -1
   }
 };
 Flow.accidentalColumnsTable = {
@@ -32721,6 +37321,9 @@ function (_StemmableNote) {
 
       this.setRendered();
       var render_stem = this.beam == null && this.render_options.draw_stem;
+      this.context.openGroup('tabnote', null, {
+        pointerBBox: true
+      });
       this.drawPositions();
       this.drawStemThrough();
       var stem_x = this.getStemX();
@@ -32736,6 +37339,7 @@ function (_StemmableNote) {
 
       this.drawFlag();
       this.drawModifiers();
+      this.context.closeGroup();
     }
   }]);
 
@@ -33091,352 +37695,6 @@ function (_StaveTie) {
 
   return TabTie;
 }(_stavetie__WEBPACK_IMPORTED_MODULE_0__["StaveTie"]);
-
-/***/ }),
-
-/***/ "./src/textFont.js":
-/*!*************************!*\
-  !*** ./src/textFont.js ***!
-  \*************************/
-/*! exports provided: TextFont */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TextFont", function() { return TextFont; });
-/* harmony import */ var _vex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vex */ "./src/vex.js");
-/* harmony import */ var _fonts_petalumaScript_metrics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fonts/petalumaScript_metrics */ "./src/fonts/petalumaScript_metrics.js");
-/* harmony import */ var _fonts_robotoSlab_metrics__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./fonts/robotoSlab_metrics */ "./src/fonts/robotoSlab_metrics.js");
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-//
-// This file handles a registry of text font metric information, so all
-// VEX modules can take advantage of font metrics in a uniform way.
-//
-
-
- // To enable logging for this class. Set `Vex.Flow.TextFont.DEBUG` to `true`.
-
-function L() {
-  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-    args[_key] = arguments[_key];
-  }
-
-  if (TextFont.DEBUG) _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].L('Vex.Flow.TextFont', args);
-}
-
-var TextFont =
-/*#__PURE__*/
-function () {
-  _createClass(TextFont, null, [{
-    key: "getFontFamilies",
-    // ### getFontFamilies
-    // Web font files are generally distributed per weight and style (bold, italic).
-    // return the family with the attributes that are available for that font.
-    // We assume descriptions are the same for different weights/styles.
-    value: function getFontFamilies() {
-      var hash = {};
-      var rv = [];
-      TextFont.fontRegistry.forEach(function (font) {
-        if (!hash[font.family]) {
-          hash[font.family] = {
-            family: font.family,
-            description: font.description,
-            bold: font.bold,
-            serifs: font.serifs,
-            italic: font.italic
-          };
-        } else {
-          ['bold', 'italic', 'monospaced', 'serifs'].forEach(function (attr) {
-            if (font[attr]) {
-              hash[font.family][attr] = true;
-            }
-          });
-        }
-      });
-      var keys = Object.keys(hash);
-      keys.forEach(function (key) {
-        rv.push(hash[key]);
-      });
-      return rv;
-    } // ### fontWeightToBold
-    // return true if the font weight indicates we desire a 'bold'
-    // used in getTextFontFromVexFontData
-
-  }, {
-    key: "fontWeightToBold",
-    value: function fontWeightToBold(fw) {
-      if (!fw) {
-        return false;
-      }
-
-      if (isNaN(parseInt(fw, 10))) {
-        return fw.toLowerCase() === 'bold';
-      } // very subjective...
-
-
-      return parseInt(fw, 10) >= 600;
-    } // ### fontStyleToItalic
-    // return true if the font style indicates we desire 'italic' style
-    // used in getTextFontFromVexFontData
-
-  }, {
-    key: "fontStyleToItalic",
-    value: function fontStyleToItalic(fs) {
-      return fs && typeof fs === 'string' && fs.toLowerCase() === 'italic';
-    } // ### getTextFontFromVexFontData
-    // Find the font that most closely matches the parameters from the given font data.
-    // Primarily we look for font family, also bold and italic attributes.  This
-    // method will always return a fallback font if there are no matches.
-
-  }, {
-    key: "getTextFontFromVexFontData",
-    value: function getTextFontFromVexFontData(fd) {
-      var i = 0;
-      var fallback = TextFont.fontRegistry[0];
-      var candidates = [];
-      var families = fd.family.split(',');
-
-      var _loop = function _loop() {
-        var famliy = families[i];
-        candidates = TextFont.fontRegistry.filter(function (font) {
-          return font.family === famliy;
-        });
-
-        if (candidates.length) {
-          return "break";
-        }
-      };
-
-      for (i = 0; i < families.length; ++i) {
-        var _ret = _loop();
-
-        if (_ret === "break") break;
-      }
-
-      if (candidates.length === 0) {
-        return new TextFont(fallback);
-      }
-
-      if (candidates.length === 1) {
-        return new TextFont(candidates[0]);
-      }
-
-      var bold = TextFont.fontWeightToBold(fd.weight);
-      var italic = TextFont.fontStyleToItalic(fd.style);
-      var perfect = candidates.find(function (font) {
-        return font.bold === bold && font.italic === italic;
-      });
-
-      if (perfect) {
-        return new TextFont(perfect);
-      }
-
-      var ok = candidates.find(function (font) {
-        return font.italic === italic || font.bold === bold;
-      });
-
-      if (ok) {
-        return new TextFont(ok);
-      }
-
-      return new TextFont(candidates[0]);
-    }
-  }, {
-    key: "getFontDataByName",
-    value: function getFontDataByName(fontName) {
-      return TextFont.fontRegistry.find(function (fd) {
-        return fd.name === fontName;
-      });
-    } // ### registerFont
-    // Applications may register their own fonts and the metrics, and those metrics
-    // will be available to the application for formatting.  See fontRegistry
-    // for format of font metrics.  Metrics can be generated from any font file
-    // using font_fontgen.js in the tools/smufl directory.
-
-  }, {
-    key: "registerFont",
-    value: function registerFont(fontData, overwrite) {
-      // Get via external reference to make sure initial object is created
-      var reg = TextFont.fontRegistry;
-      var exists = reg.find(function (td) {
-        return fontData.name === td.name;
-      });
-
-      if (exists && overwrite) {
-        TextFont.registryInstance = TextFont.fontRegistry.filter(function (fd) {
-          return fd.name !== exists.name;
-        });
-      }
-
-      if (!exists) {
-        L('registering font ' + fontData.name);
-        TextFont.registryInstance.push(fontData);
-      }
-    } // ## Prototype Methods
-    //
-    // create a font instance.
-    // The preferred method for returning an instance of this class is via
-    // getTextFontFromVexFontData
-
-  }, {
-    key: "CATEGORY",
-    get: function get() {
-      return 'textFont';
-    }
-  }, {
-    key: "DEBUG",
-    get: function get() {
-      return TextFont.debug;
-    },
-    set: function set(val) {
-      TextFont.debug = val;
-    } // ### fontRegistry
-    // Getter of an array of available fonts.  Applications may register their
-    // own fonts and the metrics for those fonts will be available to the
-    // application.
-
-  }, {
-    key: "fontRegistry",
-    get: function get() {
-      if (!TextFont.registryInstance) {
-        TextFont.registryInstance = [];
-        TextFont.registryInstance.push({
-          name: 'RobotoSlab',
-          resolution: _fonts_robotoSlab_metrics__WEBPACK_IMPORTED_MODULE_2__["RobotoSlabMetrics"].resolution,
-          glyphs: _fonts_robotoSlab_metrics__WEBPACK_IMPORTED_MODULE_2__["RobotoSlabMetrics"].glyphs,
-          family: _fonts_robotoSlab_metrics__WEBPACK_IMPORTED_MODULE_2__["RobotoSlabMetrics"].fontFamily,
-          serifs: true,
-          monospaced: false,
-          italic: false,
-          bold: false,
-          maxSizeGlyph: 'H',
-          superscriptOffset: 0.66,
-          subscriptOffset: 0.66,
-          description: 'Default serif text font to pair with Bravura/Gonville engraving font'
-        });
-        TextFont.registryInstance.push({
-          name: 'PetalumaScript',
-          resolution: _fonts_petalumaScript_metrics__WEBPACK_IMPORTED_MODULE_1__["PetalumaScriptMetrics"].resolution,
-          glyphs: _fonts_petalumaScript_metrics__WEBPACK_IMPORTED_MODULE_1__["PetalumaScriptMetrics"].glyphs,
-          family: _fonts_petalumaScript_metrics__WEBPACK_IMPORTED_MODULE_1__["PetalumaScriptMetrics"].fontFamily,
-          serifs: false,
-          monospaced: false,
-          italic: false,
-          bold: false,
-          maxSizeGlyph: 'H',
-          superscriptOffset: 0.66,
-          subscriptOffset: 0.66,
-          description: 'Default sans-serif text font to pair with Petaluma engraving font'
-        });
-      }
-
-      return TextFont.registryInstance;
-    }
-  }]);
-
-  function TextFont(params) {
-    _classCallCheck(this, TextFont);
-
-    this.attrs = {
-      'type': 'TextFont'
-    };
-
-    if (!params.name) {
-      _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('BadArgument', 'Font constructor must specify a name');
-    }
-
-    var fontData = params.glyphs ? params : TextFont.getFontDataByName(params.name);
-
-    if (!fontData) {
-      if (params.glyphs && params.resolution) {
-        TextFont.registerFont(params);
-      } else {
-        _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('BadArgument', 'Unknown font, must have glyph metrics and resolution');
-      }
-    } else {
-      _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Merge(this, fontData);
-    }
-
-    _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Merge(this, params);
-
-    if (!this.size) {
-      this.size = 14;
-    }
-
-    if (!this.maxSizeGlyph) {
-      this.maxSizeGlyph = 'H';
-    }
-  }
-
-  _createClass(TextFont, [{
-    key: "measureText",
-    value: function measureText(text) {
-      var bbox = {
-        x: 0,
-        y: 0,
-        width: 0,
-        height: this.maxHeight()
-      };
-      var i = 0;
-
-      for (i = 0; i < text.length; ++i) {
-        var _char = text[i];
-        bbox.width += this.getWidthForCharacter(_char);
-      }
-
-      return bbox;
-    }
-  }, {
-    key: "getMetricForCharacter",
-    value: function getMetricForCharacter(c) {
-      if (this.glyphs[c]) {
-        return this.glyphs[c];
-      }
-
-      return this.glyphs[this.maxSizeGlyph];
-    }
-  }, {
-    key: "getWidthForCharacter",
-    value: function getWidthForCharacter(c) {
-      var metric = this.getMetricForCharacter(c);
-
-      if (!metric) {
-        return 0.65 * this.pointsToPixels;
-      }
-
-      return metric.advanceWidth / this.resolution * this.pointsToPixels;
-    } // ### pointsToPixels
-    // The font size is specified in points, convert to 'pixels' in the svg space
-
-  }, {
-    key: "setFontSize",
-    value: function setFontSize(size) {
-      this.size = size;
-      return this;
-    }
-  }, {
-    key: "maxHeight",
-    get: function get() {
-      var glyph = this.getMetricForCharacter(this.maxSizeGlyph);
-      return glyph.ha / this.resolution * this.pointsToPixels;
-    }
-  }, {
-    key: "pointsToPixels",
-    get: function get() {
-      return this.size / 72 / (1 / 96);
-    }
-  }]);
-
-  return TextFont;
-}();
 
 /***/ }),
 
@@ -33863,6 +38121,334 @@ function (_Note) {
 
   return TextDynamics;
 }(_note__WEBPACK_IMPORTED_MODULE_1__["Note"]);
+
+/***/ }),
+
+/***/ "./src/textfont.js":
+/*!*************************!*\
+  !*** ./src/textfont.js ***!
+  \*************************/
+/*! exports provided: TextFont */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TextFont", function() { return TextFont; });
+/* harmony import */ var _vex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vex */ "./src/vex.js");
+/* harmony import */ var _fonts_petalumascript_textmetrics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fonts/petalumascript_textmetrics */ "./src/fonts/petalumascript_textmetrics.js");
+/* harmony import */ var _fonts_robotoslab_textmetrics__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./fonts/robotoslab_textmetrics */ "./src/fonts/robotoslab_textmetrics.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+//
+// ## Description
+//
+// This file handles a registry of text font metric information, so all
+// VEX modules can take advantage of font metrics in a uniform way.
+//
+
+
+ // To enable logging for this class. Set `Vex.Flow.TextFont.DEBUG` to `true`.
+
+function L() {
+  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
+
+  if (TextFont.DEBUG) _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].L('Vex.Flow.TextFont', args);
+}
+
+var TextFont =
+/*#__PURE__*/
+function () {
+  _createClass(TextFont, null, [{
+    key: "getFontFamilies",
+    // ### getFontFamilies
+    // Web font files are generally distributed per weight and style (bold, italic).
+    // return the family with the attributes that are available for that font.
+    // We assume descriptions are the same for different weights/styles.
+    value: function getFontFamilies() {
+      var hash = {};
+      var rv = [];
+      TextFont.fontRegistry.forEach(function (font) {
+        if (!hash[font.family]) {
+          hash[font.family] = {
+            family: font.family,
+            description: font.description,
+            bold: font.bold,
+            serifs: font.serifs,
+            italic: font.italic
+          };
+        } else {
+          ['bold', 'italic', 'monospaced', 'serifs'].forEach(function (attr) {
+            if (font[attr]) {
+              hash[font.family][attr] = true;
+            }
+          });
+        }
+      });
+      var keys = Object.keys(hash);
+      keys.forEach(function (key) {
+        rv.push(hash[key]);
+      });
+      return rv;
+    } // ### fontWeightToBold
+    // return true if the font weight indicates we desire a 'bold'
+    // used in getTextFontFromVexFontData
+
+  }, {
+    key: "fontWeightToBold",
+    value: function fontWeightToBold(fw) {
+      if (!fw) {
+        return false;
+      }
+
+      if (isNaN(parseInt(fw, 10))) {
+        return fw.toLowerCase() === 'bold';
+      } // very subjective...
+
+
+      return parseInt(fw, 10) >= 600;
+    } // ### fontStyleToItalic
+    // return true if the font style indicates we desire 'italic' style
+    // used in getTextFontFromVexFontData
+
+  }, {
+    key: "fontStyleToItalic",
+    value: function fontStyleToItalic(fs) {
+      return fs && typeof fs === 'string' && fs.toLowerCase() === 'italic';
+    } // ### getTextFontFromVexFontData
+    // Find the font that most closely matches the parameters from the given font data.
+    // Primarily we look for font family, also bold and italic attributes.  This
+    // method will always return a fallback font if there are no matches.
+
+  }, {
+    key: "getTextFontFromVexFontData",
+    value: function getTextFontFromVexFontData(fd) {
+      var i = 0;
+      var fallback = TextFont.fontRegistry[0];
+      var candidates = [];
+      var families = fd.family.split(',');
+
+      var _loop = function _loop() {
+        var famliy = families[i];
+        candidates = TextFont.fontRegistry.filter(function (font) {
+          return font.family === famliy;
+        });
+
+        if (candidates.length) {
+          return "break";
+        }
+      };
+
+      for (i = 0; i < families.length; ++i) {
+        var _ret = _loop();
+
+        if (_ret === "break") break;
+      }
+
+      if (candidates.length === 0) {
+        return new TextFont(fallback);
+      }
+
+      if (candidates.length === 1) {
+        return new TextFont(candidates[0]);
+      }
+
+      var bold = TextFont.fontWeightToBold(fd.weight);
+      var italic = TextFont.fontStyleToItalic(fd.style);
+      var perfect = candidates.find(function (font) {
+        return font.bold === bold && font.italic === italic;
+      });
+
+      if (perfect) {
+        return new TextFont(perfect);
+      }
+
+      var ok = candidates.find(function (font) {
+        return font.italic === italic || font.bold === bold;
+      });
+
+      if (ok) {
+        return new TextFont(ok);
+      }
+
+      return new TextFont(candidates[0]);
+    }
+  }, {
+    key: "getFontDataByName",
+    value: function getFontDataByName(fontName) {
+      return TextFont.fontRegistry.find(function (fd) {
+        return fd.name === fontName;
+      });
+    } // ### registerFont
+    // Applications may register their own fonts and the metrics, and those metrics
+    // will be available to the application for formatting.  See fontRegistry
+    // for format of font metrics.  Metrics can be generated from any font file
+    // using font_fontgen.js in the tools/smufl directory.
+
+  }, {
+    key: "registerFont",
+    value: function registerFont(fontData, overwrite) {
+      // Get via external reference to make sure initial object is created
+      var reg = TextFont.fontRegistry;
+      var exists = reg.find(function (td) {
+        return fontData.name === td.name;
+      });
+
+      if (exists && overwrite) {
+        TextFont.registryInstance = TextFont.fontRegistry.filter(function (fd) {
+          return fd.name !== exists.name;
+        });
+      }
+
+      if (!exists) {
+        L('registering font ' + fontData.name);
+        TextFont.registryInstance.push(fontData);
+      }
+    } // ## Prototype Methods
+    //
+    // create a font instance.
+    // The preferred method for returning an instance of this class is via
+    // getTextFontFromVexFontData
+
+  }, {
+    key: "CATEGORY",
+    get: function get() {
+      return 'textFont';
+    }
+  }, {
+    key: "DEBUG",
+    get: function get() {
+      return TextFont.debug;
+    },
+    set: function set(val) {
+      TextFont.debug = val;
+    } // ### fontRegistry
+    // Getter of an array of available fonts.  Applications may register their
+    // own fonts and the metrics for those fonts will be available to the
+    // application.
+
+  }, {
+    key: "fontRegistry",
+    get: function get() {
+      if (!TextFont.registryInstance) {
+        TextFont.registryInstance = [];
+        TextFont.registryInstance.push({
+          name: 'RobotoSlab',
+          resolution: _fonts_robotoslab_textmetrics__WEBPACK_IMPORTED_MODULE_2__["RobotoSlabTextMetrics"].resolution,
+          glyphs: _fonts_robotoslab_textmetrics__WEBPACK_IMPORTED_MODULE_2__["RobotoSlabTextMetrics"].glyphs,
+          family: _fonts_robotoslab_textmetrics__WEBPACK_IMPORTED_MODULE_2__["RobotoSlabTextMetrics"].fontFamily,
+          serifs: true,
+          monospaced: false,
+          italic: false,
+          bold: false,
+          maxSizeGlyph: 'H',
+          superscriptOffset: 0.66,
+          subscriptOffset: 0.66,
+          description: 'Default serif text font to pair with Bravura/Gonville engraving font'
+        });
+        TextFont.registryInstance.push({
+          name: 'PetalumaScript',
+          resolution: _fonts_petalumascript_textmetrics__WEBPACK_IMPORTED_MODULE_1__["PetalumaScriptTextMetrics"].resolution,
+          glyphs: _fonts_petalumascript_textmetrics__WEBPACK_IMPORTED_MODULE_1__["PetalumaScriptTextMetrics"].glyphs,
+          family: _fonts_petalumascript_textmetrics__WEBPACK_IMPORTED_MODULE_1__["PetalumaScriptTextMetrics"].fontFamily,
+          serifs: false,
+          monospaced: false,
+          italic: false,
+          bold: false,
+          maxSizeGlyph: 'H',
+          superscriptOffset: 0.66,
+          subscriptOffset: 0.66,
+          description: 'Default sans-serif text font to pair with Petaluma engraving font'
+        });
+      }
+
+      return TextFont.registryInstance;
+    }
+  }]);
+
+  function TextFont(params) {
+    _classCallCheck(this, TextFont);
+
+    this.attrs = {
+      'type': 'TextFont'
+    };
+
+    if (!params.name) {
+      _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('BadArgument', 'Font constructor must specify a name');
+    }
+
+    var fontData = params.glyphs ? params : TextFont.getFontDataByName(params.name);
+
+    if (!fontData) {
+      if (params.glyphs && params.resolution) {
+        TextFont.registerFont(params);
+      } else {
+        _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('BadArgument', 'Unknown font, must have glyph metrics and resolution');
+      }
+    } else {
+      _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Merge(this, fontData);
+    }
+
+    _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Merge(this, params);
+
+    if (!this.size) {
+      this.size = 14;
+    }
+
+    if (!this.maxSizeGlyph) {
+      this.maxSizeGlyph = 'H';
+    }
+  }
+
+  _createClass(TextFont, [{
+    key: "getMetricForCharacter",
+    value: function getMetricForCharacter(c) {
+      if (this.glyphs[c]) {
+        return this.glyphs[c];
+      }
+
+      return this.glyphs[this.maxSizeGlyph];
+    }
+  }, {
+    key: "getWidthForCharacter",
+    value: function getWidthForCharacter(c) {
+      var metric = this.getMetricForCharacter(c);
+
+      if (!metric) {
+        return 0.65 * this.pointsToPixels;
+      }
+
+      return metric.advanceWidth / this.resolution * this.pointsToPixels;
+    } // ### pointsToPixels
+    // The font size is specified in points, convert to 'pixels' in the svg space
+
+  }, {
+    key: "setFontSize",
+    value: function setFontSize(size) {
+      this.size = size;
+      return this;
+    }
+  }, {
+    key: "maxHeight",
+    get: function get() {
+      var glyph = this.getMetricForCharacter(this.maxSizeGlyph);
+      return glyph.ha / this.resolution * this.pointsToPixels;
+    }
+  }, {
+    key: "pointsToPixels",
+    get: function get() {
+      return this.size / 72 / (1 / 96);
+    }
+  }]);
+
+  return TextFont;
+}();
 
 /***/ }),
 
