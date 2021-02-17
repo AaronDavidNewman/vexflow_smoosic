@@ -1014,16 +1014,7 @@ export class StaveNote extends StemmableNote {
       ctx.stroke();
     };
 
-    const ledger_line_style = this.getLedgerLineStyle();
-    const style = { ...stave.getStyle() || {}, ...ledger_line_style };
-
-    // if lineWidth is not specified in getLedgerLineStyle will use
-    // twice stave.getStyle() lineWidth
-    if (ledger_line_style.lineWidth === undefined && style.lineWidth !== undefined) {
-      style.lineWidth *= Flow.LEDGER_LINE_THICKNESS_MULTIPLIER;
-    } else if (style.lineWidth === undefined) {
-      style.lineWidth = Flow.STAVE_LINE_THICKNESS * Flow.LEDGER_LINE_THICKNESS_MULTIPLIER;
-    }
+    const style = { ...stave.getStyle() || {}, ...this.getLedgerLineStyle() || {} };
     this.applyStyle(ctx, style);
 
     // Draw ledger lines below the staff:
@@ -1187,11 +1178,8 @@ export class StaveNote extends StemmableNote {
 
     // Apply the overall style -- may be contradicted by local settings:
     this.applyStyle();
-    let snClass = 'stavenote';
-    if (this.attrs.classes && this.attrs.classes.length) {
-      snClass += ' ' + this.attrs.classes;
-    }
-    this.setAttribute('el', this.context.openGroup(snClass, this.getAttribute('id')));
+    this.setAttribute('el', this.context.openGroup('stavenote', this.getAttribute('id')));
+    this.drawLedgerLines();
     this.context.openGroup('note', null, { pointerBBox: true });
     if (shouldRenderStem) this.drawStem();
     this.drawNoteHeads();

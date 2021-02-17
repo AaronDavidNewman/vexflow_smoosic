@@ -30746,17 +30746,7 @@ function (_StemmableNote) {
         ctx.stroke();
       };
 
-      var ledger_line_style = this.getLedgerLineStyle();
-
-      var style = _objectSpread({}, stave.getStyle() || {}, {}, ledger_line_style); // if lineWidth is not specified in getLedgerLineStyle will use
-      // twice stave.getStyle() lineWidth
-
-
-      if (ledger_line_style.lineWidth === undefined && style.lineWidth !== undefined) {
-        style.lineWidth *= _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].LEDGER_LINE_THICKNESS_MULTIPLIER;
-      } else if (style.lineWidth === undefined) {
-        style.lineWidth = _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].STAVE_LINE_THICKNESS * _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].LEDGER_LINE_THICKNESS_MULTIPLIER;
-      }
+      var style = _objectSpread({}, stave.getStyle() || {}, {}, this.getLedgerLineStyle() || {});
 
       this.applyStyle(ctx, style); // Draw ledger lines below the staff:
 
@@ -30951,13 +30941,8 @@ function (_StemmableNote) {
       L('Rendering ', this.isChord() ? 'chord :' : 'note :', this.keys); // Apply the overall style -- may be contradicted by local settings:
 
       this.applyStyle();
-      var snClass = 'stavenote';
-
-      if (this.attrs.classes && this.attrs.classes.length) {
-        snClass += ' ' + this.attrs.classes;
-      }
-
-      this.setAttribute('el', this.context.openGroup(snClass, this.getAttribute('id')));
+      this.setAttribute('el', this.context.openGroup('stavenote', this.getAttribute('id')));
+      this.drawLedgerLines();
       this.context.openGroup('note', null, {
         pointerBBox: true
       });
@@ -34281,8 +34266,6 @@ var Flow = {
   STEM_WIDTH: 1.5,
   STEM_HEIGHT: 35,
   STAVE_LINE_THICKNESS: 1,
-  LEDGER_LINE_THICKNESS_MULTIPLIER: 2,
-  // Gould, Behind Bars: "about twice as thick"
   RESOLUTION: 16384,
   DEFAULT_FONT_STACK: _smufl__WEBPACK_IMPORTED_MODULE_3__["DefaultFontStack"],
   DEFAULT_NOTATION_FONT_SCALE: 39,
