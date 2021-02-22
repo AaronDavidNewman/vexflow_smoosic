@@ -24466,6 +24466,11 @@ function (_Tickable) {
     get: function get() {
       return 'note';
     }
+  }, {
+    key: "modifierPadding",
+    get: function get() {
+      return 12;
+    }
   }]);
 
   function Note(noteStruct) {
@@ -24806,12 +24811,21 @@ function (_Tickable) {
   }, {
     key: "getMetrics",
     value: function getMetrics() {
+      var modLeftPx = 0;
+      var modRightPx = 0;
+
       if (!this.preFormatted) {
         throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('UnformattedNote', "Can't call getMetrics on an unformatted note.");
       }
 
-      var modLeftPx = this.modifierContext ? this.modifierContext.state.left_shift : 0;
-      var modRightPx = this.modifierContext ? this.modifierContext.state.right_shift : 0;
+      modLeftPx = this.modifierContext ? this.modifierContext.state.left_shift : 0;
+      modRightPx = this.modifierContext ? this.modifierContext.state.right_shift : 0;
+
+      if (this.modifiers.length) {
+        modLeftPx += Note.modifierPadding;
+        modRightPx += Note.modifierPadding;
+      }
+
       var width = this.getWidth();
       var glyphWidth = this.getGlyphWidth();
       var notePx = width - modLeftPx // subtract left modifiers

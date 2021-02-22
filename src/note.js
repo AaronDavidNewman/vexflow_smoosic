@@ -17,6 +17,10 @@ import { Tickable } from './tickable';
 export class Note extends Tickable {
   static get CATEGORY() { return 'note'; }
 
+  static get modifierPadding() {
+    return 12;
+  }
+
   // Debug helper. Displays various note metrics for the given
   // note.
   static plotMetrics(ctx, note, yPos) {
@@ -368,12 +372,19 @@ export class Note extends Tickable {
   // `leftDisplacedHeadPx`: Extra space on left of note.
   // `rightDisplacedHeadPx`: Extra space on right of note.
   getMetrics() {
+    let modLeftPx = 0;
+    let modRightPx = 0;
     if (!this.preFormatted) {
       throw new Vex.RERR('UnformattedNote', "Can't call getMetrics on an unformatted note.");
     }
 
-    const modLeftPx = this.modifierContext ? this.modifierContext.state.left_shift : 0;
-    const modRightPx = this.modifierContext ? this.modifierContext.state.right_shift : 0;
+
+    modLeftPx = this.modifierContext ? this.modifierContext.state.left_shift : 0;
+    modRightPx = this.modifierContext ? this.modifierContext.state.right_shift : 0;
+    if (this.modifiers.length) {
+      modLeftPx += Note.modifierPadding;
+      modRightPx += Note.modifierPadding;
+    }
     const width = this.getWidth();
     const glyphWidth = this.getGlyphWidth();
     const notePx = width
