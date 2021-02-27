@@ -539,7 +539,6 @@ export class Formatter {
 
                 const backMetrics = backVoices[v].getMetrics();
                 const insideRightEdge = backVoices[v].getX() + backMetrics.notePx + backMetrics.modRightPx + backMetrics.rightDisplacedHeadPx;
-
                 // Don't allow shifting if notes in the same voice can collide
                 maxNegativeShiftPx = Math.min(maxNegativeShiftPx, insideLeftEdge - insideRightEdge);
               });
@@ -549,8 +548,8 @@ export class Formatter {
 
               // Calculate the expected distance of the current context from the last matching tickable. The
               // distance is scaled down by the softmax for the voice.
-              expectedDistance = backTickable.getVoice().softmax(maxTicks) * adjustedJustifyWidth;
-
+              const lastVoice = backTickable.getVoice();
+              expectedDistance = lastVoice.softmax(maxTicks) * adjustedJustifyWidth;
               return {
                 expectedDistance,
                 maxNegativeShiftPx,
@@ -568,24 +567,36 @@ export class Formatter {
       // Distribute ticks to the contexts based on the calculated distance error.
       const centerX = adjustedJustifyWidth / 2;
       let spaceAccum = 0;
-      let negativeSpaceAccum = 0;
-
+      contextMap[0].preFormatX = contextMap[0].postFormatX = contextMap[0].getX();
+      // let negativeSpaceAccum = 0;
       contextList.forEach((tick, index) => {
         const context = contextMap[tick];
+        // let errorPx = 0;
         if (index > 0) {
           const x = context.getX();
           const ideal = idealDistances[index];
-          const errorPx = (ideal.fromTickable.getX() + ideal.expectedDistance) - (x + spaceAccum);
-
+          const diff = Math.max(ideal.expectedDistance, 0);
+          if (lastContext.getX() + lastContext.width + diff <= adjustedJustifyWidth) {
+            spaceAccum += diff;
+          }
+          /* errorPx = (ideal.fromTickable.getX() + ideal.expectedDistance) - (x + spaceAccum);
           let negativeShiftPx = 0;
           if (errorPx > 0) {
             spaceAccum += errorPx;
           } else if (errorPx < 0) {
             negativeShiftPx = Math.min(ideal.maxNegativeShiftPx + negativeSpaceAccum, Math.abs(errorPx));
-          }
+          }  */
 
-          context.setX(x + spaceAccum - negativeShiftPx);
-          negativeSpaceAccum += negativeShiftPx;
+          // const newX = x + spaceAccum - negativeShiftPx;
+          const newX = x + spaceAccum;
+          context.preFormatX = x;
+          context.postFormatX = newX;
+          // L('shiftToIdealDistances: tick/index/startX/lastWpX/newX/errorPx',
+          //   tick, index, x, ideal.fromTickable.getX() + ideal.fromTickable.width, errorPx);
+          L('shiftToIdealDistances: tick/index/startX/newX/expectedDistance/lastWidth',
+            tick, index, x, newX, ideal.expectedDistance, ideal.fromTickable.tickContext.width);
+          context.setX(newX);
+          // negativeSpaceAccum += negativeShiftPx;
         }
 
         // Move center aligned tickables to middle
@@ -600,18 +611,25 @@ export class Formatter {
     const adjustedJustifyWidth = justifyWidth -
       lastContext.getMetrics().notePx -
       lastContext.getMetrics().totalRightPx -
-      firstContext.getMetrics().totalLeftPx;
-    let targetWidth = adjustedJustifyWidth;
-    let actualWidth = shiftToIdealDistances(calculateIdealDistances(targetWidth));
+      firstContext.getMetrics().totalLeftPx; // -
+    // firstContext.getMetrics().notePx;
+    const targetWidth = adjustedJustifyWidth;
+    const actualWidth = shiftToIdealDistances(calculateIdealDistances(targetWidth));
 
-    let iterations = this.options.maxIterations;
-    while (actualWidth > (adjustedJustifyWidth + lastContext.getMetrics().notePx) && iterations > 0) {
+    L('actualWidth/allowedWidth', actualWidth, adjustedJustifyWidth + lastContext.getMetrics().notePx);
+    const startWidth = adjustedJustifyWidth + lastContext.getMetrics().notePx;
+    if (actualWidth > startWidth) {
       // If we couldn't fit all the notes into the jusification width, it's because the softmax-scaled
       // widths between different durations differ across stave (e.g., 1 quarter note is not the same pixel-width
       // as 4 16th-notes). Run another pass, now that we know how much to justify.
-      targetWidth -= (actualWidth - targetWidth);
-      actualWidth = shiftToIdealDistances(calculateIdealDistances(targetWidth));
-      iterations--;
+      // The ratio to alter by
+      const ratio = (lastContext.preFormatX - (firstContext.preFormatX + firstContext.width)) / actualWidth;
+      contextList.forEach((tick) => {
+        const context = contextMap[tick];
+        const newOffset = (context.postFormatX - context.preFormatX) * ratio;
+        context.setX(context.preFormatX + newOffset);
+        L('adjustWidth startX/postFormatX/newX, ratio', context.preFormatX, context.postFOormatX, context.x, ratio);
+      });
     }
 
     // Just one context. Done formatting.

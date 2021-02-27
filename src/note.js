@@ -18,7 +18,7 @@ export class Note extends Tickable {
   static get CATEGORY() { return 'note'; }
 
   static get modifierPadding() {
-    return 12;
+    return 10;
   }
 
   // Debug helper. Displays various note metrics for the given
