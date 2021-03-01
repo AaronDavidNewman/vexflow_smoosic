@@ -68,6 +68,18 @@ export class Tickable extends Element {
   reset() { return this; }
 
   getTicks() { return this.ticks; }
+
+  // return the number of ticks used to determine the distance to the next note
+  get widthTicks() {
+    if (typeof(this.widthTicksVal) === 'undefined') {
+      this.widthTicksVal = this.ticks.value();
+    }
+    return this.widthTicksVal;
+  }
+
+  set widthTicks(val) {
+    this.widthTicksVal = val;
+  }
   shouldIgnoreTicks() { return this.ignore_ticks; }
 
   // Get and set width of note. Used by the formatter for positioning.

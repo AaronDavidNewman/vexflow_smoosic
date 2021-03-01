@@ -168,24 +168,20 @@ export class Voice extends Element {
     return this;
   }
 
-  // Calculate the sum of the exponents of all the ticks in this voice to use as the denominator
-  // of softmax.
-  reCalculateExpTicksUsed() {
-    const totalTicks = this.ticksUsed.value();
-    const exp = (tickable) => Math.pow(this.options.softmaxFactor, tickable.getTicks().value() / totalTicks);
-    this.expTicksUsed = this.tickables.map(exp).reduce((a, b) => a + b);
-    return this.expTicksUsed;
-  }
-
-  // Get the softmax-scaled value of a tick duration. 'tickValue' is a number.
-  softmax(tickValue) {
-    if (!this.expTicksUsed) {
-      this.reCalculateExpTicksUsed();
+  getWidthSd() {
+    if (typeof(this.widthSd) === 'undefined') {
+      let variance = 0;
+      const tickArray = this.tickables.map((tbl) =>
+        tbl.tickContext.getMetrics().notePx + tbl.tickContext.getMetrics().totalRightPx +
+          tbl.tickContext.getMetrics().rightDisplacedHeadPx);
+      const sum = tickArray.reduce((a, b) => a + b);
+      this.widthMean = sum / this.tickables.length;
+      tickArray.forEach((tick) => {
+        variance += Math.pow(tick - this.widthMean, 2);
+      });
+      this.widthSd = Math.sqrt(variance);
     }
-
-    const totalTicks = this.ticksUsed.value();
-    const exp = (v) => Math.pow(this.options.softmaxFactor, v / totalTicks);
-    return exp(tickValue) / this.expTicksUsed;
+    return { mean: this.widthMean, stdDev: this.widthSd };
   }
 
   // Add a tickable to the voice

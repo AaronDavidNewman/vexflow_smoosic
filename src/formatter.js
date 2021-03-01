@@ -322,7 +322,7 @@ export class Formatter {
   constructor(options) {
     this.options = {
       softmaxFactor: null,
-      maxIterations: 2,
+      maxIterations: 5,
       ...options
     };
 
@@ -440,6 +440,41 @@ export class Formatter {
     return contexts;
   }
 
+  computeVoiceFormatting() {
+    this.voices.forEach((voice) => {
+      voice.widthTicksUsed = voice.tickables.map((tickable) => tickable.widthTicks)
+        .reduce((a, b) => a + b);
+      const exp = (tickable) => Math.pow(voice.options.softmaxFactor, tickable.widthTicks / voice.widthTicksUsed);
+      voice.expTicksUsed = voice.tickables.map(exp).reduce((a, b) => a + b);
+    });
+  }
+  computeMaxWidthEstimate(ideals) {
+    const voiceWidths = [];
+    this.voices.forEach((voice, index) => {
+      voiceWidths.push(0);
+      ideals.forEach((ideal, idIx) => {
+        if (idIx > 0) {
+          const tickByVoice = ideal.fromTickable.tickContext.getTickablesByVoice();
+          if (tickByVoice[index]) {
+            voiceWidths[index] += ideal.expectedDistance;
+            if (ideal.overlap > 0) {
+              voiceWidths[index] += ideal.overlap;
+            }
+          }
+        }
+      });
+      const lastContext = voice.tickables[voice.tickables.length - 1].getTickContext();
+      const metrics = lastContext.getMetrics();
+      voiceWidths[index] += metrics.notePx + metrics.totalLeftPx + metrics.totalRightPx;
+    });
+    return voiceWidths.reduce((a, b) => a > b ? a : b);
+  }
+
+  softmax(voice, tickValue) {
+    const exp = (v) => Math.pow(voice.options.softmaxFactor, v / voice.widthTicksUsed);
+    return exp(tickValue) / voice.expTicksUsed;
+  }
+
   // This is the core formatter logic. Format voices and justify them
   // to `justifyWidth` pixels. `renderingContext` is required to justify elements
   // that can't retreive widths without a canvas. This method sets the `x` positions
@@ -448,6 +483,7 @@ export class Formatter {
     // Initialize context maps.
     const contexts = this.tickContexts;
     const { list: contextList, map: contextMap } = contexts;
+    const self = this;
 
     // Reset loss history for evaluator.
     this.lossHistory = [];
@@ -486,6 +522,7 @@ export class Formatter {
 
     this.minTotalWidth = x + shift;
     this.hasMinTotalWidth = true;
+    this.computeVoiceFormatting();
 
     // No justification needed. End formatting.
     if (justifyWidth <= 0) return this.evaluate();
@@ -524,10 +561,11 @@ export class Formatter {
               let maxTicks = 0;
               let maxNegativeShiftPx = Infinity;
               let expectedDistance = 0;
+              let overlap = 0;
 
               // eslint-disable-next-line
               matchingVoices.forEach(v => {
-                const ticks = backVoices[v].getTicks().value();
+                const ticks = backVoices[v].widthTicks;
                 if (ticks > maxTicks) {
                   backTickable = backVoices[v];
                   maxTicks = ticks;
@@ -548,17 +586,23 @@ export class Formatter {
 
               // Calculate the expected distance of the current context from the last matching tickable. The
               // distance is scaled down by the softmax for the voice.
-              const lastVoice = backTickable.getVoice();
-              expectedDistance = lastVoice.softmax(maxTicks) * adjustedJustifyWidth;
+              const bmet = backTickable.getMetrics();
+              expectedDistance = self.softmax(backTickable.getVoice(), maxTicks) * adjustedJustifyWidth;
+              overlap = (bmet.notePx + bmet.modRightPx + bmet.rightDisplacedHeadPx) -
+                (expectedDistance -  context.totalLeftPx);
+
+              L('i/j/thisticks/prevTicks/expectedDistance/width/startX/prevX/overlap', i, j, tick, maxTicks,
+                expectedDistance, bmet.notePx + bmet.modRightPx + bmet.rightDisplacedHeadPx,
+                context.getX(), backTickable.getX(), overlap);
               return {
                 expectedDistance,
                 maxNegativeShiftPx,
+                overlap,
                 fromTickable: backTickable,
               };
             }
           }
         }
-
         return { errorPx: 0, fromTickablePx: 0, maxNegativeShiftPx: 0 };
       });
     }
@@ -566,37 +610,28 @@ export class Formatter {
     function shiftToIdealDistances(idealDistances) {
       // Distribute ticks to the contexts based on the calculated distance error.
       const centerX = adjustedJustifyWidth / 2;
-      let spaceAccum = 0;
-      contextMap[0].preFormatX = contextMap[0].postFormatX = contextMap[0].getX();
+      // let spaceAccum = 0;
       // let negativeSpaceAccum = 0;
+
       contextList.forEach((tick, index) => {
         const context = contextMap[tick];
-        // let errorPx = 0;
         if (index > 0) {
-          const x = context.getX();
+          // const x = context.getX();
           const ideal = idealDistances[index];
-          const diff = Math.max(ideal.expectedDistance, 0);
-          if (lastContext.getX() + lastContext.width + diff <= adjustedJustifyWidth) {
-            spaceAccum += diff;
-          }
-          /* errorPx = (ideal.fromTickable.getX() + ideal.expectedDistance) - (x + spaceAccum);
+          context.setX(ideal.fromTickable.getX() + ideal.expectedDistance);
+          /* const errorPx = (ideal.fromTickable.getX() + ideal.expectedDistance) - (x + spaceAccum);
+
           let negativeShiftPx = 0;
           if (errorPx > 0) {
             spaceAccum += errorPx;
           } else if (errorPx < 0) {
             negativeShiftPx = Math.min(ideal.maxNegativeShiftPx + negativeSpaceAccum, Math.abs(errorPx));
-          }  */
-
-          // const newX = x + spaceAccum - negativeShiftPx;
-          const newX = x + spaceAccum;
-          context.preFormatX = x;
-          context.postFormatX = newX;
-          // L('shiftToIdealDistances: tick/index/startX/lastWpX/newX/errorPx',
-          //   tick, index, x, ideal.fromTickable.getX() + ideal.fromTickable.width, errorPx);
+          }
+          const newX = x + spaceAccum - negativeShiftPx;
           L('shiftToIdealDistances: tick/index/startX/newX/expectedDistance/lastWidth',
-            tick, index, x, newX, ideal.expectedDistance, ideal.fromTickable.tickContext.width);
+            tick, index, x, newX, ideal.expectedDistance, ideal.fromTickable.widthTicks);
           context.setX(newX);
-          // negativeSpaceAccum += negativeShiftPx;
+          negativeSpaceAccum += negativeShiftPx;  */
         }
 
         // Move center aligned tickables to middle
@@ -604,36 +639,86 @@ export class Formatter {
           tickable.center_x_shift = centerX - context.getX();
         });
       });
-
       return lastContext.getX() - firstContext.getX();
     }
 
+    const lastMetrics = lastContext.getMetrics();
     const adjustedJustifyWidth = justifyWidth -
-      lastContext.getMetrics().notePx -
-      lastContext.getMetrics().totalRightPx -
-      firstContext.getMetrics().totalLeftPx; // -
-    // firstContext.getMetrics().notePx;
+      lastMetrics.notePx -
+      lastMetrics.totalRightPx -
+      lastMetrics.totalLeftPx;
     const targetWidth = adjustedJustifyWidth;
-    const actualWidth = shiftToIdealDistances(calculateIdealDistances(targetWidth));
+    let overlapIterations = this.options.maxIterations;
+    let overflowIterations = this.options.maxIterations;
+    const std = (ideals) => {
+      if (ideals.length < 2) {
+        return { mean: 1, stdDev: 1 };
+      }
+      const numArray = ideals.map((xx) => typeof(xx.overlap) === 'number' ? xx.overlap : 0);
+      numArray.splice(0, 1); // remove 1st element
+      const sum = numArray.reduce((a, b) => a + b);
+      const mean = sum / numArray.length;
+      const variance = numArray.map((a) => Math.pow(a - mean, 2)).reduce((a, b) => a + b) / numArray.length;
+      return { mean, stdDev: Math.sqrt(variance) };
+    };
+    let ideals = calculateIdealDistances(targetWidth);
+    const istats = std(ideals);
+    L('ideal means/stdDev', istats.mean, istats.stdDev);
+    let currentWidth = self.computeMaxWidthEstimate(ideals);
+    while (currentWidth > targetWidth && overflowIterations > 0 && ideals.length > 1) {
+      L('currentWidth/targetWidth', currentWidth, targetWidth);
+      const highestTickable = ideals.reduce((a, b) => typeof(a.expectedDistance) === 'number' &&
+        a.expectedDistance > b.expectedDistance ? a : b);
+      highestTickable.fromTickable.getTickContext().tickables.forEach((tickable) => {
+        tickable.widthTicks = tickable.widthTicks * 0.7;
+      });
+      this.computeVoiceFormatting();
+      ideals = calculateIdealDistances(targetWidth);
+      overflowIterations -= 1;
+      currentWidth = currentWidth = self.computeMaxWidthEstimate(ideals);
+    }
+    while (ideals.find((ideal) => ideal.overlap > 0) && overlapIterations) {
+      ideals.forEach((ideal, index) => {
+        if (ideal.overlap > 0 && index > 0) {
+          ideal.fromTickable.widthTicks =  ideal.fromTickable.widthTicks * (1 + (ideal.overlap / istats.stdDev));
+          /* const context = contextMap[contextList[index - 1]];
+          context.tickables.forEach((tickable) => {
+            tickable.widthTicks = tickable.widthTicks * (1 + (ideal.overlap / istats.stdDev));
+          });  */
+        } else if (index > 0 && ideal.overlap < (istats.mean - istats.stdDev)) {
+          const context = contextMap[contextList[index - 1]];
+          context.tickables.forEach((tickable) => {
+            tickable.widthTicks = tickable.widthTicks * 0.85;
+          });
+        }
+      });
+      overlapIterations -= 1;
+      this.computeVoiceFormatting();
+      ideals = calculateIdealDistances(targetWidth);
+    }
+    shiftToIdealDistances(ideals);
 
-    L('actualWidth/allowedWidth', actualWidth, adjustedJustifyWidth + lastContext.getMetrics().notePx);
-    const startWidth = adjustedJustifyWidth + lastContext.getMetrics().notePx;
-    if (actualWidth > startWidth) {
+    /* let iterations = this.options.maxIterations;
+    while (actualWidth > (adjustedJustifyWidth + lastContext.getMetrics().notePx) && iterations > 0) {
       // If we couldn't fit all the notes into the jusification width, it's because the softmax-scaled
       // widths between different durations differ across stave (e.g., 1 quarter note is not the same pixel-width
       // as 4 16th-notes). Run another pass, now that we know how much to justify.
-      // The ratio to alter by
-      const ratio = (lastContext.preFormatX - (firstContext.preFormatX + firstContext.width)) / actualWidth;
-      contextList.forEach((tick) => {
-        const context = contextMap[tick];
-        const newOffset = (context.postFormatX - context.preFormatX) * ratio;
-        context.setX(context.preFormatX + newOffset);
-        L('adjustWidth startX/postFormatX/newX, ratio', context.preFormatX, context.postFOormatX, context.x, ratio);
-      });
-    }
+      targetWidth -= (actualWidth - targetWidth);
+      actualWidth = shiftToIdealDistances(calculateIdealDistances(targetWidth));
+      iterations--;
+    }  */
 
     // Just one context. Done formatting.
     if (contextList.length === 1) return null;
+
+    const actualWidth = lastContext.getX() + lastContext.totalRightPx + lastContext.notePx + lastContext.rightDisplacedHeadPx + 10;
+    const ratio = (justifyWidth - actualWidth);
+    const ccount = 2 * contextList.length;
+    contextList.forEach((tick, i) => {
+      const context = contextMap[tick];
+      const oldX = context.getX();
+      context.setX(oldX + (ratio / ccount) * (i + 1));
+    });
 
     this.justifyWidth = justifyWidth;
     return this.evaluate();

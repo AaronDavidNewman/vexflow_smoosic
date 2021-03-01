@@ -10,10 +10,10 @@ VF.Test.Formatter = (function() {
   var Formatter = {
     Start: function() {
       QUnit.module('Formatter');
+      runSVG('Multiple Staves - Justified', Formatter.alignAccidentals, { justify: true, maxIterations: 5, debug: true });
+      runSVG('Multiple Staves - Justified', Formatter.multiStaves, { justify: true, maxIterations: 5, debug: true });
+      runSVG('Alignment issue 1', Formatter.alignmentIssue1, { justify: true, debug: true });
       runSVG('formatAccidentalSpaces ', Formatter.formatAccidentalSpaces);
-      runSVG('Alignment issue 1', Formatter.multiStaves2, { justify: true, iterations: 0, debug: true });
-      runSVG('Multiple Staves - Justified', Formatter.multiStaves, { justify: true, iterations: 0, debug: true });
-      runSVG('Alignment Issue 2', Formatter.multiStaves3, { justify: true, iterations: 0, debug: true });
       test('TickContext Building', Formatter.buildTickContexts);
       runSVG('StaveNote - No Justification', Formatter.formatStaveNotes);
       runSVG('StaveNote - Justification', Formatter.justifyStaveNotes, { debug: true });
@@ -82,12 +82,309 @@ VF.Test.Formatter = (function() {
       equal(tickables1[2].getX(), tickables2[2].getX(), 'Last notes of both voices have the same X');
       ok(tickables1[1].getX() < tickables2[1].getX(), 'Second note of voice 2 is to the right of the second note of voice 1');
     },
+    alignAccidentals: function(options) {
+      console.warn('alignAccidentals, font ', VF.DEFAULT_FONT_STACK[0].name);
+      const json1 = [{
+        'notes': [{
+          'pitches': [{
+            'pitch': {
+              'key': 'gn/4'
+            }
+          }],
+          'duration': '8',
+          'clef': 'treble',
+          'endBeam': true
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'gn/4'
+            }
+          }],
+          'duration': '8r',
+          'clef': 'treble',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'bn/4'
+            }
+          }],
+          'duration': '4r',
+          'clef': 'treble',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'gn/4'
+            }
+          }],
+          'duration': '16',
+          'clef': 'treble',
+          'endBeam': true
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'gn/4'
+            }
+          }],
+          'duration': '16',
+          'clef': 'treble',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'an/4'
+            }
+          }],
+          'duration': '16',
+          'clef': 'treble',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'bn/4'
+            }
+          }],
+          'duration': '16',
+          'clef': 'treble',
+          'endBeam': true
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'cn/5'
+            }
+          }],
+          'duration': '16',
+          'clef': 'treble',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'an/4'
+            }
+          }],
+          'duration': '16',
+          'clef': 'treble',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'bn/4'
+            }
+          }],
+          'duration': '16',
+          'clef': 'treble',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'gn/4'
+            }
+          }],
+          'duration': '16',
+          'clef': 'treble',
+          'endBeam': false
+        }],
+        'beats': {
+          'num_beats': 4,
+          'beat_value': 4
+        }
+      }];
+
+      const json2 = [{
+        'notes': [{
+          'pitches': [{
+            'pitch': {
+              'key': 'gn/2'
+            }
+          }],
+          'duration': '16',
+          'clef': 'bass',
+          'endBeam': true
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'gn/2'
+            }
+          }],
+          'duration': '16',
+          'clef': 'bass',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'an/2'
+            }
+          }],
+          'duration': '16',
+          'clef': 'bass',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'bn/2'
+            }
+          }],
+          'duration': '16',
+          'clef': 'bass',
+          'endBeam': true
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'cn/3'
+            }
+          }],
+          'duration': '16',
+          'clef': 'bass',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'an/2'
+            }
+          }],
+          'duration': '16',
+          'clef': 'bass',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'bn/2'
+            }
+          }],
+          'duration': '16',
+          'clef': 'bass',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'gn/2'
+            }
+          }],
+          'duration': '16',
+          'clef': 'bass',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'dn/3'
+            }
+          }],
+          'duration': '8',
+          'clef': 'bass',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'gn/3'
+            }
+          }],
+          'duration': '8',
+          'clef': 'bass',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'f#/3',
+              'accidental': '#'
+            }
+          }],
+          'duration': '8',
+          'clef': 'bass',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'gn/3'
+            }
+          }],
+          'duration': '8',
+          'clef': 'bass',
+          'endBeam': true
+        }],
+        'beats': {
+          'num_beats': 4,
+          'beat_value': 4
+        }
+      }];
+
+      const createVexNotes = (json) => {
+        const rv = {
+          notes: [],
+          beamGroups: []
+        };
+        let currentBeam = [];
+        const beamNotes = () => {
+          if (currentBeam.length > 1) {
+            rv.beamGroups.push(new VF.Beam(currentBeam));
+          }
+          currentBeam = [];
+        };
+        json.notes.forEach((nn) => {
+          const keys = nn.pitches.map((pp) => pp.pitch.key);
+          const params = {
+            duration: nn.duration,
+            keys,
+            clef: nn.clef
+          };
+          const note = new VF.StaveNote(params);
+          if (note.ticks.value() <= 2048) {
+            currentBeam.push(note);
+            if (nn.endBeam) {
+              beamNotes();
+            }
+          } else {
+            beamNotes();
+          }
+          nn.pitches.forEach((pp, ix) => {
+            if (pp.pitch.accidental) {
+              note.addAccidental(ix, new VF.Accidental(pp.pitch.accidental));
+            }
+          });
+          rv.notes.push(note);
+        });
+        beamNotes();
+        rv.voice = new VF.Voice({
+          num_beats: json.beats.num_beats,
+          beat_value: json.beats.beat_value
+        });
+        rv.voice.addTickables(rv.notes);
+        return rv;
+      };
+      var vf = VF.Test.makeFactory(options, 750, 280);
+      Vex.Flow.Formatter.DEBUG = true;
+      const context = vf.getContext();
+      const music1 = createVexNotes(json1[0]);
+      const music2 = createVexNotes(json2[0]);
+      const voice1 = music1.voice;
+      const voice2 = music2.voice;
+      const formatter = new VF.Formatter({
+        softmaxFactor: 100
+      });
+      formatter.joinVoices([voice1]);
+      formatter.joinVoices([voice2]);
+      const width = formatter.preCalculateMinTotalWidth([voice1, voice2]);
+      formatter.format([voice1, voice2], width);
+      const stave1 = new VF.Stave(10, 40, width + 20);
+      const stave2 = new VF.Stave(10, 120, width + 20);
+      stave1.setContext(context).draw();
+      stave2.setContext(context).draw();
+      voice1.draw(context, stave1);
+      voice2.draw(context, stave2);
+      music1.beamGroups.forEach((beam) => {
+        beam.setContext(context).draw();
+      });
+      music2.beamGroups.forEach((beam) => {
+        beam.setContext(context).draw();
+      });
+      ok(true);
+    },
     formatAccidentalSpaces: function(options) {
       console.warn('formatAccidentalSpaces, font ', VF.DEFAULT_FONT_STACK[0].name);
       var vf = VF.Test.makeFactory(options, 750, 280);
       Vex.Flow.Formatter.DEBUG = true;
       const context = vf.getContext();
-      var softmaxFactor = 50;
+      var softmaxFactor = 100;
       // Create the notes
       var notes = [
         new VF.StaveNote({
@@ -300,14 +597,13 @@ VF.Test.Formatter = (function() {
 
     multiStaves: function(options) {
       Vex.Flow.Formatter.DEBUG = true;
-      console.warn('multiStaves, font ', VF.DEFAULT_FONT_STACK[0].name);
+      console.warn('Multiple Staves, justified, font ', VF.DEFAULT_FONT_STACK[0].name);
 
-      var vf = VF.Test.makeFactory(options, 600, 400);
+      var vf = VF.Test.makeFactory(options, 600, 300);
       var score = vf.EasyScore();
 
-      var notes11 = score.notes('a4/2, a4/4, a4/8, ab4/16, a4/16');
+      var notes11 = score.notes('a4/2, a4/4, a4/8, ab4/16, an4/16');
       var voice11 = score.voice(notes11, { time: '4/4' });
-
 
       var notes21 = score.notes('c4/2, d4/8, d4/8, e4/8, e4/8');
       var voice21 = score.voice(notes21, { time: '4/4' });
@@ -315,7 +611,7 @@ VF.Test.Formatter = (function() {
       var beams = VF.Beam.generateBeams(notes11.slice(2));
       beams = beams.concat(beams, VF.Beam.generateBeams(notes21.slice(1, 3)));
       beams = beams.concat(VF.Beam.generateBeams(notes21.slice(3)));
-      var formatter = vf.Formatter()
+      var formatter = vf.Formatter(options.params)
         .joinVoices([voice11])
         .joinVoices([voice21]);
 
@@ -349,8 +645,8 @@ VF.Test.Formatter = (function() {
       Vex.Flow.Formatter.DEBUG = false;
       ok(true);
     },
-    multiStaves2: function(options) {
-      console.warn('multiStaves2, font ', VF.DEFAULT_FONT_STACK[0].name);
+    alignmentIssue1: function(options) {
+      console.warn('alignmentIssue1, font ', VF.DEFAULT_FONT_STACK[0].name);
       Vex.Flow.Formatter.DEBUG = options.params.justify;
 
       var vf = VF.Test.makeFactory(options, 600, 400);
@@ -390,49 +686,6 @@ VF.Test.Formatter = (function() {
         b.setContext(ctx).draw();
       });
 
-      Vex.Flow.Formatter.DEBUG = false;
-      ok(true);
-    },
-    multiStaves3: function(options) {
-      console.warn('multiStaves3, font ', VF.DEFAULT_FONT_STACK[0].name);
-      Vex.Flow.Formatter.DEBUG = options.params.justify;
-
-      var vf = VF.Test.makeFactory(options, 600, 400);
-      var score = vf.EasyScore();
-
-      var notes11 = [
-        new VF.StaveNote({ keys: ['a/4'], duration: '8' }),
-        new VF.StaveNote({ keys: ['b/4'], duration: '4' }),
-        new VF.StaveNote({ keys: ['b/4'], duration: '8' })
-      ];
-      var notes21 = [
-        new VF.StaveNote({ keys: ['a/4'], duration: '16' }),
-        new VF.StaveNote({ keys: ['b/4.'], duration: '4' }),
-        new VF.StaveNote({ keys: ['a/4'], duration: '8d' }).addDotToAll()
-      ];
-
-      var ctx = vf.getContext();
-      var voice11 = score.voice(notes11, { time: '2/4' }).setMode(VF.Voice.Mode.SOFT);
-      var voice21 = score.voice(notes21, { time: '2/4' }).setMode(VF.Voice.Mode.SOFT);
-      var beams21 = VF.Beam.generateBeams(notes21);
-      var beams11 = VF.Beam.generateBeams(notes11);
-      var formatter = new VF.Formatter();
-      formatter.joinVoices([voice11]);
-      formatter.joinVoices([voice21]);
-      var width = formatter.preCalculateMinTotalWidth([voice11, voice21]);
-      var stave11 = vf.Stave({ y: 20, width: width + 100 });
-      var stave21 = vf.Stave({ y: 130, width: width + 100 });
-      formatter.format([voice11, voice21], width);
-      stave11.setContext(ctx).draw();
-      stave21.setContext(ctx).draw();
-      voice11.draw(ctx, stave11);
-      voice21.draw(ctx, stave21);
-      beams21.forEach(function(b) {
-        b.setContext(ctx).draw();
-      });
-      beams11.forEach(function(b) {
-        b.setContext(ctx).draw();
-      });
       Vex.Flow.Formatter.DEBUG = false;
       ok(true);
     },

@@ -427,8 +427,13 @@ export class Factory {
     return connector;
   }
 
-  Formatter() {
-    return new Formatter();
+  Formatter(params) {
+    params = setDefaults(params, {
+      options: {
+        iterations: 3
+      }
+    });
+    return new Formatter(params);
   }
 
   Tuplet(params) {
