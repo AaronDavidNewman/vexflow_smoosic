@@ -475,6 +475,79 @@ export class Formatter {
     return exp(tickValue) / voice.expTicksUsed;
   }
 
+  calculateWidthMap(adjustedJustifyWidth) {
+    const widthMap = {};
+    const previousWidthByVoice = {};
+    const contexts = this.tickContexts;
+    // Calculate softmax basis based on current widthTick levels
+    this.computeVoiceFormatting();
+    const { list: contextList, map: contextMap } = contexts;
+
+    contextList.forEach((tick) => {
+      const context = contextMap[tick];
+      widthMap[tick] = {
+        context,
+        tick,
+        widthData: {}
+      };
+      const voicesInContext = context.getTickablesByVoice();
+      Object.keys(voicesInContext).forEach((voiceKey) => {
+        if (typeof(previousWidthByVoice[voiceKey]) === 'undefined') {
+          previousWidthByVoice[voiceKey] = null;
+        }
+        const widthEntry = {
+          expectedDistance: 0,
+          previousWidth: previousWidthByVoice[voiceKey],
+          nextWidth: null,
+          overlap: 0,
+          voiceKey,
+          tick,
+          x: 0,
+          tickable: voicesInContext[voiceKey]
+        };
+        const tickableMetrics = widthEntry.tickable.getMetrics();
+        widthEntry.width = tickableMetrics.notePx + tickableMetrics.modRightPx + tickableMetrics.rightDisplacedHeadPx;
+        if (widthEntry.previousWidth) {
+          widthEntry.previousWidth.nextWidth = widthEntry;
+          const previousMetrics = widthEntry.previousWidth.tickable.getMetrics();
+          widthEntry.expectedDistance =
+            this.softmax(widthEntry.previousWidth.tickable.getVoice(), widthEntry.previousWidth.tickable.widthTicks) * adjustedJustifyWidth;
+          widthEntry.overlap = (previousMetrics.notePx + previousMetrics.rightDisplacedHeadPx + previousMetrics.modRightPx) -
+            (widthEntry.expectedDistance - widthEntry.tickable.tickContext.totalLeftPx);
+          widthEntry.x = widthEntry.previousWidth.x + widthEntry.expectedDistance;
+        } else {
+          widthEntry.x = context.getX();
+        }
+        L('expectedDistance/overlap/x/tick/ticks/voice', widthEntry.expectedDistance, widthEntry.overlap, widthEntry.x,
+          tick, widthEntry.tickable.ticks.value(), widthEntry.voiceKey);
+        previousWidthByVoice[voiceKey] = widthEntry;
+        widthMap[tick].widthData[voiceKey] = widthEntry;
+      });
+    });
+    return widthMap;
+  }
+  adjustOverlaps(contextList, widthMap, istats) {
+    let overlaps = false;
+    let maxUnderlap = null;
+    contextList.forEach((tick) => {
+      const widthContext = widthMap[tick];
+      Object.keys(widthContext.widthData).forEach((voiceKey) => {
+        const widthEntry = widthContext.widthData[voiceKey];
+        if (widthEntry.overlap > 0) {
+          overlaps = true;
+          widthEntry.previousWidth.tickable.widthTicks =
+            widthEntry.previousWidth.tickable.widthTicks * (1 + (widthEntry.overlap / istats.stdDev));
+        } else if (widthEntry.overlap < istats.mean - istats.stdDev && (maxUnderlap === null || widthEntry.overlap < maxUnderlap.overlap)) {
+          maxUnderlap = widthEntry;
+        }
+      });
+    });
+    // If there were overlaps, reduce the greatest overlap to make room for the additional ticks
+    if (overlaps && maxUnderlap && maxUnderlap.previousWidth) {
+      maxUnderlap.previousWidth.tickable.widthTicks = maxUnderlap.previousWidth.tickable.widthTicks * 0.85;
+    }
+    return overlaps;
+  }
   // This is the core formatter logic. Format voices and justify them
   // to `justifyWidth` pixels. `renderingContext` is required to justify elements
   // that can't retreive widths without a canvas. This method sets the `x` positions
@@ -483,7 +556,7 @@ export class Formatter {
     // Initialize context maps.
     const contexts = this.tickContexts;
     const { list: contextList, map: contextMap } = contexts;
-    const self = this;
+    let widthMap = null;
 
     // Reset loss history for evaluator.
     this.lossHistory = [];
@@ -523,7 +596,6 @@ export class Formatter {
 
     this.minTotalWidth = x + shift;
     this.hasMinTotalWidth = true;
-    this.computeVoiceFormatting();
 
     // If we are not justifying, we are done.  Leave music left-justified.
     if (justifyWidth <= 0) return this.evaluate();
@@ -531,153 +603,73 @@ export class Formatter {
     // Start justification. Subtract the right extra pixels of the final context because the formatter
     // justifies based on the context's X position, which is the left-most part of the note head.
     const lastContext = contextMap[contextList[contextList.length - 1]];
-
-    // Calculate the "distance error" between the tick contexts. The expected distance is the spacing proportional to
-    // the softmax of the ticks.
-    function calculateIdealDistances(adjustedJustifyWidth) {
-      return contextList.map((tick, i) => {
-        const context = contextMap[tick];
-        const voices = context.getTickablesByVoice();
-        let backTickable = null;
-        if (i > 0) {
-          const prevContext = contextMap[contextList[i - 1]];
-          // Go through each tickable and search backwards for another tickable
-          // in the same voice. If found, use that duration (ticks) to calculate
-          // the expected distance.
-          for (let j = i - 1; j >= 0; j--) {
-            const backTick = contextMap[contextList[j]];
-            const backVoices = backTick.getTickablesByVoice();
-
-            // Look for matching voices between tick contexts.
-            const matchingVoices = [];
-            Object.keys(voices).forEach(v => {
-              if (backVoices[v]) {
-                matchingVoices.push(v);
-              }
-            });
-
-            if (matchingVoices.length > 0) {
-              // Found matching voices, get largest duration
-              let maxTicks = 0;
-              let maxNegativeShiftPx = Infinity;
-              let expectedDistance = 0;
-              let overlap = 0;
-
-              // eslint-disable-next-line
-              matchingVoices.forEach(v => {
-                const ticks = backVoices[v].widthTicks;
-                if (ticks > maxTicks) {
-                  backTickable = backVoices[v];
-                  maxTicks = ticks;
-                }
-
-                // Calculate the limits of the shift based on modifiers, etc.
-                const thisTickable = voices[v];
-                const insideLeftEdge = thisTickable.getX() - (thisTickable.getMetrics().modLeftPx + thisTickable.getMetrics().leftDisplacedHeadPx);
-
-                const backMetrics = backVoices[v].getMetrics();
-                const insideRightEdge = backVoices[v].getX() + backMetrics.notePx + backMetrics.modRightPx + backMetrics.rightDisplacedHeadPx;
-                // Don't allow shifting if notes in the same voice can collide
-                maxNegativeShiftPx = Math.min(maxNegativeShiftPx, insideLeftEdge - insideRightEdge);
-              });
-
-              // Don't shift further left than the notehead of the last context
-              maxNegativeShiftPx = Math.min(maxNegativeShiftPx, context.getX() - prevContext.getX());
-
-              // Calculate the expected distance of the current context from the last matching tickable. The
-              // distance is scaled down by the softmax for the voice.
-              const bmet = backTickable.getMetrics();
-              expectedDistance = self.softmax(backTickable.getVoice(), maxTicks) * adjustedJustifyWidth;
-
-              // Keep track if the previous tick collides with this one, we will adjust later.
-              overlap = (bmet.notePx + bmet.modRightPx + bmet.rightDisplacedHeadPx) -
-                (expectedDistance -  context.totalLeftPx);
-
-              L('i/j/thisticks/prevTicks/expectedDistance/width/startX/prevX/overlap', i, j, tick, maxTicks,
-                expectedDistance, bmet.notePx + bmet.modRightPx + bmet.rightDisplacedHeadPx,
-                context.getX(), backTickable.getX(), overlap);
-              return {
-                expectedDistance,
-                maxNegativeShiftPx,
-                overlap,
-                fromTickable: backTickable,
-              };
-            }
-          }
-        }
-        return { errorPx: 0, fromTickablePx: 0, maxNegativeShiftPx: 0 };
-      });
-    }
-
-    function shiftToIdealDistances(idealDistances) {
-      // Distribute ticks to the contexts based on the calculated distance error.
-      const centerX = adjustedJustifyWidth / 2;
-
-      contextList.forEach((tick, index) => {
-        const context = contextMap[tick];
-        if (index > 0) {
-          // const x = context.getX();
-          const ideal = idealDistances[index];
-          context.setX(ideal.fromTickable.getX() + ideal.expectedDistance);
-        }
-        // Move center aligned tickables to middle
-        context.getCenterAlignedTickables().forEach(tickable => { // eslint-disable-line
-          tickable.center_x_shift = centerX - context.getX();
-        });
-      });
-    }
-
     const lastMetrics = lastContext.getMetrics();
     const adjustedJustifyWidth = justifyWidth -
       lastMetrics.notePx -
       lastMetrics.totalRightPx -
       lastMetrics.totalLeftPx;
+
+    // step 1: Format the music proportionally
+    widthMap = this.calculateWidthMap(adjustedJustifyWidth);
+
+    function shiftToIdealDistances(widthMap) {
+      // Distribute ticks to the contexts based on the calculated distance error.
+      const centerX = adjustedJustifyWidth / 2;
+
+      contextList.forEach((tick) => {
+        const widthData = widthMap[tick].widthData;
+        let contextX = 0;
+        Object.keys(widthData).forEach((widthKey) => {
+          const widthEntry = widthData[widthKey];
+          const startX = widthEntry.previousWidth ? widthEntry.previousWidth.tickable.getX() :
+            widthMap[tick].context.getX();
+          const total = startX + widthEntry.expectedDistance;
+          if (total > contextX) {
+            contextX = total;
+          }
+        });
+        widthMap[tick].context.setX(contextX);
+        // Move center aligned tickables to middle
+        widthMap[tick].context.getCenterAlignedTickables().forEach(tickable => { // eslint-disable-line
+          tickable.center_x_shift = centerX - widthMap[tick].context.getX();
+        });
+      });
+    }
+
     const targetWidth = adjustedJustifyWidth;
     let overlapIterations = this.options.maxIterations;
-    const std = (ideals) => {
-      if (ideals.length < 2) {
-        return { mean: 1, stdDev: 1 };
-      }
-      const numArray = ideals.map((xx) => typeof(xx.overlap) === 'number' ? xx.overlap : 0);
-      numArray.splice(0, 1); // remove 1st element
+    const maxOverlap = (wd) => Object.keys(wd.widthData).map((key) => wd.widthData[key].overlap).reduce((a, b) => a > b ? a : b);
+    const maxOverlaps = contextList.map((tick) => maxOverlap(widthMap[tick]));
+    maxOverlaps.splice(0, 1);
+    const std = (numArray) => {
       const sum = numArray.reduce((a, b) => a + b);
       const mean = sum / numArray.length;
       const variance = numArray.map((a) => Math.pow(a - mean, 2)).reduce((a, b) => a + b) / numArray.length;
       return { mean, stdDev: Math.sqrt(variance) };
     };
-    // step 1: Format the music proportionally
-    let ideals = calculateIdealDistances(targetWidth);
-    const istats = std(ideals);
+    const istats = std(maxOverlaps);
     L('ideal means/stdDev', istats.mean, istats.stdDev);
 
     // Step 2: alignment
     // If any notes collide with their left neighbor (overlap is > 0), do 2 things:
     // 1. add ticks to those notes to make the distance between them and left neighbor greater
     // 2. remove ticks from notes that have an extra large space between them and their neihbor, to give the crowded notes more room
-    while (ideals.find((ideal) => ideal.overlap > 0) && overlapIterations) {
-      ideals.forEach((ideal, index) => {
-        if (ideal.overlap > 0 && index > 0) {
-          ideal.fromTickable.widthTicks =  ideal.fromTickable.widthTicks * (1 + (ideal.overlap / istats.stdDev));
-        } else if (index > 0 && ideal.overlap < (istats.mean - istats.stdDev)) {
-          const context = contextMap[contextList[index - 1]];
-          context.tickables.forEach((tickable) => {
-            tickable.widthTicks = tickable.widthTicks * 0.85;
-          });
-        }
-      });
+    let overlaps = this.adjustOverlaps(contextList, widthMap, istats);
+    while (overlaps && overlapIterations) {
       overlapIterations -= 1;
       // recalculate softMax based on new ticks
-      this.computeVoiceFormatting();
-      ideals = calculateIdealDistances(targetWidth);
+      widthMap = this.calculateWidthMap(targetWidth);
+      overlaps = this.adjustOverlaps(contextList, widthMap, istats);
     }
+
     // Assign X positions based on the formatting.
-    shiftToIdealDistances(ideals);
+    shiftToIdealDistances(widthMap);
 
     // Just one context. Done formatting.
     if (contextList.length === 1) return null;
 
     const actualWidth = lastContext.getX() + lastContext.totalRightPx + lastContext.notePx + lastContext.rightDisplacedHeadPx + 10;
-    const ratio = (justifyWidth - actualWidth);
+    const ratio = (justifyWidth - actualWidth - 10);
     const ccount = contextList.length;
     contextList.forEach((tick, i) => {
       const context = contextMap[tick];
