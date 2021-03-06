@@ -322,7 +322,7 @@ export class Formatter {
   constructor(options) {
     this.options = {
       softmaxFactor: null,
-      maxIterations: 5,
+      maxIterations: 10,
       ...options
     };
 
@@ -536,7 +536,7 @@ export class Formatter {
     });
     // If we haven't found any collisions per voice, look for overlaps between voices (unaligned/misaligned voices)
     if (!foundOverlappingLine) {
-      // Make sure each tickable is at the max X of it's context b/c that is where we will line them up
+      // We start by a 'dress rehearsal' where each tickable is put at what it's X would be - max X of tickables at a context
       let j = 0;
       for (i = 0; i < contextList.length; ++i) {
         const widthData = widthMap[contextList[i]].widthData;
@@ -553,7 +553,7 @@ export class Formatter {
       }
       const voiceCount = Object.keys(voiceMap).length;
       const ticksSoFar = [0];
-      // let foundOverlappingVoice = false;
+      // Now see if any tickable is to the left of a tickable earlier in the measure, in a different voice
       for (i = 1; i < contextList.length; ++i) {
         const tick = contextList[i];
         const widthData = widthMap[tick].widthData;

@@ -10,6 +10,7 @@ VF.Test.Formatter = (function() {
   var Formatter = {
     Start: function() {
       QUnit.module('Formatter');
+      runSVG('overflow ', Formatter.overflow);
       runSVG('formatAccidentalSpaces ', Formatter.formatAccidentalSpaces);
       runSVG('Align many notes', Formatter.alignManyNotes, { justify: true, maxIterations: 10, debug: true });
       runSVG('Align notes with accidentals', Formatter.alignAccidentals, { justify: true, maxIterations: 5, debug: true });
@@ -33,6 +34,52 @@ VF.Test.Formatter = (function() {
         Formatter.proportionalFormatting,
         { debug: true, iterations: 20, alpha: 0.5 }
       );
+    },
+    buildNotesFromJson: function(json) {
+      const rv = {
+        notes: [],
+        beamGroups: []
+      };
+      let currentBeam = [];
+      const beamNotes = () => {
+        if (currentBeam.length > 1) {
+          rv.beamGroups.push(new VF.Beam(currentBeam));
+        }
+        currentBeam = [];
+      };
+      json.notes.forEach((nn) => {
+        const keys = nn.pitches.map((pp) => pp.pitch.key);
+        const params = {
+          duration: nn.duration,
+          keys,
+          clef: nn.clef
+        };
+        const note = new VF.StaveNote(params);
+        if (nn.duration.indexOf('d') >= 0) {
+          note.addDotToAll();
+        }
+        if (note.ticks.value() <= 2048) {
+          currentBeam.push(note);
+          if (nn.endBeam) {
+            beamNotes();
+          }
+        } else {
+          beamNotes();
+        }
+        nn.pitches.forEach((pp, ix) => {
+          if (pp.pitch.accidental) {
+            note.addAccidental(ix, new VF.Accidental(pp.pitch.accidental));
+          }
+        });
+        rv.notes.push(note);
+      });
+      beamNotes();
+      rv.voice = new VF.Voice({
+        num_beats: json.beats.num_beats,
+        beat_value: json.beats.beat_value
+      });
+      rv.voice.addTickables(rv.notes);
+      return rv;
     },
 
     buildTickContexts: function() {
@@ -126,6 +173,317 @@ VF.Test.Formatter = (function() {
       stave2.setContext(context).draw();
       voice1.draw(context, stave1);
       voice2.draw(context, stave2);
+      VF.Formatter.DEBUG = false;
+      ok(true);
+    },
+    overflow: function(options) {
+      console.warn('overflow, font ', VF.DEFAULT_FONT_STACK[0].name);
+      const json1 = [
+        {
+          'notes': [
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'bn/4'
+                  }
+                }
+              ],
+              'duration': 'wr',
+              'clef': 'treble',
+              'endBeam': false
+            }
+          ],
+          'beats': {
+            'num_beats': 2,
+            'beat_value': 2
+          }
+        }
+      ];
+
+      const json2 =
+      [
+        {
+          'notes': [
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'eb/4'
+                  }
+                }
+              ],
+              'duration': '4d',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'fn/4'
+                  }
+                }
+              ],
+              'duration': '16',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'gn/4'
+                  }
+                }
+              ],
+              'duration': '16',
+              'clef': 'treble',
+              'endBeam': true
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'ab/4'
+                  }
+                }
+              ],
+              'duration': '16',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'bb/4'
+                  }
+                }
+              ],
+              'duration': '16',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'cn/5'
+                  }
+                }
+              ],
+              'duration': '16',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'dn/5'
+                  }
+                }
+              ],
+              'duration': '16',
+              'clef': 'treble',
+              'endBeam': true
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'eb/5'
+                  }
+                }
+              ],
+              'duration': '16',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'fn/5'
+                  }
+                }
+              ],
+              'duration': '16',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'gn/5'
+                  }
+                }
+              ],
+              'duration': '16',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'ab/5'
+                  }
+                }
+              ],
+              'duration': '16',
+              'clef': 'treble',
+              'endBeam': true
+            }
+          ],
+          'beats': {
+            'num_beats': 2,
+            'beat_value': 2
+          }
+        }
+      ];
+      const json3 = [
+        {
+          'notes': [
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'bb/2'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'bass',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'gn/3'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'bass',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'eb/3'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'bass',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'gn/3'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'bass',
+              'endBeam': true
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'bb/2'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'bass',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'gn/3'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'bass',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'eb/3'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'bass',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'gn/3'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'bass',
+              'endBeam': true
+            }
+          ],
+          'beats': {
+            'num_beats': 2,
+            'beat_value': 2
+          }
+        }
+      ];
+      var vf = VF.Test.makeFactory(options, 750, 280);
+      const context = vf.getContext();
+      const music1 = Formatter.buildNotesFromJson(json1[0]);
+      const music2 = Formatter.buildNotesFromJson(json2[0]);
+      const music3 = Formatter.buildNotesFromJson(json3[0]);
+      const voice1 = music1.voice;
+      const voice2 = music2.voice;
+      const voice3 = music3.voice;
+      const formatter = new VF.Formatter({
+        softmaxFactor: 100
+      });
+      formatter.joinVoices([voice1]);
+      formatter.joinVoices([voice2]);
+      formatter.joinVoices([voice3]);
+      const width = formatter.preCalculateMinTotalWidth([voice1, voice2, voice3]);
+      formatter.format([voice1, voice2, voice3], width + 10);
+      const stave1 = new VF.Stave(10, 40, width + 20);
+      const stave2 = new VF.Stave(10, 120, width + 20);
+      const stave3 = new VF.Stave(10, 200, width + 20);
+      stave1.setContext(context).draw();
+      stave2.setContext(context).draw();
+      stave3.setContext(context).draw();
+      voice1.draw(context, stave1);
+      voice2.draw(context, stave2);
+      voice3.draw(context, stave3);
+      music1.beamGroups.forEach((beam) => {
+        beam.setContext(context).draw();
+      });
+      music2.beamGroups.forEach((beam) => {
+        beam.setContext(context).draw();
+      });
+      music3.beamGroups.forEach((beam) => {
+        beam.setContext(context).draw();
+      });
       VF.Formatter.DEBUG = false;
       ok(true);
     },
@@ -355,7 +713,6 @@ VF.Test.Formatter = (function() {
         }
       }];
 
-      VF.Formatter.DEBUG = true;
       const createVexNotes = (json) => {
         const rv = {
           notes: [],

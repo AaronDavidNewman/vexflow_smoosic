@@ -9,7 +9,9 @@ VF.Test.Articulation = (function() {
     Start: function() {
       QUnit.module('Articulation');
       Articulation.runTests('Articulation - Staccato/Staccatissimo', 'a.', 'av', Articulation.drawArticulations);
+      VF.Formatter.DEBUG = true;
       Articulation.runTests('Articulation - Accent/Tenuto', 'a>', 'a-', Articulation.drawArticulations);
+      VF.Formatter.DEBUG = false;
       Articulation.runTests('Articulation - Marcato/L.H. Pizzicato', 'a^', 'a+', Articulation.drawArticulations);
       Articulation.runTests('Articulation - Snap Pizzicato/Fermata', 'ao', 'ao', Articulation.drawArticulations);
       Articulation.runTests('Articulation - Up-stroke/Down-Stroke', 'a|', 'am', Articulation.drawArticulations);
