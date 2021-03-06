@@ -10,6 +10,7 @@ VF.Test.Formatter = (function() {
   var Formatter = {
     Start: function() {
       QUnit.module('Formatter');
+      runSVG('unaligned Bach', Formatter.unalignedBach);
       runSVG('overflow ', Formatter.overflow);
       runSVG('formatAccidentalSpaces ', Formatter.formatAccidentalSpaces);
       runSVG('Align many notes', Formatter.alignManyNotes, { justify: true, maxIterations: 10, debug: true });
@@ -81,6 +82,149 @@ VF.Test.Formatter = (function() {
       rv.voice.addTickables(rv.notes);
       return rv;
     },
+    unalignedBach: function(options) {
+      const json1 = [
+        {
+          'notes': [
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'dn/5'
+                  }
+                }
+              ],
+              'duration': '4',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'gn/4'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'an/4'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'bn/4'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'cn/5'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'treble',
+              'endBeam': true
+            }
+          ],
+          'beats': {
+            'num_beats': 3,
+            'beat_value': 4
+          }
+        }
+      ];
+      const json2 = [
+        {
+          'notes': [
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'gn/3'
+                  }
+                },
+                {
+                  'pitch': {
+                    'key': 'bn/3'
+                  }
+                },
+                {
+                  'pitch': {
+                    'key': 'dn/4'
+                  }
+                }
+              ],
+              'duration': '2',
+              'clef': 'bass',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'an/3'
+                  }
+                }
+              ],
+              'duration': '4',
+              'clef': 'bass',
+              'endBeam': false
+            }
+          ],
+          'beats': {
+            'num_beats': 3,
+            'beat_value': 4
+          }
+        }
+      ];
+      var vf = VF.Test.makeFactory(options, 750, 280);
+      const context = vf.getContext();
+      const music1 = Formatter.buildNotesFromJson(json1[0]);
+      const music2 = Formatter.buildNotesFromJson(json2[0]);
+      const voice1 = music1.voice;
+      const voice2 = music2.voice;
+      const formatter = new VF.Formatter({
+        softmaxFactor: 100
+      });
+      formatter.joinVoices([voice1]);
+      formatter.joinVoices([voice2]);
+      const width = formatter.preCalculateMinTotalWidth([voice1, voice2]);
+      formatter.format([voice1, voice2], width);
+      const stave1 = new VF.Stave(10, 40, width + 20);
+      const stave2 = new VF.Stave(10, 120, width + 20);
+      stave1.setContext(context).draw();
+      stave2.setContext(context).draw();
+      voice1.draw(context, stave1);
+      voice2.draw(context, stave2);
+      music1.beamGroups.forEach((beam) => {
+        beam.setContext(context).draw();
+      });
+      music2.beamGroups.forEach((beam) => {
+        beam.setContext(context).draw();
+      });
+      VF.Formatter.DEBUG = false;
+      ok(true);
+    },
 
     buildTickContexts: function() {
       function createTickable() {
@@ -117,7 +261,7 @@ VF.Test.Formatter = (function() {
       // throws(
       //   function() { formatter.getMinTotalWidth(); },
       //   Vex.RERR,
-      //   "Expected to throw exception"
+      //   "Expected to throw exception'
       // );
 
       ok(formatter.preCalculateMinTotalWidth([voice1, voice2]), 'Successfully runs preCalculateMinTotalWidth');

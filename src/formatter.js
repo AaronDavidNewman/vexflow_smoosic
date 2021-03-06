@@ -596,12 +596,13 @@ export class Formatter {
       const widthContext = widthMap[tick];
       Object.keys(widthContext.widthData).forEach((voiceKey) => {
         const widthEntry = widthContext.widthData[voiceKey];
-        if (widthEntry.overlap > 0) {
+        if (widthEntry.overlap > 0 && istats.stdDev > 1) {
           overlaps = true;
           widthEntry.previousWidth.tickable.widthTicks =
             widthEntry.previousWidth.tickable.widthTicks * (1 + (widthEntry.overlap / istats.stdDev));
         } else if ((widthEntry.overlap < istats.mean - istats.stdDev || widthEntry.overlap < 2 * istats.mean)
-          && (maxUnderlap === null || widthEntry.overlap < maxUnderlap.overlap)) {
+          && (maxUnderlap === null || widthEntry.overlap < maxUnderlap.overlap)
+          && widthEntry.overlap < 0 && istats.stdDev > 1 && overlaps) {
           maxUnderlap = widthEntry;
         }
       });

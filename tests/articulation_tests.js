@@ -9,9 +9,7 @@ VF.Test.Articulation = (function() {
     Start: function() {
       QUnit.module('Articulation');
       Articulation.runTests('Articulation - Staccato/Staccatissimo', 'a.', 'av', Articulation.drawArticulations);
-      VF.Formatter.DEBUG = true;
       Articulation.runTests('Articulation - Accent/Tenuto', 'a>', 'a-', Articulation.drawArticulations);
-      VF.Formatter.DEBUG = false;
       Articulation.runTests('Articulation - Marcato/L.H. Pizzicato', 'a^', 'a+', Articulation.drawArticulations);
       Articulation.runTests('Articulation - Snap Pizzicato/Fermata', 'ao', 'ao', Articulation.drawArticulations);
       Articulation.runTests('Articulation - Up-stroke/Down-Stroke', 'a|', 'am', Articulation.drawArticulations);
@@ -37,6 +35,9 @@ VF.Test.Articulation = (function() {
 
       // Get the rendering context
       var ctx = contextBuilder(options.elementId, 625, 195);
+      if (options.params.sym1 === 'a>') {
+        VF.Formatter.DEBUG = true;
+      }
 
       // bar 1
       var staveBar1 = new VF.Stave(10, 30, 125);
@@ -106,6 +107,7 @@ VF.Test.Articulation = (function() {
       notesBar4[1].addArticulation(0, new VF.Articulation(sym2).setPosition(3));
       notesBar4[2].addArticulation(0, new VF.Articulation(sym2).setPosition(4));
       notesBar4[3].addArticulation(0, new VF.Articulation(sym2).setPosition(4));
+      VF.Formatter.DEBUG = false;
 
       // Helper function to justify and draw a 4/4 voice
       VF.Formatter.FormatAndDraw(ctx, staveBar4, notesBar4);
