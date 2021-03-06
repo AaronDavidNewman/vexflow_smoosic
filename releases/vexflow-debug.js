@@ -6308,7 +6308,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _articulation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./articulation */ "./src/articulation.js");
 /* harmony import */ var _annotation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./annotation */ "./src/annotation.js");
 /* harmony import */ var _chordsymbol__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.js");
-/* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./formatter */ "./src/formatter.js");
+/* harmony import */ var _widthformatter__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./widthformatter */ "./src/widthformatter.js");
 /* harmony import */ var _frethandfinger__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.js");
 /* harmony import */ var _stringnumber__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.js");
 /* harmony import */ var _textdynamics__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./textdynamics */ "./src/textdynamics.js");
@@ -6365,6 +6365,7 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 
 
+ // import { Formatter } from './formatter';
 
 
 
@@ -6837,8 +6838,13 @@ function () {
     }
   }, {
     key: "Formatter",
-    value: function Formatter() {
-      return new _formatter__WEBPACK_IMPORTED_MODULE_5__["Formatter"]();
+    value: function Formatter(params) {
+      params = setDefaults(params, {
+        options: {
+          iterations: 3
+        }
+      });
+      return new _widthformatter__WEBPACK_IMPORTED_MODULE_5__["WidthFormatter"](params);
     }
   }, {
     key: "Tuplet",
@@ -19629,14 +19635,13 @@ function () {
 
       var _this$tickContexts = this.tickContexts,
           contextList = _this$tickContexts.list,
-          contextMap = _this$tickContexts.map; // Go through each tick context and calculate total width.
+          contextMap = _this$tickContexts.map; // const maxTicks = contextList.map(tick => tick.maxTicks.value()).reduce((a, b) => a + b, 0);
+      // Go through each tick context and calculate total width.
 
       this.minTotalWidth = contextList.map(function (tick) {
         var context = contextMap[tick];
         context.preFormat();
-        var width = context.getWidth();
-        var metrics = context.getMetrics();
-        return width + metrics.totalLeftPx;
+        return context.getWidth();
       }).reduce(function (a, b) {
         return a + b;
       }, 0);
@@ -19814,7 +19819,6 @@ function () {
         // Distribute ticks to the contexts based on the calculated distance error.
         var centerX = adjustedJustifyWidth / 2;
         var spaceAccum = 0;
-        var negativeSpaceAccum = 0;
         contextList.forEach(function (tick, index) {
           var context = contextMap[tick];
 
@@ -19830,11 +19834,11 @@ function () {
             if (errorPx > 0) {
               spaceAccum += errorPx;
             } else if (errorPx < 0) {
-              negativeShiftPx = Math.min(ideal.maxNegativeShiftPx + negativeSpaceAccum, Math.abs(errorPx));
+              negativeShiftPx = Math.min(ideal.maxNegativeShiftPx, Math.abs(errorPx));
+              spaceAccum += -negativeShiftPx;
             }
 
-            context.setX(_x + spaceAccum - negativeShiftPx);
-            negativeSpaceAccum += negativeShiftPx;
+            context.setX(_x + spaceAccum);
           } // Move center aligned tickables to middle
 
 
@@ -22074,80 +22078,82 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./fraction */ "./src/fraction.js");
 /* harmony import */ var _renderer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./renderer */ "./src/renderer.js");
 /* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./formatter */ "./src/formatter.js");
-/* harmony import */ var _music__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./music */ "./src/music.js");
-/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./glyph */ "./src/glyph.js");
-/* harmony import */ var _stave__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./stave */ "./src/stave.js");
-/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.js");
-/* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.js");
-/* harmony import */ var _stavetempo__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./stavetempo */ "./src/stavetempo.js");
-/* harmony import */ var _voice__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./voice */ "./src/voice.js");
-/* harmony import */ var _accidental__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./accidental */ "./src/accidental.js");
-/* harmony import */ var _beam__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./beam */ "./src/beam.js");
-/* harmony import */ var _stavetie__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./stavetie */ "./src/stavetie.js");
-/* harmony import */ var _tabstave__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./tabstave */ "./src/tabstave.js");
-/* harmony import */ var _tabnote__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./tabnote */ "./src/tabnote.js");
-/* harmony import */ var _bend__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./bend */ "./src/bend.js");
-/* harmony import */ var _vibrato__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./vibrato */ "./src/vibrato.js");
-/* harmony import */ var _vibratobracket__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./vibratobracket */ "./src/vibratobracket.js");
-/* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./note */ "./src/note.js");
-/* harmony import */ var _modifiercontext__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./modifiercontext */ "./src/modifiercontext.js");
-/* harmony import */ var _multimeasurerest__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./multimeasurerest */ "./src/multimeasurerest.js");
-/* harmony import */ var _tickcontext__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.js");
-/* harmony import */ var _articulation__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./articulation */ "./src/articulation.js");
-/* harmony import */ var _annotation__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./annotation */ "./src/annotation.js");
-/* harmony import */ var _chordsymbol__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.js");
-/* harmony import */ var _stavebarline__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.js");
-/* harmony import */ var _notehead__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./notehead */ "./src/notehead.js");
-/* harmony import */ var _staveconnector__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./staveconnector */ "./src/staveconnector.js");
-/* harmony import */ var _clefnote__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./clefnote */ "./src/clefnote.js");
-/* harmony import */ var _keysignature__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./keysignature */ "./src/keysignature.js");
-/* harmony import */ var _keysignote__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./keysignote */ "./src/keysignote.js");
-/* harmony import */ var _timesignature__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./timesignature */ "./src/timesignature.js");
-/* harmony import */ var _timesignote__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./timesignote */ "./src/timesignote.js");
-/* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./stem */ "./src/stem.js");
-/* harmony import */ var _tabtie__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./tabtie */ "./src/tabtie.js");
-/* harmony import */ var _clef__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./clef */ "./src/clef.js");
-/* harmony import */ var _dot__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./dot */ "./src/dot.js");
-/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./modifier */ "./src/modifier.js");
-/* harmony import */ var _tabslide__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./tabslide */ "./src/tabslide.js");
-/* harmony import */ var _tuplet__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./tuplet */ "./src/tuplet.js");
-/* harmony import */ var _gracenote__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./gracenote */ "./src/gracenote.js");
-/* harmony import */ var _gracetabnote__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./gracetabnote */ "./src/gracetabnote.js");
-/* harmony import */ var _tuning__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./tuning */ "./src/tuning.js");
-/* harmony import */ var _keymanager__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./keymanager */ "./src/keymanager.js");
-/* harmony import */ var _stavehairpin__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./stavehairpin */ "./src/stavehairpin.js");
-/* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.js");
-/* harmony import */ var _strokes__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./strokes */ "./src/strokes.js");
-/* harmony import */ var _textnote__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./textnote */ "./src/textnote.js");
-/* harmony import */ var _curve__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./curve */ "./src/curve.js");
-/* harmony import */ var _textdynamics__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./textdynamics */ "./src/textdynamics.js");
-/* harmony import */ var _staveline__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./staveline */ "./src/staveline.js");
-/* harmony import */ var _ornament__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./ornament */ "./src/ornament.js");
-/* harmony import */ var _pedalmarking__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./pedalmarking */ "./src/pedalmarking.js");
-/* harmony import */ var _textbracket__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./textbracket */ "./src/textbracket.js");
-/* harmony import */ var _frethandfinger__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.js");
-/* harmony import */ var _staverepetition__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./staverepetition */ "./src/staverepetition.js");
-/* harmony import */ var _barnote__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./barnote */ "./src/barnote.js");
-/* harmony import */ var _ghostnote__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./ghostnote */ "./src/ghostnote.js");
-/* harmony import */ var _notesubgroup__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.js");
-/* harmony import */ var _gracenotegroup__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.js");
-/* harmony import */ var _tremolo__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./tremolo */ "./src/tremolo.js");
-/* harmony import */ var _stringnumber__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.js");
-/* harmony import */ var _crescendo__WEBPACK_IMPORTED_MODULE_65__ = __webpack_require__(/*! ./crescendo */ "./src/crescendo.js");
-/* harmony import */ var _stavevolta__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./stavevolta */ "./src/stavevolta.js");
-/* harmony import */ var _system__WEBPACK_IMPORTED_MODULE_67__ = __webpack_require__(/*! ./system */ "./src/system.js");
-/* harmony import */ var _factory__WEBPACK_IMPORTED_MODULE_68__ = __webpack_require__(/*! ./factory */ "./src/factory.js");
-/* harmony import */ var _parser__WEBPACK_IMPORTED_MODULE_69__ = __webpack_require__(/*! ./parser */ "./src/parser.js");
-/* harmony import */ var _easyscore__WEBPACK_IMPORTED_MODULE_70__ = __webpack_require__(/*! ./easyscore */ "./src/easyscore.js");
-/* harmony import */ var _registry__WEBPACK_IMPORTED_MODULE_71__ = __webpack_require__(/*! ./registry */ "./src/registry.js");
-/* harmony import */ var _stavetext__WEBPACK_IMPORTED_MODULE_72__ = __webpack_require__(/*! ./stavetext */ "./src/stavetext.js");
-/* harmony import */ var _glyphnote__WEBPACK_IMPORTED_MODULE_73__ = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.js");
-/* harmony import */ var _repeatnote__WEBPACK_IMPORTED_MODULE_74__ = __webpack_require__(/*! ./repeatnote */ "./src/repeatnote.js");
-/* harmony import */ var _textfont__WEBPACK_IMPORTED_MODULE_75__ = __webpack_require__(/*! ./textfont */ "./src/textfont.js");
-/* harmony import */ var _fonts_petalumascript_textmetrics__WEBPACK_IMPORTED_MODULE_76__ = __webpack_require__(/*! ./fonts/petalumascript_textmetrics */ "./src/fonts/petalumascript_textmetrics.js");
-/* harmony import */ var _fonts_robotoslab_textmetrics__WEBPACK_IMPORTED_MODULE_77__ = __webpack_require__(/*! ./fonts/robotoslab_textmetrics */ "./src/fonts/robotoslab_textmetrics.js");
-/* harmony import */ var _smufl__WEBPACK_IMPORTED_MODULE_78__ = __webpack_require__(/*! ./smufl */ "./src/smufl.js");
+/* harmony import */ var _widthformatter__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./widthformatter */ "./src/widthformatter.js");
+/* harmony import */ var _music__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./music */ "./src/music.js");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./glyph */ "./src/glyph.js");
+/* harmony import */ var _stave__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./stave */ "./src/stave.js");
+/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.js");
+/* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.js");
+/* harmony import */ var _stavetempo__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./stavetempo */ "./src/stavetempo.js");
+/* harmony import */ var _voice__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./voice */ "./src/voice.js");
+/* harmony import */ var _accidental__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./accidental */ "./src/accidental.js");
+/* harmony import */ var _beam__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./beam */ "./src/beam.js");
+/* harmony import */ var _stavetie__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./stavetie */ "./src/stavetie.js");
+/* harmony import */ var _tabstave__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./tabstave */ "./src/tabstave.js");
+/* harmony import */ var _tabnote__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./tabnote */ "./src/tabnote.js");
+/* harmony import */ var _bend__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./bend */ "./src/bend.js");
+/* harmony import */ var _vibrato__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./vibrato */ "./src/vibrato.js");
+/* harmony import */ var _vibratobracket__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./vibratobracket */ "./src/vibratobracket.js");
+/* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./note */ "./src/note.js");
+/* harmony import */ var _modifiercontext__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./modifiercontext */ "./src/modifiercontext.js");
+/* harmony import */ var _multimeasurerest__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./multimeasurerest */ "./src/multimeasurerest.js");
+/* harmony import */ var _tickcontext__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.js");
+/* harmony import */ var _articulation__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./articulation */ "./src/articulation.js");
+/* harmony import */ var _annotation__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./annotation */ "./src/annotation.js");
+/* harmony import */ var _chordsymbol__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.js");
+/* harmony import */ var _stavebarline__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.js");
+/* harmony import */ var _notehead__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./notehead */ "./src/notehead.js");
+/* harmony import */ var _staveconnector__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./staveconnector */ "./src/staveconnector.js");
+/* harmony import */ var _clefnote__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./clefnote */ "./src/clefnote.js");
+/* harmony import */ var _keysignature__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./keysignature */ "./src/keysignature.js");
+/* harmony import */ var _keysignote__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./keysignote */ "./src/keysignote.js");
+/* harmony import */ var _timesignature__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./timesignature */ "./src/timesignature.js");
+/* harmony import */ var _timesignote__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./timesignote */ "./src/timesignote.js");
+/* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./stem */ "./src/stem.js");
+/* harmony import */ var _tabtie__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./tabtie */ "./src/tabtie.js");
+/* harmony import */ var _clef__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./clef */ "./src/clef.js");
+/* harmony import */ var _dot__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./dot */ "./src/dot.js");
+/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./modifier */ "./src/modifier.js");
+/* harmony import */ var _tabslide__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./tabslide */ "./src/tabslide.js");
+/* harmony import */ var _tuplet__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./tuplet */ "./src/tuplet.js");
+/* harmony import */ var _gracenote__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./gracenote */ "./src/gracenote.js");
+/* harmony import */ var _gracetabnote__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./gracetabnote */ "./src/gracetabnote.js");
+/* harmony import */ var _tuning__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./tuning */ "./src/tuning.js");
+/* harmony import */ var _keymanager__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./keymanager */ "./src/keymanager.js");
+/* harmony import */ var _stavehairpin__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./stavehairpin */ "./src/stavehairpin.js");
+/* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.js");
+/* harmony import */ var _strokes__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./strokes */ "./src/strokes.js");
+/* harmony import */ var _textnote__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./textnote */ "./src/textnote.js");
+/* harmony import */ var _curve__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./curve */ "./src/curve.js");
+/* harmony import */ var _textdynamics__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./textdynamics */ "./src/textdynamics.js");
+/* harmony import */ var _staveline__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./staveline */ "./src/staveline.js");
+/* harmony import */ var _ornament__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./ornament */ "./src/ornament.js");
+/* harmony import */ var _pedalmarking__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./pedalmarking */ "./src/pedalmarking.js");
+/* harmony import */ var _textbracket__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./textbracket */ "./src/textbracket.js");
+/* harmony import */ var _frethandfinger__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.js");
+/* harmony import */ var _staverepetition__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./staverepetition */ "./src/staverepetition.js");
+/* harmony import */ var _barnote__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./barnote */ "./src/barnote.js");
+/* harmony import */ var _ghostnote__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./ghostnote */ "./src/ghostnote.js");
+/* harmony import */ var _notesubgroup__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.js");
+/* harmony import */ var _gracenotegroup__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.js");
+/* harmony import */ var _tremolo__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./tremolo */ "./src/tremolo.js");
+/* harmony import */ var _stringnumber__WEBPACK_IMPORTED_MODULE_65__ = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.js");
+/* harmony import */ var _crescendo__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./crescendo */ "./src/crescendo.js");
+/* harmony import */ var _stavevolta__WEBPACK_IMPORTED_MODULE_67__ = __webpack_require__(/*! ./stavevolta */ "./src/stavevolta.js");
+/* harmony import */ var _system__WEBPACK_IMPORTED_MODULE_68__ = __webpack_require__(/*! ./system */ "./src/system.js");
+/* harmony import */ var _factory__WEBPACK_IMPORTED_MODULE_69__ = __webpack_require__(/*! ./factory */ "./src/factory.js");
+/* harmony import */ var _parser__WEBPACK_IMPORTED_MODULE_70__ = __webpack_require__(/*! ./parser */ "./src/parser.js");
+/* harmony import */ var _easyscore__WEBPACK_IMPORTED_MODULE_71__ = __webpack_require__(/*! ./easyscore */ "./src/easyscore.js");
+/* harmony import */ var _registry__WEBPACK_IMPORTED_MODULE_72__ = __webpack_require__(/*! ./registry */ "./src/registry.js");
+/* harmony import */ var _stavetext__WEBPACK_IMPORTED_MODULE_73__ = __webpack_require__(/*! ./stavetext */ "./src/stavetext.js");
+/* harmony import */ var _glyphnote__WEBPACK_IMPORTED_MODULE_74__ = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.js");
+/* harmony import */ var _repeatnote__WEBPACK_IMPORTED_MODULE_75__ = __webpack_require__(/*! ./repeatnote */ "./src/repeatnote.js");
+/* harmony import */ var _textfont__WEBPACK_IMPORTED_MODULE_76__ = __webpack_require__(/*! ./textfont */ "./src/textfont.js");
+/* harmony import */ var _fonts_petalumascript_textmetrics__WEBPACK_IMPORTED_MODULE_77__ = __webpack_require__(/*! ./fonts/petalumascript_textmetrics */ "./src/fonts/petalumascript_textmetrics.js");
+/* harmony import */ var _fonts_robotoslab_textmetrics__WEBPACK_IMPORTED_MODULE_78__ = __webpack_require__(/*! ./fonts/robotoslab_textmetrics */ "./src/fonts/robotoslab_textmetrics.js");
+/* harmony import */ var _smufl__WEBPACK_IMPORTED_MODULE_79__ = __webpack_require__(/*! ./smufl */ "./src/smufl.js");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+
 
 
 
@@ -22232,81 +22238,82 @@ _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Element = _element__WEBPACK_IMPORT
 _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Fraction = _fraction__WEBPACK_IMPORTED_MODULE_3__["Fraction"];
 _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Renderer = _renderer__WEBPACK_IMPORTED_MODULE_4__["Renderer"];
 _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Formatter = _formatter__WEBPACK_IMPORTED_MODULE_5__["Formatter"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Music = _music__WEBPACK_IMPORTED_MODULE_6__["Music"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Glyph = _glyph__WEBPACK_IMPORTED_MODULE_7__["Glyph"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Stave = _stave__WEBPACK_IMPORTED_MODULE_8__["Stave"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.StaveNote = _stavenote__WEBPACK_IMPORTED_MODULE_9__["StaveNote"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.StaveModifier = _stavemodifier__WEBPACK_IMPORTED_MODULE_10__["StaveModifier"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.StaveTempo = _stavetempo__WEBPACK_IMPORTED_MODULE_11__["StaveTempo"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Voice = _voice__WEBPACK_IMPORTED_MODULE_12__["Voice"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Accidental = _accidental__WEBPACK_IMPORTED_MODULE_13__["Accidental"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Beam = _beam__WEBPACK_IMPORTED_MODULE_14__["Beam"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.StaveTie = _stavetie__WEBPACK_IMPORTED_MODULE_15__["StaveTie"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TabStave = _tabstave__WEBPACK_IMPORTED_MODULE_16__["TabStave"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TabNote = _tabnote__WEBPACK_IMPORTED_MODULE_17__["TabNote"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Bend = _bend__WEBPACK_IMPORTED_MODULE_18__["Bend"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Vibrato = _vibrato__WEBPACK_IMPORTED_MODULE_19__["Vibrato"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.VibratoBracket = _vibratobracket__WEBPACK_IMPORTED_MODULE_20__["VibratoBracket"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Note = _note__WEBPACK_IMPORTED_MODULE_21__["Note"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.ModifierContext = _modifiercontext__WEBPACK_IMPORTED_MODULE_22__["ModifierContext"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.MultiMeasureRest = _multimeasurerest__WEBPACK_IMPORTED_MODULE_23__["MultiMeasureRest"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TickContext = _tickcontext__WEBPACK_IMPORTED_MODULE_24__["TickContext"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Articulation = _articulation__WEBPACK_IMPORTED_MODULE_25__["Articulation"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Annotation = _annotation__WEBPACK_IMPORTED_MODULE_26__["Annotation"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.ChordSymbol = _chordsymbol__WEBPACK_IMPORTED_MODULE_27__["ChordSymbol"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Barline = _stavebarline__WEBPACK_IMPORTED_MODULE_28__["Barline"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.NoteHead = _notehead__WEBPACK_IMPORTED_MODULE_29__["NoteHead"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.StaveConnector = _staveconnector__WEBPACK_IMPORTED_MODULE_30__["StaveConnector"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.ClefNote = _clefnote__WEBPACK_IMPORTED_MODULE_31__["ClefNote"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.KeySignature = _keysignature__WEBPACK_IMPORTED_MODULE_32__["KeySignature"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.KeySigNote = _keysignote__WEBPACK_IMPORTED_MODULE_33__["KeySigNote"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TimeSignature = _timesignature__WEBPACK_IMPORTED_MODULE_34__["TimeSignature"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TimeSigNote = _timesignote__WEBPACK_IMPORTED_MODULE_35__["TimeSigNote"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Stem = _stem__WEBPACK_IMPORTED_MODULE_36__["Stem"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TabTie = _tabtie__WEBPACK_IMPORTED_MODULE_37__["TabTie"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Clef = _clef__WEBPACK_IMPORTED_MODULE_38__["Clef"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Dot = _dot__WEBPACK_IMPORTED_MODULE_39__["Dot"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Modifier = _modifier__WEBPACK_IMPORTED_MODULE_40__["Modifier"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TabSlide = _tabslide__WEBPACK_IMPORTED_MODULE_41__["TabSlide"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Tuplet = _tuplet__WEBPACK_IMPORTED_MODULE_42__["Tuplet"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.GraceNote = _gracenote__WEBPACK_IMPORTED_MODULE_43__["GraceNote"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.GraceTabNote = _gracetabnote__WEBPACK_IMPORTED_MODULE_44__["GraceTabNote"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Tuning = _tuning__WEBPACK_IMPORTED_MODULE_45__["Tuning"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.KeyManager = _keymanager__WEBPACK_IMPORTED_MODULE_46__["KeyManager"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.StaveHairpin = _stavehairpin__WEBPACK_IMPORTED_MODULE_47__["StaveHairpin"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.BoundingBox = _boundingbox__WEBPACK_IMPORTED_MODULE_48__["BoundingBox"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Stroke = _strokes__WEBPACK_IMPORTED_MODULE_49__["Stroke"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TextNote = _textnote__WEBPACK_IMPORTED_MODULE_50__["TextNote"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Curve = _curve__WEBPACK_IMPORTED_MODULE_51__["Curve"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TextDynamics = _textdynamics__WEBPACK_IMPORTED_MODULE_52__["TextDynamics"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.StaveLine = _staveline__WEBPACK_IMPORTED_MODULE_53__["StaveLine"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Ornament = _ornament__WEBPACK_IMPORTED_MODULE_54__["Ornament"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.PedalMarking = _pedalmarking__WEBPACK_IMPORTED_MODULE_55__["PedalMarking"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TextBracket = _textbracket__WEBPACK_IMPORTED_MODULE_56__["TextBracket"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.FretHandFinger = _frethandfinger__WEBPACK_IMPORTED_MODULE_57__["FretHandFinger"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Repetition = _staverepetition__WEBPACK_IMPORTED_MODULE_58__["Repetition"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.BarNote = _barnote__WEBPACK_IMPORTED_MODULE_59__["BarNote"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.GhostNote = _ghostnote__WEBPACK_IMPORTED_MODULE_60__["GhostNote"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.NoteSubGroup = _notesubgroup__WEBPACK_IMPORTED_MODULE_61__["NoteSubGroup"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.GraceNoteGroup = _gracenotegroup__WEBPACK_IMPORTED_MODULE_62__["GraceNoteGroup"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Tremolo = _tremolo__WEBPACK_IMPORTED_MODULE_63__["Tremolo"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.StringNumber = _stringnumber__WEBPACK_IMPORTED_MODULE_64__["StringNumber"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Crescendo = _crescendo__WEBPACK_IMPORTED_MODULE_65__["Crescendo"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Volta = _stavevolta__WEBPACK_IMPORTED_MODULE_66__["Volta"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.System = _system__WEBPACK_IMPORTED_MODULE_67__["System"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Factory = _factory__WEBPACK_IMPORTED_MODULE_68__["Factory"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Parser = _parser__WEBPACK_IMPORTED_MODULE_69__["Parser"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.EasyScore = _easyscore__WEBPACK_IMPORTED_MODULE_70__["EasyScore"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Registry = _registry__WEBPACK_IMPORTED_MODULE_71__["Registry"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.StaveText = _stavetext__WEBPACK_IMPORTED_MODULE_72__["StaveText"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.GlyphNote = _glyphnote__WEBPACK_IMPORTED_MODULE_73__["GlyphNote"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.RepeatNote = _repeatnote__WEBPACK_IMPORTED_MODULE_74__["RepeatNote"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Font = _smufl__WEBPACK_IMPORTED_MODULE_78__["Font"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Fonts = _smufl__WEBPACK_IMPORTED_MODULE_78__["Fonts"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TextFont = _textfont__WEBPACK_IMPORTED_MODULE_75__["TextFont"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DefaultFontStack = _smufl__WEBPACK_IMPORTED_MODULE_78__["DefaultFontStack"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.PetalumaScriptTextMetrics = _fonts_petalumascript_textmetrics__WEBPACK_IMPORTED_MODULE_76__["PetalumaScriptTextMetrics"];
-_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.RobotoSlabTextMetrics = _fonts_robotoslab_textmetrics__WEBPACK_IMPORTED_MODULE_77__["RobotoSlabTextMetrics"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.WidthFormatter = _widthformatter__WEBPACK_IMPORTED_MODULE_6__["WidthFormatter"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Music = _music__WEBPACK_IMPORTED_MODULE_7__["Music"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Glyph = _glyph__WEBPACK_IMPORTED_MODULE_8__["Glyph"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Stave = _stave__WEBPACK_IMPORTED_MODULE_9__["Stave"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.StaveNote = _stavenote__WEBPACK_IMPORTED_MODULE_10__["StaveNote"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.StaveModifier = _stavemodifier__WEBPACK_IMPORTED_MODULE_11__["StaveModifier"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.StaveTempo = _stavetempo__WEBPACK_IMPORTED_MODULE_12__["StaveTempo"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Voice = _voice__WEBPACK_IMPORTED_MODULE_13__["Voice"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Accidental = _accidental__WEBPACK_IMPORTED_MODULE_14__["Accidental"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Beam = _beam__WEBPACK_IMPORTED_MODULE_15__["Beam"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.StaveTie = _stavetie__WEBPACK_IMPORTED_MODULE_16__["StaveTie"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TabStave = _tabstave__WEBPACK_IMPORTED_MODULE_17__["TabStave"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TabNote = _tabnote__WEBPACK_IMPORTED_MODULE_18__["TabNote"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Bend = _bend__WEBPACK_IMPORTED_MODULE_19__["Bend"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Vibrato = _vibrato__WEBPACK_IMPORTED_MODULE_20__["Vibrato"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.VibratoBracket = _vibratobracket__WEBPACK_IMPORTED_MODULE_21__["VibratoBracket"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Note = _note__WEBPACK_IMPORTED_MODULE_22__["Note"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.ModifierContext = _modifiercontext__WEBPACK_IMPORTED_MODULE_23__["ModifierContext"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.MultiMeasureRest = _multimeasurerest__WEBPACK_IMPORTED_MODULE_24__["MultiMeasureRest"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TickContext = _tickcontext__WEBPACK_IMPORTED_MODULE_25__["TickContext"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Articulation = _articulation__WEBPACK_IMPORTED_MODULE_26__["Articulation"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Annotation = _annotation__WEBPACK_IMPORTED_MODULE_27__["Annotation"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.ChordSymbol = _chordsymbol__WEBPACK_IMPORTED_MODULE_28__["ChordSymbol"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Barline = _stavebarline__WEBPACK_IMPORTED_MODULE_29__["Barline"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.NoteHead = _notehead__WEBPACK_IMPORTED_MODULE_30__["NoteHead"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.StaveConnector = _staveconnector__WEBPACK_IMPORTED_MODULE_31__["StaveConnector"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.ClefNote = _clefnote__WEBPACK_IMPORTED_MODULE_32__["ClefNote"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.KeySignature = _keysignature__WEBPACK_IMPORTED_MODULE_33__["KeySignature"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.KeySigNote = _keysignote__WEBPACK_IMPORTED_MODULE_34__["KeySigNote"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TimeSignature = _timesignature__WEBPACK_IMPORTED_MODULE_35__["TimeSignature"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TimeSigNote = _timesignote__WEBPACK_IMPORTED_MODULE_36__["TimeSigNote"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Stem = _stem__WEBPACK_IMPORTED_MODULE_37__["Stem"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TabTie = _tabtie__WEBPACK_IMPORTED_MODULE_38__["TabTie"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Clef = _clef__WEBPACK_IMPORTED_MODULE_39__["Clef"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Dot = _dot__WEBPACK_IMPORTED_MODULE_40__["Dot"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Modifier = _modifier__WEBPACK_IMPORTED_MODULE_41__["Modifier"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TabSlide = _tabslide__WEBPACK_IMPORTED_MODULE_42__["TabSlide"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Tuplet = _tuplet__WEBPACK_IMPORTED_MODULE_43__["Tuplet"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.GraceNote = _gracenote__WEBPACK_IMPORTED_MODULE_44__["GraceNote"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.GraceTabNote = _gracetabnote__WEBPACK_IMPORTED_MODULE_45__["GraceTabNote"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Tuning = _tuning__WEBPACK_IMPORTED_MODULE_46__["Tuning"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.KeyManager = _keymanager__WEBPACK_IMPORTED_MODULE_47__["KeyManager"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.StaveHairpin = _stavehairpin__WEBPACK_IMPORTED_MODULE_48__["StaveHairpin"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.BoundingBox = _boundingbox__WEBPACK_IMPORTED_MODULE_49__["BoundingBox"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Stroke = _strokes__WEBPACK_IMPORTED_MODULE_50__["Stroke"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TextNote = _textnote__WEBPACK_IMPORTED_MODULE_51__["TextNote"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Curve = _curve__WEBPACK_IMPORTED_MODULE_52__["Curve"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TextDynamics = _textdynamics__WEBPACK_IMPORTED_MODULE_53__["TextDynamics"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.StaveLine = _staveline__WEBPACK_IMPORTED_MODULE_54__["StaveLine"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Ornament = _ornament__WEBPACK_IMPORTED_MODULE_55__["Ornament"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.PedalMarking = _pedalmarking__WEBPACK_IMPORTED_MODULE_56__["PedalMarking"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TextBracket = _textbracket__WEBPACK_IMPORTED_MODULE_57__["TextBracket"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.FretHandFinger = _frethandfinger__WEBPACK_IMPORTED_MODULE_58__["FretHandFinger"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Repetition = _staverepetition__WEBPACK_IMPORTED_MODULE_59__["Repetition"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.BarNote = _barnote__WEBPACK_IMPORTED_MODULE_60__["BarNote"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.GhostNote = _ghostnote__WEBPACK_IMPORTED_MODULE_61__["GhostNote"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.NoteSubGroup = _notesubgroup__WEBPACK_IMPORTED_MODULE_62__["NoteSubGroup"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.GraceNoteGroup = _gracenotegroup__WEBPACK_IMPORTED_MODULE_63__["GraceNoteGroup"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Tremolo = _tremolo__WEBPACK_IMPORTED_MODULE_64__["Tremolo"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.StringNumber = _stringnumber__WEBPACK_IMPORTED_MODULE_65__["StringNumber"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Crescendo = _crescendo__WEBPACK_IMPORTED_MODULE_66__["Crescendo"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Volta = _stavevolta__WEBPACK_IMPORTED_MODULE_67__["Volta"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.System = _system__WEBPACK_IMPORTED_MODULE_68__["System"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Factory = _factory__WEBPACK_IMPORTED_MODULE_69__["Factory"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Parser = _parser__WEBPACK_IMPORTED_MODULE_70__["Parser"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.EasyScore = _easyscore__WEBPACK_IMPORTED_MODULE_71__["EasyScore"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Registry = _registry__WEBPACK_IMPORTED_MODULE_72__["Registry"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.StaveText = _stavetext__WEBPACK_IMPORTED_MODULE_73__["StaveText"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.GlyphNote = _glyphnote__WEBPACK_IMPORTED_MODULE_74__["GlyphNote"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.RepeatNote = _repeatnote__WEBPACK_IMPORTED_MODULE_75__["RepeatNote"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Font = _smufl__WEBPACK_IMPORTED_MODULE_79__["Font"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.Fonts = _smufl__WEBPACK_IMPORTED_MODULE_79__["Fonts"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.TextFont = _textfont__WEBPACK_IMPORTED_MODULE_76__["TextFont"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DefaultFontStack = _smufl__WEBPACK_IMPORTED_MODULE_79__["DefaultFontStack"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.PetalumaScriptTextMetrics = _fonts_petalumascript_textmetrics__WEBPACK_IMPORTED_MODULE_77__["PetalumaScriptTextMetrics"];
+_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.RobotoSlabTextMetrics = _fonts_robotoslab_textmetrics__WEBPACK_IMPORTED_MODULE_78__["RobotoSlabTextMetrics"];
 /* harmony default export */ __webpack_exports__["default"] = (_vex__WEBPACK_IMPORTED_MODULE_0__["Vex"]);
 
 /***/ }),
@@ -24469,7 +24476,7 @@ function (_Tickable) {
   }, {
     key: "modifierPadding",
     get: function get() {
-      return 12;
+      return 10;
     }
   }]);
 
@@ -30768,6 +30775,12 @@ function (_StemmableNote) {
       };
 
       var style = _objectSpread({}, stave.getStyle() || {}, {}, this.getLedgerLineStyle() || {});
+
+      if (typeof style.lineWidth === 'undefined') {
+        style.lineWidth = _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].STAVE_LINE_THICKNESS * 2;
+      } else {
+        style.lineWidth *= 2;
+      }
 
       this.applyStyle(ctx, style); // Draw ledger lines below the staff:
 
@@ -38833,7 +38846,8 @@ function (_Element) {
     key: "getTicks",
     value: function getTicks() {
       return this.ticks;
-    }
+    } // return the number of ticks used to determine the distance to the next note
+
   }, {
     key: "shouldIgnoreTicks",
     value: function shouldIgnoreTicks() {
@@ -39048,6 +39062,18 @@ function (_Element) {
       var ticks = duration.numerator * (_tables__WEBPACK_IMPORTED_MODULE_2__["Flow"].RESOLUTION / duration.denominator);
       this.ticks = this.tickMultiplier.clone().multiply(ticks);
       this.intrinsicTicks = this.ticks.value();
+    }
+  }, {
+    key: "widthTicks",
+    get: function get() {
+      if (typeof this.widthTicksVal === 'undefined') {
+        this.widthTicksVal = this.ticks.value();
+      }
+
+      return this.widthTicksVal;
+    },
+    set: function set(val) {
+      this.widthTicksVal = val;
     }
   }]);
 
@@ -41317,6 +41343,560 @@ function (_Element) {
 
   return Voice;
 }(_element__WEBPACK_IMPORTED_MODULE_1__["Element"]);
+
+/***/ }),
+
+/***/ "./src/widthformatter.js":
+/*!*******************************!*\
+  !*** ./src/widthformatter.js ***!
+  \*******************************/
+/*! exports provided: WidthFormatter */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WidthFormatter", function() { return WidthFormatter; });
+/* harmony import */ var _vex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vex */ "./src/vex.js");
+/* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./formatter */ "./src/formatter.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+ // To enable logging for this class. Set `Vex.Flow.Formatter.DEBUG` to `true`.
+
+function L() {
+  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
+
+  if (WidthFormatter.DEBUG) _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].L('Vex.Flow.WidthFormatter', args);
+}
+
+var WidthFormatter =
+/*#__PURE__*/
+function (_Formatter) {
+  _inherits(WidthFormatter, _Formatter);
+
+  function WidthFormatter(options) {
+    var _this;
+
+    _classCallCheck(this, WidthFormatter);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(WidthFormatter).call(this, options));
+    _this.options.maxIterations = 5;
+    return _this;
+  } // Calculate the minimum width required to align and format `voices`.
+
+
+  _createClass(WidthFormatter, [{
+    key: "preCalculateMinTotalWidth",
+    value: function preCalculateMinTotalWidth(voices) {
+      // Cache results.
+      if (this.hasMinTotalWidth) return this.minTotalWidth; // Create tick contexts if not already created.
+
+      if (!this.tickContexts) {
+        if (!voices) {
+          throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('BadArgument', "'voices' required to run preCalculateMinTotalWidth");
+        }
+
+        this.createTickContexts(voices);
+      }
+
+      var _this$tickContexts = this.tickContexts,
+          contextList = _this$tickContexts.list,
+          contextMap = _this$tickContexts.map; // const maxTicks = contextList.map(tick => tick.maxTicks.value()).reduce((a, b) => a + b, 0);
+      // Go through each tick context and calculate total width.
+
+      this.minTotalWidth = contextList.map(function (tick) {
+        var context = contextMap[tick];
+        context.preFormat();
+        var width = context.getWidth();
+        var metrics = context.getMetrics();
+        return width + metrics.totalLeftPx;
+      }).reduce(function (a, b) {
+        return a + b;
+      }, 0);
+      this.hasMinTotalWidth = true;
+      return this.minTotalWidth;
+    }
+  }, {
+    key: "computeVoiceFormatting",
+    value: function computeVoiceFormatting() {
+      this.voices.forEach(function (voice) {
+        voice.widthTicksUsed = voice.tickables.map(function (tickable) {
+          return tickable.widthTicks;
+        }).reduce(function (a, b) {
+          return a + b;
+        });
+
+        var exp = function exp(tickable) {
+          return Math.pow(voice.options.softmaxFactor, tickable.widthTicks / voice.widthTicksUsed);
+        };
+
+        voice.expTicksUsed = voice.tickables.map(exp).reduce(function (a, b) {
+          return a + b;
+        });
+      });
+    }
+  }, {
+    key: "computeMaxWidthEstimate",
+    value: function computeMaxWidthEstimate(ideals) {
+      var voiceWidths = [];
+      this.voices.forEach(function (voice, index) {
+        voiceWidths.push(0);
+        ideals.forEach(function (ideal, idIx) {
+          if (idIx > 0) {
+            var tickByVoice = ideal.fromTickable.tickContext.getTickablesByVoice();
+
+            if (tickByVoice[index]) {
+              voiceWidths[index] += ideal.expectedDistance;
+
+              if (ideal.overlap > 0) {
+                voiceWidths[index] += ideal.overlap;
+              }
+            }
+          }
+        });
+        var lastContext = voice.tickables[voice.tickables.length - 1].getTickContext();
+        var metrics = lastContext.getMetrics();
+        voiceWidths[index] += metrics.notePx + metrics.totalLeftPx + metrics.totalRightPx;
+      });
+      return voiceWidths.reduce(function (a, b) {
+        return a > b ? a : b;
+      });
+    }
+  }, {
+    key: "softmax",
+    value: function softmax(voice, tickValue) {
+      var exp = function exp(v) {
+        return Math.pow(voice.options.softmaxFactor, v / voice.widthTicksUsed);
+      };
+
+      return exp(tickValue) / voice.expTicksUsed;
+    }
+  }, {
+    key: "calculateWidthMap",
+    value: function calculateWidthMap(adjustedJustifyWidth) {
+      var _this2 = this;
+
+      var widthMap = {};
+      var previousWidthByVoice = {};
+      var contexts = this.tickContexts;
+      var i = 0;
+      var voiceMap = {};
+      var foundOverlappingLine = false; // Calculate softmax basis based on current widthTick levels
+
+      this.computeVoiceFormatting();
+      var contextList = contexts.list,
+          contextMap = contexts.map;
+      contextList.forEach(function (tick) {
+        var context = contextMap[tick];
+        widthMap[tick] = {
+          context: context,
+          tick: tick,
+          widthData: {}
+        };
+        var voicesInContext = context.getTickablesByVoice();
+        Object.keys(voicesInContext).forEach(function (voiceKey) {
+          if (typeof previousWidthByVoice[voiceKey] === 'undefined') {
+            previousWidthByVoice[voiceKey] = null;
+          }
+
+          var widthEntry = {
+            expectedDistance: 0,
+            previousWidth: previousWidthByVoice[voiceKey],
+            nextWidth: null,
+            overlap: 0,
+            voiceKey: voiceKey,
+            tick: tick,
+            x: 0,
+            tickable: voicesInContext[voiceKey]
+          }; // Keep track of existing voices for backtrack
+
+          if (!voiceMap[voiceKey]) {
+            voiceMap[voiceKey] = true;
+          }
+
+          var tickableMetrics = widthEntry.tickable.getMetrics();
+          widthEntry.width = tickableMetrics.notePx + tickableMetrics.modRightPx + tickableMetrics.rightDisplacedHeadPx;
+
+          if (widthEntry.previousWidth) {
+            widthEntry.previousWidth.nextWidth = widthEntry;
+            var previousMetrics = widthEntry.previousWidth.tickable.getMetrics();
+            widthEntry.expectedDistance = _this2.softmax(widthEntry.previousWidth.tickable.getVoice(), widthEntry.previousWidth.tickable.widthTicks) * adjustedJustifyWidth;
+            widthEntry.overlap = previousMetrics.notePx + previousMetrics.rightDisplacedHeadPx + previousMetrics.modRightPx - (widthEntry.expectedDistance - widthEntry.tickable.tickContext.totalLeftPx);
+            widthEntry.x = widthEntry.previousWidth.x + widthEntry.expectedDistance;
+
+            if (widthEntry.overlap > 0) {
+              foundOverlappingLine = true;
+            }
+          } else {
+            widthEntry.x = context.getX();
+          }
+
+          L('expectedDistance/overlap/x/tick/ticks/voice', widthEntry.expectedDistance, widthEntry.overlap, widthEntry.x, tick, widthEntry.tickable.ticks.value(), widthEntry.voiceKey);
+          previousWidthByVoice[voiceKey] = widthEntry;
+          widthMap[tick].widthData[voiceKey] = widthEntry;
+        });
+      }); // If we haven't found any collisions per voice, look for overlaps between voices (unaligned/misaligned voices)
+
+      if (!foundOverlappingLine) {
+        // We start by a 'dress rehearsal' where each tickable is put at what it's X would be - max X of tickables at a context
+        var j = 0;
+
+        for (i = 0; i < contextList.length; ++i) {
+          var widthData = widthMap[contextList[i]].widthData;
+          var voiceKeys = Object.keys(widthData);
+          var maxX = 0;
+
+          for (j = 0; j < voiceKeys.length; ++j) {
+            var widthEntry = widthData[voiceKeys[j]];
+            var x = widthEntry.previousWidth ? widthEntry.previousWidth.x + widthEntry.expectedDistance : widthEntry.x;
+            maxX = x > maxX ? x : maxX;
+          }
+
+          for (j = 0; j < voiceKeys.length; ++j) {
+            widthData[voiceKeys[j]].x = maxX;
+          }
+        }
+
+        var voiceCount = Object.keys(voiceMap).length;
+        var ticksSoFar = [0]; // Now see if any tickable is to the left of a tickable earlier in the measure, in a different voice
+
+        for (i = 1; i < contextList.length; ++i) {
+          var tick = contextList[i];
+          var _widthData = widthMap[tick].widthData;
+          var voicesInContext = Object.keys(_widthData);
+          var checkedVoices = {};
+          var p = 0;
+
+          for (p = 0; p < voicesInContext.length; ++p) {
+            var _widthEntry = _widthData[voicesInContext[p]]; // Go backwards from this tick context to find previous notes per voice
+            // and compare x with our x
+
+            for (j = ticksSoFar.length - 1; j >= 0; --j) {
+              var previousWidths = widthMap[contextList[j]];
+              var k = 0;
+              var prevKeys = Object.keys(previousWidths.widthData);
+
+              for (k = 0; k < prevKeys.length; ++k) {
+                var prevKey = prevKeys[k];
+                var prevEntry = previousWidths.widthData[prevKey];
+                checkedVoices[prevKey] = true;
+
+                if (prevEntry.x >= _widthEntry.x && prevEntry.x - _widthEntry.x > _widthEntry.overlap) {
+                  _widthEntry.overlap = prevEntry.x - _widthEntry.x + 1; // foundOverlappingVoice = true;
+
+                  L('alternate overlap from tick/voice/newVal', prevEntry.tick, prevEntry.voiceKey, _widthEntry.overlap);
+                }
+              }
+
+              if (Object.keys(checkedVoices).length === voiceCount) {
+                break; // we've searched all voices at this tick
+              }
+            }
+          }
+
+          ticksSoFar.push(tick);
+        }
+      }
+
+      return widthMap;
+    }
+  }, {
+    key: "adjustOverlaps",
+    value: function adjustOverlaps(contextList, widthMap, istats) {
+      var overlaps = false;
+      var maxUnderlap = null;
+      contextList.forEach(function (tick) {
+        var widthContext = widthMap[tick];
+        Object.keys(widthContext.widthData).forEach(function (voiceKey) {
+          var widthEntry = widthContext.widthData[voiceKey];
+
+          if (widthEntry.overlap > 0 && istats.stdDev > 1) {
+            overlaps = true;
+            widthEntry.previousWidth.tickable.widthTicks = widthEntry.previousWidth.tickable.widthTicks * (1 + widthEntry.overlap / istats.stdDev);
+          } else if ((widthEntry.overlap < istats.mean - istats.stdDev || widthEntry.overlap < 2 * istats.mean) && (maxUnderlap === null || widthEntry.overlap < maxUnderlap.overlap) && widthEntry.overlap < 0 && istats.stdDev > 1 && overlaps) {
+            maxUnderlap = widthEntry;
+          }
+        });
+      }); // If there were overlaps, reduce the greatest overlap to make room for the additional ticks
+
+      if (overlaps && maxUnderlap && maxUnderlap.previousWidth) {
+        maxUnderlap.previousWidth.tickable.widthTicks = maxUnderlap.previousWidth.tickable.widthTicks * 0.85;
+      }
+
+      return overlaps;
+    } // This is the core formatter logic. Format voices and justify them
+    // to `justifyWidth` pixels. `renderingContext` is required to justify elements
+    // that can't retreive widths without a canvas. This method sets the `x` positions
+    // of all the tickables/notes in the formatter.
+
+  }, {
+    key: "preFormat",
+    value: function preFormat() {
+      var _this3 = this;
+
+      var justifyWidth = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+      var renderingContext = arguments.length > 1 ? arguments[1] : undefined;
+      var voices = arguments.length > 2 ? arguments[2] : undefined;
+      var stave = arguments.length > 3 ? arguments[3] : undefined;
+      // Initialize context maps.
+      var contexts = this.tickContexts;
+      var contextList = contexts.list,
+          contextMap = contexts.map;
+      var widthMap = null; // Reset loss history for evaluator.
+
+      this.lossHistory = []; // If voices and a stave were provided, set the Stave for each voice
+      // and preFormat to apply Y values to the notes;
+
+      if (voices && stave) {
+        voices.forEach(function (voice) {
+          return voice.setStave(stave).preFormat();
+        });
+      } // Now distribute the ticks to each tick context, and assign them their
+      // own X positions.
+
+
+      var x = 0;
+      var shift = 0;
+      this.minTotalWidth = 0; // Step 1: Calculate starting X based on the widths and time-order alone
+      // The music will be aligned vertically and fully left-justified
+
+      contextList.forEach(function (tick) {
+        var context = contextMap[tick];
+        if (renderingContext) context.setContext(renderingContext); // Make sure that all tickables in this context have calculated their
+        // space requirements.
+
+        context.preFormat();
+        var width = context.getWidth();
+        _this3.minTotalWidth += width;
+        var metrics = context.getMetrics();
+        x = x + shift + metrics.totalLeftPx;
+        context.setX(x); // Calculate shift for the next tick.
+
+        shift = width - metrics.totalLeftPx;
+      });
+      this.minTotalWidth = x + shift;
+      this.hasMinTotalWidth = true; // If we are not justifying, we are done.  Leave music left-justified.
+
+      if (justifyWidth <= 0) return this.evaluate(); // Start justification. Subtract the right extra pixels of the final context because the formatter
+      // justifies based on the context's X position, which is the left-most part of the note head.
+
+      var lastContext = contextMap[contextList[contextList.length - 1]];
+      var lastMetrics = lastContext.getMetrics();
+      var adjustedJustifyWidth = justifyWidth - lastMetrics.notePx - lastMetrics.totalRightPx - lastMetrics.totalLeftPx; // step 1: Format the music proportionally
+
+      widthMap = this.calculateWidthMap(adjustedJustifyWidth);
+
+      function shiftToIdealDistances(widthMap) {
+        // Distribute ticks to the contexts based on the calculated distance error.
+        var centerX = adjustedJustifyWidth / 2;
+        contextList.forEach(function (tick) {
+          var widthData = widthMap[tick].widthData;
+          var contextX = 0;
+          Object.keys(widthData).forEach(function (widthKey) {
+            var widthEntry = widthData[widthKey];
+            var startX = widthEntry.previousWidth ? widthEntry.previousWidth.tickable.getX() : widthMap[tick].context.getX();
+            var total = startX + widthEntry.expectedDistance;
+
+            if (total > contextX) {
+              contextX = total;
+            }
+          });
+          widthMap[tick].context.setX(contextX); // Move center aligned tickables to middle
+
+          widthMap[tick].context.getCenterAlignedTickables().forEach(function (tickable) {
+            // eslint-disable-line
+            tickable.center_x_shift = centerX - widthMap[tick].context.getX();
+          });
+        });
+      }
+
+      var targetWidth = adjustedJustifyWidth;
+      var overlapIterations = this.options.maxIterations;
+
+      var maxOverlap = function maxOverlap(wd) {
+        return Object.keys(wd.widthData).map(function (key) {
+          return wd.widthData[key].overlap;
+        }).reduce(function (a, b) {
+          return a > b ? a : b;
+        });
+      };
+
+      var maxOverlaps = contextList.map(function (tick) {
+        return maxOverlap(widthMap[tick]);
+      });
+      maxOverlaps.splice(0, 1);
+
+      var std = function std(numArray) {
+        if (numArray.length < 1) {
+          return {
+            mean: 1,
+            stdDev: 1
+          };
+        }
+
+        var sum = numArray.reduce(function (a, b) {
+          return a + b;
+        });
+        var mean = sum / numArray.length;
+        var variance = numArray.map(function (a) {
+          return Math.pow(a - mean, 2);
+        }).reduce(function (a, b) {
+          return a + b;
+        }) / numArray.length;
+        return {
+          mean: mean,
+          stdDev: Math.sqrt(variance)
+        };
+      };
+
+      var istats = std(maxOverlaps);
+      L('ideal means/stdDev', istats.mean, istats.stdDev); // Step 2: alignment
+      // If any notes collide with their left neighbor (overlap is > 0), do 2 things:
+      // 1. add ticks to those notes to make the distance between them and left neighbor greater
+      // 2. remove ticks from notes that have an extra large space between them and their neihbor, to give the crowded notes more room
+
+      var overlaps = this.adjustOverlaps(contextList, widthMap, istats);
+
+      while (overlaps && overlapIterations) {
+        overlapIterations -= 1; // recalculate softMax based on new ticks
+
+        widthMap = this.calculateWidthMap(targetWidth);
+        overlaps = this.adjustOverlaps(contextList, widthMap, istats);
+      } // Assign X positions based on the formatting.
+
+
+      shiftToIdealDistances(widthMap); // Just one context. Done formatting.
+
+      if (contextList.length === 1) return null;
+      var actualWidth = lastContext.getX() + lastContext.totalRightPx + lastContext.notePx + lastContext.rightDisplacedHeadPx + 10;
+      var ratio = justifyWidth - actualWidth - 10;
+      var ccount = contextList.length;
+      contextList.forEach(function (tick, i) {
+        var context = contextMap[tick];
+        var oldX = context.getX();
+        context.setX(oldX + ratio / ccount * i);
+      });
+      this.justifyWidth = justifyWidth;
+      return this.evaluate();
+    } // Calculate the total cost of this formatting decision.
+
+  }, {
+    key: "evaluate",
+    value: function evaluate() {
+      var _this4 = this;
+
+      var justifyWidth = this.justifyWidth; // Calculate available slack per tick context. This works out how much freedom
+      // to move a context has in either direction, without affecting other notes.
+
+      this.contextGaps = {
+        total: 0,
+        gaps: []
+      };
+      this.tickContexts.list.forEach(function (tick, index) {
+        if (index === 0) return;
+        var prevTick = _this4.tickContexts.list[index - 1];
+        var prevContext = _this4.tickContexts.map[prevTick];
+        var context = _this4.tickContexts.map[tick];
+        var prevMetrics = prevContext.getMetrics();
+        var currMetrics = context.getMetrics(); // Calculate X position of right edge of previous note
+
+        var insideRightEdge = prevContext.getX() + prevMetrics.notePx + prevMetrics.totalRightPx; // Calculate X position of left edge of current note
+
+        var insideLeftEdge = context.getX() - currMetrics.totalLeftPx;
+        var gap = insideLeftEdge - insideRightEdge;
+        _this4.contextGaps.total += gap;
+
+        _this4.contextGaps.gaps.push({
+          x1: insideRightEdge,
+          x2: insideLeftEdge
+        }); // Tell the tick contexts how much they can reposition themselves.
+
+
+        context.getFormatterMetrics().freedom.left = gap;
+        prevContext.getFormatterMetrics().freedom.right = gap;
+      }); // Calculate mean distance in each voice for each duration type, then calculate
+      // how far each note is from the mean.
+
+      var durationStats = this.durationStats = {};
+
+      function updateStats(duration, space) {
+        var stats = durationStats[duration];
+
+        if (stats === undefined) {
+          durationStats[duration] = {
+            mean: space,
+            count: 1
+          };
+        } else {
+          stats.count += 1;
+          stats.mean = (stats.mean + space) / 2;
+        }
+      }
+
+      this.voices.forEach(function (voice) {
+        voice.getTickables().forEach(function (note, i, notes) {
+          var duration = note.getTicks().clone().simplify().toString();
+          var metrics = note.getMetrics();
+          var formatterMetrics = note.getFormatterMetrics();
+          var leftNoteEdge = note.getX() + metrics.notePx + metrics.totalRightPx;
+          var space = 0;
+
+          if (i < notes.length - 1) {
+            var rightNote = notes[i + 1];
+            var rightMetrics = rightNote.getMetrics();
+            var rightNoteEdge = rightNote.getX() - rightMetrics.totalLeftPx;
+            space = rightNoteEdge - leftNoteEdge;
+            formatterMetrics.space.used = rightNote.getX() - note.getX();
+            rightNote.getFormatterMetrics().freedom.left = space;
+          } else {
+            space = justifyWidth - leftNoteEdge;
+            formatterMetrics.space.used = justifyWidth - note.getX();
+          }
+
+          formatterMetrics.freedom.right = space;
+          updateStats(duration, formatterMetrics.space.used);
+        });
+      }); // Calculate how much each note deviates from the mean. Loss function is square
+      // root of the sum of squared deviations.
+
+      var totalDeviation = 0;
+      this.voices.forEach(function (voice) {
+        voice.getTickables().forEach(function (note) {
+          var duration = note.getTicks().clone().simplify().toString();
+          var metrics = note.getFormatterMetrics();
+          metrics.space.mean = durationStats[duration].mean;
+          metrics.duration = duration;
+          metrics.iterations += 1;
+          metrics.space.deviation = metrics.space.used - metrics.space.mean;
+          totalDeviation += Math.pow(metrics.space.deviation, 2);
+        });
+      });
+      this.totalCost = Math.sqrt(totalDeviation);
+      this.lossHistory.push(this.totalCost);
+      return this.totalCost;
+    }
+  }]);
+
+  return WidthFormatter;
+}(_formatter__WEBPACK_IMPORTED_MODULE_1__["Formatter"]);
 
 /***/ })
 

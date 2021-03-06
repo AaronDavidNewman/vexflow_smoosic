@@ -1,5 +1,5 @@
 /**!
- * VexFlow 3.0.9 built on 2021-02-22.
+ * VexFlow 3.0.9 built on 2021-03-06.
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  *
  * http://www.vexflow.com  http://github.com/0xfe/vexflow
@@ -1614,6 +1614,9 @@ VF.Test.Articulation = (function() {
 
       // Get the rendering context
       var ctx = contextBuilder(options.elementId, 625, 195);
+      if (options.params.sym1 === 'a>') {
+        VF.Formatter.DEBUG = true;
+      }
 
       // bar 1
       var staveBar1 = new VF.Stave(10, 30, 125);
@@ -1683,6 +1686,7 @@ VF.Test.Articulation = (function() {
       notesBar4[1].addArticulation(0, new VF.Articulation(sym2).setPosition(3));
       notesBar4[2].addArticulation(0, new VF.Articulation(sym2).setPosition(4));
       notesBar4[3].addArticulation(0, new VF.Articulation(sym2).setPosition(4));
+      VF.Formatter.DEBUG = false;
 
       // Helper function to justify and draw a 4/4 voice
       VF.Formatter.FormatAndDraw(ctx, staveBar4, notesBar4);
@@ -5695,13 +5699,18 @@ VF.Test.Formatter = (function() {
   var Formatter = {
     Start: function() {
       QUnit.module('Formatter');
-      test('TickContext Building', Formatter.buildTickContexts);
+      runSVG('unaligned Bach', Formatter.unalignedBach);
+      runSVG('overflow ', Formatter.overflow);
       runSVG('formatAccidentalSpaces ', Formatter.formatAccidentalSpaces);
+      runSVG('Align many notes', Formatter.alignManyNotes, { justify: true, maxIterations: 10, debug: true });
+      runSVG('Align notes with accidentals', Formatter.alignAccidentals, { justify: true, maxIterations: 5, debug: true });
+      runSVG('Multiple Staves - Justified', Formatter.multiStaves, { justify: true, maxIterations: 5, debug: true });
+      runSVG('Alignment issue 1', Formatter.alignmentIssue1, { justify: true, debug: true });
+      test('TickContext Building', Formatter.buildTickContexts);
       runSVG('StaveNote - No Justification', Formatter.formatStaveNotes);
-      runSVG('StaveNote - Justification', Formatter.justifyStaveNotes);
+      runSVG('StaveNote - Justification', Formatter.justifyStaveNotes, { debug: true });
       runSVG('Notes with Tab', Formatter.notesWithTab);
       runSVG('Multiple Staves - No Justification', Formatter.multiStaves, { justify: false, iterations: 0, debug: true });
-      runSVG('Multiple Staves - Justified', Formatter.multiStaves, { justify: true, iterations: 0 });
       runSVG('Multiple Staves - Justified - 6 Iterations', Formatter.multiStaves, { justify: true, iterations: 4, alpha: 0.01 });
       runSVG('Softmax', Formatter.softMax);
       runSVG('Mixtime', Formatter.mixTime);
@@ -5715,6 +5724,200 @@ VF.Test.Formatter = (function() {
         Formatter.proportionalFormatting,
         { debug: true, iterations: 20, alpha: 0.5 }
       );
+    },
+    getFormatter(options) {
+      return new VF.WidthFormatter(options);
+    },
+    buildNotesFromJson: function(json) {
+      const rv = {
+        notes: [],
+        beamGroups: []
+      };
+      let currentBeam = [];
+      const beamNotes = () => {
+        if (currentBeam.length > 1) {
+          rv.beamGroups.push(new VF.Beam(currentBeam));
+        }
+        currentBeam = [];
+      };
+      json.notes.forEach((nn) => {
+        const keys = nn.pitches.map((pp) => pp.pitch.key);
+        const params = {
+          duration: nn.duration,
+          keys,
+          clef: nn.clef
+        };
+        const note = new VF.StaveNote(params);
+        if (nn.duration.indexOf('d') >= 0) {
+          note.addDotToAll();
+        }
+        if (note.ticks.value() <= 2048) {
+          currentBeam.push(note);
+          if (nn.endBeam) {
+            beamNotes();
+          }
+        } else {
+          beamNotes();
+        }
+        nn.pitches.forEach((pp, ix) => {
+          if (pp.pitch.accidental) {
+            note.addAccidental(ix, new VF.Accidental(pp.pitch.accidental));
+          }
+        });
+        rv.notes.push(note);
+      });
+      beamNotes();
+      rv.voice = new VF.Voice({
+        num_beats: json.beats.num_beats,
+        beat_value: json.beats.beat_value
+      });
+      rv.voice.addTickables(rv.notes);
+      return rv;
+    },
+    drawMusic(context, formatter, musicArray) {
+      let y = 40;
+      const voices = [];
+      musicArray.forEach((music) => {
+        formatter.joinVoices([music.voice]);
+        voices.push(music.voice);
+      });
+      const width = formatter.preCalculateMinTotalWidth(voices);
+      formatter.format(voices, width);
+      voices.forEach((voice) => {
+        const stave = new VF.Stave(10, y, width + 20);
+        y += 80;
+        stave.setContext(context).draw();
+        voice.draw(context, stave);
+      });
+      musicArray.forEach((music) => {
+        music.beamGroups.forEach((beam) => {
+          beam.setContext(context).draw();
+        });
+      });
+    },
+    unalignedBach: function(options) {
+      const json1 = [
+        {
+          'notes': [
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'dn/5'
+                  }
+                }
+              ],
+              'duration': '4',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'gn/4'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'an/4'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'bn/4'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'cn/5'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'treble',
+              'endBeam': true
+            }
+          ],
+          'beats': {
+            'num_beats': 3,
+            'beat_value': 4
+          }
+        }
+      ];
+      const json2 = [
+        {
+          'notes': [
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'gn/3'
+                  }
+                },
+                {
+                  'pitch': {
+                    'key': 'bn/3'
+                  }
+                },
+                {
+                  'pitch': {
+                    'key': 'dn/4'
+                  }
+                }
+              ],
+              'duration': '2',
+              'clef': 'bass',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'an/3'
+                  }
+                }
+              ],
+              'duration': '4',
+              'clef': 'bass',
+              'endBeam': false
+            }
+          ],
+          'beats': {
+            'num_beats': 3,
+            'beat_value': 4
+          }
+        }
+      ];
+      var vf = VF.Test.makeFactory(options, 750, 280);
+      const context = vf.getContext();
+      const formatter = Formatter.getFormatter({ softmaxFactor: 100 });
+      const musicArray = [];
+      musicArray.push(Formatter.buildNotesFromJson(json1[0]));
+      musicArray.push(Formatter.buildNotesFromJson(json2[0]));
+      Formatter.drawMusic(context, formatter, musicArray);
+      ok(true);
     },
 
     buildTickContexts: function() {
@@ -5752,7 +5955,7 @@ VF.Test.Formatter = (function() {
       // throws(
       //   function() { formatter.getMinTotalWidth(); },
       //   Vex.RERR,
-      //   "Expected to throw exception"
+      //   "Expected to throw exception'
       // );
 
       ok(formatter.preCalculateMinTotalWidth([voice1, voice2]), 'Successfully runs preCalculateMinTotalWidth');
@@ -5765,10 +5968,578 @@ VF.Test.Formatter = (function() {
       equal(tickables1[2].getX(), tickables2[2].getX(), 'Last notes of both voices have the same X');
       ok(tickables1[1].getX() < tickables2[1].getX(), 'Second note of voice 2 is to the right of the second note of voice 1');
     },
-    formatAccidentalSpaces: function(options) {
+    alignManyNotes: function(options) {
+      console.warn('alignManyNotes, font ', VF.DEFAULT_FONT_STACK[0].name);
+      var notes1 = [
+        new VF.StaveNote({ keys: ['b/4'], duration: '8r' }),
+        new VF.StaveNote({ keys: ['g/4'], duration: '16' }),
+        new VF.StaveNote({ keys: ['c/5'], duration: '16' }),
+        new VF.StaveNote({ keys: ['e/5'], duration: '16' }),
+        new VF.StaveNote({ keys: ['g/4'], duration: '16' }),
+        new VF.StaveNote({ keys: ['c/5'], duration: '16' }),
+        new VF.StaveNote({ keys: ['e/5'], duration: '16' }),
+        new VF.StaveNote({ keys: ['b/4'], duration: '8r' }),
+        new VF.StaveNote({ keys: ['g/4'], duration: '16' }),
+        new VF.StaveNote({ keys: ['c/5'], duration: '16' }),
+        new VF.StaveNote({ keys: ['e/5'], duration: '16' }),
+        new VF.StaveNote({ keys: ['g/4'], duration: '16' }),
+        new VF.StaveNote({ keys: ['c/5'], duration: '16' }),
+        new VF.StaveNote({ keys: ['e/5'], duration: '16' }),
+      ];
+      var notes2 = [
+        new VF.StaveNote({ keys: ['a/4'], duration: '16r' }),
+        new VF.StaveNote({ keys: ['e/4.'], duration: '8d' }).addDotToAll(),
+        new VF.StaveNote({ keys: ['e/4'], duration: '4' }),
+        new VF.StaveNote({ keys: ['a/4'], duration: '16r' }),
+        new VF.StaveNote({ keys: ['e/4.'], duration: '8d' }).addDotToAll(),
+        new VF.StaveNote({ keys: ['e/4'], duration: '4' }),
+      ];
       var vf = VF.Test.makeFactory(options, 750, 280);
       const context = vf.getContext();
-      var softmaxFactor = 99;
+      var voice1 = new VF.Voice({ num_beats: 4,  beat_value: 4 });
+      voice1.addTickables(notes1);
+      var voice2 = new VF.Voice({ num_beats: 4,  beat_value: 4 });
+      voice2.addTickables(notes2);
+      var formatter = Formatter.getFormatter(options);
+      formatter.joinVoices([voice1]);
+      formatter.joinVoices([voice2]);
+      var width = formatter.preCalculateMinTotalWidth([voice1, voice2]);
+      formatter.format([voice1, voice2], width + 20);
+      var stave1 = new VF.Stave(10, 40, width + 30);
+      var stave2 = new VF.Stave(10, 100, width + 30);
+      stave1.setContext(context).draw();
+      stave2.setContext(context).draw();
+      voice1.draw(context, stave1);
+      voice2.draw(context, stave2);
+      VF.Formatter.DEBUG = false;
+      ok(true);
+    },
+    overflow: function(options) {
+      console.warn('overflow, font ', VF.DEFAULT_FONT_STACK[0].name);
+      const json1 = [
+        {
+          'notes': [
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'bn/4'
+                  }
+                }
+              ],
+              'duration': 'wr',
+              'clef': 'treble',
+              'endBeam': false
+            }
+          ],
+          'beats': {
+            'num_beats': 2,
+            'beat_value': 2
+          }
+        }
+      ];
+
+      const json2 =
+      [
+        {
+          'notes': [
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'eb/4'
+                  }
+                }
+              ],
+              'duration': '4d',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'fn/4'
+                  }
+                }
+              ],
+              'duration': '16',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'gn/4'
+                  }
+                }
+              ],
+              'duration': '16',
+              'clef': 'treble',
+              'endBeam': true
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'ab/4'
+                  }
+                }
+              ],
+              'duration': '16',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'bb/4'
+                  }
+                }
+              ],
+              'duration': '16',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'cn/5'
+                  }
+                }
+              ],
+              'duration': '16',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'dn/5'
+                  }
+                }
+              ],
+              'duration': '16',
+              'clef': 'treble',
+              'endBeam': true
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'eb/5'
+                  }
+                }
+              ],
+              'duration': '16',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'fn/5'
+                  }
+                }
+              ],
+              'duration': '16',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'gn/5'
+                  }
+                }
+              ],
+              'duration': '16',
+              'clef': 'treble',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'ab/5'
+                  }
+                }
+              ],
+              'duration': '16',
+              'clef': 'treble',
+              'endBeam': true
+            }
+          ],
+          'beats': {
+            'num_beats': 2,
+            'beat_value': 2
+          }
+        }
+      ];
+      const json3 = [
+        {
+          'notes': [
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'bb/2'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'bass',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'gn/3'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'bass',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'eb/3'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'bass',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'gn/3'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'bass',
+              'endBeam': true
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'bb/2'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'bass',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'gn/3'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'bass',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'eb/3'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'bass',
+              'endBeam': false
+            },
+            {
+              'pitches': [
+                {
+                  'pitch': {
+                    'key': 'gn/3'
+                  }
+                }
+              ],
+              'duration': '8',
+              'clef': 'bass',
+              'endBeam': true
+            }
+          ],
+          'beats': {
+            'num_beats': 2,
+            'beat_value': 2
+          }
+        }
+      ];
+      var vf = VF.Test.makeFactory(options, 750, 280);
+      const context = vf.getContext();
+      const formatter = Formatter.getFormatter({
+        softmaxFactor: 100
+      });
+      const musicArray = [];
+      musicArray.push(Formatter.buildNotesFromJson(json1[0]));
+      musicArray.push(Formatter.buildNotesFromJson(json2[0]));
+      musicArray.push(Formatter.buildNotesFromJson(json3[0]));
+      Formatter.drawMusic(context, formatter, musicArray);
+      ok(true);
+    },
+    alignAccidentals: function(options) {
+      console.warn('alignAccidentals, font ', VF.DEFAULT_FONT_STACK[0].name);
+      const json1 = [{
+        'notes': [{
+          'pitches': [{
+            'pitch': {
+              'key': 'gn/4'
+            }
+          }],
+          'duration': '8',
+          'clef': 'treble',
+          'endBeam': true
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'gn/4'
+            }
+          }],
+          'duration': '8r',
+          'clef': 'treble',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'bn/4'
+            }
+          }],
+          'duration': '4r',
+          'clef': 'treble',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'gn/4'
+            }
+          }],
+          'duration': '16r',
+          'clef': 'treble',
+          'endBeam': true
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'gn/4'
+            }
+          }],
+          'duration': '16',
+          'clef': 'treble',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'an/4'
+            }
+          }],
+          'duration': '16',
+          'clef': 'treble',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'bn/4'
+            }
+          }],
+          'duration': '16',
+          'clef': 'treble',
+          'endBeam': true
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'cn/5'
+            }
+          }],
+          'duration': '16',
+          'clef': 'treble',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'an/4'
+            }
+          }],
+          'duration': '16',
+          'clef': 'treble',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'bn/4'
+            }
+          }],
+          'duration': '16',
+          'clef': 'treble',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'gn/4'
+            }
+          }],
+          'duration': '16',
+          'clef': 'treble',
+          'endBeam': true
+        }],
+        'beats': {
+          'num_beats': 4,
+          'beat_value': 4
+        }
+      }];
+
+      const json2 = [{
+        'notes': [{
+          'pitches': [{
+            'pitch': {
+              'key': 'gn/2'
+            }
+          }],
+          'duration': '16r',
+          'clef': 'bass',
+          'endBeam': true
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'gn/2'
+            }
+          }],
+          'duration': '16',
+          'clef': 'bass',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'an/2'
+            }
+          }],
+          'duration': '16',
+          'clef': 'bass',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'bn/2'
+            }
+          }],
+          'duration': '16',
+          'clef': 'bass',
+          'endBeam': true
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'cn/3'
+            }
+          }],
+          'duration': '16',
+          'clef': 'bass',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'an/2'
+            }
+          }],
+          'duration': '16',
+          'clef': 'bass',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'bn/2'
+            }
+          }],
+          'duration': '16',
+          'clef': 'bass',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'gn/2'
+            }
+          }],
+          'duration': '16',
+          'clef': 'bass',
+          'endBeam': true
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'dn/3'
+            }
+          }],
+          'duration': '8',
+          'clef': 'bass',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'gn/3'
+            }
+          }],
+          'duration': '8',
+          'clef': 'bass',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'f#/3',
+              'accidental': '#'
+            }
+          }],
+          'duration': '8',
+          'clef': 'bass',
+          'endBeam': false
+        }, {
+          'pitches': [{
+            'pitch': {
+              'key': 'gn/3'
+            }
+          }],
+          'duration': '8',
+          'clef': 'bass',
+          'endBeam': true
+        }],
+        'beats': {
+          'num_beats': 4,
+          'beat_value': 4
+        }
+      }];
+
+      var vf = VF.Test.makeFactory(options, 750, 280);
+      const context = vf.getContext();
+      var formatter = Formatter.getFormatter(options);
+      const musicArray = [];
+      musicArray.push(Formatter.buildNotesFromJson(json1[0]));
+      musicArray.push(Formatter.buildNotesFromJson(json2[0]));
+      Formatter.drawMusic(context, formatter, musicArray);
+      ok(true);
+    },
+    formatAccidentalSpaces: function(options) {
+      console.warn('formatAccidentalSpaces, font ', VF.DEFAULT_FONT_STACK[0].name);
+      var vf = VF.Test.makeFactory(options, 750, 280);
+      const context = vf.getContext();
+      var softmaxFactor = 100;
       // Create the notes
       var notes = [
         new VF.StaveNote({
@@ -5822,14 +6593,22 @@ VF.Test.Formatter = (function() {
         beat_value: 4
       });
       voice.addTickables(notes);
-      var formatter = new VF.Formatter({ softmaxFactor }).joinVoices([voice]);
-      var stave = new VF.Stave(10, 40, 366);
+      var formatter = Formatter.getFormatter({ softmaxFactor }).joinVoices([voice]);
+      var width = formatter.preCalculateMinTotalWidth([voice]);
+      var stave = new VF.Stave(10, 40, width + 20);
       stave.setContext(context).draw();
-      formatter.format([voice], 326);
+      formatter.format([voice], width);
       voice.draw(context, stave);
       beams.forEach(function(b) {
         b.setContext(context).draw();
       });
+
+      notes.forEach(function(note) {
+        VF.Test.plotNoteWidth(context, note, 30);
+      });
+
+      VF.Test.plotLegendForNoteWidth(context, 300, 150);
+      VF.Formatter.DEBUG = false;
       ok(true);
     },
     formatStaveNotes: function(options) {
@@ -5972,103 +6751,91 @@ VF.Test.Formatter = (function() {
     },
 
     multiStaves: function(options) {
+      console.warn('Multiple Staves, justified, font ', VF.DEFAULT_FONT_STACK[0].name);
+
+      var vf = VF.Test.makeFactory(options, 600, 300);
+      var score = vf.EasyScore();
+
+      var notes11 = score.notes('a4/2, a4/4, a4/8, ab4/16, an4/16');
+      var voice11 = score.voice(notes11, { time: '4/4' });
+
+      var notes21 = score.notes('c4/2, d4/8, d4/8, e4/8, e4/8');
+      var voice21 = score.voice(notes21, { time: '4/4' });
+
+      var beams = VF.Beam.generateBeams(notes11.slice(2));
+      beams = beams.concat(beams, VF.Beam.generateBeams(notes21.slice(1, 3)));
+      beams = beams.concat(VF.Beam.generateBeams(notes21.slice(3)));
+      var formatter = vf.Formatter(options.params)
+        .joinVoices([voice11])
+        .joinVoices([voice21]);
+
+      var width = formatter.preCalculateMinTotalWidth([voice11, voice21]);
+      var stave11 = vf.Stave({ y: 20, width: width + 20 });
+      var stave21 = vf.Stave({ y: 130, width: width + 20 });
+      formatter.format([voice11, voice21], width);
+      vf.StaveConnector({
+        top_stave: stave11,
+        bottom_stave: stave21,
+        type: 'brace',
+      });
+      var ctx = vf.getContext();
+      stave11.setContext(ctx).draw();
+      stave21.setContext(ctx).draw();
+      voice11.draw(ctx, stave11);
+      voice21.draw(ctx, stave21);
+      beams.forEach(function(b) {
+        b.setContext(ctx).draw();
+      });
+
+      notes11.forEach(function(note) {
+        VF.Test.plotNoteWidth(ctx, note, 35);
+      });
+
+      notes21.forEach(function(note) {
+        VF.Test.plotNoteWidth(ctx, note, 190);
+      });
+
+      VF.Test.plotLegendForNoteWidth(ctx, 300, 180);
+      ok(true);
+    },
+    alignmentIssue1: function(options) {
+      console.warn('alignmentIssue1, font ', VF.DEFAULT_FONT_STACK[0].name);
       var vf = VF.Test.makeFactory(options, 600, 400);
       var score = vf.EasyScore();
 
-      var stave11 = vf.Stave({ y: 20, width: 275 })
-        .addTrebleGlyph()
-        .addTimeSignature('6/8');
+      var notes11 = [
+        new VF.StaveNote({ keys: ['a/4'], duration: '8' }),
+        new VF.StaveNote({ keys: ['b/4'], duration: '4' }),
+        new VF.StaveNote({ keys: ['b/4'], duration: '8' })
+      ];
+      var notes21 = [
+        new VF.StaveNote({ keys: ['a/4'], duration: '16' }),
+        new VF.StaveNote({ keys: ['b/4.'], duration: '4' }),
+        new VF.StaveNote({ keys: ['a/4'], duration: '8d' }).addDotToAll()
+      ];
 
-      var notes11 = score.notes('f4/4, d4/8, g4/4, eb4/8');
-      var voice11 = score.voice(notes11, { time: '6/8' });
-
-      var stave21 = vf.Stave({ y: 130, width: 275 })
-        .addTrebleGlyph()
-        .addTimeSignature('6/8');
-
-      var notes21 = score.notes('d4/8, d4, d4, d4, e4, eb4');
-      var voice21 = score.voice(notes21, { time: '6/8' });
-
-      var stave31 = vf.Stave({ y: 250, width: 275 })
-        .addClef('bass')
-        .addTimeSignature('6/8');
-
-      var notes31 = score.notes('a5/8, a5, a5, a5, a5, a5', { stem: 'down' });
-      var voice31 = score.voice(notes31, { time: '6/8' });
-
-      vf.StaveConnector({
-        top_stave: stave21,
-        bottom_stave: stave31,
-        type: 'brace',
+      var ctx = vf.getContext();
+      var voice11 = score.voice(notes11, { time: '2/4' }).setMode(VF.Voice.Mode.SOFT);
+      var voice21 = score.voice(notes21, { time: '2/4' }).setMode(VF.Voice.Mode.SOFT);
+      var beams21 = VF.Beam.generateBeams(notes21);
+      var beams11 = VF.Beam.generateBeams(notes11);
+      var formatter = Formatter.getFormatter(options);
+      formatter.joinVoices([voice11]);
+      formatter.joinVoices([voice21]);
+      var width = formatter.preCalculateMinTotalWidth([voice11, voice21]);
+      var stave11 = vf.Stave({ y: 20, width: width + 20 });
+      var stave21 = vf.Stave({ y: 130, width: width + 20 });
+      formatter.format([voice11, voice21], width);
+      stave11.setContext(ctx).draw();
+      stave21.setContext(ctx).draw();
+      voice11.draw(ctx, stave11);
+      voice21.draw(ctx, stave21);
+      beams21.forEach(function(b) {
+        b.setContext(ctx).draw();
       });
-
-      vf.Beam({ notes: notes21.slice(0, 3) });
-      vf.Beam({ notes: notes21.slice(3, 6) });
-      vf.Beam({ notes: notes31.slice(0, 3) });
-      vf.Beam({ notes: notes31.slice(3, 6) });
-
-      var formatter = vf.Formatter()
-        .joinVoices([voice11])
-        .joinVoices([voice21])
-        .joinVoices([voice31]);
-
-      if (options.params.justify) {
-        formatter.formatToStave([voice11, voice21, voice31], stave11);
-      } else {
-        formatter.format([voice11, voice21, voice31], 0);
-      }
-
-      for (var i = 0; i < options.params.iterations; i++) {
-        formatter.tune();
-      }
-
-      var stave12 = vf.Stave({
-        x: stave11.width + stave11.x,
-        y: stave11.y,
-        width: stave11.width,
+      beams11.forEach(function(b) {
+        b.setContext(ctx).draw();
       });
-
-      var notes12 = score.notes('ab4/4, bb4/8, (cb5 eb5)/4[stem="down"], d5/8[stem="down"]');
-      var voice12 = score.voice(notes12, { time: '6/8' });
-
-      vf.Stave({
-        x: stave21.width + stave21.x,
-        y: stave21.y,
-        width: stave21.width,
-      });
-
-      var notes22 = score.notes('(eb4 ab4)/4., (c4 eb4 ab4)/4, db5/8', { stem: 'up' });
-      var voice22 = score.voice(notes22, { time: '6/8' });
-
-      vf.Stave({
-        x: stave31.width + stave31.x,
-        y: stave31.y,
-        width: stave31.width,
-      });
-
-      var notes32 = score.notes('a5/8, a5, a5, a5, a5, a5', { stem: 'down' });
-      var voice32 = score.voice(notes32, { time: '6/8' });
-
-      formatter = vf.Formatter()
-        .joinVoices([voice12])
-        .joinVoices([voice22])
-        .joinVoices([voice32]);
-
-      if (options.params.justify) {
-        formatter.formatToStave([voice12, voice22, voice32], stave12);
-      } else {
-        formatter.format([voice12, voice22, voice32], 0);
-      }
-
-      for (var j = 0; j < options.params.iterations; j++) {
-        formatter.tune();
-      }
-
-      vf.Beam({ notes: notes32.slice(0, 3) });
-      vf.Beam({ notes: notes32.slice(3, 6) });
-
-      vf.draw();
-
       ok(true);
     },
 
