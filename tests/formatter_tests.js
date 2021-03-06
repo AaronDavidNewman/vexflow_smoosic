@@ -84,6 +84,7 @@ VF.Test.Formatter = (function() {
       ok(tickables1[1].getX() < tickables2[1].getX(), 'Second note of voice 2 is to the right of the second note of voice 1');
     },
     alignManyNotes: function(options) {
+      console.warn('alignManyNotes, font ', VF.DEFAULT_FONT_STACK[0].name);
       var notes1 = [
         new VF.StaveNote({ keys: ['b/4'], duration: '8r' }),
         new VF.StaveNote({ keys: ['g/4'], duration: '16' }),
@@ -102,10 +103,10 @@ VF.Test.Formatter = (function() {
       ];
       var notes2 = [
         new VF.StaveNote({ keys: ['a/4'], duration: '16r' }),
-        new VF.StaveNote({ keys: ['e/4.'], duration: '8d' }),
+        new VF.StaveNote({ keys: ['e/4.'], duration: '8d' }).addDotToAll(),
         new VF.StaveNote({ keys: ['e/4'], duration: '4' }),
         new VF.StaveNote({ keys: ['a/4'], duration: '16r' }),
-        new VF.StaveNote({ keys: ['e/4.'], duration: '8d' }),
+        new VF.StaveNote({ keys: ['e/4.'], duration: '8d' }).addDotToAll(),
         new VF.StaveNote({ keys: ['e/4'], duration: '4' }),
       ];
       var vf = VF.Test.makeFactory(options, 750, 280);
@@ -125,11 +126,11 @@ VF.Test.Formatter = (function() {
       stave2.setContext(context).draw();
       voice1.draw(context, stave1);
       voice2.draw(context, stave2);
+      VF.Formatter.DEBUG = false;
       ok(true);
     },
     alignAccidentals: function(options) {
       console.warn('alignAccidentals, font ', VF.DEFAULT_FONT_STACK[0].name);
-      VF.Formatter.DEBUG = true;
       const json1 = [{
         'notes': [{
           'pitches': [{
@@ -229,7 +230,7 @@ VF.Test.Formatter = (function() {
           }],
           'duration': '16',
           'clef': 'treble',
-          'endBeam': false
+          'endBeam': true
         }],
         'beats': {
           'num_beats': 4,
@@ -309,7 +310,7 @@ VF.Test.Formatter = (function() {
           }],
           'duration': '16',
           'clef': 'bass',
-          'endBeam': false
+          'endBeam': true
         }, {
           'pitches': [{
             'pitch': {
@@ -354,6 +355,7 @@ VF.Test.Formatter = (function() {
         }
       }];
 
+      VF.Formatter.DEBUG = true;
       const createVexNotes = (json) => {
         const rv = {
           notes: [],
@@ -690,7 +692,6 @@ VF.Test.Formatter = (function() {
     },
     alignmentIssue1: function(options) {
       console.warn('alignmentIssue1, font ', VF.DEFAULT_FONT_STACK[0].name);
-
       var vf = VF.Test.makeFactory(options, 600, 400);
       var score = vf.EasyScore();
 
