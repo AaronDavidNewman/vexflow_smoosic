@@ -36,6 +36,9 @@ VF.Test.Formatter = (function() {
         { debug: true, iterations: 20, alpha: 0.5 }
       );
     },
+    getFormatter(options) {
+      return new VF.WidthFormatter(options);
+    },
     buildNotesFromJson: function(json) {
       const rv = {
         notes: [],
@@ -81,6 +84,27 @@ VF.Test.Formatter = (function() {
       });
       rv.voice.addTickables(rv.notes);
       return rv;
+    },
+    drawMusic(context, formatter, musicArray) {
+      let y = 40;
+      const voices = [];
+      musicArray.forEach((music) => {
+        formatter.joinVoices([music.voice]);
+        voices.push(music.voice);
+      });
+      const width = formatter.preCalculateMinTotalWidth(voices);
+      formatter.format(voices, width);
+      voices.forEach((voice) => {
+        const stave = new VF.Stave(10, y, width + 20);
+        y += 80;
+        stave.setContext(context).draw();
+        voice.draw(context, stave);
+      });
+      musicArray.forEach((music) => {
+        music.beamGroups.forEach((beam) => {
+          beam.setContext(context).draw();
+        });
+      });
     },
     unalignedBach: function(options) {
       const json1 = [
@@ -199,30 +223,11 @@ VF.Test.Formatter = (function() {
       ];
       var vf = VF.Test.makeFactory(options, 750, 280);
       const context = vf.getContext();
-      const music1 = Formatter.buildNotesFromJson(json1[0]);
-      const music2 = Formatter.buildNotesFromJson(json2[0]);
-      const voice1 = music1.voice;
-      const voice2 = music2.voice;
-      const formatter = new VF.Formatter({
-        softmaxFactor: 100
-      });
-      formatter.joinVoices([voice1]);
-      formatter.joinVoices([voice2]);
-      const width = formatter.preCalculateMinTotalWidth([voice1, voice2]);
-      formatter.format([voice1, voice2], width);
-      const stave1 = new VF.Stave(10, 40, width + 20);
-      const stave2 = new VF.Stave(10, 120, width + 20);
-      stave1.setContext(context).draw();
-      stave2.setContext(context).draw();
-      voice1.draw(context, stave1);
-      voice2.draw(context, stave2);
-      music1.beamGroups.forEach((beam) => {
-        beam.setContext(context).draw();
-      });
-      music2.beamGroups.forEach((beam) => {
-        beam.setContext(context).draw();
-      });
-      VF.Formatter.DEBUG = false;
+      const formatter = Formatter.getFormatter({ softmaxFactor: 100 });
+      const musicArray = [];
+      musicArray.push(Formatter.buildNotesFromJson(json1[0]));
+      musicArray.push(Formatter.buildNotesFromJson(json2[0]));
+      Formatter.drawMusic(context, formatter, musicArray);
       ok(true);
     },
 
@@ -306,7 +311,7 @@ VF.Test.Formatter = (function() {
       voice1.addTickables(notes1);
       var voice2 = new VF.Voice({ num_beats: 4,  beat_value: 4 });
       voice2.addTickables(notes2);
-      var formatter = new VF.Formatter();
+      var formatter = Formatter.getFormatter(options);
       formatter.joinVoices([voice1]);
       formatter.joinVoices([voice2]);
       var width = formatter.preCalculateMinTotalWidth([voice1, voice2]);
@@ -596,39 +601,14 @@ VF.Test.Formatter = (function() {
       ];
       var vf = VF.Test.makeFactory(options, 750, 280);
       const context = vf.getContext();
-      const music1 = Formatter.buildNotesFromJson(json1[0]);
-      const music2 = Formatter.buildNotesFromJson(json2[0]);
-      const music3 = Formatter.buildNotesFromJson(json3[0]);
-      const voice1 = music1.voice;
-      const voice2 = music2.voice;
-      const voice3 = music3.voice;
-      const formatter = new VF.Formatter({
+      const formatter = Formatter.getFormatter({
         softmaxFactor: 100
       });
-      formatter.joinVoices([voice1]);
-      formatter.joinVoices([voice2]);
-      formatter.joinVoices([voice3]);
-      const width = formatter.preCalculateMinTotalWidth([voice1, voice2, voice3]);
-      formatter.format([voice1, voice2, voice3], width + 10);
-      const stave1 = new VF.Stave(10, 40, width + 20);
-      const stave2 = new VF.Stave(10, 120, width + 20);
-      const stave3 = new VF.Stave(10, 200, width + 20);
-      stave1.setContext(context).draw();
-      stave2.setContext(context).draw();
-      stave3.setContext(context).draw();
-      voice1.draw(context, stave1);
-      voice2.draw(context, stave2);
-      voice3.draw(context, stave3);
-      music1.beamGroups.forEach((beam) => {
-        beam.setContext(context).draw();
-      });
-      music2.beamGroups.forEach((beam) => {
-        beam.setContext(context).draw();
-      });
-      music3.beamGroups.forEach((beam) => {
-        beam.setContext(context).draw();
-      });
-      VF.Formatter.DEBUG = false;
+      const musicArray = [];
+      musicArray.push(Formatter.buildNotesFromJson(json1[0]));
+      musicArray.push(Formatter.buildNotesFromJson(json2[0]));
+      musicArray.push(Formatter.buildNotesFromJson(json3[0]));
+      Formatter.drawMusic(context, formatter, musicArray);
       ok(true);
     },
     alignAccidentals: function(options) {
@@ -857,75 +837,13 @@ VF.Test.Formatter = (function() {
         }
       }];
 
-      const createVexNotes = (json) => {
-        const rv = {
-          notes: [],
-          beamGroups: []
-        };
-        let currentBeam = [];
-        const beamNotes = () => {
-          if (currentBeam.length > 1) {
-            rv.beamGroups.push(new VF.Beam(currentBeam));
-          }
-          currentBeam = [];
-        };
-        json.notes.forEach((nn) => {
-          const keys = nn.pitches.map((pp) => pp.pitch.key);
-          const params = {
-            duration: nn.duration,
-            keys,
-            clef: nn.clef
-          };
-          const note = new VF.StaveNote(params);
-          if (note.ticks.value() <= 2048) {
-            currentBeam.push(note);
-            if (nn.endBeam) {
-              beamNotes();
-            }
-          } else {
-            beamNotes();
-          }
-          nn.pitches.forEach((pp, ix) => {
-            if (pp.pitch.accidental) {
-              note.addAccidental(ix, new VF.Accidental(pp.pitch.accidental));
-            }
-          });
-          rv.notes.push(note);
-        });
-        beamNotes();
-        rv.voice = new VF.Voice({
-          num_beats: json.beats.num_beats,
-          beat_value: json.beats.beat_value
-        });
-        rv.voice.addTickables(rv.notes);
-        return rv;
-      };
       var vf = VF.Test.makeFactory(options, 750, 280);
       const context = vf.getContext();
-      const music1 = createVexNotes(json1[0]);
-      const music2 = createVexNotes(json2[0]);
-      const voice1 = music1.voice;
-      const voice2 = music2.voice;
-      const formatter = new VF.Formatter({
-        softmaxFactor: 100
-      });
-      formatter.joinVoices([voice1]);
-      formatter.joinVoices([voice2]);
-      const width = formatter.preCalculateMinTotalWidth([voice1, voice2]);
-      formatter.format([voice1, voice2], width);
-      const stave1 = new VF.Stave(10, 40, width + 20);
-      const stave2 = new VF.Stave(10, 120, width + 20);
-      stave1.setContext(context).draw();
-      stave2.setContext(context).draw();
-      voice1.draw(context, stave1);
-      voice2.draw(context, stave2);
-      music1.beamGroups.forEach((beam) => {
-        beam.setContext(context).draw();
-      });
-      music2.beamGroups.forEach((beam) => {
-        beam.setContext(context).draw();
-      });
-      VF.Formatter.DEBUG = false;
+      var formatter = Formatter.getFormatter(options);
+      const musicArray = [];
+      musicArray.push(Formatter.buildNotesFromJson(json1[0]));
+      musicArray.push(Formatter.buildNotesFromJson(json2[0]));
+      Formatter.drawMusic(context, formatter, musicArray);
       ok(true);
     },
     formatAccidentalSpaces: function(options) {
@@ -986,7 +904,7 @@ VF.Test.Formatter = (function() {
         beat_value: 4
       });
       voice.addTickables(notes);
-      var formatter = new VF.Formatter({ softmaxFactor }).joinVoices([voice]);
+      var formatter = Formatter.getFormatter({ softmaxFactor }).joinVoices([voice]);
       var width = formatter.preCalculateMinTotalWidth([voice]);
       var stave = new VF.Stave(10, 40, width + 20);
       stave.setContext(context).draw();
@@ -1212,7 +1130,7 @@ VF.Test.Formatter = (function() {
       var voice21 = score.voice(notes21, { time: '2/4' }).setMode(VF.Voice.Mode.SOFT);
       var beams21 = VF.Beam.generateBeams(notes21);
       var beams11 = VF.Beam.generateBeams(notes11);
-      var formatter = new VF.Formatter();
+      var formatter = Formatter.getFormatter(options);
       formatter.joinVoices([voice11]);
       formatter.joinVoices([voice21]);
       var width = formatter.preCalculateMinTotalWidth([voice11, voice21]);

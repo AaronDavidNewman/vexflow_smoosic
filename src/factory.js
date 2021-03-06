@@ -13,7 +13,8 @@ import { Accidental } from './accidental';
 import { Articulation } from './articulation';
 import { Annotation } from './annotation';
 import { ChordSymbol } from './chordsymbol';
-import { Formatter } from './formatter';
+// import { Formatter } from './formatter';
+import { WidthFormatter } from './widthformatter';
 import { FretHandFinger } from './frethandfinger';
 import { StringNumber } from './stringnumber';
 import { TextDynamics } from './textdynamics';
@@ -433,7 +434,7 @@ export class Factory {
         iterations: 3
       }
     });
-    return new Formatter(params);
+    return new WidthFormatter(params);
   }
 
   Tuplet(params) {

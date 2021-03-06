@@ -5,6 +5,217 @@ import { Formatter } from './formatter';
 function L(...args) { if (WidthFormatter.DEBUG) Vex.L('Vex.Flow.WidthFormatter', args); }
 
 export class WidthFormatter extends Formatter {
+  constructor(options) {
+    super(options);
+    this.options.maxIterations = 5;
+  }
+  // Calculate the minimum width required to align and format `voices`.
+  preCalculateMinTotalWidth(voices) {
+    // Cache results.
+    if (this.hasMinTotalWidth) return this.minTotalWidth;
+
+    // Create tick contexts if not already created.
+    if (!this.tickContexts) {
+      if (!voices) {
+        throw new Vex.RERR(
+          'BadArgument', "'voices' required to run preCalculateMinTotalWidth"
+        );
+      }
+
+      this.createTickContexts(voices);
+    }
+
+    const { list: contextList, map: contextMap } = this.tickContexts;
+
+    // const maxTicks = contextList.map(tick => tick.maxTicks.value()).reduce((a, b) => a + b, 0);
+    // Go through each tick context and calculate total width.
+    this.minTotalWidth = contextList
+      .map(tick => {
+        const context = contextMap[tick];
+        context.preFormat();
+        const width =  context.getWidth();
+        const metrics = context.getMetrics();
+        return width + metrics.totalLeftPx;
+      })
+      .reduce((a, b) => a + b, 0);
+
+    this.hasMinTotalWidth = true;
+
+    return this.minTotalWidth;
+  }
+  computeVoiceFormatting() {
+    this.voices.forEach((voice) => {
+      voice.widthTicksUsed = voice.tickables.map((tickable) => tickable.widthTicks)
+        .reduce((a, b) => a + b);
+      const exp = (tickable) => Math.pow(voice.options.softmaxFactor, tickable.widthTicks / voice.widthTicksUsed);
+      voice.expTicksUsed = voice.tickables.map(exp).reduce((a, b) => a + b);
+    });
+  }
+  computeMaxWidthEstimate(ideals) {
+    const voiceWidths = [];
+    this.voices.forEach((voice, index) => {
+      voiceWidths.push(0);
+      ideals.forEach((ideal, idIx) => {
+        if (idIx > 0) {
+          const tickByVoice = ideal.fromTickable.tickContext.getTickablesByVoice();
+          if (tickByVoice[index]) {
+            voiceWidths[index] += ideal.expectedDistance;
+            if (ideal.overlap > 0) {
+              voiceWidths[index] += ideal.overlap;
+            }
+          }
+        }
+      });
+      const lastContext = voice.tickables[voice.tickables.length - 1].getTickContext();
+      const metrics = lastContext.getMetrics();
+      voiceWidths[index] += metrics.notePx + metrics.totalLeftPx + metrics.totalRightPx;
+    });
+    return voiceWidths.reduce((a, b) => a > b ? a : b);
+  }
+
+  softmax(voice, tickValue) {
+    const exp = (v) => Math.pow(voice.options.softmaxFactor, v / voice.widthTicksUsed);
+    return exp(tickValue) / voice.expTicksUsed;
+  }
+  calculateWidthMap(adjustedJustifyWidth) {
+    const widthMap = {};
+    const previousWidthByVoice = {};
+    const contexts = this.tickContexts;
+    let i = 0;
+    const voiceMap = {};
+    let foundOverlappingLine = false;
+    // Calculate softmax basis based on current widthTick levels
+    this.computeVoiceFormatting();
+    const { list: contextList, map: contextMap } = contexts;
+
+    contextList.forEach((tick) => {
+      const context = contextMap[tick];
+      widthMap[tick] = {
+        context,
+        tick,
+        widthData: {}
+      };
+      const voicesInContext = context.getTickablesByVoice();
+      Object.keys(voicesInContext).forEach((voiceKey) => {
+        if (typeof(previousWidthByVoice[voiceKey]) === 'undefined') {
+          previousWidthByVoice[voiceKey] = null;
+        }
+        const widthEntry = {
+          expectedDistance: 0,
+          previousWidth: previousWidthByVoice[voiceKey],
+          nextWidth: null,
+          overlap: 0,
+          voiceKey,
+          tick,
+          x: 0,
+          tickable: voicesInContext[voiceKey]
+        };
+        // Keep track of existing voices for backtrack
+        if (!voiceMap[voiceKey]) {
+          voiceMap[voiceKey] = true;
+        }
+        const tickableMetrics = widthEntry.tickable.getMetrics();
+        widthEntry.width = tickableMetrics.notePx + tickableMetrics.modRightPx + tickableMetrics.rightDisplacedHeadPx;
+        if (widthEntry.previousWidth) {
+          widthEntry.previousWidth.nextWidth = widthEntry;
+          const previousMetrics = widthEntry.previousWidth.tickable.getMetrics();
+          widthEntry.expectedDistance =
+            this.softmax(widthEntry.previousWidth.tickable.getVoice(), widthEntry.previousWidth.tickable.widthTicks) * adjustedJustifyWidth;
+          widthEntry.overlap = (previousMetrics.notePx + previousMetrics.rightDisplacedHeadPx + previousMetrics.modRightPx) -
+            (widthEntry.expectedDistance - widthEntry.tickable.tickContext.totalLeftPx);
+          widthEntry.x = widthEntry.previousWidth.x + widthEntry.expectedDistance;
+          if (widthEntry.overlap > 0) {
+            foundOverlappingLine = true;
+          }
+        } else {
+          widthEntry.x = context.getX();
+        }
+        L('expectedDistance/overlap/x/tick/ticks/voice', widthEntry.expectedDistance, widthEntry.overlap, widthEntry.x,
+          tick, widthEntry.tickable.ticks.value(), widthEntry.voiceKey);
+        previousWidthByVoice[voiceKey] = widthEntry;
+        widthMap[tick].widthData[voiceKey] = widthEntry;
+      });
+    });
+    // If we haven't found any collisions per voice, look for overlaps between voices (unaligned/misaligned voices)
+    if (!foundOverlappingLine) {
+      // We start by a 'dress rehearsal' where each tickable is put at what it's X would be - max X of tickables at a context
+      let j = 0;
+      for (i = 0; i < contextList.length; ++i) {
+        const widthData = widthMap[contextList[i]].widthData;
+        const voiceKeys = Object.keys(widthData);
+        let maxX = 0;
+        for (j = 0; j < voiceKeys.length; ++j) {
+          const widthEntry = widthData[voiceKeys[j]];
+          const x = widthEntry.previousWidth ? widthEntry.previousWidth.x + widthEntry.expectedDistance : widthEntry.x;
+          maxX = x > maxX ? x : maxX;
+        }
+        for (j = 0; j < voiceKeys.length; ++j) {
+          widthData[voiceKeys[j]].x = maxX;
+        }
+      }
+      const voiceCount = Object.keys(voiceMap).length;
+      const ticksSoFar = [0];
+      // Now see if any tickable is to the left of a tickable earlier in the measure, in a different voice
+      for (i = 1; i < contextList.length; ++i) {
+        const tick = contextList[i];
+        const widthData = widthMap[tick].widthData;
+        const voicesInContext = Object.keys(widthData);
+        const checkedVoices = {};
+        let p = 0;
+        for (p = 0; p < voicesInContext.length; ++p) {
+          const widthEntry = widthData[voicesInContext[p]];
+          // Go backwards from this tick context to find previous notes per voice
+          // and compare x with our x
+          for (j = ticksSoFar.length - 1; j >= 0; --j) {
+            const previousWidths = widthMap[contextList[j]];
+            let k = 0;
+            const prevKeys = Object.keys(previousWidths.widthData);
+            for (k = 0; k < prevKeys.length; ++k) {
+              const prevKey = prevKeys[k];
+              const prevEntry = previousWidths.widthData[prevKey];
+              checkedVoices[prevKey] = true;
+              if (prevEntry.x >= widthEntry.x && prevEntry.x - widthEntry.x > widthEntry.overlap) {
+                widthEntry.overlap = prevEntry.x - widthEntry.x + 1;
+                // foundOverlappingVoice = true;
+                L('alternate overlap from tick/voice/newVal',
+                  prevEntry.tick, prevEntry.voiceKey, widthEntry.overlap);
+              }
+            }
+            if (Object.keys(checkedVoices).length === voiceCount) {
+              break; // we've searched all voices at this tick
+            }
+          }
+        }
+        ticksSoFar.push(tick);
+      }
+    }
+    return widthMap;
+  }
+  adjustOverlaps(contextList, widthMap, istats) {
+    let overlaps = false;
+    let maxUnderlap = null;
+    contextList.forEach((tick) => {
+      const widthContext = widthMap[tick];
+      Object.keys(widthContext.widthData).forEach((voiceKey) => {
+        const widthEntry = widthContext.widthData[voiceKey];
+        if (widthEntry.overlap > 0 && istats.stdDev > 1) {
+          overlaps = true;
+          widthEntry.previousWidth.tickable.widthTicks =
+            widthEntry.previousWidth.tickable.widthTicks * (1 + (widthEntry.overlap / istats.stdDev));
+        } else if ((widthEntry.overlap < istats.mean - istats.stdDev || widthEntry.overlap < 2 * istats.mean)
+          && (maxUnderlap === null || widthEntry.overlap < maxUnderlap.overlap)
+          && widthEntry.overlap < 0 && istats.stdDev > 1 && overlaps) {
+          maxUnderlap = widthEntry;
+        }
+      });
+    });
+    // If there were overlaps, reduce the greatest overlap to make room for the additional ticks
+    if (overlaps && maxUnderlap && maxUnderlap.previousWidth) {
+      maxUnderlap.previousWidth.tickable.widthTicks = maxUnderlap.previousWidth.tickable.widthTicks * 0.85;
+    }
+    return overlaps;
+  }
+
   // This is the core formatter logic. Format voices and justify them
   // to `justifyWidth` pixels. `renderingContext` is required to justify elements
   // that can't retreive widths without a canvas. This method sets the `x` positions
