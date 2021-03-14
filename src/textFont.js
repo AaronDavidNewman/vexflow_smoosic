@@ -105,8 +105,15 @@ export class TextFont  {
   // ### fontStyleToItalic
   // return true if the font style indicates we desire 'italic' style
   // used in getTextFontFromVexFontData
-  static  fontStyleToItalic(fs) {
-    return (fs && typeof(fs) === 'string' && fs.toLowerCase() === 'italic');
+  static fontStyleToItalic(fs) {
+    return fs && typeof fs === 'string' && fs.toLowerCase() === 'italic';
+  }
+
+  static get fontTextHash() {
+    if (typeof TextFont.fontTextHashInstance === 'undefined') {
+      TextFont.fontTextHashInstance = {};
+    }
+    return TextFont.fontTextHashInstance;
   }
 
   // ### getTextFontFromVexFontData
@@ -115,6 +122,7 @@ export class TextFont  {
   // method will always return a fallback font if there are no matches.
   static getTextFontFromVexFontData(fd) {
     let i = 0;
+    let rv = null;
     const fallback = TextFont.fontRegistry[0];
     let candidates = [];
     const families = fd.family.split(',');
@@ -126,26 +134,31 @@ export class TextFont  {
       }
     }
     if (candidates.length === 0) {
-      return new TextFont(fallback);
+      rv = new TextFont(fallback);
+    } else if (candidates.length === 1) {
+      rv = new TextFont(candidates[0]);
+    } else {
+      const bold = TextFont.fontWeightToBold(fd.weight);
+      const italic = TextFont.fontStyleToItalic(fd.style);
+      const perfect = candidates.find((font) => font.bold === bold && font.italic === italic);
+      if (perfect) {
+        rv = new TextFont(perfect);
+      } else {
+        const ok = candidates.find((font) => font.italic === italic || font.bold === bold);
+        if (ok) {
+          rv = new TextFont(ok);
+        } else {
+          rv = new TextFont(candidates[0]);
+        }
+      }
     }
-    if (candidates.length === 1) {
-      return new TextFont(candidates[0]);
+    if (typeof fd.size === 'number' && fd.size > 0) {
+      rv.setFontSize(fd.size);
     }
-    const bold = TextFont.fontWeightToBold(fd.weight);
-    const italic = TextFont.fontStyleToItalic(fd.style);
-
-    const perfect = candidates.find((font) => font.bold === bold && font.italic === italic);
-    if (perfect) {
-      return new TextFont(perfect);
-    }
-    const ok = candidates.find((font) => font.italic === italic || font.bold === bold);
-    if (ok) {
-      return new TextFont(ok);
-    }
-    return new TextFont(candidates[0]);
+    return rv;
   }
 
-  static getFontDataByName(fontName)  {
+  static getFontDataByName(fontName) {
     return TextFont.fontRegistry.find((fd) => fd.name === fontName);
   }
 
@@ -173,7 +186,7 @@ export class TextFont  {
   // The preferred method for returning an instance of this class is via
   // getTextFontFromVexFontData
   constructor(params) {
-    this.attrs = { 'type': 'TextFont' };
+    this.attrs = { type: 'TextFont' };
     if (!params.name) {
       Vex.RERR('BadArgument', 'Font constructor must specify a name');
     }
@@ -195,6 +208,13 @@ export class TextFont  {
     if (!this.maxSizeGlyph) {
       this.maxSizeGlyph = 'H';
     }
+    this.weight = typeof this.weight === 'undefined' ? '' : this.weight;
+    this.style = typeof this.style === 'undefined' ? '' : this.style;
+    this.setHashBase();
+  }
+
+  setHashBase() {
+    this.textHashBase = this.family + '-' + this.size + '-' + this.weight + '-' + this.style;
   }
 
   getMetricForCharacter(c) {
@@ -206,7 +226,7 @@ export class TextFont  {
 
   get maxHeight() {
     const glyph = this.getMetricForCharacter(this.maxSizeGlyph);
-    return  (glyph.ha / this.resolution) *  this.pointsToPixels;
+    return (glyph.ha / this.resolution) * this.pointsToPixels;
   }
 
   getWidthForCharacter(c) {
@@ -217,14 +237,27 @@ export class TextFont  {
     return (metric.advanceWidth / this.resolution) * this.pointsToPixels;
   }
 
+  getWidthForString(s) {
+    const key = this.textHashBase + '-' + s;
+    let width = 0;
+    if (!TextFont.fontTextHash[key]) {
+      for (let j = 0; j < s.length; ++j) {
+        width += this.getWidthForCharacter(s[j]);
+      }
+      TextFont.fontTextHash[key] = width;
+    }
+    return TextFont.fontTextHash[key];
+  }
+
   // ### pointsToPixels
   // The font size is specified in points, convert to 'pixels' in the svg space
   get pointsToPixels() {
-    return (this.size / 72) / (1 / 96);
+    return this.size / 72 / (1 / 96);
   }
 
   setFontSize(size) {
     this.size = size;
+    this.setHashBase();
     return this;
   }
 }

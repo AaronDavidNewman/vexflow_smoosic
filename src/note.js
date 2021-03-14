@@ -372,19 +372,19 @@ export class Note extends Tickable {
   // `leftDisplacedHeadPx`: Extra space on left of note.
   // `rightDisplacedHeadPx`: Extra space on right of note.
   getMetrics() {
-    let modLeftPx = 0;
-    let modRightPx = 0;
+    //let modLeftPx = 0;
+    //let modRightPx = 0;
     if (!this.preFormatted) {
       throw new Vex.RERR('UnformattedNote', "Can't call getMetrics on an unformatted note.");
     }
 
 
-    modLeftPx = this.modifierContext ? this.modifierContext.state.left_shift : 0;
-    modRightPx = this.modifierContext ? this.modifierContext.state.right_shift : 0;
-    if (this.modifiers.length) {
+    const modLeftPx = this.modifierContext ? this.modifierContext.state.left_shift : 0;
+    const modRightPx = this.modifierContext ? this.modifierContext.state.right_shift : 0;
+    /* if (this.modifiers.length) {
       modLeftPx += Note.modifierPadding;
       modRightPx += Note.modifierPadding;
-    }
+    }  */
     const width = this.getWidth();
     const glyphWidth = this.getGlyphWidth();
     const notePx = width

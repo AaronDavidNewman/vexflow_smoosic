@@ -14,6 +14,7 @@ import { Beam } from './beam';
 import { StaveTie } from './stavetie';
 import { TabTie } from './tabtie';
 import { StaveNote } from './stavenote';
+// import { WidthFormatter } from './widthformatter';
 
 // To enable logging for this class. Set `Vex.Flow.GraceNoteGroup.DEBUG` to `true`.
 function L(...args) { if (GraceNoteGroup.DEBUG) Vex.L('Vex.Flow.GraceNoteGroup', args); }

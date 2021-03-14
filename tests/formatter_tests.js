@@ -37,7 +37,7 @@ VF.Test.Formatter = (function() {
       );
     },
     getFormatter(options) {
-      return new VF.WidthFormatter(options);
+      return new VF.Formatter(options);
     },
     buildNotesFromJson: function(json) {
       const rv = {
