@@ -2,7 +2,9 @@ import { Vex } from './vex';
 import { Formatter } from './formatter';
 
 // To enable logging for this class. Set `Vex.Flow.Formatter.DEBUG` to `true`.
-function L(...args) { if (WidthFormatter.DEBUG) Vex.L('Vex.Flow.WidthFormatter', args); }
+function L(...args) {
+  if (WidthFormatter.DEBUG) Vex.L('Vex.Flow.WidthFormatter', args);
+}
 
 export class WidthFormatter extends Formatter {
   constructor(options) {
@@ -17,9 +19,7 @@ export class WidthFormatter extends Formatter {
     // Create tick contexts if not already created.
     if (!this.tickContexts) {
       if (!voices) {
-        throw new Vex.RERR(
-          'BadArgument', "'voices' required to run preCalculateMinTotalWidth"
-        );
+        throw new Vex.RERR('BadArgument', "'voices' required to run preCalculateMinTotalWidth");
       }
 
       this.createTickContexts(voices);
@@ -30,10 +30,10 @@ export class WidthFormatter extends Formatter {
     // const maxTicks = contextList.map(tick => tick.maxTicks.value()).reduce((a, b) => a + b, 0);
     // Go through each tick context and calculate total width.
     this.minTotalWidth = contextList
-      .map(tick => {
+      .map((tick) => {
         const context = contextMap[tick];
         context.preFormat();
-        const width =  context.getWidth();
+        const width = context.getWidth();
         const metrics = context.getMetrics();
         return width + metrics.totalLeftPx;
       })
@@ -45,8 +45,7 @@ export class WidthFormatter extends Formatter {
   }
   computeVoiceFormatting() {
     this.voices.forEach((voice) => {
-      voice.widthTicksUsed = voice.tickables.map((tickable) => tickable.widthTicks)
-        .reduce((a, b) => a + b);
+      voice.widthTicksUsed = voice.tickables.map((tickable) => tickable.widthTicks).reduce((a, b) => a + b);
       const exp = (tickable) => Math.pow(voice.options.softmaxFactor, tickable.widthTicks / voice.widthTicksUsed);
       voice.expTicksUsed = voice.tickables.map(exp).reduce((a, b) => a + b);
     });
@@ -70,7 +69,7 @@ export class WidthFormatter extends Formatter {
       const metrics = lastContext.getMetrics();
       voiceWidths[index] += metrics.notePx + metrics.totalLeftPx + metrics.totalRightPx;
     });
-    return voiceWidths.reduce((a, b) => a > b ? a : b);
+    return voiceWidths.reduce((a, b) => (a > b ? a : b));
   }
 
   softmax(voice, tickValue) {
@@ -93,11 +92,11 @@ export class WidthFormatter extends Formatter {
       widthMap[tick] = {
         context,
         tick,
-        widthData: {}
+        widthData: {},
       };
       const voicesInContext = context.getTickablesByVoice();
       Object.keys(voicesInContext).forEach((voiceKey) => {
-        if (typeof(previousWidthByVoice[voiceKey]) === 'undefined') {
+        if (typeof previousWidthByVoice[voiceKey] === 'undefined') {
           previousWidthByVoice[voiceKey] = null;
         }
         const widthEntry = {
@@ -108,7 +107,7 @@ export class WidthFormatter extends Formatter {
           voiceKey,
           tick,
           x: 0,
-          tickable: voicesInContext[voiceKey]
+          tickable: voicesInContext[voiceKey],
         };
         // Keep track of existing voices for backtrack
         if (!voiceMap[voiceKey]) {
@@ -120,8 +119,12 @@ export class WidthFormatter extends Formatter {
           widthEntry.previousWidth.nextWidth = widthEntry;
           const previousMetrics = widthEntry.previousWidth.tickable.getMetrics();
           widthEntry.expectedDistance =
-            this.softmax(widthEntry.previousWidth.tickable.getVoice(), widthEntry.previousWidth.tickable.widthTicks) * adjustedJustifyWidth;
-          widthEntry.overlap = (previousMetrics.notePx + previousMetrics.rightDisplacedHeadPx + previousMetrics.modRightPx) -
+            this.softmax(widthEntry.previousWidth.tickable.getVoice(), widthEntry.previousWidth.tickable.widthTicks) *
+            adjustedJustifyWidth;
+          widthEntry.overlap =
+            previousMetrics.notePx +
+            previousMetrics.rightDisplacedHeadPx +
+            previousMetrics.modRightPx -
             (widthEntry.expectedDistance - widthEntry.tickable.tickContext.totalLeftPx);
           widthEntry.x = widthEntry.previousWidth.x + widthEntry.expectedDistance;
           if (widthEntry.overlap > 0) {
@@ -130,8 +133,15 @@ export class WidthFormatter extends Formatter {
         } else {
           widthEntry.x = context.getX();
         }
-        L('expectedDistance/overlap/x/tick/ticks/voice', widthEntry.expectedDistance, widthEntry.overlap, widthEntry.x,
-          tick, widthEntry.tickable.ticks.value(), widthEntry.voiceKey);
+        L(
+          'expectedDistance/overlap/x/tick/ticks/voice',
+          widthEntry.expectedDistance,
+          widthEntry.overlap,
+          widthEntry.x,
+          tick,
+          widthEntry.tickable.ticks.value(),
+          widthEntry.voiceKey
+        );
         previousWidthByVoice[voiceKey] = widthEntry;
         widthMap[tick].widthData[voiceKey] = widthEntry;
       });
@@ -177,8 +187,7 @@ export class WidthFormatter extends Formatter {
               if (prevEntry.x >= widthEntry.x && prevEntry.x - widthEntry.x > widthEntry.overlap) {
                 widthEntry.overlap = prevEntry.x - widthEntry.x + 1;
                 // foundOverlappingVoice = true;
-                L('alternate overlap from tick/voice/newVal',
-                  prevEntry.tick, prevEntry.voiceKey, widthEntry.overlap);
+                L('alternate overlap from tick/voice/newVal', prevEntry.tick, prevEntry.voiceKey, widthEntry.overlap);
               }
             }
             if (Object.keys(checkedVoices).length === voiceCount) {
@@ -201,10 +210,14 @@ export class WidthFormatter extends Formatter {
         if (widthEntry.overlap > 0 && istats.stdDev > 1) {
           overlaps = true;
           widthEntry.previousWidth.tickable.widthTicks =
-            widthEntry.previousWidth.tickable.widthTicks * (1 + (widthEntry.overlap / istats.stdDev));
-        } else if ((widthEntry.overlap < istats.mean - istats.stdDev || widthEntry.overlap < 2 * istats.mean)
-          && (maxUnderlap === null || widthEntry.overlap < maxUnderlap.overlap)
-          && widthEntry.overlap < 0 && istats.stdDev > 1 && overlaps) {
+            widthEntry.previousWidth.tickable.widthTicks * (1 + widthEntry.overlap / istats.stdDev);
+        } else if (
+          (widthEntry.overlap < istats.mean - istats.stdDev || widthEntry.overlap < 2 * istats.mean) &&
+          (maxUnderlap === null || widthEntry.overlap < maxUnderlap.overlap) &&
+          widthEntry.overlap < 0 &&
+          istats.stdDev > 1 &&
+          overlaps
+        ) {
           maxUnderlap = widthEntry;
         }
       });
@@ -232,7 +245,7 @@ export class WidthFormatter extends Formatter {
     // If voices and a stave were provided, set the Stave for each voice
     // and preFormat to apply Y values to the notes;
     if (voices && stave) {
-      voices.forEach(voice => voice.setStave(stave).preFormat());
+      voices.forEach((voice) => voice.setStave(stave).preFormat());
     }
 
     // Now distribute the ticks to each tick context, and assign them their
@@ -272,10 +285,7 @@ export class WidthFormatter extends Formatter {
     // justifies based on the context's X position, which is the left-most part of the note head.
     const lastContext = contextMap[contextList[contextList.length - 1]];
     const lastMetrics = lastContext.getMetrics();
-    const adjustedJustifyWidth = justifyWidth -
-      lastMetrics.notePx -
-      lastMetrics.totalRightPx -
-      lastMetrics.totalLeftPx;
+    const adjustedJustifyWidth = justifyWidth - lastMetrics.notePx - lastMetrics.totalRightPx - lastMetrics.totalLeftPx;
 
     // step 1: Format the music proportionally
     widthMap = this.calculateWidthMap(adjustedJustifyWidth);
@@ -289,8 +299,9 @@ export class WidthFormatter extends Formatter {
         let contextX = 0;
         Object.keys(widthData).forEach((widthKey) => {
           const widthEntry = widthData[widthKey];
-          const startX = widthEntry.previousWidth ? widthEntry.previousWidth.tickable.getX() :
-            widthMap[tick].context.getX();
+          const startX = widthEntry.previousWidth
+            ? widthEntry.previousWidth.tickable.getX()
+            : widthMap[tick].context.getX();
           const total = startX + widthEntry.expectedDistance;
           if (total > contextX) {
             contextX = total;
@@ -306,7 +317,10 @@ export class WidthFormatter extends Formatter {
 
     const targetWidth = adjustedJustifyWidth;
     let overlapIterations = this.options.maxIterations;
-    const maxOverlap = (wd) => Object.keys(wd.widthData).map((key) => wd.widthData[key].overlap).reduce((a, b) => a > b ? a : b);
+    const maxOverlap = (wd) =>
+      Object.keys(wd.widthData)
+        .map((key) => wd.widthData[key].overlap)
+        .reduce((a, b) => (a > b ? a : b));
     const maxOverlaps = contextList.map((tick) => maxOverlap(widthMap[tick]));
     maxOverlaps.splice(0, 1);
     const std = (numArray) => {
@@ -339,8 +353,9 @@ export class WidthFormatter extends Formatter {
     // Just one context. Done formatting.
     if (contextList.length === 1) return null;
 
-    const actualWidth = lastContext.getX() + lastContext.totalRightPx + lastContext.notePx + lastContext.rightDisplacedHeadPx + 10;
-    const ratio = (justifyWidth - actualWidth - 10);
+    const actualWidth =
+      lastContext.getX() + lastContext.totalRightPx + lastContext.notePx + lastContext.rightDisplacedHeadPx + 10;
+    const ratio = justifyWidth - actualWidth - 10;
     const ccount = contextList.length;
     contextList.forEach((tick, i) => {
       const context = contextMap[tick];
@@ -369,7 +384,7 @@ export class WidthFormatter extends Formatter {
       // Calculate X position of right edge of previous note
       const insideRightEdge = prevContext.getX() + prevMetrics.notePx + prevMetrics.totalRightPx;
       // Calculate X position of left edge of current note
-      const insideLeftEdge = context.getX() - (currMetrics.totalLeftPx);
+      const insideLeftEdge = context.getX() - currMetrics.totalLeftPx;
       const gap = insideLeftEdge - insideRightEdge;
       this.contextGaps.total += gap;
       this.contextGaps.gaps.push({ x1: insideRightEdge, x2: insideLeftEdge });
@@ -381,7 +396,7 @@ export class WidthFormatter extends Formatter {
 
     // Calculate mean distance in each voice for each duration type, then calculate
     // how far each note is from the mean.
-    const durationStats = this.durationStats = {};
+    const durationStats = (this.durationStats = {});
 
     function updateStats(duration, space) {
       const stats = durationStats[duration];
@@ -393,7 +408,7 @@ export class WidthFormatter extends Formatter {
       }
     }
 
-    this.voices.forEach(voice => {
+    this.voices.forEach((voice) => {
       voice.getTickables().forEach((note, i, notes) => {
         const duration = note.getTicks().clone().simplify().toString();
         const metrics = note.getMetrics();
@@ -401,7 +416,7 @@ export class WidthFormatter extends Formatter {
         const leftNoteEdge = note.getX() + metrics.notePx + metrics.totalRightPx;
         let space = 0;
 
-        if (i < (notes.length - 1)) {
+        if (i < notes.length - 1) {
           const rightNote = notes[i + 1];
           const rightMetrics = rightNote.getMetrics();
           const rightNoteEdge = rightNote.getX() - rightMetrics.totalLeftPx;
@@ -422,7 +437,7 @@ export class WidthFormatter extends Formatter {
     // Calculate how much each note deviates from the mean. Loss function is square
     // root of the sum of squared deviations.
     let totalDeviation = 0;
-    this.voices.forEach(voice => {
+    this.voices.forEach((voice) => {
       voice.getTickables().forEach((note) => {
         const duration = note.getTicks().clone().simplify().toString();
         const metrics = note.getFormatterMetrics();

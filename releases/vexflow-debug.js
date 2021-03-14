@@ -114,29 +114,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./glyph */ "./src/glyph.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -145,6 +143,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // @author Mohit Cheppudira
@@ -177,14 +185,159 @@ var getGlyphWidth = function getGlyphWidth(glyph) {
 // `ModifierContext`.
 
 
-var Accidental =
-/*#__PURE__*/
-function (_Modifier) {
+var Accidental = /*#__PURE__*/function (_Modifier) {
   _inherits(Accidental, _Modifier);
 
-  _createClass(Accidental, null, [{
+  var _super = _createSuper(Accidental);
+
+  // Create accidental. `type` can be a value from the
+  // `Vex.Flow.accidentalCodes.accidentals` table in `tables.js`. For
+  // example: `#`, `##`, `b`, `n`, etc.
+  function Accidental() {
+    var _this;
+
+    var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+    _classCallCheck(this, Accidental);
+
+    _this = _super.call(this);
+
+    _this.setAttribute('type', 'Accidental');
+
+    L('New accidental: ', type);
+    _this.note = null; // The `index` points to a specific note in a chord.
+
+    _this.index = null;
+    _this.type = type;
+    _this.position = _modifier__WEBPACK_IMPORTED_MODULE_4__["Modifier"].Position.LEFT;
+    _this.render_options = {
+      // Font size for glyphs
+      font_scale: 38,
+      // Length of stroke across heads above or below the stave.
+      stroke_px: 3,
+      // Padding between accidental and parentheses on each side
+      parenLeftPadding: 2,
+      parenRightPadding: 2
+    };
+    _this.accidental = _tables__WEBPACK_IMPORTED_MODULE_2__["Flow"].accidentalCodes(_this.type);
+
+    if (!_this.accidental) {
+      throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('ArgumentError', "Unknown accidental type: ".concat(type));
+    } // Cautionary accidentals have parentheses around them
+
+
+    _this.cautionary = false;
+    _this.parenLeft = null;
+    _this.parenRight = null;
+
+    _this.reset();
+
+    return _this;
+  }
+
+  _createClass(Accidental, [{
+    key: "reset",
+    value: function reset() {
+      var fontScale = this.render_options.font_scale;
+      this.glyph = new _glyph__WEBPACK_IMPORTED_MODULE_5__["Glyph"](this.accidental.code, fontScale);
+      this.glyph.setOriginX(1.0);
+
+      if (this.cautionary) {
+        this.parenLeft = new _glyph__WEBPACK_IMPORTED_MODULE_5__["Glyph"](_tables__WEBPACK_IMPORTED_MODULE_2__["Flow"].accidentalCodes('{').code, fontScale);
+        this.parenRight = new _glyph__WEBPACK_IMPORTED_MODULE_5__["Glyph"](_tables__WEBPACK_IMPORTED_MODULE_2__["Flow"].accidentalCodes('}').code, fontScale);
+        this.parenLeft.setOriginX(1.0);
+        this.parenRight.setOriginX(1.0);
+      }
+    }
+  }, {
+    key: "getCategory",
+    value: function getCategory() {
+      return Accidental.CATEGORY;
+    }
+  }, {
+    key: "getWidth",
+    value: function getWidth() {
+      var parenWidth = this.cautionary ? getGlyphWidth(this.parenLeft) + getGlyphWidth(this.parenRight) + this.render_options.parenLeftPadding + this.render_options.parenRightPadding : 0;
+      return getGlyphWidth(this.glyph) + parenWidth;
+    } // Attach this accidental to `note`, which must be a `StaveNote`.
+
+  }, {
+    key: "setNote",
+    value: function setNote(note) {
+      if (!note) {
+        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('ArgumentError', "Bad note value: ".concat(note));
+      }
+
+      this.note = note; // Accidentals attached to grace notes are rendered smaller.
+
+      if (this.note.getCategory() === 'gracenotes') {
+        this.render_options.font_scale = 25;
+        this.reset();
+      }
+    } // If called, draws parenthesis around accidental.
+
+  }, {
+    key: "setAsCautionary",
+    value: function setAsCautionary() {
+      this.cautionary = true;
+      this.render_options.font_scale = 28;
+      this.reset();
+      return this;
+    } // Render accidental onto canvas.
+
+  }, {
+    key: "draw",
+    value: function draw() {
+      var context = this.context,
+          type = this.type,
+          position = this.position,
+          note = this.note,
+          index = this.index,
+          cautionary = this.cautionary,
+          x_shift = this.x_shift,
+          y_shift = this.y_shift,
+          glyph = this.glyph,
+          parenLeft = this.parenLeft,
+          parenRight = this.parenRight,
+          _this$render_options = this.render_options,
+          parenLeftPadding = _this$render_options.parenLeftPadding,
+          parenRightPadding = _this$render_options.parenRightPadding;
+      this.checkContext();
+
+      if (!(note && index != null)) {
+        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('NoAttachedNote', "Can't draw accidental without a note and index.");
+      } // Figure out the start `x` and `y` coordinates for note and index.
+
+
+      var start = note.getModifierStartXY(position, index);
+      var accX = start.x + x_shift;
+      var accY = start.y + y_shift;
+      L('Rendering: ', type, accX, accY);
+
+      if (!cautionary) {
+        glyph.render(context, accX, accY);
+      } else {
+        // Render the accidental in parentheses.
+        parenRight.render(context, accX, accY);
+        accX -= getGlyphWidth(parenRight);
+        accX -= parenRightPadding;
+        accX -= this.accidental.parenRightPaddingAdjustment;
+        glyph.render(context, accX, accY);
+        accX -= getGlyphWidth(glyph);
+        accX -= parenLeftPadding;
+        parenLeft.render(context, accX, accY);
+      }
+
+      this.setRendered();
+    }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'accidentals';
+    } // Arrange accidentals inside a ModifierContext.
+
+  }, {
     key: "format",
-    // Arrange accidentals inside a ModifierContext.
     value: function format(accidentals, state) {
       var _this2 = this;
 
@@ -586,153 +739,6 @@ function (_Modifier) {
 
         notes.forEach(processNote);
       });
-    } // Create accidental. `type` can be a value from the
-    // `Vex.Flow.accidentalCodes.accidentals` table in `tables.js`. For
-    // example: `#`, `##`, `b`, `n`, etc.
-
-  }, {
-    key: "CATEGORY",
-    get: function get() {
-      return 'accidentals';
-    }
-  }]);
-
-  function Accidental() {
-    var _this;
-
-    var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-    _classCallCheck(this, Accidental);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Accidental).call(this));
-
-    _this.setAttribute('type', 'Accidental');
-
-    L('New accidental: ', type);
-    _this.note = null; // The `index` points to a specific note in a chord.
-
-    _this.index = null;
-    _this.type = type;
-    _this.position = _modifier__WEBPACK_IMPORTED_MODULE_4__["Modifier"].Position.LEFT;
-    _this.render_options = {
-      // Font size for glyphs
-      font_scale: 38,
-      // Length of stroke across heads above or below the stave.
-      stroke_px: 3,
-      // Padding between accidental and parentheses on each side
-      parenLeftPadding: 2,
-      parenRightPadding: 2
-    };
-    _this.accidental = _tables__WEBPACK_IMPORTED_MODULE_2__["Flow"].accidentalCodes(_this.type);
-
-    if (!_this.accidental) {
-      throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('ArgumentError', "Unknown accidental type: ".concat(type));
-    } // Cautionary accidentals have parentheses around them
-
-
-    _this.cautionary = false;
-    _this.parenLeft = null;
-    _this.parenRight = null;
-
-    _this.reset();
-
-    return _this;
-  }
-
-  _createClass(Accidental, [{
-    key: "reset",
-    value: function reset() {
-      var fontScale = this.render_options.font_scale;
-      this.glyph = new _glyph__WEBPACK_IMPORTED_MODULE_5__["Glyph"](this.accidental.code, fontScale);
-      this.glyph.setOriginX(1.0);
-
-      if (this.cautionary) {
-        this.parenLeft = new _glyph__WEBPACK_IMPORTED_MODULE_5__["Glyph"](_tables__WEBPACK_IMPORTED_MODULE_2__["Flow"].accidentalCodes('{').code, fontScale);
-        this.parenRight = new _glyph__WEBPACK_IMPORTED_MODULE_5__["Glyph"](_tables__WEBPACK_IMPORTED_MODULE_2__["Flow"].accidentalCodes('}').code, fontScale);
-        this.parenLeft.setOriginX(1.0);
-        this.parenRight.setOriginX(1.0);
-      }
-    }
-  }, {
-    key: "getCategory",
-    value: function getCategory() {
-      return Accidental.CATEGORY;
-    }
-  }, {
-    key: "getWidth",
-    value: function getWidth() {
-      var parenWidth = this.cautionary ? getGlyphWidth(this.parenLeft) + getGlyphWidth(this.parenRight) + this.render_options.parenLeftPadding + this.render_options.parenRightPadding : 0;
-      return getGlyphWidth(this.glyph) + parenWidth;
-    } // Attach this accidental to `note`, which must be a `StaveNote`.
-
-  }, {
-    key: "setNote",
-    value: function setNote(note) {
-      if (!note) {
-        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('ArgumentError', "Bad note value: ".concat(note));
-      }
-
-      this.note = note; // Accidentals attached to grace notes are rendered smaller.
-
-      if (this.note.getCategory() === 'gracenotes') {
-        this.render_options.font_scale = 25;
-        this.reset();
-      }
-    } // If called, draws parenthesis around accidental.
-
-  }, {
-    key: "setAsCautionary",
-    value: function setAsCautionary() {
-      this.cautionary = true;
-      this.render_options.font_scale = 28;
-      this.reset();
-      return this;
-    } // Render accidental onto canvas.
-
-  }, {
-    key: "draw",
-    value: function draw() {
-      var context = this.context,
-          type = this.type,
-          position = this.position,
-          note = this.note,
-          index = this.index,
-          cautionary = this.cautionary,
-          x_shift = this.x_shift,
-          y_shift = this.y_shift,
-          glyph = this.glyph,
-          parenLeft = this.parenLeft,
-          parenRight = this.parenRight,
-          _this$render_options = this.render_options,
-          parenLeftPadding = _this$render_options.parenLeftPadding,
-          parenRightPadding = _this$render_options.parenRightPadding;
-      this.checkContext();
-
-      if (!(note && index != null)) {
-        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('NoAttachedNote', "Can't draw accidental without a note and index.");
-      } // Figure out the start `x` and `y` coordinates for note and index.
-
-
-      var start = note.getModifierStartXY(position, index);
-      var accX = start.x + x_shift;
-      var accY = start.y + y_shift;
-      L('Rendering: ', type, accX, accY);
-
-      if (!cautionary) {
-        glyph.render(context, accX, accY);
-      } else {
-        // Render the accidental in parentheses.
-        parenRight.render(context, accX, accY);
-        accX -= getGlyphWidth(parenRight);
-        accX -= parenRightPadding;
-        accX -= this.accidental.parenRightPaddingAdjustment;
-        glyph.render(context, accX, accY);
-        accX -= getGlyphWidth(glyph);
-        accX -= parenLeftPadding;
-        parenLeft.render(context, accX, accY);
-      }
-
-      this.setRendered();
     }
   }]);
 
@@ -754,15 +760,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _vex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vex */ "./src/vex.js");
 /* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tables */ "./src/tables.js");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modifier */ "./src/modifier.js");
+/* harmony import */ var _textfont__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./textfont */ "./src/textfont.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -772,6 +773,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
@@ -780,6 +791,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 // notes.
 //
 // See `tests/annotation_tests.js` for usage examples.
+
 
 
  // To enable logging for this class. Set `Vex.Flow.Annotation.DEBUG` to `true`.
@@ -792,112 +804,27 @@ function L() {
   if (Annotation.DEBUG) _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].L('Vex.Flow.Annotation', args);
 }
 
-var Annotation =
-/*#__PURE__*/
-function (_Modifier) {
+var Annotation = /*#__PURE__*/function (_Modifier) {
   _inherits(Annotation, _Modifier);
 
-  _createClass(Annotation, null, [{
-    key: "format",
-    // Arrange annotations within a `ModifierContext`
-    value: function format(annotations, state) {
-      if (!annotations || annotations.length === 0) return false;
-      var width = 0;
-      var reportedWidths = [];
+  var _super = _createSuper(Annotation);
 
-      for (var i = 0; i < annotations.length; ++i) {
-        var annotation = annotations[i];
-        width = Math.max(annotation.getWidth(), width);
-
-        if (annotation.getReportWidth()) {
-          reportedWidths.push(width);
-        } else {
-          reportedWidths.push(0);
-        }
-
-        if (annotation.getPosition() === _modifier__WEBPACK_IMPORTED_MODULE_2__["Modifier"].Position.ABOVE) {
-          annotation.setTextLine(state.top_text_line);
-          state.top_text_line++;
-        } else {
-          annotation.setTextLine(state.text_line);
-          state.text_line++;
-        }
-      }
-
-      width = reportedWidths.reduce(function (a, b) {
-        return a + b;
-      });
-      state.left_shift += width / 2;
-      state.right_shift += width / 2;
-      return true;
-    } // ## Prototype Methods
-    //
-    // Annotations inherit from `Modifier` and is positioned correctly when
-    // in a `ModifierContext`.
-    // Create a new `Annotation` with the string `text`.
-
-  }, {
-    key: "CATEGORY",
-    get: function get() {
-      return 'annotations';
-    } // Text annotations can be positioned and justified relative to the note.
-
-  }, {
-    key: "Justify",
-    get: function get() {
-      return {
-        LEFT: 1,
-        CENTER: 2,
-        RIGHT: 3,
-        CENTER_STEM: 4
-      };
-    }
-  }, {
-    key: "JustifyString",
-    get: function get() {
-      return {
-        left: Annotation.Justify.LEFT,
-        right: Annotation.Justify.RIGHT,
-        center: Annotation.Justify.CENTER,
-        centerStem: Annotation.Justify.CENTER_STEM
-      };
-    }
-  }, {
-    key: "VerticalJustify",
-    get: function get() {
-      return {
-        TOP: 1,
-        CENTER: 2,
-        BOTTOM: 3,
-        CENTER_STEM: 4
-      };
-    }
-  }, {
-    key: "VerticalJustifyString",
-    get: function get() {
-      return {
-        above: Annotation.VerticalJustify.TOP,
-        top: Annotation.VerticalJustify.TOP,
-        below: Annotation.VerticalJustify.BOTTOM,
-        bottom: Annotation.VerticalJustify.BOTTOM,
-        center: Annotation.VerticalJustify.CENTER,
-        centerStem: Annotation.VerticalJustify.CENTER_STEM
-      };
-    }
-  }]);
-
+  // ## Prototype Methods
+  //
+  // Annotations inherit from `Modifier` and is positioned correctly when
+  // in a `ModifierContext`.
+  // Create a new `Annotation` with the string `text`.
   function Annotation(text) {
     var _this;
 
     _classCallCheck(this, Annotation);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Annotation).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'Annotation');
 
     _this.note = null;
     _this.index = null;
-    _this.reportWidth = true;
     _this.text = text;
     _this.justification = Annotation.Justify.CENTER;
     _this.vert_justification = Annotation.VerticalJustify.TOP;
@@ -916,17 +843,6 @@ function (_Modifier) {
     key: "getCategory",
     value: function getCategory() {
       return Annotation.CATEGORY;
-    }
-  }, {
-    key: "setReportWidth",
-    value: function setReportWidth(value) {
-      this.reportWidth = value;
-      return this;
-    }
-  }, {
-    key: "getReportWidth",
-    value: function getReportWidth() {
-      return this.reportWidth;
     } // Set font family, size, and weight. E.g., `Arial`, `10pt`, `Bold`.
 
   }, {
@@ -992,9 +908,9 @@ function (_Modifier) {
         x = start.x - text_width;
       } else if (this.justification === Annotation.Justify.CENTER) {
         x = start.x - text_width / 2;
-      } else
-        /* CENTER_STEM */
-        {
+      }
+      /* CENTER_STEM */
+      else {
           x = this.note.getStemX() - text_width / 2;
         }
 
@@ -1028,9 +944,9 @@ function (_Modifier) {
         if (has_stem) {
           y = Math.min(y, stem_ext.topY - 5 - spacing * this.text_line);
         }
-      } else
-        /* CENTER_STEM */
-        {
+      }
+      /* CENTER_STEM */
+      else {
           var extents = this.note.getStemExtents();
           y = extents.topY + (extents.baseY - extents.topY) / 2 + text_height / 2;
         }
@@ -1039,6 +955,94 @@ function (_Modifier) {
       this.context.fillText(this.text, x, y);
       this.context.closeGroup();
       this.context.restore();
+    }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'annotations';
+    } // Is there a better source for this?
+
+  }, {
+    key: "distanceBetweenLines",
+    get: function get() {
+      return 10;
+    } // Text annotations can be positioned and justified relative to the note.
+
+  }, {
+    key: "Justify",
+    get: function get() {
+      return {
+        LEFT: 1,
+        CENTER: 2,
+        RIGHT: 3,
+        CENTER_STEM: 4
+      };
+    }
+  }, {
+    key: "JustifyString",
+    get: function get() {
+      return {
+        left: Annotation.Justify.LEFT,
+        right: Annotation.Justify.RIGHT,
+        center: Annotation.Justify.CENTER,
+        centerStem: Annotation.Justify.CENTER_STEM
+      };
+    }
+  }, {
+    key: "VerticalJustify",
+    get: function get() {
+      return {
+        TOP: 1,
+        CENTER: 2,
+        BOTTOM: 3,
+        CENTER_STEM: 4
+      };
+    }
+  }, {
+    key: "VerticalJustifyString",
+    get: function get() {
+      return {
+        above: Annotation.VerticalJustify.TOP,
+        top: Annotation.VerticalJustify.TOP,
+        below: Annotation.VerticalJustify.BOTTOM,
+        bottom: Annotation.VerticalJustify.BOTTOM,
+        center: Annotation.VerticalJustify.CENTER,
+        centerStem: Annotation.VerticalJustify.CENTER_STEM
+      };
+    } // Arrange annotations within a `ModifierContext`
+
+  }, {
+    key: "format",
+    value: function format(annotations, state) {
+      if (!annotations || annotations.length === 0) return false;
+      var width = 0;
+
+      for (var i = 0; i < annotations.length; ++i) {
+        var testWidth = 0;
+        var annotation = annotations[i];
+        var textFont = _textfont__WEBPACK_IMPORTED_MODULE_3__["TextFont"].getTextFontFromVexFontData({
+          family: annotation.font.family,
+          size: annotation.font.size,
+          weight: 'normal'
+        }); // Calculate if the vertical extent will exceed a single line and adjust accordingly.
+
+        var numLines = Math.floor(textFont.maxHeight / Annotation.distanceBetweenLines) + 1; // Get the string width from the font metrics
+
+        testWidth = textFont.getWidthForString(annotation.text);
+        width = Math.max(width, testWidth);
+
+        if (annotation.getPosition() === _modifier__WEBPACK_IMPORTED_MODULE_2__["Modifier"].Position.ABOVE) {
+          annotation.setTextLine(state.top_text_line);
+          state.top_text_line += numLines;
+        } else {
+          annotation.setTextLine(state.text_line);
+          state.text_line += numLines;
+        }
+      }
+
+      state.left_shift += width / 2;
+      state.right_shift += width / 2;
+      return true;
     }
   }]);
 
@@ -1064,23 +1068,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stem */ "./src/stem.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -1090,13 +1088,27 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Larry Kuhns.
@@ -1257,109 +1269,19 @@ var getInitialOffset = function getInitialOffset(note, position) {
   }
 };
 
-var Articulation =
-/*#__PURE__*/
-function (_Modifier) {
+var Articulation = /*#__PURE__*/function (_Modifier) {
   _inherits(Articulation, _Modifier);
 
-  _createClass(Articulation, null, [{
-    key: "format",
-    // FIXME:
-    // Most of the complex formatting logic (ie: snapping to space) is
-    // actually done in .render(). But that logic belongs in this method.
-    //
-    // Unfortunately, this isn't possible because, by this point, stem lengths
-    // have not yet been finalized. Finalized stem lengths are required to determine the
-    // initial position of any stem-side articulation.
-    //
-    // This indicates that all objects should have their stave set before being
-    // formatted. It can't be an optional if you want accurate vertical positioning.
-    // Consistently positioned articulations that play nice with other modifiers
-    // won't be possible until we stop relying on render-time formatting.
-    //
-    // Ideally, when this function has completed, the vertical articulation positions
-    // should be ready to render without further adjustment. But the current state
-    // is far from this ideal.
-    value: function format(articulations, state) {
-      if (!articulations || articulations.length === 0) return false;
+  var _super = _createSuper(Articulation);
 
-      var isAbove = function isAbove(artic) {
-        return artic.getPosition() === ABOVE;
-      };
-
-      var isBelow = function isBelow(artic) {
-        return artic.getPosition() === BELOW;
-      };
-
-      var margin = 0.5;
-
-      var getIncrement = function getIncrement(articulation, line, position) {
-        return roundToNearestHalf(getRoundingFunction(line, position), articulation.glyph.getMetrics().height / 10 + margin);
-      };
-
-      articulations.filter(isAbove).forEach(function (articulation) {
-        articulation.setTextLine(state.top_text_line);
-        state.top_text_line += getIncrement(articulation, state.top_text_line, ABOVE);
-      });
-      articulations.filter(isBelow).forEach(function (articulation) {
-        articulation.setTextLine(state.text_line);
-        state.text_line += getIncrement(articulation, state.text_line, BELOW);
-      });
-      var width = articulations.map(function (articulation) {
-        return articulation.getWidth();
-      }).reduce(function (maxWidth, articWidth) {
-        return Math.max(articWidth, maxWidth);
-      });
-      state.left_shift += width / 2;
-      state.right_shift += width / 2;
-      return true;
-    }
-  }, {
-    key: "easyScoreHook",
-    value: function easyScoreHook(_ref, note, builder) {
-      var articulations = _ref.articulations;
-      if (!articulations) return;
-      var articNameToCode = {
-        staccato: 'a.',
-        tenuto: 'a-',
-        accent: 'a>'
-      };
-      articulations.split(',').map(function (articString) {
-        return articString.trim().split('.');
-      }).map(function (_ref2) {
-        var _ref3 = _slicedToArray(_ref2, 2),
-            name = _ref3[0],
-            position = _ref3[1];
-
-        var artic = {
-          type: articNameToCode[name]
-        };
-        if (position) artic.position = _modifier__WEBPACK_IMPORTED_MODULE_2__["Modifier"].PositionString[position];
-        return builder.getFactory().Articulation(artic);
-      }).map(function (artic) {
-        return note.addModifier(0, artic);
-      });
-    } // Create a new articulation of type `type`, which is an entry in
-    // `Vex.Flow.articulationCodes` in `tables.js`.
-
-  }, {
-    key: "CATEGORY",
-    get: function get() {
-      return 'articulations';
-    }
-  }, {
-    key: "INITIAL_OFFSET",
-    get: function get() {
-      return -0.5;
-    }
-  }]);
-
+  // Create a new articulation of type `type`, which is an entry in
+  // `Vex.Flow.articulationCodes` in `tables.js`.
   function Articulation(type) {
     var _this;
 
     _classCallCheck(this, Articulation);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Articulation).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'Articulation');
 
@@ -1447,6 +1369,94 @@ function (_Modifier) {
       L("Rendering articulation at (x: ".concat(x, ", y: ").concat(y, ")"));
       glyph.render(ctx, x, y);
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'articulations';
+    }
+  }, {
+    key: "INITIAL_OFFSET",
+    get: function get() {
+      return -0.5;
+    } // FIXME:
+    // Most of the complex formatting logic (ie: snapping to space) is
+    // actually done in .render(). But that logic belongs in this method.
+    //
+    // Unfortunately, this isn't possible because, by this point, stem lengths
+    // have not yet been finalized. Finalized stem lengths are required to determine the
+    // initial position of any stem-side articulation.
+    //
+    // This indicates that all objects should have their stave set before being
+    // formatted. It can't be an optional if you want accurate vertical positioning.
+    // Consistently positioned articulations that play nice with other modifiers
+    // won't be possible until we stop relying on render-time formatting.
+    //
+    // Ideally, when this function has completed, the vertical articulation positions
+    // should be ready to render without further adjustment. But the current state
+    // is far from this ideal.
+
+  }, {
+    key: "format",
+    value: function format(articulations, state) {
+      if (!articulations || articulations.length === 0) return false;
+
+      var isAbove = function isAbove(artic) {
+        return artic.getPosition() === ABOVE;
+      };
+
+      var isBelow = function isBelow(artic) {
+        return artic.getPosition() === BELOW;
+      };
+
+      var margin = 0.5;
+
+      var getIncrement = function getIncrement(articulation, line, position) {
+        return roundToNearestHalf(getRoundingFunction(line, position), articulation.glyph.getMetrics().height / 10 + margin);
+      };
+
+      articulations.filter(isAbove).forEach(function (articulation) {
+        articulation.setTextLine(state.top_text_line);
+        state.top_text_line += getIncrement(articulation, state.top_text_line, ABOVE);
+      });
+      articulations.filter(isBelow).forEach(function (articulation) {
+        articulation.setTextLine(state.text_line);
+        state.text_line += getIncrement(articulation, state.text_line, BELOW);
+      });
+      var width = articulations.map(function (articulation) {
+        return articulation.getWidth();
+      }).reduce(function (maxWidth, articWidth) {
+        return Math.max(articWidth, maxWidth);
+      });
+      state.left_shift += width / 2;
+      state.right_shift += width / 2;
+      return true;
+    }
+  }, {
+    key: "easyScoreHook",
+    value: function easyScoreHook(_ref, note, builder) {
+      var articulations = _ref.articulations;
+      if (!articulations) return;
+      var articNameToCode = {
+        staccato: 'a.',
+        tenuto: 'a-',
+        accent: 'a>'
+      };
+      articulations.split(',').map(function (articString) {
+        return articString.trim().split('.');
+      }).map(function (_ref2) {
+        var _ref3 = _slicedToArray(_ref2, 2),
+            name = _ref3[0],
+            position = _ref3[1];
+
+        var artic = {
+          type: articNameToCode[name]
+        };
+        if (position) artic.position = _modifier__WEBPACK_IMPORTED_MODULE_2__["Modifier"].PositionString[position];
+        return builder.getFactory().Articulation(artic);
+      }).map(function (artic) {
+        return note.addModifier(0, artic);
+      });
+    }
   }]);
 
   return Articulation;
@@ -1477,19 +1487,23 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -1512,10 +1526,10 @@ function L() {
   if (BarNote.DEBUG) _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].L('Vex.Flow.BarNote', args);
 }
 
-var BarNote =
-/*#__PURE__*/
-function (_Note) {
+var BarNote = /*#__PURE__*/function (_Note) {
   _inherits(BarNote, _Note);
+
+  var _super = _createSuper(BarNote);
 
   function BarNote() {
     var _this$metrics$widths;
@@ -1526,9 +1540,9 @@ function (_Note) {
 
     _classCallCheck(this, BarNote);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(BarNote).call(this, {
+    _this = _super.call(this, {
       duration: 'b'
-    }));
+    });
 
     _this.setAttribute('type', 'BarNote');
 
@@ -1614,21 +1628,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./stem */ "./src/stem.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -1637,6 +1649,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -1678,17 +1700,526 @@ var getStemSlope = function getStemSlope(firstNote, lastNote) {
 var BEAM_LEFT = 'L';
 var BEAM_RIGHT = 'R';
 var BEAM_BOTH = 'B';
-var Beam =
-/*#__PURE__*/
-function (_Element) {
+var Beam = /*#__PURE__*/function (_Element) {
   _inherits(Beam, _Element);
 
-  _createClass(Beam, null, [{
+  var _super = _createSuper(Beam);
+
+  function Beam(notes, auto_stem) {
+    var _this;
+
+    _classCallCheck(this, Beam);
+
+    _this = _super.call(this);
+
+    _this.setAttribute('type', 'Beam');
+
+    if (!notes || notes === []) {
+      throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RuntimeError('BadArguments', 'No notes provided for beam.');
+    }
+
+    if (notes.length === 1) {
+      throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RuntimeError('BadArguments', 'Too few notes for beam.');
+    } // Validate beam line, direction and ticks.
+
+
+    _this.ticks = notes[0].getIntrinsicTicks();
+
+    if (_this.ticks >= _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].durationToTicks('4')) {
+      throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RuntimeError('BadArguments', 'Beams can only be applied to notes shorter than a quarter note.');
+    }
+
+    var i; // shared iterator
+
+    var note;
+    _this.stem_direction = _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].UP;
+
+    for (i = 0; i < notes.length; ++i) {
+      note = notes[i];
+
+      if (note.hasStem()) {
+        _this.stem_direction = note.getStemDirection();
+        break;
+      }
+    }
+
+    var stem_direction = _this.stem_direction; // Figure out optimal stem direction based on given notes
+
+    if (auto_stem && notes[0].getCategory() === 'stavenotes') {
+      stem_direction = calculateStemDirection(notes);
+    } else if (auto_stem && notes[0].getCategory() === 'tabnotes') {
+      // Auto Stem TabNotes
+      var stem_weight = notes.reduce(function (memo, note) {
+        return memo + note.stem_direction;
+      }, 0);
+      stem_direction = stem_weight > -1 ? _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].UP : _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].DOWN;
+    } // Apply stem directions and attach beam to notes
+
+
+    for (i = 0; i < notes.length; ++i) {
+      note = notes[i];
+
+      if (auto_stem) {
+        note.setStemDirection(stem_direction);
+        _this.stem_direction = stem_direction;
+      }
+
+      note.setBeam(_assertThisInitialized(_this));
+    }
+
+    _this.postFormatted = false;
+    _this.notes = notes;
+    _this.beam_count = _this.getBeamCount();
+    _this.break_on_indices = [];
+    _this.render_options = {
+      beam_width: 5,
+      max_slope: 0.25,
+      min_slope: -0.25,
+      slope_iterations: 20,
+      slope_cost: 100,
+      show_stemlets: false,
+      stemlet_extension: 7,
+      partial_beam_length: 10,
+      flat_beams: false,
+      min_flat_beam_offset: 15
+    };
+    return _this;
+  } // Get the notes in this beam
+
+
+  _createClass(Beam, [{
+    key: "getNotes",
+    value: function getNotes() {
+      return this.notes;
+    } // Get the max number of beams in the set of notes
+
+  }, {
+    key: "getBeamCount",
+    value: function getBeamCount() {
+      var beamCounts = this.notes.map(function (note) {
+        return note.getGlyph().beam_count;
+      });
+      var maxBeamCount = beamCounts.reduce(function (max, beamCount) {
+        return beamCount > max ? beamCount : max;
+      });
+      return maxBeamCount;
+    } // Set which note `indices` to break the secondary beam at
+
+  }, {
+    key: "breakSecondaryAt",
+    value: function breakSecondaryAt(indices) {
+      this.break_on_indices = indices;
+      return this;
+    } // Return the y coordinate for linear function
+
+  }, {
+    key: "getSlopeY",
+    value: function getSlopeY(x, first_x_px, first_y_px, slope) {
+      return first_y_px + (x - first_x_px) * slope;
+    } // Calculate the best possible slope for the provided notes
+
+  }, {
+    key: "calculateSlope",
+    value: function calculateSlope() {
+      var notes = this.notes,
+          stemDirection = this.stem_direction,
+          _this$render_options = this.render_options,
+          max_slope = _this$render_options.max_slope,
+          min_slope = _this$render_options.min_slope,
+          slope_iterations = _this$render_options.slope_iterations,
+          slope_cost = _this$render_options.slope_cost;
+      var firstNote = notes[0];
+      var initialSlope = getStemSlope(firstNote, notes[notes.length - 1]);
+      var increment = (max_slope - min_slope) / slope_iterations;
+      var minCost = Number.MAX_VALUE;
+      var bestSlope = 0;
+      var yShift = 0; // iterate through slope values to find best weighted fit
+
+      for (var slope = min_slope; slope <= max_slope; slope += increment) {
+        var totalStemExtension = 0;
+        var yShiftTemp = 0; // iterate through notes, calculating y shift and stem extension
+
+        for (var i = 1; i < notes.length; ++i) {
+          var note = notes[i];
+          var adjustedStemTipY = this.getSlopeY(note.getStemX(), firstNote.getStemX(), firstNote.getStemExtents().topY, slope) + yShiftTemp;
+          var stemTipY = note.getStemExtents().topY; // beam needs to be shifted up to accommodate note
+
+          if (stemTipY * stemDirection < adjustedStemTipY * stemDirection) {
+            var diff = Math.abs(stemTipY - adjustedStemTipY);
+            yShiftTemp += diff * -stemDirection;
+            totalStemExtension += diff * i;
+          } else {
+            // beam overshoots note, account for the difference
+            totalStemExtension += (stemTipY - adjustedStemTipY) * stemDirection;
+          }
+        } // most engraving books suggest aiming for a slope about half the angle of the
+        // difference between the first and last notes' stem length;
+
+
+        var idealSlope = initialSlope / 2;
+        var distanceFromIdeal = Math.abs(idealSlope - slope); // This tries to align most beams to something closer to the idealSlope, but
+        // doesn't go crazy. To disable, set this.render_options.slope_cost = 0
+
+        var cost = slope_cost * distanceFromIdeal + Math.abs(totalStemExtension); // update state when a more ideal slope is found
+
+        if (cost < minCost) {
+          minCost = cost;
+          bestSlope = slope;
+          yShift = yShiftTemp;
+        }
+      }
+
+      this.slope = bestSlope;
+      this.y_shift = yShift;
+    } // Calculate a slope and y-shift for flat beams
+
+  }, {
+    key: "calculateFlatSlope",
+    value: function calculateFlatSlope() {
+      var notes = this.notes,
+          stem_direction = this.stem_direction,
+          _this$render_options2 = this.render_options,
+          beam_width = _this$render_options2.beam_width,
+          min_flat_beam_offset = _this$render_options2.min_flat_beam_offset,
+          flat_beam_offset = _this$render_options2.flat_beam_offset; // If a flat beam offset has not yet been supplied or calculated,
+      // generate one based on the notes in this particular note group
+
+      var total = 0;
+      var extremeY = 0; // Store the highest or lowest note here
+
+      var extremeBeamCount = 0; // The beam count of the extreme note
+
+      var currentExtreme = 0;
+
+      for (var i = 0; i < notes.length; i++) {
+        // Total up all of the offsets so we can average them out later
+        var note = notes[i];
+        var stemTipY = note.getStemExtents().topY;
+        total += stemTipY; // Store the highest (stems-up) or lowest (stems-down) note so the
+        //  offset can be adjusted in case the average isn't enough
+
+        if (stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].DOWN && currentExtreme < stemTipY) {
+          currentExtreme = stemTipY;
+          extremeY = Math.max.apply(Math, _toConsumableArray(note.getYs()));
+          extremeBeamCount = note.getBeamCount();
+        } else if (stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].UP && (currentExtreme === 0 || currentExtreme > stemTipY)) {
+          currentExtreme = stemTipY;
+          extremeY = Math.min.apply(Math, _toConsumableArray(note.getYs()));
+          extremeBeamCount = note.getBeamCount();
+        }
+      } // Average the offsets to try and come up with a reasonable one that
+      //  works for all of the notes in the beam group.
+
+
+      var offset = total / notes.length; // In case the average isn't long enough, add or subtract some more
+      //  based on the highest or lowest note (again, based on the stem
+      //  direction). This also takes into account the added height due to
+      //  the width of the beams.
+
+      var beamWidth = beam_width * 1.5;
+      var extremeTest = min_flat_beam_offset + extremeBeamCount * beamWidth;
+      var newOffset = extremeY + extremeTest * -stem_direction;
+
+      if (stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].DOWN && offset < newOffset) {
+        offset = extremeY + extremeTest;
+      } else if (stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].UP && offset > newOffset) {
+        offset = extremeY - extremeTest;
+      }
+
+      if (!flat_beam_offset) {
+        // Set the offset for the group based on the calculations above.
+        this.render_options.flat_beam_offset = offset;
+      } else if (stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].DOWN && offset > flat_beam_offset) {
+        this.render_options.flat_beam_offset = offset;
+      } else if (stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].UP && offset < flat_beam_offset) {
+        this.render_options.flat_beam_offset = offset;
+      } // for flat beams, the slope and y_shift are simply 0
+
+
+      this.slope = 0;
+      this.y_shift = 0;
+    }
+  }, {
+    key: "getBeamYToDraw",
+    value: function getBeamYToDraw() {
+      var firstNote = this.notes[0];
+      var firstStemTipY = firstNote.getStemExtents().topY;
+      var beamY = firstStemTipY; // For flat beams, set the first and last Y to the offset, rather than
+      //  using the note's stem extents.
+
+      if (this.render_options.flat_beams && this.render_options.flat_beam_offset) {
+        beamY = this.render_options.flat_beam_offset;
+      }
+
+      return beamY;
+    } // Create new stems for the notes in the beam, so that each stem
+    // extends into the beams.
+
+  }, {
+    key: "applyStemExtensions",
+    value: function applyStemExtensions() {
+      var notes = this.notes,
+          slope = this.slope,
+          y_shift = this.y_shift,
+          stem_direction = this.stem_direction,
+          beam_count = this.beam_count,
+          _this$render_options3 = this.render_options,
+          show_stemlets = _this$render_options3.show_stemlets,
+          stemlet_extension = _this$render_options3.stemlet_extension,
+          beam_width = _this$render_options3.beam_width;
+      var firstNote = notes[0];
+      var firstStemTipY = this.getBeamYToDraw();
+      var firstStemX = firstNote.getStemX();
+
+      for (var i = 0; i < notes.length; ++i) {
+        var note = notes[i];
+        var stemX = note.getStemX();
+
+        var _note$getStemExtents = note.getStemExtents(),
+            stemTipY = _note$getStemExtents.topY;
+
+        var beamedStemTipY = this.getSlopeY(stemX, firstStemX, firstStemTipY, slope) + y_shift;
+        var preBeamExtension = note.getStem().getExtension();
+        var beamExtension = stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].UP ? stemTipY - beamedStemTipY : beamedStemTipY - stemTipY;
+        note.stem.setExtension(preBeamExtension + beamExtension);
+        note.stem.renderHeightAdjustment = -_stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].WIDTH / 2;
+
+        if (note.isRest() && show_stemlets) {
+          var beamWidth = beam_width;
+          var totalBeamWidth = (beam_count - 1) * beamWidth * 1.5 + beamWidth;
+          note.stem.setVisibility(true).setStemlet(true, totalBeamWidth + stemlet_extension);
+        }
+      }
+    } // return upper level beam direction.
+
+  }, {
+    key: "lookupBeamDirection",
+    value: function lookupBeamDirection(duration, prev_tick, tick, next_tick) {
+      if (duration === '4') {
+        return BEAM_LEFT;
+      }
+
+      var lookup_duration = "".concat(_tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].durationToNumber(duration) / 2);
+      var prev_note_gets_beam = prev_tick < _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].durationToTicks(lookup_duration);
+      var next_note_gets_beam = next_tick < _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].durationToTicks(lookup_duration);
+      var note_gets_beam = tick < _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].durationToTicks(lookup_duration);
+
+      if (prev_note_gets_beam && next_note_gets_beam && note_gets_beam) {
+        return BEAM_BOTH;
+      } else if (prev_note_gets_beam && !next_note_gets_beam && note_gets_beam) {
+        return BEAM_LEFT;
+      } else if (!prev_note_gets_beam && next_note_gets_beam && note_gets_beam) {
+        return BEAM_RIGHT;
+      }
+
+      return this.lookupBeamDirection(lookup_duration, prev_tick, tick, next_tick);
+    } // Get the x coordinates for the beam lines of specific `duration`
+
+  }, {
+    key: "getBeamLines",
+    value: function getBeamLines(duration) {
+      var tick_of_duration = _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].durationToTicks(duration);
+      var beam_lines = [];
+      var beam_started = false;
+      var current_beam = null;
+      var partial_beam_length = this.render_options.partial_beam_length;
+      var previous_should_break = false;
+      var tick_tally = 0;
+
+      for (var i = 0; i < this.notes.length; ++i) {
+        var note = this.notes[i]; // See if we need to break secondary beams on this note.
+
+        var ticks = note.ticks.value();
+        tick_tally += ticks;
+        var should_break = false; // 8th note beams are always drawn.
+
+        if (parseInt(duration, 10) >= 8) {
+          // First, check to see if any indices were set up through breakSecondaryAt()
+          should_break = this.break_on_indices.indexOf(i) !== -1; // If the secondary breaks were auto-configured in the render options,
+          //  handle that as well.
+
+          if (this.render_options.secondary_break_ticks && tick_tally >= this.render_options.secondary_break_ticks) {
+            tick_tally = 0;
+            should_break = true;
+          }
+        }
+
+        var note_gets_beam = note.getIntrinsicTicks() < tick_of_duration;
+        var stem_x = note.getStemX() - _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].WIDTH / 2; // Check to see if the next note in the group will get a beam at this
+        //  level. This will help to inform the partial beam logic below.
+
+        var prev_note = this.notes[i - 1];
+        var next_note = this.notes[i + 1];
+        var next_note_gets_beam = next_note && next_note.getIntrinsicTicks() < tick_of_duration;
+        var prev_note_gets_beam = prev_note && prev_note.getIntrinsicTicks() < tick_of_duration;
+        var beam_alone = prev_note && next_note && note_gets_beam && !prev_note_gets_beam && !next_note_gets_beam; // const beam_alone = note_gets_beam && !prev_note_gets_beam && !next_note_gets_beam;
+
+        if (note_gets_beam) {
+          // This note gets a beam at the current level
+          if (beam_started) {
+            // We're currently in the middle of a beam. Just continue it on to
+            //  the stem X of the current note.
+            current_beam = beam_lines[beam_lines.length - 1];
+            current_beam.end = stem_x; // If a secondary beam break is set up, end the beam right now.
+
+            if (should_break) {
+              beam_started = false;
+
+              if (next_note && !next_note_gets_beam && current_beam.end === null) {
+                // This note gets a beam,.but the next one does not. This means
+                //  we need a partial pointing right.
+                current_beam.end = current_beam.start - partial_beam_length;
+              }
+            }
+          } else {
+            // No beam started yet. Start a new one.
+            current_beam = {
+              start: stem_x,
+              end: null
+            };
+            beam_started = true;
+
+            if (beam_alone) {
+              // previous and next beam exists and does not get a beam but current gets it.
+              var prev_tick = prev_note.getIntrinsicTicks();
+              var next_tick = next_note.getIntrinsicTicks();
+              var tick = note.getIntrinsicTicks();
+              var beam_direction = this.lookupBeamDirection(duration, prev_tick, tick, next_tick);
+
+              if ([BEAM_LEFT, BEAM_BOTH].includes(beam_direction)) {
+                current_beam.end = current_beam.start - partial_beam_length;
+              } else {
+                current_beam.end = current_beam.start + partial_beam_length;
+              }
+            } else if (!next_note_gets_beam) {
+              // The next note doesn't get a beam. Draw a partial.
+              if ((previous_should_break || i === 0) && next_note) {
+                // This is the first note (but not the last one), or it is
+                //  following a secondary break. Draw a partial to the right.
+                current_beam.end = current_beam.start + partial_beam_length;
+              } else {
+                // By default, draw a partial to the left.
+                current_beam.end = current_beam.start - partial_beam_length;
+              }
+            } else if (should_break) {
+              // This note should have a secondary break after it. Even though
+              //  we just started a beam, it needs to end immediately.
+              current_beam.end = current_beam.start - partial_beam_length;
+              beam_started = false;
+            }
+
+            beam_lines.push(current_beam);
+          }
+        } else {
+          // The current note does not get a beam.
+          beam_started = false;
+        } // Store the secondary break flag to inform the partial beam logic in
+        //  the next iteration of the loop.
+
+
+        previous_should_break = should_break;
+      } // Add a partial beam pointing left if this is the last note in the group
+
+
+      var last_beam = beam_lines[beam_lines.length - 1];
+
+      if (last_beam && last_beam.end === null) {
+        last_beam.end = last_beam.start - partial_beam_length;
+      }
+
+      return beam_lines;
+    } // Render the stems for each notes
+
+  }, {
+    key: "drawStems",
+    value: function drawStems() {
+      var _this2 = this;
+
+      this.notes.forEach(function (note) {
+        if (note.getStem()) {
+          note.getStem().setContext(_this2.context).draw();
+        }
+      }, this);
+    } // Render the beam lines
+
+  }, {
+    key: "drawBeamLines",
+    value: function drawBeamLines() {
+      this.checkContext();
+      var valid_beam_durations = ['4', '8', '16', '32', '64'];
+      var firstNote = this.notes[0];
+      var beamY = this.getBeamYToDraw();
+      var firstStemX = firstNote.getStemX();
+      var beamThickness = this.render_options.beam_width * this.stem_direction; // Draw the beams.
+
+      for (var i = 0; i < valid_beam_durations.length; ++i) {
+        var duration = valid_beam_durations[i];
+        var beamLines = this.getBeamLines(duration);
+
+        for (var j = 0; j < beamLines.length; ++j) {
+          var beam_line = beamLines[j];
+          var startBeamX = beam_line.start;
+          var startBeamY = this.getSlopeY(startBeamX, firstStemX, beamY, this.slope);
+          var lastBeamX = beam_line.end;
+          var lastBeamY = this.getSlopeY(lastBeamX, firstStemX, beamY, this.slope);
+          this.context.beginPath();
+          this.context.moveTo(startBeamX, startBeamY);
+          this.context.lineTo(startBeamX, startBeamY + beamThickness);
+          this.context.lineTo(lastBeamX + 1, lastBeamY + beamThickness);
+          this.context.lineTo(lastBeamX + 1, lastBeamY);
+          this.context.closePath();
+          this.context.fill();
+        }
+
+        beamY += beamThickness * 1.5;
+      }
+    } // Pre-format the beam
+
+  }, {
+    key: "preFormat",
+    value: function preFormat() {
+      return this;
+    } // Post-format the beam. This can only be called after
+    // the notes in the beam have both `x` and `y` values. ie: they've
+    // been formatted and have staves
+
+  }, {
+    key: "postFormat",
+    value: function postFormat() {
+      if (this.postFormatted) return; // Calculate a smart slope if we're not forcing the beams to be flat.
+
+      if (this.notes[0].getCategory() === 'tabnotes' || this.render_options.flat_beams) {
+        this.calculateFlatSlope();
+      } else {
+        this.calculateSlope();
+      }
+
+      this.applyStemExtensions();
+      this.postFormatted = true;
+    } // Render the beam to the canvas context
+
+  }, {
+    key: "draw",
+    value: function draw() {
+      this.checkContext();
+      this.setRendered();
+      if (this.unbeamable) return;
+
+      if (!this.postFormatted) {
+        this.postFormat();
+      }
+
+      this.drawStems();
+      this.applyStyle();
+      this.drawBeamLines();
+      this.restoreStyle();
+    }
+  }], [{
     key: "getDefaultBeamGroups",
-    // Gets the default beam groups for a provided time signature.
+    value: // Gets the default beam groups for a provided time signature.
     // Attempts to guess if the time signature is not found in table.
     // Currently this is fairly naive.
-    value: function getDefaultBeamGroups(time_sig) {
+    function getDefaultBeamGroups(time_sig) {
       if (!time_sig || time_sig === 'c') {
         time_sig = '4/4';
       }
@@ -1932,9 +2463,8 @@ function (_Element) {
           var stemDirection;
 
           if (config.maintain_stem_directions) {
-            var _note = findFirstNote(group);
-
-            stemDirection = _note ? _note.getStemDirection() : _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].UP;
+            var note = findFirstNote(group);
+            stemDirection = note ? note.getStemDirection() : _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].UP;
           } else {
             if (config.stem_direction) {
               stemDirection = config.stem_direction;
@@ -1948,11 +2478,11 @@ function (_Element) {
       }
 
       function findFirstNote(group) {
-        for (var _i = 0; _i < group.length; _i++) {
-          var _note2 = group[_i];
+        for (var i = 0; i < group.length; i++) {
+          var note = group[i];
 
-          if (!_note2.isRest()) {
-            return _note2;
+          if (!note.isRest()) {
+            return note;
           }
         }
 
@@ -2019,10 +2549,10 @@ function (_Element) {
 
         var bracketed = false;
 
-        for (var _i2 = 0; _i2 < tuplet.notes.length; _i2++) {
-          var _note3 = tuplet.notes[_i2];
+        for (var i = 0; i < tuplet.notes.length; i++) {
+          var note = tuplet.notes[i];
 
-          if (_note3.beam === null) {
+          if (note.beam === null) {
             bracketed = true;
             break;
           }
@@ -2031,530 +2561,6 @@ function (_Element) {
         tuplet.setBracketed(bracketed);
       });
       return beams;
-    }
-  }]);
-
-  function Beam(notes, auto_stem) {
-    var _this;
-
-    _classCallCheck(this, Beam);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Beam).call(this));
-
-    _this.setAttribute('type', 'Beam');
-
-    if (!notes || notes === []) {
-      throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RuntimeError('BadArguments', 'No notes provided for beam.');
-    }
-
-    if (notes.length === 1) {
-      throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RuntimeError('BadArguments', 'Too few notes for beam.');
-    } // Validate beam line, direction and ticks.
-
-
-    _this.ticks = notes[0].getIntrinsicTicks();
-
-    if (_this.ticks >= _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].durationToTicks('4')) {
-      throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RuntimeError('BadArguments', 'Beams can only be applied to notes shorter than a quarter note.');
-    }
-
-    var i; // shared iterator
-
-    var note;
-    _this.stem_direction = _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].UP;
-
-    for (i = 0; i < notes.length; ++i) {
-      note = notes[i];
-
-      if (note.hasStem()) {
-        _this.stem_direction = note.getStemDirection();
-        break;
-      }
-    }
-
-    var stem_direction = _this.stem_direction; // Figure out optimal stem direction based on given notes
-
-    if (auto_stem && notes[0].getCategory() === 'stavenotes') {
-      stem_direction = calculateStemDirection(notes);
-    } else if (auto_stem && notes[0].getCategory() === 'tabnotes') {
-      // Auto Stem TabNotes
-      var stem_weight = notes.reduce(function (memo, note) {
-        return memo + note.stem_direction;
-      }, 0);
-      stem_direction = stem_weight > -1 ? _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].UP : _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].DOWN;
-    } // Apply stem directions and attach beam to notes
-
-
-    for (i = 0; i < notes.length; ++i) {
-      note = notes[i];
-
-      if (auto_stem) {
-        note.setStemDirection(stem_direction);
-        _this.stem_direction = stem_direction;
-      }
-
-      note.setBeam(_assertThisInitialized(_this));
-    }
-
-    _this.postFormatted = false;
-    _this.notes = notes;
-    _this.beam_count = _this.getBeamCount();
-    _this.break_on_indices = [];
-    _this.render_options = {
-      beam_width: 5,
-      max_slope: 0.25,
-      min_slope: -0.25,
-      slope_iterations: 20,
-      slope_cost: 100,
-      show_stemlets: false,
-      stemlet_extension: 7,
-      partial_beam_length: 10,
-      flat_beams: false,
-      min_flat_beam_offset: 15
-    };
-    return _this;
-  } // Get the notes in this beam
-
-
-  _createClass(Beam, [{
-    key: "getNotes",
-    value: function getNotes() {
-      return this.notes;
-    } // Get the max number of beams in the set of notes
-
-  }, {
-    key: "getBeamCount",
-    value: function getBeamCount() {
-      var beamCounts = this.notes.map(function (note) {
-        return note.getGlyph().beam_count;
-      });
-      var maxBeamCount = beamCounts.reduce(function (max, beamCount) {
-        return beamCount > max ? beamCount : max;
-      });
-      return maxBeamCount;
-    } // Set which note `indices` to break the secondary beam at
-
-  }, {
-    key: "breakSecondaryAt",
-    value: function breakSecondaryAt(indices) {
-      this.break_on_indices = indices;
-      return this;
-    } // Return the y coordinate for linear function
-
-  }, {
-    key: "getSlopeY",
-    value: function getSlopeY(x, first_x_px, first_y_px, slope) {
-      return first_y_px + (x - first_x_px) * slope;
-    } // Calculate the best possible slope for the provided notes
-
-  }, {
-    key: "calculateSlope",
-    value: function calculateSlope() {
-      var notes = this.notes,
-          stemDirection = this.stem_direction,
-          _this$render_options = this.render_options,
-          max_slope = _this$render_options.max_slope,
-          min_slope = _this$render_options.min_slope,
-          slope_iterations = _this$render_options.slope_iterations,
-          slope_cost = _this$render_options.slope_cost;
-      var firstNote = notes[0];
-      var initialSlope = getStemSlope(firstNote, notes[notes.length - 1]);
-      var increment = (max_slope - min_slope) / slope_iterations;
-      var minCost = Number.MAX_VALUE;
-      var bestSlope = 0;
-      var yShift = 0; // iterate through slope values to find best weighted fit
-
-      for (var slope = min_slope; slope <= max_slope; slope += increment) {
-        var totalStemExtension = 0;
-        var yShiftTemp = 0; // iterate through notes, calculating y shift and stem extension
-
-        for (var _i3 = 1; _i3 < notes.length; ++_i3) {
-          var _note4 = notes[_i3];
-          var adjustedStemTipY = this.getSlopeY(_note4.getStemX(), firstNote.getStemX(), firstNote.getStemExtents().topY, slope) + yShiftTemp;
-
-          var stemTipY = _note4.getStemExtents().topY; // beam needs to be shifted up to accommodate note
-
-
-          if (stemTipY * stemDirection < adjustedStemTipY * stemDirection) {
-            var diff = Math.abs(stemTipY - adjustedStemTipY);
-            yShiftTemp += diff * -stemDirection;
-            totalStemExtension += diff * _i3;
-          } else {
-            // beam overshoots note, account for the difference
-            totalStemExtension += (stemTipY - adjustedStemTipY) * stemDirection;
-          }
-        } // most engraving books suggest aiming for a slope about half the angle of the
-        // difference between the first and last notes' stem length;
-
-
-        var idealSlope = initialSlope / 2;
-        var distanceFromIdeal = Math.abs(idealSlope - slope); // This tries to align most beams to something closer to the idealSlope, but
-        // doesn't go crazy. To disable, set this.render_options.slope_cost = 0
-
-        var cost = slope_cost * distanceFromIdeal + Math.abs(totalStemExtension); // update state when a more ideal slope is found
-
-        if (cost < minCost) {
-          minCost = cost;
-          bestSlope = slope;
-          yShift = yShiftTemp;
-        }
-      }
-
-      this.slope = bestSlope;
-      this.y_shift = yShift;
-    } // Calculate a slope and y-shift for flat beams
-
-  }, {
-    key: "calculateFlatSlope",
-    value: function calculateFlatSlope() {
-      var notes = this.notes,
-          stem_direction = this.stem_direction,
-          _this$render_options2 = this.render_options,
-          beam_width = _this$render_options2.beam_width,
-          min_flat_beam_offset = _this$render_options2.min_flat_beam_offset,
-          flat_beam_offset = _this$render_options2.flat_beam_offset; // If a flat beam offset has not yet been supplied or calculated,
-      // generate one based on the notes in this particular note group
-
-      var total = 0;
-      var extremeY = 0; // Store the highest or lowest note here
-
-      var extremeBeamCount = 0; // The beam count of the extreme note
-
-      var currentExtreme = 0;
-
-      for (var _i4 = 0; _i4 < notes.length; _i4++) {
-        // Total up all of the offsets so we can average them out later
-        var _note5 = notes[_i4];
-
-        var stemTipY = _note5.getStemExtents().topY;
-
-        total += stemTipY; // Store the highest (stems-up) or lowest (stems-down) note so the
-        //  offset can be adjusted in case the average isn't enough
-
-        if (stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].DOWN && currentExtreme < stemTipY) {
-          currentExtreme = stemTipY;
-          extremeY = Math.max.apply(Math, _toConsumableArray(_note5.getYs()));
-          extremeBeamCount = _note5.getBeamCount();
-        } else if (stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].UP && (currentExtreme === 0 || currentExtreme > stemTipY)) {
-          currentExtreme = stemTipY;
-          extremeY = Math.min.apply(Math, _toConsumableArray(_note5.getYs()));
-          extremeBeamCount = _note5.getBeamCount();
-        }
-      } // Average the offsets to try and come up with a reasonable one that
-      //  works for all of the notes in the beam group.
-
-
-      var offset = total / notes.length; // In case the average isn't long enough, add or subtract some more
-      //  based on the highest or lowest note (again, based on the stem
-      //  direction). This also takes into account the added height due to
-      //  the width of the beams.
-
-      var beamWidth = beam_width * 1.5;
-      var extremeTest = min_flat_beam_offset + extremeBeamCount * beamWidth;
-      var newOffset = extremeY + extremeTest * -stem_direction;
-
-      if (stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].DOWN && offset < newOffset) {
-        offset = extremeY + extremeTest;
-      } else if (stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].UP && offset > newOffset) {
-        offset = extremeY - extremeTest;
-      }
-
-      if (!flat_beam_offset) {
-        // Set the offset for the group based on the calculations above.
-        this.render_options.flat_beam_offset = offset;
-      } else if (stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].DOWN && offset > flat_beam_offset) {
-        this.render_options.flat_beam_offset = offset;
-      } else if (stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].UP && offset < flat_beam_offset) {
-        this.render_options.flat_beam_offset = offset;
-      } // for flat beams, the slope and y_shift are simply 0
-
-
-      this.slope = 0;
-      this.y_shift = 0;
-    }
-  }, {
-    key: "getBeamYToDraw",
-    value: function getBeamYToDraw() {
-      var firstNote = this.notes[0];
-      var firstStemTipY = firstNote.getStemExtents().topY;
-      var beamY = firstStemTipY; // For flat beams, set the first and last Y to the offset, rather than
-      //  using the note's stem extents.
-
-      if (this.render_options.flat_beams && this.render_options.flat_beam_offset) {
-        beamY = this.render_options.flat_beam_offset;
-      }
-
-      return beamY;
-    } // Create new stems for the notes in the beam, so that each stem
-    // extends into the beams.
-
-  }, {
-    key: "applyStemExtensions",
-    value: function applyStemExtensions() {
-      var notes = this.notes,
-          slope = this.slope,
-          y_shift = this.y_shift,
-          stem_direction = this.stem_direction,
-          beam_count = this.beam_count,
-          _this$render_options3 = this.render_options,
-          show_stemlets = _this$render_options3.show_stemlets,
-          stemlet_extension = _this$render_options3.stemlet_extension,
-          beam_width = _this$render_options3.beam_width;
-      var firstNote = notes[0];
-      var firstStemTipY = this.getBeamYToDraw();
-      var firstStemX = firstNote.getStemX();
-
-      for (var _i5 = 0; _i5 < notes.length; ++_i5) {
-        var _note6 = notes[_i5];
-
-        var stemX = _note6.getStemX();
-
-        var _note6$getStemExtents = _note6.getStemExtents(),
-            stemTipY = _note6$getStemExtents.topY;
-
-        var beamedStemTipY = this.getSlopeY(stemX, firstStemX, firstStemTipY, slope) + y_shift;
-
-        var preBeamExtension = _note6.getStem().getExtension();
-
-        var beamExtension = stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].UP ? stemTipY - beamedStemTipY : beamedStemTipY - stemTipY;
-
-        _note6.stem.setExtension(preBeamExtension + beamExtension);
-
-        _note6.stem.renderHeightAdjustment = -_stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].WIDTH / 2;
-
-        if (_note6.isRest() && show_stemlets) {
-          var beamWidth = beam_width;
-          var totalBeamWidth = (beam_count - 1) * beamWidth * 1.5 + beamWidth;
-
-          _note6.stem.setVisibility(true).setStemlet(true, totalBeamWidth + stemlet_extension);
-        }
-      }
-    } // return upper level beam direction.
-
-  }, {
-    key: "lookupBeamDirection",
-    value: function lookupBeamDirection(duration, prev_tick, tick, next_tick) {
-      if (duration === '4') {
-        return BEAM_LEFT;
-      }
-
-      var lookup_duration = "".concat(_tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].durationToNumber(duration) / 2);
-      var prev_note_gets_beam = prev_tick < _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].durationToTicks(lookup_duration);
-      var next_note_gets_beam = next_tick < _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].durationToTicks(lookup_duration);
-      var note_gets_beam = tick < _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].durationToTicks(lookup_duration);
-
-      if (prev_note_gets_beam && next_note_gets_beam && note_gets_beam) {
-        return BEAM_BOTH;
-      } else if (prev_note_gets_beam && !next_note_gets_beam && note_gets_beam) {
-        return BEAM_LEFT;
-      } else if (!prev_note_gets_beam && next_note_gets_beam && note_gets_beam) {
-        return BEAM_RIGHT;
-      }
-
-      return this.lookupBeamDirection(lookup_duration, prev_tick, tick, next_tick);
-    } // Get the x coordinates for the beam lines of specific `duration`
-
-  }, {
-    key: "getBeamLines",
-    value: function getBeamLines(duration) {
-      var tick_of_duration = _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].durationToTicks(duration);
-      var beam_lines = [];
-      var beam_started = false;
-      var current_beam = null;
-      var partial_beam_length = this.render_options.partial_beam_length;
-      var previous_should_break = false;
-      var tick_tally = 0;
-
-      for (var _i6 = 0; _i6 < this.notes.length; ++_i6) {
-        var _note7 = this.notes[_i6]; // See if we need to break secondary beams on this note.
-
-        var ticks = _note7.ticks.value();
-
-        tick_tally += ticks;
-        var should_break = false; // 8th note beams are always drawn.
-
-        if (parseInt(duration, 10) >= 8) {
-          // First, check to see if any indices were set up through breakSecondaryAt()
-          should_break = this.break_on_indices.indexOf(_i6) !== -1; // If the secondary breaks were auto-configured in the render options,
-          //  handle that as well.
-
-          if (this.render_options.secondary_break_ticks && tick_tally >= this.render_options.secondary_break_ticks) {
-            tick_tally = 0;
-            should_break = true;
-          }
-        }
-
-        var note_gets_beam = _note7.getIntrinsicTicks() < tick_of_duration;
-        var stem_x = _note7.getStemX() - _stem__WEBPACK_IMPORTED_MODULE_5__["Stem"].WIDTH / 2; // Check to see if the next note in the group will get a beam at this
-        //  level. This will help to inform the partial beam logic below.
-
-        var prev_note = this.notes[_i6 - 1];
-        var next_note = this.notes[_i6 + 1];
-        var next_note_gets_beam = next_note && next_note.getIntrinsicTicks() < tick_of_duration;
-        var prev_note_gets_beam = prev_note && prev_note.getIntrinsicTicks() < tick_of_duration;
-        var beam_alone = prev_note && next_note && note_gets_beam && !prev_note_gets_beam && !next_note_gets_beam; // const beam_alone = note_gets_beam && !prev_note_gets_beam && !next_note_gets_beam;
-
-        if (note_gets_beam) {
-          // This note gets a beam at the current level
-          if (beam_started) {
-            // We're currently in the middle of a beam. Just continue it on to
-            //  the stem X of the current note.
-            current_beam = beam_lines[beam_lines.length - 1];
-            current_beam.end = stem_x; // If a secondary beam break is set up, end the beam right now.
-
-            if (should_break) {
-              beam_started = false;
-
-              if (next_note && !next_note_gets_beam && current_beam.end === null) {
-                // This note gets a beam,.but the next one does not. This means
-                //  we need a partial pointing right.
-                current_beam.end = current_beam.start - partial_beam_length;
-              }
-            }
-          } else {
-            // No beam started yet. Start a new one.
-            current_beam = {
-              start: stem_x,
-              end: null
-            };
-            beam_started = true;
-
-            if (beam_alone) {
-              // previous and next beam exists and does not get a beam but current gets it.
-              var prev_tick = prev_note.getIntrinsicTicks();
-              var next_tick = next_note.getIntrinsicTicks();
-
-              var tick = _note7.getIntrinsicTicks();
-
-              var beam_direction = this.lookupBeamDirection(duration, prev_tick, tick, next_tick);
-
-              if ([BEAM_LEFT, BEAM_BOTH].includes(beam_direction)) {
-                current_beam.end = current_beam.start - partial_beam_length;
-              } else {
-                current_beam.end = current_beam.start + partial_beam_length;
-              }
-            } else if (!next_note_gets_beam) {
-              // The next note doesn't get a beam. Draw a partial.
-              if ((previous_should_break || _i6 === 0) && next_note) {
-                // This is the first note (but not the last one), or it is
-                //  following a secondary break. Draw a partial to the right.
-                current_beam.end = current_beam.start + partial_beam_length;
-              } else {
-                // By default, draw a partial to the left.
-                current_beam.end = current_beam.start - partial_beam_length;
-              }
-            } else if (should_break) {
-              // This note should have a secondary break after it. Even though
-              //  we just started a beam, it needs to end immediately.
-              current_beam.end = current_beam.start - partial_beam_length;
-              beam_started = false;
-            }
-
-            beam_lines.push(current_beam);
-          }
-        } else {
-          // The current note does not get a beam.
-          beam_started = false;
-        } // Store the secondary break flag to inform the partial beam logic in
-        //  the next iteration of the loop.
-
-
-        previous_should_break = should_break;
-      } // Add a partial beam pointing left if this is the last note in the group
-
-
-      var last_beam = beam_lines[beam_lines.length - 1];
-
-      if (last_beam && last_beam.end === null) {
-        last_beam.end = last_beam.start - partial_beam_length;
-      }
-
-      return beam_lines;
-    } // Render the stems for each notes
-
-  }, {
-    key: "drawStems",
-    value: function drawStems() {
-      var _this2 = this;
-
-      this.notes.forEach(function (note) {
-        if (note.getStem()) {
-          note.getStem().setContext(_this2.context).draw();
-        }
-      }, this);
-    } // Render the beam lines
-
-  }, {
-    key: "drawBeamLines",
-    value: function drawBeamLines() {
-      this.checkContext();
-      var valid_beam_durations = ['4', '8', '16', '32', '64'];
-      var firstNote = this.notes[0];
-      var beamY = this.getBeamYToDraw();
-      var firstStemX = firstNote.getStemX();
-      var beamThickness = this.render_options.beam_width * this.stem_direction; // Draw the beams.
-
-      for (var _i7 = 0; _i7 < valid_beam_durations.length; ++_i7) {
-        var duration = valid_beam_durations[_i7];
-        var beamLines = this.getBeamLines(duration);
-
-        for (var j = 0; j < beamLines.length; ++j) {
-          var beam_line = beamLines[j];
-          var startBeamX = beam_line.start;
-          var startBeamY = this.getSlopeY(startBeamX, firstStemX, beamY, this.slope);
-          var lastBeamX = beam_line.end;
-          var lastBeamY = this.getSlopeY(lastBeamX, firstStemX, beamY, this.slope);
-          this.context.beginPath();
-          this.context.moveTo(startBeamX, startBeamY);
-          this.context.lineTo(startBeamX, startBeamY + beamThickness);
-          this.context.lineTo(lastBeamX + 1, lastBeamY + beamThickness);
-          this.context.lineTo(lastBeamX + 1, lastBeamY);
-          this.context.closePath();
-          this.context.fill();
-        }
-
-        beamY += beamThickness * 1.5;
-      }
-    } // Pre-format the beam
-
-  }, {
-    key: "preFormat",
-    value: function preFormat() {
-      return this;
-    } // Post-format the beam. This can only be called after
-    // the notes in the beam have both `x` and `y` values. ie: they've
-    // been formatted and have staves
-
-  }, {
-    key: "postFormat",
-    value: function postFormat() {
-      if (this.postFormatted) return; // Calculate a smart slope if we're not forcing the beams to be flat.
-
-      if (this.notes[0].getCategory() === 'tabnotes' || this.render_options.flat_beams) {
-        this.calculateFlatSlope();
-      } else {
-        this.calculateSlope();
-      }
-
-      this.applyStemExtensions();
-      this.postFormatted = true;
-    } // Render the beam to the canvas context
-
-  }, {
-    key: "draw",
-    value: function draw() {
-      this.checkContext();
-      this.setRendered();
-      if (this.unbeamable) return;
-
-      if (!this.postFormatted) {
-        this.postFormat();
-      }
-
-      this.drawStems();
-      this.applyStyle();
-      this.drawBeamLines();
-      this.restoreStyle();
     }
   }]);
 
@@ -2580,12 +2586,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -2593,6 +2593,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -2637,56 +2647,18 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
      }]
  */
 
-var Bend =
-/*#__PURE__*/
-function (_Modifier) {
+var Bend = /*#__PURE__*/function (_Modifier) {
   _inherits(Bend, _Modifier);
 
-  _createClass(Bend, null, [{
-    key: "format",
-    // ## Static Methods
-    // Arrange bends in `ModifierContext`
-    value: function format(bends, state) {
-      if (!bends || bends.length === 0) return false;
-      var last_width = 0; // Bends are always on top.
+  var _super = _createSuper(Bend);
 
-      var text_line = state.top_text_line; // Format Bends
-
-      for (var i = 0; i < bends.length; ++i) {
-        var bend = bends[i];
-        bend.setXShift(last_width);
-        last_width = bend.getWidth();
-        bend.setTextLine(text_line);
-      }
-
-      state.right_shift += last_width;
-      state.top_text_line += 1;
-      return true;
-    } // ## Prototype Methods
-
-  }, {
-    key: "CATEGORY",
-    get: function get() {
-      return 'bends';
-    }
-  }, {
-    key: "UP",
-    get: function get() {
-      return 0;
-    }
-  }, {
-    key: "DOWN",
-    get: function get() {
-      return 1;
-    }
-  }]);
-
+  // ## Prototype Methods
   function Bend(text, release, phrase) {
     var _this;
 
     _classCallCheck(this, Bend);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Bend).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'Bend');
 
@@ -2886,6 +2858,42 @@ function (_Modifier) {
         renderArrowHead(last_bend.x + last_drawn_width, start.y, -1);
       }
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'bends';
+    }
+  }, {
+    key: "UP",
+    get: function get() {
+      return 0;
+    }
+  }, {
+    key: "DOWN",
+    get: function get() {
+      return 1;
+    } // ## Static Methods
+    // Arrange bends in `ModifierContext`
+
+  }, {
+    key: "format",
+    value: function format(bends, state) {
+      if (!bends || bends.length === 0) return false;
+      var last_width = 0; // Bends are always on top.
+
+      var text_line = state.top_text_line; // Format Bends
+
+      for (var i = 0; i < bends.length; ++i) {
+        var bend = bends[i];
+        bend.setXShift(last_width);
+        last_width = bend.getWidth();
+        bend.setTextLine(text_line);
+      }
+
+      state.right_shift += last_width;
+      state.top_text_line += 1;
+      return true;
+    }
   }]);
 
   return Bend;
@@ -2914,16 +2922,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 //
 // Copyright Mohit Muthanna 2010
 // Bounding boxes for interactive notation
-var BoundingBox =
-/*#__PURE__*/
-function () {
-  _createClass(BoundingBox, null, [{
-    key: "copy",
-    value: function copy(that) {
-      return new BoundingBox(that.x, that.y, that.w, that.h);
-    }
-  }]);
-
+var BoundingBox = /*#__PURE__*/function () {
   function BoundingBox(x, y, w, h) {
     _classCallCheck(this, BoundingBox);
 
@@ -3013,6 +3012,11 @@ function () {
       ctx.rect(this.x + x, this.y + y, this.w, this.h);
       ctx.stroke();
     }
+  }], [{
+    key: "copy",
+    value: function copy(that) {
+      return new BoundingBox(that.x, that.y, that.w, that.h);
+    }
   }]);
 
   return BoundingBox;
@@ -3045,9 +3049,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 //
 // taken from: https://github.com/gabelerner/canvg/blob/860e418aca67b9a41e858a223d74d375793ec364/ca
 // nvg.js#L449
-var BoundingBoxComputation =
-/*#__PURE__*/
-function () {
+var BoundingBoxComputation = /*#__PURE__*/function () {
   function BoundingBoxComputation(x1, y1, x2, y2) {
     _classCallCheck(this, BoundingBoxComputation);
 
@@ -3188,11 +3190,15 @@ function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CanvasContext", function() { return CanvasContext; });
 /* harmony import */ var _vex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vex */ "./src/vex.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -3211,43 +3217,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 /** @constructor */
 
-var CanvasContext =
-/*#__PURE__*/
-function () {
-  _createClass(CanvasContext, null, [{
-    key: "SanitizeCanvasDims",
-    value: function SanitizeCanvasDims(width, height) {
-      if (Math.max(width, height) > this.CANVAS_BROWSER_SIZE_LIMIT) {
-        _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].W('Canvas dimensions exceed browser limit. Cropping to ' + this.CANVAS_BROWSER_SIZE_LIMIT);
-
-        if (width > this.CANVAS_BROWSER_SIZE_LIMIT) {
-          width = this.CANVAS_BROWSER_SIZE_LIMIT; // note: Math.min return 0 for undefined, NaN for null. Would change inputs.
-        }
-
-        if (height > this.CANVAS_BROWSER_SIZE_LIMIT) {
-          height = this.CANVAS_BROWSER_SIZE_LIMIT;
-        }
-      }
-
-      return [width, height];
-    }
-  }, {
-    key: "WIDTH",
-    get: function get() {
-      return 600;
-    }
-  }, {
-    key: "HEIGHT",
-    get: function get() {
-      return 400;
-    }
-  }, {
-    key: "CANVAS_BROWSER_SIZE_LIMIT",
-    get: function get() {
-      return 32767; // Chrome/Firefox. Could be determined more precisely by npm module canvas-size
-    }
-  }]);
-
+var CanvasContext = /*#__PURE__*/function () {
   function CanvasContext(context) {
     _classCallCheck(this, CanvasContext);
 
@@ -3450,6 +3420,38 @@ function () {
     value: function restore() {
       return this.vexFlowCanvasContext.restore();
     }
+  }], [{
+    key: "WIDTH",
+    get: function get() {
+      return 600;
+    }
+  }, {
+    key: "HEIGHT",
+    get: function get() {
+      return 400;
+    }
+  }, {
+    key: "CANVAS_BROWSER_SIZE_LIMIT",
+    get: function get() {
+      return 32767; // Chrome/Firefox. Could be determined more precisely by npm module canvas-size
+    }
+  }, {
+    key: "SanitizeCanvasDims",
+    value: function SanitizeCanvasDims(width, height) {
+      if (Math.max(width, height) > this.CANVAS_BROWSER_SIZE_LIMIT) {
+        _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].W('Canvas dimensions exceed browser limit. Cropping to ' + this.CANVAS_BROWSER_SIZE_LIMIT);
+
+        if (width > this.CANVAS_BROWSER_SIZE_LIMIT) {
+          width = this.CANVAS_BROWSER_SIZE_LIMIT; // note: Math.min return 0 for undefined, NaN for null. Would change inputs.
+        }
+
+        if (height > this.CANVAS_BROWSER_SIZE_LIMIT) {
+          height = this.CANVAS_BROWSER_SIZE_LIMIT;
+        }
+      }
+
+      return [width, height];
+    }
   }]);
 
   return CanvasContext;
@@ -3476,12 +3478,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -3489,6 +3485,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -3513,382 +3519,21 @@ function L() {
   if (ChordSymbol.DEBUG) _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].L('Vex.Flow.ChordSymbol', args);
 }
 
-var ChordSymbol =
-/*#__PURE__*/
-function (_Modifier) {
+var ChordSymbol = /*#__PURE__*/function (_Modifier) {
   _inherits(ChordSymbol, _Modifier);
 
-  _createClass(ChordSymbol, [{
-    key: "getYOffsetForText",
-    value: function getYOffsetForText(text) {
-      var acc = 0;
-      var ix = 0;
-      var resolution = this.textFont.resolution;
+  var _super = _createSuper(ChordSymbol);
 
-      for (ix = 0; ix < text.length; ++ix) {
-        var metric = this.textFont.getMetricForCharacter(text[ix]);
-
-        if (metric) {
-          acc = metric.y < acc ? metric.y : acc;
-        }
-      }
-
-      return ix > 0 ? -1 * (acc / resolution) : 0;
-    }
-  }, {
-    key: "getWidthForCharacter",
-    value: function getWidthForCharacter(c) {
-      return this.textFont.getMetricForCharacter(c).advanceWidth / this.textFont.resolution;
-    }
-  }], [{
-    key: "getMetricForGlyph",
-    value: function getMetricForGlyph(glyphCode) {
-      if (ChordSymbol.chordSymbolMetrics[glyphCode]) {
-        return ChordSymbol.chordSymbolMetrics[glyphCode];
-      }
-
-      return null;
-    }
-  }, {
-    key: "getWidthForGlyph",
-    value: function getWidthForGlyph(glyph) {
-      var metric = ChordSymbol.getMetricForGlyph(glyph.code);
-
-      if (!metric) {
-        return 0.65; // probably should do something here.
-      }
-
-      return metric.advanceWidth / ChordSymbol.engravingFontResolution;
-    }
-  }, {
-    key: "getYShiftForGlyph",
-    value: function getYShiftForGlyph(glyph) {
-      var metric = ChordSymbol.getMetricForGlyph(glyph.code);
-
-      if (!metric) {
-        return 0;
-      }
-
-      return metric.yOffset / ChordSymbol.engravingFontResolution;
-    }
-  }, {
-    key: "getXShiftForGlyph",
-    value: function getXShiftForGlyph(glyph) {
-      var metric = ChordSymbol.getMetricForGlyph(glyph.code);
-
-      if (!metric) {
-        return 0;
-      }
-
-      return -1 * metric.leftSideBearing / ChordSymbol.engravingFontResolution;
-    }
-  }, {
-    key: "format",
-    // ### format
-    // try to estimate the width of the whole chord symbol, based on the
-    // sum of the widths of the individual blocks.  Also estimate how many
-    // lines above/below the staff we need`
-    value: function format(instances, state) {
-      if (!instances || instances.length === 0) return false;
-      var width = 0;
-      var nonSuperWidth = 0;
-      var reportedWidths = [];
-
-      for (var i = 0; i < instances.length; ++i) {
-        var instance = instances[i];
-        var fontAdj = instance.font.size / 20;
-        var glyphAdj = fontAdj * 2;
-        var lineSpaces = 1;
-        var vAlign = false;
-
-        for (var j = 0; j < instance.symbolBlocks.length; ++j) {
-          var symbol = instance.symbolBlocks[j];
-          var sup = instance.isSuperscript(symbol);
-          var sub = instance.isSubscript(symbol);
-          var subAdj = sup || sub ? ChordSymbol.superSubRatio : 1;
-          var adj = symbol.symbolType === ChordSymbol.symbolTypes.GLYPH ? glyphAdj * subAdj : fontAdj * subAdj; // If there are super/subscripts, they extend beyond the line so
-          // assume they take up 2 lines
-
-          if (sup || sub) {
-            lineSpaces = 2;
-          } // If there is a symbol-specific offset, add it but consider font
-          // size since font and glyphs will be interspersed
-
-
-          if (symbol.symbolType === ChordSymbol.symbolTypes.GLYPH) {
-            symbol.yShift += ChordSymbol.getYShiftForGlyph(symbol.glyph) * instance.pointsToPixels * subAdj;
-            symbol.xShift += ChordSymbol.getXShiftForGlyph(symbol.glyph) * instance.pointsToPixels * subAdj;
-            symbol.glyph.scale = symbol.glyph.scale * adj;
-            symbol.width = ChordSymbol.getWidthForGlyph(symbol.glyph) * instance.pointsToPixels * subAdj;
-          } else if (symbol.symbolType === ChordSymbol.symbolTypes.TEXT) {
-            symbol.width = symbol.width * instance.textFont.pointsToPixels * subAdj;
-            symbol.yShift += instance.getYOffsetForText(symbol.text) * adj;
-          }
-
-          if (symbol.symbolType === ChordSymbol.symbolTypes.GLYPH && symbol.glyph.code === ChordSymbol.glyphs.over.code) {
-            lineSpaces = 2;
-          }
-
-          symbol.width += ChordSymbol.spacingBetweenBlocks * instance.pointsToPixels * subAdj; // If a subscript immediately  follows a superscript block, try to
-          // overlay them.
-
-          if (sup && j > 0) {
-            var prev = instance.symbolBlocks[j - 1];
-
-            if (!instance.isSuperscript(prev)) {
-              nonSuperWidth = width;
-            }
-          }
-
-          if (sub && nonSuperWidth > 0) {
-            vAlign = true; // slide the symbol over so it lines up with superscript
-
-            symbol.xShift = symbol.xShift + (nonSuperWidth - width);
-            width = nonSuperWidth;
-            nonSuperWidth = 0; // If we have vertically lined up, turn kerning off.
-
-            instance.setEnableKerning(false);
-          }
-
-          if (!sup && !sub) {
-            nonSuperWidth = 0;
-          }
-
-          symbol.vAlign = vAlign;
-          width += symbol.width;
-        } // make kerning adjustments after computing super/subscripts
-
-
-        instance.updateKerningAdjustments();
-        instance.updateOverBarAdjustments();
-
-        if (instance.getVertical() === ChordSymbol.verticalJustify.TOP) {
-          instance.setTextLine(state.top_text_line);
-          state.top_text_line += lineSpaces;
-        } else {
-          instance.setTextLine(state.text_line + 1);
-          state.text_line += lineSpaces + 1;
-        }
-
-        if (instance.getReportWidth()) {
-          reportedWidths.push(width);
-        } else {
-          reportedWidths.push(0);
-        }
-      }
-
-      width = reportedWidths.reduce(function (a, b) {
-        return a + b;
-      });
-      state.left_shift += width / 2;
-      state.right_shift += width / 2;
-      return true;
-    } // ## Prototype Methods
-    //
-    // chordSymbol is a modifier that creates a chord symbol above/below a chord
-    // This is the modifier version, meaning it is attached to an existing note.
-
-  }, {
-    key: "CATEGORY",
-    get: function get() {
-      return 'chordSymbol';
-    } // Chord symbols can be positioned and justified relative to the note.
-
-  }, {
-    key: "horizontalJustify",
-    get: function get() {
-      return {
-        LEFT: 1,
-        CENTER: 2,
-        RIGHT: 3,
-        CENTER_STEM: 4
-      };
-    }
-  }, {
-    key: "horizontalJustifyString",
-    get: function get() {
-      return {
-        left: ChordSymbol.horizontalJustify.LEFT,
-        right: ChordSymbol.horizontalJustify.RIGHT,
-        center: ChordSymbol.horizontalJustify.CENTER,
-        centerStem: ChordSymbol.horizontalJustify.CENTER_STEM
-      };
-    }
-  }, {
-    key: "verticalJustify",
-    get: function get() {
-      return {
-        TOP: 1,
-        BOTTOM: 2
-      };
-    }
-  }, {
-    key: "superSubRatio",
-    get: function get() {
-      return ChordSymbol.chordSymbolMetrics.global.superSubRatio;
-    }
-  }, {
-    key: "DEBUG",
-    get: function get() {
-      return ChordSymbol.debug;
-    } // ### NOTEXTFORMAT
-    // used to globally turn off text formatting, if the built-in formatting does not
-    // work for your font..
-    ,
-    set: function set(val) {
-      ChordSymbol.debug = val;
-    }
-  }, {
-    key: "NOTEXTFORMAT",
-    get: function get() {
-      return typeof ChordSymbol.noFormat === 'undefined' ? false : ChordSymbol.noFormat;
-    },
-    set: function set(val) {
-      ChordSymbol.noFormat = val;
-    }
-  }, {
-    key: "verticalJustifyString",
-    get: function get() {
-      return {
-        top: ChordSymbol.verticalJustify.TOP,
-        above: ChordSymbol.verticalJustify.TOP,
-        below: ChordSymbol.verticalJustify.BOTTOM,
-        bottom: ChordSymbol.verticalJustify.BOTTOM
-      };
-    }
-  }, {
-    key: "engravingFontResolution",
-    get: function get() {
-      return _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DEFAULT_FONT_STACK[0].getResolution();
-    }
-  }, {
-    key: "spacingBetweenBlocks",
-    get: function get() {
-      return ChordSymbol.chordSymbolMetrics.global.spacing / ChordSymbol.engravingFontResolution;
-    }
-  }, {
-    key: "superscriptOffset",
-    get: function get() {
-      return ChordSymbol.chordSymbolMetrics.global.superscriptOffset / ChordSymbol.engravingFontResolution;
-    }
-  }, {
-    key: "subscriptOffset",
-    get: function get() {
-      return ChordSymbol.chordSymbolMetrics.global.subscriptOffset / ChordSymbol.engravingFontResolution;
-    }
-  }, {
-    key: "kerningOffset",
-    get: function get() {
-      return ChordSymbol.chordSymbolMetrics.global.kerningOffset / ChordSymbol.engravingFontResolution;
-    } // Glyph data
-
-  }, {
-    key: "glyphs",
-    get: function get() {
-      return {
-        'diminished': {
-          code: 'csymDiminished'
-        },
-        'dim': {
-          code: 'csymDiminished'
-        },
-        'halfDiminished': {
-          code: 'csymHalfDiminished'
-        },
-        '+': {
-          code: 'csymAugmented'
-        },
-        'augmented': {
-          code: 'csymAugmented'
-        },
-        'majorSeventh': {
-          code: 'csymMajorSeventh'
-        },
-        'minor': {
-          code: 'csymMinor'
-        },
-        '-': {
-          code: 'csymMinor'
-        },
-        '(': {
-          code: 'csymParensLeftTall'
-        },
-        'leftParen': {
-          code: 'csymParensLeftTall'
-        },
-        ')': {
-          code: 'csymParensRightTall'
-        },
-        'rightParen': {
-          code: 'csymParensRightTall'
-        },
-        'leftBracket': {
-          code: 'csymBracketLeftTall'
-        },
-        'rightBracket': {
-          code: 'csymBracketRightTall'
-        },
-        'leftParenTall': {
-          code: 'csymParensLeftVeryTall'
-        },
-        'rightParenTall': {
-          code: 'csymParensRightVeryTall'
-        },
-        '/': {
-          code: 'csymDiagonalArrangementSlash'
-        },
-        'over': {
-          code: 'csymDiagonalArrangementSlash'
-        },
-        '#': {
-          code: 'accidentalSharp'
-        },
-        'b': {
-          code: 'accidentalFlat'
-        }
-      };
-    }
-  }, {
-    key: "symbolTypes",
-    get: function get() {
-      return {
-        GLYPH: 1,
-        TEXT: 2,
-        LINE: 3
-      };
-    }
-  }, {
-    key: "symbolModifiers",
-    get: function get() {
-      return {
-        NONE: 1,
-        SUBSCRIPT: 2,
-        SUPERSCRIPT: 3
-      };
-    }
-  }, {
-    key: "chordSymbolMetrics",
-    get: function get() {
-      return _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.chordSymbol;
-    }
-  }, {
-    key: "lowerKerningText",
-    get: function get() {
-      return _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.chordSymbol.global.lowerKerningText;
-    }
-  }, {
-    key: "upperKerningText",
-    get: function get() {
-      return _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.chordSymbol.global.upperKerningText;
-    }
-  }]);
-
+  // ## Prototype Methods
+  //
+  // chordSymbol is a modifier that creates a chord symbol above/below a chord
+  // This is the modifier version, meaning it is attached to an existing note.
   function ChordSymbol() {
     var _this;
 
     _classCallCheck(this, ChordSymbol);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(ChordSymbol).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'ChordSymbol');
 
@@ -3919,6 +3564,43 @@ function (_Modifier) {
 
 
   _createClass(ChordSymbol, [{
+    key: "getYOffsetForText",
+    value: function getYOffsetForText(text) {
+      var acc = 0;
+      var ix = 0;
+      var resolution = this.textFont.resolution;
+
+      for (ix = 0; ix < text.length; ++ix) {
+        var metric = this.textFont.getMetricForCharacter(text[ix]);
+
+        if (metric) {
+          acc = metric.y < acc ? metric.y : acc;
+        }
+      }
+
+      return ix > 0 ? -1 * (acc / resolution) : 0;
+    }
+  }, {
+    key: "getWidthForCharacter",
+    value: function getWidthForCharacter(c) {
+      return this.textFont.getMetricForCharacter(c).advanceWidth / this.textFont.resolution;
+    }
+  }, {
+    key: "pointsToPixels",
+    get: function get() {
+      return this.textFont.pointsToPixels;
+    }
+  }, {
+    key: "superscriptOffset",
+    get: function get() {
+      return ChordSymbol.superscriptOffset * this.pointsToPixels;
+    }
+  }, {
+    key: "subscriptOffset",
+    get: function get() {
+      return ChordSymbol.subscriptOffset * this.pointsToPixels;
+    }
+  }, {
     key: "setReportWidth",
     value: function setReportWidth(value) {
       this.reportWidth = value;
@@ -4306,9 +3988,9 @@ function (_Modifier) {
         x = start.x + this.getWidth();
       } else if (this.horizontal === ChordSymbol.horizontalJustify.CENTER) {
         x = start.x - this.getWidth() / 2;
-      } else
-        /* CENTER_STEM */
-        {
+      }
+      /* CENTER_STEM */
+      else {
           x = this.note.getStemX() - this.getWidth() / 2;
         }
 
@@ -4379,20 +4061,342 @@ function (_Modifier) {
       this.context.closeGroup();
       this.context.restore();
     }
-  }, {
-    key: "pointsToPixels",
+  }], [{
+    key: "CATEGORY",
     get: function get() {
-      return this.textFont.pointsToPixels;
+      return 'chordSymbol';
+    } // Chord symbols can be positioned and justified relative to the note.
+
+  }, {
+    key: "horizontalJustify",
+    get: function get() {
+      return {
+        LEFT: 1,
+        CENTER: 2,
+        RIGHT: 3,
+        CENTER_STEM: 4
+      };
+    }
+  }, {
+    key: "horizontalJustifyString",
+    get: function get() {
+      return {
+        left: ChordSymbol.horizontalJustify.LEFT,
+        right: ChordSymbol.horizontalJustify.RIGHT,
+        center: ChordSymbol.horizontalJustify.CENTER,
+        centerStem: ChordSymbol.horizontalJustify.CENTER_STEM
+      };
+    }
+  }, {
+    key: "verticalJustify",
+    get: function get() {
+      return {
+        TOP: 1,
+        BOTTOM: 2
+      };
+    }
+  }, {
+    key: "superSubRatio",
+    get: function get() {
+      return ChordSymbol.chordSymbolMetrics.global.superSubRatio;
+    }
+  }, {
+    key: "DEBUG",
+    get: function get() {
+      return ChordSymbol.debug;
+    } // ### NOTEXTFORMAT
+    // used to globally turn off text formatting, if the built-in formatting does not
+    // work for your font..
+    ,
+    set: function set(val) {
+      ChordSymbol.debug = val;
+    }
+  }, {
+    key: "NOTEXTFORMAT",
+    get: function get() {
+      return typeof ChordSymbol.noFormat === 'undefined' ? false : ChordSymbol.noFormat;
+    },
+    set: function set(val) {
+      ChordSymbol.noFormat = val;
+    }
+  }, {
+    key: "verticalJustifyString",
+    get: function get() {
+      return {
+        top: ChordSymbol.verticalJustify.TOP,
+        above: ChordSymbol.verticalJustify.TOP,
+        below: ChordSymbol.verticalJustify.BOTTOM,
+        bottom: ChordSymbol.verticalJustify.BOTTOM
+      };
+    }
+  }, {
+    key: "getMetricForGlyph",
+    value: function getMetricForGlyph(glyphCode) {
+      if (ChordSymbol.chordSymbolMetrics[glyphCode]) {
+        return ChordSymbol.chordSymbolMetrics[glyphCode];
+      }
+
+      return null;
+    }
+  }, {
+    key: "engravingFontResolution",
+    get: function get() {
+      return _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DEFAULT_FONT_STACK[0].getResolution();
+    }
+  }, {
+    key: "spacingBetweenBlocks",
+    get: function get() {
+      return ChordSymbol.chordSymbolMetrics.global.spacing / ChordSymbol.engravingFontResolution;
+    }
+  }, {
+    key: "getWidthForGlyph",
+    value: function getWidthForGlyph(glyph) {
+      var metric = ChordSymbol.getMetricForGlyph(glyph.code);
+
+      if (!metric) {
+        return 0.65; // probably should do something here.
+      }
+
+      return metric.advanceWidth / ChordSymbol.engravingFontResolution;
+    }
+  }, {
+    key: "getYShiftForGlyph",
+    value: function getYShiftForGlyph(glyph) {
+      var metric = ChordSymbol.getMetricForGlyph(glyph.code);
+
+      if (!metric) {
+        return 0;
+      }
+
+      return metric.yOffset / ChordSymbol.engravingFontResolution;
+    }
+  }, {
+    key: "getXShiftForGlyph",
+    value: function getXShiftForGlyph(glyph) {
+      var metric = ChordSymbol.getMetricForGlyph(glyph.code);
+
+      if (!metric) {
+        return 0;
+      }
+
+      return -1 * metric.leftSideBearing / ChordSymbol.engravingFontResolution;
     }
   }, {
     key: "superscriptOffset",
     get: function get() {
-      return ChordSymbol.superscriptOffset * this.pointsToPixels;
+      return ChordSymbol.chordSymbolMetrics.global.superscriptOffset / ChordSymbol.engravingFontResolution;
     }
   }, {
     key: "subscriptOffset",
     get: function get() {
-      return ChordSymbol.subscriptOffset * this.pointsToPixels;
+      return ChordSymbol.chordSymbolMetrics.global.subscriptOffset / ChordSymbol.engravingFontResolution;
+    }
+  }, {
+    key: "kerningOffset",
+    get: function get() {
+      return ChordSymbol.chordSymbolMetrics.global.kerningOffset / ChordSymbol.engravingFontResolution;
+    } // Glyph data
+
+  }, {
+    key: "glyphs",
+    get: function get() {
+      return {
+        diminished: {
+          code: 'csymDiminished'
+        },
+        dim: {
+          code: 'csymDiminished'
+        },
+        halfDiminished: {
+          code: 'csymHalfDiminished'
+        },
+        '+': {
+          code: 'csymAugmented'
+        },
+        augmented: {
+          code: 'csymAugmented'
+        },
+        majorSeventh: {
+          code: 'csymMajorSeventh'
+        },
+        minor: {
+          code: 'csymMinor'
+        },
+        '-': {
+          code: 'csymMinor'
+        },
+        '(': {
+          code: 'csymParensLeftTall'
+        },
+        leftParen: {
+          code: 'csymParensLeftTall'
+        },
+        ')': {
+          code: 'csymParensRightTall'
+        },
+        rightParen: {
+          code: 'csymParensRightTall'
+        },
+        leftBracket: {
+          code: 'csymBracketLeftTall'
+        },
+        rightBracket: {
+          code: 'csymBracketRightTall'
+        },
+        leftParenTall: {
+          code: 'csymParensLeftVeryTall'
+        },
+        rightParenTall: {
+          code: 'csymParensRightVeryTall'
+        },
+        '/': {
+          code: 'csymDiagonalArrangementSlash'
+        },
+        over: {
+          code: 'csymDiagonalArrangementSlash'
+        },
+        '#': {
+          code: 'accidentalSharp'
+        },
+        b: {
+          code: 'accidentalFlat'
+        }
+      };
+    }
+  }, {
+    key: "symbolTypes",
+    get: function get() {
+      return {
+        GLYPH: 1,
+        TEXT: 2,
+        LINE: 3
+      };
+    }
+  }, {
+    key: "symbolModifiers",
+    get: function get() {
+      return {
+        NONE: 1,
+        SUBSCRIPT: 2,
+        SUPERSCRIPT: 3
+      };
+    }
+  }, {
+    key: "chordSymbolMetrics",
+    get: function get() {
+      return _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.chordSymbol;
+    }
+  }, {
+    key: "lowerKerningText",
+    get: function get() {
+      return _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.chordSymbol.global.lowerKerningText;
+    }
+  }, {
+    key: "upperKerningText",
+    get: function get() {
+      return _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.chordSymbol.global.upperKerningText;
+    } // ### format
+    // try to estimate the width of the whole chord symbol, based on the
+    // sum of the widths of the individual blocks.  Also estimate how many
+    // lines above/below the staff we need`
+
+  }, {
+    key: "format",
+    value: function format(instances, state) {
+      if (!instances || instances.length === 0) return false;
+      var width = 0;
+      var nonSuperWidth = 0;
+      var reportedWidths = [];
+
+      for (var i = 0; i < instances.length; ++i) {
+        var instance = instances[i];
+        var fontAdj = instance.font.size / 20;
+        var glyphAdj = fontAdj * 2;
+        var lineSpaces = 1;
+        var vAlign = false;
+
+        for (var j = 0; j < instance.symbolBlocks.length; ++j) {
+          var symbol = instance.symbolBlocks[j];
+          var sup = instance.isSuperscript(symbol);
+          var sub = instance.isSubscript(symbol);
+          var subAdj = sup || sub ? ChordSymbol.superSubRatio : 1;
+          var adj = symbol.symbolType === ChordSymbol.symbolTypes.GLYPH ? glyphAdj * subAdj : fontAdj * subAdj; // If there are super/subscripts, they extend beyond the line so
+          // assume they take up 2 lines
+
+          if (sup || sub) {
+            lineSpaces = 2;
+          } // If there is a symbol-specific offset, add it but consider font
+          // size since font and glyphs will be interspersed
+
+
+          if (symbol.symbolType === ChordSymbol.symbolTypes.GLYPH) {
+            symbol.yShift += ChordSymbol.getYShiftForGlyph(symbol.glyph) * instance.pointsToPixels * subAdj;
+            symbol.xShift += ChordSymbol.getXShiftForGlyph(symbol.glyph) * instance.pointsToPixels * subAdj;
+            symbol.glyph.scale = symbol.glyph.scale * adj;
+            symbol.width = ChordSymbol.getWidthForGlyph(symbol.glyph) * instance.pointsToPixels * subAdj;
+          } else if (symbol.symbolType === ChordSymbol.symbolTypes.TEXT) {
+            symbol.width = symbol.width * instance.textFont.pointsToPixels * subAdj;
+            symbol.yShift += instance.getYOffsetForText(symbol.text) * adj;
+          }
+
+          if (symbol.symbolType === ChordSymbol.symbolTypes.GLYPH && symbol.glyph.code === ChordSymbol.glyphs.over.code) {
+            lineSpaces = 2;
+          }
+
+          symbol.width += ChordSymbol.spacingBetweenBlocks * instance.pointsToPixels * subAdj; // If a subscript immediately  follows a superscript block, try to
+          // overlay them.
+
+          if (sup && j > 0) {
+            var prev = instance.symbolBlocks[j - 1];
+
+            if (!instance.isSuperscript(prev)) {
+              nonSuperWidth = width;
+            }
+          }
+
+          if (sub && nonSuperWidth > 0) {
+            vAlign = true; // slide the symbol over so it lines up with superscript
+
+            symbol.xShift = symbol.xShift + (nonSuperWidth - width);
+            width = nonSuperWidth;
+            nonSuperWidth = 0; // If we have vertically lined up, turn kerning off.
+
+            instance.setEnableKerning(false);
+          }
+
+          if (!sup && !sub) {
+            nonSuperWidth = 0;
+          }
+
+          symbol.vAlign = vAlign;
+          width += symbol.width;
+        } // make kerning adjustments after computing super/subscripts
+
+
+        instance.updateKerningAdjustments();
+        instance.updateOverBarAdjustments();
+
+        if (instance.getVertical() === ChordSymbol.verticalJustify.TOP) {
+          instance.setTextLine(state.top_text_line);
+          state.top_text_line += lineSpaces;
+        } else {
+          instance.setTextLine(state.text_line + 1);
+          state.text_line += lineSpaces + 1;
+        }
+
+        if (instance.getReportWidth()) {
+          reportedWidths.push(width);
+        } else {
+          reportedWidths.push(0);
+        }
+      }
+
+      width = reportedWidths.reduce(function (a, b) {
+        return a + b;
+      });
+      state.left_shift += width / 2;
+      state.right_shift += width / 2;
+      return true;
     }
   }]);
 
@@ -4418,12 +4422,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -4431,6 +4429,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna Cheppudira 2013.
 // Co-author: Benjamin W. Bohl
@@ -4452,81 +4460,19 @@ function L() {
   if (Clef.DEBUG) _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].L('Vex.Flow.Clef', args);
 }
 
-var Clef =
-/*#__PURE__*/
-function (_StaveModifier) {
+var Clef = /*#__PURE__*/function (_StaveModifier) {
   _inherits(Clef, _StaveModifier);
 
-  _createClass(Clef, null, [{
-    key: "CATEGORY",
-    get: function get() {
-      return 'clefs';
-    } // Every clef name is associated with a glyph code from the font file
-    // and a default stave line number.
+  var _super = _createSuper(Clef);
 
-  }, {
-    key: "types",
-    get: function get() {
-      return {
-        'treble': {
-          code: 'gClef',
-          line: 3
-        },
-        'bass': {
-          code: 'fClef',
-          line: 1
-        },
-        'alto': {
-          code: 'cClef',
-          line: 2
-        },
-        'tenor': {
-          code: 'cClef',
-          line: 1
-        },
-        'percussion': {
-          code: 'restMaxima',
-          line: 2
-        },
-        'soprano': {
-          code: 'cClef',
-          line: 4
-        },
-        'mezzo-soprano': {
-          code: 'cClef',
-          line: 3
-        },
-        'baritone-c': {
-          code: 'cClef',
-          line: 0
-        },
-        'baritone-f': {
-          code: 'fClef',
-          line: 2
-        },
-        'subbass': {
-          code: 'fClef',
-          line: 0
-        },
-        'french': {
-          code: 'gClef',
-          line: 4
-        },
-        'tab': {
-          code: '6stringTabClef'
-        }
-      };
-    } // Create a new clef. The parameter `clef` must be a key from
-    // `Clef.types`.
-
-  }]);
-
+  // Create a new clef. The parameter `clef` must be a key from
+  // `Clef.types`.
   function Clef(type, size, annotation) {
     var _this;
 
     _classCallCheck(this, Clef);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Clef).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'Clef');
 
@@ -4625,6 +4571,66 @@ function (_StaveModifier) {
         this.attachment.renderToStave(this.x);
       }
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'clefs';
+    } // Every clef name is associated with a glyph code from the font file
+    // and a default stave line number.
+
+  }, {
+    key: "types",
+    get: function get() {
+      return {
+        treble: {
+          code: 'gClef',
+          line: 3
+        },
+        bass: {
+          code: 'fClef',
+          line: 1
+        },
+        alto: {
+          code: 'cClef',
+          line: 2
+        },
+        tenor: {
+          code: 'cClef',
+          line: 1
+        },
+        percussion: {
+          code: 'restMaxima',
+          line: 2
+        },
+        soprano: {
+          code: 'cClef',
+          line: 4
+        },
+        'mezzo-soprano': {
+          code: 'cClef',
+          line: 3
+        },
+        'baritone-c': {
+          code: 'cClef',
+          line: 0
+        },
+        'baritone-f': {
+          code: 'fClef',
+          line: 2
+        },
+        subbass: {
+          code: 'fClef',
+          line: 0
+        },
+        french: {
+          code: 'gClef',
+          line: 4
+        },
+        tab: {
+          code: '6stringTabClef'
+        }
+      };
+    }
   }]);
 
   return Clef;
@@ -4650,23 +4656,27 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Copyright Mohit Muthanna 2010
@@ -4678,26 +4688,19 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 /** @constructor */
 
-var ClefNote =
-/*#__PURE__*/
-function (_Note) {
+var ClefNote = /*#__PURE__*/function (_Note) {
   _inherits(ClefNote, _Note);
 
-  _createClass(ClefNote, null, [{
-    key: "CATEGORY",
-    get: function get() {
-      return 'clefnote';
-    }
-  }]);
+  var _super = _createSuper(ClefNote);
 
   function ClefNote(type, size, annotation) {
     var _this;
 
     _classCallCheck(this, ClefNote);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(ClefNote).call(this, {
+    _this = _super.call(this, {
       duration: 'b'
-    }));
+    });
 
     _this.setAttribute('type', 'ClefNote');
 
@@ -4780,6 +4783,11 @@ function (_Note) {
         attachment.renderToStave(abs_x);
       }
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'clefnote';
+    }
   }]);
 
   return ClefNote;
@@ -4808,15 +4816,19 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -4861,10 +4873,10 @@ function renderHairpin(ctx, params) {
   ctx.closePath();
 }
 
-var Crescendo =
-/*#__PURE__*/
-function (_Note) {
+var Crescendo = /*#__PURE__*/function (_Note) {
   _inherits(Crescendo, _Note);
+
+  var _super = _createSuper(Crescendo);
 
   // Initialize the crescendo's properties
   function Crescendo(note_struct) {
@@ -4872,7 +4884,7 @@ function (_Note) {
 
     _classCallCheck(this, Crescendo);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Crescendo).call(this, note_struct));
+    _this = _super.call(this, note_struct);
 
     _this.setAttribute('type', 'Crescendo'); // Whether the object is a decrescendo
 
@@ -4964,12 +4976,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -4978,47 +4984,39 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 // VexFlow - Music Engraving for HTML5
 // Copyright Mohit Muthanna 2010
 //
 // This class implements curves (for slurs)
 
 
-var Curve =
-/*#__PURE__*/
-function (_Element) {
+var Curve = /*#__PURE__*/function (_Element) {
   _inherits(Curve, _Element);
 
-  _createClass(Curve, null, [{
-    key: "Position",
-    get: function get() {
-      return {
-        NEAR_HEAD: 1,
-        NEAR_TOP: 2
-      };
-    }
-  }, {
-    key: "PositionString",
-    get: function get() {
-      return {
-        nearHead: Curve.Position.NEAR_HEAD,
-        nearTop: Curve.Position.NEAR_TOP
-      };
-    } // from: Start note
-    // to: End note
-    // options:
-    //    cps: List of control points
-    //    x_shift: pixels to shift
-    //    y_shift: pixels to shift
+  var _super = _createSuper(Curve);
 
-  }]);
-
+  // from: Start note
+  // to: End note
+  // options:
+  //    cps: List of control points
+  //    x_shift: pixels to shift
+  //    y_shift: pixels to shift
   function Curve(from, to, options) {
     var _this;
 
     _classCallCheck(this, Curve);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Curve).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'Curve');
 
@@ -5146,6 +5144,22 @@ function (_Element) {
       });
       return true;
     }
+  }], [{
+    key: "Position",
+    get: function get() {
+      return {
+        NEAR_HEAD: 1,
+        NEAR_TOP: 2
+      };
+    }
+  }, {
+    key: "PositionString",
+    get: function get() {
+      return {
+        nearHead: Curve.Position.NEAR_HEAD,
+        nearTop: Curve.Position.NEAR_TOP
+      };
+    }
   }]);
 
   return Curve;
@@ -5169,12 +5183,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -5183,20 +5191,105 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 // VexFlow - Music Engraving for HTML5
 // Copyright Mohit Muthanna 2010
 //
 // This class implements dot modifiers for notes.
 
 
-var Dot =
-/*#__PURE__*/
-function (_Modifier) {
+var Dot = /*#__PURE__*/function (_Modifier) {
   _inherits(Dot, _Modifier);
 
-  _createClass(Dot, null, [{
+  var _super = _createSuper(Dot);
+
+  /**
+   * @constructor
+   */
+  function Dot() {
+    var _this;
+
+    _classCallCheck(this, Dot);
+
+    _this = _super.call(this);
+
+    _this.setAttribute('type', 'Dot');
+
+    _this.note = null;
+    _this.index = null;
+    _this.position = _modifier__WEBPACK_IMPORTED_MODULE_1__["Modifier"].Position.RIGHT;
+    _this.radius = 2;
+
+    _this.setWidth(5);
+
+    _this.dot_shiftY = 0;
+    return _this;
+  }
+
+  _createClass(Dot, [{
+    key: "getCategory",
+    value: function getCategory() {
+      return Dot.CATEGORY;
+    }
+  }, {
+    key: "setNote",
+    value: function setNote(note) {
+      this.note = note;
+
+      if (this.note.getCategory() === 'gracenotes') {
+        this.radius *= 0.5;
+        this.setWidth(3);
+      }
+    }
+  }, {
+    key: "setDotShiftY",
+    value: function setDotShiftY(y) {
+      this.dot_shiftY = y;
+      return this;
+    }
+  }, {
+    key: "draw",
+    value: function draw() {
+      this.checkContext();
+      this.setRendered();
+
+      if (!this.note || this.index === null) {
+        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('NoAttachedNote', "Can't draw dot without a note and index.");
+      }
+
+      var lineSpace = this.note.stave.options.spacing_between_lines_px;
+      var start = this.note.getModifierStartXY(this.position, this.index, {
+        forceFlagRight: true
+      }); // Set the starting y coordinate to the base of the stem for TabNotes
+
+      if (this.note.getCategory() === 'tabnotes') {
+        start.y = this.note.getStemExtents().baseY;
+      }
+
+      var x = start.x + this.x_shift + this.width - this.radius;
+      var y = start.y + this.y_shift + this.dot_shiftY * lineSpace;
+      var ctx = this.context;
+      ctx.beginPath();
+      ctx.arc(x, y, this.radius, 0, Math.PI * 2, false);
+      ctx.fill();
+    }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'dots';
+    } // Arrange dots inside a ModifierContext.
+
+  }, {
     key: "format",
-    // Arrange dots inside a ModifierContext.
     value: function format(dots, state) {
       var right_shift = state.right_shift;
       var dot_spacing = 1;
@@ -5294,84 +5387,6 @@ function (_Modifier) {
       state.right_shift += x_width;
       return true;
     }
-    /**
-     * @constructor
-     */
-
-  }, {
-    key: "CATEGORY",
-    get: function get() {
-      return 'dots';
-    }
-  }]);
-
-  function Dot() {
-    var _this;
-
-    _classCallCheck(this, Dot);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Dot).call(this));
-
-    _this.setAttribute('type', 'Dot');
-
-    _this.note = null;
-    _this.index = null;
-    _this.position = _modifier__WEBPACK_IMPORTED_MODULE_1__["Modifier"].Position.RIGHT;
-    _this.radius = 2;
-
-    _this.setWidth(5);
-
-    _this.dot_shiftY = 0;
-    return _this;
-  }
-
-  _createClass(Dot, [{
-    key: "getCategory",
-    value: function getCategory() {
-      return Dot.CATEGORY;
-    }
-  }, {
-    key: "setNote",
-    value: function setNote(note) {
-      this.note = note;
-
-      if (this.note.getCategory() === 'gracenotes') {
-        this.radius *= 0.50;
-        this.setWidth(3);
-      }
-    }
-  }, {
-    key: "setDotShiftY",
-    value: function setDotShiftY(y) {
-      this.dot_shiftY = y;
-      return this;
-    }
-  }, {
-    key: "draw",
-    value: function draw() {
-      this.checkContext();
-      this.setRendered();
-
-      if (!this.note || this.index === null) {
-        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('NoAttachedNote', "Can't draw dot without a note and index.");
-      }
-
-      var lineSpace = this.note.stave.options.spacing_between_lines_px;
-      var start = this.note.getModifierStartXY(this.position, this.index, {
-        forceFlagRight: true
-      }); // Set the starting y coordinate to the base of the stem for TabNotes
-
-      if (this.note.getCategory() === 'tabnotes') {
-        start.y = this.note.getStemExtents().baseY;
-      }
-
-      var x = start.x + this.x_shift + this.width - this.radius;
-      var y = start.y + this.y_shift + this.dot_shiftY * lineSpace;
-      var ctx = this.context;
-      ctx.beginPath();
-      ctx.arc(x, y, this.radius, 0, Math.PI * 2, false);
-      ctx.fill();
-    }
   }]);
 
   return Dot;
@@ -5401,13 +5416,17 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -5441,9 +5460,7 @@ function L() {
 
 var X = _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].MakeException('EasyScoreError');
 
-var Grammar =
-/*#__PURE__*/
-function () {
+var Grammar = /*#__PURE__*/function () {
   function Grammar(builder) {
     _classCallCheck(this, Grammar);
 
@@ -5754,9 +5771,7 @@ function () {
   return Grammar;
 }();
 
-var Builder =
-/*#__PURE__*/
-function () {
+var Builder = /*#__PURE__*/function () {
   function Builder(factory) {
     _classCallCheck(this, Builder);
 
@@ -5875,7 +5890,7 @@ function () {
       var factory = this.factory;
       if (!factory) return;
 
-      var options = _objectSpread({}, this.options, {}, this.piece.options);
+      var options = _objectSpread(_objectSpread({}, this.options), this.piece.options);
 
       var stem = options.stem,
           clef = options.clef;
@@ -5939,9 +5954,7 @@ function setClass(options, note) {
   });
 }
 
-var EasyScore =
-/*#__PURE__*/
-function () {
+var EasyScore = /*#__PURE__*/function () {
   function EasyScore() {
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
@@ -6081,16 +6094,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-var Element =
-/*#__PURE__*/
-function () {
-  _createClass(Element, null, [{
-    key: "newID",
-    value: function newID() {
-      return 'auto' + Element.ID++;
-    }
-  }]);
-
+var Element = /*#__PURE__*/function () {
   function Element() {
     var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
         type = _ref.type;
@@ -6284,6 +6288,11 @@ function () {
 
       return this.context;
     }
+  }], [{
+    key: "newID",
+    value: function newID() {
+      return 'auto' + Element.ID++;
+    }
   }]);
 
   return Element;
@@ -6308,7 +6317,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _articulation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./articulation */ "./src/articulation.js");
 /* harmony import */ var _annotation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./annotation */ "./src/annotation.js");
 /* harmony import */ var _chordsymbol__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.js");
-/* harmony import */ var _widthformatter__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./widthformatter */ "./src/widthformatter.js");
+/* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./formatter */ "./src/formatter.js");
 /* harmony import */ var _frethandfinger__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.js");
 /* harmony import */ var _stringnumber__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.js");
 /* harmony import */ var _textdynamics__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./textdynamics */ "./src/textdynamics.js");
@@ -6365,8 +6374,8 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 
 
- // import { Formatter } from './formatter';
 
+ // import { WidthFormatter } from './widthformatter';
 
 
 
@@ -6423,9 +6432,7 @@ function setDefaults() {
   return params;
 }
 
-var Factory =
-/*#__PURE__*/
-function () {
+var Factory = /*#__PURE__*/function () {
   function Factory(options) {
     _classCallCheck(this, Factory);
 
@@ -6844,7 +6851,7 @@ function () {
           iterations: 3
         }
       });
-      return new _widthformatter__WEBPACK_IMPORTED_MODULE_5__["WidthFormatter"](params);
+      return new _formatter__WEBPACK_IMPORTED_MODULE_5__["Formatter"](params);
     }
   }, {
     key: "Tuplet",
@@ -17475,7 +17482,7 @@ var PetalumaMetrics = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PetalumaScriptTextMetrics", function() { return PetalumaScriptTextMetrics; });
 var PetalumaScriptTextMetrics = {
-  name: 'PetalumaScript',
+  name: 'petalumaScript',
   smufl: false,
   spacing: 50,
   "glyphs": {
@@ -18353,7 +18360,7 @@ var PetalumaScriptTextMetrics = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RobotoSlabTextMetrics", function() { return RobotoSlabTextMetrics; });
 var RobotoSlabTextMetrics = {
-  name: 'RobotoSlab',
+  name: 'Roboto Slab',
   smufl: false,
   spacing: 50,
   "glyphs": {
@@ -19384,204 +19391,13 @@ function createContexts(voices, ContextType, addToContext) {
   };
 }
 
-var Formatter =
-/*#__PURE__*/
-function () {
-  _createClass(Formatter, null, [{
-    key: "SimpleFormat",
-    // Helper function to layout "notes" one after the other without
-    // regard for proportions. Useful for tests and debugging.
-    value: function SimpleFormat(notes) {
-      var x = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-
-      var _ref = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
-          _ref$paddingBetween = _ref.paddingBetween,
-          paddingBetween = _ref$paddingBetween === void 0 ? 10 : _ref$paddingBetween;
-
-      notes.reduce(function (x, note) {
-        note.addToModifierContext(new _modifiercontext__WEBPACK_IMPORTED_MODULE_7__["ModifierContext"]());
-        var tick = new _tickcontext__WEBPACK_IMPORTED_MODULE_8__["TickContext"]().addTickable(note).preFormat();
-        var metrics = tick.getMetrics();
-        tick.setX(x + metrics.totalLeftPx);
-        return x + tick.getWidth() + metrics.totalRightPx + paddingBetween;
-      }, x);
-    } // Helper function to plot formatter debug info.
-
-  }, {
-    key: "plotDebugging",
-    value: function plotDebugging(ctx, formatter, xPos, y1, y2, options) {
-      options = _objectSpread({
-        stavePadding: _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DEFAULT_FONT_STACK[0].lookupMetric('stave.padding')
-      }, options);
-      var x = xPos + options.stavePadding;
-      var contextGaps = formatter.contextGaps;
-
-      function stroke(x1, x2, color) {
-        ctx.beginPath();
-        ctx.setStrokeStyle(color);
-        ctx.setFillStyle(color);
-        ctx.setLineWidth(1);
-        ctx.fillRect(x1, y1, Math.max(x2 - x1, 0), y2 - y1);
-      }
-
-      ctx.save();
-      ctx.setFont('Arial', 8, '');
-      contextGaps.gaps.forEach(function (gap) {
-        stroke(x + gap.x1, x + gap.x2, 'rgba(100,200,100,0.4)');
-        ctx.setFillStyle('green');
-        ctx.fillText(Math.round(gap.x2 - gap.x1), x + gap.x1, y2 + 12);
-      });
-      ctx.setFillStyle('red');
-      ctx.fillText("Loss: ".concat((formatter.totalCost || 0).toFixed(2), " Shift: ").concat((formatter.totalShift || 0).toFixed(2), " Gap: ").concat(contextGaps.total.toFixed(2)), x - 20, y2 + 27);
-      ctx.restore();
-    } // Helper function to format and draw a single voice. Returns a bounding
-    // box for the notation.
-    //
-    // Parameters:
-    // * `ctx` - The rendering context
-    // * `stave` - The stave to which to draw (`Stave` or `TabStave`)
-    // * `notes` - Array of `Note` instances (`StaveNote`, `TextNote`, `TabNote`, etc.)
-    // * `params` - One of below:
-    //    * Setting `autobeam` only `(context, stave, notes, true)` or
-    //      `(ctx, stave, notes, {autobeam: true})`
-    //    * Setting `align_rests` a struct is needed `(context, stave, notes, {align_rests: true})`
-    //    * Setting both a struct is needed `(context, stave, notes, {
-    //      autobeam: true, align_rests: true})`
-    //
-    // `autobeam` automatically generates beams for the notes.
-    // `align_rests` aligns rests with nearby notes.
-
-  }, {
-    key: "FormatAndDraw",
-    value: function FormatAndDraw(ctx, stave, notes, params) {
-      var options = {
-        auto_beam: false,
-        align_rests: false
-      };
-
-      if (_typeof(params) === 'object') {
-        _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Merge(options, params);
-      } else if (typeof params === 'boolean') {
-        options.auto_beam = params;
-      } // Start by creating a voice and adding all the notes to it.
-
-
-      var voice = new _voice__WEBPACK_IMPORTED_MODULE_4__["Voice"](_tables__WEBPACK_IMPORTED_MODULE_2__["Flow"].TIME4_4).setMode(_voice__WEBPACK_IMPORTED_MODULE_4__["Voice"].Mode.SOFT).addTickables(notes); // Then create beams, if requested.
-
-      var beams = options.auto_beam ? _beam__WEBPACK_IMPORTED_MODULE_1__["Beam"].applyAndGetBeams(voice) : []; // Instantiate a `Formatter` and format the notes.
-
-      new Formatter().joinVoices([voice], {
-        align_rests: options.align_rests
-      }).formatToStave([voice], stave, {
-        align_rests: options.align_rests,
-        stave: stave
-      }); // Render the voice and beams to the stave.
-
-      voice.setStave(stave).draw(ctx, stave);
-      beams.forEach(function (beam) {
-        return beam.setContext(ctx).draw();
-      }); // Return the bounding box of the voice.
-
-      return voice.getBoundingBox();
-    } // Helper function to format and draw aligned tab and stave notes in two
-    // separate staves.
-    //
-    // Parameters:
-    // * `ctx` - The rendering context
-    // * `tabstave` - A `TabStave` instance on which to render `TabNote`s.
-    // * `stave` - A `Stave` instance on which to render `Note`s.
-    // * `notes` - Array of `Note` instances for the stave (`StaveNote`, `BarNote`, etc.)
-    // * `tabnotes` - Array of `Note` instances for the tab stave (`TabNote`, `BarNote`, etc.)
-    // * `autobeam` - Automatically generate beams.
-    // * `params` - A configuration object:
-    //    * `autobeam` automatically generates beams for the notes.
-    //    * `align_rests` aligns rests with nearby notes.
-
-  }, {
-    key: "FormatAndDrawTab",
-    value: function FormatAndDrawTab(ctx, tabstave, stave, tabnotes, notes, autobeam, params) {
-      var opts = {
-        auto_beam: autobeam,
-        align_rests: false
-      };
-
-      if (_typeof(params) === 'object') {
-        _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Merge(opts, params);
-      } else if (typeof params === 'boolean') {
-        opts.auto_beam = params;
-      } // Create a `4/4` voice for `notes`.
-
-
-      var notevoice = new _voice__WEBPACK_IMPORTED_MODULE_4__["Voice"](_tables__WEBPACK_IMPORTED_MODULE_2__["Flow"].TIME4_4).setMode(_voice__WEBPACK_IMPORTED_MODULE_4__["Voice"].Mode.SOFT).addTickables(notes); // Create a `4/4` voice for `tabnotes`.
-
-      var tabvoice = new _voice__WEBPACK_IMPORTED_MODULE_4__["Voice"](_tables__WEBPACK_IMPORTED_MODULE_2__["Flow"].TIME4_4).setMode(_voice__WEBPACK_IMPORTED_MODULE_4__["Voice"].Mode.SOFT).addTickables(tabnotes); // Then create beams, if requested.
-
-      var beams = opts.auto_beam ? _beam__WEBPACK_IMPORTED_MODULE_1__["Beam"].applyAndGetBeams(notevoice) : []; // Instantiate a `Formatter` and align tab and stave notes.
-
-      new Formatter().joinVoices([notevoice], {
-        align_rests: opts.align_rests
-      }).joinVoices([tabvoice]).formatToStave([notevoice, tabvoice], stave, {
-        align_rests: opts.align_rests
-      }); // Render voices and beams to staves.
-
-      notevoice.draw(ctx, stave);
-      tabvoice.draw(ctx, tabstave);
-      beams.forEach(function (beam) {
-        return beam.setContext(ctx).draw();
-      }); // Draw a connector between tab and note staves.
-
-      new _staveconnector__WEBPACK_IMPORTED_MODULE_5__["StaveConnector"](stave, tabstave).setContext(ctx).draw();
-    } // Auto position rests based on previous/next note positions.
-    //
-    // Params:
-    // * `notes`: An array of notes.
-    // * `alignAllNotes`: If set to false, only aligns non-beamed notes.
-    // * `alignTuplets`: If set to false, ignores tuplets.
-
-  }, {
-    key: "AlignRestsToNotes",
-    value: function AlignRestsToNotes(notes, alignAllNotes, alignTuplets) {
-      notes.forEach(function (note, index) {
-        if (note instanceof _stavenote__WEBPACK_IMPORTED_MODULE_6__["StaveNote"] && note.isRest()) {
-          if (note.tuplet && !alignTuplets) return; // If activated rests not on default can be rendered as specified.
-
-          var position = note.getGlyph().position.toUpperCase();
-          if (position !== 'R/4' && position !== 'B/4') return;
-
-          if (alignAllNotes || note.beam != null) {
-            // Align rests with previous/next notes.
-            var props = note.getKeyProps()[0];
-
-            if (index === 0) {
-              props.line = lookAhead(notes, props.line, index, false);
-              note.setKeyLine(0, props.line);
-            } else if (index > 0 && index < notes.length) {
-              // If previous note is a rest, use its line number.
-              var restLine;
-
-              if (notes[index - 1].isRest()) {
-                restLine = notes[index - 1].getKeyProps()[0].line;
-                props.line = restLine;
-              } else {
-                restLine = notes[index - 1].getLineForRest(); // Get the rest line for next valid non-rest note group.
-
-                props.line = lookAhead(notes, restLine, index, true);
-              }
-
-              note.setKeyLine(0, props.line);
-            }
-          }
-        }
-      });
-      return this;
-    }
-  }]);
-
+var Formatter = /*#__PURE__*/function () {
   function Formatter(options) {
     _classCallCheck(this, Formatter);
 
     this.options = _objectSpread({
       softmaxFactor: null,
+      globalSoftmax: false,
       maxIterations: 2
     }, options); // Minimum width required to render all the notes in the voices.
 
@@ -19715,7 +19531,8 @@ function () {
 
       var x = 0;
       var shift = 0;
-      this.minTotalWidth = 0; // Pass 1: Give each note maximum width requested by context.
+      this.minTotalWidth = 0;
+      var totalTicks = 0; // Pass 1: Give each note maximum width requested by context.
 
       contextList.forEach(function (tick) {
         var context = contextMap[tick];
@@ -19725,11 +19542,24 @@ function () {
         context.preFormat();
         var width = context.getWidth();
         _this.minTotalWidth += width;
+        var maxTicks = context.getMaxTicks().value();
+        totalTicks += maxTicks;
         var metrics = context.getMetrics();
         x = x + shift + metrics.totalLeftPx;
         context.setX(x); // Calculate shift for the next tick.
 
         shift = width - metrics.totalLeftPx;
+      }); // Use softmax based on all notes across all staves. (options.globalSoftmax)
+
+      var options = this.options;
+      var softmaxFactor = options.softmaxFactor || 100;
+
+      var exp = function exp(tick) {
+        return Math.pow(softmaxFactor, contextMap[tick].getMaxTicks().value() / totalTicks);
+      };
+
+      var expTicksUsed = contextList.map(exp).reduce(function (a, b) {
+        return a + b;
       });
       this.minTotalWidth = x + shift;
       this.hasMinTotalWidth = true; // No justification needed. End formatting.
@@ -19784,12 +19614,24 @@ function () {
                   var insideRightEdge = backVoices[v].getX() + backMetrics.notePx + backMetrics.modRightPx + backMetrics.rightDisplacedHeadPx; // Don't allow shifting if notes in the same voice can collide
 
                   maxNegativeShiftPx = Math.min(maxNegativeShiftPx, insideLeftEdge - insideRightEdge);
-                }); // Don't shift further left than the notehead of the last context
+                }); // Don't shift further left than the notehead of the last context. Actually, stay at most 5% to the right
+                // so that two different tick contexts don't align across staves.
 
-                maxNegativeShiftPx = Math.min(maxNegativeShiftPx, context.getX() - prevContext.getX()); // Calculate the expected distance of the current context from the last matching tickable. The
+                maxNegativeShiftPx = Math.min(maxNegativeShiftPx, context.getX() - (prevContext.getX() + adjustedJustifyWidth * 0.05)); // Calculate the expected distance of the current context from the last matching tickable. The
                 // distance is scaled down by the softmax for the voice.
 
-                expectedDistance = backTickable.getVoice().softmax(maxTicks) * adjustedJustifyWidth;
+                if (options.globalSoftmax) {
+                  var t = totalTicks;
+
+                  var _exp = function _exp(v) {
+                    return Math.pow(softmaxFactor, v / t);
+                  };
+
+                  expectedDistance = _exp(maxTicks) / expTicksUsed * adjustedJustifyWidth;
+                } else {
+                  expectedDistance = backTickable.getVoice().softmax(maxTicks) * adjustedJustifyWidth;
+                }
+
                 return {
                   v: {
                     expectedDistance: expectedDistance,
@@ -19808,7 +19650,7 @@ function () {
           }
 
           return {
-            errorPx: 0,
+            expectedDistance: 0,
             fromTickablePx: 0,
             maxNegativeShiftPx: 0
           };
@@ -20097,6 +19939,194 @@ function () {
         context: stave.getContext()
       }, options));
     }
+  }], [{
+    key: "SimpleFormat",
+    value: // Helper function to layout "notes" one after the other without
+    // regard for proportions. Useful for tests and debugging.
+    function SimpleFormat(notes) {
+      var x = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
+      var _ref = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
+          _ref$paddingBetween = _ref.paddingBetween,
+          paddingBetween = _ref$paddingBetween === void 0 ? 10 : _ref$paddingBetween;
+
+      notes.reduce(function (x, note) {
+        note.addToModifierContext(new _modifiercontext__WEBPACK_IMPORTED_MODULE_7__["ModifierContext"]());
+        var tick = new _tickcontext__WEBPACK_IMPORTED_MODULE_8__["TickContext"]().addTickable(note).preFormat();
+        var metrics = tick.getMetrics();
+        tick.setX(x + metrics.totalLeftPx);
+        return x + tick.getWidth() + metrics.totalRightPx + paddingBetween;
+      }, x);
+    } // Helper function to plot formatter debug info.
+
+  }, {
+    key: "plotDebugging",
+    value: function plotDebugging(ctx, formatter, xPos, y1, y2, options) {
+      options = _objectSpread({
+        stavePadding: _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Flow.DEFAULT_FONT_STACK[0].lookupMetric('stave.padding')
+      }, options);
+      var x = xPos + options.stavePadding;
+      var contextGaps = formatter.contextGaps;
+
+      function stroke(x1, x2, color) {
+        ctx.beginPath();
+        ctx.setStrokeStyle(color);
+        ctx.setFillStyle(color);
+        ctx.setLineWidth(1);
+        ctx.fillRect(x1, y1, Math.max(x2 - x1, 0), y2 - y1);
+      }
+
+      ctx.save();
+      ctx.setFont('Arial', 8, '');
+      contextGaps.gaps.forEach(function (gap) {
+        stroke(x + gap.x1, x + gap.x2, 'rgba(100,200,100,0.4)');
+        ctx.setFillStyle('green');
+        ctx.fillText(Math.round(gap.x2 - gap.x1), x + gap.x1, y2 + 12);
+      });
+      ctx.setFillStyle('red');
+      ctx.fillText("Loss: ".concat((formatter.totalCost || 0).toFixed(2), " Shift: ").concat((formatter.totalShift || 0).toFixed(2), " Gap: ").concat(contextGaps.total.toFixed(2)), x - 20, y2 + 27);
+      ctx.restore();
+    } // Helper function to format and draw a single voice. Returns a bounding
+    // box for the notation.
+    //
+    // Parameters:
+    // * `ctx` - The rendering context
+    // * `stave` - The stave to which to draw (`Stave` or `TabStave`)
+    // * `notes` - Array of `Note` instances (`StaveNote`, `TextNote`, `TabNote`, etc.)
+    // * `params` - One of below:
+    //    * Setting `autobeam` only `(context, stave, notes, true)` or
+    //      `(ctx, stave, notes, {autobeam: true})`
+    //    * Setting `align_rests` a struct is needed `(context, stave, notes, {align_rests: true})`
+    //    * Setting both a struct is needed `(context, stave, notes, {
+    //      autobeam: true, align_rests: true})`
+    //
+    // `autobeam` automatically generates beams for the notes.
+    // `align_rests` aligns rests with nearby notes.
+
+  }, {
+    key: "FormatAndDraw",
+    value: function FormatAndDraw(ctx, stave, notes, params) {
+      var options = {
+        auto_beam: false,
+        align_rests: false
+      };
+
+      if (_typeof(params) === 'object') {
+        _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Merge(options, params);
+      } else if (typeof params === 'boolean') {
+        options.auto_beam = params;
+      } // Start by creating a voice and adding all the notes to it.
+
+
+      var voice = new _voice__WEBPACK_IMPORTED_MODULE_4__["Voice"](_tables__WEBPACK_IMPORTED_MODULE_2__["Flow"].TIME4_4).setMode(_voice__WEBPACK_IMPORTED_MODULE_4__["Voice"].Mode.SOFT).addTickables(notes); // Then create beams, if requested.
+
+      var beams = options.auto_beam ? _beam__WEBPACK_IMPORTED_MODULE_1__["Beam"].applyAndGetBeams(voice) : []; // Instantiate a `Formatter` and format the notes.
+
+      new Formatter().joinVoices([voice], {
+        align_rests: options.align_rests
+      }).formatToStave([voice], stave, {
+        align_rests: options.align_rests,
+        stave: stave
+      }); // Render the voice and beams to the stave.
+
+      voice.setStave(stave).draw(ctx, stave);
+      beams.forEach(function (beam) {
+        return beam.setContext(ctx).draw();
+      }); // Return the bounding box of the voice.
+
+      return voice.getBoundingBox();
+    } // Helper function to format and draw aligned tab and stave notes in two
+    // separate staves.
+    //
+    // Parameters:
+    // * `ctx` - The rendering context
+    // * `tabstave` - A `TabStave` instance on which to render `TabNote`s.
+    // * `stave` - A `Stave` instance on which to render `Note`s.
+    // * `notes` - Array of `Note` instances for the stave (`StaveNote`, `BarNote`, etc.)
+    // * `tabnotes` - Array of `Note` instances for the tab stave (`TabNote`, `BarNote`, etc.)
+    // * `autobeam` - Automatically generate beams.
+    // * `params` - A configuration object:
+    //    * `autobeam` automatically generates beams for the notes.
+    //    * `align_rests` aligns rests with nearby notes.
+
+  }, {
+    key: "FormatAndDrawTab",
+    value: function FormatAndDrawTab(ctx, tabstave, stave, tabnotes, notes, autobeam, params) {
+      var opts = {
+        auto_beam: autobeam,
+        align_rests: false
+      };
+
+      if (_typeof(params) === 'object') {
+        _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Merge(opts, params);
+      } else if (typeof params === 'boolean') {
+        opts.auto_beam = params;
+      } // Create a `4/4` voice for `notes`.
+
+
+      var notevoice = new _voice__WEBPACK_IMPORTED_MODULE_4__["Voice"](_tables__WEBPACK_IMPORTED_MODULE_2__["Flow"].TIME4_4).setMode(_voice__WEBPACK_IMPORTED_MODULE_4__["Voice"].Mode.SOFT).addTickables(notes); // Create a `4/4` voice for `tabnotes`.
+
+      var tabvoice = new _voice__WEBPACK_IMPORTED_MODULE_4__["Voice"](_tables__WEBPACK_IMPORTED_MODULE_2__["Flow"].TIME4_4).setMode(_voice__WEBPACK_IMPORTED_MODULE_4__["Voice"].Mode.SOFT).addTickables(tabnotes); // Then create beams, if requested.
+
+      var beams = opts.auto_beam ? _beam__WEBPACK_IMPORTED_MODULE_1__["Beam"].applyAndGetBeams(notevoice) : []; // Instantiate a `Formatter` and align tab and stave notes.
+
+      new Formatter().joinVoices([notevoice], {
+        align_rests: opts.align_rests
+      }).joinVoices([tabvoice]).formatToStave([notevoice, tabvoice], stave, {
+        align_rests: opts.align_rests
+      }); // Render voices and beams to staves.
+
+      notevoice.draw(ctx, stave);
+      tabvoice.draw(ctx, tabstave);
+      beams.forEach(function (beam) {
+        return beam.setContext(ctx).draw();
+      }); // Draw a connector between tab and note staves.
+
+      new _staveconnector__WEBPACK_IMPORTED_MODULE_5__["StaveConnector"](stave, tabstave).setContext(ctx).draw();
+    } // Auto position rests based on previous/next note positions.
+    //
+    // Params:
+    // * `notes`: An array of notes.
+    // * `alignAllNotes`: If set to false, only aligns non-beamed notes.
+    // * `alignTuplets`: If set to false, ignores tuplets.
+
+  }, {
+    key: "AlignRestsToNotes",
+    value: function AlignRestsToNotes(notes, alignAllNotes, alignTuplets) {
+      notes.forEach(function (note, index) {
+        if (note instanceof _stavenote__WEBPACK_IMPORTED_MODULE_6__["StaveNote"] && note.isRest()) {
+          if (note.tuplet && !alignTuplets) return; // If activated rests not on default can be rendered as specified.
+
+          var position = note.getGlyph().position.toUpperCase();
+          if (position !== 'R/4' && position !== 'B/4') return;
+
+          if (alignAllNotes || note.beam != null) {
+            // Align rests with previous/next notes.
+            var props = note.getKeyProps()[0];
+
+            if (index === 0) {
+              props.line = lookAhead(notes, props.line, index, false);
+              note.setKeyLine(0, props.line);
+            } else if (index > 0 && index < notes.length) {
+              // If previous note is a rest, use its line number.
+              var restLine;
+
+              if (notes[index - 1].isRest()) {
+                restLine = notes[index - 1].getKeyProps()[0].line;
+                props.line = restLine;
+              } else {
+                restLine = notes[index - 1].getLineForRest(); // Get the rest line for next valid non-rest note group.
+
+                props.line = lookAhead(notes, restLine, index, true);
+              }
+
+              note.setKeyLine(0, props.line);
+            }
+          }
+        }
+      });
+      return this;
+    }
   }]);
 
   return Formatter;
@@ -20131,60 +20161,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 /* eslint-disable no-underscore-dangle */
 
-var Fraction =
-/*#__PURE__*/
-function () {
-  _createClass(Fraction, null, [{
-    key: "GCD",
-
-    /**
-     * GCD: Find greatest common divisor using Euclidean algorithm
-     */
-    value: function GCD(a, b) {
-      if (typeof a !== 'number' || typeof b !== 'number') {
-        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('BadArgument', "Invalid numbers: ".concat(a, ", ").concat(b));
-      }
-
-      var t;
-
-      while (b !== 0) {
-        t = b;
-        b = a % b;
-        a = t;
-      }
-
-      return a;
-    }
-    /**
-     * LCM: Lowest common multiple
-     */
-
-  }, {
-    key: "LCM",
-    value: function LCM(a, b) {
-      return a * b / Fraction.GCD(a, b);
-    }
-    /**
-     * LCMM: Lowest common multiple for more than two numbers
-     */
-
-  }, {
-    key: "LCMM",
-    value: function LCMM(args) {
-      if (args.length === 0) {
-        return 0;
-      } else if (args.length === 1) {
-        return args[0];
-      } else if (args.length === 2) {
-        return Fraction.LCM(args[0], args[1]);
-      } else {
-        var arg0 = args[0];
-        args.shift();
-        return Fraction.LCM(arg0, Fraction.LCMM(args));
-      }
-    }
-  }]);
-
+var Fraction = /*#__PURE__*/function () {
   function Fraction(numerator, denominator) {
     _classCallCheck(this, Fraction);
 
@@ -20455,6 +20432,55 @@ function () {
       var d = i[1] ? parseInt(i[1], 10) : 1;
       return this.set(n, d);
     }
+  }], [{
+    key: "GCD",
+    value:
+    /**
+     * GCD: Find greatest common divisor using Euclidean algorithm
+     */
+    function GCD(a, b) {
+      if (typeof a !== 'number' || typeof b !== 'number') {
+        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('BadArgument', "Invalid numbers: ".concat(a, ", ").concat(b));
+      }
+
+      var t;
+
+      while (b !== 0) {
+        t = b;
+        b = a % b;
+        a = t;
+      }
+
+      return a;
+    }
+    /**
+     * LCM: Lowest common multiple
+     */
+
+  }, {
+    key: "LCM",
+    value: function LCM(a, b) {
+      return a * b / Fraction.GCD(a, b);
+    }
+    /**
+     * LCMM: Lowest common multiple for more than two numbers
+     */
+
+  }, {
+    key: "LCMM",
+    value: function LCMM(args) {
+      if (args.length === 0) {
+        return 0;
+      } else if (args.length === 1) {
+        return args[0];
+      } else if (args.length === 2) {
+        return Fraction.LCM(args[0], args[1]);
+      } else {
+        var arg0 = args[0];
+        args.shift();
+        return Fraction.LCM(arg0, Fraction.LCMM(args));
+      }
+    }
   }]);
 
   return Fraction;
@@ -20480,21 +20506,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -20503,6 +20527,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // VexFlow - Music Engraving for HTML5
 // Copyright Mohit Muthanna 2010
@@ -20514,14 +20548,114 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  * @constructor
  */
 
-var FretHandFinger =
-/*#__PURE__*/
-function (_Modifier) {
+var FretHandFinger = /*#__PURE__*/function (_Modifier) {
   _inherits(FretHandFinger, _Modifier);
 
-  _createClass(FretHandFinger, null, [{
+  var _super = _createSuper(FretHandFinger);
+
+  function FretHandFinger(number) {
+    var _this;
+
+    _classCallCheck(this, FretHandFinger);
+
+    _this = _super.call(this);
+
+    _this.setAttribute('type', 'FretHandFinger');
+
+    _this.note = null;
+    _this.index = null;
+    _this.finger = number;
+    _this.width = 7;
+    _this.position = _modifier__WEBPACK_IMPORTED_MODULE_1__["Modifier"].Position.LEFT; // Default position above stem or note head
+
+    _this.x_shift = 0;
+    _this.y_shift = 0;
+    _this.x_offset = 0; // Horizontal offset from default
+
+    _this.y_offset = 0; // Vertical offset from default
+
+    _this.font = {
+      family: 'sans-serif',
+      size: 9,
+      weight: 'bold'
+    };
+    return _this;
+  }
+
+  _createClass(FretHandFinger, [{
+    key: "getCategory",
+    value: function getCategory() {
+      return FretHandFinger.CATEGORY;
+    }
+  }, {
+    key: "setFretHandFinger",
+    value: function setFretHandFinger(number) {
+      this.finger = number;
+      return this;
+    }
+  }, {
+    key: "setOffsetX",
+    value: function setOffsetX(x) {
+      this.x_offset = x;
+      return this;
+    }
+  }, {
+    key: "setOffsetY",
+    value: function setOffsetY(y) {
+      this.y_offset = y;
+      return this;
+    }
+  }, {
+    key: "draw",
+    value: function draw() {
+      this.checkContext();
+
+      if (!this.note || this.index == null) {
+        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('NoAttachedNote', "Can't draw string number without a note and index.");
+      }
+
+      this.setRendered();
+      var ctx = this.context;
+      var start = this.note.getModifierStartXY(this.position, this.index);
+      var dot_x = start.x + this.x_shift + this.x_offset;
+      var dot_y = start.y + this.y_shift + this.y_offset + 5;
+
+      switch (this.position) {
+        case _modifier__WEBPACK_IMPORTED_MODULE_1__["Modifier"].Position.ABOVE:
+          dot_x -= 4;
+          dot_y -= 12;
+          break;
+
+        case _modifier__WEBPACK_IMPORTED_MODULE_1__["Modifier"].Position.BELOW:
+          dot_x -= 2;
+          dot_y += 10;
+          break;
+
+        case _modifier__WEBPACK_IMPORTED_MODULE_1__["Modifier"].Position.LEFT:
+          dot_x -= this.width;
+          break;
+
+        case _modifier__WEBPACK_IMPORTED_MODULE_1__["Modifier"].Position.RIGHT:
+          dot_x += 1;
+          break;
+
+        default:
+          throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('InvalidPostion', "The position ".concat(this.position, " does not exist"));
+      }
+
+      ctx.save();
+      ctx.setFont(this.font.family, this.font.size, this.font.weight);
+      ctx.fillText('' + this.finger, dot_x, dot_y);
+      ctx.restore();
+    }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'frethandfinger';
+    } // Arrange fingerings inside a ModifierContext.
+
+  }, {
     key: "format",
-    // Arrange fingerings inside a ModifierContext.
     value: function format(nums, state) {
       var left_shift = state.left_shift,
           right_shift = state.right_shift;
@@ -20633,108 +20767,6 @@ function (_Modifier) {
         return note.addModifier(index, fingering);
       });
     }
-  }, {
-    key: "CATEGORY",
-    get: function get() {
-      return 'frethandfinger';
-    }
-  }]);
-
-  function FretHandFinger(number) {
-    var _this;
-
-    _classCallCheck(this, FretHandFinger);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(FretHandFinger).call(this));
-
-    _this.setAttribute('type', 'FretHandFinger');
-
-    _this.note = null;
-    _this.index = null;
-    _this.finger = number;
-    _this.width = 7;
-    _this.position = _modifier__WEBPACK_IMPORTED_MODULE_1__["Modifier"].Position.LEFT; // Default position above stem or note head
-
-    _this.x_shift = 0;
-    _this.y_shift = 0;
-    _this.x_offset = 0; // Horizontal offset from default
-
-    _this.y_offset = 0; // Vertical offset from default
-
-    _this.font = {
-      family: 'sans-serif',
-      size: 9,
-      weight: 'bold'
-    };
-    return _this;
-  }
-
-  _createClass(FretHandFinger, [{
-    key: "getCategory",
-    value: function getCategory() {
-      return FretHandFinger.CATEGORY;
-    }
-  }, {
-    key: "setFretHandFinger",
-    value: function setFretHandFinger(number) {
-      this.finger = number;
-      return this;
-    }
-  }, {
-    key: "setOffsetX",
-    value: function setOffsetX(x) {
-      this.x_offset = x;
-      return this;
-    }
-  }, {
-    key: "setOffsetY",
-    value: function setOffsetY(y) {
-      this.y_offset = y;
-      return this;
-    }
-  }, {
-    key: "draw",
-    value: function draw() {
-      this.checkContext();
-
-      if (!this.note || this.index == null) {
-        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('NoAttachedNote', "Can't draw string number without a note and index.");
-      }
-
-      this.setRendered();
-      var ctx = this.context;
-      var start = this.note.getModifierStartXY(this.position, this.index);
-      var dot_x = start.x + this.x_shift + this.x_offset;
-      var dot_y = start.y + this.y_shift + this.y_offset + 5;
-
-      switch (this.position) {
-        case _modifier__WEBPACK_IMPORTED_MODULE_1__["Modifier"].Position.ABOVE:
-          dot_x -= 4;
-          dot_y -= 12;
-          break;
-
-        case _modifier__WEBPACK_IMPORTED_MODULE_1__["Modifier"].Position.BELOW:
-          dot_x -= 2;
-          dot_y += 10;
-          break;
-
-        case _modifier__WEBPACK_IMPORTED_MODULE_1__["Modifier"].Position.LEFT:
-          dot_x -= this.width;
-          break;
-
-        case _modifier__WEBPACK_IMPORTED_MODULE_1__["Modifier"].Position.RIGHT:
-          dot_x += 1;
-          break;
-
-        default:
-          throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('InvalidPostion', "The position ".concat(this.position, " does not exist"));
-      }
-
-      ctx.save();
-      ctx.setFont(this.font.family, this.font.size, this.font.weight);
-      ctx.fillText('' + this.finger, dot_x, dot_y);
-      ctx.restore();
-    }
   }]);
 
   return FretHandFinger;
@@ -20762,29 +20794,33 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 
 
-var GhostNote =
-/*#__PURE__*/
-function (_StemmableNote) {
+var GhostNote = /*#__PURE__*/function (_StemmableNote) {
   _inherits(GhostNote, _StemmableNote);
+
+  var _super = _createSuper(GhostNote);
 
   /** @constructor */
   function GhostNote(parameter) {
@@ -20809,7 +20845,7 @@ function (_StemmableNote) {
       throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RuntimeError('BadArguments', 'Ghost note must have valid initialization data to identify ' + 'duration.');
     }
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(GhostNote).call(this, note_struct));
+    _this = _super.call(this, note_struct);
 
     _this.setAttribute('type', 'GhostNote'); // Note properties
 
@@ -20886,12 +20922,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -20899,6 +20929,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 
@@ -20959,20 +20999,175 @@ function processOutline(outline, originX, originY, scaleX, scaleY, outlineFns) {
   }
 }
 
-var Glyph =
-/*#__PURE__*/
-function (_Element) {
+var Glyph = /*#__PURE__*/function (_Element) {
   _inherits(Glyph, _Element);
 
-  _createClass(Glyph, null, [{
-    key: "lookupFontMetric",
+  var _super = _createSuper(Glyph);
 
+  /**
+   * @constructor
+   */
+  function Glyph(code, point, options) {
+    var _this;
+
+    _classCallCheck(this, Glyph);
+
+    _this = _super.call(this);
+
+    _this.setAttribute('type', 'Glyph');
+
+    _this.code = code;
+    _this.point = point;
+    _this.options = {
+      fontStack: _this.getFontStack(),
+      category: null
+    };
+    _this.metrics = null;
+    _this.x_shift = 0;
+    _this.y_shift = 0;
+    _this.originShift = {
+      x: 0,
+      y: 0
+    };
+
+    if (options) {
+      _this.setOptions(options);
+    } else {
+      _this.reset();
+    }
+
+    return _this;
+  }
+
+  _createClass(Glyph, [{
+    key: "getCode",
+    value: function getCode() {
+      return this.code;
+    }
+  }, {
+    key: "setOptions",
+    value: function setOptions(options) {
+      this.options = _objectSpread(_objectSpread({}, this.options), options);
+      this.reset();
+    }
+  }, {
+    key: "setPoint",
+    value: function setPoint(point) {
+      this.point = point;
+      return this;
+    }
+  }, {
+    key: "setStave",
+    value: function setStave(stave) {
+      this.stave = stave;
+      return this;
+    }
+  }, {
+    key: "setXShift",
+    value: function setXShift(x_shift) {
+      this.x_shift = x_shift;
+      return this;
+    }
+  }, {
+    key: "setYShift",
+    value: function setYShift(y_shift) {
+      this.y_shift = y_shift;
+      return this;
+    }
+  }, {
+    key: "reset",
+    value: function reset() {
+      this.metrics = Glyph.loadMetrics(this.options.fontStack, this.code, this.options.category); // Override point from metrics file
+
+      this.point = this.options.category ? Glyph.lookupFontMetric({
+        category: this.options.category,
+        font: this.metrics.font,
+        code: this.code,
+        key: 'point',
+        defaultValue: this.point
+      }) : this.point;
+      this.scale = this.point * 72 / (this.metrics.font.getResolution() * 100);
+      this.bbox = Glyph.getOutlineBoundingBox(this.metrics.outline, this.scale * this.metrics.scale, this.metrics.x_shift, this.metrics.y_shift);
+    }
+  }, {
+    key: "getMetrics",
+    value: function getMetrics() {
+      if (!this.metrics) {
+        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RuntimeError('BadGlyph', "Glyph ".concat(this.code, " is not initialized."));
+      }
+
+      return {
+        x_min: this.metrics.x_min * this.scale * this.metrics.scale,
+        x_max: this.metrics.x_max * this.scale * this.metrics.scale,
+        width: this.bbox.getW(),
+        height: this.bbox.getH()
+      };
+    }
+  }, {
+    key: "setOriginX",
+    value: function setOriginX(x) {
+      var bbox = this.bbox;
+      var originX = Math.abs(bbox.getX() / bbox.getW());
+      var xShift = (x - originX) * bbox.getW();
+      this.originShift.x = -xShift;
+    }
+  }, {
+    key: "setOriginY",
+    value: function setOriginY(y) {
+      var bbox = this.bbox;
+      var originY = Math.abs(bbox.getY() / bbox.getH());
+      var yShift = (y - originY) * bbox.getH();
+      this.originShift.y = -yShift;
+    }
+  }, {
+    key: "setOrigin",
+    value: function setOrigin(x, y) {
+      this.setOriginX(x);
+      this.setOriginY(y);
+    }
+  }, {
+    key: "render",
+    value: function render(ctx, x, y) {
+      if (!this.metrics) {
+        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RuntimeError('BadGlyph', "Glyph ".concat(this.code, " is not initialized."));
+      }
+
+      var outline = this.metrics.outline;
+      var scale = this.scale * this.metrics.scale;
+      this.setRendered();
+      this.applyStyle(ctx);
+      Glyph.renderOutline(ctx, outline, scale, x + this.originShift.x + this.metrics.x_shift, y + this.originShift.y + this.metrics.y_shift);
+      this.restoreStyle(ctx);
+    }
+  }, {
+    key: "renderToStave",
+    value: function renderToStave(x) {
+      this.checkContext();
+
+      if (!this.metrics) {
+        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RuntimeError('BadGlyph', "Glyph ".concat(this.code, " is not initialized."));
+      }
+
+      if (!this.stave) {
+        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RuntimeError('GlyphError', 'No valid stave');
+      }
+
+      var outline = this.metrics.outline;
+      var scale = this.scale * this.metrics.scale;
+      this.setRendered();
+      this.applyStyle();
+      Glyph.renderOutline(this.context, outline, scale, x + this.x_shift + this.metrics.x_shift, this.stave.getYForGlyphs() + this.y_shift + this.metrics.y_shift);
+      this.restoreStyle();
+    }
+  }], [{
+    key: "lookupFontMetric",
+    value:
     /*
       Static methods used to implement loading and rendering glyphs.
        Below categoryPath can be any metric path under 'glyphs', so stem.up would respolve
       to glyphs.stem.up.shifX, glyphs.stem.up.shiftY, etc.
     */
-    value: function lookupFontMetric(_ref) {
+    function lookupFontMetric(_ref) {
       var font = _ref.font,
           category = _ref.category,
           code = _ref.code,
@@ -21132,164 +21327,6 @@ function (_Element) {
       });
       return new _boundingbox__WEBPACK_IMPORTED_MODULE_4__["BoundingBox"](bboxComp.x1, bboxComp.y1, bboxComp.width(), bboxComp.height());
     }
-    /**
-     * @constructor
-     */
-
-  }]);
-
-  function Glyph(code, point, options) {
-    var _this;
-
-    _classCallCheck(this, Glyph);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Glyph).call(this));
-
-    _this.setAttribute('type', 'Glyph');
-
-    _this.code = code;
-    _this.point = point;
-    _this.options = {
-      fontStack: _this.getFontStack(),
-      category: null
-    };
-    _this.metrics = null;
-    _this.x_shift = 0;
-    _this.y_shift = 0;
-    _this.originShift = {
-      x: 0,
-      y: 0
-    };
-
-    if (options) {
-      _this.setOptions(options);
-    } else {
-      _this.reset();
-    }
-
-    return _this;
-  }
-
-  _createClass(Glyph, [{
-    key: "getCode",
-    value: function getCode() {
-      return this.code;
-    }
-  }, {
-    key: "setOptions",
-    value: function setOptions(options) {
-      this.options = _objectSpread({}, this.options, {}, options);
-      this.reset();
-    }
-  }, {
-    key: "setPoint",
-    value: function setPoint(point) {
-      this.point = point;
-      return this;
-    }
-  }, {
-    key: "setStave",
-    value: function setStave(stave) {
-      this.stave = stave;
-      return this;
-    }
-  }, {
-    key: "setXShift",
-    value: function setXShift(x_shift) {
-      this.x_shift = x_shift;
-      return this;
-    }
-  }, {
-    key: "setYShift",
-    value: function setYShift(y_shift) {
-      this.y_shift = y_shift;
-      return this;
-    }
-  }, {
-    key: "reset",
-    value: function reset() {
-      this.metrics = Glyph.loadMetrics(this.options.fontStack, this.code, this.options.category); // Override point from metrics file
-
-      this.point = this.options.category ? Glyph.lookupFontMetric({
-        category: this.options.category,
-        font: this.metrics.font,
-        code: this.code,
-        key: 'point',
-        defaultValue: this.point
-      }) : this.point;
-      this.scale = this.point * 72 / (this.metrics.font.getResolution() * 100);
-      this.bbox = Glyph.getOutlineBoundingBox(this.metrics.outline, this.scale * this.metrics.scale, this.metrics.x_shift, this.metrics.y_shift);
-    }
-  }, {
-    key: "getMetrics",
-    value: function getMetrics() {
-      if (!this.metrics) {
-        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RuntimeError('BadGlyph', "Glyph ".concat(this.code, " is not initialized."));
-      }
-
-      return {
-        x_min: this.metrics.x_min * this.scale * this.metrics.scale,
-        x_max: this.metrics.x_max * this.scale * this.metrics.scale,
-        width: this.bbox.getW(),
-        height: this.bbox.getH()
-      };
-    }
-  }, {
-    key: "setOriginX",
-    value: function setOriginX(x) {
-      var bbox = this.bbox;
-      var originX = Math.abs(bbox.getX() / bbox.getW());
-      var xShift = (x - originX) * bbox.getW();
-      this.originShift.x = -xShift;
-    }
-  }, {
-    key: "setOriginY",
-    value: function setOriginY(y) {
-      var bbox = this.bbox;
-      var originY = Math.abs(bbox.getY() / bbox.getH());
-      var yShift = (y - originY) * bbox.getH();
-      this.originShift.y = -yShift;
-    }
-  }, {
-    key: "setOrigin",
-    value: function setOrigin(x, y) {
-      this.setOriginX(x);
-      this.setOriginY(y);
-    }
-  }, {
-    key: "render",
-    value: function render(ctx, x, y) {
-      if (!this.metrics) {
-        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RuntimeError('BadGlyph', "Glyph ".concat(this.code, " is not initialized."));
-      }
-
-      var outline = this.metrics.outline;
-      var scale = this.scale * this.metrics.scale;
-      this.setRendered();
-      this.applyStyle(ctx);
-      Glyph.renderOutline(ctx, outline, scale, x + this.originShift.x + this.metrics.x_shift, y + this.originShift.y + this.metrics.y_shift);
-      this.restoreStyle(ctx);
-    }
-  }, {
-    key: "renderToStave",
-    value: function renderToStave(x) {
-      this.checkContext();
-
-      if (!this.metrics) {
-        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RuntimeError('BadGlyph', "Glyph ".concat(this.code, " is not initialized."));
-      }
-
-      if (!this.stave) {
-        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RuntimeError('GlyphError', 'No valid stave');
-      }
-
-      var outline = this.metrics.outline;
-      var scale = this.scale * this.metrics.scale;
-      this.setRendered();
-      this.applyStyle();
-      Glyph.renderOutline(this.context, outline, scale, x + this.x_shift + this.metrics.x_shift, this.stave.getYForGlyphs() + this.y_shift + this.metrics.y_shift);
-      this.restoreStyle();
-    }
   }]);
 
   return Glyph;
@@ -21322,29 +21359,33 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 
-var GlyphNote =
-/*#__PURE__*/
-function (_Note) {
+var GlyphNote = /*#__PURE__*/function (_Note) {
   _inherits(GlyphNote, _Note);
+
+  var _super = _createSuper(GlyphNote);
 
   function GlyphNote(glyph, noteStruct, options) {
     var _this;
 
     _classCallCheck(this, GlyphNote);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(GlyphNote).call(this, noteStruct));
+    _this = _super.call(this, noteStruct);
     _this.options = _objectSpread({
       ignoreTicks: false,
       line: 2
@@ -21432,60 +21473,47 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 
 
 
 
-var GraceNote =
-/*#__PURE__*/
-function (_StaveNote) {
+var GraceNote = /*#__PURE__*/function (_StaveNote) {
   _inherits(GraceNote, _StaveNote);
 
-  _createClass(GraceNote, null, [{
-    key: "CATEGORY",
-    get: function get() {
-      return 'gracenotes';
-    }
-  }, {
-    key: "LEDGER_LINE_OFFSET",
-    get: function get() {
-      return 2;
-    }
-  }, {
-    key: "SCALE",
-    get: function get() {
-      return 0.66;
-    }
-  }]);
+  var _super = _createSuper(GraceNote);
 
   function GraceNote(note_struct) {
     var _this;
 
     _classCallCheck(this, GraceNote);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(GraceNote).call(this, _objectSpread({
+    _this = _super.call(this, _objectSpread({
       glyph_font_scale: _tables__WEBPACK_IMPORTED_MODULE_2__["Flow"].DEFAULT_NOTATION_FONT_SCALE * GraceNote.SCALE,
       stroke_px: GraceNote.LEDGER_LINE_OFFSET
-    }, note_struct)));
+    }, note_struct));
 
     _this.setAttribute('type', 'GraceNote');
 
@@ -21697,6 +21725,21 @@ function (_StaveNote) {
       };
       return ret;
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'gracenotes';
+    }
+  }, {
+    key: "LEDGER_LINE_OFFSET",
+    get: function get() {
+      return 2;
+    }
+  }, {
+    key: "SCALE",
+    get: function get() {
+      return 0.66;
+    }
   }]);
 
   return GraceNote;
@@ -21727,12 +21770,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -21740,6 +21777,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -21755,7 +21802,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
- // To enable logging for this class. Set `Vex.Flow.GraceNoteGroup.DEBUG` to `true`.
+ // import { WidthFormatter } from './widthformatter';
+// To enable logging for this class. Set `Vex.Flow.GraceNoteGroup.DEBUG` to `true`.
 
 function L() {
   for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -21765,84 +21813,21 @@ function L() {
   if (GraceNoteGroup.DEBUG) _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].L('Vex.Flow.GraceNoteGroup', args);
 }
 
-var GraceNoteGroup =
-/*#__PURE__*/
-function (_Modifier) {
+var GraceNoteGroup = /*#__PURE__*/function (_Modifier) {
   _inherits(GraceNoteGroup, _Modifier);
 
-  _createClass(GraceNoteGroup, null, [{
-    key: "format",
-    // Arrange groups inside a `ModifierContext`
-    value: function format(gracenote_groups, state) {
-      var group_spacing_stave = 4;
-      var group_spacing_tab = 0;
-      if (!gracenote_groups || gracenote_groups.length === 0) return false;
-      var group_list = [];
-      var prev_note = null;
-      var shiftL = 0;
+  var _super = _createSuper(GraceNoteGroup);
 
-      for (var i = 0; i < gracenote_groups.length; ++i) {
-        var gracenote_group = gracenote_groups[i];
-        var note = gracenote_group.getNote();
-        var is_stavenote = note.getCategory() === _stavenote__WEBPACK_IMPORTED_MODULE_8__["StaveNote"].CATEGORY;
-        var spacing = is_stavenote ? group_spacing_stave : group_spacing_tab;
-
-        if (is_stavenote && note !== prev_note) {
-          // Iterate through all notes to get the displaced pixels
-          for (var n = 0; n < note.keys.length; ++n) {
-            shiftL = Math.max(note.getLeftDisplacedHeadPx(), shiftL);
-          }
-
-          prev_note = note;
-        }
-
-        group_list.push({
-          shift: shiftL,
-          gracenote_group: gracenote_group,
-          spacing: spacing
-        });
-      } // If first note left shift in case it is displaced
-
-
-      var group_shift = group_list[0].shift;
-      var formatWidth;
-
-      for (var _i = 0; _i < group_list.length; ++_i) {
-        var _gracenote_group = group_list[_i].gracenote_group;
-
-        _gracenote_group.preFormat();
-
-        formatWidth = _gracenote_group.getWidth() + group_list[_i].spacing;
-        group_shift = Math.max(formatWidth, group_shift);
-      }
-
-      for (var _i2 = 0; _i2 < group_list.length; ++_i2) {
-        var _gracenote_group2 = group_list[_i2].gracenote_group;
-        formatWidth = _gracenote_group2.getWidth() + group_list[_i2].spacing;
-
-        _gracenote_group2.setSpacingFromNextModifier(group_shift - Math.min(formatWidth, group_shift));
-      }
-
-      state.left_shift += group_shift;
-      return true;
-    } // ## Prototype Methods
-    //
-    // `GraceNoteGroup` inherits from `Modifier` and is placed inside a
-    // `ModifierContext`.
-
-  }, {
-    key: "CATEGORY",
-    get: function get() {
-      return 'gracenotegroups';
-    }
-  }]);
-
+  // ## Prototype Methods
+  //
+  // `GraceNoteGroup` inherits from `Modifier` and is placed inside a
+  // `ModifierContext`.
   function GraceNoteGroup(grace_notes, show_slur) {
     var _this;
 
     _classCallCheck(this, GraceNoteGroup);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(GraceNoteGroup).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'GraceNoteGroup');
 
@@ -21957,6 +21942,67 @@ function (_Modifier) {
         this.slur.setContext(this.context).draw();
       }
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'gracenotegroups';
+    } // Arrange groups inside a `ModifierContext`
+
+  }, {
+    key: "format",
+    value: function format(gracenote_groups, state) {
+      var group_spacing_stave = 4;
+      var group_spacing_tab = 0;
+      if (!gracenote_groups || gracenote_groups.length === 0) return false;
+      var group_list = [];
+      var prev_note = null;
+      var shiftL = 0;
+
+      for (var i = 0; i < gracenote_groups.length; ++i) {
+        var gracenote_group = gracenote_groups[i];
+        var note = gracenote_group.getNote();
+        var is_stavenote = note.getCategory() === _stavenote__WEBPACK_IMPORTED_MODULE_8__["StaveNote"].CATEGORY;
+        var spacing = is_stavenote ? group_spacing_stave : group_spacing_tab;
+
+        if (is_stavenote && note !== prev_note) {
+          // Iterate through all notes to get the displaced pixels
+          for (var n = 0; n < note.keys.length; ++n) {
+            shiftL = Math.max(note.getLeftDisplacedHeadPx(), shiftL);
+          }
+
+          prev_note = note;
+        }
+
+        group_list.push({
+          shift: shiftL,
+          gracenote_group: gracenote_group,
+          spacing: spacing
+        });
+      } // If first note left shift in case it is displaced
+
+
+      var group_shift = group_list[0].shift;
+      var formatWidth;
+
+      for (var _i = 0; _i < group_list.length; ++_i) {
+        var _gracenote_group = group_list[_i].gracenote_group;
+
+        _gracenote_group.preFormat();
+
+        formatWidth = _gracenote_group.getWidth() + group_list[_i].spacing;
+        group_shift = Math.max(formatWidth, group_shift);
+      }
+
+      for (var _i2 = 0; _i2 < group_list.length; ++_i2) {
+        var _gracenote_group2 = group_list[_i2].gracenote_group;
+        formatWidth = _gracenote_group2.getWidth() + group_list[_i2].spacing;
+
+        _gracenote_group2.setSpacingFromNextModifier(group_shift - Math.min(formatWidth, group_shift));
+      }
+
+      state.left_shift += group_shift;
+      return true;
+    }
   }]);
 
   return GraceNoteGroup;
@@ -21980,23 +22026,27 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // @author Balazs Forian-Szabo
@@ -22009,24 +22059,17 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 // See `tests/gracetabnote_tests.js` for usage examples.
 
 
-var GraceTabNote =
-/*#__PURE__*/
-function (_TabNote) {
+var GraceTabNote = /*#__PURE__*/function (_TabNote) {
   _inherits(GraceTabNote, _TabNote);
 
-  _createClass(GraceTabNote, null, [{
-    key: "CATEGORY",
-    get: function get() {
-      return 'gracetabnotes';
-    }
-  }]);
+  var _super = _createSuper(GraceTabNote);
 
   function GraceTabNote(note_struct) {
     var _this;
 
     _classCallCheck(this, GraceTabNote);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(GraceTabNote).call(this, note_struct, false));
+    _this = _super.call(this, note_struct, false);
 
     _this.setAttribute('type', 'GraceTabNote');
 
@@ -22055,6 +22098,11 @@ function (_TabNote) {
       _get(_getPrototypeOf(GraceTabNote.prototype), "draw", this).call(this);
 
       this.setRendered();
+    }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'gracetabnotes';
     }
   }]);
 
@@ -22343,9 +22391,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 // This class implements diatonic key management.
 
 
-var KeyManager =
-/*#__PURE__*/
-function () {
+var KeyManager = /*#__PURE__*/function () {
   function KeyManager(key) {
     _classCallCheck(this, KeyManager);
 
@@ -22415,9 +22461,9 @@ function () {
 
       if (scaleNote === note) {
         return {
-          'note': scaleNote,
-          'accidental': parts.accidental,
-          'change': false
+          note: scaleNote,
+          accidental: parts.accidental,
+          change: false
         };
       } // Then search for a note of equivalent value in our altered scale
 
@@ -22426,9 +22472,9 @@ function () {
 
       if (valueNote != null) {
         return {
-          'note': valueNote,
-          'accidental': this.music.getNoteParts(valueNote).accidental,
-          'change': false
+          note: valueNote,
+          accidental: this.music.getNoteParts(valueNote).accidental,
+          change: false
         };
       } // Then search for a note of equivalent value in the original scale
 
@@ -22440,9 +22486,9 @@ function () {
         delete this.scaleMapByValue[this.music.getNoteValue(scaleNote)];
         this.scaleMapByValue[this.music.getNoteValue(note)] = originalValueNote;
         return {
-          'note': originalValueNote,
-          'accidental': this.music.getNoteParts(originalValueNote).accidental,
-          'change': true
+          note: originalValueNote,
+          accidental: this.music.getNoteParts(originalValueNote).accidental,
+          change: true
         };
       } // Then try to unmodify a currently modified note.
 
@@ -22452,9 +22498,9 @@ function () {
         this.scaleMapByValue[this.music.getNoteValue(modparts.root)] = modparts.root;
         this.scaleMap[modparts.root] = modparts.root;
         return {
-          'note': modparts.root,
-          'accidental': null,
-          'change': true
+          note: modparts.root,
+          accidental: null,
+          change: true
         };
       } // Last resort -- shitshoot
 
@@ -22465,8 +22511,8 @@ function () {
       this.scaleMap[modparts.root] = note;
       return {
         note: note,
-        'accidental': parts.accidental,
-        'change': true
+        accidental: parts.accidental,
+        change: true
       };
     }
   }]);
@@ -22494,12 +22540,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -22507,6 +22547,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Cyril Silverman
@@ -22519,89 +22569,18 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var KeySignature =
-/*#__PURE__*/
-function (_StaveModifier) {
+var KeySignature = /*#__PURE__*/function (_StaveModifier) {
   _inherits(KeySignature, _StaveModifier);
 
-  _createClass(KeySignature, null, [{
-    key: "CATEGORY",
-    get: function get() {
-      return 'keysignatures';
-    } // Space between natural and following accidental depending
-    // on vertical position
+  var _super = _createSuper(KeySignature);
 
-  }, {
-    key: "accidentalSpacing",
-    get: function get() {
-      return {
-        '#': {
-          above: 6,
-          below: 4
-        },
-        'b': {
-          above: 4,
-          below: 7
-        },
-        'n': {
-          above: 4,
-          below: 1
-        },
-        '##': {
-          above: 6,
-          below: 4
-        },
-        'bb': {
-          above: 4,
-          below: 7
-        },
-        'db': {
-          above: 4,
-          below: 7
-        },
-        'd': {
-          above: 4,
-          below: 7
-        },
-        'bbs': {
-          above: 4,
-          below: 7
-        },
-        '++': {
-          above: 6,
-          below: 4
-        },
-        '+': {
-          above: 6,
-          below: 4
-        },
-        '+-': {
-          above: 6,
-          below: 4
-        },
-        '++-': {
-          above: 6,
-          below: 4
-        },
-        'bs': {
-          above: 4,
-          below: 10
-        },
-        'bss': {
-          above: 4,
-          below: 10
-        }
-      };
-    } // Create a new Key Signature based on a `key_spec`
-
-  }]);
-
+  // Create a new Key Signature based on a `key_spec`
   function KeySignature(keySpec, cancelKeySpec, alterKeySpec) {
     var _this;
 
     _classCallCheck(this, KeySignature);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(KeySignature).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'KeySignature');
 
@@ -22864,6 +22843,75 @@ function (_StaveModifier) {
         glyph.renderToStave(x);
       }
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'keysignatures';
+    } // Space between natural and following accidental depending
+    // on vertical position
+
+  }, {
+    key: "accidentalSpacing",
+    get: function get() {
+      return {
+        '#': {
+          above: 6,
+          below: 4
+        },
+        b: {
+          above: 4,
+          below: 7
+        },
+        n: {
+          above: 4,
+          below: 1
+        },
+        '##': {
+          above: 6,
+          below: 4
+        },
+        bb: {
+          above: 4,
+          below: 7
+        },
+        db: {
+          above: 4,
+          below: 7
+        },
+        d: {
+          above: 4,
+          below: 7
+        },
+        bbs: {
+          above: 4,
+          below: 7
+        },
+        '++': {
+          above: 6,
+          below: 4
+        },
+        '+': {
+          above: 6,
+          below: 4
+        },
+        '+-': {
+          above: 6,
+          below: 4
+        },
+        '++-': {
+          above: 6,
+          below: 4
+        },
+        bs: {
+          above: 4,
+          below: 10
+        },
+        bss: {
+          above: 4,
+          below: 10
+        }
+      };
+    }
   }]);
 
   return KeySignature;
@@ -22891,37 +22939,41 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Mark Meeus 2019
 
 
-var KeySigNote =
-/*#__PURE__*/
-function (_Note) {
+var KeySigNote = /*#__PURE__*/function (_Note) {
   _inherits(KeySigNote, _Note);
+
+  var _super = _createSuper(KeySigNote);
 
   function KeySigNote(keySpec, cancelKeySpec, alterKeySpec) {
     var _this;
 
     _classCallCheck(this, KeySigNote);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(KeySigNote).call(this, {
+    _this = _super.call(this, {
       duration: 'b'
-    }));
+    });
 
     _this.setAttribute('type', 'KeySigNote');
 
@@ -22983,12 +23035,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -22996,6 +23042,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -23015,45 +23071,17 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  // To enable logging for this class. Set `Vex.Flow.Modifier.DEBUG` to `true`.
 // function L(...args) { if (Modifier.DEBUG) Vex.L('Vex.Flow.Modifier', args); }
 
-var Modifier =
-/*#__PURE__*/
-function (_Element) {
+var Modifier = /*#__PURE__*/function (_Element) {
   _inherits(Modifier, _Element);
 
-  _createClass(Modifier, null, [{
-    key: "CATEGORY",
-    get: function get() {
-      return 'none';
-    } // Modifiers can be positioned almost anywhere, relative to a note.
-
-  }, {
-    key: "Position",
-    get: function get() {
-      return {
-        LEFT: 1,
-        RIGHT: 2,
-        ABOVE: 3,
-        BELOW: 4
-      };
-    }
-  }, {
-    key: "PositionString",
-    get: function get() {
-      return {
-        above: Modifier.Position.ABOVE,
-        below: Modifier.Position.BELOW,
-        left: Modifier.Position.LEFT,
-        right: Modifier.Position.RIGHT
-      };
-    }
-  }]);
+  var _super = _createSuper(Modifier);
 
   function Modifier() {
     var _this;
 
     _classCallCheck(this, Modifier);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Modifier).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'Modifier');
 
@@ -23075,8 +23103,8 @@ function (_Element) {
 
   _createClass(Modifier, [{
     key: "reset",
-    value: function reset() {} // do nothing
-    // Every modifier has a category. The `ModifierContext` uses this to determine
+    value: function reset() {// do nothing
+    } // Every modifier has a category. The `ModifierContext` uses this to determine
     // the type and order of the modifiers.
 
   }, {
@@ -23208,6 +23236,32 @@ function (_Element) {
         subTickContext.setXOffset(subNoteXOffset); // don't touch baseX to avoid shift each render
       });
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'none';
+    } // Modifiers can be positioned almost anywhere, relative to a note.
+
+  }, {
+    key: "Position",
+    get: function get() {
+      return {
+        LEFT: 1,
+        RIGHT: 2,
+        ABOVE: 3,
+        BELOW: 4
+      };
+    }
+  }, {
+    key: "PositionString",
+    get: function get() {
+      return {
+        above: Modifier.Position.ABOVE,
+        below: Modifier.Position.BELOW,
+        left: Modifier.Position.LEFT,
+        right: Modifier.Position.RIGHT
+      };
+    }
   }]);
 
   return Modifier;
@@ -23276,9 +23330,7 @@ function L() {
   if (ModifierContext.DEBUG) _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].L('Vex.Flow.ModifierContext', args);
 }
 
-var ModifierContext =
-/*#__PURE__*/
-function () {
+var ModifierContext = /*#__PURE__*/function () {
   function ModifierContext() {
     _classCallCheck(this, ModifierContext);
 
@@ -23406,15 +23458,19 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 // VexFlow - Music Engraving for HTML5
 // Copyright Mohit Muthanna 2010
@@ -23445,10 +23501,10 @@ function get_semibrave_rest() {
   return semibrave_rest;
 }
 
-var MultiMeasureRest =
-/*#__PURE__*/
-function (_Element) {
+var MultiMeasureRest = /*#__PURE__*/function (_Element) {
   _inherits(MultiMeasureRest, _Element);
+
+  var _super = _createSuper(MultiMeasureRest);
 
   // Parameters:
   // * `number_of_measures` - Number of measures.
@@ -23471,7 +23527,7 @@ function (_Element) {
 
     _classCallCheck(this, MultiMeasureRest);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(MultiMeasureRest).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'MultiMeasureRest');
 
@@ -23683,9 +23739,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 // ## Description
 // This class implements some standard music theory routines.
 
-var Music =
-/*#__PURE__*/
-function () {
+var Music = /*#__PURE__*/function () {
   function Music() {
     _classCallCheck(this, Music);
   }
@@ -23945,13 +23999,13 @@ function () {
     key: "root_indices",
     get: function get() {
       return {
-        'c': 0,
-        'd': 1,
-        'e': 2,
-        'f': 3,
-        'g': 4,
-        'a': 5,
-        'b': 6
+        c: 0,
+        d: 1,
+        e: 2,
+        f: 3,
+        g: 4,
+        a: 5,
+        b: 6
       };
     }
   }, {
@@ -23968,55 +24022,55 @@ function () {
     key: "diatonic_accidentals",
     get: function get() {
       return {
-        'unison': {
+        unison: {
           note: 0,
           accidental: 0
         },
-        'm2': {
+        m2: {
           note: 1,
           accidental: -1
         },
-        'M2': {
+        M2: {
           note: 1,
           accidental: 0
         },
-        'm3': {
+        m3: {
           note: 2,
           accidental: -1
         },
-        'M3': {
+        M3: {
           note: 2,
           accidental: 0
         },
-        'p4': {
+        p4: {
           note: 3,
           accidental: 0
         },
-        'dim5': {
+        dim5: {
           note: 4,
           accidental: -1
         },
-        'p5': {
+        p5: {
           note: 4,
           accidental: 0
         },
-        'm6': {
+        m6: {
           note: 5,
           accidental: -1
         },
-        'M6': {
+        M6: {
           note: 5,
           accidental: 0
         },
-        'b7': {
+        b7: {
           note: 6,
           accidental: -1
         },
-        'M7': {
+        M7: {
           note: 6,
           accidental: 0
         },
-        'octave': {
+        octave: {
           note: 7,
           accidental: 0
         }
@@ -24026,46 +24080,46 @@ function () {
     key: "intervals",
     get: function get() {
       return {
-        'u': 0,
-        'unison': 0,
-        'm2': 1,
-        'b2': 1,
-        'min2': 1,
-        'S': 1,
-        'H': 1,
-        '2': 2,
-        'M2': 2,
-        'maj2': 2,
-        'T': 2,
-        'W': 2,
-        'm3': 3,
-        'b3': 3,
-        'min3': 3,
-        'M3': 4,
-        '3': 4,
-        'maj3': 4,
-        '4': 5,
-        'p4': 5,
+        u: 0,
+        unison: 0,
+        m2: 1,
+        b2: 1,
+        min2: 1,
+        S: 1,
+        H: 1,
+        2: 2,
+        M2: 2,
+        maj2: 2,
+        T: 2,
+        W: 2,
+        m3: 3,
+        b3: 3,
+        min3: 3,
+        M3: 4,
+        3: 4,
+        maj3: 4,
+        4: 5,
+        p4: 5,
         '#4': 6,
-        'b5': 6,
-        'aug4': 6,
-        'dim5': 6,
-        '5': 7,
-        'p5': 7,
+        b5: 6,
+        aug4: 6,
+        dim5: 6,
+        5: 7,
+        p5: 7,
         '#5': 8,
-        'b6': 8,
-        'aug5': 8,
-        '6': 9,
-        'M6': 9,
-        'maj6': 9,
-        'b7': 10,
-        'm7': 10,
-        'min7': 10,
-        'dom7': 10,
-        'M7': 11,
-        'maj7': 11,
-        '8': 12,
-        'octave': 12
+        b6: 8,
+        aug5: 8,
+        6: 9,
+        M6: 9,
+        maj6: 9,
+        b7: 10,
+        m7: 10,
+        min7: 10,
+        dom7: 10,
+        M7: 11,
+        maj7: 11,
+        8: 12,
+        octave: 12
       };
     }
   }, {
@@ -24082,8 +24136,8 @@ function () {
     key: "scaleTypes",
     get: function get() {
       return {
-        'M': Music.scales.major,
-        'm': Music.scales.minor
+        M: Music.scales.major,
+        m: Music.scales.minor
       };
     }
   }, {
@@ -24095,11 +24149,11 @@ function () {
     key: "noteValues",
     get: function get() {
       return {
-        'c': {
+        c: {
           root_index: 0,
           int_val: 0
         },
-        'cn': {
+        cn: {
           root_index: 0,
           int_val: 0
         },
@@ -24111,19 +24165,19 @@ function () {
           root_index: 0,
           int_val: 2
         },
-        'cb': {
+        cb: {
           root_index: 0,
           int_val: 11
         },
-        'cbb': {
+        cbb: {
           root_index: 0,
           int_val: 10
         },
-        'd': {
+        d: {
           root_index: 1,
           int_val: 2
         },
-        'dn': {
+        dn: {
           root_index: 1,
           int_val: 2
         },
@@ -24135,19 +24189,19 @@ function () {
           root_index: 1,
           int_val: 4
         },
-        'db': {
+        db: {
           root_index: 1,
           int_val: 1
         },
-        'dbb': {
+        dbb: {
           root_index: 1,
           int_val: 0
         },
-        'e': {
+        e: {
           root_index: 2,
           int_val: 4
         },
-        'en': {
+        en: {
           root_index: 2,
           int_val: 4
         },
@@ -24159,19 +24213,19 @@ function () {
           root_index: 2,
           int_val: 6
         },
-        'eb': {
+        eb: {
           root_index: 2,
           int_val: 3
         },
-        'ebb': {
+        ebb: {
           root_index: 2,
           int_val: 2
         },
-        'f': {
+        f: {
           root_index: 3,
           int_val: 5
         },
-        'fn': {
+        fn: {
           root_index: 3,
           int_val: 5
         },
@@ -24183,19 +24237,19 @@ function () {
           root_index: 3,
           int_val: 7
         },
-        'fb': {
+        fb: {
           root_index: 3,
           int_val: 4
         },
-        'fbb': {
+        fbb: {
           root_index: 3,
           int_val: 3
         },
-        'g': {
+        g: {
           root_index: 4,
           int_val: 7
         },
-        'gn': {
+        gn: {
           root_index: 4,
           int_val: 7
         },
@@ -24207,19 +24261,19 @@ function () {
           root_index: 4,
           int_val: 9
         },
-        'gb': {
+        gb: {
           root_index: 4,
           int_val: 6
         },
-        'gbb': {
+        gbb: {
           root_index: 4,
           int_val: 5
         },
-        'a': {
+        a: {
           root_index: 5,
           int_val: 9
         },
-        'an': {
+        an: {
           root_index: 5,
           int_val: 9
         },
@@ -24231,19 +24285,19 @@ function () {
           root_index: 5,
           int_val: 11
         },
-        'ab': {
+        ab: {
           root_index: 5,
           int_val: 8
         },
-        'abb': {
+        abb: {
           root_index: 5,
           int_val: 7
         },
-        'b': {
+        b: {
           root_index: 6,
           int_val: 11
         },
-        'bn': {
+        bn: {
           root_index: 6,
           int_val: 11
         },
@@ -24255,11 +24309,11 @@ function () {
           root_index: 6,
           int_val: 1
         },
-        'bb': {
+        bb: {
           root_index: 6,
           int_val: 10
         },
-        'bbb': {
+        bbb: {
           root_index: 6,
           int_val: 9
         }
@@ -24289,12 +24343,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -24302,6 +24350,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -24317,175 +24375,27 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var Note =
-/*#__PURE__*/
-function (_Tickable) {
+var Note = /*#__PURE__*/function (_Tickable) {
   _inherits(Note, _Tickable);
 
-  _createClass(Note, null, [{
-    key: "plotMetrics",
-    // Debug helper. Displays various note metrics for the given
-    // note.
-    value: function plotMetrics(ctx, note, yPos) {
-      var metrics = note.getMetrics();
-      var xStart = note.getAbsoluteX() - metrics.modLeftPx - metrics.leftDisplacedHeadPx;
-      var xPre1 = note.getAbsoluteX() - metrics.leftDisplacedHeadPx;
-      var xAbs = note.getAbsoluteX();
-      var xPost1 = note.getAbsoluteX() + metrics.notePx;
-      var xPost2 = note.getAbsoluteX() + metrics.notePx + metrics.rightDisplacedHeadPx;
-      var xEnd = note.getAbsoluteX() + metrics.notePx + metrics.rightDisplacedHeadPx + metrics.modRightPx;
-      var xFreedomRight = xEnd + (note.getFormatterMetrics().freedom.right || 0);
-      var xWidth = xEnd - xStart;
-      ctx.save();
-      ctx.setFont('Arial', 8, '');
-      ctx.fillText(Math.round(xWidth) + 'px', xStart + note.getXShift(), yPos);
-      var y = yPos + 7;
+  var _super = _createSuper(Note);
 
-      function stroke(x1, x2, color) {
-        var yy = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : y;
-        ctx.beginPath();
-        ctx.setStrokeStyle(color);
-        ctx.setFillStyle(color);
-        ctx.setLineWidth(3);
-        ctx.moveTo(x1 + note.getXShift(), yy);
-        ctx.lineTo(x2 + note.getXShift(), yy);
-        ctx.stroke();
-      }
-
-      stroke(xStart, xPre1, 'red');
-      stroke(xPre1, xAbs, '#999');
-      stroke(xAbs, xPost1, 'green');
-      stroke(xPost1, xPost2, '#999');
-      stroke(xPost2, xEnd, 'red');
-      stroke(xEnd, xFreedomRight, '#DD0');
-      stroke(xStart - note.getXShift(), xStart, '#BBB'); // Shift
-
-      _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].drawDot(ctx, xAbs + note.getXShift(), y, 'blue');
-      var formatterMetrics = note.getFormatterMetrics();
-
-      if (formatterMetrics.iterations > 0) {
-        var spaceDeviation = formatterMetrics.space.deviation;
-        var prefix = spaceDeviation >= 0 ? '+' : '';
-        ctx.setFillStyle('red');
-        ctx.fillText(prefix + Math.round(spaceDeviation), xAbs + note.getXShift(), yPos - 10);
-      }
-
-      ctx.restore();
-    }
-  }, {
-    key: "parseDuration",
-    value: function parseDuration(durationString) {
-      if (typeof durationString !== 'string') {
-        return null;
-      }
-
-      var regexp = /(\d*\/?\d+|[a-z])(d*)([nrhms]|$)/;
-      var result = regexp.exec(durationString);
-
-      if (!result) {
-        return null;
-      }
-
-      var duration = result[1];
-      var dots = result[2].length;
-      var type = result[3] || 'n';
-      return {
-        duration: duration,
-        dots: dots,
-        type: type
-      };
-    }
-  }, {
-    key: "parseNoteStruct",
-    value: function parseNoteStruct(noteStruct) {
-      var durationString = noteStruct.duration;
-      var customTypes = []; // Preserve backwards-compatibility
-
-      var durationProps = Note.parseDuration(durationString);
-
-      if (!durationProps) {
-        return null;
-      } // If specified type is invalid, return null
-
-
-      var type = noteStruct.type;
-
-      if (type && !_tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].getGlyphProps.validTypes[type]) {
-        return null;
-      } // If no type specified, check duration or custom types
-
-
-      if (!type) {
-        type = durationProps.type || 'n'; // If we have keys, try and check if we've got a custom glyph
-
-        if (noteStruct.keys !== undefined) {
-          noteStruct.keys.forEach(function (k, i) {
-            var result = k.split('/'); // We have a custom glyph specified after the note eg. /X2
-
-            customTypes[i] = result && result.length === 3 ? result[2] : type;
-          });
-        }
-      } // Calculate the tick duration of the note
-
-
-      var ticks = _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].durationToTicks(durationProps.duration);
-
-      if (ticks == null) {
-        return null;
-      } // Are there any dots?
-
-
-      var dots = noteStruct.dots ? noteStruct.dots : durationProps.dots;
-
-      if (typeof dots !== 'number') {
-        return null;
-      } // Add ticks as necessary depending on the numbr of dots
-
-
-      var currentTicks = ticks;
-
-      for (var i = 0; i < dots; i++) {
-        if (currentTicks <= 1) return null;
-        currentTicks = currentTicks / 2;
-        ticks += currentTicks;
-      }
-
-      return {
-        duration: durationProps.duration,
-        type: type,
-        customTypes: customTypes,
-        dots: dots,
-        ticks: ticks
-      };
-    } // Every note is a tickable, i.e., it can be mutated by the `Formatter` class for
-    // positioning and layout.
-    // To create a new note you need to provide a `noteStruct`, which consists
-    // of the following fields:
-    //
-    // `type`: The note type (e.g., `r` for rest, `s` for slash notes, etc.)
-    // `dots`: The number of dots, which affects the duration.
-    // `duration`: The time length (e.g., `q` for quarter, `h` for half, `8` for eighth etc.)
-    //
-    // The range of values for these parameters are available in `src/tables.js`.
-
-  }, {
-    key: "CATEGORY",
-    get: function get() {
-      return 'note';
-    }
-  }, {
-    key: "modifierPadding",
-    get: function get() {
-      return 10;
-    }
-  }]);
-
+  // Every note is a tickable, i.e., it can be mutated by the `Formatter` class for
+  // positioning and layout.
+  // To create a new note you need to provide a `noteStruct`, which consists
+  // of the following fields:
+  //
+  // `type`: The note type (e.g., `r` for rest, `s` for slash notes, etc.)
+  // `dots`: The number of dots, which affects the duration.
+  // `duration`: The time length (e.g., `q` for quarter, `h` for half, `8` for eighth etc.)
+  //
+  // The range of values for these parameters are available in `src/tables.js`.
   function Note(noteStruct) {
     var _this;
 
     _classCallCheck(this, Note);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Note).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'Note');
 
@@ -24818,27 +24728,25 @@ function (_Tickable) {
   }, {
     key: "getMetrics",
     value: function getMetrics() {
-      var modLeftPx = 0;
-      var modRightPx = 0;
-
+      //let modLeftPx = 0;
+      //let modRightPx = 0;
       if (!this.preFormatted) {
         throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('UnformattedNote', "Can't call getMetrics on an unformatted note.");
       }
 
-      modLeftPx = this.modifierContext ? this.modifierContext.state.left_shift : 0;
-      modRightPx = this.modifierContext ? this.modifierContext.state.right_shift : 0;
-
-      if (this.modifiers.length) {
+      var modLeftPx = this.modifierContext ? this.modifierContext.state.left_shift : 0;
+      var modRightPx = this.modifierContext ? this.modifierContext.state.right_shift : 0;
+      /* if (this.modifiers.length) {
         modLeftPx += Note.modifierPadding;
         modRightPx += Note.modifierPadding;
-      }
+      }  */
 
       var width = this.getWidth();
       var glyphWidth = this.getGlyphWidth();
-      var notePx = width - modLeftPx // subtract left modifiers
-      - modRightPx // subtract right modifiers
-      - this.leftDisplacedHeadPx // subtract left displaced head
-      - this.rightDisplacedHeadPx; // subtract right displaced head
+      var notePx = width - modLeftPx - // subtract left modifiers
+      modRightPx - // subtract right modifiers
+      this.leftDisplacedHeadPx - // subtract left displaced head
+      this.rightDisplacedHeadPx; // subtract right displaced head
 
       return {
         // ----------
@@ -24883,6 +24791,152 @@ function (_Tickable) {
     value: function setPreFormatted(value) {
       this.preFormatted = value;
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'note';
+    }
+  }, {
+    key: "modifierPadding",
+    get: function get() {
+      return 10;
+    } // Debug helper. Displays various note metrics for the given
+    // note.
+
+  }, {
+    key: "plotMetrics",
+    value: function plotMetrics(ctx, note, yPos) {
+      var metrics = note.getMetrics();
+      var xStart = note.getAbsoluteX() - metrics.modLeftPx - metrics.leftDisplacedHeadPx;
+      var xPre1 = note.getAbsoluteX() - metrics.leftDisplacedHeadPx;
+      var xAbs = note.getAbsoluteX();
+      var xPost1 = note.getAbsoluteX() + metrics.notePx;
+      var xPost2 = note.getAbsoluteX() + metrics.notePx + metrics.rightDisplacedHeadPx;
+      var xEnd = note.getAbsoluteX() + metrics.notePx + metrics.rightDisplacedHeadPx + metrics.modRightPx;
+      var xFreedomRight = xEnd + (note.getFormatterMetrics().freedom.right || 0);
+      var xWidth = xEnd - xStart;
+      ctx.save();
+      ctx.setFont('Arial', 8, '');
+      ctx.fillText(Math.round(xWidth) + 'px', xStart + note.getXShift(), yPos);
+      var y = yPos + 7;
+
+      function stroke(x1, x2, color) {
+        var yy = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : y;
+        ctx.beginPath();
+        ctx.setStrokeStyle(color);
+        ctx.setFillStyle(color);
+        ctx.setLineWidth(3);
+        ctx.moveTo(x1 + note.getXShift(), yy);
+        ctx.lineTo(x2 + note.getXShift(), yy);
+        ctx.stroke();
+      }
+
+      stroke(xStart, xPre1, 'red');
+      stroke(xPre1, xAbs, '#999');
+      stroke(xAbs, xPost1, 'green');
+      stroke(xPost1, xPost2, '#999');
+      stroke(xPost2, xEnd, 'red');
+      stroke(xEnd, xFreedomRight, '#DD0');
+      stroke(xStart - note.getXShift(), xStart, '#BBB'); // Shift
+
+      _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].drawDot(ctx, xAbs + note.getXShift(), y, 'blue');
+      var formatterMetrics = note.getFormatterMetrics();
+
+      if (formatterMetrics.iterations > 0) {
+        var spaceDeviation = formatterMetrics.space.deviation;
+        var prefix = spaceDeviation >= 0 ? '+' : '';
+        ctx.setFillStyle('red');
+        ctx.fillText(prefix + Math.round(spaceDeviation), xAbs + note.getXShift(), yPos - 10);
+      }
+
+      ctx.restore();
+    }
+  }, {
+    key: "parseDuration",
+    value: function parseDuration(durationString) {
+      if (typeof durationString !== 'string') {
+        return null;
+      }
+
+      var regexp = /(\d*\/?\d+|[a-z])(d*)([nrhms]|$)/;
+      var result = regexp.exec(durationString);
+
+      if (!result) {
+        return null;
+      }
+
+      var duration = result[1];
+      var dots = result[2].length;
+      var type = result[3] || 'n';
+      return {
+        duration: duration,
+        dots: dots,
+        type: type
+      };
+    }
+  }, {
+    key: "parseNoteStruct",
+    value: function parseNoteStruct(noteStruct) {
+      var durationString = noteStruct.duration;
+      var customTypes = []; // Preserve backwards-compatibility
+
+      var durationProps = Note.parseDuration(durationString);
+
+      if (!durationProps) {
+        return null;
+      } // If specified type is invalid, return null
+
+
+      var type = noteStruct.type;
+
+      if (type && !_tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].getGlyphProps.validTypes[type]) {
+        return null;
+      } // If no type specified, check duration or custom types
+
+
+      if (!type) {
+        type = durationProps.type || 'n'; // If we have keys, try and check if we've got a custom glyph
+
+        if (noteStruct.keys !== undefined) {
+          noteStruct.keys.forEach(function (k, i) {
+            var result = k.split('/'); // We have a custom glyph specified after the note eg. /X2
+
+            customTypes[i] = result && result.length === 3 ? result[2] : type;
+          });
+        }
+      } // Calculate the tick duration of the note
+
+
+      var ticks = _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].durationToTicks(durationProps.duration);
+
+      if (ticks == null) {
+        return null;
+      } // Are there any dots?
+
+
+      var dots = noteStruct.dots ? noteStruct.dots : durationProps.dots;
+
+      if (typeof dots !== 'number') {
+        return null;
+      } // Add ticks as necessary depending on the numbr of dots
+
+
+      var currentTicks = ticks;
+
+      for (var i = 0; i < dots; i++) {
+        if (currentTicks <= 1) return null;
+        currentTicks = currentTicks / 2;
+        ticks += currentTicks;
+      }
+
+      return {
+        duration: durationProps.duration,
+        type: type,
+        customTypes: customTypes,
+        dots: dots,
+        ticks: ticks
+      };
+    }
   }]);
 
   return Note;
@@ -24910,23 +24964,27 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -24998,24 +25056,17 @@ function drawSlashNoteHead(ctx, duration, x, y, stem_direction, staveSpace) {
   ctx.restore();
 }
 
-var NoteHead =
-/*#__PURE__*/
-function (_Note) {
+var NoteHead = /*#__PURE__*/function (_Note) {
   _inherits(NoteHead, _Note);
 
-  _createClass(NoteHead, null, [{
-    key: "CATEGORY",
-    get: function get() {
-      return 'notehead';
-    }
-  }]);
+  var _super = _createSuper(NoteHead);
 
   function NoteHead(head_options) {
     var _this;
 
     _classCallCheck(this, NoteHead);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(NoteHead).call(this, head_options));
+    _this = _super.call(this, head_options);
 
     _this.setAttribute('type', 'NoteHead');
 
@@ -25201,6 +25252,11 @@ function (_Note) {
         this.restoreStyle(ctx);
       }
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'notehead';
+    }
   }]);
 
   return NoteHead;
@@ -25227,12 +25283,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -25240,6 +25290,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Taehoon Moon 2016
@@ -25254,40 +25314,17 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var NoteSubGroup =
-/*#__PURE__*/
-function (_Modifier) {
+var NoteSubGroup = /*#__PURE__*/function (_Modifier) {
   _inherits(NoteSubGroup, _Modifier);
 
-  _createClass(NoteSubGroup, null, [{
-    key: "format",
-    // Arrange groups inside a `ModifierContext`
-    value: function format(groups, state) {
-      if (!groups || groups.length === 0) return false;
-      var width = 0;
-
-      for (var i = 0; i < groups.length; ++i) {
-        var group = groups[i];
-        group.preFormat();
-        width += group.getWidth();
-      }
-
-      state.left_shift += width;
-      return true;
-    }
-  }, {
-    key: "CATEGORY",
-    get: function get() {
-      return 'notesubgroup';
-    }
-  }]);
+  var _super = _createSuper(NoteSubGroup);
 
   function NoteSubGroup(subNotes) {
     var _this;
 
     _classCallCheck(this, NoteSubGroup);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(NoteSubGroup).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'NoteSubGroup');
 
@@ -25362,6 +25399,27 @@ function (_Modifier) {
         return subNote.setContext(_this2.context).drawWithStyle();
       });
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'notesubgroup';
+    } // Arrange groups inside a `ModifierContext`
+
+  }, {
+    key: "format",
+    value: function format(groups, state) {
+      if (!groups || groups.length === 0) return false;
+      var width = 0;
+
+      for (var i = 0; i < groups.length; ++i) {
+        var group = groups[i];
+        group.preFormat();
+        width += group.getWidth();
+      }
+
+      state.left_shift += width;
+      return true;
+    }
   }]);
 
   return NoteSubGroup;
@@ -25389,12 +25447,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -25402,6 +25454,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Cyril Silverman
@@ -25428,136 +25490,19 @@ function L() {
   if (Ornament.DEBUG) _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].L('Vex.Flow.Ornament', args);
 }
 
-var Ornament =
-/*#__PURE__*/
-function (_Modifier) {
+var Ornament = /*#__PURE__*/function (_Modifier) {
   _inherits(Ornament, _Modifier);
 
-  _createClass(Ornament, [{
-    key: "getMetrics",
-    // ### getMetrics
-    // legacy ornaments have hard-coded metrics.  If additional ornament types are
-    // added, get their metrics here.
-    value: function getMetrics() {
-      return this.getFontStack()[0].metrics.glyphs.jazzOrnaments[this.ornament.code];
-    } // Create a new ornament of type `type`, which is an entry in
-    // `Vex.Flow.ornamentCodes` in `tables.js`.
+  var _super = _createSuper(Ornament);
 
-  }], [{
-    key: "format",
-    // ## Static Methods
-    // Arrange ornaments inside `ModifierContext`
-    value: function format(ornaments, state) {
-      if (!ornaments || ornaments.length === 0) return false;
-      var width = 0; // width is used by ornaments, which are always centered on the note head
-
-      var right_shift = state.right_shift; // jazz ornaments calculate r/l shift separately
-
-      var left_shift = state.left_shift;
-      var yOffset = 0;
-
-      for (var i = 0; i < ornaments.length; ++i) {
-        var ornament = ornaments[i];
-        var increment = 2;
-
-        if (Ornament.ornamentRelease.indexOf(ornament.type) >= 0) {
-          ornament.x_shift += right_shift + 2;
-        }
-
-        if (Ornament.ornamentAttack.indexOf(ornament.type) >= 0) {
-          ornament.x_shift -= left_shift + 2;
-        }
-
-        if (ornament.reportedWidth && ornament.x_shift < 0) {
-          left_shift += ornament.reportedWidth;
-        } else if (ornament.reportedWidth && ornament.x_shift > 0) {
-          right_shift += ornament.reportedWidth;
-        } else {
-          width = Math.max(ornament.getWidth(), width);
-        } // articulations above/below the line can be stacked.
-
-
-        if (Ornament.ornamentArticulation.indexOf(ornament.type) >= 0) {
-          // Unfortunately we don't know the stem direction.  So we base it
-          // on the line number, but also allow it to be overridden.
-          if (ornament.note.getLineNumber() >= 3 || ornament.getPosition() === _modifier__WEBPACK_IMPORTED_MODULE_2__["Modifier"].Position.ABOVE) {
-            state.top_text_line += increment;
-            ornament.y_shift += yOffset;
-            yOffset -= ornament.glyph.bbox.h;
-          } else {
-            state.text_line += increment;
-            ornament.y_shift += yOffset;
-            yOffset += ornament.glyph.bbox.h;
-          }
-        } else {
-          if (ornament.getPosition() === _modifier__WEBPACK_IMPORTED_MODULE_2__["Modifier"].Position.ABOVE) {
-            ornament.setTextLine(state.top_text_line);
-            state.top_text_line += increment;
-          } else {
-            ornament.setTextLine(state.text_line);
-            state.text_line += increment;
-          }
-        }
-      } // Note: 'legit' ornaments don't consider other modifiers when calculating their
-      // X position, but jazz ornaments sometimes need to.
-
-
-      state.left_shift = left_shift + width / 2;
-      state.right_shift = right_shift + width / 2;
-      return true;
-    } // ### ornamentNoteTransition
-    // means the jazz ornament represents an effect from one note to another,
-    // these are generally on the top of the staff.
-
-  }, {
-    key: "CATEGORY",
-    get: function get() {
-      return 'ornaments';
-    }
-  }, {
-    key: "ornamentNoteTransition",
-    get: function get() {
-      return ['flip', 'jazzTurn', 'smear'];
-    } // ### ornamentAttack
-    // Indicates something that happens in the attach, placed before the note and
-    // any accidentals
-
-  }, {
-    key: "ornamentAttack",
-    get: function get() {
-      return ['scoop'];
-    } // ### ornamentAlignWithNoteHead
-    // The ornament is aligned based on the note head, but without regard to whether the
-    // stem goes up or down.
-
-  }, {
-    key: "ornamentAlignWithNoteHead",
-    get: function get() {
-      return ['doit', 'fall', 'fallLong', 'doitLong', 'bend', 'plungerClosed', 'plungerOpen', 'scoop'];
-    } // ### ornamentRelease
-    // An ornament that happens on the release of the note, generally placed after the
-    // note and overlapping the next beat/measure..
-
-  }, {
-    key: "ornamentRelease",
-    get: function get() {
-      return ['doit', 'fall', 'fallLong', 'doitLong', 'jazzTurn', 'smear', 'flip'];
-    } // ### ornamentArticulation
-    // goes above/below the note based on space availablity
-
-  }, {
-    key: "ornamentArticulation",
-    get: function get() {
-      return ['bend', 'plungerClosed', 'plungerOpen'];
-    }
-  }]);
-
+  // Create a new ornament of type `type`, which is an entry in
+  // `Vex.Flow.ornamentCodes` in `tables.js`.
   function Ornament(type) {
     var _this;
 
     _classCallCheck(this, Ornament);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Ornament).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'Ornament');
 
@@ -25611,6 +25556,14 @@ function (_Modifier) {
   }
 
   _createClass(Ornament, [{
+    key: "getMetrics",
+    value: // ### getMetrics
+    // legacy ornaments have hard-coded metrics.  If additional ornament types are
+    // added, get their metrics here.
+    function getMetrics() {
+      return this.getFontStack()[0].metrics.glyphs.jazzOrnaments[this.ornament.code];
+    }
+  }, {
     key: "getCategory",
     value: function getCategory() {
       return Ornament.CATEGORY;
@@ -25737,6 +25690,113 @@ function (_Modifier) {
 
       this.context.closeGroup();
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'ornaments';
+    } // ## Static Methods
+    // Arrange ornaments inside `ModifierContext`
+
+  }, {
+    key: "format",
+    value: function format(ornaments, state) {
+      if (!ornaments || ornaments.length === 0) return false;
+      var width = 0; // width is used by ornaments, which are always centered on the note head
+
+      var right_shift = state.right_shift; // jazz ornaments calculate r/l shift separately
+
+      var left_shift = state.left_shift;
+      var yOffset = 0;
+
+      for (var i = 0; i < ornaments.length; ++i) {
+        var ornament = ornaments[i];
+        var increment = 2;
+
+        if (Ornament.ornamentRelease.indexOf(ornament.type) >= 0) {
+          ornament.x_shift += right_shift + 2;
+        }
+
+        if (Ornament.ornamentAttack.indexOf(ornament.type) >= 0) {
+          ornament.x_shift -= left_shift + 2;
+        }
+
+        if (ornament.reportedWidth && ornament.x_shift < 0) {
+          left_shift += ornament.reportedWidth;
+        } else if (ornament.reportedWidth && ornament.x_shift > 0) {
+          right_shift += ornament.reportedWidth;
+        } else {
+          width = Math.max(ornament.getWidth(), width);
+        } // articulations above/below the line can be stacked.
+
+
+        if (Ornament.ornamentArticulation.indexOf(ornament.type) >= 0) {
+          // Unfortunately we don't know the stem direction.  So we base it
+          // on the line number, but also allow it to be overridden.
+          if (ornament.note.getLineNumber() >= 3 || ornament.getPosition() === _modifier__WEBPACK_IMPORTED_MODULE_2__["Modifier"].Position.ABOVE) {
+            state.top_text_line += increment;
+            ornament.y_shift += yOffset;
+            yOffset -= ornament.glyph.bbox.h;
+          } else {
+            state.text_line += increment;
+            ornament.y_shift += yOffset;
+            yOffset += ornament.glyph.bbox.h;
+          }
+        } else {
+          if (ornament.getPosition() === _modifier__WEBPACK_IMPORTED_MODULE_2__["Modifier"].Position.ABOVE) {
+            ornament.setTextLine(state.top_text_line);
+            state.top_text_line += increment;
+          } else {
+            ornament.setTextLine(state.text_line);
+            state.text_line += increment;
+          }
+        }
+      } // Note: 'legit' ornaments don't consider other modifiers when calculating their
+      // X position, but jazz ornaments sometimes need to.
+
+
+      state.left_shift = left_shift + width / 2;
+      state.right_shift = right_shift + width / 2;
+      return true;
+    } // ### ornamentNoteTransition
+    // means the jazz ornament represents an effect from one note to another,
+    // these are generally on the top of the staff.
+
+  }, {
+    key: "ornamentNoteTransition",
+    get: function get() {
+      return ['flip', 'jazzTurn', 'smear'];
+    } // ### ornamentAttack
+    // Indicates something that happens in the attach, placed before the note and
+    // any accidentals
+
+  }, {
+    key: "ornamentAttack",
+    get: function get() {
+      return ['scoop'];
+    } // ### ornamentAlignWithNoteHead
+    // The ornament is aligned based on the note head, but without regard to whether the
+    // stem goes up or down.
+
+  }, {
+    key: "ornamentAlignWithNoteHead",
+    get: function get() {
+      return ['doit', 'fall', 'fallLong', 'doitLong', 'bend', 'plungerClosed', 'plungerOpen', 'scoop'];
+    } // ### ornamentRelease
+    // An ornament that happens on the release of the note, generally placed after the
+    // note and overlapping the next beat/measure..
+
+  }, {
+    key: "ornamentRelease",
+    get: function get() {
+      return ['doit', 'fall', 'fallLong', 'doitLong', 'jazzTurn', 'smear', 'flip'];
+    } // ### ornamentArticulation
+    // goes above/below the note based on space availablity
+
+  }, {
+    key: "ornamentArticulation",
+    get: function get() {
+      return ['bend', 'plungerClosed', 'plungerOpen'];
+    }
   }]);
 
   return Ornament;
@@ -25789,9 +25849,7 @@ function flattenMatches(results) {
 // when a string is terminated.)
 
 
-var Parser =
-/*#__PURE__*/
-function () {
+var Parser = /*#__PURE__*/function () {
   // For an example of a simple grammar, take a look at tests/parser_tests.js or
   // the EasyScore grammar in easyscore.js.
   function Parser(grammar) {
@@ -25998,12 +26056,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -26011,6 +26063,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -26044,81 +26106,18 @@ function drawPedalGlyph(name, context, x, y, point) {
   glyph.render(context, x + glyph_data.x_shift, y + glyph_data.y_shift);
 }
 
-var PedalMarking =
-/*#__PURE__*/
-function (_Element) {
+var PedalMarking = /*#__PURE__*/function (_Element) {
   _inherits(PedalMarking, _Element);
 
-  _createClass(PedalMarking, null, [{
-    key: "createSustain",
-    // Create a sustain pedal marking. Returns the defaults PedalMarking.
-    // Which uses the traditional "Ped" and "*"" markings.
-    value: function createSustain(notes) {
-      var pedal = new PedalMarking(notes);
-      return pedal;
-    } // Create a sostenuto pedal marking
+  var _super = _createSuper(PedalMarking);
 
-  }, {
-    key: "createSostenuto",
-    value: function createSostenuto(notes) {
-      var pedal = new PedalMarking(notes);
-      pedal.setStyle(PedalMarking.Styles.MIXED);
-      pedal.setCustomText('Sost. Ped.');
-      return pedal;
-    } // Create an una corda pedal marking
-
-  }, {
-    key: "createUnaCorda",
-    value: function createUnaCorda(notes) {
-      var pedal = new PedalMarking(notes);
-      pedal.setStyle(PedalMarking.Styles.TEXT);
-      pedal.setCustomText('una corda', 'tre corda');
-      return pedal;
-    } // ## Prototype Methods
-
-  }, {
-    key: "GLYPHS",
-    // Glyph data
-    get: function get() {
-      return {
-        'pedal_depress': {
-          code: 'keyboardPedalPed',
-          x_shift: -10,
-          y_shift: 0
-        },
-        'pedal_release': {
-          code: 'keyboardPedalUp',
-          x_shift: -2,
-          y_shift: 3
-        }
-      };
-    }
-  }, {
-    key: "Styles",
-    get: function get() {
-      return {
-        TEXT: 1,
-        BRACKET: 2,
-        MIXED: 3
-      };
-    }
-  }, {
-    key: "StylesString",
-    get: function get() {
-      return {
-        text: PedalMarking.Styles.TEXT,
-        bracket: PedalMarking.Styles.BRACKET,
-        mixed: PedalMarking.Styles.MIXED
-      };
-    }
-  }]);
-
+  // ## Prototype Methods
   function PedalMarking(notes) {
     var _this;
 
     _classCallCheck(this, PedalMarking);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(PedalMarking).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'PedalMarking');
 
@@ -26301,6 +26300,67 @@ function (_Element) {
 
       ctx.restore();
     }
+  }], [{
+    key: "GLYPHS",
+    get: // Glyph data
+    function get() {
+      return {
+        pedal_depress: {
+          code: 'keyboardPedalPed',
+          x_shift: -10,
+          y_shift: 0
+        },
+        pedal_release: {
+          code: 'keyboardPedalUp',
+          x_shift: -2,
+          y_shift: 3
+        }
+      };
+    }
+  }, {
+    key: "Styles",
+    get: function get() {
+      return {
+        TEXT: 1,
+        BRACKET: 2,
+        MIXED: 3
+      };
+    }
+  }, {
+    key: "StylesString",
+    get: function get() {
+      return {
+        text: PedalMarking.Styles.TEXT,
+        bracket: PedalMarking.Styles.BRACKET,
+        mixed: PedalMarking.Styles.MIXED
+      };
+    } // Create a sustain pedal marking. Returns the defaults PedalMarking.
+    // Which uses the traditional "Ped" and "*"" markings.
+
+  }, {
+    key: "createSustain",
+    value: function createSustain(notes) {
+      var pedal = new PedalMarking(notes);
+      return pedal;
+    } // Create a sostenuto pedal marking
+
+  }, {
+    key: "createSostenuto",
+    value: function createSostenuto(notes) {
+      var pedal = new PedalMarking(notes);
+      pedal.setStyle(PedalMarking.Styles.MIXED);
+      pedal.setCustomText('Sost. Ped.');
+      return pedal;
+    } // Create an una corda pedal marking
+
+  }, {
+    key: "createUnaCorda",
+    value: function createUnaCorda(notes) {
+      var pedal = new PedalMarking(notes);
+      pedal.setStyle(PedalMarking.Styles.TEXT);
+      pedal.setCustomText('una corda', 'tre corda');
+      return pedal;
+    }
   }]);
 
   return PedalMarking;
@@ -26332,9 +26392,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 // ## Warning: Deprecated for SVGContext
 // Except in instances where SVG support for IE < 9.0 is
 // needed, SVGContext is recommended.
-var RaphaelContext =
-/*#__PURE__*/
-function () {
+var RaphaelContext = /*#__PURE__*/function () {
   function RaphaelContext(element) {
     _classCallCheck(this, RaphaelContext);
 
@@ -26358,15 +26416,15 @@ function () {
     };
     this.attributes = {
       'stroke-width': 0.3,
-      'fill': 'black',
-      'stroke': 'black',
-      'font': '10pt Arial'
+      fill: 'black',
+      stroke: 'black',
+      font: '10pt Arial'
     };
     this.background_attributes = {
       'stroke-width': 0,
-      'fill': 'white',
-      'stroke': 'white',
-      'font': '10pt Arial'
+      fill: 'white',
+      stroke: 'white',
+      font: '10pt Arial'
     };
     this.shadow_attributes = {
       width: 0,
@@ -26791,16 +26849,7 @@ function setIndexValue(index, name, value, id, elem) {
   index[name][value][id] = elem;
 }
 
-var Registry =
-/*#__PURE__*/
-function () {
-  _createClass(Registry, null, [{
-    key: "INDEXES",
-    get: function get() {
-      return ['type'];
-    }
-  }]);
-
+var Registry = /*#__PURE__*/function () {
   function Registry() {
     _classCallCheck(this, Registry);
 
@@ -26851,7 +26900,7 @@ function () {
       id = id || elem.getAttribute('id');
 
       if (!id) {
-        throw new X('Can\'t add element without `id` attribute to registry', elem);
+        throw new X("Can't add element without `id` attribute to registry", elem);
       } // Manually add id to index, then update other indexes.
 
 
@@ -26922,6 +26971,11 @@ function () {
       return this;
     }
   }], [{
+    key: "INDEXES",
+    get: function get() {
+      return ['type'];
+    }
+  }, {
     key: "enableDefaultRegistry",
     value: function enableDefaultRegistry(registry) {
       Registry.defaultRegistry = registry;
@@ -26958,11 +27012,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _raphaelcontext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./raphaelcontext */ "./src/raphaelcontext.js");
 /* harmony import */ var _svgcontext__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./svgcontext */ "./src/svgcontext.js");
 /* harmony import */ var _vex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./vex */ "./src/vex.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -26981,10 +27039,111 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 var lastContext = null;
-var Renderer =
-/*#__PURE__*/
-function () {
-  _createClass(Renderer, null, [{
+var Renderer = /*#__PURE__*/function () {
+  function Renderer(elementId, backend) {
+    _classCallCheck(this, Renderer);
+
+    this.elementId = elementId;
+
+    if (!this.elementId) {
+      throw new _vex__WEBPACK_IMPORTED_MODULE_3__["Vex"].RERR('BadArgument', 'Invalid id for renderer.');
+    }
+
+    this.element = document.getElementById(elementId);
+    if (!this.element) this.element = elementId; // Verify backend and create context
+
+    this.ctx = null;
+    this.paper = null;
+    this.backend = backend;
+
+    if (this.backend === Renderer.Backends.CANVAS) {
+      // Create context.
+      if (!this.element.getContext) {
+        throw new _vex__WEBPACK_IMPORTED_MODULE_3__["Vex"].RERR('BadElement', "Can't get canvas context from element: ".concat(elementId));
+      }
+
+      this.ctx = Renderer.bolsterCanvasContext(this.element.getContext('2d'));
+    } else if (this.backend === Renderer.Backends.RAPHAEL) {
+      this.ctx = new _raphaelcontext__WEBPACK_IMPORTED_MODULE_1__["RaphaelContext"](this.element);
+    } else if (this.backend === Renderer.Backends.SVG) {
+      this.ctx = new _svgcontext__WEBPACK_IMPORTED_MODULE_2__["SVGContext"](this.element);
+    } else {
+      throw new _vex__WEBPACK_IMPORTED_MODULE_3__["Vex"].RERR('InvalidBackend', "No support for backend: ".concat(this.backend));
+    }
+  }
+
+  _createClass(Renderer, [{
+    key: "resize",
+    value: function resize(width, height) {
+      if (this.backend === Renderer.Backends.CANVAS) {
+        if (!this.element.getContext) {
+          throw new _vex__WEBPACK_IMPORTED_MODULE_3__["Vex"].RERR('BadElement', "Can't get canvas context from element: ".concat(this.elementId));
+        }
+
+        var _CanvasContext$Saniti = _canvascontext__WEBPACK_IMPORTED_MODULE_0__["CanvasContext"].SanitizeCanvasDims(width, height);
+
+        var _CanvasContext$Saniti2 = _slicedToArray(_CanvasContext$Saniti, 2);
+
+        width = _CanvasContext$Saniti2[0];
+        height = _CanvasContext$Saniti2[1];
+        var devicePixelRatio = window.devicePixelRatio || 1;
+        this.element.width = width * devicePixelRatio;
+        this.element.height = height * devicePixelRatio;
+        this.element.style.width = width + 'px';
+        this.element.style.height = height + 'px';
+        this.ctx = Renderer.bolsterCanvasContext(this.element.getContext('2d'));
+        this.ctx.scale(devicePixelRatio, devicePixelRatio);
+      } else {
+        this.ctx.resize(width, height);
+      }
+
+      return this;
+    }
+  }, {
+    key: "getContext",
+    value: function getContext() {
+      return this.ctx;
+    }
+  }], [{
+    key: "Backends",
+    get: function get() {
+      return {
+        CANVAS: 1,
+        RAPHAEL: 2,
+        SVG: 3,
+        VML: 4
+      };
+    } // End of line types
+
+  }, {
+    key: "LineEndType",
+    get: function get() {
+      return {
+        NONE: 1,
+        // No leg
+        UP: 2,
+        // Upward leg
+        DOWN: 3 // Downward leg
+
+      };
+    } // Set this to true if you're using VexFlow inside a runtime
+    // that does not allow modifiying canvas objects. There is a small
+    // performance degradation due to the extra indirection.
+
+  }, {
+    key: "USE_CANVAS_PROXY",
+    get: function get() {
+      return false;
+    }
+  }, {
+    key: "lastContext",
+    get: function get() {
+      return lastContext;
+    },
+    set: function set(ctx) {
+      lastContext = ctx;
+    }
+  }, {
     key: "buildContext",
     value: function buildContext(elementId, backend, width, height, background) {
       var renderer = new Renderer(elementId, backend);
@@ -27063,111 +27222,6 @@ function () {
       context.closePath();
       context.stroke();
     }
-  }, {
-    key: "Backends",
-    get: function get() {
-      return {
-        CANVAS: 1,
-        RAPHAEL: 2,
-        SVG: 3,
-        VML: 4
-      };
-    } // End of line types
-
-  }, {
-    key: "LineEndType",
-    get: function get() {
-      return {
-        NONE: 1,
-        // No leg
-        UP: 2,
-        // Upward leg
-        DOWN: 3 // Downward leg
-
-      };
-    } // Set this to true if you're using VexFlow inside a runtime
-    // that does not allow modifiying canvas objects. There is a small
-    // performance degradation due to the extra indirection.
-
-  }, {
-    key: "USE_CANVAS_PROXY",
-    get: function get() {
-      return false;
-    }
-  }, {
-    key: "lastContext",
-    get: function get() {
-      return lastContext;
-    },
-    set: function set(ctx) {
-      lastContext = ctx;
-    }
-  }]);
-
-  function Renderer(elementId, backend) {
-    _classCallCheck(this, Renderer);
-
-    this.elementId = elementId;
-
-    if (!this.elementId) {
-      throw new _vex__WEBPACK_IMPORTED_MODULE_3__["Vex"].RERR('BadArgument', 'Invalid id for renderer.');
-    }
-
-    this.element = document.getElementById(elementId);
-    if (!this.element) this.element = elementId; // Verify backend and create context
-
-    this.ctx = null;
-    this.paper = null;
-    this.backend = backend;
-
-    if (this.backend === Renderer.Backends.CANVAS) {
-      // Create context.
-      if (!this.element.getContext) {
-        throw new _vex__WEBPACK_IMPORTED_MODULE_3__["Vex"].RERR('BadElement', "Can't get canvas context from element: ".concat(elementId));
-      }
-
-      this.ctx = Renderer.bolsterCanvasContext(this.element.getContext('2d'));
-    } else if (this.backend === Renderer.Backends.RAPHAEL) {
-      this.ctx = new _raphaelcontext__WEBPACK_IMPORTED_MODULE_1__["RaphaelContext"](this.element);
-    } else if (this.backend === Renderer.Backends.SVG) {
-      this.ctx = new _svgcontext__WEBPACK_IMPORTED_MODULE_2__["SVGContext"](this.element);
-    } else {
-      throw new _vex__WEBPACK_IMPORTED_MODULE_3__["Vex"].RERR('InvalidBackend', "No support for backend: ".concat(this.backend));
-    }
-  }
-
-  _createClass(Renderer, [{
-    key: "resize",
-    value: function resize(width, height) {
-      if (this.backend === Renderer.Backends.CANVAS) {
-        if (!this.element.getContext) {
-          throw new _vex__WEBPACK_IMPORTED_MODULE_3__["Vex"].RERR('BadElement', "Can't get canvas context from element: ".concat(this.elementId));
-        }
-
-        var _CanvasContext$Saniti = _canvascontext__WEBPACK_IMPORTED_MODULE_0__["CanvasContext"].SanitizeCanvasDims(width, height);
-
-        var _CanvasContext$Saniti2 = _slicedToArray(_CanvasContext$Saniti, 2);
-
-        width = _CanvasContext$Saniti2[0];
-        height = _CanvasContext$Saniti2[1];
-        var devicePixelRatio = window.devicePixelRatio || 1;
-        this.element.width = width * devicePixelRatio;
-        this.element.height = height * devicePixelRatio;
-        this.element.style.width = width + 'px';
-        this.element.style.height = height + 'px';
-        this.ctx = Renderer.bolsterCanvasContext(this.element.getContext('2d'));
-        this.ctx.scale(devicePixelRatio, devicePixelRatio);
-      } else {
-        this.ctx.resize(width, height);
-      }
-
-      return this;
-    }
-  }, {
-    key: "getContext",
-    value: function getContext() {
-      return this.ctx;
-    }
   }]);
 
   return Renderer;
@@ -27197,23 +27251,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 
 
-var RepeatNote =
-/*#__PURE__*/
-function (_GlyphNote) {
+var RepeatNote = /*#__PURE__*/function (_GlyphNote) {
   _inherits(RepeatNote, _GlyphNote);
+
+  var _super = _createSuper(RepeatNote);
 
   function RepeatNote(type, noteStruct, options) {
     var _this;
@@ -27222,19 +27280,19 @@ function (_GlyphNote) {
 
     // Smufl Codes
     var CODES = {
-      '1': 'repeat1Bar',
-      '2': 'repeat2Bars',
-      '4': 'repeat4Bars',
-      'slash': 'repeatBarSlash'
+      1: 'repeat1Bar',
+      2: 'repeat2Bars',
+      4: 'repeat4Bars',
+      slash: 'repeatBarSlash'
     };
     noteStruct = _objectSpread({
       duration: 'q',
       align_center: type !== 'slash'
     }, noteStruct);
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(RepeatNote).call(this, null, _objectSpread({
+    _this = _super.call(this, null, _objectSpread({
       duration: 'q',
       align_center: type !== 'slash'
-    }, noteStruct), options));
+    }, noteStruct), options);
 
     _this.setAttribute('type', 'RepeatNote');
 
@@ -27294,9 +27352,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-var Font =
-/*#__PURE__*/
-function () {
+var Font = /*#__PURE__*/function () {
   function Font(name, metrics, fontData) {
     _classCallCheck(this, Font);
 
@@ -27419,15 +27475,19 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 
@@ -27444,17 +27504,17 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var Stave =
-/*#__PURE__*/
-function (_Element) {
+var Stave = /*#__PURE__*/function (_Element) {
   _inherits(Stave, _Element);
+
+  var _super = _createSuper(Stave);
 
   function Stave(x, y, width, options) {
     var _this;
 
     _classCallCheck(this, Stave);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Stave).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'Stave');
 
@@ -28266,12 +28326,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -28280,59 +28334,35 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // Author Larry Kuhns 2011
 
 
-var Barline =
-/*#__PURE__*/
-function (_StaveModifier) {
+var Barline = /*#__PURE__*/function (_StaveModifier) {
   _inherits(Barline, _StaveModifier);
 
-  _createClass(Barline, null, [{
-    key: "CATEGORY",
-    get: function get() {
-      return 'barlines';
-    }
-  }, {
-    key: "type",
-    get: function get() {
-      return {
-        SINGLE: 1,
-        DOUBLE: 2,
-        END: 3,
-        REPEAT_BEGIN: 4,
-        REPEAT_END: 5,
-        REPEAT_BOTH: 6,
-        NONE: 7
-      };
-    }
-  }, {
-    key: "typeString",
-    get: function get() {
-      return {
-        single: Barline.type.SINGLE,
-        "double": Barline.type.DOUBLE,
-        end: Barline.type.END,
-        repeatBegin: Barline.type.REPEAT_BEGIN,
-        repeatEnd: Barline.type.REPEAT_END,
-        repeatBoth: Barline.type.REPEAT_BOTH,
-        none: Barline.type.NONE
-      };
-    }
-    /**
-     * @constructor
-     */
+  var _super = _createSuper(Barline);
 
-  }]);
-
+  /**
+   * @constructor
+   */
   function Barline(type) {
     var _this;
 
     _classCallCheck(this, Barline);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Barline).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'Barline');
 
@@ -28528,6 +28558,37 @@ function (_StaveModifier) {
       stave.context.arc(dot_x, dot_y, dot_radius, 0, Math.PI * 2, false);
       stave.context.fill();
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'barlines';
+    }
+  }, {
+    key: "type",
+    get: function get() {
+      return {
+        SINGLE: 1,
+        DOUBLE: 2,
+        END: 3,
+        REPEAT_BEGIN: 4,
+        REPEAT_END: 5,
+        REPEAT_BOTH: 6,
+        NONE: 7
+      };
+    }
+  }, {
+    key: "typeString",
+    get: function get() {
+      return {
+        single: Barline.type.SINGLE,
+        "double": Barline.type.DOUBLE,
+        end: Barline.type.END,
+        repeatBegin: Barline.type.REPEAT_BEGIN,
+        repeatEnd: Barline.type.REPEAT_END,
+        repeatBoth: Barline.type.REPEAT_BOTH,
+        none: Barline.type.NONE
+      };
+    }
   }]);
 
   return Barline;
@@ -28553,12 +28614,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -28566,6 +28621,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 
@@ -28595,54 +28660,17 @@ function drawBoldDoubleLine(ctx, type, topX, topY, botY) {
   ctx.fillRect(topX - thickLineOffset, topY, variableWidth, botY - topY);
 }
 
-var StaveConnector =
-/*#__PURE__*/
-function (_Element) {
+var StaveConnector = /*#__PURE__*/function (_Element) {
   _inherits(StaveConnector, _Element);
 
-  _createClass(StaveConnector, null, [{
-    key: "type",
-    // SINGLE_LEFT and SINGLE are the same value for compatibility
-    // with older versions of vexflow which didn't have right sided
-    // stave connectors
-    get: function get() {
-      return {
-        SINGLE_RIGHT: 0,
-        SINGLE_LEFT: 1,
-        SINGLE: 1,
-        DOUBLE: 2,
-        BRACE: 3,
-        BRACKET: 4,
-        BOLD_DOUBLE_LEFT: 5,
-        BOLD_DOUBLE_RIGHT: 6,
-        THIN_DOUBLE: 7,
-        NONE: 8
-      };
-    }
-  }, {
-    key: "typeString",
-    get: function get() {
-      return {
-        singleRight: StaveConnector.type.SINGLE_RIGHT,
-        singleLeft: StaveConnector.type.SINGLE_LEFT,
-        single: StaveConnector.type.SINGLE,
-        "double": StaveConnector.type.DOUBLE,
-        brace: StaveConnector.type.BRACE,
-        bracket: StaveConnector.type.BRACKET,
-        boldDoubleLeft: StaveConnector.type.BOLD_DOUBLE_LEFT,
-        boldDoubleRight: StaveConnector.type.BOLD_DOUBLE_RIGHT,
-        thinDouble: StaveConnector.type.THIN_DOUBLE,
-        none: StaveConnector.type.NONE
-      };
-    }
-  }]);
+  var _super = _createSuper(StaveConnector);
 
   function StaveConnector(top_stave, bottom_stave) {
     var _this;
 
     _classCallCheck(this, StaveConnector);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(StaveConnector).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'StaveConnector');
 
@@ -28747,9 +28775,9 @@ function (_Element) {
             var y3 = botY;
             var x2 = x1 - width;
             var y2 = y1 + attachment_height / 2.0;
-            var cpx1 = x2 - 0.90 * width;
+            var cpx1 = x2 - 0.9 * width;
             var cpy1 = y1 + 0.2 * attachment_height;
-            var cpx2 = x1 + 1.10 * width;
+            var cpx2 = x1 + 1.1 * width;
             var cpy2 = y2 - 0.135 * attachment_height;
             var cpx3 = cpx2;
             var cpy3 = y2 + 0.135 * attachment_height;
@@ -28757,7 +28785,7 @@ function (_Element) {
             var cpy4 = y3 - 0.2 * attachment_height;
             var cpx5 = x2 - width;
             var cpy5 = cpy4;
-            var cpx6 = x1 + 0.40 * width;
+            var cpx6 = x1 + 0.4 * width;
             var cpy6 = y2 + 0.135 * attachment_height;
             var cpx7 = cpx6;
             var cpy7 = y2 - 0.135 * attachment_height;
@@ -28826,6 +28854,41 @@ function (_Element) {
 
       ctx.restore();
     }
+  }], [{
+    key: "type",
+    get: // SINGLE_LEFT and SINGLE are the same value for compatibility
+    // with older versions of vexflow which didn't have right sided
+    // stave connectors
+    function get() {
+      return {
+        SINGLE_RIGHT: 0,
+        SINGLE_LEFT: 1,
+        SINGLE: 1,
+        DOUBLE: 2,
+        BRACE: 3,
+        BRACKET: 4,
+        BOLD_DOUBLE_LEFT: 5,
+        BOLD_DOUBLE_RIGHT: 6,
+        THIN_DOUBLE: 7,
+        NONE: 8
+      };
+    }
+  }, {
+    key: "typeString",
+    get: function get() {
+      return {
+        singleRight: StaveConnector.type.SINGLE_RIGHT,
+        singleLeft: StaveConnector.type.SINGLE_LEFT,
+        single: StaveConnector.type.SINGLE,
+        "double": StaveConnector.type.DOUBLE,
+        brace: StaveConnector.type.BRACE,
+        bracket: StaveConnector.type.BRACKET,
+        boldDoubleLeft: StaveConnector.type.BOLD_DOUBLE_LEFT,
+        boldDoubleRight: StaveConnector.type.BOLD_DOUBLE_RIGHT,
+        thinDouble: StaveConnector.type.THIN_DOUBLE,
+        none: StaveConnector.type.NONE
+      };
+    }
   }]);
 
   return StaveConnector;
@@ -28850,12 +28913,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -28863,6 +28920,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -28874,66 +28941,18 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var StaveHairpin =
-/*#__PURE__*/
-function (_Element) {
+var StaveHairpin = /*#__PURE__*/function (_Element) {
   _inherits(StaveHairpin, _Element);
 
-  _createClass(StaveHairpin, null, [{
-    key: "FormatByTicksAndDraw",
+  var _super = _createSuper(StaveHairpin);
 
-    /* Helper function to convert ticks into pixels.
-     * Requires a Formatter with voices joined and formatted (to
-     * get pixels per tick)
-     *
-     * options is struct that has:
-     *
-     *  {
-     *   height: px,
-     *   y_shift: px, //vertical offset
-     *   left_shift_ticks: 0, //left horizontal offset expressed in ticks
-     *   right_shift_ticks: 0 // right horizontal offset expressed in ticks
-     *  }
-     *
-     **/
-    value: function FormatByTicksAndDraw(ctx, formatter, notes, type, position, options) {
-      var ppt = formatter.pixelsPerTick;
-
-      if (ppt == null) {
-        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RuntimeError('BadArguments', 'A valid Formatter must be provide to draw offsets by ticks.');
-      }
-
-      var l_shift_px = ppt * options.left_shift_ticks;
-      var r_shift_px = ppt * options.right_shift_ticks;
-      var hairpin_options = {
-        height: options.height,
-        y_shift: options.y_shift,
-        left_shift_px: l_shift_px,
-        right_shift_px: r_shift_px
-      };
-      new StaveHairpin({
-        first_note: notes.first_note,
-        last_note: notes.last_note
-      }, type).setContext(ctx).setRenderOptions(hairpin_options).setPosition(position).draw();
-    }
-    /**
-     * Create a new hairpin from the specified notes.
-     *
-     * @constructor
-     * @param {!Object} notes The notes to tie up.
-     * @param {!Object} type The type of hairpin
-     */
-
-  }, {
-    key: "type",
-    get: function get() {
-      return {
-        CRESC: 1,
-        DECRESC: 2
-      };
-    }
-  }]);
-
+  /**
+   * Create a new hairpin from the specified notes.
+   *
+   * @constructor
+   * @param {!Object} notes The notes to tie up.
+   * @param {!Object} type The type of hairpin
+   */
   function StaveHairpin(notes, type) {
     var _this;
 
@@ -28948,7 +28967,7 @@ function (_Element) {
      *  }
      *
      **/
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(StaveHairpin).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'StaveHairpin');
 
@@ -29061,6 +29080,51 @@ function (_Element) {
       });
       return true;
     }
+  }], [{
+    key: "type",
+    get: function get() {
+      return {
+        CRESC: 1,
+        DECRESC: 2
+      };
+    }
+    /* Helper function to convert ticks into pixels.
+     * Requires a Formatter with voices joined and formatted (to
+     * get pixels per tick)
+     *
+     * options is struct that has:
+     *
+     *  {
+     *   height: px,
+     *   y_shift: px, //vertical offset
+     *   left_shift_ticks: 0, //left horizontal offset expressed in ticks
+     *   right_shift_ticks: 0 // right horizontal offset expressed in ticks
+     *  }
+     *
+     **/
+
+  }, {
+    key: "FormatByTicksAndDraw",
+    value: function FormatByTicksAndDraw(ctx, formatter, notes, type, position, options) {
+      var ppt = formatter.pixelsPerTick;
+
+      if (ppt == null) {
+        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RuntimeError('BadArguments', 'A valid Formatter must be provide to draw offsets by ticks.');
+      }
+
+      var l_shift_px = ppt * options.left_shift_ticks;
+      var r_shift_px = ppt * options.right_shift_ticks;
+      var hairpin_options = {
+        height: options.height,
+        y_shift: options.y_shift,
+        left_shift_px: l_shift_px,
+        right_shift_px: r_shift_px
+      };
+      new StaveHairpin({
+        first_note: notes.first_note,
+        last_note: notes.last_note
+      }, type).setContext(ctx).setRenderOptions(hairpin_options).setPosition(position).draw();
+    }
   }]);
 
   return StaveHairpin;
@@ -29085,12 +29149,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -29098,6 +29156,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -29202,49 +29270,29 @@ function drawArrowLine(ctx, point1, point2, config) {
   }
 }
 
-var StaveLine =
-/*#__PURE__*/
-function (_Element) {
+var StaveLine = /*#__PURE__*/function (_Element) {
   _inherits(StaveLine, _Element);
 
-  _createClass(StaveLine, null, [{
-    key: "TextVerticalPosition",
-    // Text Positioning
-    get: function get() {
-      return {
-        TOP: 1,
-        BOTTOM: 2
-      };
-    }
-  }, {
-    key: "TextJustification",
-    get: function get() {
-      return {
-        LEFT: 1,
-        CENTER: 2,
-        RIGHT: 3
-      };
-    } // Initialize the StaveLine with the given `notes`.
-    //
-    // `notes` is a struct that has:
-    //
-    //  ```
-    //  {
-    //    first_note: Note,
-    //    last_note: Note,
-    //    first_indices: [n1, n2, n3],
-    //    last_indices: [n1, n2, n3]
-    //  }
-    //  ```
+  var _super = _createSuper(StaveLine);
 
-  }]);
-
+  // Initialize the StaveLine with the given `notes`.
+  //
+  // `notes` is a struct that has:
+  //
+  //  ```
+  //  {
+  //    first_note: Note,
+  //    last_note: Note,
+  //    first_indices: [n1, n2, n3],
+  //    last_indices: [n1, n2, n3]
+  //  }
+  //  ```
   function StaveLine(notes) {
     var _this;
 
     _classCallCheck(this, StaveLine);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(StaveLine).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'StaveLine');
 
@@ -29434,6 +29482,24 @@ function (_Element) {
       ctx.restore();
       return this;
     }
+  }], [{
+    key: "TextVerticalPosition",
+    get: // Text Positioning
+    function get() {
+      return {
+        TOP: 1,
+        BOTTOM: 2
+      };
+    }
+  }, {
+    key: "TextJustification",
+    get: function get() {
+      return {
+        LEFT: 1,
+        CENTER: 2,
+        RIGHT: 3
+      };
+    }
   }]);
 
   return StaveLine;
@@ -29456,12 +29522,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -29470,36 +29530,32 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 // A base class for stave modifiers (e.g. clefs, key signatures)
 
-var StaveModifier =
-/*#__PURE__*/
-function (_Element) {
+var StaveModifier = /*#__PURE__*/function (_Element) {
   _inherits(StaveModifier, _Element);
 
-  _createClass(StaveModifier, null, [{
-    key: "Position",
-    get: function get() {
-      return {
-        LEFT: 1,
-        RIGHT: 2,
-        ABOVE: 3,
-        BELOW: 4,
-        BEGIN: 5,
-        END: 6
-      };
-    }
-  }]);
+  var _super = _createSuper(StaveModifier);
 
   function StaveModifier() {
     var _this;
 
     _classCallCheck(this, StaveModifier);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(StaveModifier).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'StaveModifier');
 
@@ -29604,6 +29660,18 @@ function (_Element) {
     value: function getLayoutMetrics() {
       return this.layoutMetrics;
     }
+  }], [{
+    key: "Position",
+    get: function get() {
+      return {
+        LEFT: 1,
+        RIGHT: 2,
+        ABOVE: 3,
+        BELOW: 4,
+        BEGIN: 5,
+        END: 6
+      };
+    }
   }]);
 
   return StaveModifier;
@@ -29639,23 +29707,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -29710,281 +29782,17 @@ function centerRest(rest, noteU, noteL) {
   rest.minLine -= delta;
 }
 
-var StaveNote =
-/*#__PURE__*/
-function (_StemmableNote) {
+var StaveNote = /*#__PURE__*/function (_StemmableNote) {
   _inherits(StaveNote, _StemmableNote);
 
-  _createClass(StaveNote, null, [{
-    key: "format",
-    // ## Static Methods
-    //
-    // Format notes inside a ModifierContext.
-    value: function format(notes, state) {
-      if (!notes || notes.length < 2) return false; // FIXME: VexFlow will soon require that a stave be set before formatting.
-      // Which, according to the below condition, means that following branch will
-      // always be taken and the rest of this function is dead code.
-      //
-      // Problematically, `Formatter#formatByY` was not designed to work for more
-      // than 2 voices (although, doesn't throw on this condition, just tries
-      // to power through).
-      //
-      // Based on the above:
-      //   * 2 voices can be formatted *with or without* a stave being set but
-      //     the output will be different
-      //   * 3 voices can only be formatted *without* a stave
-
-      if (notes[0].getStave()) {
-        return StaveNote.formatByY(notes, state);
-      }
-
-      var notesList = [];
-
-      for (var i = 0; i < notes.length; i++) {
-        var props = notes[i].getKeyProps();
-        var line = props[0].line;
-        var minL = props[props.length - 1].line;
-        var stemDirection = notes[i].getStemDirection();
-        var stemMax = notes[i].getStemLength() / 10;
-        var stemMin = notes[i].getStemMinimumLength() / 10;
-        var maxL = void 0;
-
-        if (notes[i].isRest()) {
-          maxL = line + notes[i].glyph.line_above;
-          minL = line - notes[i].glyph.line_below;
-        } else {
-          maxL = stemDirection === 1 ? props[props.length - 1].line + stemMax : props[props.length - 1].line;
-          minL = stemDirection === 1 ? props[0].line : props[0].line - stemMax;
-        }
-
-        notesList.push({
-          line: props[0].line,
-          // note/rest base line
-          maxLine: maxL,
-          // note/rest upper bounds line
-          minLine: minL,
-          // note/rest lower bounds line
-          isrest: notes[i].isRest(),
-          stemDirection: stemDirection,
-          stemMax: stemMax,
-          // Maximum (default) note stem length;
-          stemMin: stemMin,
-          // minimum note stem length
-          voice_shift: notes[i].getVoiceShiftWidth(),
-          is_displaced: notes[i].isDisplaced(),
-          // note manually displaced
-          note: notes[i]
-        });
-      }
-
-      var voices = notesList.length;
-      var noteU = notesList[0];
-      var noteM = voices > 2 ? notesList[1] : null;
-      var noteL = voices > 2 ? notesList[2] : notesList[1]; // for two voice backward compatibility, ensure upper voice is stems up
-      // for three voices, the voices must be in order (upper, middle, lower)
-
-      if (voices === 2 && noteU.stemDirection === -1 && noteL.stemDirection === 1) {
-        noteU = notesList[1];
-        noteL = notesList[0];
-      }
-
-      var voiceXShift = Math.max(noteU.voice_shift, noteL.voice_shift);
-      var xShift = 0;
-      var stemDelta; // Test for two voice note intersection
-
-      if (voices === 2) {
-        var lineSpacing = noteU.stemDirection === noteL.stemDirection ? 0.0 : 0.5; // if top voice is a middle voice, check stem intersection with lower voice
-
-        if (noteU.stemDirection === noteL.stemDirection && noteU.minLine <= noteL.maxLine) {
-          if (!noteU.isrest) {
-            stemDelta = Math.abs(noteU.line - (noteL.maxLine + 0.5));
-            stemDelta = Math.max(stemDelta, noteU.stemMin);
-            noteU.minLine = noteU.line - stemDelta;
-            noteU.note.setStemLength(stemDelta * 10);
-          }
-        }
-
-        if (noteU.minLine <= noteL.maxLine + lineSpacing) {
-          if (noteU.isrest) {
-            // shift rest up
-            shiftRestVertical(noteU, noteL, 1);
-          } else if (noteL.isrest) {
-            // shift rest down
-            shiftRestVertical(noteL, noteU, -1);
-          } else {
-            xShift = voiceXShift;
-
-            if (noteU.stemDirection === noteL.stemDirection) {
-              // upper voice is middle voice, so shift it right
-              noteU.note.setXShift(xShift + 3);
-            } else {
-              // shift lower voice right
-              noteL.note.setXShift(xShift);
-            }
-          }
-        } // format complete
-
-
-        return true;
-      } // Check middle voice stem intersection with lower voice
-
-
-      if (noteM !== null && noteM.minLine < noteL.maxLine + 0.5) {
-        if (!noteM.isrest) {
-          stemDelta = Math.abs(noteM.line - (noteL.maxLine + 0.5));
-          stemDelta = Math.max(stemDelta, noteM.stemMin);
-          noteM.minLine = noteM.line - stemDelta;
-          noteM.note.setStemLength(stemDelta * 10);
-        }
-      } // For three voices, test if rests can be repositioned
-      //
-      // Special case 1 :: middle voice rest between two notes
-      //
-
-
-      if (noteM.isrest && !noteU.isrest && !noteL.isrest) {
-        if (noteU.minLine <= noteM.maxLine || noteM.minLine <= noteL.maxLine) {
-          var restHeight = noteM.maxLine - noteM.minLine;
-          var space = noteU.minLine - noteL.maxLine;
-
-          if (restHeight < space) {
-            // center middle voice rest between the upper and lower voices
-            centerRest(noteM, noteU, noteL);
-          } else {
-            xShift = voiceXShift + 3; // shift middle rest right
-
-            noteM.note.setXShift(xShift);
-          } // format complete
-
-
-          return true;
-        }
-      } // Special case 2 :: all voices are rests
-
-
-      if (noteU.isrest && noteM.isrest && noteL.isrest) {
-        // Shift upper voice rest up
-        shiftRestVertical(noteU, noteM, 1); // Shift lower voice rest down
-
-        shiftRestVertical(noteL, noteM, -1); // format complete
-
-        return true;
-      } // Test if any other rests can be repositioned
-
-
-      if (noteM.isrest && noteU.isrest && noteM.minLine <= noteL.maxLine) {
-        // Shift middle voice rest up
-        shiftRestVertical(noteM, noteL, 1);
-      }
-
-      if (noteM.isrest && noteL.isrest && noteU.minLine <= noteM.maxLine) {
-        // Shift middle voice rest down
-        shiftRestVertical(noteM, noteU, -1);
-      }
-
-      if (noteU.isrest && noteU.minLine <= noteM.maxLine) {
-        // shift upper voice rest up;
-        shiftRestVertical(noteU, noteM, 1);
-      }
-
-      if (noteL.isrest && noteM.minLine <= noteL.maxLine) {
-        // shift lower voice rest down
-        shiftRestVertical(noteL, noteM, -1);
-      } // If middle voice intersects upper or lower voice
-
-
-      if (!noteU.isrest && !noteM.isrest && noteU.minLine <= noteM.maxLine + 0.5 || !noteM.isrest && !noteL.isrest && noteM.minLine <= noteL.maxLine) {
-        xShift = voiceXShift + 3; // shift middle note right
-
-        noteM.note.setXShift(xShift);
-      }
-
-      return true;
-    }
-  }, {
-    key: "formatByY",
-    value: function formatByY(notes, state) {
-      // NOTE: this function does not support more than two voices per stave
-      // use with care.
-      var hasStave = true;
-
-      for (var i = 0; i < notes.length; i++) {
-        hasStave = hasStave && notes[i].getStave() != null;
-      }
-
-      if (!hasStave) {
-        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('Stave Missing', 'All notes must have a stave - Vex.Flow.ModifierContext.formatMultiVoice!');
-      }
-
-      var xShift = 0;
-
-      for (var _i = 0; _i < notes.length - 1; _i++) {
-        var topNote = notes[_i];
-        var bottomNote = notes[_i + 1];
-
-        if (topNote.getStemDirection() === _stem__WEBPACK_IMPORTED_MODULE_3__["Stem"].DOWN) {
-          topNote = notes[_i + 1];
-          bottomNote = notes[_i];
-        }
-
-        var topKeys = topNote.getKeyProps();
-        var bottomKeys = bottomNote.getKeyProps();
-        var HALF_NOTEHEAD_HEIGHT = 0.5; // `keyProps` and `stave.getYForLine` have different notions of a `line`
-        // so we have to convert the keyProps value by subtracting 5.
-        // See https://github.com/0xfe/vexflow/wiki/Development-Gotchas
-        //
-        // We also extend the y for each note by a half notehead because the
-        // notehead's origin is centered
-
-        var topNoteBottomY = topNote.getStave().getYForLine(5 - topKeys[0].line + HALF_NOTEHEAD_HEIGHT);
-        var bottomNoteTopY = bottomNote.getStave().getYForLine(5 - bottomKeys[bottomKeys.length - 1].line - HALF_NOTEHEAD_HEIGHT);
-        var areNotesColliding = bottomNoteTopY - topNoteBottomY < 0;
-
-        if (areNotesColliding) {
-          xShift = topNote.getVoiceShiftWidth() + 2;
-          bottomNote.setXShift(xShift);
-        }
-      }
-
-      state.right_shift += xShift;
-    }
-  }, {
-    key: "postFormat",
-    value: function postFormat(notes) {
-      if (!notes) return false;
-      notes.forEach(function (note) {
-        return note.postFormat();
-      });
-      return true;
-    }
-  }, {
-    key: "CATEGORY",
-    get: function get() {
-      return 'stavenotes';
-    }
-  }, {
-    key: "STEM_UP",
-    get: function get() {
-      return _stem__WEBPACK_IMPORTED_MODULE_3__["Stem"].UP;
-    }
-  }, {
-    key: "STEM_DOWN",
-    get: function get() {
-      return _stem__WEBPACK_IMPORTED_MODULE_3__["Stem"].DOWN;
-    }
-  }, {
-    key: "DEFAULT_LEDGER_LINE_OFFSET",
-    get: function get() {
-      return 3;
-    }
-  }]);
+  var _super = _createSuper(StaveNote);
 
   function StaveNote(noteStruct) {
     var _this;
 
     _classCallCheck(this, StaveNote);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(StaveNote).call(this, noteStruct));
+    _this = _super.call(this, noteStruct);
 
     _this.setAttribute('type', 'StaveNote');
 
@@ -30774,7 +30582,7 @@ function (_StemmableNote) {
         ctx.stroke();
       };
 
-      var style = _objectSpread({}, stave.getStyle() || {}, {}, this.getLedgerLineStyle() || {});
+      var style = _objectSpread(_objectSpread({}, stave.getStyle() || {}), this.getLedgerLineStyle() || {});
 
       if (typeof style.lineWidth === 'undefined') {
         style.lineWidth = _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].STAVE_LINE_THICKNESS * 2;
@@ -30847,9 +30655,9 @@ function (_StemmableNote) {
         var noteStemHeight = stem.getHeight();
         var flagX = this.getStemX(); // FIXME: What's with the magic +/- 2
 
-        var flagY = this.getStemDirection() === _stem__WEBPACK_IMPORTED_MODULE_3__["Stem"].DOWN // Down stems have flags on the left
-        ? y_top - noteStemHeight + 2 // Up stems have flags on the eft.
-        : y_bottom - noteStemHeight - 2; // Draw the Flag
+        var flagY = this.getStemDirection() === _stem__WEBPACK_IMPORTED_MODULE_3__["Stem"].DOWN ? // Down stems have flags on the left
+        y_top - noteStemHeight + 2 : // Up stems have flags on the eft.
+        y_bottom - noteStemHeight - 2; // Draw the Flag
 
         ctx.openGroup('flag', null, {
           pointerBBox: true
@@ -30989,6 +30797,268 @@ function (_StemmableNote) {
       this.restoreStyle();
       this.setRendered();
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'stavenotes';
+    }
+  }, {
+    key: "STEM_UP",
+    get: function get() {
+      return _stem__WEBPACK_IMPORTED_MODULE_3__["Stem"].UP;
+    }
+  }, {
+    key: "STEM_DOWN",
+    get: function get() {
+      return _stem__WEBPACK_IMPORTED_MODULE_3__["Stem"].DOWN;
+    }
+  }, {
+    key: "DEFAULT_LEDGER_LINE_OFFSET",
+    get: function get() {
+      return 3;
+    } // ## Static Methods
+    //
+    // Format notes inside a ModifierContext.
+
+  }, {
+    key: "format",
+    value: function format(notes, state) {
+      if (!notes || notes.length < 2) return false; // FIXME: VexFlow will soon require that a stave be set before formatting.
+      // Which, according to the below condition, means that following branch will
+      // always be taken and the rest of this function is dead code.
+      //
+      // Problematically, `Formatter#formatByY` was not designed to work for more
+      // than 2 voices (although, doesn't throw on this condition, just tries
+      // to power through).
+      //
+      // Based on the above:
+      //   * 2 voices can be formatted *with or without* a stave being set but
+      //     the output will be different
+      //   * 3 voices can only be formatted *without* a stave
+
+      if (notes[0].getStave()) {
+        return StaveNote.formatByY(notes, state);
+      }
+
+      var notesList = [];
+
+      for (var i = 0; i < notes.length; i++) {
+        var props = notes[i].getKeyProps();
+        var line = props[0].line;
+        var minL = props[props.length - 1].line;
+        var stemDirection = notes[i].getStemDirection();
+        var stemMax = notes[i].getStemLength() / 10;
+        var stemMin = notes[i].getStemMinimumLength() / 10;
+        var maxL = void 0;
+
+        if (notes[i].isRest()) {
+          maxL = line + notes[i].glyph.line_above;
+          minL = line - notes[i].glyph.line_below;
+        } else {
+          maxL = stemDirection === 1 ? props[props.length - 1].line + stemMax : props[props.length - 1].line;
+          minL = stemDirection === 1 ? props[0].line : props[0].line - stemMax;
+        }
+
+        notesList.push({
+          line: props[0].line,
+          // note/rest base line
+          maxLine: maxL,
+          // note/rest upper bounds line
+          minLine: minL,
+          // note/rest lower bounds line
+          isrest: notes[i].isRest(),
+          stemDirection: stemDirection,
+          stemMax: stemMax,
+          // Maximum (default) note stem length;
+          stemMin: stemMin,
+          // minimum note stem length
+          voice_shift: notes[i].getVoiceShiftWidth(),
+          is_displaced: notes[i].isDisplaced(),
+          // note manually displaced
+          note: notes[i]
+        });
+      }
+
+      var voices = notesList.length;
+      var noteU = notesList[0];
+      var noteM = voices > 2 ? notesList[1] : null;
+      var noteL = voices > 2 ? notesList[2] : notesList[1]; // for two voice backward compatibility, ensure upper voice is stems up
+      // for three voices, the voices must be in order (upper, middle, lower)
+
+      if (voices === 2 && noteU.stemDirection === -1 && noteL.stemDirection === 1) {
+        noteU = notesList[1];
+        noteL = notesList[0];
+      }
+
+      var voiceXShift = Math.max(noteU.voice_shift, noteL.voice_shift);
+      var xShift = 0;
+      var stemDelta; // Test for two voice note intersection
+
+      if (voices === 2) {
+        var lineSpacing = noteU.stemDirection === noteL.stemDirection ? 0.0 : 0.5; // if top voice is a middle voice, check stem intersection with lower voice
+
+        if (noteU.stemDirection === noteL.stemDirection && noteU.minLine <= noteL.maxLine) {
+          if (!noteU.isrest) {
+            stemDelta = Math.abs(noteU.line - (noteL.maxLine + 0.5));
+            stemDelta = Math.max(stemDelta, noteU.stemMin);
+            noteU.minLine = noteU.line - stemDelta;
+            noteU.note.setStemLength(stemDelta * 10);
+          }
+        }
+
+        if (noteU.minLine <= noteL.maxLine + lineSpacing) {
+          if (noteU.isrest) {
+            // shift rest up
+            shiftRestVertical(noteU, noteL, 1);
+          } else if (noteL.isrest) {
+            // shift rest down
+            shiftRestVertical(noteL, noteU, -1);
+          } else {
+            xShift = voiceXShift;
+
+            if (noteU.stemDirection === noteL.stemDirection) {
+              // upper voice is middle voice, so shift it right
+              noteU.note.setXShift(xShift + 3);
+            } else {
+              // shift lower voice right
+              noteL.note.setXShift(xShift);
+            }
+          }
+        } // format complete
+
+
+        return true;
+      } // Check middle voice stem intersection with lower voice
+
+
+      if (noteM !== null && noteM.minLine < noteL.maxLine + 0.5) {
+        if (!noteM.isrest) {
+          stemDelta = Math.abs(noteM.line - (noteL.maxLine + 0.5));
+          stemDelta = Math.max(stemDelta, noteM.stemMin);
+          noteM.minLine = noteM.line - stemDelta;
+          noteM.note.setStemLength(stemDelta * 10);
+        }
+      } // For three voices, test if rests can be repositioned
+      //
+      // Special case 1 :: middle voice rest between two notes
+      //
+
+
+      if (noteM.isrest && !noteU.isrest && !noteL.isrest) {
+        if (noteU.minLine <= noteM.maxLine || noteM.minLine <= noteL.maxLine) {
+          var restHeight = noteM.maxLine - noteM.minLine;
+          var space = noteU.minLine - noteL.maxLine;
+
+          if (restHeight < space) {
+            // center middle voice rest between the upper and lower voices
+            centerRest(noteM, noteU, noteL);
+          } else {
+            xShift = voiceXShift + 3; // shift middle rest right
+
+            noteM.note.setXShift(xShift);
+          } // format complete
+
+
+          return true;
+        }
+      } // Special case 2 :: all voices are rests
+
+
+      if (noteU.isrest && noteM.isrest && noteL.isrest) {
+        // Shift upper voice rest up
+        shiftRestVertical(noteU, noteM, 1); // Shift lower voice rest down
+
+        shiftRestVertical(noteL, noteM, -1); // format complete
+
+        return true;
+      } // Test if any other rests can be repositioned
+
+
+      if (noteM.isrest && noteU.isrest && noteM.minLine <= noteL.maxLine) {
+        // Shift middle voice rest up
+        shiftRestVertical(noteM, noteL, 1);
+      }
+
+      if (noteM.isrest && noteL.isrest && noteU.minLine <= noteM.maxLine) {
+        // Shift middle voice rest down
+        shiftRestVertical(noteM, noteU, -1);
+      }
+
+      if (noteU.isrest && noteU.minLine <= noteM.maxLine) {
+        // shift upper voice rest up;
+        shiftRestVertical(noteU, noteM, 1);
+      }
+
+      if (noteL.isrest && noteM.minLine <= noteL.maxLine) {
+        // shift lower voice rest down
+        shiftRestVertical(noteL, noteM, -1);
+      } // If middle voice intersects upper or lower voice
+
+
+      if (!noteU.isrest && !noteM.isrest && noteU.minLine <= noteM.maxLine + 0.5 || !noteM.isrest && !noteL.isrest && noteM.minLine <= noteL.maxLine) {
+        xShift = voiceXShift + 3; // shift middle note right
+
+        noteM.note.setXShift(xShift);
+      }
+
+      return true;
+    }
+  }, {
+    key: "formatByY",
+    value: function formatByY(notes, state) {
+      // NOTE: this function does not support more than two voices per stave
+      // use with care.
+      var hasStave = true;
+
+      for (var i = 0; i < notes.length; i++) {
+        hasStave = hasStave && notes[i].getStave() != null;
+      }
+
+      if (!hasStave) {
+        throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('Stave Missing', 'All notes must have a stave - Vex.Flow.ModifierContext.formatMultiVoice!');
+      }
+
+      var xShift = 0;
+
+      for (var _i = 0; _i < notes.length - 1; _i++) {
+        var topNote = notes[_i];
+        var bottomNote = notes[_i + 1];
+
+        if (topNote.getStemDirection() === _stem__WEBPACK_IMPORTED_MODULE_3__["Stem"].DOWN) {
+          topNote = notes[_i + 1];
+          bottomNote = notes[_i];
+        }
+
+        var topKeys = topNote.getKeyProps();
+        var bottomKeys = bottomNote.getKeyProps();
+        var HALF_NOTEHEAD_HEIGHT = 0.5; // `keyProps` and `stave.getYForLine` have different notions of a `line`
+        // so we have to convert the keyProps value by subtracting 5.
+        // See https://github.com/0xfe/vexflow/wiki/Development-Gotchas
+        //
+        // We also extend the y for each note by a half notehead because the
+        // notehead's origin is centered
+
+        var topNoteBottomY = topNote.getStave().getYForLine(5 - topKeys[0].line + HALF_NOTEHEAD_HEIGHT);
+        var bottomNoteTopY = bottomNote.getStave().getYForLine(5 - bottomKeys[bottomKeys.length - 1].line - HALF_NOTEHEAD_HEIGHT);
+        var areNotesColliding = bottomNoteTopY - topNoteBottomY < 0;
+
+        if (areNotesColliding) {
+          xShift = topNote.getVoiceShiftWidth() + 2;
+          bottomNote.setXShift(xShift);
+        }
+      }
+
+      state.right_shift += xShift;
+    }
+  }, {
+    key: "postFormat",
+    value: function postFormat(notes) {
+      if (!notes) return false;
+      notes.forEach(function (note) {
+        return note.postFormat();
+      });
+      return true;
+    }
   }]);
 
   return StaveNote;
@@ -31012,12 +31082,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -31026,58 +31090,31 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Larry Kuhns 2011
 
 
-var Repetition =
-/*#__PURE__*/
-function (_StaveModifier) {
+var Repetition = /*#__PURE__*/function (_StaveModifier) {
   _inherits(Repetition, _StaveModifier);
 
-  _createClass(Repetition, null, [{
-    key: "CATEGORY",
-    get: function get() {
-      return 'repetitions';
-    }
-  }, {
-    key: "type",
-    get: function get() {
-      return {
-        NONE: 1,
-        // no coda or segno
-        CODA_LEFT: 2,
-        // coda at beginning of stave
-        CODA_RIGHT: 3,
-        // coda at end of stave
-        SEGNO_LEFT: 4,
-        // segno at beginning of stave
-        SEGNO_RIGHT: 5,
-        // segno at end of stave
-        DC: 6,
-        // D.C. at end of stave
-        DC_AL_CODA: 7,
-        // D.C. al coda at end of stave
-        DC_AL_FINE: 8,
-        // D.C. al Fine end of stave
-        DS: 9,
-        // D.S. at end of stave
-        DS_AL_CODA: 10,
-        // D.S. al coda at end of stave
-        DS_AL_FINE: 11,
-        // D.S. al Fine at end of stave
-        FINE: 12 // Fine at end of stave
-
-      };
-    }
-  }]);
+  var _super = _createSuper(Repetition);
 
   function Repetition(type, x, y_shift) {
     var _this;
 
     _classCallCheck(this, Repetition);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Repetition).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'Repetition');
 
@@ -31219,6 +31256,41 @@ function (_StaveModifier) {
       ctx.restore();
       return this;
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'repetitions';
+    }
+  }, {
+    key: "type",
+    get: function get() {
+      return {
+        NONE: 1,
+        // no coda or segno
+        CODA_LEFT: 2,
+        // coda at beginning of stave
+        CODA_RIGHT: 3,
+        // coda at end of stave
+        SEGNO_LEFT: 4,
+        // segno at beginning of stave
+        SEGNO_RIGHT: 5,
+        // segno at end of stave
+        DC: 6,
+        // D.C. at end of stave
+        DC_AL_CODA: 7,
+        // D.C. al coda at end of stave
+        DC_AL_FINE: 8,
+        // D.C. al Fine end of stave
+        DS: 9,
+        // D.S. at end of stave
+        DS_AL_CODA: 10,
+        // D.S. al coda at end of stave
+        DS_AL_FINE: 11,
+        // D.S. al Fine at end of stave
+        FINE: 12 // Fine at end of stave
+
+      };
+    }
   }]);
 
   return Repetition;
@@ -31241,12 +31313,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -31255,27 +31321,30 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Larry Kuhns 2011
 
-var StaveSection =
-/*#__PURE__*/
-function (_StaveModifier) {
+var StaveSection = /*#__PURE__*/function (_StaveModifier) {
   _inherits(StaveSection, _StaveModifier);
 
-  _createClass(StaveSection, null, [{
-    key: "CATEGORY",
-    get: function get() {
-      return 'stavesection';
-    }
-  }]);
+  var _super = _createSuper(StaveSection);
 
   function StaveSection(section, x, shift_y) {
     var _this;
 
     _classCallCheck(this, StaveSection);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(StaveSection).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'StaveSection');
 
@@ -31341,6 +31410,11 @@ function (_StaveModifier) {
       ctx.restore();
       return this;
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'stavesection';
+    }
   }]);
 
   return StaveSection;
@@ -31366,12 +31440,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -31380,30 +31448,33 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Radosaw Eichler 2012
 
 
 
 
-var StaveTempo =
-/*#__PURE__*/
-function (_StaveModifier) {
+var StaveTempo = /*#__PURE__*/function (_StaveModifier) {
   _inherits(StaveTempo, _StaveModifier);
 
-  _createClass(StaveTempo, null, [{
-    key: "CATEGORY",
-    get: function get() {
-      return 'stavetempo';
-    }
-  }]);
+  var _super = _createSuper(StaveTempo);
 
   function StaveTempo(tempo, x, shift_y) {
     var _this;
 
     _classCallCheck(this, StaveTempo);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(StaveTempo).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'StaveTempo');
 
@@ -31514,6 +31585,11 @@ function (_StaveModifier) {
       ctx.restore();
       return this;
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'stavetempo';
+    }
   }]);
 
   return StaveTempo;
@@ -31538,12 +31614,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -31552,29 +31622,32 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Taehoon Moon 2014
 
 
 
-var StaveText =
-/*#__PURE__*/
-function (_StaveModifier) {
+var StaveText = /*#__PURE__*/function (_StaveModifier) {
   _inherits(StaveText, _StaveModifier);
 
-  _createClass(StaveText, null, [{
-    key: "CATEGORY",
-    get: function get() {
-      return 'stavetext';
-    }
-  }]);
+  var _super = _createSuper(StaveText);
 
   function StaveText(text, position, options) {
     var _this;
 
     _classCallCheck(this, StaveText);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(StaveText).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'StaveText');
 
@@ -31682,6 +31755,11 @@ function (_StaveModifier) {
       ctx.restore();
       return this;
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'stavetext';
+    }
   }]);
 
   return StaveText;
@@ -31709,15 +31787,19 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -31726,10 +31808,10 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 // ties include: regular ties, hammer ons, pull offs, and slides.
 
 
-var StaveTie =
-/*#__PURE__*/
-function (_Element) {
+var StaveTie = /*#__PURE__*/function (_Element) {
   _inherits(StaveTie, _Element);
+
+  var _super = _createSuper(StaveTie);
 
   function StaveTie(notes, text) {
     var _this;
@@ -31747,7 +31829,7 @@ function (_Element) {
      *  }
      *
      **/
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(StaveTie).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'StaveTie');
 
@@ -31945,12 +32027,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -31959,38 +32035,30 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Larry Kuhns 2011
 
-var Volta =
-/*#__PURE__*/
-function (_StaveModifier) {
+var Volta = /*#__PURE__*/function (_StaveModifier) {
   _inherits(Volta, _StaveModifier);
 
-  _createClass(Volta, null, [{
-    key: "CATEGORY",
-    get: function get() {
-      return 'voltas';
-    }
-  }, {
-    key: "type",
-    get: function get() {
-      return {
-        NONE: 1,
-        BEGIN: 2,
-        MID: 3,
-        END: 4,
-        BEGIN_END: 5
-      };
-    }
-  }]);
+  var _super = _createSuper(Volta);
 
   function Volta(type, number, x, y_shift) {
     var _this;
 
     _classCallCheck(this, Volta);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Volta).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'Volta');
 
@@ -32058,6 +32126,22 @@ function (_StaveModifier) {
       ctx.fillRect(this.x + x, top_y, width, 1);
       return this;
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'voltas';
+    }
+  }, {
+    key: "type",
+    get: function get() {
+      return {
+        NONE: 1,
+        BEGIN: 2,
+        MID: 3,
+        END: 4,
+        BEGIN_END: 5
+      };
+    }
   }]);
 
   return Volta;
@@ -32082,12 +32166,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -32095,6 +32173,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -32113,39 +32201,10 @@ function L() {
   if (Stem.DEBUG) _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].L('Vex.Flow.Stem', args);
 }
 
-var Stem =
-/*#__PURE__*/
-function (_Element) {
+var Stem = /*#__PURE__*/function (_Element) {
   _inherits(Stem, _Element);
 
-  _createClass(Stem, null, [{
-    key: "CATEGORY",
-    get: function get() {
-      return 'stem';
-    } // Stem directions
-
-  }, {
-    key: "UP",
-    get: function get() {
-      return 1;
-    }
-  }, {
-    key: "DOWN",
-    get: function get() {
-      return -1;
-    } // Theme
-
-  }, {
-    key: "WIDTH",
-    get: function get() {
-      return _tables__WEBPACK_IMPORTED_MODULE_2__["Flow"].STEM_WIDTH;
-    }
-  }, {
-    key: "HEIGHT",
-    get: function get() {
-      return _tables__WEBPACK_IMPORTED_MODULE_2__["Flow"].STEM_HEIGHT;
-    }
-  }]);
+  var _super = _createSuper(Stem);
 
   function Stem() {
     var _this;
@@ -32154,7 +32213,7 @@ function (_Element) {
 
     _classCallCheck(this, Stem);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Stem).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'Stem'); // Default notehead x bounds
 
@@ -32310,6 +32369,33 @@ function (_Element) {
       this.restoreStyle(ctx);
       ctx.restore();
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'stem';
+    } // Stem directions
+
+  }, {
+    key: "UP",
+    get: function get() {
+      return 1;
+    }
+  }, {
+    key: "DOWN",
+    get: function get() {
+      return -1;
+    } // Theme
+
+  }, {
+    key: "WIDTH",
+    get: function get() {
+      return _tables__WEBPACK_IMPORTED_MODULE_2__["Flow"].STEM_WIDTH;
+    }
+  }, {
+    key: "HEIGHT",
+    get: function get() {
+      return _tables__WEBPACK_IMPORTED_MODULE_2__["Flow"].STEM_HEIGHT;
+    }
   }]);
 
   return Stem;
@@ -32340,15 +32426,19 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -32360,17 +32450,17 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var StemmableNote =
-/*#__PURE__*/
-function (_Note) {
+var StemmableNote = /*#__PURE__*/function (_Note) {
   _inherits(StemmableNote, _Note);
+
+  var _super = _createSuper(StemmableNote);
 
   function StemmableNote(note_struct) {
     var _this;
 
     _classCallCheck(this, StemmableNote);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(StemmableNote).call(this, note_struct));
+    _this = _super.call(this, note_struct);
 
     _this.setAttribute('type', 'StemmableNote');
 
@@ -32657,12 +32747,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -32670,6 +32754,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Larry Kuhns
@@ -32681,126 +32775,17 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var StringNumber =
-/*#__PURE__*/
-function (_Modifier) {
+var StringNumber = /*#__PURE__*/function (_Modifier) {
   _inherits(StringNumber, _Modifier);
 
-  _createClass(StringNumber, null, [{
-    key: "format",
-    // ## Static Methods
-    // Arrange string numbers inside a `ModifierContext`
-    value: function format(nums, state) {
-      var left_shift = state.left_shift;
-      var right_shift = state.right_shift;
-      var num_spacing = 1;
-      if (!nums || nums.length === 0) return this;
-      var nums_list = [];
-      var prev_note = null;
-      var shift_left = 0;
-      var shift_right = 0;
-      var i;
-      var num;
-      var note;
-      var pos;
-
-      for (i = 0; i < nums.length; ++i) {
-        num = nums[i];
-        note = num.getNote();
-
-        for (i = 0; i < nums.length; ++i) {
-          num = nums[i];
-          note = num.getNote();
-          pos = num.getPosition();
-          var props = note.getKeyProps()[num.getIndex()];
-
-          if (note !== prev_note) {
-            for (var n = 0; n < note.keys.length; ++n) {
-              if (left_shift === 0) {
-                shift_left = Math.max(note.getLeftDisplacedHeadPx(), shift_left);
-              }
-
-              if (right_shift === 0) {
-                shift_right = Math.max(note.getRightDisplacedHeadPx(), shift_right);
-              }
-            }
-
-            prev_note = note;
-          }
-
-          nums_list.push({
-            pos: pos,
-            note: note,
-            num: num,
-            line: props.line,
-            shiftL: shift_left,
-            shiftR: shift_right
-          });
-        }
-      } // Sort string numbers by line number.
-
-
-      nums_list.sort(function (a, b) {
-        return b.line - a.line;
-      }); // TODO: This variable never gets assigned to anything. Is that a bug or can this be removed?
-
-      var num_shiftL = 0; // eslint-disable-line
-
-      var num_shiftR = 0;
-      var x_widthL = 0;
-      var x_widthR = 0;
-      var last_line = null;
-      var last_note = null;
-
-      for (i = 0; i < nums_list.length; ++i) {
-        var num_shift = 0;
-        note = nums_list[i].note;
-        pos = nums_list[i].pos;
-        num = nums_list[i].num;
-        var line = nums_list[i].line;
-        var shiftL = nums_list[i].shiftL;
-        var shiftR = nums_list[i].shiftR; // Reset the position of the string number every line.
-
-        if (line !== last_line || note !== last_note) {
-          num_shiftL = left_shift + shiftL;
-          num_shiftR = right_shift + shiftR;
-        }
-
-        var num_width = num.getWidth() + num_spacing;
-
-        if (pos === _modifier__WEBPACK_IMPORTED_MODULE_1__["Modifier"].Position.LEFT) {
-          num.setXShift(left_shift);
-          num_shift = shift_left + num_width; // spacing
-
-          x_widthL = num_shift > x_widthL ? num_shift : x_widthL;
-        } else if (pos === _modifier__WEBPACK_IMPORTED_MODULE_1__["Modifier"].Position.RIGHT) {
-          num.setXShift(num_shiftR);
-          num_shift += num_width; // spacing
-
-          x_widthR = num_shift > x_widthR ? num_shift : x_widthR;
-        }
-
-        last_line = line;
-        last_note = note;
-      }
-
-      state.left_shift += x_widthL;
-      state.right_shift += x_widthR;
-      return true;
-    }
-  }, {
-    key: "CATEGORY",
-    get: function get() {
-      return 'stringnumber';
-    }
-  }]);
+  var _super = _createSuper(StringNumber);
 
   function StringNumber(number) {
     var _this;
 
     _classCallCheck(this, StringNumber);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(StringNumber).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'StringNumber');
 
@@ -32993,6 +32978,113 @@ function (_Modifier) {
 
       ctx.restore();
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'stringnumber';
+    } // ## Static Methods
+    // Arrange string numbers inside a `ModifierContext`
+
+  }, {
+    key: "format",
+    value: function format(nums, state) {
+      var left_shift = state.left_shift;
+      var right_shift = state.right_shift;
+      var num_spacing = 1;
+      if (!nums || nums.length === 0) return this;
+      var nums_list = [];
+      var prev_note = null;
+      var shift_left = 0;
+      var shift_right = 0;
+      var i;
+      var num;
+      var note;
+      var pos;
+
+      for (i = 0; i < nums.length; ++i) {
+        num = nums[i];
+        note = num.getNote();
+
+        for (i = 0; i < nums.length; ++i) {
+          num = nums[i];
+          note = num.getNote();
+          pos = num.getPosition();
+          var props = note.getKeyProps()[num.getIndex()];
+
+          if (note !== prev_note) {
+            for (var n = 0; n < note.keys.length; ++n) {
+              if (left_shift === 0) {
+                shift_left = Math.max(note.getLeftDisplacedHeadPx(), shift_left);
+              }
+
+              if (right_shift === 0) {
+                shift_right = Math.max(note.getRightDisplacedHeadPx(), shift_right);
+              }
+            }
+
+            prev_note = note;
+          }
+
+          nums_list.push({
+            pos: pos,
+            note: note,
+            num: num,
+            line: props.line,
+            shiftL: shift_left,
+            shiftR: shift_right
+          });
+        }
+      } // Sort string numbers by line number.
+
+
+      nums_list.sort(function (a, b) {
+        return b.line - a.line;
+      }); // TODO: This variable never gets assigned to anything. Is that a bug or can this be removed?
+
+      var num_shiftL = 0; // eslint-disable-line
+
+      var num_shiftR = 0;
+      var x_widthL = 0;
+      var x_widthR = 0;
+      var last_line = null;
+      var last_note = null;
+
+      for (i = 0; i < nums_list.length; ++i) {
+        var num_shift = 0;
+        note = nums_list[i].note;
+        pos = nums_list[i].pos;
+        num = nums_list[i].num;
+        var line = nums_list[i].line;
+        var shiftL = nums_list[i].shiftL;
+        var shiftR = nums_list[i].shiftR; // Reset the position of the string number every line.
+
+        if (line !== last_line || note !== last_note) {
+          num_shiftL = left_shift + shiftL;
+          num_shiftR = right_shift + shiftR;
+        }
+
+        var num_width = num.getWidth() + num_spacing;
+
+        if (pos === _modifier__WEBPACK_IMPORTED_MODULE_1__["Modifier"].Position.LEFT) {
+          num.setXShift(left_shift);
+          num_shift = shift_left + num_width; // spacing
+
+          x_widthL = num_shift > x_widthL ? num_shift : x_widthL;
+        } else if (pos === _modifier__WEBPACK_IMPORTED_MODULE_1__["Modifier"].Position.RIGHT) {
+          num.setXShift(num_shiftR);
+          num_shift += num_width; // spacing
+
+          x_widthR = num_shift > x_widthR ? num_shift : x_widthR;
+        }
+
+        last_line = line;
+        last_note = note;
+      }
+
+      state.left_shift += x_widthL;
+      state.right_shift += x_widthR;
+      return true;
+    }
   }]);
 
   return StringNumber;
@@ -33018,12 +33110,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -33031,6 +33117,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Larry Kuhns
@@ -33042,78 +33138,17 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var Stroke =
-/*#__PURE__*/
-function (_Modifier) {
+var Stroke = /*#__PURE__*/function (_Modifier) {
   _inherits(Stroke, _Modifier);
 
-  _createClass(Stroke, null, [{
-    key: "format",
-    // Arrange strokes inside `ModifierContext`
-    value: function format(strokes, state) {
-      var left_shift = state.left_shift;
-      var stroke_spacing = 0;
-      if (!strokes || strokes.length === 0) return this;
-      var strokeList = strokes.map(function (stroke) {
-        var note = stroke.getNote();
-
-        if (note instanceof _stavenote__WEBPACK_IMPORTED_MODULE_2__["StaveNote"]) {
-          var line = note.getKeyProps()[stroke.getIndex()].line;
-          var shift = note.getLeftDisplacedHeadPx();
-          return {
-            line: line,
-            shift: shift,
-            stroke: stroke
-          };
-        } else {
-          var string = note.getPositions()[stroke.getIndex()].str;
-          return {
-            line: string,
-            shift: 0,
-            stroke: stroke
-          };
-        }
-      });
-      var strokeShift = left_shift; // There can only be one stroke .. if more than one, they overlay each other
-
-      var xShift = strokeList.reduce(function (xShift, _ref) {
-        var stroke = _ref.stroke,
-            shift = _ref.shift;
-        stroke.setXShift(strokeShift + shift);
-        return Math.max(stroke.getWidth() + stroke_spacing, xShift);
-      }, 0);
-      state.left_shift += xShift;
-      return true;
-    }
-  }, {
-    key: "CATEGORY",
-    get: function get() {
-      return 'strokes';
-    }
-  }, {
-    key: "Type",
-    get: function get() {
-      return {
-        BRUSH_DOWN: 1,
-        BRUSH_UP: 2,
-        ROLL_DOWN: 3,
-        // Arpeggiated chord
-        ROLL_UP: 4,
-        // Arpeggiated chord
-        RASQUEDO_DOWN: 5,
-        RASQUEDO_UP: 6,
-        ARPEGGIO_DIRECTIONLESS: 7 // Arpeggiated chord without upwards or downwards arrow
-
-      };
-    }
-  }]);
+  var _super = _createSuper(Stroke);
 
   function Stroke(type, options) {
     var _this;
 
     _classCallCheck(this, Stroke);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Stroke).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'Stroke');
 
@@ -33311,6 +33346,65 @@ function (_Modifier) {
         this.context.restore();
       }
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'strokes';
+    }
+  }, {
+    key: "Type",
+    get: function get() {
+      return {
+        BRUSH_DOWN: 1,
+        BRUSH_UP: 2,
+        ROLL_DOWN: 3,
+        // Arpeggiated chord
+        ROLL_UP: 4,
+        // Arpeggiated chord
+        RASQUEDO_DOWN: 5,
+        RASQUEDO_UP: 6,
+        ARPEGGIO_DIRECTIONLESS: 7 // Arpeggiated chord without upwards or downwards arrow
+
+      };
+    } // Arrange strokes inside `ModifierContext`
+
+  }, {
+    key: "format",
+    value: function format(strokes, state) {
+      var left_shift = state.left_shift;
+      var stroke_spacing = 0;
+      if (!strokes || strokes.length === 0) return this;
+      var strokeList = strokes.map(function (stroke) {
+        var note = stroke.getNote();
+
+        if (note instanceof _stavenote__WEBPACK_IMPORTED_MODULE_2__["StaveNote"]) {
+          var line = note.getKeyProps()[stroke.getIndex()].line;
+          var shift = note.getLeftDisplacedHeadPx();
+          return {
+            line: line,
+            shift: shift,
+            stroke: stroke
+          };
+        } else {
+          var string = note.getPositions()[stroke.getIndex()].str;
+          return {
+            line: string,
+            shift: 0,
+            stroke: stroke
+          };
+        }
+      });
+      var strokeShift = left_shift; // There can only be one stroke .. if more than one, they overlay each other
+
+      var xShift = strokeList.reduce(function (xShift, _ref) {
+        var stroke = _ref.stroke,
+            shift = _ref.shift;
+        stroke.setXShift(strokeShift + shift);
+        return Math.max(stroke.getWidth() + stroke_spacing, xShift);
+      }, 0);
+      state.left_shift += xShift;
+      return true;
+    }
   }]);
 
   return Stroke;
@@ -33361,9 +33455,7 @@ var attrNamesToIgnoreMap = {
   _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Merge(attrNamesToIgnoreMap.rect, fontAttrNamesToIgnore);
   _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Merge(attrNamesToIgnoreMap.path, fontAttrNamesToIgnore);
 }
-var SVGContext =
-/*#__PURE__*/
-function () {
+var SVGContext = /*#__PURE__*/function () {
   function SVGContext(element) {
     _classCallCheck(this, SVGContext);
 
@@ -33396,8 +33488,8 @@ function () {
     };
     this.attributes = {
       'stroke-width': 0.3,
-      'fill': 'black',
-      'stroke': 'black',
+      fill: 'black',
+      stroke: 'black',
       'stroke-dasharray': 'none',
       'font-family': 'Arial',
       'font-size': '10pt',
@@ -33406,8 +33498,8 @@ function () {
     };
     this.background_attributes = {
       'stroke-width': 0,
-      'fill': 'white',
-      'stroke': 'white',
+      fill: 'white',
+      stroke: 'white',
       'stroke-dasharray': 'none',
       'font-family': 'Arial',
       'font-size': '10pt',
@@ -34068,19 +34160,23 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -34091,10 +34187,10 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var System =
-/*#__PURE__*/
-function (_Element) {
+var System = /*#__PURE__*/function (_Element) {
   _inherits(System, _Element);
+
+  var _super = _createSuper(System);
 
   function System() {
     var _this;
@@ -34103,7 +34199,7 @@ function (_Element) {
 
     _classCallCheck(this, System);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(System).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'System');
 
@@ -34117,7 +34213,7 @@ function (_Element) {
     key: "setOptions",
     value: function setOptions() {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      this.options = _objectSpread({
+      this.options = _objectSpread(_objectSpread({
         x: 10,
         y: 10,
         width: 500,
@@ -34130,7 +34226,7 @@ function (_Element) {
         formatIterations: 0,
         // number of formatter tuning steps
         noPadding: false
-      }, options, {
+      }, options), {}, {
         details: _objectSpread({
           alpha: 0.5
         }, options.details)
@@ -34165,7 +34261,7 @@ function (_Element) {
     value: function addStave(params) {
       var _this2 = this;
 
-      params = _objectSpread({
+      params = _objectSpread(_objectSpread({
         stave: null,
         voices: [],
         spaceAbove: 0,
@@ -34173,7 +34269,7 @@ function (_Element) {
         spaceBelow: 0,
         // stave spaces
         debugNoteMetrics: false
-      }, params, {
+      }, params), {}, {
         options: _objectSpread({
           left_bar: false
         }, params.options)
@@ -34326,22 +34422,22 @@ Flow.clefProperties = function (clef) {
 };
 
 Flow.clefProperties.values = {
-  'treble': {
+  treble: {
     line_shift: 0
   },
-  'bass': {
+  bass: {
     line_shift: 6
   },
-  'tenor': {
+  tenor: {
     line_shift: 4
   },
-  'alto': {
+  alto: {
     line_shift: 3
   },
-  'soprano': {
+  soprano: {
     line_shift: 1
   },
-  'percussion': {
+  percussion: {
     line_shift: 0
   },
   'mezzo-soprano': {
@@ -34353,10 +34449,10 @@ Flow.clefProperties.values = {
   'baritone-f': {
     line_shift: 5
   },
-  'subbass': {
+  subbass: {
     line_shift: 7
   },
-  'french': {
+  french: {
     line_shift: -1
   }
 };
@@ -34428,12 +34524,12 @@ Flow.keyProperties = function (key, clef, params) {
 };
 
 Flow.keyProperties.note_values = {
-  'C': {
+  C: {
     index: 0,
     int_val: 0,
     accidental: null
   },
-  'CN': {
+  CN: {
     index: 0,
     int_val: 0,
     accidental: 'n'
@@ -34448,22 +34544,22 @@ Flow.keyProperties.note_values = {
     int_val: 2,
     accidental: '##'
   },
-  'CB': {
+  CB: {
     index: 0,
     int_val: -1,
     accidental: 'b'
   },
-  'CBB': {
+  CBB: {
     index: 0,
     int_val: -2,
     accidental: 'bb'
   },
-  'D': {
+  D: {
     index: 1,
     int_val: 2,
     accidental: null
   },
-  'DN': {
+  DN: {
     index: 1,
     int_val: 2,
     accidental: 'n'
@@ -34478,22 +34574,22 @@ Flow.keyProperties.note_values = {
     int_val: 4,
     accidental: '##'
   },
-  'DB': {
+  DB: {
     index: 1,
     int_val: 1,
     accidental: 'b'
   },
-  'DBB': {
+  DBB: {
     index: 1,
     int_val: 0,
     accidental: 'bb'
   },
-  'E': {
+  E: {
     index: 2,
     int_val: 4,
     accidental: null
   },
-  'EN': {
+  EN: {
     index: 2,
     int_val: 4,
     accidental: 'n'
@@ -34508,22 +34604,22 @@ Flow.keyProperties.note_values = {
     int_val: 6,
     accidental: '##'
   },
-  'EB': {
+  EB: {
     index: 2,
     int_val: 3,
     accidental: 'b'
   },
-  'EBB': {
+  EBB: {
     index: 2,
     int_val: 2,
     accidental: 'bb'
   },
-  'F': {
+  F: {
     index: 3,
     int_val: 5,
     accidental: null
   },
-  'FN': {
+  FN: {
     index: 3,
     int_val: 5,
     accidental: 'n'
@@ -34538,22 +34634,22 @@ Flow.keyProperties.note_values = {
     int_val: 7,
     accidental: '##'
   },
-  'FB': {
+  FB: {
     index: 3,
     int_val: 4,
     accidental: 'b'
   },
-  'FBB': {
+  FBB: {
     index: 3,
     int_val: 3,
     accidental: 'bb'
   },
-  'G': {
+  G: {
     index: 4,
     int_val: 7,
     accidental: null
   },
-  'GN': {
+  GN: {
     index: 4,
     int_val: 7,
     accidental: 'n'
@@ -34568,22 +34664,22 @@ Flow.keyProperties.note_values = {
     int_val: 9,
     accidental: '##'
   },
-  'GB': {
+  GB: {
     index: 4,
     int_val: 6,
     accidental: 'b'
   },
-  'GBB': {
+  GBB: {
     index: 4,
     int_val: 5,
     accidental: 'bb'
   },
-  'A': {
+  A: {
     index: 5,
     int_val: 9,
     accidental: null
   },
-  'AN': {
+  AN: {
     index: 5,
     int_val: 9,
     accidental: 'n'
@@ -34598,22 +34694,22 @@ Flow.keyProperties.note_values = {
     int_val: 11,
     accidental: '##'
   },
-  'AB': {
+  AB: {
     index: 5,
     int_val: 8,
     accidental: 'b'
   },
-  'ABB': {
+  ABB: {
     index: 5,
     int_val: 7,
     accidental: 'bb'
   },
-  'B': {
+  B: {
     index: 6,
     int_val: 11,
     accidental: null
   },
-  'BN': {
+  BN: {
     index: 6,
     int_val: 11,
     accidental: 'n'
@@ -34628,23 +34724,23 @@ Flow.keyProperties.note_values = {
     int_val: 13,
     accidental: '##'
   },
-  'BB': {
+  BB: {
     index: 6,
     int_val: 10,
     accidental: 'b'
   },
-  'BBB': {
+  BBB: {
     index: 6,
     int_val: 9,
     accidental: 'bb'
   },
-  'R': {
+  R: {
     index: 6,
     int_val: 9,
     rest: true
   },
   // Rest
-  'X': {
+  X: {
     index: 6,
     accidental: '',
     octave: 4,
@@ -34725,7 +34821,7 @@ Flow.articulationCodes.articulations = {
     between_lines: true
   },
   // Staccato
-  'av': {
+  av: {
     aboveCode: 'articStaccatissimoAbove',
     belowCode: 'articStaccatissimoBelow',
     between_lines: true
@@ -34754,13 +34850,13 @@ Flow.articulationCodes.articulations = {
     between_lines: false
   },
   // Left hand pizzicato
-  'ao': {
+  ao: {
     aboveCode: 'pluckedSnapPizzicatoAbove',
     belowCode: 'pluckedSnapPizzicatoBelow',
     between_lines: false
   },
   // Snap pizzicato
-  'ah': {
+  ah: {
     code: 'stringsHarmonic',
     between_lines: false
   },
@@ -34786,7 +34882,7 @@ Flow.articulationCodes.articulations = {
     between_lines: false
   },
   // Bow up - up stroke
-  'am': {
+  am: {
     code: 'stringsDownBow',
     between_lines: false
   },
@@ -34811,15 +34907,15 @@ Flow.accidentalCodes.accidentals = {
     code: 'accidentalDoubleSharp',
     parenRightPaddingAdjustment: -1
   },
-  'b': {
+  b: {
     code: 'accidentalFlat',
     parenRightPaddingAdjustment: -2
   },
-  'bb': {
+  bb: {
     code: 'accidentalDoubleFlat',
     parenRightPaddingAdjustment: -2
   },
-  'n': {
+  n: {
     code: 'accidentalNatural',
     parenRightPaddingAdjustment: -1
   },
@@ -34831,11 +34927,11 @@ Flow.accidentalCodes.accidentals = {
     code: 'accidentalParensRight',
     parenRightPaddingAdjustment: -1
   },
-  'db': {
+  db: {
     code: 'accidentalThreeQuarterTonesFlatZimmermann',
     parenRightPaddingAdjustment: -1
   },
-  'd': {
+  d: {
     code: 'accidentalQuarterToneFlatStein',
     parenRightPaddingAdjustment: 0
   },
@@ -34851,23 +34947,23 @@ Flow.accidentalCodes.accidentals = {
     code: 'accidentalKucukMucennebSharp',
     parenRightPaddingAdjustment: -1
   },
-  'bs': {
+  bs: {
     code: 'accidentalBakiyeFlat',
     parenRightPaddingAdjustment: -1
   },
-  'bss': {
+  bss: {
     code: 'accidentalBuyukMucennebFlat',
     parenRightPaddingAdjustment: -1
   },
-  'o': {
+  o: {
     code: 'accidentalSori',
     parenRightPaddingAdjustment: -1
   },
-  'k': {
+  k: {
     code: 'accidentalKoron',
     parenRightPaddingAdjustment: -1
   },
-  'bbs': {
+  bbs: {
     code: 'vexAccidentalMicrotonal1',
     parenRightPaddingAdjustment: -1
   },
@@ -34875,971 +34971,971 @@ Flow.accidentalCodes.accidentals = {
     code: 'vexAccidentalMicrotonal2',
     parenRightPaddingAdjustment: -1
   },
-  'ashs': {
+  ashs: {
     code: 'vexAccidentalMicrotonal3',
     parenRightPaddingAdjustment: -1
   },
-  'afhf': {
+  afhf: {
     code: 'vexAccidentalMicrotonal4',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal5v7KleismaUp': {
+  accSagittal5v7KleismaUp: {
     code: 'accSagittal5v7KleismaUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal5v7KleismaDown': {
+  accSagittal5v7KleismaDown: {
     code: 'accSagittal5v7KleismaDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal5CommaUp': {
+  accSagittal5CommaUp: {
     code: 'accSagittal5CommaUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal5CommaDown': {
+  accSagittal5CommaDown: {
     code: 'accSagittal5CommaDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal7CommaUp': {
+  accSagittal7CommaUp: {
     code: 'accSagittal7CommaUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal7CommaDown': {
+  accSagittal7CommaDown: {
     code: 'accSagittal7CommaDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal25SmallDiesisUp': {
+  accSagittal25SmallDiesisUp: {
     code: 'accSagittal25SmallDiesisUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal25SmallDiesisDown': {
+  accSagittal25SmallDiesisDown: {
     code: 'accSagittal25SmallDiesisDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal35MediumDiesisUp': {
+  accSagittal35MediumDiesisUp: {
     code: 'accSagittal35MediumDiesisUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal35MediumDiesisDown': {
+  accSagittal35MediumDiesisDown: {
     code: 'accSagittal35MediumDiesisDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal11MediumDiesisUp': {
+  accSagittal11MediumDiesisUp: {
     code: 'accSagittal11MediumDiesisUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal11MediumDiesisDown': {
+  accSagittal11MediumDiesisDown: {
     code: 'accSagittal11MediumDiesisDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal11LargeDiesisUp': {
+  accSagittal11LargeDiesisUp: {
     code: 'accSagittal11LargeDiesisUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal11LargeDiesisDown': {
+  accSagittal11LargeDiesisDown: {
     code: 'accSagittal11LargeDiesisDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal35LargeDiesisUp': {
+  accSagittal35LargeDiesisUp: {
     code: 'accSagittal35LargeDiesisUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal35LargeDiesisDown': {
+  accSagittal35LargeDiesisDown: {
     code: 'accSagittal35LargeDiesisDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp25SDown': {
+  accSagittalSharp25SDown: {
     code: 'accSagittalSharp25SDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat25SUp': {
+  accSagittalFlat25SUp: {
     code: 'accSagittalFlat25SUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp7CDown': {
+  accSagittalSharp7CDown: {
     code: 'accSagittalSharp7CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat7CUp': {
+  accSagittalFlat7CUp: {
     code: 'accSagittalFlat7CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp5CDown': {
+  accSagittalSharp5CDown: {
     code: 'accSagittalSharp5CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat5CUp': {
+  accSagittalFlat5CUp: {
     code: 'accSagittalFlat5CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp5v7kDown': {
+  accSagittalSharp5v7kDown: {
     code: 'accSagittalSharp5v7kDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat5v7kUp': {
+  accSagittalFlat5v7kUp: {
     code: 'accSagittalFlat5v7kUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp': {
+  accSagittalSharp: {
     code: 'accSagittalSharp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat': {
+  accSagittalFlat: {
     code: 'accSagittalFlat',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp5v7kUp': {
+  accSagittalSharp5v7kUp: {
     code: 'accSagittalSharp5v7kUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat5v7kDown': {
+  accSagittalFlat5v7kDown: {
     code: 'accSagittalFlat5v7kDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp5CUp': {
+  accSagittalSharp5CUp: {
     code: 'accSagittalSharp5CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat5CDown': {
+  accSagittalFlat5CDown: {
     code: 'accSagittalFlat5CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp7CUp': {
+  accSagittalSharp7CUp: {
     code: 'accSagittalSharp7CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat7CDown': {
+  accSagittalFlat7CDown: {
     code: 'accSagittalFlat7CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp25SUp': {
+  accSagittalSharp25SUp: {
     code: 'accSagittalSharp25SUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat25SDown': {
+  accSagittalFlat25SDown: {
     code: 'accSagittalFlat25SDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp35MUp': {
+  accSagittalSharp35MUp: {
     code: 'accSagittalSharp35MUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat35MDown': {
+  accSagittalFlat35MDown: {
     code: 'accSagittalFlat35MDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp11MUp': {
+  accSagittalSharp11MUp: {
     code: 'accSagittalSharp11MUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat11MDown': {
+  accSagittalFlat11MDown: {
     code: 'accSagittalFlat11MDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp11LUp': {
+  accSagittalSharp11LUp: {
     code: 'accSagittalSharp11LUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat11LDown': {
+  accSagittalFlat11LDown: {
     code: 'accSagittalFlat11LDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp35LUp': {
+  accSagittalSharp35LUp: {
     code: 'accSagittalSharp35LUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat35LDown': {
+  accSagittalFlat35LDown: {
     code: 'accSagittalFlat35LDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleSharp25SDown': {
+  accSagittalDoubleSharp25SDown: {
     code: 'accSagittalDoubleSharp25SDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleFlat25SUp': {
+  accSagittalDoubleFlat25SUp: {
     code: 'accSagittalDoubleFlat25SUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleSharp7CDown': {
+  accSagittalDoubleSharp7CDown: {
     code: 'accSagittalDoubleSharp7CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleFlat7CUp': {
+  accSagittalDoubleFlat7CUp: {
     code: 'accSagittalDoubleFlat7CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleSharp5CDown': {
+  accSagittalDoubleSharp5CDown: {
     code: 'accSagittalDoubleSharp5CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleFlat5CUp': {
+  accSagittalDoubleFlat5CUp: {
     code: 'accSagittalDoubleFlat5CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleSharp5v7kDown': {
+  accSagittalDoubleSharp5v7kDown: {
     code: 'accSagittalDoubleSharp5v7kDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleFlat5v7kUp': {
+  accSagittalDoubleFlat5v7kUp: {
     code: 'accSagittalDoubleFlat5v7kUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleSharp': {
+  accSagittalDoubleSharp: {
     code: 'accSagittalDoubleSharp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleFlat': {
+  accSagittalDoubleFlat: {
     code: 'accSagittalDoubleFlat',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal7v11KleismaUp': {
+  accSagittal7v11KleismaUp: {
     code: 'accSagittal7v11KleismaUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal7v11KleismaDown': {
+  accSagittal7v11KleismaDown: {
     code: 'accSagittal7v11KleismaDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal17CommaUp': {
+  accSagittal17CommaUp: {
     code: 'accSagittal17CommaUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal17CommaDown': {
+  accSagittal17CommaDown: {
     code: 'accSagittal17CommaDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal55CommaUp': {
+  accSagittal55CommaUp: {
     code: 'accSagittal55CommaUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal55CommaDown': {
+  accSagittal55CommaDown: {
     code: 'accSagittal55CommaDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal7v11CommaUp': {
+  accSagittal7v11CommaUp: {
     code: 'accSagittal7v11CommaUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal7v11CommaDown': {
+  accSagittal7v11CommaDown: {
     code: 'accSagittal7v11CommaDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal5v11SmallDiesisUp': {
+  accSagittal5v11SmallDiesisUp: {
     code: 'accSagittal5v11SmallDiesisUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal5v11SmallDiesisDown': {
+  accSagittal5v11SmallDiesisDown: {
     code: 'accSagittal5v11SmallDiesisDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp5v11SDown': {
+  accSagittalSharp5v11SDown: {
     code: 'accSagittalSharp5v11SDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat5v11SUp': {
+  accSagittalFlat5v11SUp: {
     code: 'accSagittalFlat5v11SUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp7v11CDown': {
+  accSagittalSharp7v11CDown: {
     code: 'accSagittalSharp7v11CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat7v11CUp': {
+  accSagittalFlat7v11CUp: {
     code: 'accSagittalFlat7v11CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp55CDown': {
+  accSagittalSharp55CDown: {
     code: 'accSagittalSharp55CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat55CUp': {
+  accSagittalFlat55CUp: {
     code: 'accSagittalFlat55CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp17CDown': {
+  accSagittalSharp17CDown: {
     code: 'accSagittalSharp17CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat17CUp': {
+  accSagittalFlat17CUp: {
     code: 'accSagittalFlat17CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp7v11kDown': {
+  accSagittalSharp7v11kDown: {
     code: 'accSagittalSharp7v11kDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat7v11kUp': {
+  accSagittalFlat7v11kUp: {
     code: 'accSagittalFlat7v11kUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp7v11kUp': {
+  accSagittalSharp7v11kUp: {
     code: 'accSagittalSharp7v11kUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat7v11kDown': {
+  accSagittalFlat7v11kDown: {
     code: 'accSagittalFlat7v11kDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp17CUp': {
+  accSagittalSharp17CUp: {
     code: 'accSagittalSharp17CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat17CDown': {
+  accSagittalFlat17CDown: {
     code: 'accSagittalFlat17CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp55CUp': {
+  accSagittalSharp55CUp: {
     code: 'accSagittalSharp55CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat55CDown': {
+  accSagittalFlat55CDown: {
     code: 'accSagittalFlat55CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp7v11CUp': {
+  accSagittalSharp7v11CUp: {
     code: 'accSagittalSharp7v11CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat7v11CDown': {
+  accSagittalFlat7v11CDown: {
     code: 'accSagittalFlat7v11CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp5v11SUp': {
+  accSagittalSharp5v11SUp: {
     code: 'accSagittalSharp5v11SUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat5v11SDown': {
+  accSagittalFlat5v11SDown: {
     code: 'accSagittalFlat5v11SDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleSharp5v11SDown': {
+  accSagittalDoubleSharp5v11SDown: {
     code: 'accSagittalDoubleSharp5v11SDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleFlat5v11SUp': {
+  accSagittalDoubleFlat5v11SUp: {
     code: 'accSagittalDoubleFlat5v11SUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleSharp7v11CDown': {
+  accSagittalDoubleSharp7v11CDown: {
     code: 'accSagittalDoubleSharp7v11CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleFlat7v11CUp': {
+  accSagittalDoubleFlat7v11CUp: {
     code: 'accSagittalDoubleFlat7v11CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleSharp55CDown': {
+  accSagittalDoubleSharp55CDown: {
     code: 'accSagittalDoubleSharp55CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleFlat55CUp': {
+  accSagittalDoubleFlat55CUp: {
     code: 'accSagittalDoubleFlat55CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleSharp17CDown': {
+  accSagittalDoubleSharp17CDown: {
     code: 'accSagittalDoubleSharp17CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleFlat17CUp': {
+  accSagittalDoubleFlat17CUp: {
     code: 'accSagittalDoubleFlat17CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleSharp7v11kDown': {
+  accSagittalDoubleSharp7v11kDown: {
     code: 'accSagittalDoubleSharp7v11kDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleFlat7v11kUp': {
+  accSagittalDoubleFlat7v11kUp: {
     code: 'accSagittalDoubleFlat7v11kUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal23CommaUp': {
+  accSagittal23CommaUp: {
     code: 'accSagittal23CommaUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal23CommaDown': {
+  accSagittal23CommaDown: {
     code: 'accSagittal23CommaDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal5v19CommaUp': {
+  accSagittal5v19CommaUp: {
     code: 'accSagittal5v19CommaUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal5v19CommaDown': {
+  accSagittal5v19CommaDown: {
     code: 'accSagittal5v19CommaDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal5v23SmallDiesisUp': {
+  accSagittal5v23SmallDiesisUp: {
     code: 'accSagittal5v23SmallDiesisUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal5v23SmallDiesisDown': {
+  accSagittal5v23SmallDiesisDown: {
     code: 'accSagittal5v23SmallDiesisDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp5v23SDown': {
+  accSagittalSharp5v23SDown: {
     code: 'accSagittalSharp5v23SDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat5v23SUp': {
+  accSagittalFlat5v23SUp: {
     code: 'accSagittalFlat5v23SUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp5v19CDown': {
+  accSagittalSharp5v19CDown: {
     code: 'accSagittalSharp5v19CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat5v19CUp': {
+  accSagittalFlat5v19CUp: {
     code: 'accSagittalFlat5v19CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp23CDown': {
+  accSagittalSharp23CDown: {
     code: 'accSagittalSharp23CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat23CUp': {
+  accSagittalFlat23CUp: {
     code: 'accSagittalFlat23CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp23CUp': {
+  accSagittalSharp23CUp: {
     code: 'accSagittalSharp23CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat23CDown': {
+  accSagittalFlat23CDown: {
     code: 'accSagittalFlat23CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp5v19CUp': {
+  accSagittalSharp5v19CUp: {
     code: 'accSagittalSharp5v19CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat5v19CDown': {
+  accSagittalFlat5v19CDown: {
     code: 'accSagittalFlat5v19CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp5v23SUp': {
+  accSagittalSharp5v23SUp: {
     code: 'accSagittalSharp5v23SUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat5v23SDown': {
+  accSagittalFlat5v23SDown: {
     code: 'accSagittalFlat5v23SDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleSharp5v23SDown': {
+  accSagittalDoubleSharp5v23SDown: {
     code: 'accSagittalDoubleSharp5v23SDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleFlat5v23SUp': {
+  accSagittalDoubleFlat5v23SUp: {
     code: 'accSagittalDoubleFlat5v23SUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleSharp5v19CDown': {
+  accSagittalDoubleSharp5v19CDown: {
     code: 'accSagittalDoubleSharp5v19CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleFlat5v19CUp': {
+  accSagittalDoubleFlat5v19CUp: {
     code: 'accSagittalDoubleFlat5v19CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleSharp23CDown': {
+  accSagittalDoubleSharp23CDown: {
     code: 'accSagittalDoubleSharp23CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleFlat23CUp': {
+  accSagittalDoubleFlat23CUp: {
     code: 'accSagittalDoubleFlat23CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal19SchismaUp': {
+  accSagittal19SchismaUp: {
     code: 'accSagittal19SchismaUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal19SchismaDown': {
+  accSagittal19SchismaDown: {
     code: 'accSagittal19SchismaDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal17KleismaUp': {
+  accSagittal17KleismaUp: {
     code: 'accSagittal17KleismaUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal17KleismaDown': {
+  accSagittal17KleismaDown: {
     code: 'accSagittal17KleismaDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal143CommaUp': {
+  accSagittal143CommaUp: {
     code: 'accSagittal143CommaUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal143CommaDown': {
+  accSagittal143CommaDown: {
     code: 'accSagittal143CommaDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal11v49CommaUp': {
+  accSagittal11v49CommaUp: {
     code: 'accSagittal11v49CommaUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal11v49CommaDown': {
+  accSagittal11v49CommaDown: {
     code: 'accSagittal11v49CommaDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal19CommaUp': {
+  accSagittal19CommaUp: {
     code: 'accSagittal19CommaUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal19CommaDown': {
+  accSagittal19CommaDown: {
     code: 'accSagittal19CommaDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal7v19CommaUp': {
+  accSagittal7v19CommaUp: {
     code: 'accSagittal7v19CommaUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal7v19CommaDown': {
+  accSagittal7v19CommaDown: {
     code: 'accSagittal7v19CommaDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal49SmallDiesisUp': {
+  accSagittal49SmallDiesisUp: {
     code: 'accSagittal49SmallDiesisUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal49SmallDiesisDown': {
+  accSagittal49SmallDiesisDown: {
     code: 'accSagittal49SmallDiesisDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal23SmallDiesisUp': {
+  accSagittal23SmallDiesisUp: {
     code: 'accSagittal23SmallDiesisUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal23SmallDiesisDown': {
+  accSagittal23SmallDiesisDown: {
     code: 'accSagittal23SmallDiesisDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal5v13MediumDiesisUp': {
+  accSagittal5v13MediumDiesisUp: {
     code: 'accSagittal5v13MediumDiesisUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal5v13MediumDiesisDown': {
+  accSagittal5v13MediumDiesisDown: {
     code: 'accSagittal5v13MediumDiesisDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal11v19MediumDiesisUp': {
+  accSagittal11v19MediumDiesisUp: {
     code: 'accSagittal11v19MediumDiesisUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal11v19MediumDiesisDown': {
+  accSagittal11v19MediumDiesisDown: {
     code: 'accSagittal11v19MediumDiesisDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal49MediumDiesisUp': {
+  accSagittal49MediumDiesisUp: {
     code: 'accSagittal49MediumDiesisUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal49MediumDiesisDown': {
+  accSagittal49MediumDiesisDown: {
     code: 'accSagittal49MediumDiesisDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal5v49MediumDiesisUp': {
+  accSagittal5v49MediumDiesisUp: {
     code: 'accSagittal5v49MediumDiesisUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal5v49MediumDiesisDown': {
+  accSagittal5v49MediumDiesisDown: {
     code: 'accSagittal5v49MediumDiesisDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal49LargeDiesisUp': {
+  accSagittal49LargeDiesisUp: {
     code: 'accSagittal49LargeDiesisUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal49LargeDiesisDown': {
+  accSagittal49LargeDiesisDown: {
     code: 'accSagittal49LargeDiesisDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal11v19LargeDiesisUp': {
+  accSagittal11v19LargeDiesisUp: {
     code: 'accSagittal11v19LargeDiesisUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal11v19LargeDiesisDown': {
+  accSagittal11v19LargeDiesisDown: {
     code: 'accSagittal11v19LargeDiesisDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal5v13LargeDiesisUp': {
+  accSagittal5v13LargeDiesisUp: {
     code: 'accSagittal5v13LargeDiesisUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal5v13LargeDiesisDown': {
+  accSagittal5v13LargeDiesisDown: {
     code: 'accSagittal5v13LargeDiesisDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp23SDown': {
+  accSagittalSharp23SDown: {
     code: 'accSagittalSharp23SDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat23SUp': {
+  accSagittalFlat23SUp: {
     code: 'accSagittalFlat23SUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp49SDown': {
+  accSagittalSharp49SDown: {
     code: 'accSagittalSharp49SDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat49SUp': {
+  accSagittalFlat49SUp: {
     code: 'accSagittalFlat49SUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp7v19CDown': {
+  accSagittalSharp7v19CDown: {
     code: 'accSagittalSharp7v19CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat7v19CUp': {
+  accSagittalFlat7v19CUp: {
     code: 'accSagittalFlat7v19CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp19CDown': {
+  accSagittalSharp19CDown: {
     code: 'accSagittalSharp19CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat19CUp': {
+  accSagittalFlat19CUp: {
     code: 'accSagittalFlat19CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp11v49CDown': {
+  accSagittalSharp11v49CDown: {
     code: 'accSagittalSharp11v49CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat11v49CUp': {
+  accSagittalFlat11v49CUp: {
     code: 'accSagittalFlat11v49CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp143CDown': {
+  accSagittalSharp143CDown: {
     code: 'accSagittalSharp143CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat143CUp': {
+  accSagittalFlat143CUp: {
     code: 'accSagittalFlat143CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp17kDown': {
+  accSagittalSharp17kDown: {
     code: 'accSagittalSharp17kDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat17kUp': {
+  accSagittalFlat17kUp: {
     code: 'accSagittalFlat17kUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp19sDown': {
+  accSagittalSharp19sDown: {
     code: 'accSagittalSharp19sDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat19sUp': {
+  accSagittalFlat19sUp: {
     code: 'accSagittalFlat19sUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp19sUp': {
+  accSagittalSharp19sUp: {
     code: 'accSagittalSharp19sUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat19sDown': {
+  accSagittalFlat19sDown: {
     code: 'accSagittalFlat19sDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp17kUp': {
+  accSagittalSharp17kUp: {
     code: 'accSagittalSharp17kUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat17kDown': {
+  accSagittalFlat17kDown: {
     code: 'accSagittalFlat17kDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp143CUp': {
+  accSagittalSharp143CUp: {
     code: 'accSagittalSharp143CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat143CDown': {
+  accSagittalFlat143CDown: {
     code: 'accSagittalFlat143CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp11v49CUp': {
+  accSagittalSharp11v49CUp: {
     code: 'accSagittalSharp11v49CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat11v49CDown': {
+  accSagittalFlat11v49CDown: {
     code: 'accSagittalFlat11v49CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp19CUp': {
+  accSagittalSharp19CUp: {
     code: 'accSagittalSharp19CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat19CDown': {
+  accSagittalFlat19CDown: {
     code: 'accSagittalFlat19CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp7v19CUp': {
+  accSagittalSharp7v19CUp: {
     code: 'accSagittalSharp7v19CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat7v19CDown': {
+  accSagittalFlat7v19CDown: {
     code: 'accSagittalFlat7v19CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp49SUp': {
+  accSagittalSharp49SUp: {
     code: 'accSagittalSharp49SUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat49SDown': {
+  accSagittalFlat49SDown: {
     code: 'accSagittalFlat49SDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp23SUp': {
+  accSagittalSharp23SUp: {
     code: 'accSagittalSharp23SUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat23SDown': {
+  accSagittalFlat23SDown: {
     code: 'accSagittalFlat23SDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp5v13MUp': {
+  accSagittalSharp5v13MUp: {
     code: 'accSagittalSharp5v13MUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat5v13MDown': {
+  accSagittalFlat5v13MDown: {
     code: 'accSagittalFlat5v13MDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp11v19MUp': {
+  accSagittalSharp11v19MUp: {
     code: 'accSagittalSharp11v19MUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat11v19MDown': {
+  accSagittalFlat11v19MDown: {
     code: 'accSagittalFlat11v19MDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp49MUp': {
+  accSagittalSharp49MUp: {
     code: 'accSagittalSharp49MUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat49MDown': {
+  accSagittalFlat49MDown: {
     code: 'accSagittalFlat49MDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp5v49MUp': {
+  accSagittalSharp5v49MUp: {
     code: 'accSagittalSharp5v49MUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat5v49MDown': {
+  accSagittalFlat5v49MDown: {
     code: 'accSagittalFlat5v49MDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp49LUp': {
+  accSagittalSharp49LUp: {
     code: 'accSagittalSharp49LUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat49LDown': {
+  accSagittalFlat49LDown: {
     code: 'accSagittalFlat49LDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp11v19LUp': {
+  accSagittalSharp11v19LUp: {
     code: 'accSagittalSharp11v19LUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat11v19LDown': {
+  accSagittalFlat11v19LDown: {
     code: 'accSagittalFlat11v19LDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalSharp5v13LUp': {
+  accSagittalSharp5v13LUp: {
     code: 'accSagittalSharp5v13LUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFlat5v13LDown': {
+  accSagittalFlat5v13LDown: {
     code: 'accSagittalFlat5v13LDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleSharp23SDown': {
+  accSagittalDoubleSharp23SDown: {
     code: 'accSagittalDoubleSharp23SDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleFlat23SUp': {
+  accSagittalDoubleFlat23SUp: {
     code: 'accSagittalDoubleFlat23SUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleSharp49SDown': {
+  accSagittalDoubleSharp49SDown: {
     code: 'accSagittalDoubleSharp49SDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleFlat49SUp': {
+  accSagittalDoubleFlat49SUp: {
     code: 'accSagittalDoubleFlat49SUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleSharp7v19CDown': {
+  accSagittalDoubleSharp7v19CDown: {
     code: 'accSagittalDoubleSharp7v19CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleFlat7v19CUp': {
+  accSagittalDoubleFlat7v19CUp: {
     code: 'accSagittalDoubleFlat7v19CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleSharp19CDown': {
+  accSagittalDoubleSharp19CDown: {
     code: 'accSagittalDoubleSharp19CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleFlat19CUp': {
+  accSagittalDoubleFlat19CUp: {
     code: 'accSagittalDoubleFlat19CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleSharp11v49CDown': {
+  accSagittalDoubleSharp11v49CDown: {
     code: 'accSagittalDoubleSharp11v49CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleFlat11v49CUp': {
+  accSagittalDoubleFlat11v49CUp: {
     code: 'accSagittalDoubleFlat11v49CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleSharp143CDown': {
+  accSagittalDoubleSharp143CDown: {
     code: 'accSagittalDoubleSharp143CDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleFlat143CUp': {
+  accSagittalDoubleFlat143CUp: {
     code: 'accSagittalDoubleFlat143CUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleSharp17kDown': {
+  accSagittalDoubleSharp17kDown: {
     code: 'accSagittalDoubleSharp17kDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleFlat17kUp': {
+  accSagittalDoubleFlat17kUp: {
     code: 'accSagittalDoubleFlat17kUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleSharp19sDown': {
+  accSagittalDoubleSharp19sDown: {
     code: 'accSagittalDoubleSharp19sDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalDoubleFlat19sUp': {
+  accSagittalDoubleFlat19sUp: {
     code: 'accSagittalDoubleFlat19sUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalShaftUp': {
+  accSagittalShaftUp: {
     code: 'accSagittalShaftUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalShaftDown': {
+  accSagittalShaftDown: {
     code: 'accSagittalShaftDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalAcute': {
+  accSagittalAcute: {
     code: 'accSagittalAcute',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalGrave': {
+  accSagittalGrave: {
     code: 'accSagittalGrave',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal1MinaUp': {
+  accSagittal1MinaUp: {
     code: 'accSagittal1MinaUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal1MinaDown': {
+  accSagittal1MinaDown: {
     code: 'accSagittal1MinaDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal2MinasUp': {
+  accSagittal2MinasUp: {
     code: 'accSagittal2MinasUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal2MinasDown': {
+  accSagittal2MinasDown: {
     code: 'accSagittal2MinasDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal1TinaUp': {
+  accSagittal1TinaUp: {
     code: 'accSagittal1TinaUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal1TinaDown': {
+  accSagittal1TinaDown: {
     code: 'accSagittal1TinaDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal2TinasUp': {
+  accSagittal2TinasUp: {
     code: 'accSagittal2TinasUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal2TinasDown': {
+  accSagittal2TinasDown: {
     code: 'accSagittal2TinasDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal3TinasUp': {
+  accSagittal3TinasUp: {
     code: 'accSagittal3TinasUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal3TinasDown': {
+  accSagittal3TinasDown: {
     code: 'accSagittal3TinasDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal4TinasUp': {
+  accSagittal4TinasUp: {
     code: 'accSagittal4TinasUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal4TinasDown': {
+  accSagittal4TinasDown: {
     code: 'accSagittal4TinasDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal5TinasUp': {
+  accSagittal5TinasUp: {
     code: 'accSagittal5TinasUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal5TinasDown': {
+  accSagittal5TinasDown: {
     code: 'accSagittal5TinasDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal6TinasUp': {
+  accSagittal6TinasUp: {
     code: 'accSagittal6TinasUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal6TinasDown': {
+  accSagittal6TinasDown: {
     code: 'accSagittal6TinasDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal7TinasUp': {
+  accSagittal7TinasUp: {
     code: 'accSagittal7TinasUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal7TinasDown': {
+  accSagittal7TinasDown: {
     code: 'accSagittal7TinasDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal8TinasUp': {
+  accSagittal8TinasUp: {
     code: 'accSagittal8TinasUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal8TinasDown': {
+  accSagittal8TinasDown: {
     code: 'accSagittal8TinasDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal9TinasUp': {
+  accSagittal9TinasUp: {
     code: 'accSagittal9TinasUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittal9TinasDown': {
+  accSagittal9TinasDown: {
     code: 'accSagittal9TinasDown',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFractionalTinaUp': {
+  accSagittalFractionalTinaUp: {
     code: 'accSagittalFractionalTinaUp',
     parenRightPaddingAdjustment: -1
   },
-  'accSagittalFractionalTinaDown': {
+  accSagittalFractionalTinaDown: {
     code: 'accSagittalFractionalTinaDown',
     parenRightPaddingAdjustment: -1
   },
-  'accidentalNarrowReversedFlat': {
+  accidentalNarrowReversedFlat: {
     code: 'accidentalNarrowReversedFlat',
     parenRightPaddingAdjustment: -1
   },
-  'accidentalNarrowReversedFlatAndFlat': {
+  accidentalNarrowReversedFlatAndFlat: {
     code: 'accidentalNarrowReversedFlatAndFlat',
     parenRightPaddingAdjustment: -1
   },
-  'accidentalWilsonPlus': {
+  accidentalWilsonPlus: {
     code: 'accidentalWilsonPlus',
     parenRightPaddingAdjustment: -1
   },
-  'accidentalWilsonMinus': {
+  accidentalWilsonMinus: {
     code: 'accidentalWilsonMinus',
     parenRightPaddingAdjustment: -1
   }
@@ -35881,76 +35977,76 @@ Flow.ornamentCodes = function (acc) {
 };
 
 Flow.ornamentCodes.ornaments = {
-  'mordent': {
+  mordent: {
     code: 'ornamentShortTrill'
   },
-  'mordent_inverted': {
+  mordent_inverted: {
     code: 'ornamentMordent'
   },
-  'turn': {
+  turn: {
     code: 'ornamentTurn'
   },
-  'turn_inverted': {
+  turn_inverted: {
     code: 'ornamentTurnSlash'
   },
-  'tr': {
+  tr: {
     code: 'ornamentTrill'
   },
-  'upprall': {
+  upprall: {
     code: 'ornamentPrecompSlideTrillDAnglebert'
   },
-  'downprall': {
+  downprall: {
     code: 'ornamentPrecompDoubleCadenceUpperPrefix'
   },
-  'prallup': {
+  prallup: {
     code: 'ornamentPrecompTrillSuffixDandrieu'
   },
-  'pralldown': {
+  pralldown: {
     code: 'ornamentPrecompTrillLowerSuffix'
   },
-  'upmordent': {
+  upmordent: {
     code: 'ornamentPrecompSlideTrillBach'
   },
-  'downmordent': {
+  downmordent: {
     code: 'ornamentPrecompDoubleCadenceUpperPrefixTurn'
   },
-  'lineprall': {
+  lineprall: {
     code: 'ornamentPrecompAppoggTrill'
   },
-  'prallprall': {
+  prallprall: {
     code: 'ornamentTremblement'
   },
-  'scoop': {
+  scoop: {
     code: 'brassScoop'
   },
-  'doit': {
+  doit: {
     code: 'brassDoitMedium'
   },
-  'fall': {
+  fall: {
     code: 'brassFallLipShort'
   },
-  'doitLong': {
+  doitLong: {
     code: 'brassLiftMedium'
   },
-  'fallLong': {
+  fallLong: {
     code: 'brassFallRoughMedium'
   },
-  'bend': {
+  bend: {
     code: 'brassBend'
   },
-  'plungerClosed': {
+  plungerClosed: {
     code: 'brassMuteClosed'
   },
-  'plungerOpen': {
+  plungerOpen: {
     code: 'brassMuteOpen'
   },
-  'flip': {
+  flip: {
     code: 'brassFlip'
   },
-  'jazzTurn': {
+  jazzTurn: {
     code: 'brassJazzTurn'
   },
-  'smear': {
+  smear: {
     code: 'brassSmear'
   }
 };
@@ -35981,87 +36077,87 @@ Flow.keySignature = function (spec) {
 };
 
 Flow.keySignature.keySpecs = {
-  'C': {
+  C: {
     acc: null,
     num: 0
   },
-  'Am': {
+  Am: {
     acc: null,
     num: 0
   },
-  'F': {
+  F: {
     acc: 'b',
     num: 1
   },
-  'Dm': {
+  Dm: {
     acc: 'b',
     num: 1
   },
-  'Bb': {
+  Bb: {
     acc: 'b',
     num: 2
   },
-  'Gm': {
+  Gm: {
     acc: 'b',
     num: 2
   },
-  'Eb': {
+  Eb: {
     acc: 'b',
     num: 3
   },
-  'Cm': {
+  Cm: {
     acc: 'b',
     num: 3
   },
-  'Ab': {
+  Ab: {
     acc: 'b',
     num: 4
   },
-  'Fm': {
+  Fm: {
     acc: 'b',
     num: 4
   },
-  'Db': {
+  Db: {
     acc: 'b',
     num: 5
   },
-  'Bbm': {
+  Bbm: {
     acc: 'b',
     num: 5
   },
-  'Gb': {
+  Gb: {
     acc: 'b',
     num: 6
   },
-  'Ebm': {
+  Ebm: {
     acc: 'b',
     num: 6
   },
-  'Cb': {
+  Cb: {
     acc: 'b',
     num: 7
   },
-  'Abm': {
+  Abm: {
     acc: 'b',
     num: 7
   },
-  'G': {
+  G: {
     acc: '#',
     num: 1
   },
-  'Em': {
+  Em: {
     acc: '#',
     num: 1
   },
-  'D': {
+  D: {
     acc: '#',
     num: 2
   },
-  'Bm': {
+  Bm: {
     acc: '#',
     num: 2
   },
-  'A': {
+  A: {
     acc: '#',
     num: 3
   },
@@ -36069,7 +36165,7 @@ Flow.keySignature.keySpecs = {
     acc: '#',
     num: 3
   },
-  'E': {
+  E: {
     acc: '#',
     num: 4
   },
@@ -36077,7 +36173,7 @@ Flow.keySignature.keySpecs = {
     acc: '#',
     num: 4
   },
-  'B': {
+  B: {
     acc: '#',
     num: 5
   },
@@ -36104,21 +36200,21 @@ Flow.keySignature.keySpecs = {
 };
 Flow.unicode = {
   // Unicode accidentals
-  'sharp': String.fromCharCode(parseInt('266F', 16)),
-  'flat': String.fromCharCode(parseInt('266D', 16)),
-  'natural': String.fromCharCode(parseInt('266E', 16)),
+  sharp: String.fromCharCode(parseInt('266F', 16)),
+  flat: String.fromCharCode(parseInt('266D', 16)),
+  natural: String.fromCharCode(parseInt('266E', 16)),
   // Major Chord
-  'triangle': String.fromCharCode(parseInt('25B3', 16)),
+  triangle: String.fromCharCode(parseInt('25B3', 16)),
   // half-diminished
   'o-with-slash': String.fromCharCode(parseInt('00F8', 16)),
   // Diminished
-  'degrees': String.fromCharCode(parseInt('00B0', 16)),
-  'circle': String.fromCharCode(parseInt('25CB', 16))
+  degrees: String.fromCharCode(parseInt('00B0', 16)),
+  circle: String.fromCharCode(parseInt('25CB', 16))
 };
 
 Flow.keySignature.accidentalList = function (acc) {
   var patterns = {
-    'b': [2, 0.5, 2.5, 1, 3, 1.5, 3.5],
+    b: [2, 0.5, 2.5, 1, 3, 1.5, 3.5],
     '#': [0, 1.5, -0.5, 1, 2.5, 0.5, 2]
   };
   return patterns[acc];
@@ -36166,25 +36262,25 @@ Flow.durationToTicks = function (duration) {
 
 Flow.durationToTicks.durations = {
   '1/2': Flow.RESOLUTION * 2,
-  '1': Flow.RESOLUTION / 1,
-  '2': Flow.RESOLUTION / 2,
-  '4': Flow.RESOLUTION / 4,
-  '8': Flow.RESOLUTION / 8,
-  '16': Flow.RESOLUTION / 16,
-  '32': Flow.RESOLUTION / 32,
-  '64': Flow.RESOLUTION / 64,
-  '128': Flow.RESOLUTION / 128,
-  '256': Flow.RESOLUTION / 256
+  1: Flow.RESOLUTION / 1,
+  2: Flow.RESOLUTION / 2,
+  4: Flow.RESOLUTION / 4,
+  8: Flow.RESOLUTION / 8,
+  16: Flow.RESOLUTION / 16,
+  32: Flow.RESOLUTION / 32,
+  64: Flow.RESOLUTION / 64,
+  128: Flow.RESOLUTION / 128,
+  256: Flow.RESOLUTION / 256
 };
 Flow.durationAliases = {
-  'w': '1',
-  'h': '2',
-  'q': '4',
+  w: '1',
+  h: '2',
+  q: '4',
   // This is the default duration used to render bars (BarNote). Bars no longer
   // consume ticks, so this should be a no-op.
   //
   // TODO(0xfe): This needs to be cleaned up.
-  'b': '256'
+  b: '256'
 }; // Return a glyph given duration and type. The type can be a custom glyph code from customNoteHeads.
 
 Flow.getGlyphProps = function (duration, type) {
@@ -36216,84 +36312,84 @@ Flow.getGlyphProps = function (duration, type) {
   } // Merge duration props for 'duration' with the note head properties.
 
 
-  return _objectSpread({}, code.common, {}, glyphTypeProperties);
+  return _objectSpread(_objectSpread({}, code.common), glyphTypeProperties);
 };
 
 Flow.getGlyphProps.validTypes = {
-  'n': {
+  n: {
     name: 'note'
   },
-  'r': {
+  r: {
     name: 'rest'
   },
-  'h': {
+  h: {
     name: 'harmonic'
   },
-  'm': {
+  m: {
     name: 'muted'
   },
-  's': {
+  s: {
     name: 'slash'
   }
 }; // Custom note heads
 
 Flow.keyProperties.customNoteHeads = {
   /* Diamond */
-  'D0': {
+  D0: {
     code: 'noteheadDiamondWhole'
   },
-  'D1': {
+  D1: {
     code: 'noteheadDiamondHalf'
   },
-  'D2': {
+  D2: {
     code: 'noteheadDiamondBlack'
   },
-  'D3': {
+  D3: {
     code: 'noteheadDiamondBlack'
   },
 
   /* Triangle */
-  'T0': {
+  T0: {
     code: 'noteheadTriangleUpWhole'
   },
-  'T1': {
+  T1: {
     code: 'noteheadTriangleUpHalf'
   },
-  'T2': {
+  T2: {
     code: 'noteheadTriangleUpBlack'
   },
-  'T3': {
+  T3: {
     code: 'noteheadTriangleUpBlack'
   },
 
   /* Cross */
-  'X0': {
+  X0: {
     code: 'noteheadXWhole'
   },
-  'X1': {
+  X1: {
     code: 'noteheadXHalf'
   },
-  'X2': {
+  X2: {
     code: 'noteheadXBlack'
   },
-  'X3': {
+  X3: {
     code: 'noteheadCircleX'
   },
 
   /* Square */
-  'S1': {
+  S1: {
     code: 'noteheadSquareWhite'
   },
-  'S2': {
+  S2: {
     code: 'noteheadSquareBlack'
   },
 
   /* Rectangle */
-  'R1': {
+  R1: {
     code: 'vexNoteHeadRectWhite'
   },
   // no smufl code
-  'R2': {
+  R2: {
     code: 'vexNoteHeadRectBlack'
   } // no smufl code
 
@@ -36317,27 +36413,27 @@ Flow.getGlyphProps.duration_codes = {
       line_below: 0
     },
     type: {
-      'n': {
+      n: {
         // Breve note
         code_head: 'noteheadDoubleWhole'
       },
-      'h': {
+      h: {
         // Breve note harmonic
         code_head: 'unpitchedPercussionClef1'
       },
-      'm': {
+      m: {
         // Breve note muted -
         code_head: 'vexNoteHeadMutedBreve',
         stem_offset: 0
       },
-      'r': {
+      r: {
         // Breve rest
         code_head: 'restDoubleWhole',
         rest: true,
         position: 'B/5',
         dot_shiftY: 0.5
       },
-      's': {
+      s: {
         // Breve note slash -
         // Drawn with canvas primitives
         getWidth: function getWidth() {
@@ -36347,7 +36443,7 @@ Flow.getGlyphProps.duration_codes = {
       }
     }
   },
-  '1': {
+  1: {
     common: {
       getWidth: function getWidth() {
         var scale = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : Flow.DEFAULT_NOTATION_FONT_SCALE;
@@ -36365,27 +36461,27 @@ Flow.getGlyphProps.duration_codes = {
       line_below: 0
     },
     type: {
-      'n': {
+      n: {
         // Whole note
         code_head: 'noteheadWhole'
       },
-      'h': {
+      h: {
         // Whole note harmonic
         code_head: 'noteheadDiamondWhole'
       },
-      'm': {
+      m: {
         // Whole note muted
         code_head: 'noteheadXWhole',
         stem_offset: -3
       },
-      'r': {
+      r: {
         // Whole rest
         code_head: 'restWhole',
         rest: true,
         position: 'D/5',
         dot_shiftY: 0.5
       },
-      's': {
+      s: {
         // Whole note slash
         // Drawn with canvas primitives
         getWidth: function getWidth() {
@@ -36395,7 +36491,7 @@ Flow.getGlyphProps.duration_codes = {
       }
     }
   },
-  '2': {
+  2: {
     common: {
       getWidth: function getWidth() {
         var scale = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : Flow.DEFAULT_NOTATION_FONT_SCALE;
@@ -36413,20 +36509,20 @@ Flow.getGlyphProps.duration_codes = {
       line_below: 0
     },
     type: {
-      'n': {
+      n: {
         // Half note
         code_head: 'noteheadHalf'
       },
-      'h': {
+      h: {
         // Half note harmonic
         code_head: 'noteheadDiamondHalf'
       },
-      'm': {
+      m: {
         // Half note muted
         code_head: 'noteheadXHalf',
         stem_offset: -3
       },
-      'r': {
+      r: {
         // Half rest
         code_head: 'restHalf',
         stem: false,
@@ -36434,7 +36530,7 @@ Flow.getGlyphProps.duration_codes = {
         position: 'B/4',
         dot_shiftY: -0.5
       },
-      's': {
+      s: {
         // Half note slash
         // Drawn with canvas primitives
         getWidth: function getWidth() {
@@ -36444,7 +36540,7 @@ Flow.getGlyphProps.duration_codes = {
       }
     }
   },
-  '4': {
+  4: {
     common: {
       getWidth: function getWidth() {
         var scale = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : Flow.DEFAULT_NOTATION_FONT_SCALE;
@@ -36462,19 +36558,19 @@ Flow.getGlyphProps.duration_codes = {
       line_below: 0
     },
     type: {
-      'n': {
+      n: {
         // Quarter note
         code_head: 'noteheadBlack'
       },
-      'h': {
+      h: {
         // Quarter harmonic
         code_head: 'noteheadDiamondBlack'
       },
-      'm': {
+      m: {
         // Quarter muted
         code_head: 'noteheadXBlack'
       },
-      'r': {
+      r: {
         // Quarter rest
         code_head: 'restQuarter',
         stem: false,
@@ -36484,7 +36580,7 @@ Flow.getGlyphProps.duration_codes = {
         line_above: 1.5,
         line_below: 1.5
       },
-      's': {
+      s: {
         // Quarter slash
         // Drawn with canvas primitives
         getWidth: function getWidth() {
@@ -36494,7 +36590,7 @@ Flow.getGlyphProps.duration_codes = {
       }
     }
   },
-  '8': {
+  8: {
     common: {
       getWidth: function getWidth() {
         var scale = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : Flow.DEFAULT_NOTATION_FONT_SCALE;
@@ -36515,19 +36611,19 @@ Flow.getGlyphProps.duration_codes = {
       line_below: 0
     },
     type: {
-      'n': {
+      n: {
         // Eighth note
         code_head: 'noteheadBlack'
       },
-      'h': {
+      h: {
         // Eighth note harmonic
         code_head: 'noteheadDiamondBlack'
       },
-      'm': {
+      m: {
         // Eighth note muted
         code_head: 'noteheadXBlack'
       },
-      'r': {
+      r: {
         // Eighth rest
         code_head: 'rest8th',
         stem: false,
@@ -36538,7 +36634,7 @@ Flow.getGlyphProps.duration_codes = {
         line_above: 1.0,
         line_below: 1.0
       },
-      's': {
+      s: {
         // Eight slash
         // Drawn with canvas primitives
         getWidth: function getWidth() {
@@ -36548,7 +36644,7 @@ Flow.getGlyphProps.duration_codes = {
       }
     }
   },
-  '16': {
+  16: {
     common: {
       beam_count: 2,
       getWidth: function getWidth() {
@@ -36569,19 +36665,19 @@ Flow.getGlyphProps.duration_codes = {
       line_below: 0
     },
     type: {
-      'n': {
+      n: {
         // Sixteenth note
         code_head: 'noteheadBlack'
       },
-      'h': {
+      h: {
         // Sixteenth note harmonic
         code_head: 'noteheadDiamondBlack'
       },
-      'm': {
+      m: {
         // Sixteenth note muted
         code_head: 'noteheadXBlack'
       },
-      'r': {
+      r: {
         // Sixteenth rest
         code_head: 'rest16th',
         stem: false,
@@ -36592,7 +36688,7 @@ Flow.getGlyphProps.duration_codes = {
         line_above: 1.0,
         line_below: 2.0
       },
-      's': {
+      s: {
         // Sixteenth slash
         // Drawn with canvas primitives
         getWidth: function getWidth() {
@@ -36602,7 +36698,7 @@ Flow.getGlyphProps.duration_codes = {
       }
     }
   },
-  '32': {
+  32: {
     common: {
       beam_count: 3,
       getWidth: function getWidth() {
@@ -36623,19 +36719,19 @@ Flow.getGlyphProps.duration_codes = {
       line_below: 0
     },
     type: {
-      'n': {
+      n: {
         // Thirty-second note
         code_head: 'noteheadBlack'
       },
-      'h': {
+      h: {
         // Thirty-second harmonic
         code_head: 'noteheadDiamondBlack'
       },
-      'm': {
+      m: {
         // Thirty-second muted
         code_head: 'noteheadXBlack'
       },
-      'r': {
+      r: {
         // Thirty-second rest
         code_head: 'rest32nd',
         stem: false,
@@ -36646,7 +36742,7 @@ Flow.getGlyphProps.duration_codes = {
         line_above: 2.0,
         line_below: 2.0
       },
-      's': {
+      s: {
         // Thirty-second slash
         // Drawn with canvas primitives
         getWidth: function getWidth() {
@@ -36656,7 +36752,7 @@ Flow.getGlyphProps.duration_codes = {
       }
     }
   },
-  '64': {
+  64: {
     common: {
       beam_count: 4,
       getWidth: function getWidth() {
@@ -36677,19 +36773,19 @@ Flow.getGlyphProps.duration_codes = {
       line_below: 0
     },
     type: {
-      'n': {
+      n: {
         // Sixty-fourth note
         code_head: 'noteheadBlack'
       },
-      'h': {
+      h: {
         // Sixty-fourth harmonic
         code_head: 'noteheadDiamondBlack'
       },
-      'm': {
+      m: {
         // Sixty-fourth muted
         code_head: 'noteheadXBlack'
       },
-      'r': {
+      r: {
         // Sixty-fourth rest
         code_head: 'rest64th',
         stem: false,
@@ -36700,7 +36796,7 @@ Flow.getGlyphProps.duration_codes = {
         line_above: 2.0,
         line_below: 3.0
       },
-      's': {
+      s: {
         // Sixty-fourth slash
         // Drawn with canvas primitives
         getWidth: function getWidth() {
@@ -36710,7 +36806,7 @@ Flow.getGlyphProps.duration_codes = {
       }
     }
   },
-  '128': {
+  128: {
     common: {
       beam_count: 5,
       getWidth: function getWidth() {
@@ -36731,19 +36827,19 @@ Flow.getGlyphProps.duration_codes = {
       line_below: 0
     },
     type: {
-      'n': {
+      n: {
         // Hundred-twenty-eight note
         code_head: 'noteheadBlack'
       },
-      'h': {
+      h: {
         // Hundred-twenty-eight harmonic
         code_head: 'noteheadDiamondBlack'
       },
-      'm': {
+      m: {
         // Hundred-twenty-eight muted
         code_head: 'noteheadXBlack'
       },
-      'r': {
+      r: {
         // Hundred-twenty-eight rest
         code_head: 'rest128th',
         stem: false,
@@ -36754,7 +36850,7 @@ Flow.getGlyphProps.duration_codes = {
         line_above: 3.0,
         line_below: 3.0
       },
-      's': {
+      s: {
         // Hundred-twenty-eight rest
         // Drawn with canvas primitives
         getWidth: function getWidth() {
@@ -36796,23 +36892,27 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -36916,26 +37016,19 @@ function getPartialStemLines(stem_y, unused_strings, stave, stem_direction) {
   return stem_lines;
 }
 
-var TabNote =
-/*#__PURE__*/
-function (_StemmableNote) {
+var TabNote = /*#__PURE__*/function (_StemmableNote) {
   _inherits(TabNote, _StemmableNote);
 
-  _createClass(TabNote, null, [{
-    key: "CATEGORY",
-    get: function get() {
-      return 'tabnotes';
-    } // Initialize the TabNote with a `tab_struct` full of properties
-    // and whether to `draw_stem` when rendering the note
+  var _super = _createSuper(TabNote);
 
-  }]);
-
+  // Initialize the TabNote with a `tab_struct` full of properties
+  // and whether to `draw_stem` when rendering the note
   function TabNote(tab_struct, draw_stem) {
     var _this;
 
     _classCallCheck(this, TabNote);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(TabNote).call(this, tab_struct));
+    _this = _super.call(this, tab_struct);
 
     _this.setAttribute('type', 'TabNote');
 
@@ -37358,6 +37451,11 @@ function (_StemmableNote) {
       this.drawModifiers();
       this.context.closeGroup();
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'tabnotes';
+    }
   }]);
 
   return TabNote;
@@ -37381,12 +37479,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -37395,6 +37487,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
@@ -37402,32 +37504,10 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 // ties include: regular ties, hammer ons, pull offs, and slides.
 
 
-var TabSlide =
-/*#__PURE__*/
-function (_TabTie) {
+var TabSlide = /*#__PURE__*/function (_TabTie) {
   _inherits(TabSlide, _TabTie);
 
-  _createClass(TabSlide, null, [{
-    key: "createSlideUp",
-    value: function createSlideUp(notes) {
-      return new TabSlide(notes, TabSlide.SLIDE_UP);
-    }
-  }, {
-    key: "createSlideDown",
-    value: function createSlideDown(notes) {
-      return new TabSlide(notes, TabSlide.SLIDE_DOWN);
-    }
-  }, {
-    key: "SLIDE_UP",
-    get: function get() {
-      return 1;
-    }
-  }, {
-    key: "SLIDE_DOWN",
-    get: function get() {
-      return -1;
-    }
-  }]);
+  var _super = _createSuper(TabSlide);
 
   function TabSlide(notes, direction) {
     var _this;
@@ -37445,7 +37525,7 @@ function (_TabTie) {
      *  }
      *
      **/
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(TabSlide).call(this, notes, 'sl.'));
+    _this = _super.call(this, notes, 'sl.');
 
     _this.setAttribute('type', 'TabSlide');
 
@@ -37504,6 +37584,26 @@ function (_TabTie) {
 
       this.setRendered();
     }
+  }], [{
+    key: "SLIDE_UP",
+    get: function get() {
+      return 1;
+    }
+  }, {
+    key: "SLIDE_DOWN",
+    get: function get() {
+      return -1;
+    }
+  }, {
+    key: "createSlideUp",
+    value: function createSlideUp(notes) {
+      return new TabSlide(notes, TabSlide.SLIDE_UP);
+    }
+  }, {
+    key: "createSlideDown",
+    value: function createSlideDown(notes) {
+      return new TabSlide(notes, TabSlide.SLIDE_DOWN);
+    }
   }]);
 
   return TabSlide;
@@ -37531,23 +37631,27 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 
 
-var TabStave =
-/*#__PURE__*/
-function (_Stave) {
+var TabStave = /*#__PURE__*/function (_Stave) {
   _inherits(TabStave, _Stave);
+
+  var _super = _createSuper(TabStave);
 
   function TabStave(x, y, width, options) {
     var _this;
@@ -37560,7 +37664,7 @@ function (_Stave) {
       top_text_position: 1
     };
     _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Merge(tab_options, options);
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(TabStave).call(this, x, y, width, tab_options));
+    _this = _super.call(this, x, y, width, tab_options);
 
     _this.setAttribute('type', 'TabStave');
 
@@ -37601,12 +37705,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -37615,28 +37713,26 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 // / [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 // This class implements varies types of ties between contiguous notes. The
 // ties include: regular ties, hammer ons, pull offs, and slides.
 
-var TabTie =
-/*#__PURE__*/
-function (_StaveTie) {
+var TabTie = /*#__PURE__*/function (_StaveTie) {
   _inherits(TabTie, _StaveTie);
 
-  _createClass(TabTie, null, [{
-    key: "createHammeron",
-    value: function createHammeron(notes) {
-      return new TabTie(notes, 'H');
-    }
-  }, {
-    key: "createPulloff",
-    value: function createPulloff(notes) {
-      return new TabTie(notes, 'P');
-    }
-  }]);
+  var _super = _createSuper(TabTie);
 
   function TabTie(notes, text) {
     var _this;
@@ -37654,7 +37750,7 @@ function (_StaveTie) {
      *  }
      *
      **/
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(TabTie).call(this, notes, text));
+    _this = _super.call(this, notes, text);
 
     _this.setAttribute('type', 'TabTie');
 
@@ -37708,6 +37804,16 @@ function (_StaveTie) {
       this.renderText(first_x_px, last_x_px);
       return true;
     }
+  }], [{
+    key: "createHammeron",
+    value: function createHammeron(notes) {
+      return new TabTie(notes, 'H');
+    }
+  }, {
+    key: "createPulloff",
+    value: function createPulloff(notes) {
+      return new TabTie(notes, 'P');
+    }
   }]);
 
   return TabTie;
@@ -37739,12 +37845,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -37752,6 +37852,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Cyril Silverman
@@ -37774,29 +37884,10 @@ function L() {
   if (TextBracket.DEBUG) _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].L('Vex.Flow.TextBracket', args);
 }
 
-var TextBracket =
-/*#__PURE__*/
-function (_Element) {
+var TextBracket = /*#__PURE__*/function (_Element) {
   _inherits(TextBracket, _Element);
 
-  _createClass(TextBracket, null, [{
-    key: "Positions",
-    // FIXME: Modifier.Position is singular while this is plural, make consistent
-    get: function get() {
-      return {
-        TOP: 1,
-        BOTTOM: -1
-      };
-    }
-  }, {
-    key: "PositionString",
-    get: function get() {
-      return {
-        top: TextBracket.Positions.TOP,
-        bottom: TextBracket.Positions.BOTTOM
-      };
-    }
-  }]);
+  var _super = _createSuper(TextBracket);
 
   function TextBracket(_ref) {
     var _this;
@@ -37812,7 +37903,7 @@ function (_Element) {
 
     _classCallCheck(this, TextBracket);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(TextBracket).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'TextBracket');
 
@@ -37866,7 +37957,7 @@ function (_Element) {
     key: "setFont",
     value: function setFont(font) {
       // We use Object.assign to support partial updates to the font object
-      this.font = _objectSpread({}, this.font, {}, font);
+      this.font = _objectSpread(_objectSpread({}, this.font), font);
       return this;
     } // Set the rendering `context` for the octave bracket
 
@@ -37964,6 +38055,23 @@ function (_Element) {
 
       ctx.restore();
     }
+  }], [{
+    key: "Positions",
+    get: // FIXME: Modifier.Position is singular while this is plural, make consistent
+    function get() {
+      return {
+        TOP: 1,
+        BOTTOM: -1
+      };
+    }
+  }, {
+    key: "PositionString",
+    get: function get() {
+      return {
+        top: TextBracket.Positions.TOP,
+        bottom: TextBracket.Positions.BOTTOM
+      };
+    }
   }]);
 
   return TextBracket;
@@ -37988,12 +38096,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -38001,6 +38103,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -38022,55 +38134,22 @@ function L() {
   if (TextDynamics.DEBUG) _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].L('Vex.Flow.TextDynamics', args);
 }
 
-var TextDynamics =
-/*#__PURE__*/
-function (_Note) {
+var TextDynamics = /*#__PURE__*/function (_Note) {
   _inherits(TextDynamics, _Note);
 
-  _createClass(TextDynamics, null, [{
-    key: "GLYPHS",
-    // The glyph data for each dynamics letter
-    get: function get() {
-      return {
-        'f': {
-          code: 'dynamicForte',
-          width: 12
-        },
-        'p': {
-          code: 'dynamicPiano',
-          width: 14
-        },
-        'm': {
-          code: 'dynamicMezzo',
-          width: 17
-        },
-        's': {
-          code: 'dynamicSforzando',
-          width: 10
-        },
-        'z': {
-          code: 'dynamicZ',
-          width: 12
-        },
-        'r': {
-          code: 'dynamicRinforzando',
-          width: 12
-        }
-      };
-    } // A `TextDynamics` object inherits from `Note` so that it can be formatted
-    // within a `Voice`.
-    // Create the dynamics marking. `text_struct` is an object
-    // that contains a `duration` property and a `sequence` of
-    // letters that represents the letters to render
+  var _super = _createSuper(TextDynamics);
 
-  }]);
-
+  // A `TextDynamics` object inherits from `Note` so that it can be formatted
+  // within a `Voice`.
+  // Create the dynamics marking. `text_struct` is an object
+  // that contains a `duration` property and a `sequence` of
+  // letters that represents the letters to render
   function TextDynamics(text_struct) {
     var _this;
 
     _classCallCheck(this, TextDynamics);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(TextDynamics).call(this, text_struct));
+    _this = _super.call(this, text_struct);
 
     _this.setAttribute('type', 'TextDynamics');
 
@@ -38134,6 +38213,37 @@ function (_Note) {
         letter_x += TextDynamics.GLYPHS[current_letter].width;
       });
     }
+  }], [{
+    key: "GLYPHS",
+    get: // The glyph data for each dynamics letter
+    function get() {
+      return {
+        f: {
+          code: 'dynamicForte',
+          width: 12
+        },
+        p: {
+          code: 'dynamicPiano',
+          width: 14
+        },
+        m: {
+          code: 'dynamicMezzo',
+          width: 17
+        },
+        s: {
+          code: 'dynamicSforzando',
+          width: 10
+        },
+        z: {
+          code: 'dynamicZ',
+          width: 12
+        },
+        r: {
+          code: 'dynamicRinforzando',
+          width: 12
+        }
+      };
+    }
   }]);
 
   return TextDynamics;
@@ -38179,161 +38289,112 @@ function L() {
   if (TextFont.DEBUG) _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].L('Vex.Flow.TextFont', args);
 }
 
-var TextFont =
-/*#__PURE__*/
-function () {
-  _createClass(TextFont, null, [{
-    key: "getFontFamilies",
-    // ### getFontFamilies
-    // Web font files are generally distributed per weight and style (bold, italic).
-    // return the family with the attributes that are available for that font.
-    // We assume descriptions are the same for different weights/styles.
-    value: function getFontFamilies() {
-      var hash = {};
-      var rv = [];
-      TextFont.fontRegistry.forEach(function (font) {
-        if (!hash[font.family]) {
-          hash[font.family] = {
-            family: font.family,
-            description: font.description,
-            bold: font.bold,
-            serifs: font.serifs,
-            italic: font.italic
-          };
-        } else {
-          ['bold', 'italic', 'monospaced', 'serifs'].forEach(function (attr) {
-            if (font[attr]) {
-              hash[font.family][attr] = true;
-            }
-          });
-        }
-      });
-      var keys = Object.keys(hash);
-      keys.forEach(function (key) {
-        rv.push(hash[key]);
-      });
-      return rv;
-    } // ### fontWeightToBold
-    // return true if the font weight indicates we desire a 'bold'
-    // used in getTextFontFromVexFontData
+var TextFont = /*#__PURE__*/function () {
+  // ## Prototype Methods
+  //
+  // create a font instance.
+  // The preferred method for returning an instance of this class is via
+  // getTextFontFromVexFontData
+  function TextFont(params) {
+    _classCallCheck(this, TextFont);
 
-  }, {
-    key: "fontWeightToBold",
-    value: function fontWeightToBold(fw) {
-      if (!fw) {
-        return false;
+    this.attrs = {
+      type: 'TextFont'
+    };
+
+    if (!params.name) {
+      _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('BadArgument', 'Font constructor must specify a name');
+    }
+
+    var fontData = params.glyphs ? params : TextFont.getFontDataByName(params.name);
+
+    if (!fontData) {
+      if (params.glyphs && params.resolution) {
+        TextFont.registerFont(params);
+      } else {
+        _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('BadArgument', 'Unknown font, must have glyph metrics and resolution');
       }
+    } else {
+      _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Merge(this, fontData);
+    }
 
-      if (isNaN(parseInt(fw, 10))) {
-        return fw.toLowerCase() === 'bold';
-      } // very subjective...
+    _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Merge(this, params);
 
+    if (!this.size) {
+      this.size = 14;
+    }
 
-      return parseInt(fw, 10) >= 600;
-    } // ### fontStyleToItalic
-    // return true if the font style indicates we desire 'italic' style
-    // used in getTextFontFromVexFontData
+    if (!this.maxSizeGlyph) {
+      this.maxSizeGlyph = 'H';
+    }
 
-  }, {
-    key: "fontStyleToItalic",
-    value: function fontStyleToItalic(fs) {
-      return fs && typeof fs === 'string' && fs.toLowerCase() === 'italic';
-    } // ### getTextFontFromVexFontData
-    // Find the font that most closely matches the parameters from the given font data.
-    // Primarily we look for font family, also bold and italic attributes.  This
-    // method will always return a fallback font if there are no matches.
+    this.weight = typeof this.weight === 'undefined' ? '' : this.weight;
+    this.style = typeof this.style === 'undefined' ? '' : this.style;
+    this.setHashBase();
+  }
 
-  }, {
-    key: "getTextFontFromVexFontData",
-    value: function getTextFontFromVexFontData(fd) {
-      var i = 0;
-      var fallback = TextFont.fontRegistry[0];
-      var candidates = [];
-      var families = fd.family.split(',');
-
-      var _loop = function _loop() {
-        var famliy = families[i];
-        candidates = TextFont.fontRegistry.filter(function (font) {
-          return font.family === famliy;
-        });
-
-        if (candidates.length) {
-          return "break";
-        }
-      };
-
-      for (i = 0; i < families.length; ++i) {
-        var _ret = _loop();
-
-        if (_ret === "break") break;
-      }
-
-      if (candidates.length === 0) {
-        return new TextFont(fallback);
-      }
-
-      if (candidates.length === 1) {
-        return new TextFont(candidates[0]);
-      }
-
-      var bold = TextFont.fontWeightToBold(fd.weight);
-      var italic = TextFont.fontStyleToItalic(fd.style);
-      var perfect = candidates.find(function (font) {
-        return font.bold === bold && font.italic === italic;
-      });
-
-      if (perfect) {
-        return new TextFont(perfect);
-      }
-
-      var ok = candidates.find(function (font) {
-        return font.italic === italic || font.bold === bold;
-      });
-
-      if (ok) {
-        return new TextFont(ok);
-      }
-
-      return new TextFont(candidates[0]);
+  _createClass(TextFont, [{
+    key: "setHashBase",
+    value: function setHashBase() {
+      this.textHashBase = this.family + '-' + this.size + '-' + this.weight + '-' + this.style;
     }
   }, {
-    key: "getFontDataByName",
-    value: function getFontDataByName(fontName) {
-      return TextFont.fontRegistry.find(function (fd) {
-        return fd.name === fontName;
-      });
-    } // ### registerFont
-    // Applications may register their own fonts and the metrics, and those metrics
-    // will be available to the application for formatting.  See fontRegistry
-    // for format of font metrics.  Metrics can be generated from any font file
-    // using font_fontgen.js in the tools/smufl directory.
-
-  }, {
-    key: "registerFont",
-    value: function registerFont(fontData, overwrite) {
-      // Get via external reference to make sure initial object is created
-      var reg = TextFont.fontRegistry;
-      var exists = reg.find(function (td) {
-        return fontData.name === td.name;
-      });
-
-      if (exists && overwrite) {
-        TextFont.registryInstance = TextFont.fontRegistry.filter(function (fd) {
-          return fd.name !== exists.name;
-        });
+    key: "getMetricForCharacter",
+    value: function getMetricForCharacter(c) {
+      if (this.glyphs[c]) {
+        return this.glyphs[c];
       }
 
-      if (!exists) {
-        L('registering font ' + fontData.name);
-        TextFont.registryInstance.push(fontData);
+      return this.glyphs[this.maxSizeGlyph];
+    }
+  }, {
+    key: "maxHeight",
+    get: function get() {
+      var glyph = this.getMetricForCharacter(this.maxSizeGlyph);
+      return glyph.ha / this.resolution * this.pointsToPixels;
+    }
+  }, {
+    key: "getWidthForCharacter",
+    value: function getWidthForCharacter(c) {
+      var metric = this.getMetricForCharacter(c);
+
+      if (!metric) {
+        return 0.65 * this.pointsToPixels;
       }
-    } // ## Prototype Methods
-    //
-    // create a font instance.
-    // The preferred method for returning an instance of this class is via
-    // getTextFontFromVexFontData
+
+      return metric.advanceWidth / this.resolution * this.pointsToPixels;
+    }
+  }, {
+    key: "getWidthForString",
+    value: function getWidthForString(s) {
+      var key = this.textHashBase + '-' + s;
+      var width = 0;
+
+      if (!TextFont.fontTextHash[key]) {
+        for (var j = 0; j < s.length; ++j) {
+          width += this.getWidthForCharacter(s[j]);
+        }
+
+        TextFont.fontTextHash[key] = width;
+      }
+
+      return TextFont.fontTextHash[key];
+    } // ### pointsToPixels
+    // The font size is specified in points, convert to 'pixels' in the svg space
 
   }, {
+    key: "pointsToPixels",
+    get: function get() {
+      return this.size / 72 / (1 / 96);
+    }
+  }, {
+    key: "setFontSize",
+    value: function setFontSize(size) {
+      this.size = size;
+      this.setHashBase();
+      return this;
+    }
+  }], [{
     key: "CATEGORY",
     get: function get() {
       return 'textFont';
@@ -38386,81 +38447,166 @@ function () {
       }
 
       return TextFont.registryInstance;
+    } // ### getFontFamilies
+    // Web font files are generally distributed per weight and style (bold, italic).
+    // return the family with the attributes that are available for that font.
+    // We assume descriptions are the same for different weights/styles.
+
+  }, {
+    key: "getFontFamilies",
+    value: function getFontFamilies() {
+      var hash = {};
+      var rv = [];
+      TextFont.fontRegistry.forEach(function (font) {
+        if (!hash[font.family]) {
+          hash[font.family] = {
+            family: font.family,
+            description: font.description,
+            bold: font.bold,
+            serifs: font.serifs,
+            italic: font.italic
+          };
+        } else {
+          ['bold', 'italic', 'monospaced', 'serifs'].forEach(function (attr) {
+            if (font[attr]) {
+              hash[font.family][attr] = true;
+            }
+          });
+        }
+      });
+      var keys = Object.keys(hash);
+      keys.forEach(function (key) {
+        rv.push(hash[key]);
+      });
+      return rv;
+    } // ### fontWeightToBold
+    // return true if the font weight indicates we desire a 'bold'
+    // used in getTextFontFromVexFontData
+
+  }, {
+    key: "fontWeightToBold",
+    value: function fontWeightToBold(fw) {
+      if (!fw) {
+        return false;
+      }
+
+      if (isNaN(parseInt(fw, 10))) {
+        return fw.toLowerCase() === 'bold';
+      } // very subjective...
+
+
+      return parseInt(fw, 10) >= 600;
+    } // ### fontStyleToItalic
+    // return true if the font style indicates we desire 'italic' style
+    // used in getTextFontFromVexFontData
+
+  }, {
+    key: "fontStyleToItalic",
+    value: function fontStyleToItalic(fs) {
+      return fs && typeof fs === 'string' && fs.toLowerCase() === 'italic';
     }
-  }]);
+  }, {
+    key: "fontTextHash",
+    get: function get() {
+      if (typeof TextFont.fontTextHashInstance === 'undefined') {
+        TextFont.fontTextHashInstance = {};
+      }
 
-  function TextFont(params) {
-    _classCallCheck(this, TextFont);
+      return TextFont.fontTextHashInstance;
+    } // ### getTextFontFromVexFontData
+    // Find the font that most closely matches the parameters from the given font data.
+    // Primarily we look for font family, also bold and italic attributes.  This
+    // method will always return a fallback font if there are no matches.
 
-    this.attrs = {
-      'type': 'TextFont'
-    };
+  }, {
+    key: "getTextFontFromVexFontData",
+    value: function getTextFontFromVexFontData(fd) {
+      var i = 0;
+      var rv = null;
+      var fallback = TextFont.fontRegistry[0];
+      var candidates = [];
+      var families = fd.family.split(',');
 
-    if (!params.name) {
-      _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('BadArgument', 'Font constructor must specify a name');
-    }
+      var _loop = function _loop() {
+        var famliy = families[i];
+        candidates = TextFont.fontRegistry.filter(function (font) {
+          return font.family === famliy;
+        });
 
-    var fontData = params.glyphs ? params : TextFont.getFontDataByName(params.name);
+        if (candidates.length) {
+          return "break";
+        }
+      };
 
-    if (!fontData) {
-      if (params.glyphs && params.resolution) {
-        TextFont.registerFont(params);
+      for (i = 0; i < families.length; ++i) {
+        var _ret = _loop();
+
+        if (_ret === "break") break;
+      }
+
+      if (candidates.length === 0) {
+        rv = new TextFont(fallback);
+      } else if (candidates.length === 1) {
+        rv = new TextFont(candidates[0]);
       } else {
-        _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RERR('BadArgument', 'Unknown font, must have glyph metrics and resolution');
-      }
-    } else {
-      _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Merge(this, fontData);
-    }
+        var bold = TextFont.fontWeightToBold(fd.weight);
+        var italic = TextFont.fontStyleToItalic(fd.style);
+        var perfect = candidates.find(function (font) {
+          return font.bold === bold && font.italic === italic;
+        });
 
-    _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].Merge(this, params);
+        if (perfect) {
+          rv = new TextFont(perfect);
+        } else {
+          var ok = candidates.find(function (font) {
+            return font.italic === italic || font.bold === bold;
+          });
 
-    if (!this.size) {
-      this.size = 14;
-    }
-
-    if (!this.maxSizeGlyph) {
-      this.maxSizeGlyph = 'H';
-    }
-  }
-
-  _createClass(TextFont, [{
-    key: "getMetricForCharacter",
-    value: function getMetricForCharacter(c) {
-      if (this.glyphs[c]) {
-        return this.glyphs[c];
+          if (ok) {
+            rv = new TextFont(ok);
+          } else {
+            rv = new TextFont(candidates[0]);
+          }
+        }
       }
 
-      return this.glyphs[this.maxSizeGlyph];
-    }
-  }, {
-    key: "getWidthForCharacter",
-    value: function getWidthForCharacter(c) {
-      var metric = this.getMetricForCharacter(c);
-
-      if (!metric) {
-        return 0.65 * this.pointsToPixels;
+      if (typeof fd.size === 'number' && fd.size > 0) {
+        rv.setFontSize(fd.size);
       }
 
-      return metric.advanceWidth / this.resolution * this.pointsToPixels;
-    } // ### pointsToPixels
-    // The font size is specified in points, convert to 'pixels' in the svg space
+      return rv;
+    }
+  }, {
+    key: "getFontDataByName",
+    value: function getFontDataByName(fontName) {
+      return TextFont.fontRegistry.find(function (fd) {
+        return fd.name === fontName;
+      });
+    } // ### registerFont
+    // Applications may register their own fonts and the metrics, and those metrics
+    // will be available to the application for formatting.  See fontRegistry
+    // for format of font metrics.  Metrics can be generated from any font file
+    // using font_fontgen.js in the tools/smufl directory.
 
   }, {
-    key: "setFontSize",
-    value: function setFontSize(size) {
-      this.size = size;
-      return this;
-    }
-  }, {
-    key: "maxHeight",
-    get: function get() {
-      var glyph = this.getMetricForCharacter(this.maxSizeGlyph);
-      return glyph.ha / this.resolution * this.pointsToPixels;
-    }
-  }, {
-    key: "pointsToPixels",
-    get: function get() {
-      return this.size / 72 / (1 / 96);
+    key: "registerFont",
+    value: function registerFont(fontData, overwrite) {
+      // Get via external reference to make sure initial object is created
+      var reg = TextFont.fontRegistry;
+      var exists = reg.find(function (td) {
+        return fontData.name === td.name;
+      });
+
+      if (exists && overwrite) {
+        TextFont.registryInstance = TextFont.fontRegistry.filter(function (fd) {
+          return fd.name !== exists.name;
+        });
+      }
+
+      if (!exists) {
+        L('registering font ' + fontData.name);
+        TextFont.registryInstance.push(fontData);
+      }
     }
   }]);
 
@@ -38492,12 +38638,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -38505,6 +38645,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -38515,92 +38665,17 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var TextNote =
-/*#__PURE__*/
-function (_Note) {
+var TextNote = /*#__PURE__*/function (_Note) {
   _inherits(TextNote, _Note);
 
-  _createClass(TextNote, null, [{
-    key: "Justification",
-    get: function get() {
-      return {
-        LEFT: 1,
-        CENTER: 2,
-        RIGHT: 3
-      };
-    } // Glyph data
-
-  }, {
-    key: "GLYPHS",
-    get: function get() {
-      return {
-        'segno': {
-          code: 'segno'
-        },
-        'tr': {
-          code: 'ornamentTrill'
-        },
-        'mordent': {
-          code: 'ornamentMordent'
-        },
-        'mordent_upper': {
-          code: 'ornamentShortTrill'
-        },
-        'mordent_lower': {
-          code: 'ornamentMordent'
-        },
-        'f': {
-          code: 'dynamicForte'
-        },
-        'p': {
-          code: 'dynamicPiano'
-        },
-        'm': {
-          code: 'dynamicMezzo'
-        },
-        's': {
-          code: 'dynamicSforzando'
-        },
-        'z': {
-          code: 'dynamicZ'
-        },
-        'coda': {
-          code: 'coda'
-        },
-        'pedal_open': {
-          code: 'keyboardPedalPed'
-        },
-        'pedal_close': {
-          code: 'keyboardPedalUp'
-        },
-        'caesura_straight': {
-          code: 'caesura'
-        },
-        'caesura_curved': {
-          code: 'caesuraCurved'
-        },
-        'breath': {
-          code: 'breathMarkComma'
-        },
-        'tick': {
-          code: 'breathMarkTick'
-        },
-        'turn': {
-          code: 'ornamentTurn'
-        },
-        'turn_inverted': {
-          code: 'ornamentTurnSlash'
-        }
-      };
-    }
-  }]);
+  var _super = _createSuper(TextNote);
 
   function TextNote(options) {
     var _this;
 
     _classCallCheck(this, TextNote);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(TextNote).call(this, options));
+    _this = _super.call(this, options);
 
     _this.setAttribute('type', 'TextNote'); // Note properties
 
@@ -38724,6 +38799,79 @@ function (_Note) {
         this.restoreStyle(ctx);
       }
     }
+  }], [{
+    key: "Justification",
+    get: function get() {
+      return {
+        LEFT: 1,
+        CENTER: 2,
+        RIGHT: 3
+      };
+    } // Glyph data
+
+  }, {
+    key: "GLYPHS",
+    get: function get() {
+      return {
+        segno: {
+          code: 'segno'
+        },
+        tr: {
+          code: 'ornamentTrill'
+        },
+        mordent: {
+          code: 'ornamentMordent'
+        },
+        mordent_upper: {
+          code: 'ornamentShortTrill'
+        },
+        mordent_lower: {
+          code: 'ornamentMordent'
+        },
+        f: {
+          code: 'dynamicForte'
+        },
+        p: {
+          code: 'dynamicPiano'
+        },
+        m: {
+          code: 'dynamicMezzo'
+        },
+        s: {
+          code: 'dynamicSforzando'
+        },
+        z: {
+          code: 'dynamicZ'
+        },
+        coda: {
+          code: 'coda'
+        },
+        pedal_open: {
+          code: 'keyboardPedalPed'
+        },
+        pedal_close: {
+          code: 'keyboardPedalUp'
+        },
+        caesura_straight: {
+          code: 'caesura'
+        },
+        caesura_curved: {
+          code: 'caesuraCurved'
+        },
+        breath: {
+          code: 'breathMarkComma'
+        },
+        tick: {
+          code: 'breathMarkTick'
+        },
+        turn: {
+          code: 'ornamentTurn'
+        },
+        turn_inverted: {
+          code: 'ornamentTurnSlash'
+        }
+      };
+    }
   }]);
 
   return TextNote;
@@ -38753,15 +38901,19 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -38772,17 +38924,17 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var Tickable =
-/*#__PURE__*/
-function (_Element) {
+var Tickable = /*#__PURE__*/function (_Element) {
   _inherits(Tickable, _Element);
+
+  var _super = _createSuper(Tickable);
 
   function Tickable() {
     var _this;
 
     _classCallCheck(this, Tickable);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Tickable).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'Tickable'); // These properties represent the duration of
     // this tickable element.
@@ -38848,6 +39000,18 @@ function (_Element) {
       return this.ticks;
     } // return the number of ticks used to determine the distance to the next note
 
+  }, {
+    key: "widthTicks",
+    get: function get() {
+      if (typeof this.widthTicksVal === 'undefined') {
+        this.widthTicksVal = this.ticks.value();
+      }
+
+      return this.widthTicksVal;
+    },
+    set: function set(val) {
+      this.widthTicksVal = val;
+    }
   }, {
     key: "shouldIgnoreTicks",
     value: function shouldIgnoreTicks() {
@@ -39063,18 +39227,6 @@ function (_Element) {
       this.ticks = this.tickMultiplier.clone().multiply(ticks);
       this.intrinsicTicks = this.ticks.value();
     }
-  }, {
-    key: "widthTicks",
-    get: function get() {
-      if (typeof this.widthTicksVal === 'undefined') {
-        this.widthTicksVal = this.ticks.value();
-      }
-
-      return this.widthTicksVal;
-    },
-    set: function set(val) {
-      this.widthTicksVal = val;
-    }
   }]);
 
   return Tickable;
@@ -39099,12 +39251,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -39112,6 +39258,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -39121,26 +39277,17 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var TickContext =
-/*#__PURE__*/
-function (_Tickable) {
+var TickContext = /*#__PURE__*/function (_Tickable) {
   _inherits(TickContext, _Tickable);
 
-  _createClass(TickContext, null, [{
-    key: "getNextContext",
-    value: function getNextContext(tContext) {
-      var contexts = tContext.tContexts;
-      var index = contexts.indexOf(tContext);
-      return contexts[index + 1];
-    }
-  }]);
+  var _super = _createSuper(TickContext);
 
   function TickContext(options) {
     var _this;
 
     _classCallCheck(this, TickContext);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(TickContext).call(this));
+    _this = _super.call(this);
     _this.tickID = options && options.tickID;
 
     _this.setAttribute('type', 'TickContext');
@@ -39386,6 +39533,13 @@ function (_Tickable) {
       this.postFormatted = true;
       return this;
     }
+  }], [{
+    key: "getNextContext",
+    value: function getNextContext(tContext) {
+      var contexts = tContext.tContexts;
+      var index = contexts.indexOf(tContext);
+      return contexts[index + 1];
+    }
   }]);
 
   return TickContext;
@@ -39408,21 +39562,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -39431,6 +39583,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -39458,33 +39620,10 @@ var assertIsValidFraction = function assertIsValidFraction(timeSpec) {
   });
 };
 
-var TimeSignature =
-/*#__PURE__*/
-function (_StaveModifier) {
+var TimeSignature = /*#__PURE__*/function (_StaveModifier) {
   _inherits(TimeSignature, _StaveModifier);
 
-  _createClass(TimeSignature, null, [{
-    key: "CATEGORY",
-    get: function get() {
-      return 'timesignatures';
-    }
-  }, {
-    key: "glyphs",
-    get: function get() {
-      return {
-        'C': {
-          code: 'timeSigCommon',
-          point: 40,
-          line: 2
-        },
-        'C|': {
-          code: 'timeSigCutCommon',
-          point: 40,
-          line: 2
-        }
-      };
-    }
-  }]);
+  var _super = _createSuper(TimeSignature);
 
   function TimeSignature() {
     var _this;
@@ -39495,7 +39634,7 @@ function (_StaveModifier) {
 
     _classCallCheck(this, TimeSignature);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(TimeSignature).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'TimeSignature');
 
@@ -39644,6 +39783,27 @@ function (_StaveModifier) {
       this.placeGlyphOnLine(this.timeSig.glyph, this.stave, this.timeSig.line);
       this.timeSig.glyph.renderToStave(this.x);
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'timesignatures';
+    }
+  }, {
+    key: "glyphs",
+    get: function get() {
+      return {
+        C: {
+          code: 'timeSigCommon',
+          point: 40,
+          line: 2
+        },
+        'C|': {
+          code: 'timeSigCutCommon',
+          point: 40,
+          line: 2
+        }
+      };
+    }
   }]);
 
   return TimeSignature;
@@ -39671,37 +39831,41 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Taehoon Moon 2014
 
 
-var TimeSigNote =
-/*#__PURE__*/
-function (_Note) {
+var TimeSigNote = /*#__PURE__*/function (_Note) {
   _inherits(TimeSigNote, _Note);
+
+  var _super = _createSuper(TimeSigNote);
 
   function TimeSigNote(timeSpec, customPadding) {
     var _this;
 
     _classCallCheck(this, TimeSigNote);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(TimeSigNote).call(this, {
+    _this = _super.call(this, {
       duration: 'b'
-    }));
+    });
 
     _this.setAttribute('type', 'TimeSigNote');
 
@@ -39772,12 +39936,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -39785,6 +39943,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Mike Corrigan <corrigan@gmail.com>
@@ -39795,24 +39963,17 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var Tremolo =
-/*#__PURE__*/
-function (_Modifier) {
+var Tremolo = /*#__PURE__*/function (_Modifier) {
   _inherits(Tremolo, _Modifier);
 
-  _createClass(Tremolo, null, [{
-    key: "CATEGORY",
-    get: function get() {
-      return 'tremolo';
-    }
-  }]);
+  var _super = _createSuper(Tremolo);
 
   function Tremolo(num) {
     var _this;
 
     _classCallCheck(this, Tremolo);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Tremolo).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'Tremolo');
 
@@ -39874,6 +40035,11 @@ function (_Modifier) {
         y += this.y_spacing;
       }
     }
+  }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'tremolo';
+    }
   }]);
 
   return Tremolo;
@@ -39905,22 +40071,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 // This class implements varies types of tunings for tablature.
 
 
-var Tuning =
-/*#__PURE__*/
-function () {
-  _createClass(Tuning, null, [{
-    key: "names",
-    get: function get() {
-      return {
-        'standard': 'E/5,B/4,G/4,D/4,A/3,E/3',
-        'dagdad': 'D/5,A/4,G/4,D/4,A/3,D/3',
-        'dropd': 'E/5,B/4,G/4,D/4,A/3,D/3',
-        'eb': 'Eb/5,Bb/4,Gb/4,Db/4,Ab/3,Db/3',
-        'standardBanjo': 'D/5,B/4,G/4,D/4,G/5'
-      };
-    }
-  }]);
-
+var Tuning = /*#__PURE__*/function () {
   function Tuning() {
     var tuningString = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'E/5,B/4,G/4,D/4,A/3,E/3,B/2,E/2';
 
@@ -39988,6 +40139,17 @@ function () {
       var value = noteValue % 12;
       return _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].integerToNote(value) + '/' + octave;
     }
+  }], [{
+    key: "names",
+    get: function get() {
+      return {
+        standard: 'E/5,B/4,G/4,D/4,A/3,E/3',
+        dagdad: 'D/5,A/4,G/4,D/4,A/3,D/3',
+        dropd: 'E/5,B/4,G/4,D/4,A/3,D/3',
+        eb: 'Eb/5,Bb/4,Gb/4,Db/4,Ab/3,Db/3',
+        standardBanjo: 'D/5,B/4,G/4,D/4,G/5'
+      };
+    }
   }]);
 
   return Tuning;
@@ -40014,12 +40176,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -40027,6 +40183,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 
@@ -40078,34 +40244,17 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var Tuplet =
-/*#__PURE__*/
-function (_Element) {
+var Tuplet = /*#__PURE__*/function (_Element) {
   _inherits(Tuplet, _Element);
 
-  _createClass(Tuplet, null, [{
-    key: "LOCATION_TOP",
-    get: function get() {
-      return 1;
-    }
-  }, {
-    key: "LOCATION_BOTTOM",
-    get: function get() {
-      return -1;
-    }
-  }, {
-    key: "NESTING_OFFSET",
-    get: function get() {
-      return 15;
-    }
-  }]);
+  var _super = _createSuper(Tuplet);
 
   function Tuplet(notes, options) {
     var _this;
 
     _classCallCheck(this, Tuplet);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Tuplet).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'Tuplet');
 
@@ -40402,6 +40551,21 @@ function (_Element) {
         });
       }
     }
+  }], [{
+    key: "LOCATION_TOP",
+    get: function get() {
+      return 1;
+    }
+  }, {
+    key: "LOCATION_BOTTOM",
+    get: function get() {
+      return -1;
+    }
+  }, {
+    key: "NESTING_OFFSET",
+    get: function get() {
+      return 15;
+    }
   }]);
 
   return Tuplet;
@@ -40427,17 +40591,19 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
 function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
 
-function isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
 
-function _construct(Parent, args, Class) { if (isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
 
@@ -40463,17 +40629,17 @@ Vex.L = function (block, args) {
 };
 
 Vex.MakeException = function (name) {
-  var exception =
-  /*#__PURE__*/
-  function (_Error) {
+  var exception = /*#__PURE__*/function (_Error) {
     _inherits(exception, _Error);
+
+    var _super = _createSuper(exception);
 
     function exception(message, data) {
       var _this;
 
       _classCallCheck(this, exception);
 
-      _this = _possibleConstructorReturn(this, _getPrototypeOf(exception).call(this, message));
+      _this = _super.call(this, message);
       _this.name = name;
       _this.message = message;
       _this.data = data;
@@ -40481,15 +40647,13 @@ Vex.MakeException = function (name) {
     }
 
     return exception;
-  }(_wrapNativeSuper(Error));
+  }( /*#__PURE__*/_wrapNativeSuper(Error));
 
   return exception;
 }; // Default runtime exception.
 
 
-var RuntimeError =
-/*#__PURE__*/
-function () {
+var RuntimeError = /*#__PURE__*/function () {
   function RuntimeError(code, message) {
     _classCallCheck(this, RuntimeError);
 
@@ -40665,12 +40829,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -40679,6 +40837,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
@@ -40686,55 +40854,18 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var Vibrato =
-/*#__PURE__*/
-function (_Modifier) {
+var Vibrato = /*#__PURE__*/function (_Modifier) {
   _inherits(Vibrato, _Modifier);
 
-  _createClass(Vibrato, null, [{
-    key: "format",
-    // ## Static Methods
-    // Arrange vibratos inside a `ModifierContext`.
-    value: function format(vibratos, state, context) {
-      if (!vibratos || vibratos.length === 0) return false; // Vibratos are always on top.
+  var _super = _createSuper(Vibrato);
 
-      var text_line = state.top_text_line;
-      var width = 0;
-      var shift = state.right_shift - 7; // If there's a bend, drop the text line
-
-      var bends = context.getModifiers(_bend__WEBPACK_IMPORTED_MODULE_2__["Bend"].CATEGORY);
-
-      if (bends && bends.length > 0) {
-        text_line--;
-      } // Format Vibratos
-
-
-      for (var i = 0; i < vibratos.length; ++i) {
-        var vibrato = vibratos[i];
-        vibrato.setXShift(shift);
-        vibrato.setTextLine(text_line);
-        width += vibrato.getWidth();
-        shift += width;
-      }
-
-      state.right_shift += width;
-      state.top_text_line += 1;
-      return true;
-    } // ## Prototype Methods
-
-  }, {
-    key: "CATEGORY",
-    get: function get() {
-      return 'vibratos';
-    }
-  }]);
-
+  // ## Prototype Methods
   function Vibrato() {
     var _this;
 
     _classCallCheck(this, Vibrato);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Vibrato).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'Vibrato');
 
@@ -40788,6 +40919,41 @@ function (_Modifier) {
     // other classes (e.g. VibratoBracket)
 
   }], [{
+    key: "CATEGORY",
+    get: function get() {
+      return 'vibratos';
+    } // ## Static Methods
+    // Arrange vibratos inside a `ModifierContext`.
+
+  }, {
+    key: "format",
+    value: function format(vibratos, state, context) {
+      if (!vibratos || vibratos.length === 0) return false; // Vibratos are always on top.
+
+      var text_line = state.top_text_line;
+      var width = 0;
+      var shift = state.right_shift - 7; // If there's a bend, drop the text line
+
+      var bends = context.getModifiers(_bend__WEBPACK_IMPORTED_MODULE_2__["Bend"].CATEGORY);
+
+      if (bends && bends.length > 0) {
+        text_line--;
+      } // Format Vibratos
+
+
+      for (var i = 0; i < vibratos.length; ++i) {
+        var vibrato = vibratos[i];
+        vibrato.setXShift(shift);
+        vibrato.setTextLine(text_line);
+        width += vibrato.getWidth();
+        shift += width;
+      }
+
+      state.right_shift += width;
+      state.top_text_line += 1;
+      return true;
+    }
+  }, {
     key: "renderVibrato",
     value: function renderVibrato(ctx, x, y, opts) {
       var harsh = opts.harsh,
@@ -40865,15 +41031,19 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Balazs Forian-Szabo
@@ -40894,10 +41064,10 @@ function L() {
   if (VibratoBracket.DEBUG) _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].L('Vex.Flow.VibratoBracket', args);
 }
 
-var VibratoBracket =
-/*#__PURE__*/
-function (_Element) {
+var VibratoBracket = /*#__PURE__*/function (_Element) {
   _inherits(VibratoBracket, _Element);
+
+  var _super = _createSuper(VibratoBracket);
 
   // bracket_data = {
   //   start: Vex.Flow.Note (optional)
@@ -40911,7 +41081,7 @@ function (_Element) {
 
     _classCallCheck(this, VibratoBracket);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(VibratoBracket).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'VibratoBracket');
 
@@ -40988,12 +41158,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
@@ -41001,6 +41165,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -41012,34 +41186,17 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var Voice =
-/*#__PURE__*/
-function (_Element) {
+var Voice = /*#__PURE__*/function (_Element) {
   _inherits(Voice, _Element);
 
-  _createClass(Voice, null, [{
-    key: "Mode",
-    // Modes allow the addition of ticks in three different ways:
-    //
-    // STRICT: This is the default. Ticks must fill the voice.
-    // SOFT:   Ticks can be added without restrictions.
-    // FULL:   Ticks do not need to fill the voice, but can't exceed the maximum
-    //         tick length.
-    get: function get() {
-      return {
-        STRICT: 1,
-        SOFT: 2,
-        FULL: 3
-      };
-    }
-  }]);
+  var _super = _createSuper(Voice);
 
   function Voice(time, options) {
     var _this;
 
     _classCallCheck(this, Voice);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Voice).call(this));
+    _this = _super.call(this);
 
     _this.setAttribute('type', 'Voice');
 
@@ -41250,7 +41407,8 @@ function (_Element) {
         return Math.pow(_this3.options.softmaxFactor, v / totalTicks);
       };
 
-      return exp(tickValue) / this.expTicksUsed;
+      var sm = exp(tickValue) / this.expTicksUsed;
+      return sm;
     } // Add a tickable to the voice
 
   }, {
@@ -41260,6 +41418,7 @@ function (_Element) {
         var ticks = tickable.getTicks(); // Update the total ticks for this line.
 
         this.ticksUsed.add(ticks);
+        this.expTicksUsed = 0; // reset
 
         if ((this.mode === Voice.Mode.STRICT || this.mode === Voice.Mode.FULL) && this.ticksUsed.greaterThan(this.totalTicks)) {
           this.ticksUsed.subtract(ticks);
@@ -41339,6 +41498,21 @@ function (_Element) {
 
       this.boundingBox = boundingBox;
     }
+  }], [{
+    key: "Mode",
+    get: // Modes allow the addition of ticks in three different ways:
+    //
+    // STRICT: This is the default. Ticks must fill the voice.
+    // SOFT:   Ticks can be added without restrictions.
+    // FULL:   Ticks do not need to fill the voice, but can't exceed the maximum
+    //         tick length.
+    function get() {
+      return {
+        STRICT: 1,
+        SOFT: 2,
+        FULL: 3
+      };
+    }
   }]);
 
   return Voice;
@@ -41366,15 +41540,19 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 
  // To enable logging for this class. Set `Vex.Flow.Formatter.DEBUG` to `true`.
@@ -41387,17 +41565,17 @@ function L() {
   if (WidthFormatter.DEBUG) _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].L('Vex.Flow.WidthFormatter', args);
 }
 
-var WidthFormatter =
-/*#__PURE__*/
-function (_Formatter) {
+var WidthFormatter = /*#__PURE__*/function (_Formatter) {
   _inherits(WidthFormatter, _Formatter);
+
+  var _super = _createSuper(WidthFormatter);
 
   function WidthFormatter(options) {
     var _this;
 
     _classCallCheck(this, WidthFormatter);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(WidthFormatter).call(this, options));
+    _this = _super.call(this, options);
     _this.options.maxIterations = 5;
     return _this;
   } // Calculate the minimum width required to align and format `voices`.

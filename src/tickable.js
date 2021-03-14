@@ -65,13 +65,17 @@ export class Tickable extends Element {
     };
   }
 
-  reset() { return this; }
+  reset() {
+    return this;
+  }
 
-  getTicks() { return this.ticks; }
+  getTicks() {
+    return this.ticks;
+  }
 
   // return the number of ticks used to determine the distance to the next note
   get widthTicks() {
-    if (typeof(this.widthTicksVal) === 'undefined') {
+    if (typeof this.widthTicksVal === 'undefined') {
       this.widthTicksVal = this.ticks.value();
     }
     return this.widthTicksVal;
@@ -80,10 +84,14 @@ export class Tickable extends Element {
   set widthTicks(val) {
     this.widthTicksVal = val;
   }
-  shouldIgnoreTicks() { return this.ignore_ticks; }
+  shouldIgnoreTicks() {
+    return this.ignore_ticks;
+  }
 
   // Get and set width of note. Used by the formatter for positioning.
-  setWidth(width) { this.width = width; }
+  setWidth(width) {
+    this.width = width;
+  }
   getWidth() {
     if (!this.preFormatted) {
       throw new Vex.RERR('UnformattedNote', "Can't call GetWidth on an unformatted note.");
@@ -93,8 +101,13 @@ export class Tickable extends Element {
   }
 
   // Displace note by `x` pixels. Used by the formatter.
-  setXShift(x) { this.x_shift = x; return this; }
-  getXShift() { return this.x_shift; }
+  setXShift(x) {
+    this.x_shift = x;
+    return this;
+  }
+  getXShift() {
+    return this.x_shift;
+  }
 
   // Get `X` position of this tick context.
   getX() {
@@ -105,7 +118,9 @@ export class Tickable extends Element {
     return this.tickContext.getX() + this.x_shift;
   }
 
-  getFormatterMetrics() { return this.formatterMetrics; }
+  getFormatterMetrics() {
+    return this.formatterMetrics;
+  }
 
   getCenterXShift() {
     if (this.isCenterAligned()) {
@@ -114,7 +129,9 @@ export class Tickable extends Element {
 
     return 0;
   }
-  isCenterAligned() { return this.align_center; }
+  isCenterAligned() {
+    return this.align_center;
+  }
   setCenterAlignment(align_center) {
     this.align_center = align_center;
     return this;
@@ -126,8 +143,12 @@ export class Tickable extends Element {
     if (!this.voice) throw new Vex.RERR('NoVoice', 'Tickable has no voice.');
     return this.voice;
   }
-  setVoice(voice) { this.voice = voice; }
-  getTuplet() { return this.tuplet; }
+  setVoice(voice) {
+    this.voice = voice;
+  }
+  getTuplet() {
+    return this.tuplet;
+  }
 
   /*
    * resetTuplet

@@ -44,6 +44,7 @@ VF.Test.Annotation = (function() {
         system.addStave({
           voices: [score.voice(score.notes('(F4 D5)/2').concat(score.beam(score.notes('(F4 F5)/8, (F4 F5)/8'))))],
         });
+        // eslint-disable-next-line no-loop-func
         ['hand,', 'and', 'me', 'pears', 'lead', 'the'].forEach((text, ix) => {
           const verse = Math.floor(ix / 3);
           const nid = 'n' + (ix % 3);

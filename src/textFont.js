@@ -11,10 +11,14 @@ import { PetalumaScriptTextMetrics } from './fonts/petalumascript_textmetrics';
 import { RobotoSlabTextMetrics } from './fonts/robotoslab_textmetrics';
 
 // To enable logging for this class. Set `Vex.Flow.TextFont.DEBUG` to `true`.
-function L(...args) { if (TextFont.DEBUG) Vex.L('Vex.Flow.TextFont', args); }
+function L(...args) {
+  if (TextFont.DEBUG) Vex.L('Vex.Flow.TextFont', args);
+}
 
-export class TextFont  {
-  static get CATEGORY() { return 'textFont'; }
+export class TextFont {
+  static get CATEGORY() {
+    return 'textFont';
+  }
 
   static get DEBUG() {
     return TextFont.debug;
@@ -71,8 +75,13 @@ export class TextFont  {
     const rv = [];
     TextFont.fontRegistry.forEach((font) => {
       if (!hash[font.family]) {
-        hash[font.family] = { family: font.family, description: font.description,
-          bold: font.bold, serifs: font.serifs, italic: font.italic };
+        hash[font.family] = {
+          family: font.family,
+          description: font.description,
+          bold: font.bold,
+          serifs: font.serifs,
+          italic: font.italic,
+        };
       } else {
         ['bold', 'italic', 'monospaced', 'serifs'].forEach((attr) => {
           if (font[attr]) {
