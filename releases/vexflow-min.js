@@ -29792,10 +29792,7 @@ var StaveNote = /*#__PURE__*/function (_StemmableNote) {
 
     _classCallCheck(this, StaveNote);
 
-    var timestamp = new Date().valueOf();
     _this = _super.call(this, noteStruct);
-    L('time one ', new Date().valueOf() - timestamp);
-    timestamp = new Date().valueOf();
 
     _this.setAttribute('type', 'StaveNote');
 
@@ -29805,8 +29802,6 @@ var StaveNote = /*#__PURE__*/function (_StemmableNote) {
     _this.beam = null; // Pull note rendering properties
 
     _this.glyph = _tables__WEBPACK_IMPORTED_MODULE_1__["Flow"].getGlyphProps(_this.duration, _this.noteType);
-    L('time two ', new Date().valueOf() - timestamp);
-    timestamp = new Date().valueOf();
 
     if (!_this.glyph) {
       throw new _vex__WEBPACK_IMPORTED_MODULE_0__["Vex"].RuntimeError('BadArguments', "Invalid note initialization data (No glyph found): ".concat(JSON.stringify(noteStruct)));
@@ -29845,7 +29840,6 @@ var StaveNote = /*#__PURE__*/function (_StemmableNote) {
 
     _this.buildFlag();
 
-    L('time three ', new Date().valueOf() - timestamp);
     return _this;
   }
 
