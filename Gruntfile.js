@@ -1,3 +1,4 @@
+/* global module, __dirname, process, require */
 const path = require('path');
 
 module.exports = (grunt) => {
@@ -17,16 +18,11 @@ module.exports = (grunt) => {
   const TARGET_MIN = 'vexflow-min.js';
 
   // Used for eslint and docco
-  const SOURCES = ['src/*.js', '!src/header.js'];
+  const SOURCES = ['src/*.ts', 'src/*.js', '!src/header.js'];
 
   // Take all test files in 'tests/' and build TARGET_TESTS
   const TARGET_TESTS = path.join(BUILD_DIR, 'vexflow-tests.js');
-  const TEST_SOURCES = [
-    'tests/vexflow_test_helpers.js',
-    'tests/mocks.js',
-    'tests/*_tests.js',
-    'tests/run.js',
-  ];
+  const TEST_SOURCES = ['tests/vexflow_test_helpers.js', 'tests/mocks.js', 'tests/*_tests.js', 'tests/run.js'];
 
   function webpackConfig(target, preset, mode) {
     return {
@@ -40,18 +36,32 @@ module.exports = (grunt) => {
         libraryExport: 'default',
       },
       devtool: 'source-map',
+      resolve: {
+        extensions: ['.ts', '.js', '.json']
+      },
       module: {
         rules: [
           {
             test: /\.js?$/,
             exclude: /(node_modules|bower_components)/,
-            use: [{
-              loader: 'babel-loader',
-              options: {
-                presets: [preset],
-                plugins: ['@babel/plugin-transform-object-assign'],
+            use: [
+              {
+                loader: 'babel-loader',
+                options: {
+                  presets: [preset],
+                  plugins: ['@babel/plugin-transform-object-assign'],
+                },
               },
-            }],
+            ],
+          },
+          {
+            test: /\.ts?$/,
+            exclude: /(node_modules|bower_components)/,
+            use: [
+              {
+                loader: 'ts-loader',
+              },
+            ],
           },
         ],
       },
@@ -180,6 +190,5 @@ module.exports = (grunt) => {
   });
 
   // Increment package version generate releases
-  grunt.registerTask('publish', 'Generate releases.',
-    ['bump', 'stage', 'gitcommit:releases', 'release', 'alldone']);
+  grunt.registerTask('publish', 'Generate releases.', ['bump', 'stage', 'gitcommit:releases', 'release', 'alldone']);
 };

@@ -3,7 +3,6 @@
 import { StaveNote } from './stavenote';
 import { Stem } from './stem';
 import { Flow } from './tables';
-import { NoteHead } from './notehead';
 
 export class GraceNote extends StaveNote {
   static get CATEGORY() {
@@ -48,72 +47,6 @@ export class GraceNote extends StaveNote {
     }
 
     return 0;
-  }
-
-  // Builds a `NoteHead` for each key in the note
-  buildNoteHeads() {
-    this.note_heads = [];
-    const stemDirection = this.getStemDirection();
-    const keys = this.getKeys();
-
-    let lastLine = null;
-    let lineDiff = null;
-    let displaced = false;
-
-    // Draw notes from bottom to top.
-
-    // For down-stem notes, we draw from top to bottom.
-    let start;
-    let end;
-    let step;
-    if (stemDirection === Stem.UP) {
-      start = 0;
-      end = keys.length;
-      step = 1;
-    } else if (stemDirection === Stem.DOWN) {
-      start = keys.length - 1;
-      end = -1;
-      step = -1;
-    }
-
-    for (let i = start; i !== end; i += step) {
-      const noteProps = this.keyProps[i];
-      const line = noteProps.line;
-
-      // Keep track of last line with a note head, so that consecutive heads
-      // are correctly displaced.
-      if (lastLine === null) {
-        lastLine = line;
-      } else {
-        lineDiff = Math.abs(lastLine - line);
-        if (lineDiff === 0 || lineDiff === 0.5) {
-          displaced = !displaced;
-        } else {
-          displaced = false;
-          this.use_default_head_x = true;
-        }
-      }
-      lastLine = line;
-      let noteheadScale = this.render_options.glyph_font_scale;
-      if (Flow.DEFAULT_FONT_STACK[0].name === 'Petaluma') {
-        noteheadScale = noteheadScale * 0.2;
-      }
-
-      const notehead = new NoteHead({
-        duration: this.duration,
-        note_type: this.noteType,
-        displaced,
-        stem_direction: stemDirection,
-        custom_glyph_code: noteProps.code,
-        glyph_font_scale: noteheadScale,
-        x_shift: noteProps.shift_right,
-        stem_up_x_offset: noteProps.stem_up_x_offset,
-        stem_down_x_offset: noteProps.stem_down_x_offset,
-        line: noteProps.line,
-      });
-
-      this.note_heads[i] = notehead;
-    }
   }
 
   getCategory() {

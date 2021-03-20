@@ -528,7 +528,7 @@ export class Formatter {
               let expectedDistance = 0;
 
               // eslint-disable-next-line
-              matchingVoices.forEach(v => {
+              matchingVoices.forEach((v) => {
                 const ticks = backVoices[v].getTicks().value();
                 if (ticks > maxTicks) {
                   backTickable = backVoices[v];
@@ -603,7 +603,8 @@ export class Formatter {
         }
 
         // Move center aligned tickables to middle
-        context.getCenterAlignedTickables().forEach(tickable => { // eslint-disable-line
+        context.getCenterAlignedTickables().forEach((tickable) => {
+          // eslint-disable-line
           tickable.center_x_shift = centerX - context.getX();
         });
       });

@@ -3,10 +3,10 @@
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
 
-VF.Test.Annotation = (function() {
+VF.Test.Annotation = (function () {
   var runTests = VF.Test.runTests;
   var Annotation = {
-    Start: function() {
+    Start: function () {
       QUnit.module('Annotation');
       runTests('Lyrics', Annotation.lyrics);
       runTests('Simple Annotation', Annotation.simple);
@@ -19,8 +19,10 @@ VF.Test.Annotation = (function() {
       runTests('Test Justification Annotation Stem Down', Annotation.justificationStemDown);
       runTests('TabNote Annotations', Annotation.tabNotes);
     },
-    lyrics: function(options) {
-      const id = (ii) => registry.getElementById(ii);
+    lyrics: function (options) {
+      const id = (ii) => {
+        return registry.getElementById(ii);
+      };
       let fontSize = 10;
       let x = 10;
       let width = 170;
@@ -44,7 +46,6 @@ VF.Test.Annotation = (function() {
         system.addStave({
           voices: [score.voice(score.notes('(F4 D5)/2').concat(score.beam(score.notes('(F4 F5)/8, (F4 F5)/8'))))],
         });
-        // eslint-disable-next-line no-loop-func
         ['hand,', 'and', 'me', 'pears', 'lead', 'the'].forEach((text, ix) => {
           const verse = Math.floor(ix / 3);
           const nid = 'n' + (ix % 3);
@@ -58,7 +59,7 @@ VF.Test.Annotation = (function() {
       }
       ok(true);
     },
-    simple: function(options, contextBuilder) {
+    simple: function (options, contextBuilder) {
       var ctx = contextBuilder(options.elementId, 500, 240);
       ctx.scale(1.5, 1.5);
       ctx.fillStyle = '#221';
@@ -96,7 +97,7 @@ VF.Test.Annotation = (function() {
       ok(true, 'Simple Annotation');
     },
 
-    standard: function(options, contextBuilder) {
+    standard: function (options, contextBuilder) {
       var ctx = contextBuilder(options.elementId, 500, 240);
       ctx.scale(1.5, 1.5);
       ctx.fillStyle = '#221';
@@ -119,7 +120,7 @@ VF.Test.Annotation = (function() {
       ok(true, 'Standard Notation Annotation');
     },
 
-    harmonic: function(options, contextBuilder) {
+    harmonic: function (options, contextBuilder) {
       var ctx = contextBuilder(options.elementId, 500, 240);
       ctx.scale(1.5, 1.5);
       ctx.fillStyle = '#221';
@@ -154,7 +155,7 @@ VF.Test.Annotation = (function() {
       ok(true, 'Simple Annotation');
     },
 
-    picking: function(options, contextBuilder) {
+    picking: function (options, contextBuilder) {
       var ctx = contextBuilder(options.elementId, 500, 240);
       ctx.scale(1.5, 1.5);
       ctx.setFillStyle('#221');
@@ -202,7 +203,7 @@ VF.Test.Annotation = (function() {
       ok(true, 'Fingerpicking');
     },
 
-    bottom: function(options, contextBuilder) {
+    bottom: function (options, contextBuilder) {
       var ctx = contextBuilder(options.elementId, 500, 240);
       ctx.scale(1.5, 1.5);
       ctx.fillStyle = '#221';
@@ -229,7 +230,7 @@ VF.Test.Annotation = (function() {
       ok(true, 'Bottom Annotation');
     },
 
-    bottomWithBeam: function(options, contextBuilder) {
+    bottomWithBeam: function (options, contextBuilder) {
       var ctx = contextBuilder(options.elementId, 500, 240);
       ctx.scale(1.5, 1.5);
       ctx.fillStyle = '#221';
@@ -266,7 +267,7 @@ VF.Test.Annotation = (function() {
       ok(true, 'Bottom Annotation with Beams');
     },
 
-    justificationStemUp: function(options, contextBuilder) {
+    justificationStemUp: function (options, contextBuilder) {
       var ctx = contextBuilder(options.elementId, 650, 950);
       ctx.scale(1.5, 1.5);
       ctx.fillStyle = '#221';
@@ -298,7 +299,7 @@ VF.Test.Annotation = (function() {
       ok(true, 'Test Justification Annotation');
     },
 
-    justificationStemDown: function(options, contextBuilder) {
+    justificationStemDown: function (options, contextBuilder) {
       var ctx = contextBuilder(options.elementId, 650, 1000);
       ctx.scale(1.5, 1.5);
       ctx.fillStyle = '#221';
@@ -338,7 +339,7 @@ VF.Test.Annotation = (function() {
       ok(true, 'Test Justification Annotation');
     },
 
-    tabNotes: function(options, contextBuilder) {
+    tabNotes: function (options, contextBuilder) {
       var ctx = new contextBuilder(options.elementId, 600, 200);
       ctx.font = '10pt Arial';
       var stave = new VF.TabStave(10, 10, 550);
@@ -376,20 +377,20 @@ VF.Test.Annotation = (function() {
         },
       ];
 
-      var notes = specs.map(function(noteSpec) {
+      var notes = specs.map(function (noteSpec) {
         var tabNote = new VF.TabNote(noteSpec);
         tabNote.render_options.draw_stem = true;
         return tabNote;
       });
 
-      var notes2 = specs.map(function(noteSpec) {
+      var notes2 = specs.map(function (noteSpec) {
         var tabNote = new VF.TabNote(noteSpec);
         tabNote.render_options.draw_stem = true;
         tabNote.setStemDirection(-1);
         return tabNote;
       });
 
-      var notes3 = specs.map(function(noteSpec) {
+      var notes3 = specs.map(function (noteSpec) {
         var tabNote = new VF.TabNote(noteSpec);
         return tabNote;
       });

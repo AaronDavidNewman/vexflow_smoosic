@@ -443,13 +443,8 @@ export class Factory {
     return connector;
   }
 
-  Formatter(params) {
-    params = setDefaults(params, {
-      options: {
-        iterations: 3,
-      },
-    });
-    return new Formatter(params);
+  Formatter(options) {
+    return new Formatter(options);
   }
 
   Tuplet(params) {

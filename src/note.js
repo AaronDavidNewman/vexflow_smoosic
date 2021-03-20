@@ -19,10 +19,6 @@ export class Note extends Tickable {
     return 'note';
   }
 
-  static get modifierPadding() {
-    return 10;
-  }
-
   // Debug helper. Displays various note metrics for the given
   // note.
   static plotMetrics(ctx, note, yPos) {
@@ -443,10 +439,6 @@ export class Note extends Tickable {
 
     const modLeftPx = this.modifierContext ? this.modifierContext.state.left_shift : 0;
     const modRightPx = this.modifierContext ? this.modifierContext.state.right_shift : 0;
-    /* if (this.modifiers.length) {
-      modLeftPx += Note.modifierPadding;
-      modRightPx += Note.modifierPadding;
-    }  */
     const width = this.getWidth();
     const glyphWidth = this.getGlyphWidth();
     const notePx =

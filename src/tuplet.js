@@ -158,11 +158,13 @@ export class Tuplet extends Element {
       'getNotesOccupied and setNotesOccupied instead',
     ].join('');
 
+    // eslint-disable-next-line
     if (console && console.warn) {
-      // eslint-disable-line no-console
-      console.warn(msg); // eslint-disable-line no-console
+      // eslint-disable-next-line
+      console.warn(msg);
     } else if (console) {
-      console.log(msg); // eslint-disable-line no-console
+      // eslint-disable-next-line
+      console.log(msg);
     }
   }
 
