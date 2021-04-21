@@ -5,7 +5,7 @@
 import { Vex } from './vex';
 import { Fraction } from './fraction';
 import { Glyph } from './glyph';
-import { DefaultFontStack } from './smufl';
+import { DefaultFontStack } from './font';
 
 const Flow = {
   STEM_WIDTH: 1.5,
@@ -30,6 +30,11 @@ const Flow = {
 
   /* Kerning (DEPRECATED) */
   IsKerned: true,
+  keyProperties: keyProperties,
+  integerToNote: integerToNote,
+  durationToTicks: durationToTicks,
+  durationToFraction: durationToFraction,
+  getGlyphProps: getGlyphProps,
 };
 
 Flow.clefProperties = (clef) => {
@@ -61,7 +66,7 @@ Flow.clefProperties.values = {
   The last argument, params, is a struct the currently can contain one option,
   octave_shift for clef ottavation (0 = default; 1 = 8va; -1 = 8vb, etc.).
 */
-Flow.keyProperties = (key, clef, params) => {
+function keyProperties(key, clef, params) {
   if (clef === undefined) {
     clef = 'treble';
   }
@@ -121,7 +126,7 @@ Flow.keyProperties = (key, clef, params) => {
     displaced: false,
     ...extraProps,
   };
-};
+}
 
 Flow.keyProperties.note_values = {
   C: { index: 0, int_val: 0, accidental: null },
@@ -176,7 +181,7 @@ Flow.keyProperties.note_values = {
   },
 };
 
-Flow.integerToNote = (integer) => {
+function integerToNote(integer) {
   if (typeof integer === 'undefined') {
     throw new Vex.RERR('BadArguments', 'Undefined integer for integerToNote');
   }
@@ -191,7 +196,7 @@ Flow.integerToNote = (integer) => {
   }
 
   return noteValue;
-};
+}
 
 Flow.integerToNote.table = {
   0: 'C',
@@ -693,13 +698,15 @@ Flow.sanitizeDuration = (duration) => {
 };
 
 // Convert the `duration` to an fraction
-Flow.durationToFraction = (duration) => new Fraction().parse(Flow.sanitizeDuration(duration));
+function durationToFraction(duration) {
+  return new Fraction().parse(Flow.sanitizeDuration(duration));
+}
 
 // Convert the `duration` to an number
 Flow.durationToNumber = (duration) => Flow.durationToFraction(duration).value();
 
 // Convert the `duration` to total ticks
-Flow.durationToTicks = (duration) => {
+function durationToTicks(duration) {
   duration = Flow.sanitizeDuration(duration);
 
   const ticks = Flow.durationToTicks.durations[duration];
@@ -708,7 +715,7 @@ Flow.durationToTicks = (duration) => {
   }
 
   return ticks;
-};
+}
 
 Flow.durationToTicks.durations = {
   '1/2': Flow.RESOLUTION * 2,
@@ -736,7 +743,7 @@ Flow.durationAliases = {
 };
 
 // Return a glyph given duration and type. The type can be a custom glyph code from customNoteHeads.
-Flow.getGlyphProps = (duration, type) => {
+function getGlyphProps(duration, type) {
   duration = Flow.sanitizeDuration(duration);
   type = type || 'n'; // default type is a regular note
 
@@ -768,7 +775,7 @@ Flow.getGlyphProps = (duration, type) => {
 
   // Merge duration props for 'duration' with the note head properties.
   return { ...code.common, ...glyphTypeProperties };
-};
+}
 
 Flow.getGlyphProps.validTypes = {
   n: { name: 'note' },

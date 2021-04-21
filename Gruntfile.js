@@ -1,5 +1,7 @@
 /* global module, __dirname, process, require */
+
 const path = require('path');
+const glob = require('glob');
 
 module.exports = (grunt) => {
   const BANNER = [
@@ -18,45 +20,36 @@ module.exports = (grunt) => {
   const TARGET_MIN = 'vexflow-min.js';
 
   // Used for eslint and docco
-  const SOURCES = ['src/*.ts', 'src/*.js', '!src/header.js'];
+  const SOURCES = ['./src/*.ts', './src/*.js', '!./src/header.js'];
 
-  // Take all test files in 'tests/' and build TARGET_TESTS
-  const TARGET_TESTS = path.join(BUILD_DIR, 'vexflow-tests.js');
-  const TEST_SOURCES = ['tests/vexflow_test_helpers.js', 'tests/mocks.js', 'tests/*_tests.js', 'tests/run.js'];
+  // Take all test files in 'tests/' and build TARGET_TESTS_BROWSER
+  const TARGET_TESTS_BROWSER = 'vexflow-tests.js';
+  const TEST_SOURCES = [
+    './tests/vexflow_test_helpers.js',
+    ...['./tests/mocks.js', './tests/*_tests.js', './tests/*_tests.ts'].flatMap((file) => glob.sync(file)),
+    './tests/run.js',
+  ];
 
-  function webpackConfig(target, preset, mode) {
+  function webpackConfig(target, moduleEntry, mode, libraryName) {
     return {
       mode: 'development',
       entry: MODULE_ENTRY,
       output: {
         path: BUILD_DIR,
         filename: target,
-        library: 'Vex',
+        library: libraryName,
         libraryTarget: 'umd',
         libraryExport: 'default',
       },
       devtool: 'source-map',
       resolve: {
-        extensions: ['.ts', '.js', '.json']
+        extensions: ['.ts', '.js', '.json'],
       },
       module: {
         rules: [
           {
-            test: /\.js?$/,
-            exclude: /(node_modules|bower_components)/,
-            use: [
-              {
-                loader: 'babel-loader',
-                options: {
-                  presets: [preset],
-                  plugins: ['@babel/plugin-transform-object-assign'],
-                },
-              },
-            ],
-          },
-          {
-            test: /\.ts?$/,
-            exclude: /(node_modules|bower_components)/,
+            test: /(\.ts?$|\.js?$)/,
+            exclude: /node_modules/,
             use: [
               {
                 loader: 'ts-loader',
@@ -68,8 +61,9 @@ module.exports = (grunt) => {
     };
   }
 
-  const webpackProd = webpackConfig(TARGET_MIN, ['@babel/preset-env'], 'production');
-  const webpackDev = webpackConfig(TARGET_RAW, ['@babel/preset-env'], 'development');
+  const webpackProd = webpackConfig(TARGET_MIN, MODULE_ENTRY, 'production', 'Vex');
+  const webpackDev = webpackConfig(TARGET_RAW, MODULE_ENTRY, 'development', 'Vex');
+  const webpackTest = webpackConfig(TARGET_TESTS_BROWSER, TEST_SOURCES, 'development', 'VFTests');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -80,12 +74,13 @@ module.exports = (grunt) => {
       },
       tests: {
         src: TEST_SOURCES,
-        dest: TARGET_TESTS,
+        dest: TARGET_TESTS_BROWSER,
       },
     },
     webpack: {
       build: webpackProd,
       buildDev: webpackDev,
+      buildTest: webpackTest,
       watch: {
         ...webpackDev,
         watch: true,
@@ -116,7 +111,7 @@ module.exports = (grunt) => {
             expand: true,
             dest: RELEASE_DIR,
             cwd: BUILD_DIR,
-            src: ['*.js', 'docs/**', '*.map'],
+            src: ['*.js', 'docs/**', 'typedocs/**', '*.map'],
           },
         ],
       },
@@ -127,6 +122,15 @@ module.exports = (grunt) => {
         layout: 'linear',
         output: 'build/docs',
       },
+    },
+    typedoc: {
+      build: {
+        options: {
+          out: 'build/typedocs',
+          name: 'vexflow',
+        },
+        src: ['./typedoc.ts']
+      }
     },
     gitcommit: {
       releases: {
@@ -168,6 +172,7 @@ module.exports = (grunt) => {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-docco');
+  grunt.loadNpmTasks('grunt-typedoc');
   grunt.loadNpmTasks('grunt-release');
   grunt.loadNpmTasks('grunt-bump');
   grunt.loadNpmTasks('grunt-git');
@@ -175,8 +180,14 @@ module.exports = (grunt) => {
   grunt.loadNpmTasks('grunt-webpack');
 
   // Default task(s).
-  grunt.registerTask('default', ['eslint', 'webpack:buildDev', 'webpack:build', 'concat', 'docco']);
-  grunt.registerTask('test', 'Run qunit tests.', ['webpack:buildDev', 'concat', 'qunit']);
+  grunt.registerTask('default', ['clean', 'eslint', 'webpack:build', 'webpack:buildDev', 'webpack:buildTest', 'docco', 'typedoc']);
+  grunt.registerTask('test', 'Run qunit tests.', [
+    'clean',
+    'webpack:build',
+    'webpack:buildDev',
+    'webpack:buildTest',
+    'qunit',
+  ]);
 
   // Release current build.
   grunt.registerTask('stage', 'Stage current bundles to releases/.', () => {

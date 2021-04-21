@@ -1,9 +1,8 @@
 
 
 @font-face {
-    font-family: 'Petaluma Script';
-    src: url('https://aarondavidnewman.github.io/Smoosic/build/styles/fonts/petalumascript-webfont.woff2') format('woff2'),
-         url('https://aarondavidnewman.github.io/Smoosic/build/styles/fonts/petalumascript-webfont.woff') format('woff');
+    font-family: 'petalumaScript';
+    src: url('../releases/fonts/petalumascript-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
