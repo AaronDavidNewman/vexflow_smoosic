@@ -32,8 +32,8 @@ module.exports = (grunt) => {
 
   function webpackConfig(target, moduleEntry, mode, libraryName) {
     return {
-      mode: 'development',
-      entry: MODULE_ENTRY,
+      mode: mode,
+      entry: moduleEntry,
       output: {
         path: BUILD_DIR,
         filename: target,
