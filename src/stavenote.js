@@ -884,7 +884,7 @@ export class StaveNote extends StemmableNote {
     let width = this.getGlyphWidth() + this.leftDisplacedHeadPx + this.rightDisplacedHeadPx;
 
     // For upward flagged notes, the width of the flag needs to be added
-    if (this.glyph.flag && this.beam === null && this.stem_direction === Stem.UP) {
+    if (this.glyph.flag && this.beam === undefined && this.stem_direction === Stem.UP) {
       width += this.getGlyphWidth();
       // TODO: Add flag width as a separate metric
     }
@@ -1080,7 +1080,7 @@ export class StaveNote extends StemmableNote {
       throw new Vex.RERR('NoCanvasContext', "Can't draw without a canvas context.");
     }
 
-    const shouldRenderFlag = beam === null;
+    const shouldRenderFlag = beam === undefined;
     const glyph = this.getGlyph();
 
     if (glyph.flag && shouldRenderFlag) {

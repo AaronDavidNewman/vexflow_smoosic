@@ -6,27 +6,10 @@
 
 import { Vex } from './vex';
 import { Flow } from './tables';
-import { Stem } from './stem';
+import { Stem, StemOptions } from './stem';
 import { Glyph } from './glyph';
 import { Note, NoteStruct } from './note';
 import { GlyphProps } from './glyph';
-
-//** TODO: Move to Stem.ts */
-export interface StemStruct {
-  stem_down_y_base_offset: number;
-  stem_up_y_base_offset: number;
-  stem_down_y_offset: number;
-  stem_up_y_offset: number;
-  stemletHeight: number;
-  isStemlet: boolean;
-  hide: boolean;
-  stem_direction: number;
-  stem_extension: number;
-  y_bottom: number;
-  y_top: number;
-  x_end: number;
-  x_begin: number;
-}
 
 export abstract class StemmableNote extends Note {
   stem_direction?: number;
@@ -99,19 +82,19 @@ export abstract class StemmableNote extends Note {
     // if note is flagged, cannot shorten beam
     switch (this.duration) {
       case '8':
-        if (this.beam == null) length = 35;
+        if (this.beam == undefined) length = 35;
         break;
       case '16':
-        length = this.beam == null ? 35 : 25;
+        length = this.beam == undefined ? 35 : 25;
         break;
       case '32':
-        length = this.beam == null ? 45 : 35;
+        length = this.beam == undefined ? 45 : 35;
         break;
       case '64':
-        length = this.beam == null ? 50 : 40;
+        length = this.beam == undefined ? 50 : 40;
         break;
       case '128':
-        length = this.beam == null ? 55 : 45;
+        length = this.beam == undefined ? 55 : 45;
         break;
       default:
         break;
@@ -250,11 +233,11 @@ export abstract class StemmableNote extends Note {
   }
 
   /** Renders the stem onto the canvas. */
-  drawStem(stem_struct: StemStruct): void {
+  drawStem(stemOptions: StemOptions): void {
     this.checkContext();
     this.setRendered();
 
-    this.setStem(new Stem(stem_struct));
+    this.setStem(new Stem(stemOptions));
     this.stem?.setContext(this.getContext()).draw();
   }
 }
