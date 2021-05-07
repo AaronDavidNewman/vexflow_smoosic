@@ -2203,9 +2203,9 @@ module.exports = g;
 
 /***/ }),
 
-/***/ "./src/boundingbox.js":
+/***/ "./src/boundingbox.ts":
 /*!****************************!*\
-  !*** ./src/boundingbox.js ***!
+  !*** ./src/boundingbox.ts ***!
   \****************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -2260,6 +2260,7 @@ var BoundingBox = /** @class */ (function () {
     BoundingBox.prototype.move = function (x, y) {
         this.x += x;
         this.y += y;
+        return this;
     };
     BoundingBox.prototype.clone = function () {
         return BoundingBox.copy(this);
@@ -2295,9 +2296,9 @@ exports.BoundingBox = BoundingBox;
 
 /***/ }),
 
-/***/ "./src/boundingboxcomputation.js":
+/***/ "./src/boundingboxcomputation.ts":
 /*!***************************************!*\
-  !*** ./src/boundingboxcomputation.js ***!
+  !*** ./src/boundingboxcomputation.ts ***!
   \***************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -2325,6 +2326,12 @@ var BoundingBoxComputation = /** @class */ (function () {
         this.addPoint(x1, y1);
         this.addPoint(x2, y2);
     }
+    BoundingBoxComputation.prototype.getX1 = function () {
+        return this.x1;
+    };
+    BoundingBoxComputation.prototype.getY1 = function () {
+        return this.y1;
+    };
     BoundingBoxComputation.prototype.width = function () {
         return this.x2 - this.x1;
     };
@@ -2335,7 +2342,7 @@ var BoundingBoxComputation = /** @class */ (function () {
         // do nothing
     };
     BoundingBoxComputation.prototype.addPoint = function (x, y) {
-        if (x != null) {
+        if (x != undefined) {
             if (isNaN(this.x1) || isNaN(this.x2)) {
                 this.x1 = x;
                 this.x2 = x;
@@ -2345,7 +2352,7 @@ var BoundingBoxComputation = /** @class */ (function () {
             if (x > this.x2)
                 this.x2 = x;
         }
-        if (y != null) {
+        if (y != undefined) {
             if (isNaN(this.y1) || isNaN(this.y2)) {
                 this.y1 = y;
                 this.y2 = y;
@@ -2357,10 +2364,10 @@ var BoundingBoxComputation = /** @class */ (function () {
         }
     };
     BoundingBoxComputation.prototype.addX = function (x) {
-        this.addPoint(x, null);
+        this.addPoint(x, undefined);
     };
     BoundingBoxComputation.prototype.addY = function (y) {
-        this.addPoint(null, y);
+        this.addPoint(undefined, y);
     };
     BoundingBoxComputation.prototype.addQuadraticCurve = function (p0x, p0y, p1x, p1y, p2x, p2y) {
         var cp1x = p0x + (2 / 3) * (p1x - p0x); // CP1 = QP0 + 2/3 *(QP1-QP0)
@@ -2445,7 +2452,7 @@ exports.BoundingBoxComputation = BoundingBoxComputation;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Element = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
-var registry_1 = __webpack_require__(/*! ./registry */ "./src/registry.js");
+var registry_1 = __webpack_require__(/*! ./registry */ "./src/registry.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 /**
  * Element implements a generic base class for VexFlow, with implementations
@@ -2455,9 +2462,10 @@ var Element = /** @class */ (function () {
     /** Constructor. */
     function Element(_a) {
         var _b = _a === void 0 ? {} : _a, type = _b.type;
+        var _c;
         this.attrs = {
             id: Element.newID(),
-            el: null,
+            el: undefined,
             type: type || 'Base',
             classes: {},
         };
@@ -2465,9 +2473,7 @@ var Element = /** @class */ (function () {
         this.fontStack = tables_1.Flow.DEFAULT_FONT_STACK;
         this.musicFont = tables_1.Flow.DEFAULT_FONT_STACK[0];
         // If a default registry exist, then register with it right away.
-        if (registry_1.Registry.getDefaultRegistry()) {
-            registry_1.Registry.getDefaultRegistry().register(this);
-        }
+        (_c = registry_1.Registry.getDefaultRegistry()) === null || _c === void 0 ? void 0 : _c.register(this);
     }
     Element.newID = function () {
         return "auto" + Element.ID++;
@@ -2539,10 +2545,10 @@ var Element = /** @class */ (function () {
         this.attrs.classes[className] = true;
         if (this.registry) {
             this.registry.onUpdate({
-                id: this.getAttribute('id'),
+                id: this.attrs.id,
                 name: 'class',
                 value: className,
-                oldValue: null,
+                oldValue: undefined,
             });
         }
         return this;
@@ -2552,9 +2558,9 @@ var Element = /** @class */ (function () {
         delete this.attrs.classes[className];
         if (this.registry) {
             this.registry.onUpdate({
-                id: this.getAttribute('id'),
+                id: this.attrs.id,
                 name: 'class',
-                value: null,
+                value: undefined,
                 oldValue: className,
             });
         }
@@ -2580,17 +2586,19 @@ var Element = /** @class */ (function () {
         return this.attrs;
     };
     /** Returns an attribute. */
+    // eslint-disable-next-line
     Element.prototype.getAttribute = function (name) {
         return this.attrs[name];
     };
     /** Sets an attribute. */
+    // eslint-disable-next-line
     Element.prototype.setAttribute = function (name, value) {
-        var id = this.attrs.id;
+        var oldID = this.attrs.id;
         var oldValue = this.attrs[name];
         this.attrs[name] = value;
         if (this.registry) {
             // Register with old id to support id changes.
-            this.registry.onUpdate({ id: id, name: name, value: value, oldValue: oldValue });
+            this.registry.onUpdate({ id: oldID, name: name, value: value, oldValue: oldValue });
         }
         return this;
     };
@@ -5935,7 +5943,7 @@ exports.BravuraMetrics = {
                         line: -0.2,
                         shiftX: 8,
                     },
-                }
+                },
             },
             '8vb': {
                 smuflCode: 'timeSig8',
@@ -5948,7 +5956,7 @@ exports.BravuraMetrics = {
                     bass: {
                         line: 3.5,
                         shiftX: 1,
-                    }
+                    },
                 },
                 small: {
                     point: 16,
@@ -5959,9 +5967,9 @@ exports.BravuraMetrics = {
                     bass: {
                         line: 3.1,
                         shiftX: 0.5,
-                    }
-                }
-            }
+                    },
+                },
+            },
         },
         // These may no longer be necessary
         lineCount: {
@@ -5970,15 +5978,15 @@ exports.BravuraMetrics = {
             '6': { point: 32, shiftY: 1 },
             '5': { point: 30, shiftY: -6 },
             '4': { point: 23, shiftY: -12 },
-        }
+        },
     },
     pedalMarking: {
         up: {
-            point: 40
+            point: 40,
         },
         down: {
-            point: 34
-        }
+            point: 34,
+        },
     },
     // These are for numeric digits, such as in time signatures
     digits: {
@@ -5995,7 +6003,7 @@ exports.BravuraMetrics = {
         },
         articStaccatissimoBelow: {
             padding: 2,
-        }
+        },
     },
     tremolo: {
         default: {
@@ -6013,9 +6021,10 @@ exports.BravuraMetrics = {
             offsetYStemDown: 5,
             offsetXStemUp: 7,
             offsetXStemDown: 1,
-        }
+        },
     },
     stem: {
+        heightAdjustmentForFlag: -3,
         // These are stem (Y) offsets to the note heads. To shift the
         // noteheads (x-position) themselves, see glyphs.notehead.custom.
         noteHead: {
@@ -6043,14 +6052,19 @@ exports.BravuraMetrics = {
                 offsetYBaseStemUp: -4,
                 offsetYBaseStemDown: 4,
             },
+            noteheadHalf: {
+                offsetYBaseStemUp: -2.55,
+                offsetYBaseStemDown: 2.65,
+            },
             noteheadBlack: {
+                offsetYBaseStemUp: -2,
                 offsetYBaseStemDown: 2,
             },
             noteheadSquareWhite: {
                 offsetYBaseStemDown: -5,
                 offsetYBaseStemUp: 5,
-            }
-        }
+            },
+        },
     },
     // Values under here are used by the Glyph class to reposition and rescale
     // glyphs based on their category. This should be the first stop for
@@ -6077,16 +6091,16 @@ exports.BravuraMetrics = {
             },
             staveTempo: {
                 shiftX: -1,
-            }
+            },
         },
         clef: {
             gClef: {
                 default: { scale: 1.1, shiftY: 1 },
-                small: { shiftY: 1.5 }
+                small: { shiftY: 1.5 },
             },
             fClef: {
-                default: { shiftY: -0.5 }
-            }
+                default: { shiftY: -0.5 },
+            },
         },
         ornament: {
             ornamentTurn: {
@@ -6104,7 +6118,7 @@ exports.BravuraMetrics = {
                 wiggly: {
                     shiftX: -1,
                     shiftY: 1,
-                }
+                },
             },
             arrowheadBlackUp: {
                 straight: {
@@ -6113,8 +6127,8 @@ exports.BravuraMetrics = {
                 wiggly: {
                     shiftX: -1,
                     shiftY: 1,
-                }
-            }
+                },
+            },
         },
         textNote: {
             point: 34,
@@ -6150,7 +6164,7 @@ exports.BravuraMetrics = {
             },
             ornamentShortTrill: {
                 shiftX: -8,
-            }
+            },
         },
         noteHead: {
             standard: {
@@ -6162,45 +6176,45 @@ exports.BravuraMetrics = {
                 },
             },
             custom: {
-                'noteheadCircleXStemUp': {
+                noteheadCircleXStemUp: {
                     shiftX: 1.5,
                 },
-                'noteheadCircleXStemDown': {
+                noteheadCircleXStemDown: {
                     shiftX: 0.25,
                 },
-                'noteheadDiamondHalfStemUp': {
+                noteheadDiamondHalfStemUp: {
                     shiftX: 1.5,
                 },
-                'noteheadDiamondBlackStemUp': {
+                noteheadDiamondBlackStemUp: {
                     shiftX: 1.5,
                 },
-                'noteheadDiamondWholeStemUp': {
+                noteheadDiamondWholeStemUp: {
                     shiftX: 1,
                 },
-                'noteheadXHalfStemUp': {
+                noteheadXHalfStemUp: {
                     shiftX: -2,
                 },
-                'noteheadXHalfStemDown': {
+                noteheadXHalfStemDown: {
                     shiftX: 1,
                 },
-                'noteheadXWholeStemUp': {
+                noteheadXWholeStemUp: {
                     shiftX: -4,
                 },
-                'noteheadXWholeStemDown': {
+                noteheadXWholeStemDown: {
                     shiftX: 1,
                 },
-                'noteheadSquareWhiteStemDown': {
+                noteheadSquareWhiteStemDown: {
                     shiftX: 0.25,
                 },
-                'noteheadSquareWhiteStemUp': {
+                noteheadSquareWhiteStemUp: {
                     shiftX: -0.75,
                 },
-                'noteheadSquareBlackStemUp': {
+                noteheadSquareBlackStemUp: {
                     shiftX: -0.75,
                 },
-                'noteheadTriangleUpWholeStemUp': {
+                noteheadTriangleUpWholeStemUp: {
                     shiftX: -0.75,
-                }
+                },
             },
         },
         chordSymbol: {
@@ -6211,92 +6225,92 @@ exports.BravuraMetrics = {
                 lowerKerningText: ['D', 'F', 'P', 'T', 'V', 'Y'],
                 upperKerningText: ['A', 'L'],
                 spacing: 100,
-                superSubRatio: 0.66
+                superSubRatio: 0.66,
             },
             csymDiminished: {
                 scale: 0.8,
                 leftSideBearing: -32,
                 advanceWidth: 506,
-                yOffset: 0
+                yOffset: 0,
             },
             csymHalfDiminished: {
                 scale: 0.8,
                 leftSideBearing: -32,
                 advanceWidth: 506,
-                yOffset: 0
+                yOffset: 0,
             },
             csymAugmented: {
                 scale: 1,
                 leftSideBearing: 0,
                 advanceWidth: 530,
-                yOffset: 0
+                yOffset: 0,
             },
             csymParensLeftTall: {
                 scale: 0.8,
                 leftSideBearing: -20,
                 advanceWidth: 184,
-                yOffset: 250
+                yOffset: 250,
             },
             csymParensRightTall: {
                 scale: 0.8,
                 leftSideBearing: 0,
                 advanceWidth: 189,
-                yOffset: 250
+                yOffset: 250,
             },
             csymBracketLeftTall: {
                 scale: 0.8,
                 leftSideBearing: 0,
                 advanceWidth: 328,
-                yOffset: 0
+                yOffset: 0,
             },
             csymBracketRightTall: {
                 scale: 0.8,
                 leftSideBearing: 1,
                 advanceWidth: 600,
-                yOffset: 0
+                yOffset: 0,
             },
             csymParensLeftVeryTall: {
                 scale: 0.9,
                 leftSideBearing: 50,
                 advanceWidth: 121,
-                yOffset: 350
+                yOffset: 350,
             },
             csymParensRightVeryTall: {
                 scale: 0.9,
                 leftSideBearing: 0,
                 advanceWidth: 111,
-                yOffset: 350
+                yOffset: 350,
             },
             csymDiagonalArrangementSlash: {
                 scale: 0.6,
                 leftSideBearing: -1,
                 advanceWidth: 990,
-                yOffset: 0
+                yOffset: 0,
             },
             csymMinor: {
                 scale: 0.8,
                 leftSideBearing: 0,
                 advanceWidth: 482,
-                yOffset: 0
+                yOffset: 0,
             },
             csymMajorSeventh: {
                 scale: 0.9,
                 leftSideBearing: 200,
                 yOffset: 0,
-                advanceWidth: 600
+                advanceWidth: 600,
             },
             accidentalSharp: {
                 scale: 0.75,
                 leftSideBearing: 20,
                 advanceWidth: 250,
-                yOffset: -302
+                yOffset: -302,
             },
             accidentalFlat: {
                 scale: 0.9,
                 leftSideBearing: -20,
                 advanceWidth: 226,
-                yOffset: -184
-            }
+                yOffset: -184,
+            },
         },
         jazzOrnaments: {
             brassScoop: {
@@ -6304,80 +6318,80 @@ exports.BravuraMetrics = {
                 xOffset: -12,
                 yOffset: 0,
                 stemUpYOffset: 0,
-                reportedWidth: 10
+                reportedWidth: 10,
             },
             brassDoitMedium: {
                 scale: 1.0,
                 xOffset: 16,
                 yOffset: 0,
                 stemUpYOffset: 0,
-                reportedWidth: 15
+                reportedWidth: 15,
             },
             brassFallLipShort: {
                 scale: 1.0,
                 xOffset: 16,
                 yOffset: 0,
                 stemUpYOffset: 0,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassLiftMedium: {
                 scale: 1.0,
                 xOffset: 16,
                 yOffset: 5,
                 stemUpYOffset: 0,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassFallRoughMedium: {
                 scale: 1.0,
                 xOffset: 16,
                 yOffset: 28,
                 stemUpYOffset: 0,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassBend: {
                 scale: 1.0,
                 xOffset: 2,
                 yOffset: -8,
                 stemUpYOffset: 25,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassMuteClosed: {
                 scale: 1.0,
                 xOffset: 3,
                 yOffset: -8,
                 stemUpYOffset: 25,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassMuteOpen: {
                 scale: 1.0,
                 xOffset: 3,
                 yOffset: -7,
                 stemUpYOffset: 25,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassFlip: {
                 scale: 1.0,
                 xOffset: 10,
                 yOffset: -4,
                 stemUpYOffset: 0,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassJazzTurn: {
                 scale: 1.0,
                 xOffset: 6,
                 yOffset: -4,
                 stemUpYOffset: 0,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassSmear: {
                 scale: 1.0,
                 xOffset: 10,
                 yOffset: -4,
                 stemUpYOffset: 0,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
-        }
-    }
+        },
+    },
 };
 
 
@@ -7425,11 +7439,11 @@ exports.GonvilleMetrics = {
         padding: 12,
     },
     clef: {
-        'default': {
+        default: {
             point: 40,
-            width: 26
+            width: 26,
         },
-        'small': {
+        small: {
             point: 32,
             width: 20,
         },
@@ -7449,7 +7463,7 @@ exports.GonvilleMetrics = {
                         line: -0.4,
                         shiftX: 8,
                     },
-                }
+                },
             },
             '8vb': {
                 smuflCode: 'timeSig8',
@@ -7462,7 +7476,7 @@ exports.GonvilleMetrics = {
                     bass: {
                         line: 4,
                         shiftX: 1,
-                    }
+                    },
                 },
                 small: {
                     point: 18,
@@ -7473,9 +7487,9 @@ exports.GonvilleMetrics = {
                     bass: {
                         line: 3.5,
                         shiftX: 0.5,
-                    }
-                }
-            }
+                    },
+                },
+            },
         },
         // May not need these anymore
         lineCount: {
@@ -7484,15 +7498,15 @@ exports.GonvilleMetrics = {
             '6': { point: 40, shiftY: 1 },
             '5': { point: 30, shiftY: -6 },
             '4': { point: 23, shiftY: -12 },
-        }
+        },
     },
     pedalMarking: {
         up: {
-            point: 40
+            point: 40,
         },
         down: {
-            point: 40
-        }
+            point: 40,
+        },
     },
     tremolo: {
         default: {
@@ -7510,7 +7524,7 @@ exports.GonvilleMetrics = {
             offsetYStemDown: -21,
             offsetXStemUp: 6,
             offsetXStemDown: -2,
-        }
+        },
     },
     // These are for numeric digits, such as in time signatures
     digits: {
@@ -7518,6 +7532,7 @@ exports.GonvilleMetrics = {
         tupletPoint: 28,
     },
     stem: {
+        heightAdjustmentForFlag: -3,
         // These are stem (Y) offsets to the note heads. To shift the
         // noteheads (x-position) themselves, see glyphs.notehead.custom.
         noteHead: {
@@ -7545,36 +7560,59 @@ exports.GonvilleMetrics = {
                 offsetYBaseStemUp: -4,
                 offsetYBaseStemDown: 4,
             },
+            noteheadHalf: {
+                offsetYBaseStemUp: -1.5,
+                offsetYBaseStemDown: 1.5,
+            },
             noteheadBlack: {
-                offsetYBaseStemDown: 2,
+                offsetYBaseStemUp: -1.5,
+                offsetYBaseStemDown: 1.5,
             },
             noteheadSquareWhite: {
                 offsetYBaseStemDown: -5,
                 offsetYBaseStemUp: 5,
-            }
-        }
+            },
+        },
     },
     glyphs: {
+        flag: {
+            shiftX: -0.08,
+            flag8thDown: {
+                shiftX: -0.16,
+            },
+            flag16thDown: {
+                shiftX: -0.16,
+            },
+            flag32ndDown: {
+                shiftX: -0.16,
+            },
+            flag64thDown: {
+                shiftX: -0.16,
+            },
+            flag128thDown: {
+                shiftX: -0.16,
+            },
+        },
         textNote: {
             point: 40,
             default: {},
             ornamentTrill: {
                 shiftX: -5,
                 shiftY: 4,
-            }
+            },
         },
         noteHead: {
             custom: {
-                'noteheadDiamondWholeStemUp': {
+                noteheadDiamondWholeStemUp: {
                     shiftX: -6,
                 },
-                'noteheadCircleXStemUp': {
+                noteheadCircleXStemUp: {
                     shiftX: -1.5,
                 },
-                'noteheadXWholeStemUp': {
+                noteheadXWholeStemUp: {
                     shiftX: -5,
                 },
-                'noteheadTriangleUpWholeStemUp': {
+                noteheadTriangleUpWholeStemUp: {
                     shiftX: -6,
                 },
             },
@@ -7587,92 +7625,92 @@ exports.GonvilleMetrics = {
                 lowerKerningText: ['D', 'F', 'P', 'T', 'V', 'Y'],
                 upperKerningText: ['A', 'L'],
                 spacing: 100,
-                superSubRatio: 0.66
+                superSubRatio: 0.66,
             },
             csymDiminished: {
                 scale: 0.8,
                 leftSideBearing: 0,
                 advanceWidth: 506,
-                yOffset: 0
+                yOffset: 0,
             },
             csymHalfDiminished: {
                 scale: 0.8,
                 leftSideBearing: -32,
                 advanceWidth: 506,
-                yOffset: 0
+                yOffset: 0,
             },
             csymAugmented: {
                 scale: 1,
                 leftSideBearing: 0,
                 advanceWidth: 530,
-                yOffset: 0
+                yOffset: 0,
             },
             csymParensLeftTall: {
                 scale: 0.8,
                 leftSideBearing: 0,
                 advanceWidth: 155,
-                yOffset: 250
+                yOffset: 250,
             },
             csymParensRightTall: {
                 scale: 0.8,
                 leftSideBearing: -40,
                 advanceWidth: 189,
-                yOffset: 250
+                yOffset: 250,
             },
             csymBracketLeftTall: {
                 scale: 0.8,
                 leftSideBearing: 0,
                 advanceWidth: 328,
-                yOffset: 0
+                yOffset: 0,
             },
             csymBracketRightTall: {
                 scale: 0.8,
                 leftSideBearing: 1,
                 advanceWidth: 600,
-                yOffset: 0
+                yOffset: 0,
             },
             csymParensLeftVeryTall: {
                 scale: 0.9,
                 leftSideBearing: 0,
                 advanceWidth: 121,
-                yOffset: 350
+                yOffset: 350,
             },
             csymParensRightVeryTall: {
                 scale: 0.9,
                 leftSideBearing: 50,
                 advanceWidth: 111,
-                yOffset: 350
+                yOffset: 350,
             },
             csymDiagonalArrangementSlash: {
                 scale: 0.6,
                 leftSideBearing: -1,
                 advanceWidth: 990,
-                yOffset: 0
+                yOffset: 0,
             },
             csymMinor: {
                 scale: 0.8,
                 leftSideBearing: 0,
                 advanceWidth: 482,
-                yOffset: 0
+                yOffset: 0,
             },
             csymMajorSeventh: {
                 scale: 0.9,
                 leftSideBearing: 200,
                 yOffset: 0,
-                advanceWidth: 600
+                advanceWidth: 600,
             },
             accidentalSharp: {
                 scale: 0.75,
                 leftSideBearing: 40,
                 advanceWidth: 250,
-                yOffset: -402
+                yOffset: -402,
             },
             accidentalFlat: {
                 scale: 0.95,
                 leftSideBearing: -50,
                 advanceWidth: 208,
-                yOffset: -184
-            }
+                yOffset: -184,
+            },
         },
         jazzOrnaments: {
             brassScoop: {
@@ -7680,80 +7718,80 @@ exports.GonvilleMetrics = {
                 xOffset: -12,
                 yOffset: 0,
                 stemUpYOffset: 0,
-                reportedWidth: 10
+                reportedWidth: 10,
             },
             brassDoitMedium: {
                 scale: 1.0,
                 xOffset: 16,
                 yOffset: 0,
                 stemUpYOffset: 0,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassFallLipShort: {
                 scale: 1.0,
                 xOffset: 17,
                 yOffset: 0,
                 stemUpYOffset: 0,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassLiftMedium: {
                 scale: 1.0,
                 xOffset: 16,
                 yOffset: 5,
                 stemUpYOffset: 0,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassFallRoughMedium: {
                 scale: 1.0,
                 xOffset: 16,
                 yOffset: 28,
                 stemUpYOffset: 0,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassBend: {
                 scale: 1.0,
                 xOffset: 2,
                 yOffset: -8,
                 stemUpYOffset: 24,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassMuteClosed: {
                 scale: 1.0,
                 xOffset: 3,
                 yOffset: -9,
                 stemUpYOffset: 24,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassMuteOpen: {
                 scale: 1.0,
                 xOffset: 3,
                 yOffset: -7,
                 stemUpYOffset: 25,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassFlip: {
                 scale: 1.0,
                 xOffset: 10,
                 yOffset: -4,
                 stemUpYOffset: 0,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassJazzTurn: {
                 scale: 1.0,
                 xOffset: 6,
                 yOffset: -4,
                 stemUpYOffset: 0,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassSmear: {
                 scale: 1.0,
                 xOffset: 10,
                 yOffset: -4,
                 stemUpYOffset: 0,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
-        }
-    }
+        },
+    },
 };
 
 
@@ -12559,7 +12597,7 @@ exports.PetalumaMetrics = {
                         line: -0.2,
                         shiftX: 8,
                     },
-                }
+                },
             },
             '8vb': {
                 smuflCode: 'timeSig8',
@@ -12572,7 +12610,7 @@ exports.PetalumaMetrics = {
                     bass: {
                         line: 3.5,
                         shiftX: 1,
-                    }
+                    },
                 },
                 small: {
                     point: 16,
@@ -12583,9 +12621,9 @@ exports.PetalumaMetrics = {
                     bass: {
                         line: 3.1,
                         shiftX: 0.5,
-                    }
-                }
-            }
+                    },
+                },
+            },
         },
         // These may no longer be necessary
         lineCount: {
@@ -12594,15 +12632,15 @@ exports.PetalumaMetrics = {
             '6': { point: 32, shiftY: 1 },
             '5': { point: 30, shiftY: -6 },
             '4': { point: 23, shiftY: -12 },
-        }
+        },
     },
     pedalMarking: {
         up: {
-            point: 40
+            point: 40,
         },
         down: {
-            point: 34
-        }
+            point: 34,
+        },
     },
     // These are for numeric digits, such as in time signatures
     digits: {
@@ -12619,7 +12657,7 @@ exports.PetalumaMetrics = {
         },
         articStaccatissimoBelow: {
             padding: 2,
-        }
+        },
     },
     tremolo: {
         default: {
@@ -12637,7 +12675,7 @@ exports.PetalumaMetrics = {
             offsetYStemDown: 5,
             offsetXStemUp: 7,
             offsetXStemDown: 1,
-        }
+        },
     },
     noteHead: {
         displaced: {
@@ -12645,6 +12683,7 @@ exports.PetalumaMetrics = {
         },
     },
     stem: {
+        heightAdjustmentForFlag: -3,
         // These are stem (Y) offsets to the note heads. To shift the
         // noteheads (x-position) themselves, see glyphs.notehead.custom.
         noteHead: {
@@ -12672,6 +12711,10 @@ exports.PetalumaMetrics = {
                 offsetYBaseStemUp: -4,
                 offsetYBaseStemDown: 4,
             },
+            noteheadHalf: {
+                offsetYBaseStemDown: 1.8,
+                offsetYBaseStemUp: -1.8,
+            },
             noteheadBlack: {
                 offsetYBaseStemDown: 2,
                 offsetYBaseStemUp: -2,
@@ -12679,8 +12722,8 @@ exports.PetalumaMetrics = {
             noteheadSquareWhite: {
                 offsetYBaseStemDown: -5,
                 offsetYBaseStemUp: 5,
-            }
-        }
+            },
+        },
     },
     // Values under here are used by the Glyph class to reposition and rescale
     // glyphs based on their category. This should be the first stop for
@@ -12701,22 +12744,46 @@ exports.PetalumaMetrics = {
             shiftX: -7,
         },
         flag: {
-            shiftX: -0.75,
+            shiftX: -0.77,
+            flag16thUp: {
+                shiftX: -0.75,
+            },
+            flag32ndUp: {
+                shiftX: -0.85,
+            },
+            flag64thUp: {
+                shiftX: -1.55,
+            },
+            flag128thUp: {
+                shiftX: -1.3,
+            },
+            flag16thDown: {
+                shiftX: -0.75,
+            },
+            flag32ndDown: {
+                shiftX: -0.76,
+            },
+            flag64thDown: {
+                shiftX: -1.5,
+            },
+            flag128thDown: {
+                shiftX: -1.2,
+            },
             tabStem: {
                 shiftX: -1.75,
             },
             staveTempo: {
                 shiftX: -1,
-            }
+            },
         },
         clef: {
             gClef: {
                 default: { scale: 1.1, shiftY: 1 },
-                small: { shiftY: 1.5 }
+                small: { shiftY: 1.5 },
             },
             fClef: {
-                default: { shiftY: -0.5 }
-            }
+                default: { shiftY: -0.5 },
+            },
         },
         ornament: {
             ornamentTurn: {
@@ -12734,7 +12801,7 @@ exports.PetalumaMetrics = {
                 wiggly: {
                     shiftX: -1,
                     shiftY: 1,
-                }
+                },
             },
             arrowheadBlackUp: {
                 straight: {
@@ -12743,8 +12810,8 @@ exports.PetalumaMetrics = {
                 wiggly: {
                     shiftX: -1,
                     shiftY: 1,
-                }
-            }
+                },
+            },
         },
         textNote: {
             point: 34,
@@ -12774,19 +12841,19 @@ exports.PetalumaMetrics = {
             },
             ornamentShortTrill: {
                 shiftX: -8,
-            }
+            },
         },
         noteHead: {
             standard: {
                 noteheadBlackStemUp: {
-                    shiftX: 1.5,
+                    shiftX: 1.625,
                     point: 34,
                 },
                 noteheadBlackStemDown: {
                     point: 34,
                 },
                 noteheadHalfStemUp: {
-                    shiftX: 1,
+                    shiftX: 1.725,
                     point: 34,
                 },
                 noteheadHalfStemDown: {
@@ -12807,48 +12874,48 @@ exports.PetalumaMetrics = {
                 },
             },
             custom: {
-                'noteheadCircleXStemUp': {
+                noteheadCircleXStemUp: {
                     shiftX: -1,
                 },
-                'noteheadCircleXStemDown': {
+                noteheadCircleXStemDown: {
                     shiftX: 0.25,
                 },
-                'noteheadDiamondHalfStemUp': {
+                noteheadDiamondHalfStemUp: {
                     shiftX: 1.5,
                 },
-                'noteheadDiamondBlackStemUp': {
+                noteheadDiamondBlackStemUp: {
                     shiftX: 1.5,
                 },
-                'noteheadDiamondWholeStemUp': {
+                noteheadDiamondWholeStemUp: {
                     shiftX: 1,
                 },
-                'noteheadXBlackStemUp': {
+                noteheadXBlackStemUp: {
                     shiftX: 1,
                 },
-                'noteheadXHalfStemUp': {
+                noteheadXHalfStemUp: {
                     shiftX: -3,
                 },
-                'noteheadXHalfStemDown': {
+                noteheadXHalfStemDown: {
                     shiftX: 1,
                 },
-                'noteheadXWholeStemUp': {
+                noteheadXWholeStemUp: {
                     shiftX: -7,
                 },
-                'noteheadXWholeStemDown': {
+                noteheadXWholeStemDown: {
                     shiftX: 1,
                 },
-                'noteheadSquareWhiteStemDown': {
+                noteheadSquareWhiteStemDown: {
                     shiftX: 0.25,
                 },
-                'noteheadSquareWhiteStemUp': {
+                noteheadSquareWhiteStemUp: {
                     shiftX: -0.75,
                 },
-                'noteheadSquareBlackStemUp': {
+                noteheadSquareBlackStemUp: {
                     shiftX: -0.75,
                 },
-                'noteheadTriangleUpWholeStemUp': {
+                noteheadTriangleUpWholeStemUp: {
                     shiftX: -0.75,
-                }
+                },
             },
         },
         chordSymbol: {
@@ -12859,92 +12926,92 @@ exports.PetalumaMetrics = {
                 lowerKerningText: ['D', 'F', 'P', 'T', 'V', 'Y'],
                 upperKerningText: ['L'],
                 spacing: 20,
-                superSubRatio: 0.73
+                superSubRatio: 0.73,
             },
             csymDiminished: {
                 scale: 0.8,
                 leftSideBearing: -95,
                 advanceWidth: 506,
-                yOffset: 0
+                yOffset: 0,
             },
             csymHalfDiminished: {
                 scale: 0.8,
                 leftSideBearing: -32,
                 advanceWidth: 506,
-                yOffset: 0
+                yOffset: 0,
             },
             csymAugmented: {
                 scale: 1,
                 leftSideBearing: -25,
                 advanceWidth: 530,
-                yOffset: 0
+                yOffset: 0,
             },
             csymParensLeftTall: {
                 scale: 0.8,
                 leftSideBearing: 0,
                 advanceWidth: 155,
-                yOffset: 150
+                yOffset: 150,
             },
             csymParensRightTall: {
                 scale: 0.8,
                 leftSideBearing: 40,
                 advanceWidth: 189,
-                yOffset: 150
+                yOffset: 150,
             },
             csymBracketLeftTall: {
                 scale: 0.8,
                 leftSideBearing: 0,
                 advanceWidth: 328,
-                yOffset: 0
+                yOffset: 0,
             },
             csymBracketRightTall: {
                 scale: 0.8,
                 leftSideBearing: 1,
                 advanceWidth: 600,
-                yOffset: 0
+                yOffset: 0,
             },
             csymParensLeftVeryTall: {
                 scale: 0.95,
                 leftSideBearing: 0,
                 advanceWidth: 210,
-                yOffset: 250
+                yOffset: 250,
             },
             csymParensRightVeryTall: {
                 scale: 0.9,
                 leftSideBearing: -100,
                 advanceWidth: 111,
-                yOffset: 250
+                yOffset: 250,
             },
             csymDiagonalArrangementSlash: {
                 scale: 0.6,
                 leftSideBearing: -1,
                 advanceWidth: 990,
-                yOffset: 0
+                yOffset: 0,
             },
             csymMinor: {
                 scale: 0.7,
                 leftSideBearing: 0,
                 advanceWidth: 482,
-                yOffset: 0
+                yOffset: 0,
             },
             csymMajorSeventh: {
                 scale: 0.8,
                 leftSideBearing: 100,
                 yOffset: 0,
-                advanceWidth: 600
+                advanceWidth: 600,
             },
             accidentalSharp: {
                 scale: 0.7,
                 leftSideBearing: 0,
                 advanceWidth: 425,
-                yOffset: -422
+                yOffset: -422,
             },
             accidentalFlat: {
                 scale: 0.8,
                 leftSideBearing: -10,
                 advanceWidth: 228,
-                yOffset: -284
-            }
+                yOffset: -284,
+            },
         },
         jazzOrnaments: {
             brassScoop: {
@@ -12952,80 +13019,80 @@ exports.PetalumaMetrics = {
                 xOffset: -12,
                 yOffset: 0,
                 stemUpYOffset: 0,
-                reportedWidth: 10
+                reportedWidth: 10,
             },
             brassDoitMedium: {
                 scale: 1.0,
                 xOffset: 16,
                 yOffset: 0,
                 stemUpYOffset: 0,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassFallLipShort: {
                 scale: 1.0,
                 xOffset: 16,
                 yOffset: 0,
                 stemUpYOffset: 0,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassLiftMedium: {
                 scale: 1.0,
                 xOffset: 16,
                 yOffset: 5,
                 stemUpYOffset: 0,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassFallRoughMedium: {
                 scale: 1.0,
                 xOffset: 16,
                 yOffset: 26,
                 stemUpYOffset: 0,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassBend: {
                 scale: 1.0,
                 xOffset: 3,
                 yOffset: -8,
                 stemUpYOffset: 28,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassMuteClosed: {
                 scale: 1.0,
                 xOffset: 3,
                 yOffset: -8,
                 stemUpYOffset: 26,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassMuteOpen: {
                 scale: 1.0,
                 xOffset: 4,
                 yOffset: -8,
                 stemUpYOffset: 27,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassFlip: {
                 scale: 1.0,
                 xOffset: 10,
                 yOffset: -4,
                 stemUpYOffset: 0,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassJazzTurn: {
                 scale: 1.0,
                 xOffset: 6,
                 yOffset: -4,
                 stemUpYOffset: 0,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
             brassSmear: {
                 scale: 1.0,
                 xOffset: 10,
                 yOffset: -4,
                 stemUpYOffset: 0,
-                reportedWidth: 5
+                reportedWidth: 5,
             },
-        }
-    }
+        },
+    },
 };
 
 
@@ -13335,8 +13402,8 @@ exports.Glyph = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var boundingboxcomputation_1 = __webpack_require__(/*! ./boundingboxcomputation */ "./src/boundingboxcomputation.js");
-var boundingbox_1 = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.js");
+var boundingboxcomputation_1 = __webpack_require__(/*! ./boundingboxcomputation */ "./src/boundingboxcomputation.ts");
+var boundingbox_1 = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 function processOutline(outline, originX, originY, scaleX, scaleY, 
 // eslint-disable-next-line
 outlineFns) {
@@ -13538,7 +13605,7 @@ var Glyph = /** @class */ (function (_super) {
             b: bboxComp.addBezierCurve.bind(bboxComp),
             z: bboxComp.noOp.bind(bboxComp),
         });
-        return new boundingbox_1.BoundingBox(bboxComp.x1, bboxComp.y1, bboxComp.width(), bboxComp.height());
+        return new boundingbox_1.BoundingBox(bboxComp.getX1(), bboxComp.getY1(), bboxComp.width(), bboxComp.height());
     };
     Glyph.prototype.getCode = function () {
         return this.code;
@@ -14187,9 +14254,9 @@ exports.Music = Music;
 
 /***/ }),
 
-/***/ "./src/registry.js":
+/***/ "./src/registry.ts":
 /*!*************************!*\
-  !*** ./src/registry.js ***!
+  !*** ./src/registry.ts ***!
   \*************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -14205,9 +14272,9 @@ exports.Music = Music;
 // to track, query, and manage some subset of generated elements, and
 // dynamically get and set attributes.
 //
-// There are two ways to regiser with a registry:
+// There are two ways to register with a registry:
 //
-// 1) Explicitly call `element.register(registry)`, or,
+// 1) Explicitly call `registry.register(elem:Element, id?:string)`, or,
 // 2) Call `Registry.enableDefaultRegistry(registry)` when ready, and all future
 //    elements will automatically register with it.
 //
@@ -14218,84 +14285,83 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Registry = exports.X = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 exports.X = vex_1.Vex.MakeException('RegistryError');
-function setIndexValue(index, name, value, id, elem) {
-    if (!index[name][value])
-        index[name][value] = {};
-    index[name][value][id] = elem;
-}
+// Indexes are represented as maps of maps of maps. This allows
+// for both multi-labeling (e.g., an element can have multiple classes)
+// and efficient lookup.
+var Index = /** @class */ (function () {
+    function Index() {
+        this.id = {};
+        this.type = {};
+        this.class = {};
+    }
+    return Index;
+}());
 var Registry = /** @class */ (function () {
     function Registry() {
-        this.clear();
+        this.index = new Index();
     }
-    Object.defineProperty(Registry, "INDEXES", {
-        get: function () {
-            return ['type'];
-        },
-        enumerable: false,
-        configurable: true
-    });
+    Registry.getDefaultRegistry = function () {
+        return Registry.defaultRegistry;
+    };
     // If you call `enableDefaultRegistry`, any new elements will auto-register with
     // the provided registry as soon as they're constructed.
     Registry.enableDefaultRegistry = function (registry) {
         Registry.defaultRegistry = registry;
     };
-    Registry.getDefaultRegistry = function () {
-        return Registry.defaultRegistry;
-    };
     Registry.disableDefaultRegistry = function () {
-        Registry.defaultRegistry = null;
+        Registry.defaultRegistry = undefined;
     };
     Registry.prototype.clear = function () {
-        // Indexes are represented as maps of maps (of maps). This allows
-        // for both multi-labeling (e.g., an element can have multiple classes)
-        // and efficient lookup.
-        this.index = {
-            id: {},
-            type: {},
-            class: {},
-        };
+        this.index = new Index();
         return this;
+    };
+    Registry.prototype.setIndexValue = function (name, value, id, elem) {
+        var index = this.index;
+        if (!index[name][value]) {
+            index[name][value] = {};
+        }
+        index[name][value][id] = elem;
     };
     // Updates the indexes for element 'id'. If an element's attribute changes
     // from A -> B, make sure to remove the element from A.
     Registry.prototype.updateIndex = function (_a) {
         var id = _a.id, name = _a.name, value = _a.value, oldValue = _a.oldValue;
         var elem = this.getElementById(id);
-        if (oldValue !== null && this.index[name][oldValue]) {
+        if (oldValue !== undefined && this.index[name][oldValue]) {
             delete this.index[name][oldValue][id];
         }
-        if (value !== null) {
-            setIndexValue(this.index, name, value, elem.getAttribute('id'), elem);
+        if (value && elem) {
+            this.setIndexValue(name, value, elem.getAttribute('id'), elem);
         }
     };
     // Register element `elem` with this registry. This adds the element to its index and watches
     // it for attribute changes.
     Registry.prototype.register = function (elem, id) {
-        var _this = this;
         id = id || elem.getAttribute('id');
         if (!id) {
             throw new exports.X("Can't add element without `id` attribute to registry", elem);
         }
         // Manually add id to index, then update other indexes.
         elem.setAttribute('id', id);
-        setIndexValue(this.index, 'id', id, id, elem);
-        Registry.INDEXES.forEach(function (name) {
-            _this.updateIndex({ id: id, name: name, value: elem.getAttribute(name), oldValue: null });
-        });
+        this.setIndexValue('id', id, id, elem);
+        this.updateIndex({ id: id, name: 'type', value: elem.getAttribute('type'), oldValue: undefined });
         elem.onRegister(this);
         return this;
     };
     Registry.prototype.getElementById = function (id) {
-        return this.index.id[id] ? this.index.id[id][id] : null;
+        var _a, _b;
+        return (_b = (_a = this.index.id) === null || _a === void 0 ? void 0 : _a[id]) === null || _b === void 0 ? void 0 : _b[id]; // return undefined if the id is not found.
     };
-    Registry.prototype.getElementsByAttribute = function (attrName, value) {
-        var index = this.index[attrName];
-        if (index && index[value]) {
-            return Object.keys(index[value]).map(function (i) { return index[value][i]; });
+    Registry.prototype.getElementsByAttribute = function (attribute, value) {
+        var index_attr = this.index[attribute];
+        if (index_attr) {
+            var index_attr_val_1 = index_attr[value];
+            if (index_attr_val_1) {
+                var keys = Object.keys(index_attr_val_1);
+                return keys.map(function (k) { return index_attr_val_1[k]; });
+            }
         }
-        else {
-            return [];
-        }
+        return [];
     };
     Registry.prototype.getElementsByType = function (type) {
         return this.getElementsByAttribute('type', type);
@@ -14305,20 +14371,16 @@ var Registry = /** @class */ (function () {
     };
     // This is called by the element when an attribute value changes. If an indexed
     // attribute changes, then update the local index.
-    Registry.prototype.onUpdate = function (_a) {
-        var id = _a.id, name = _a.name, value = _a.value, oldValue = _a.oldValue;
-        function includes(array, value) {
-            return array.filter(function (x) { return x === value; }).length > 0;
+    Registry.prototype.onUpdate = function (info) {
+        var allowedNames = ['id', 'type', 'class'];
+        if (allowedNames.includes(info.name)) {
+            this.updateIndex(info);
         }
-        if (!includes(Registry.INDEXES.concat(['id', 'class']), name))
-            return this;
-        this.updateIndex({ id: id, name: name, value: value, oldValue: oldValue });
         return this;
     };
     return Registry;
 }());
 exports.Registry = Registry;
-Registry.defaultRegistry = null;
 
 
 /***/ }),
@@ -14375,7 +14437,9 @@ var Flow = {
     integerToNote: integerToNote,
     durationToTicks: durationToTicks,
     durationToFraction: durationToFraction,
+    durationToNumber: durationToNumber,
     getGlyphProps: getGlyphProps,
+    textWidth: textWidth,
 };
 exports.Flow = Flow;
 Flow.clefProperties = function (clef) {
@@ -14550,7 +14614,9 @@ Flow.tabToGlyph = function (fret, scale) {
         shift_y: shift_y,
     };
 };
-Flow.textWidth = function (text) { return 7 * text.toString().length; };
+function textWidth(text) {
+    return 7 * text.toString().length;
+}
 Flow.articulationCodes = function (artic) { return Flow.articulationCodes.articulations[artic]; };
 Flow.articulationCodes.articulations = {
     'a.': { code: 'augmentationDot', between_lines: true },
@@ -14996,7 +15062,9 @@ function durationToFraction(duration) {
     return new fraction_1.Fraction().parse(Flow.sanitizeDuration(duration));
 }
 // Convert the `duration` to an number
-Flow.durationToNumber = function (duration) { return Flow.durationToFraction(duration).value(); };
+function durationToNumber(duration) {
+    return durationToFraction(duration).value();
+}
 // Convert the `duration` to total ticks
 function durationToTicks(duration) {
     duration = Flow.sanitizeDuration(duration);
@@ -16377,7 +16445,7 @@ Vex.Flow.Test.Accidental = (function () {
                 { keys: ['c/4', 'c/5'], duration: '4' },
             ].map(vf.StaveNote.bind(vf));
             var gracenotes = [{ keys: ['d#/4'], duration: '16', slash: true }].map(vf.GraceNote.bind(vf));
-            notes[0].addModifier(0, vf.GraceNoteGroup({ notes: gracenotes }).beamNotes());
+            notes[0].addModifier(vf.GraceNoteGroup({ notes: gracenotes }).beamNotes(), 0);
             var voice = vf
                 .Voice()
                 .setMode(Vex.Flow.Voice.Mode.SOFT)
@@ -16708,7 +16776,7 @@ VF.Test.Annotation = (function () {
                 ['hand,', 'and', 'me', 'pears', 'lead', 'the'].forEach(function (text, ix) {
                     var verse = Math.floor(ix / 3);
                     var nid = 'n' + (ix % 3);
-                    id(nid).addModifier(verse, vf.Annotation({ text: text }).setFont('Roboto Slab', fontSize, 'normal'));
+                    id(nid).addModifier(vf.Annotation({ text: text }).setFont('Roboto Slab', fontSize, 'normal'), verse);
                 });
                 vf.draw();
                 ratio = (fontSize + 2) / fontSize;
@@ -16877,10 +16945,10 @@ VF.Test.Annotation = (function () {
             var stave = new VF.Stave(10, 10, 300).addClef('treble').setContext(ctx).draw();
             // Create some notes
             var notes = [
-                new VF.StaveNote({ keys: ['a/3'], duration: '8' }).addModifier(0, new VF.Annotation('good').setVerticalJustification(VF.Annotation.VerticalJustify.BOTTOM)),
-                new VF.StaveNote({ keys: ['g/3'], duration: '8' }).addModifier(0, new VF.Annotation('even').setVerticalJustification(VF.Annotation.VerticalJustify.BOTTOM)),
-                new VF.StaveNote({ keys: ['c/4'], duration: '8' }).addModifier(0, new VF.Annotation('under').setVerticalJustification(VF.Annotation.VerticalJustify.BOTTOM)),
-                new VF.StaveNote({ keys: ['d/4'], duration: '8' }).addModifier(0, new VF.Annotation('beam').setVerticalJustification(VF.Annotation.VerticalJustify.BOTTOM)),
+                new VF.StaveNote({ keys: ['a/3'], duration: '8' }).addModifier(new VF.Annotation('good').setVerticalJustification(VF.Annotation.VerticalJustify.BOTTOM), 0),
+                new VF.StaveNote({ keys: ['g/3'], duration: '8' }).addModifier(new VF.Annotation('even').setVerticalJustification(VF.Annotation.VerticalJustify.BOTTOM), 0),
+                new VF.StaveNote({ keys: ['c/4'], duration: '8' }).addModifier(new VF.Annotation('under').setVerticalJustification(VF.Annotation.VerticalJustify.BOTTOM), 0),
+                new VF.StaveNote({ keys: ['d/4'], duration: '8' }).addModifier(new VF.Annotation('beam').setVerticalJustification(VF.Annotation.VerticalJustify.BOTTOM), 0),
             ];
             var beam = new VF.Beam(notes.slice(1));
             VF.Formatter.FormatAndDraw(ctx, stave, notes);
@@ -18064,15 +18132,15 @@ VF.Test.BachDemo = (function () {
             system.addConnector('brace');
             system.addConnector('singleRight');
             system.addConnector('singleLeft');
-            id('m1a').addModifier(0, vf.Fingering({ number: '5' }));
+            id('m1a').addModifier(vf.Fingering({ number: '5' }), 0);
             /*  Measure 2 */
             system = makeSystem(150);
             system.addStave({ voices: [voice(notes('D5/q[id="m2a"], G4[id="m2b"], G4[id="m2c"]'))] });
             system.addStave({ voices: [voice(notes('B3/h.', { clef: 'bass' }))] });
             system.addConnector('singleRight');
-            id('m2a').addModifier(0, vf.Articulation({ type: 'a.', position: 'above' }));
-            id('m2b').addModifier(0, vf.Articulation({ type: 'a.', position: 'below' }));
-            id('m2c').addModifier(0, vf.Articulation({ type: 'a.', position: 'below' }));
+            id('m2a').addModifier(vf.Articulation({ type: 'a.', position: 'above' }), 0);
+            id('m2b').addModifier(vf.Articulation({ type: 'a.', position: 'below' }), 0);
+            id('m2c').addModifier(vf.Articulation({ type: 'a.', position: 'below' }), 0);
             vf.Curve({
                 from: id('m1a'),
                 to: id('m2a'),
@@ -18088,7 +18156,7 @@ VF.Test.BachDemo = (function () {
             system.addStave({
                 voices: [voice([notes('E5/q[id="m3a"]'), beam(notes('C5/8, D5, E5, F5', { stem: 'down' }))].reduce(concat))],
             });
-            id('m3a').addModifier(0, vf.Fingering({ number: '3', position: 'above' }));
+            id('m3a').addModifier(vf.Fingering({ number: '3', position: 'above' }), 0);
             system.addStave({ voices: [voice(notes('C4/h.', { clef: 'bass' }))] });
             system.addConnector('singleRight');
             /*  Measure 4 */
@@ -18096,9 +18164,9 @@ VF.Test.BachDemo = (function () {
             system.addStave({ voices: [voice(notes('G5/q[id="m4a"], G4[id="m4b"], G4[id="m4c"]'))] });
             system.addStave({ voices: [voice(notes('B3/h.', { clef: 'bass' }))] });
             system.addConnector('singleRight');
-            id('m4a').addModifier(0, vf.Articulation({ type: 'a.', position: 'above' }));
-            id('m4b').addModifier(0, vf.Articulation({ type: 'a.', position: 'below' }));
-            id('m4c').addModifier(0, vf.Articulation({ type: 'a.', position: 'below' }));
+            id('m4a').addModifier(vf.Articulation({ type: 'a.', position: 'above' }), 0);
+            id('m4b').addModifier(vf.Articulation({ type: 'a.', position: 'below' }), 0);
+            id('m4c').addModifier(vf.Articulation({ type: 'a.', position: 'below' }), 0);
             vf.Curve({
                 from: id('m3a'),
                 to: id('m4a'),
@@ -18114,7 +18182,7 @@ VF.Test.BachDemo = (function () {
             system.addStave({
                 voices: [voice([notes('C5/q[id="m5a"]'), beam(notes('D5/8, C5, B4, A4', { stem: 'down' }))].reduce(concat))],
             });
-            id('m5a').addModifier(0, vf.Fingering({ number: '4', position: 'above' }));
+            id('m5a').addModifier(vf.Fingering({ number: '4', position: 'above' }), 0);
             system.addStave({ voices: [voice(notes('A3/h.', { clef: 'bass' }))] });
             system.addConnector('singleRight');
             /*  Measure 6 */
@@ -18156,9 +18224,9 @@ VF.Test.BachDemo = (function () {
             system.addConnector('brace');
             system.addConnector('singleRight');
             system.addConnector('singleLeft');
-            id('m7a').addModifier(0, vf.Fingering({ number: '2', position: 'below' }));
-            id('m7b').addModifier(0, vf.Fingering({ number: '1' }));
-            id('m7c').addModifier(0, vf.Fingering({ number: '3', position: 'above' }));
+            id('m7a').addModifier(vf.Fingering({ number: '2', position: 'below' }), 0);
+            id('m7b').addModifier(vf.Fingering({ number: '1' }), 0);
+            id('m7c').addModifier(vf.Fingering({ number: '3', position: 'above' }), 0);
             /*  Measure 8 */
             system = makeSystem(180);
             var grace = vf.GraceNote({ keys: ['d/3'], clef: 'bass', duration: '8', slash: true });
@@ -18171,8 +18239,8 @@ VF.Test.BachDemo = (function () {
                 ],
             });
             system.addConnector('singleRight');
-            id('m8b').addModifier(0, vf.Fingering({ number: '1', position: 'above' }));
-            id('m8c').addModifier(0, vf.GraceNoteGroup({ notes: [grace] }));
+            id('m8b').addModifier(vf.Fingering({ number: '1', position: 'above' }), 0);
+            id('m8c').addModifier(vf.GraceNoteGroup({ notes: [grace] }), 0);
             vf.Curve({
                 from: id('m7a'),
                 to: id('m8c'),
@@ -18198,16 +18266,16 @@ VF.Test.BachDemo = (function () {
             });
             system.addStave({ voices: [voice(notes('B3/h, A3/q', { clef: 'bass' }))] });
             system.addConnector('singleRight');
-            id('m9a').addModifier(0, vf.Fingering({ number: '5' }));
+            id('m9a').addModifier(vf.Fingering({ number: '5' }), 0);
             /*  Measure 10 */
             system = makeSystem(170);
             system.addStave({ voices: [voice(notes('D5/q[id="m10a"], G4[id="m10b"], G4[id="m10c"]'))] });
             system.addStave({ voices: [voice(notes('G3/q[id="m10d"], B3, G3', { clef: 'bass' }))] });
             system.addConnector('singleRight');
-            id('m10a').addModifier(0, vf.Articulation({ type: 'a.', position: 'above' }));
-            id('m10b').addModifier(0, vf.Articulation({ type: 'a.', position: 'below' }));
-            id('m10c').addModifier(0, vf.Articulation({ type: 'a.', position: 'below' }));
-            id('m10d').addModifier(0, vf.Fingering({ number: '4' }));
+            id('m10a').addModifier(vf.Articulation({ type: 'a.', position: 'above' }), 0);
+            id('m10b').addModifier(vf.Articulation({ type: 'a.', position: 'below' }), 0);
+            id('m10c').addModifier(vf.Articulation({ type: 'a.', position: 'below' }), 0);
+            id('m10d').addModifier(vf.Fingering({ number: '4' }), 0);
             vf.Curve({
                 from: id('m9a'),
                 to: id('m10a'),
@@ -18223,7 +18291,7 @@ VF.Test.BachDemo = (function () {
             system.addStave({
                 voices: [voice([notes('E5/q[id="m11a"]'), beam(notes('C5/8, D5, E5, F5', { stem: 'down' }))].reduce(concat))],
             });
-            id('m11a').addModifier(0, vf.Fingering({ number: '3', position: 'above' }));
+            id('m11a').addModifier(vf.Fingering({ number: '3', position: 'above' }), 0);
             system.addStave({ voices: [voice(notes('C4/h.', { clef: 'bass' }))] });
             system.addConnector('singleRight');
             /*  Measure 12 */
@@ -18237,11 +18305,11 @@ VF.Test.BachDemo = (function () {
                 ],
             });
             system.addConnector('singleRight');
-            id('m12a').addModifier(0, vf.Articulation({ type: 'a.', position: 'above' }));
-            id('m12b').addModifier(0, vf.Articulation({ type: 'a.', position: 'below' }));
-            id('m12c').addModifier(0, vf.Articulation({ type: 'a.', position: 'below' }));
-            id('m12d').addModifier(0, vf.Fingering({ number: '2', position: 'above' }));
-            id('m12e').addModifier(0, vf.Fingering({ number: '4', position: 'above' }));
+            id('m12a').addModifier(vf.Articulation({ type: 'a.', position: 'above' }), 0);
+            id('m12b').addModifier(vf.Articulation({ type: 'a.', position: 'below' }), 0);
+            id('m12c').addModifier(vf.Articulation({ type: 'a.', position: 'below' }), 0);
+            id('m12d').addModifier(vf.Fingering({ number: '2', position: 'above' }), 0);
+            id('m12e').addModifier(vf.Fingering({ number: '4', position: 'above' }), 0);
             vf.Curve({
                 from: id('m11a'),
                 to: id('m12a'),
@@ -18273,9 +18341,9 @@ VF.Test.BachDemo = (function () {
             system.addConnector('brace');
             system.addConnector('singleRight');
             system.addConnector('singleLeft');
-            id('m13a').addModifier(0, vf.Fingering({ number: '4', position: 'above' }));
-            id('m13b').addModifier(0, vf.Fingering({ number: '1' }));
-            id('m13c').addModifier(0, vf.Fingering({ number: '3', position: 'above' }));
+            id('m13a').addModifier(vf.Fingering({ number: '4', position: 'above' }), 0);
+            id('m13b').addModifier(vf.Fingering({ number: '1' }), 0);
+            id('m13c').addModifier(vf.Fingering({ number: '3', position: 'above' }), 0);
             /*  Measure 14 */
             system = makeSystem(180);
             system.addStave({
@@ -18287,8 +18355,8 @@ VF.Test.BachDemo = (function () {
             });
             system.addStave({ voices: [voice(notes('g3/h[id="m14a"], b3/q[id="m14b"]', { clef: 'bass' }))] });
             system.addConnector('singleRight');
-            id('m14a').addModifier(0, vf.Fingering({ number: '2' }));
-            id('m14b').addModifier(0, vf.Fingering({ number: '1' }));
+            id('m14a').addModifier(vf.Fingering({ number: '2' }), 0);
+            id('m14b').addModifier(vf.Fingering({ number: '1' }), 0);
             /*  Measure 15 */
             system = makeSystem(180);
             system.addStave({
@@ -18300,8 +18368,8 @@ VF.Test.BachDemo = (function () {
             });
             system.addStave({ voices: [voice(notes('c4/q[id="m15b"], d4, d3', { clef: 'bass' }))] });
             system.addConnector('singleRight');
-            id('m15a').addModifier(0, vf.Fingering({ number: '2' }));
-            id('m15b').addModifier(0, vf.Fingering({ number: '2' }));
+            id('m15a').addModifier(vf.Fingering({ number: '2' }), 0);
+            id('m15b').addModifier(vf.Fingering({ number: '2' }), 0);
             /*  Measure 16 */
             system = makeSystem(130);
             system
@@ -18313,8 +18381,8 @@ VF.Test.BachDemo = (function () {
                 .addStave({ voices: [voice(notes('g3/h[id="m16b"], g2/q', { clef: 'bass' }))] })
                 .setEndBarType(VF.Barline.type.REPEAT_END);
             system.addConnector('boldDoubleRight');
-            id('m16a').addModifier(0, vf.Fingering({ number: '1' }));
-            id('m16b').addModifier(0, vf.Fingering({ number: '1' }));
+            id('m16a').addModifier(vf.Fingering({ number: '1' }), 0);
+            id('m16b').addModifier(vf.Fingering({ number: '1' }), 0);
             vf.Curve({
                 from: id('m13a'),
                 to: id('m16a'),
@@ -18344,7 +18412,7 @@ VF.Test.BachDemo = (function () {
                 .setBegBarType(VF.Barline.type.REPEAT_BEGIN);
             system.addConnector('boldDoubleLeft');
             system.addConnector('singleRight');
-            id('m17a').addModifier(0, vf.Fingering({ number: '5', position: 'above' }));
+            id('m17a').addModifier(vf.Fingering({ number: '5', position: 'above' }), 0);
             /* Measure 18 */
             system = makeSystem(180);
             system.addStave({
@@ -18356,7 +18424,7 @@ VF.Test.BachDemo = (function () {
             });
             system.addStave({ voices: [voice(notes('f3/h.', { clef: 'bass' }))] });
             system.addConnector('singleRight');
-            id('m18a').addModifier(0, vf.Fingering({ number: '4', position: 'above' }));
+            id('m18a').addModifier(vf.Fingering({ number: '4', position: 'above' }), 0);
             vf.Curve({
                 from: id('m17a'),
                 to: id('m18b'),
@@ -18999,10 +19067,10 @@ VF.Test.Beam = (function () {
                 { keys: ['c/5'], duration: '32', stem_direction: -1 },
             ];
             notes = notes.map(function (note) {
-                return vf.StaveNote(note).addModifier(0, vf.Annotation({ text: '1', vJustify: 'above' }));
+                return vf.StaveNote(note).addModifier(vf.Annotation({ text: '1', vJustify: 'above' }), 0);
             });
             notes2 = notes2.map(function (note) {
-                return vf.StaveNote(note).addModifier(0, vf.Annotation({ text: '3', vJustify: 'below' }));
+                return vf.StaveNote(note).addModifier(vf.Annotation({ text: '3', vJustify: 'below' }), 0);
             });
             vf.Beam({ notes: notes });
             vf.Beam({ notes: notes2 });
@@ -19033,10 +19101,10 @@ VF.Test.Beam = (function () {
                 { keys: ['c/5'], duration: '32', stem_direction: -1 },
             ];
             notes = notes.map(function (note) {
-                return vf.StaveNote(note).addModifier(0, vf.Articulation({ type: 'am', position: 'above' }));
+                return vf.StaveNote(note).addModifier(vf.Articulation({ type: 'am', position: 'above' }), 0);
             });
             notes2 = notes2.map(function (note) {
-                return vf.StaveNote(note).addModifier(0, vf.Articulation({ type: 'a>', position: 'below' }));
+                return vf.StaveNote(note).addModifier(vf.Articulation({ type: 'a>', position: 'below' }), 0);
             });
             vf.Beam({ notes: notes });
             vf.Beam({ notes: notes2 });
@@ -19409,7 +19477,7 @@ VF.Test.ChordSymbol = (function () {
             ctx.fillStyle = '#221';
             ctx.strokeStyle = '#221';
             function newNote(keys, duration, chordSymbol) {
-                return new VF.StaveNote({ keys: keys, duration: duration }).addModifier(0, chordSymbol);
+                return new VF.StaveNote({ keys: keys, duration: duration }).addModifier(chordSymbol, 0);
             }
             function draw(chords, y) {
                 var notes = [];
@@ -19474,7 +19542,7 @@ VF.Test.ChordSymbol = (function () {
             ctx.fillStyle = '#221';
             ctx.strokeStyle = '#221';
             function newNote(keys, duration, chordSymbol) {
-                return new VF.StaveNote({ keys: keys, duration: duration }).addModifier(0, chordSymbol);
+                return new VF.StaveNote({ keys: keys, duration: duration }).addModifier(chordSymbol, 0);
             }
             function draw(c1, c2, y) {
                 var notes = [];
@@ -19519,7 +19587,7 @@ VF.Test.ChordSymbol = (function () {
             ctx.fillStyle = '#221';
             ctx.strokeStyle = '#221';
             function newNote(keys, duration, chordSymbol) {
-                return new VF.StaveNote({ keys: keys, duration: duration }).addModifier(0, chordSymbol);
+                return new VF.StaveNote({ keys: keys, duration: duration }).addModifier(chordSymbol, 0);
             }
             function draw(chords, y) {
                 var notes = [];
@@ -19613,7 +19681,7 @@ VF.Test.ChordSymbol = (function () {
             ctx.fillStyle = '#221';
             ctx.strokeStyle = '#221';
             function newNote(keys, duration, chordSymbol) {
-                return new VF.StaveNote({ keys: keys, duration: duration }).addModifier(0, chordSymbol);
+                return new VF.StaveNote({ keys: keys, duration: duration }).addModifier(chordSymbol, 0);
             }
             function draw(chord1, chord2, y) {
                 var notes = [];
@@ -19661,7 +19729,7 @@ VF.Test.ChordSymbol = (function () {
             ctx.fillStyle = '#221';
             ctx.strokeStyle = '#221';
             function newNote(keys, duration, chordSymbol1, chordSymbol2) {
-                return new VF.StaveNote({ keys: keys, duration: duration }).addModifier(0, chordSymbol1).addModifier(0, chordSymbol2);
+                return new VF.StaveNote({ keys: keys, duration: duration }).addModifier(chordSymbol1, 0).addModifier(chordSymbol2, 0);
             }
             function draw(chords, chords2, y) {
                 var notes = [];
@@ -19692,7 +19760,7 @@ VF.Test.ChordSymbol = (function () {
             ctx.fillStyle = '#221';
             ctx.strokeStyle = '#221';
             function newNote(keys, duration, chordSymbol) {
-                return new VF.StaveNote({ keys: keys, duration: duration }).addModifier(0, chordSymbol);
+                return new VF.StaveNote({ keys: keys, duration: duration }).addModifier(chordSymbol, 0);
             }
             function draw(chords, y) {
                 var notes = [];
@@ -19718,7 +19786,7 @@ VF.Test.ChordSymbol = (function () {
             ctx.fillStyle = '#221';
             ctx.strokeStyle = '#221';
             function newNote(keys, duration, chordSymbol) {
-                return new VF.StaveNote({ keys: keys, duration: duration, stem_direction: -1 }).addModifier(0, chordSymbol);
+                return new VF.StaveNote({ keys: keys, duration: duration, stem_direction: -1 }).addModifier(chordSymbol, 0);
             }
             function draw(chords, y) {
                 var notes = [];
@@ -21231,7 +21299,7 @@ exports.FractionTests = {
         declarations_1.ok(f_1_2.greaterThanEquals(0.2), 'Fraction: 1/2 >= 0.2');
         declarations_1.ok(f_1_2.greaterThanEquals(0.5), 'Fraction: 1/2 >= 0.5');
         declarations_1.notOk(f_1_2.greaterThanEquals(1), 'Fraction: ! 1/2 >= 1');
-        declarations_1.notOk(f_1_2.lessThan(0.5), 'Fracion: ! 1/2 < 0.5');
+        declarations_1.notOk(f_1_2.lessThan(0.5), 'Fraction: ! 1/2 < 0.5');
         declarations_1.ok(f_1_2.lessThan(1), 'Fraction: 1/2 < 1');
         declarations_1.ok(f_1_2.lessThanEquals(0.6), 'Fraction: 1/2 <= 0.6');
         declarations_1.ok(f_1_2.lessThanEquals(0.5), 'Fraction: 1/2 <= 0.5');
@@ -21514,20 +21582,20 @@ VF.Test.GraceNote = (function () {
             var notes = [
                 vf
                     .StaveNote({ keys: ['b/4'], duration: '4', auto_stem: true })
-                    .addModifier(0, vf.GraceNoteGroup({ notes: gracenotes }).beamNotes()),
+                    .addModifier(vf.GraceNoteGroup({ notes: gracenotes }).beamNotes(), 0),
                 vf
                     .StaveNote({ keys: ['c/5'], duration: '4', auto_stem: true })
                     .addAccidental(0, vf.Accidental({ type: '#' }))
-                    .addModifier(0, vf.GraceNoteGroup({ notes: gracenotes1 }).beamNotes()),
+                    .addModifier(vf.GraceNoteGroup({ notes: gracenotes1 }).beamNotes(), 0),
                 vf
                     .StaveNote({ keys: ['c/5', 'd/5'], duration: '4', auto_stem: true })
-                    .addModifier(0, vf.GraceNoteGroup({ notes: gracenotes2 }).beamNotes()),
+                    .addModifier(vf.GraceNoteGroup({ notes: gracenotes2 }).beamNotes(), 0),
                 vf
                     .StaveNote({ keys: ['a/4'], duration: '4', auto_stem: true })
-                    .addModifier(0, vf.GraceNoteGroup({ notes: gracenotes3 }).beamNotes()),
+                    .addModifier(vf.GraceNoteGroup({ notes: gracenotes3 }).beamNotes(), 0),
                 vf
                     .StaveNote({ keys: ['a/4'], duration: '4', auto_stem: true })
-                    .addModifier(0, vf.GraceNoteGroup({ notes: gracenotes4 }).beamNotes()),
+                    .addModifier(vf.GraceNoteGroup({ notes: gracenotes4 }).beamNotes(), 0),
             ];
             var voice = vf.Voice().setStrict(false).addTickables(notes);
             new VF.Formatter().joinVoices([voice]).formatToStave([voice], stave);
@@ -21564,20 +21632,20 @@ VF.Test.GraceNote = (function () {
             var notes = [
                 vf
                     .StaveNote({ keys: ['b/4'], duration: '4', auto_stem: true })
-                    .addModifier(0, vf.GraceNoteGroup({ notes: gracenotes0, slur: true }).beamNotes()),
+                    .addModifier(vf.GraceNoteGroup({ notes: gracenotes0, slur: true }).beamNotes(), 0),
                 vf
                     .StaveNote({ keys: ['c/5'], duration: '4', auto_stem: true })
                     .addAccidental(0, vf.Accidental({ type: '#' }))
-                    .addModifier(0, vf.GraceNoteGroup({ notes: gracenotes1, slur: true }).beamNotes()),
+                    .addModifier(vf.GraceNoteGroup({ notes: gracenotes1, slur: true }).beamNotes(), 0),
                 vf
                     .StaveNote({ keys: ['c/5', 'd/5'], duration: '4', auto_stem: true })
-                    .addModifier(0, vf.GraceNoteGroup({ notes: gracenotes2, slur: true }).beamNotes()),
+                    .addModifier(vf.GraceNoteGroup({ notes: gracenotes2, slur: true }).beamNotes(), 0),
                 vf
                     .StaveNote({ keys: ['a/4'], duration: '4', auto_stem: true })
-                    .addModifier(0, vf.GraceNoteGroup({ notes: gracenotes3, slur: true }).beamNotes()),
+                    .addModifier(vf.GraceNoteGroup({ notes: gracenotes3, slur: true }).beamNotes(), 0),
                 vf
                     .StaveNote({ keys: ['a/4'], duration: '4', auto_stem: true })
-                    .addModifier(0, vf.GraceNoteGroup({ notes: gracenotes4, slur: true }).beamNotes()),
+                    .addModifier(vf.GraceNoteGroup({ notes: gracenotes4, slur: true }).beamNotes(), 0),
                 vf.StaveNote({ keys: ['a/4'], duration: '4', auto_stem: true }),
             ];
             var voice = vf.Voice().setStrict(false).addTickables(notes);
@@ -21596,7 +21664,7 @@ VF.Test.GraceNote = (function () {
             function createNoteBlock(keys, stem_direction) {
                 var notes = createNotes(vf.StaveNote.bind(vf), keys, stem_direction);
                 var gracenotes = createNotes(vf.GraceNote.bind(vf), keys, stem_direction);
-                notes[0].addModifier(0, vf.GraceNoteGroup({ notes: gracenotes }));
+                notes[0].addModifier(vf.GraceNoteGroup({ notes: gracenotes }), 0);
                 return notes;
             }
             var voice = vf.Voice().setStrict(false);
@@ -21633,7 +21701,7 @@ VF.Test.GraceNote = (function () {
                 var gracenotes = createBeamdNotes(vf.GraceNote.bind(vf), keys, stem_direction, beams, true, notesToBeam);
                 var graceNoteGroup = vf.GraceNoteGroup({ notes: gracenotes });
                 notesToBeam.map(graceNoteGroup.beamNotes.bind(graceNoteGroup));
-                bnotes[0].addModifier(0, graceNoteGroup);
+                bnotes[0].addModifier(graceNoteGroup, 0);
                 return bnotes;
             }
             var beams = [];
@@ -21676,7 +21744,7 @@ VF.Test.GraceNote = (function () {
                 gnotesToBeam.forEach(function (gnotes) {
                     gracenoteGroup.beamNotes(gnotes);
                 });
-                notes[0].addModifier(0, gracenoteGroup);
+                notes[0].addModifier(gracenoteGroup, 0);
                 return notes;
             }
             var voice = vf.Voice().setStrict(false);
@@ -21711,7 +21779,7 @@ VF.Test.GraceNote = (function () {
                 gnotesToBeam.forEach(function (gnotes) {
                     gracenoteGroup.beamNotes(gnotes);
                 });
-                notes[0].addModifier(0, gracenoteGroup);
+                notes[0].addModifier(gracenoteGroup, 0);
                 return notes;
             }
             var voice = vf.Voice().setStrict(false);
@@ -21757,10 +21825,10 @@ VF.Test.GraceNote = (function () {
             ].map(vf.GraceNote.bind(vf));
             gracenotes2[0].setStemDirection(-1);
             gracenotes2[0].addAccidental(0, vf.Accidental({ type: '#' }));
-            notes[1].addModifier(0, vf.GraceNoteGroup({ notes: gracenotes4 }).beamNotes());
-            notes[3].addModifier(0, vf.GraceNoteGroup({ notes: gracenotes1 }));
-            notes2[1].addModifier(0, vf.GraceNoteGroup({ notes: gracenotes2 }).beamNotes());
-            notes2[5].addModifier(0, vf.GraceNoteGroup({ notes: gracenotes3 }).beamNotes());
+            notes[1].addModifier(vf.GraceNoteGroup({ notes: gracenotes4 }).beamNotes(), 0);
+            notes[3].addModifier(vf.GraceNoteGroup({ notes: gracenotes1 }), 0);
+            notes2[1].addModifier(vf.GraceNoteGroup({ notes: gracenotes2 }).beamNotes(), 0);
+            notes2[5].addModifier(vf.GraceNoteGroup({ notes: gracenotes3 }).beamNotes(), 0);
             var voice = vf.Voice().setStrict(false).addTickables(notes);
             var voice2 = vf.Voice().setStrict(false).addTickables(notes2);
             vf.Beam({ notes: notes.slice(0, 4) });
@@ -21807,10 +21875,10 @@ VF.Test.GraceNote = (function () {
             ].map(vf.GraceNote.bind(vf));
             gracenotes2[0].setStemDirection(-1);
             gracenotes2[0].addAccidental(0, vf.Accidental({ type: '#' }));
-            notes[1].addModifier(0, vf.GraceNoteGroup({ notes: gracenotes4 }).beamNotes());
-            notes[3].addModifier(0, vf.GraceNoteGroup({ notes: gracenotes1 }));
-            notes2[1].addModifier(0, vf.GraceNoteGroup({ notes: gracenotes2 }).beamNotes());
-            notes2[5].addModifier(0, vf.GraceNoteGroup({ notes: gracenotes3 }).beamNotes());
+            notes[1].addModifier(vf.GraceNoteGroup({ notes: gracenotes4 }).beamNotes(), 0);
+            notes[3].addModifier(vf.GraceNoteGroup({ notes: gracenotes1 }), 0);
+            notes2[1].addModifier(vf.GraceNoteGroup({ notes: gracenotes2 }).beamNotes(), 0);
+            notes2[5].addModifier(vf.GraceNoteGroup({ notes: gracenotes3 }).beamNotes(), 0);
             var voice = vf.Voice().setStrict(false).addTickables(notes);
             var voice2 = vf.Voice().setStrict(false).addTickables(notes2);
             vf.Beam({ notes: notes.slice(0, 4) });
@@ -22533,9 +22601,9 @@ VF.Test.ModifierContext = (function () {
             var mc = new VF.ModifierContext();
             var modifier1 = new VF.Modifier();
             var modifier2 = new VF.Modifier();
-            mc.addModifier(modifier1);
-            mc.addModifier(modifier2);
-            var accidentals = mc.getModifiers('none');
+            mc.addMember(modifier1);
+            mc.addMember(modifier2);
+            var accidentals = mc.getMembers('none');
             equal(accidentals.length, 2, 'Added two modifiers');
         },
     };
@@ -23159,10 +23227,10 @@ VF.Test.NoteSubGroup = (function () {
                 { keys: ['f/4'], stem_direction: -1, duration: '4', clef: 'tenor' },
             ].map(vf.StaveNote.bind(vf));
             function addAccidental(note, acc) {
-                return note.addModifier(0, vf.Accidental({ type: acc }));
+                return note.addModifier(vf.Accidental({ type: acc }), 0);
             }
             function addSubGroup(note, subNotes) {
-                return note.addModifier(0, vf.NoteSubGroup({ notes: subNotes }));
+                return note.addModifier(vf.NoteSubGroup({ notes: subNotes }), 0);
             }
             // {SubNotes} | {Accidental} | {StaveNote}
             addAccidental(notes[1], '#');
@@ -23200,10 +23268,10 @@ VF.Test.NoteSubGroup = (function () {
                 { keys: ['f/4'], stem_direction: -1, duration: '4', clef: 'soprano' },
             ].map(vf.StaveNote.bind(vf));
             function addAccidental(note, accid) {
-                return note.addModifier(0, vf.Accidental({ type: accid }));
+                return note.addModifier(vf.Accidental({ type: accid }), 0);
             }
             function addSubGroup(note, subNotes) {
-                return note.addModifier(0, vf.NoteSubGroup({ notes: subNotes }));
+                return note.addModifier(vf.NoteSubGroup({ notes: subNotes }), 0);
             }
             addAccidental(notes1[1], '#');
             addSubGroup(notes1[1], [
@@ -23245,10 +23313,10 @@ VF.Test.NoteSubGroup = (function () {
                 { keys: ['f/4'], stem_direction: -1, duration: '4', clef: 'soprano' },
             ].map(vf.StaveNote.bind(vf));
             function addAccidental(note, accid) {
-                return note.addModifier(0, vf.Accidental({ type: accid }));
+                return note.addModifier(vf.Accidental({ type: accid }), 0);
             }
             function addSubGroup(note, subNotes) {
-                return note.addModifier(0, vf.NoteSubGroup({ notes: subNotes }));
+                return note.addModifier(vf.NoteSubGroup({ notes: subNotes }), 0);
             }
             addAccidental(notes1[1], '#');
             addSubGroup(notes1[1], [
@@ -23304,10 +23372,10 @@ VF.Test.NoteSubGroup = (function () {
             vf.StaveConnector({ top_stave: stave1, bottom_stave: stave2, type: 'singleLeft' });
             vf.StaveConnector({ top_stave: stave1, bottom_stave: stave2, type: 'singleRight' });
             function addAccidental(note, acc) {
-                return note.addModifier(0, vf.Accidental({ type: acc }));
+                return note.addModifier(vf.Accidental({ type: acc }), 0);
             }
             function addSubGroup(note, subNotes) {
-                return note.addModifier(0, vf.NoteSubGroup({ notes: subNotes }));
+                return note.addModifier(vf.NoteSubGroup({ notes: subNotes }), 0);
             }
             vf.Beam({ notes: notes3.slice(1, 4) });
             vf.Beam({ notes: notes3.slice(5) });
@@ -23391,19 +23459,19 @@ VF.Test.Ornament = (function () {
                 new VF.StaveNote({ keys: ['f/4'], duration: '4', stem_direction: 1 }),
                 new VF.StaveNote({ keys: ['f/4'], duration: '4', stem_direction: 1 }),
             ];
-            notesBar1[0].addModifier(0, new VF.Ornament('mordent'));
-            notesBar1[1].addModifier(0, new VF.Ornament('mordent_inverted'));
-            notesBar1[2].addModifier(0, new VF.Ornament('turn'));
-            notesBar1[3].addModifier(0, new VF.Ornament('turn_inverted'));
-            notesBar1[4].addModifier(0, new VF.Ornament('tr'));
-            notesBar1[5].addModifier(0, new VF.Ornament('upprall'));
-            notesBar1[6].addModifier(0, new VF.Ornament('downprall'));
-            notesBar1[7].addModifier(0, new VF.Ornament('prallup'));
-            notesBar1[8].addModifier(0, new VF.Ornament('pralldown'));
-            notesBar1[9].addModifier(0, new VF.Ornament('upmordent'));
-            notesBar1[10].addModifier(0, new VF.Ornament('downmordent'));
-            notesBar1[11].addModifier(0, new VF.Ornament('lineprall'));
-            notesBar1[12].addModifier(0, new VF.Ornament('prallprall'));
+            notesBar1[0].addModifier(new VF.Ornament('mordent'), 0);
+            notesBar1[1].addModifier(new VF.Ornament('mordent_inverted'), 0);
+            notesBar1[2].addModifier(new VF.Ornament('turn'), 0);
+            notesBar1[3].addModifier(new VF.Ornament('turn_inverted'), 0);
+            notesBar1[4].addModifier(new VF.Ornament('tr'), 0);
+            notesBar1[5].addModifier(new VF.Ornament('upprall'), 0);
+            notesBar1[6].addModifier(new VF.Ornament('downprall'), 0);
+            notesBar1[7].addModifier(new VF.Ornament('prallup'), 0);
+            notesBar1[8].addModifier(new VF.Ornament('pralldown'), 0);
+            notesBar1[9].addModifier(new VF.Ornament('upmordent'), 0);
+            notesBar1[10].addModifier(new VF.Ornament('downmordent'), 0);
+            notesBar1[11].addModifier(new VF.Ornament('lineprall'), 0);
+            notesBar1[12].addModifier(new VF.Ornament('prallprall'), 0);
             // Helper function to justify and draw a 4/4 voice
             VF.Formatter.FormatAndDraw(ctx, staveBar1, notesBar1);
         },
@@ -23429,19 +23497,20 @@ VF.Test.Ornament = (function () {
                 new VF.StaveNote({ keys: ['a/4'], duration: '4', stem_direction: 1 }),
                 new VF.StaveNote({ keys: ['a/4'], duration: '4', stem_direction: 1 }),
             ];
-            notesBar1[0].addModifier(0, new VF.Ornament('mordent'));
-            notesBar1[1].addModifier(0, new VF.Ornament('mordent_inverted'));
-            notesBar1[2].addModifier(0, new VF.Ornament('turn'));
-            notesBar1[3].addModifier(0, new VF.Ornament('turn_inverted'));
-            notesBar1[4].addModifier(0, new VF.Ornament('tr'));
-            notesBar1[5].addModifier(0, new VF.Ornament('upprall'));
-            notesBar1[6].addModifier(0, new VF.Ornament('downprall'));
-            notesBar1[7].addModifier(0, new VF.Ornament('prallup'));
-            notesBar1[8].addModifier(0, new VF.Ornament('pralldown'));
-            notesBar1[9].addModifier(0, new VF.Ornament('upmordent'));
-            notesBar1[10].addModifier(0, new VF.Ornament('downmordent'));
-            notesBar1[11].addModifier(0, new VF.Ornament('lineprall'));
-            notesBar1[12].addModifier(0, new VF.Ornament('prallprall'));
+            notesBar1[0].addModifier(new VF.Ornament('mordent'), 0);
+            notesBar1[1].addModifier(new VF.Ornament('mordent_inverted'), 0);
+            notesBar1[1].addModifier(new VF.Ornament('mordent_inverted'), 0);
+            notesBar1[2].addModifier(new VF.Ornament('turn'), 0);
+            notesBar1[3].addModifier(new VF.Ornament('turn_inverted'), 0);
+            notesBar1[4].addModifier(new VF.Ornament('tr'), 0);
+            notesBar1[5].addModifier(new VF.Ornament('upprall'), 0);
+            notesBar1[6].addModifier(new VF.Ornament('downprall'), 0);
+            notesBar1[7].addModifier(new VF.Ornament('prallup'), 0);
+            notesBar1[8].addModifier(new VF.Ornament('pralldown'), 0);
+            notesBar1[9].addModifier(new VF.Ornament('upmordent'), 0);
+            notesBar1[10].addModifier(new VF.Ornament('downmordent'), 0);
+            notesBar1[11].addModifier(new VF.Ornament('lineprall'), 0);
+            notesBar1[12].addModifier(new VF.Ornament('prallprall'), 0);
             // Helper function to justify and draw a 4/4 voice
             VF.Formatter.FormatAndDraw(ctx, staveBar1, notesBar1);
         },
@@ -23458,10 +23527,10 @@ VF.Test.Ornament = (function () {
                 new VF.StaveNote({ keys: ['a/4'], duration: '4', stem_direction: 1 }),
                 new VF.StaveNote({ keys: ['a/4'], duration: '4', stem_direction: 1 }),
             ];
-            notesBar1[0].addModifier(0, new VF.Ornament('turn').setDelayed(true));
-            notesBar1[1].addModifier(0, new VF.Ornament('turn_inverted').setDelayed(true));
-            notesBar1[2].addModifier(0, new VF.Ornament('turn_inverted').setDelayed(true));
-            notesBar1[3].addModifier(0, new VF.Ornament('turn').setDelayed(true));
+            notesBar1[0].addModifier(new VF.Ornament('turn').setDelayed(true), 0);
+            notesBar1[1].addModifier(new VF.Ornament('turn_inverted').setDelayed(true), 0);
+            notesBar1[2].addModifier(new VF.Ornament('turn_inverted').setDelayed(true), 0);
+            notesBar1[3].addModifier(new VF.Ornament('turn').setDelayed(true), 0);
             // Helper function to justify and draw a 4/4 voice
             VF.Formatter.FormatAndDraw(ctx, staveBar1, notesBar1);
         },
@@ -23478,10 +23547,10 @@ VF.Test.Ornament = (function () {
                 new VF.StaveNote({ keys: ['a/4'], duration: '4', stem_direction: 1 }),
                 new VF.StaveNote({ keys: ['a/4'], duration: '4', stem_direction: 1 }),
             ];
-            notesBar1[0].addModifier(0, new VF.Ornament('turn').setDelayed(true));
-            notesBar1[1].addModifier(0, new VF.Ornament('turn_inverted').setDelayed(true));
-            notesBar1[2].addModifier(0, new VF.Ornament('turn_inverted').setDelayed(true));
-            notesBar1[3].addModifier(0, new VF.Ornament('turn').setDelayed(true));
+            notesBar1[0].addModifier(new VF.Ornament('turn').setDelayed(true), 0);
+            notesBar1[1].addModifier(new VF.Ornament('turn_inverted').setDelayed(true), 0);
+            notesBar1[2].addModifier(new VF.Ornament('turn_inverted').setDelayed(true), 0);
+            notesBar1[3].addModifier(new VF.Ornament('turn').setDelayed(true), 0);
             // Helper function to justify and draw a 4/4 voice
             VF.Formatter.FormatAndDraw(ctx, staveBar1, notesBar1);
             VF.Formatter.FormatAndDraw(ctx, staveBar1, notesBar1);
@@ -23499,14 +23568,14 @@ VF.Test.Ornament = (function () {
                 new VF.StaveNote({ keys: ['a/4'], duration: '4', stem_direction: 1 }),
                 new VF.StaveNote({ keys: ['a/4'], duration: '4', stem_direction: 1 }),
             ];
-            notesBar1[0].addModifier(0, new VF.Ornament('mordent'));
-            notesBar1[1].addModifier(0, new VF.Ornament('turn_inverted'));
-            notesBar1[2].addModifier(0, new VF.Ornament('turn'));
-            notesBar1[3].addModifier(0, new VF.Ornament('turn_inverted'));
-            notesBar1[0].addModifier(0, new VF.Ornament('turn'));
-            notesBar1[1].addModifier(0, new VF.Ornament('prallup'));
-            notesBar1[2].addModifier(0, new VF.Ornament('upmordent'));
-            notesBar1[3].addModifier(0, new VF.Ornament('lineprall'));
+            notesBar1[0].addModifier(new VF.Ornament('mordent'), 0);
+            notesBar1[1].addModifier(new VF.Ornament('turn_inverted'), 0);
+            notesBar1[2].addModifier(new VF.Ornament('turn'), 0);
+            notesBar1[3].addModifier(new VF.Ornament('turn_inverted'), 0);
+            notesBar1[0].addModifier(new VF.Ornament('turn'), 0);
+            notesBar1[1].addModifier(new VF.Ornament('prallup'), 0);
+            notesBar1[2].addModifier(new VF.Ornament('upmordent'), 0);
+            notesBar1[3].addModifier(new VF.Ornament('lineprall'), 0);
             // Helper function to justify and draw a 4/4 voice
             VF.Formatter.FormatAndDraw(ctx, staveBar1, notesBar1);
         },
@@ -23530,17 +23599,18 @@ VF.Test.Ornament = (function () {
                 new VF.StaveNote({ keys: ['f/4'], duration: '4', stem_direction: 1 }),
                 new VF.StaveNote({ keys: ['f/4'], duration: '4', stem_direction: 1 }),
             ];
-            notesBar1[0].addModifier(0, new VF.Ornament('mordent').setUpperAccidental('#').setLowerAccidental('#'));
-            notesBar1[1].addModifier(0, new VF.Ornament('turn_inverted').setLowerAccidental('b').setUpperAccidental('b'));
-            notesBar1[2].addModifier(0, new VF.Ornament('turn').setUpperAccidental('##').setLowerAccidental('##'));
-            notesBar1[3].addModifier(0, new VF.Ornament('mordent_inverted').setLowerAccidental('db').setUpperAccidental('db'));
-            notesBar1[4].addModifier(0, new VF.Ornament('turn_inverted').setUpperAccidental('++').setLowerAccidental('++'));
-            notesBar1[5].addModifier(0, new VF.Ornament('tr').setUpperAccidental('n').setLowerAccidental('n'));
-            notesBar1[6].addModifier(0, new VF.Ornament('prallup').setUpperAccidental('d').setLowerAccidental('d'));
-            notesBar1[7].addModifier(0, new VF.Ornament('lineprall').setUpperAccidental('db').setLowerAccidental('db'));
-            notesBar1[8].addModifier(0, new VF.Ornament('upmordent').setUpperAccidental('bbs').setLowerAccidental('bbs'));
-            notesBar1[9].addModifier(0, new VF.Ornament('prallprall').setUpperAccidental('bb').setLowerAccidental('bb'));
-            notesBar1[10].addModifier(0, new VF.Ornament('turn_inverted').setUpperAccidental('+').setLowerAccidental('+'));
+            notesBar1[0].addModifier(new VF.Ornament('mordent').setUpperAccidental('#').setLowerAccidental('#'), 0);
+            notesBar1[1].addModifier(new VF.Ornament('turn_inverted').setLowerAccidental('b').setUpperAccidental('b'), 0);
+            notesBar1[1].addModifier(new VF.Ornament('turn_inverted').setLowerAccidental('b').setUpperAccidental('b'), 0);
+            notesBar1[2].addModifier(new VF.Ornament('turn').setUpperAccidental('##').setLowerAccidental('##'), 0);
+            notesBar1[3].addModifier(new VF.Ornament('mordent_inverted').setLowerAccidental('db').setUpperAccidental('db'), 0);
+            notesBar1[4].addModifier(new VF.Ornament('turn_inverted').setUpperAccidental('++').setLowerAccidental('++'), 0);
+            notesBar1[5].addModifier(new VF.Ornament('tr').setUpperAccidental('n').setLowerAccidental('n'), 0);
+            notesBar1[6].addModifier(new VF.Ornament('prallup').setUpperAccidental('d').setLowerAccidental('d'), 0);
+            notesBar1[7].addModifier(new VF.Ornament('lineprall').setUpperAccidental('db').setLowerAccidental('db'), 0);
+            notesBar1[8].addModifier(new VF.Ornament('upmordent').setUpperAccidental('bbs').setLowerAccidental('bbs'), 0);
+            notesBar1[9].addModifier(new VF.Ornament('prallprall').setUpperAccidental('bb').setLowerAccidental('bb'), 0);
+            notesBar1[10].addModifier(new VF.Ornament('turn_inverted').setUpperAccidental('+').setLowerAccidental('+'), 0);
             // Helper function to justify and draw a 4/4 voice
             VF.Formatter.FormatAndDraw(ctx, staveBar1, notesBar1);
         },
@@ -23554,7 +23624,7 @@ VF.Test.Ornament = (function () {
             function newNote(keys, duration, modifier, stemDirection) {
                 var dot = duration.indexOf('d') >= 0;
                 var rv = new VF.StaveNote({ keys: keys, duration: duration, stem_direction: stemDirection })
-                    .addModifier(0, modifier)
+                    .addModifier(modifier, 0)
                     .addAccidental(0, new VF.Accidental('b'));
                 if (dot) {
                     rv.addDotToAll();
@@ -23573,7 +23643,7 @@ VF.Test.Ornament = (function () {
                 notes.push(newNote(keys, '4d', modifiers[2], stemDirection));
                 notes.push(newNote(keys, '8', modifiers[3], stemDirection));
                 if (modifiers.length > 4) {
-                    notes[3].addModifier(0, modifiers[4]);
+                    notes[3].addModifier(modifiers[4], 0);
                 }
                 VF.Beam.generateBeams(notes);
                 var voice = new VF.Voice({
@@ -23720,6 +23790,65 @@ Vex.Flow.Test.Parser = (function () {
             },
         };
     };
+    // A series of piano key numbers (Middle C == 40) separated by whitespace.
+    //   C Major Scale => 40 42 44 45 47 49 51 52
+    // A chord is 2 or more piano key numbers surrounded by BRACKETS and separated by PERIODS
+    //   C Major == [40.44.47]
+    //   C-major F-major G-major A-minor chord progression => [40.44.47] [45.49.52] [47.51.54] [49.52.56]
+    var MicroScoreGrammar = /** @class */ (function () {
+        function MicroScoreGrammar() {
+        }
+        MicroScoreGrammar.prototype.begin = function () {
+            return this.BEGIN;
+        };
+        MicroScoreGrammar.prototype.BEGIN = function () {
+            return {
+                expect: [this.ITEM, this.MAYBE_MORE_ITEMS, this.EOL],
+            };
+        };
+        MicroScoreGrammar.prototype.ITEM = function () {
+            return { expect: [this.PIANO_KEY_NUMBER, this.CHORD], or: true };
+        };
+        MicroScoreGrammar.prototype.MAYBE_MORE_ITEMS = function () {
+            return {
+                expect: [this.ITEM],
+                zeroOrMore: true,
+            };
+        };
+        MicroScoreGrammar.prototype.PIANO_KEY_NUMBER = function () {
+            return { expect: [this.NUM], oneOrMore: true };
+        };
+        MicroScoreGrammar.prototype.CHORD = function () {
+            return {
+                expect: [this.LEFT_BRACKET, this.PIANO_KEY_NUMBER, this.MORE_CHORD_PARTS, this.RIGHT_BRACKET],
+            };
+        };
+        MicroScoreGrammar.prototype.MORE_CHORD_PARTS = function () {
+            return {
+                expect: [this.PERIOD, this.PIANO_KEY_NUMBER],
+                oneOrMore: true,
+            };
+        };
+        MicroScoreGrammar.prototype.NUM = function () {
+            return { token: '\\d+' };
+        };
+        MicroScoreGrammar.prototype.WHITESPACE = function () {
+            return { token: '\\s+' };
+        };
+        MicroScoreGrammar.prototype.PERIOD = function () {
+            return { token: '\\.' };
+        };
+        MicroScoreGrammar.prototype.LEFT_BRACKET = function () {
+            return { token: '\\[' };
+        };
+        MicroScoreGrammar.prototype.RIGHT_BRACKET = function () {
+            return { token: '\\]' };
+        };
+        MicroScoreGrammar.prototype.EOL = function () {
+            return { token: '$' };
+        };
+        return MicroScoreGrammar;
+    }());
     function assertParseFail(assert, result, expectedPos, msg) {
         assert.notOk(result.success, msg);
         assert.equal(result.errorPos, expectedPos, msg);
@@ -23731,6 +23860,7 @@ Vex.Flow.Test.Parser = (function () {
             QUnit.test('Basic', VFT.Parser.basic);
             QUnit.test('Advanced', VFT.Parser.advanced);
             QUnit.test('Mixed', VFT.Parser.mixed);
+            QUnit.test('Micro Score', VFT.Parser.microscore);
         },
         basic: function (assert) {
             var grammar = new TestGrammar();
@@ -23771,6 +23901,23 @@ Vex.Flow.Test.Parser = (function () {
                 assert.equal(parser.parse(line).success, true, line);
             });
             assertParseFail(assert, parser.parse('first second'), 6);
+        },
+        microscore: function (assert) {
+            var grammar = new MicroScoreGrammar();
+            var parser = new VF.Parser(grammar);
+            var mustPass = [
+                '40 42 44 45 47 49 51 52',
+                '[40.44.47] [45.49.52] [47.51.54] [49.52.56]',
+                '40 [40.44.47] 45 47 [44.47.51]', // Mixed Notes and Chords: C4 [Cmajor] F4 G4 [Eminor]
+            ];
+            mustPass.forEach(function (line) {
+                var result = parser.parse(line);
+                assert.equal(result.success, true, line);
+                assert.equal(result.matches.length, 3, line);
+            });
+            assertParseFail(assert, parser.parse('40 42 44 45 47 49 5A 52'), 19);
+            assertParseFail(assert, parser.parse('40.44.47] [45.49.52] [47.51.54] [49.52.56]'), 2);
+            assertParseFail(assert, parser.parse('40 [40] 45 47 [44.47.51]'), 3); // A chord with a single note is not allowed.
         },
     };
     return Parser;
@@ -23967,16 +24114,16 @@ VF.Test.Percussion = (function () {
                     vf
                         .StaveNote({ keys: ['c/5'], duration: '4', stem_direction: -1 })
                         .addArticulation(0, vf.Articulation({ type: 'a>' }))
-                        .addModifier(0, vf.Annotation({ text: 'L' })),
+                        .addModifier(vf.Annotation({ text: 'L' }), 0),
                     vf
                         .StaveNote({ keys: ['c/5'], duration: '4', stem_direction: -1 })
-                        .addModifier(0, vf.Annotation({ text: 'R' })),
+                        .addModifier(vf.Annotation({ text: 'R' }), 0),
                     vf
                         .StaveNote({ keys: ['c/5'], duration: '4', stem_direction: -1 })
-                        .addModifier(0, vf.Annotation({ text: 'L' })),
+                        .addModifier(vf.Annotation({ text: 'L' }), 0),
                     vf
                         .StaveNote({ keys: ['c/5'], duration: '4', stem_direction: -1 })
-                        .addModifier(0, vf.Annotation({ text: 'L' })),
+                        .addModifier(vf.Annotation({ text: 'L' }), 0),
                 ]);
             }));
             run('Percussion Snare1', createSingleMeasureTest(function (vf) {
@@ -24650,7 +24797,7 @@ VF.Test.Rhythm = (function () {
                 }),
                 new VF.StaveNote({ keys: ['b/4'], duration: '8s', stem_direction: -1 }),
             ];
-            notesBar1_part1[0].addModifier(0, new VF.Annotation('C7').setFont('Times', VF.Test.Font.size + 2));
+            notesBar1_part1[0].addModifier(new VF.Annotation('C7').setFont('Times', VF.Test.Font.size + 2), 0);
             var notesBar1_part2 = [
                 new VF.StaveNote({
                     keys: ['b/4'],
@@ -24699,7 +24846,7 @@ VF.Test.Rhythm = (function () {
                     stem_direction: -1,
                 }),
             ];
-            notesBar2[0].addModifier(0, new VF.Annotation('F').setFont('Times', VF.Test.Font.size + 2));
+            notesBar2[0].addModifier(new VF.Annotation('F').setFont('Times', VF.Test.Font.size + 2), 0);
             // Helper function to justify and draw a 4/4 voice
             VF.Formatter.FormatAndDraw(ctx, staveBar2, notesBar2);
             expect(0);
@@ -24759,7 +24906,7 @@ VF.Test.Rhythm = (function () {
                     stem_direction: -1,
                 }),
             ];
-            notesBar1_part1[0].addModifier(0, new VF.Annotation('C7').setFont('Times', VF.Test.Font.size + 3));
+            notesBar1_part1[0].addModifier(new VF.Annotation('C7').setFont('Times', VF.Test.Font.size + 3), 0);
             // create the beams for 8th notes in 2nd measure
             var beam1 = new VF.Beam(notesBar1_part1);
             var beam2 = new VF.Beam(notesBar1_part2);
@@ -24823,7 +24970,7 @@ VF.Test.Rhythm = (function () {
                     stem_direction: 1,
                 }),
             ];
-            notesBar1_part1[0].addModifier(0, new VF.Annotation('C7').setFont('Times', VF.Test.Font.size + 3));
+            notesBar1_part1[0].addModifier(new VF.Annotation('C7').setFont('Times', VF.Test.Font.size + 3), 0);
             // create the beams for 8th notes in 2nd measure
             var beam1 = new VF.Beam(notesBar1_part1);
             // Helper function to justify and draw a 4/4 voice
@@ -27134,10 +27281,10 @@ VF.Test.StaveNote = (function () {
                 .addAnnotation(0, new VF.Annotation('Test').setPosition(3))
                 .addStroke(0, new VF.Stroke(2))
                 .addAccidental(1, new VF.Accidental('#'))
-                .addModifier(0, newFinger('3', VF.Modifier.Position.LEFT))
-                .addModifier(2, newFinger('2', VF.Modifier.Position.LEFT))
-                .addModifier(1, newFinger('1', VF.Modifier.Position.RIGHT))
-                .addModifier(2, newStringNumber('4', VF.Modifier.Position.BELOW))
+                .addModifier(newFinger('3', VF.Modifier.Position.LEFT), 0)
+                .addModifier(newFinger('2', VF.Modifier.Position.LEFT), 2)
+                .addModifier(newFinger('1', VF.Modifier.Position.RIGHT), 1)
+                .addModifier(newStringNumber('4', VF.Modifier.Position.BELOW), 2)
                 .addDotToAll();
             var voice = vf.Voice().setStrict(false).addTickables([note]);
             vf.Formatter().joinVoices([voice]).formatToStave([voice], stave);
@@ -27304,25 +27451,25 @@ VF.Test.StringNumber = (function () {
             var stave1 = vf.Stave({ width: 300 }).setEndBarType(VF.Barline.type.DOUBLE).addClef('treble');
             var notes1 = score.notes('(c4 e4 g4)/4., (c5 e5 g5)/8, (c4 f4 g4)/4, (c4 f4 g4)/4', { stem: 'down' });
             notes1[0]
-                .addModifier(0, vf.StringNumber({ number: '5', position: 'right' }))
-                .addModifier(1, vf.StringNumber({ number: '4', position: 'left' }))
-                .addModifier(2, vf.StringNumber({ number: '3', position: 'right' }));
+                .addModifier(vf.StringNumber({ number: '5', position: 'right' }), 0)
+                .addModifier(vf.StringNumber({ number: '4', position: 'left' }), 1)
+                .addModifier(vf.StringNumber({ number: '3', position: 'right' }), 2);
             notes1[1]
                 .addAccidental(0, vf.Accidental({ type: '#' }))
-                .addModifier(0, vf.StringNumber({ number: '5', position: 'below' }))
+                .addModifier(vf.StringNumber({ number: '5', position: 'below' }), 0)
                 .addAccidental(1, vf.Accidental({ type: '#' }).setAsCautionary())
-                .addModifier(2, vf
+                .addModifier(vf
                 .StringNumber({ number: '3', position: 'above' })
                 .setLastNote(notes1[3])
-                .setLineEndType(VF.Renderer.LineEndType.DOWN));
+                .setLineEndType(VF.Renderer.LineEndType.DOWN), 2);
             notes1[2]
-                .addModifier(0, vf.StringNumber({ number: '5', position: 'left' }))
-                .addModifier(2, vf.StringNumber({ number: '3', position: 'left' }))
+                .addModifier(vf.StringNumber({ number: '5', position: 'left' }), 0)
+                .addModifier(vf.StringNumber({ number: '3', position: 'left' }), 2)
                 .addAccidental(1, vf.Accidental({ type: '#' }));
             notes1[3]
-                .addModifier(0, vf.StringNumber({ number: '5', position: 'right' }).setOffsetY(7))
-                .addModifier(1, vf.StringNumber({ number: '4', position: 'right' }).setOffsetY(6))
-                .addModifier(2, vf.StringNumber({ number: '3', position: 'right' }).setOffsetY(-6));
+                .addModifier(vf.StringNumber({ number: '5', position: 'right' }).setOffsetY(7), 0)
+                .addModifier(vf.StringNumber({ number: '4', position: 'right' }).setOffsetY(6), 1)
+                .addModifier(vf.StringNumber({ number: '3', position: 'right' }).setOffsetY(-6), 2);
             var voice1 = score.voice(notes1);
             vf.Formatter().joinVoices([voice1]).formatToStave([voice1], stave1);
             // bar 2 - juxtaposing second bar next to first bar
@@ -27331,31 +27478,31 @@ VF.Test.StringNumber = (function () {
                 .setEndBarType(VF.Barline.type.DOUBLE);
             var notes2 = score.notes('(c4 e4 g4)/4, (c5 e5 g5), (c4 f4 g4), (c4 f4 g4)', { stem: 'up' });
             notes2[0]
-                .addModifier(0, vf.StringNumber({ number: '5', position: 'right' }))
-                .addModifier(1, vf.StringNumber({ number: '4', position: 'left' }))
-                .addModifier(2, vf.StringNumber({ number: '3', position: 'right' }));
+                .addModifier(vf.StringNumber({ number: '5', position: 'right' }), 0)
+                .addModifier(vf.StringNumber({ number: '4', position: 'left' }), 1)
+                .addModifier(vf.StringNumber({ number: '3', position: 'right' }), 2);
             notes2[1]
                 .addAccidental(0, vf.Accidental({ type: '#' }))
-                .addModifier(0, vf.StringNumber({ number: '5', position: 'below' }))
+                .addModifier(vf.StringNumber({ number: '5', position: 'below' }), 0)
                 .addAccidental(1, vf.Accidental({ type: '#' }))
-                .addModifier(2, vf.StringNumber({ number: '3', position: 'above' }).setLastNote(notes2[3]).setDashed(false));
+                .addModifier(vf.StringNumber({ number: '3', position: 'above' }).setLastNote(notes2[3]).setDashed(false), 2);
             notes2[2]
-                .addModifier(2, vf.StringNumber({ number: '3', position: 'left' }))
+                .addModifier(vf.StringNumber({ number: '3', position: 'left' }), 2)
                 .addAccidental(1, vf.Accidental({ type: '#' }));
             notes2[3]
-                .addModifier(0, vf.StringNumber({ number: '5', position: 'right' }).setOffsetY(7))
-                .addModifier(1, vf.StringNumber({ number: '4', position: 'right' }).setOffsetY(6))
-                .addModifier(2, vf.StringNumber({ number: '3', position: 'right' }).setOffsetY(-6));
+                .addModifier(vf.StringNumber({ number: '5', position: 'right' }).setOffsetY(7), 0)
+                .addModifier(vf.StringNumber({ number: '4', position: 'right' }).setOffsetY(6), 1)
+                .addModifier(vf.StringNumber({ number: '3', position: 'right' }).setOffsetY(-6), 2);
             var voice2 = score.voice(notes2);
             vf.Formatter().joinVoices([voice2]).formatToStave([voice2], stave2);
             // bar 3 - juxtaposing third bar next to second bar
             var stave3 = vf.Stave({ x: stave2.width + stave2.x, y: stave2.y, width: 150 }).setEndBarType(VF.Barline.type.END);
             var notesBar3 = score.notes('(c4 e4 g4 a4)/1.');
             notesBar3[0]
-                .addModifier(0, vf.StringNumber({ number: '5', position: 'below' }))
-                .addModifier(1, vf.StringNumber({ number: '4', position: 'right' }))
-                .addModifier(2, vf.StringNumber({ number: '3', position: 'left' }))
-                .addModifier(3, vf.StringNumber({ number: '2', position: 'above' }));
+                .addModifier(vf.StringNumber({ number: '5', position: 'below' }), 0)
+                .addModifier(vf.StringNumber({ number: '4', position: 'right' }), 1)
+                .addModifier(vf.StringNumber({ number: '3', position: 'left' }), 2)
+                .addModifier(vf.StringNumber({ number: '2', position: 'above' }), 3);
             var voice3 = score.voice(notesBar3, { time: '6/4' });
             vf.Formatter().joinVoices([voice3]).formatToStave([voice3], stave3);
             vf.draw();
@@ -27368,57 +27515,57 @@ VF.Test.StringNumber = (function () {
             var stave1 = vf.Stave({ width: 350 }).setEndBarType(VF.Barline.type.DOUBLE).addClef('treble');
             var notes1 = score.notes('(c4 e4 g4)/4, (c5 e5 g5), (c4 f4 g4), (c4 f4 g4)', { stem: 'down' });
             notes1[0]
-                .addModifier(0, vf.Fingering({ number: '3', position: 'left' }))
-                .addModifier(1, vf.Fingering({ number: '2', position: 'left' }))
-                .addModifier(2, vf.Fingering({ number: '0', position: 'left' }));
+                .addModifier(vf.Fingering({ number: '3', position: 'left' }), 0)
+                .addModifier(vf.Fingering({ number: '2', position: 'left' }), 1)
+                .addModifier(vf.Fingering({ number: '0', position: 'left' }), 2);
             notes1[1]
                 .addAccidental(0, vf.Accidental({ type: '#' }))
-                .addModifier(0, vf.Fingering({ number: '3', position: 'left' }))
-                .addModifier(1, vf.Fingering({ number: '2', position: 'left' }))
+                .addModifier(vf.Fingering({ number: '3', position: 'left' }), 0)
+                .addModifier(vf.Fingering({ number: '2', position: 'left' }), 1)
                 .addAccidental(1, vf.Accidental({ type: '#' }))
-                .addModifier(2, vf.Fingering({ number: '0', position: 'left' }));
+                .addModifier(vf.Fingering({ number: '0', position: 'left' }), 2);
             notes1[2]
-                .addModifier(0, vf.Fingering({ number: '3', position: 'below' }))
-                .addModifier(1, vf.Fingering({ number: '4', position: 'left' }))
-                .addModifier(1, vf.StringNumber({ number: '4', position: 'left' }))
-                .addModifier(2, vf.Fingering({ number: '0', position: 'above' }))
+                .addModifier(vf.Fingering({ number: '3', position: 'below' }), 0)
+                .addModifier(vf.Fingering({ number: '4', position: 'left' }), 1)
+                .addModifier(vf.StringNumber({ number: '4', position: 'left' }), 1)
+                .addModifier(vf.Fingering({ number: '0', position: 'above' }), 2)
                 .addAccidental(1, vf.Accidental({ type: '#' }));
             notes1[3]
-                .addModifier(0, vf.Fingering({ number: '3', position: 'right' }))
-                .addModifier(0, vf.StringNumber({ number: '5', position: 'right' }).setOffsetY(7))
-                .addModifier(1, vf.Fingering({ number: '4', position: 'right' }))
-                .addModifier(1, vf.StringNumber({ number: '4', position: 'right' }).setOffsetY(6))
-                .addModifier(2, vf.Fingering({ number: '0', position: 'right' }).setOffsetY(-5))
-                .addModifier(2, vf.StringNumber({ number: '3', position: 'right' }).setOffsetY(-6));
+                .addModifier(vf.Fingering({ number: '3', position: 'right' }), 0)
+                .addModifier(vf.StringNumber({ number: '5', position: 'right' }).setOffsetY(7), 0)
+                .addModifier(vf.Fingering({ number: '4', position: 'right' }), 1)
+                .addModifier(vf.StringNumber({ number: '4', position: 'right' }).setOffsetY(6), 1)
+                .addModifier(vf.Fingering({ number: '0', position: 'right' }).setOffsetY(-5), 2)
+                .addModifier(vf.StringNumber({ number: '3', position: 'right' }).setOffsetY(-6), 2);
             var voice1 = score.voice(notes1);
             vf.Formatter().joinVoices([voice1]).formatToStave([voice1], stave1);
             // bar 2 - juxtaposing second bar next to first bar
             var stave2 = vf.Stave({ x: stave1.width + stave1.x, y: stave1.y, width: 350 }).setEndBarType(VF.Barline.type.END);
             var notes2 = score.notes('(c4 e4 g4)/4., (c5 e5 g5)/8, (c4 f4 g4)/8, (c4 f4 g4)/4.[stem="down"]', { stem: 'up' });
             notes2[0]
-                .addModifier(0, vf.Fingering({ number: '3', position: 'right' }))
-                .addModifier(1, vf.Fingering({ number: '2', position: 'left' }))
-                .addModifier(1, vf.StringNumber({ number: '4', position: 'right' }))
-                .addModifier(2, vf.Fingering({ number: '0', position: 'above' }));
+                .addModifier(vf.Fingering({ number: '3', position: 'right' }), 0)
+                .addModifier(vf.Fingering({ number: '2', position: 'left' }), 1)
+                .addModifier(vf.StringNumber({ number: '4', position: 'right' }), 1)
+                .addModifier(vf.Fingering({ number: '0', position: 'above' }), 2);
             notes2[1]
                 .addAccidental(0, vf.Accidental({ type: '#' }))
-                .addModifier(0, vf.Fingering({ number: '3', position: 'right' }))
-                .addModifier(1, vf.Fingering({ number: '2', position: 'left' }))
+                .addModifier(vf.Fingering({ number: '3', position: 'right' }), 0)
+                .addModifier(vf.Fingering({ number: '2', position: 'left' }), 1)
                 .addAccidental(1, vf.Accidental({ type: '#' }))
-                .addModifier(2, vf.Fingering({ number: '0', position: 'left' }));
+                .addModifier(vf.Fingering({ number: '0', position: 'left' }), 2);
             notes2[2]
-                .addModifier(0, vf.Fingering({ number: '3', position: 'below' }))
-                .addModifier(1, vf.Fingering({ number: '2', position: 'left' }))
-                .addModifier(1, vf.StringNumber({ number: '4', position: 'left' }))
-                .addModifier(2, vf.Fingering({ number: '1', position: 'right' }))
+                .addModifier(vf.Fingering({ number: '3', position: 'below' }), 0)
+                .addModifier(vf.Fingering({ number: '2', position: 'left' }), 1)
+                .addModifier(vf.StringNumber({ number: '4', position: 'left' }), 1)
+                .addModifier(vf.Fingering({ number: '1', position: 'right' }), 2)
                 .addAccidental(2, vf.Accidental({ type: '#' }));
             notes2[3]
-                .addModifier(0, vf.Fingering({ number: '3', position: 'right' }))
-                .addModifier(0, vf.StringNumber({ number: '5', position: 'right' }).setOffsetY(7))
-                .addModifier(1, vf.Fingering({ number: '4', position: 'right' }))
-                .addModifier(1, vf.StringNumber({ number: '4', position: 'right' }).setOffsetY(6))
-                .addModifier(2, vf.Fingering({ number: '1', position: 'right' }).setOffsetY(-6))
-                .addModifier(2, vf.StringNumber({ number: '3', position: 'right' }).setOffsetY(-6));
+                .addModifier(vf.Fingering({ number: '3', position: 'right' }), 0)
+                .addModifier(vf.StringNumber({ number: '5', position: 'right' }).setOffsetY(7), 0)
+                .addModifier(vf.Fingering({ number: '4', position: 'right' }), 1)
+                .addModifier(vf.StringNumber({ number: '4', position: 'right' }).setOffsetY(6), 1)
+                .addModifier(vf.Fingering({ number: '1', position: 'right' }).setOffsetY(-6), 2)
+                .addModifier(vf.StringNumber({ number: '3', position: 'right' }).setOffsetY(-6), 2);
             var voice2 = score.voice(notes2);
             vf.Formatter().joinVoices([voice2]).formatToStave([voice2], stave2);
             vf.draw();
@@ -27431,37 +27578,37 @@ VF.Test.StringNumber = (function () {
             var notes1 = score.notes('(c4 e4 g4)/4, (a3 e4 g4), (c4 d4 a4), (c4 d4 a4)', { stem: 'up' });
             notes1[0]
                 .addStroke(0, new VF.Stroke(5))
-                .addModifier(0, vf.Fingering({ number: '3', position: 'left' }))
-                .addModifier(1, vf.Fingering({ number: '2', position: 'left' }))
-                .addModifier(2, vf.Fingering({ number: '0', position: 'left' }))
-                .addModifier(1, vf.StringNumber({ number: '4', position: 'left' }))
-                .addModifier(2, vf.StringNumber({ number: '3', position: 'above' }));
+                .addModifier(vf.Fingering({ number: '3', position: 'left' }), 0)
+                .addModifier(vf.Fingering({ number: '2', position: 'left' }), 1)
+                .addModifier(vf.Fingering({ number: '0', position: 'left' }), 2)
+                .addModifier(vf.StringNumber({ number: '4', position: 'left' }), 1)
+                .addModifier(vf.StringNumber({ number: '3', position: 'above' }), 2);
             notes1[1]
                 .addStroke(0, new VF.Stroke(6))
-                .addModifier(1, vf.StringNumber({ number: '4', position: 'right' }))
-                .addModifier(2, vf.StringNumber({ number: '3', position: 'above' }))
+                .addModifier(vf.StringNumber({ number: '4', position: 'right' }), 1)
+                .addModifier(vf.StringNumber({ number: '3', position: 'above' }), 2)
                 .addAccidental(0, vf.Accidental({ type: '#' }))
                 .addAccidental(1, vf.Accidental({ type: '#' }))
                 .addAccidental(2, vf.Accidental({ type: '#' }));
             notes1[2]
                 .addStroke(0, new VF.Stroke(2))
-                .addModifier(0, vf.Fingering({ number: '3', position: 'left' }))
-                .addModifier(1, vf.Fingering({ number: '0', position: 'right' }))
-                .addModifier(1, vf.StringNumber({ number: '4', position: 'right' }))
-                .addModifier(2, vf.Fingering({ number: '1', position: 'left' }))
-                .addModifier(2, vf.StringNumber({ number: '3', position: 'right' }));
+                .addModifier(vf.Fingering({ number: '3', position: 'left' }), 0)
+                .addModifier(vf.Fingering({ number: '0', position: 'right' }), 1)
+                .addModifier(vf.StringNumber({ number: '4', position: 'right' }), 1)
+                .addModifier(vf.Fingering({ number: '1', position: 'left' }), 2)
+                .addModifier(vf.StringNumber({ number: '3', position: 'right' }), 2);
             notes1[3]
                 .addStroke(0, new VF.Stroke(1))
-                .addModifier(2, vf.StringNumber({ number: '3', position: 'left' }))
-                .addModifier(1, vf.StringNumber({ number: '4', position: 'right' }));
+                .addModifier(vf.StringNumber({ number: '3', position: 'left' }), 2)
+                .addModifier(vf.StringNumber({ number: '4', position: 'right' }), 1);
             var notes2 = score.notes('e3/8, e3, e3, e3, e3, e3, e3, e3', { stem: 'down' });
             notes2[0]
-                .addModifier(0, vf.Fingering({ number: '0', position: 'left' }))
-                .addModifier(0, vf.StringNumber({ number: '6', position: 'below' }));
+                .addModifier(vf.Fingering({ number: '0', position: 'left' }), 0)
+                .addModifier(vf.StringNumber({ number: '6', position: 'below' }), 0);
             notes2[2].addAccidental(0, vf.Accidental({ type: '#' }));
-            notes2[4].addModifier(0, vf.Fingering({ number: '0', position: 'left' }));
+            notes2[4].addModifier(vf.Fingering({ number: '0', position: 'left' }), 0);
             // Position string number 6 beneath the strum arrow: left (15) and down (18)
-            notes2[4].addModifier(0, vf.StringNumber({ number: '6', position: 'left' }).setOffsetX(15).setOffsetY(18));
+            notes2[4].addModifier(vf.StringNumber({ number: '6', position: 'left' }).setOffsetX(15).setOffsetY(18), 0);
             var voices = [notes1, notes2].map(score.voice.bind(score));
             vf.Formatter().joinVoices(voices).formatToStave(voices, stave);
             vf.Beam({ notes: notes2.slice(0, 4) });
@@ -27479,19 +27626,19 @@ VF.Test.StringNumber = (function () {
                 vf.StaveNote({ keys: ['c/4', 'e/4', 'g/4', 'd/5', 'e/5', 'g/5'], stem_direction: -1, duration: '4' }),
             ];
             notes[0]
-                .addModifier(0, vf.Fingering({ number: '3', position: 'left' }))
+                .addModifier(vf.Fingering({ number: '3', position: 'left' }), 0)
                 .addAccidental(0, vf.Accidental({ type: '#' }))
-                .addModifier(1, vf.Fingering({ number: '2', position: 'left' }))
-                .addModifier(1, vf.StringNumber({ number: '2', position: 'left' }))
+                .addModifier(vf.Fingering({ number: '2', position: 'left' }), 1)
+                .addModifier(vf.StringNumber({ number: '2', position: 'left' }), 1)
                 .addAccidental(1, vf.Accidental({ type: '#' }))
-                .addModifier(2, vf.Fingering({ number: '0', position: 'left' }))
+                .addModifier(vf.Fingering({ number: '0', position: 'left' }), 2)
                 .addAccidental(2, vf.Accidental({ type: '#' }))
-                .addModifier(3, vf.Fingering({ number: '3', position: 'left' }))
+                .addModifier(vf.Fingering({ number: '3', position: 'left' }), 3)
                 .addAccidental(3, vf.Accidental({ type: '#' }))
-                .addModifier(4, vf.Fingering({ number: '2', position: 'right' }))
-                .addModifier(4, vf.StringNumber({ number: '3', position: 'right' }))
+                .addModifier(vf.Fingering({ number: '2', position: 'right' }), 4)
+                .addModifier(vf.StringNumber({ number: '3', position: 'right' }), 4)
                 .addAccidental(4, vf.Accidental({ type: '#' }))
-                .addModifier(5, vf.Fingering({ number: '0', position: 'left' }))
+                .addModifier(vf.Fingering({ number: '0', position: 'left' }), 5)
                 .addAccidental(5, vf.Accidental({ type: '#' }));
             notes[1]
                 .addAccidental(0, vf.Accidental({ type: '#' }))
@@ -27501,19 +27648,19 @@ VF.Test.StringNumber = (function () {
                 .addAccidental(4, vf.Accidental({ type: '#' }))
                 .addAccidental(5, vf.Accidental({ type: '#' }));
             notes[2]
-                .addModifier(0, vf.Fingering({ number: '3', position: 'left' }))
+                .addModifier(vf.Fingering({ number: '3', position: 'left' }), 0)
                 .addAccidental(0, vf.Accidental({ type: '#' }))
-                .addModifier(1, vf.Fingering({ number: '2', position: 'left' }))
-                .addModifier(1, vf.StringNumber({ number: '2', position: 'left' }))
+                .addModifier(vf.Fingering({ number: '2', position: 'left' }), 1)
+                .addModifier(vf.StringNumber({ number: '2', position: 'left' }), 1)
                 .addAccidental(1, vf.Accidental({ type: '#' }))
-                .addModifier(2, vf.Fingering({ number: '0', position: 'left' }))
+                .addModifier(vf.Fingering({ number: '0', position: 'left' }), 2)
                 .addAccidental(2, vf.Accidental({ type: '#' }))
-                .addModifier(3, vf.Fingering({ number: '3', position: 'left' }))
+                .addModifier(vf.Fingering({ number: '3', position: 'left' }), 3)
                 .addAccidental(3, vf.Accidental({ type: '#' }))
-                .addModifier(4, vf.Fingering({ number: '2', position: 'right' }))
-                .addModifier(4, vf.StringNumber({ number: '3', position: 'right' }))
+                .addModifier(vf.Fingering({ number: '2', position: 'right' }), 4)
+                .addModifier(vf.StringNumber({ number: '3', position: 'right' }), 4)
                 .addAccidental(4, vf.Accidental({ type: '#' }))
-                .addModifier(5, vf.Fingering({ number: '0', position: 'left' }))
+                .addModifier(vf.Fingering({ number: '0', position: 'left' }), 5)
                 .addAccidental(5, vf.Accidental({ type: '#' }));
             notes[3]
                 .addAccidental(0, vf.Accidental({ type: '#' }))
@@ -27615,10 +27762,10 @@ VF.Test.Strokes = (function () {
             notes1[2]
                 .addStroke(0, new VF.Stroke(7))
                 .addAccidental(1, vf.Accidental({ type: 'b' }))
-                .addModifier(0, graceNoteGroup);
-            notes1[3]
-                .addStroke(0, new VF.Stroke(7))
-                .addModifier(0, vf.NoteSubGroup({ notes: [vf.ClefNote({ type: 'treble', options: { size: 'default', annotation: '8va' } })] }));
+                .addModifier(graceNoteGroup, 0);
+            notes1[3].addStroke(0, new VF.Stroke(7)).addModifier(vf.NoteSubGroup({
+                notes: [vf.ClefNote({ type: 'treble', options: { size: 'default', annotation: '8va' } })],
+            }), 0);
             var voice1 = score.voice(notes1);
             vf.Formatter().joinVoices([voice1]).formatToStave([voice1], stave1);
             vf.draw();
@@ -27965,9 +28112,9 @@ VF.Test.Style = (function () {
             var mods1 = notes[1].getModifiers();
             mods1[0].setStyle(FS('green'));
             notes[0].addArticulation(0, new VF.Articulation('a.').setPosition(4).setStyle(FS('green')));
-            notes[0].addModifier(0, new VF.Ornament('mordent').setStyle(FS('lightgreen')));
-            notes[1].addModifier(0, new VF.Annotation('blue').setStyle(FS('blue')));
-            notes[1].addModifier(0, new VF.NoteSubGroup([vf.ClefNote({ options: { size: 'small' } }).setStyle(FS('blue'))]));
+            notes[0].addModifier(new VF.Ornament('mordent').setStyle(FS('lightgreen')), 0);
+            notes[1].addModifier(new VF.Annotation('blue').setStyle(FS('blue')), 0);
+            notes[1].addModifier(new VF.NoteSubGroup([vf.ClefNote({ options: { size: 'small' } }).setStyle(FS('blue'))]), 0);
             var voice = vf.Voice().addTickables(notes);
             vf.Formatter().joinVoices([voice]).formatToStave([voice], stave);
             vf.draw();
@@ -29296,29 +29443,29 @@ VF.Test.ThreeVoices = (function () {
             var run = VF.Test.runTests;
             QUnit.module('Three Voice Rests');
             run('Three Voices - #1', createThreeVoicesTest(['e5/2, e5', { stem: 'up' }], ['(d4 a4 d#5)/8, b4, (d4 a4 c5), b4, (d4 a4 c5), b4, (d4 a4 c5), b4', { stem: 'down' }], ['b3/4, e3, f3, a3', { stem: 'down' }], function (vf, voices) {
-                voices[0].getTickables()[0].addModifier(0, vf.Fingering({ number: '0', position: 'left' }));
+                voices[0].getTickables()[0].addModifier(vf.Fingering({ number: '0', position: 'left' }), 0);
                 voices[1]
                     .getTickables()[0]
-                    .addModifier(0, vf.Fingering({ number: '0', position: 'left' }))
-                    .addModifier(1, vf.Fingering({ number: '4', position: 'left' }));
+                    .addModifier(vf.Fingering({ number: '0', position: 'left' }), 0)
+                    .addModifier(vf.Fingering({ number: '4', position: 'left' }), 1);
             }));
             run('Three Voices - #2 Complex', createThreeVoicesTest(['(a4 e5)/16, e5, e5, e5, e5/8, e5, e5/2', { stem: 'up' }], ['(d4 d#5)/16, (b4 c5), d5, e5, (d4 a4 c5)/8, b4, (d4 a4 c5), b4, (d4 a4 c5), b4', { stem: 'down' }], ['b3/8, b3, e3/4, f3, a3', { stem: 'down' }], function (vf, voices) {
                 voices[0]
                     .getTickables()[0]
-                    .addModifier(0, vf.Fingering({ number: '2', position: 'left' }))
-                    .addModifier(1, vf.Fingering({ number: '0', position: 'above' }));
+                    .addModifier(vf.Fingering({ number: '2', position: 'left' }), 0)
+                    .addModifier(vf.Fingering({ number: '0', position: 'above' }), 1);
                 voices[1]
                     .getTickables()[0]
-                    .addModifier(0, vf.Fingering({ number: '0', position: 'left' }))
-                    .addModifier(1, vf.Fingering({ number: '4', position: 'left' }));
+                    .addModifier(vf.Fingering({ number: '0', position: 'left' }), 0)
+                    .addModifier(vf.Fingering({ number: '4', position: 'left' }), 1);
             }));
             run('Three Voices - #3', createThreeVoicesTest(['(g4 e5)/4, e5, (g4 e5)/2', { stem: 'up' }], ['c#5/4, b4/8, b4/8/r, a4/4., g4/8', { stem: 'down' }], ['c4/4, b3, a3, g3', { stem: 'down' }], function (vf, voices) {
                 voices[0]
                     .getTickables()[0]
-                    .addModifier(0, vf.Fingering({ number: '0', position: 'left' }))
-                    .addModifier(1, vf.Fingering({ number: '0', position: 'left' }));
-                voices[1].getTickables()[0].addModifier(0, vf.Fingering({ number: '1', position: 'left' }));
-                voices[2].getTickables()[0].addModifier(0, vf.Fingering({ number: '3', position: 'left' }));
+                    .addModifier(vf.Fingering({ number: '0', position: 'left' }), 0)
+                    .addModifier(vf.Fingering({ number: '0', position: 'left' }), 1);
+                voices[1].getTickables()[0].addModifier(vf.Fingering({ number: '1', position: 'left' }), 0);
+                voices[2].getTickables()[0].addModifier(vf.Fingering({ number: '3', position: 'left' }), 0);
             }));
             run('Auto Adjust Rest Positions - Two Voices', ThreeVoices.autoRestTwoVoices);
             run('Auto Adjust Rest Positions - Three Voices #1', ThreeVoices.autorestthreevoices);
@@ -30209,6 +30356,13 @@ VF.Test = (function () {
         NODE_IMAGEDIR: 'images',
         // Default font properties for tests.
         Font: { size: 10 },
+        // Customize this array to test more fonts (e.g., ['Bravura', 'Gonville', 'Petaluma']).
+        FONT_STACKS_TO_TEST: ['Bravura'],
+        FONT_STACKS: {
+            Bravura: [VF.Fonts.Bravura, VF.Fonts.Gonville, VF.Fonts.Custom],
+            Gonville: [VF.Fonts.Gonville, VF.Fonts.Bravura, VF.Fonts.Custom],
+            Petaluma: [VF.Fonts.Petaluma, VF.Fonts.Gonville, VF.Fonts.Custom],
+        },
         // Returns a unique ID for a test.
         genID: function (prefix) {
             return prefix + VF.Test.genID.ID++;
@@ -30298,15 +30452,9 @@ VF.Test = (function () {
         runSVGTest: function (name, func, params) {
             if (!VF.Test.RUN_SVG_TESTS)
                 return;
-            var fontStacks = {
-                Bravura: [VF.Fonts.Bravura, VF.Fonts.Gonville, VF.Fonts.Custom],
-                Leland: [VF.Fonts.Leland, VF.Fonts.Gonville, VF.Fonts.Bravura, VF.Fonts.Custom],
-                Gonville: [VF.Fonts.Gonville, VF.Fonts.Bravura, VF.Fonts.Custom],
-                Petaluma: [VF.Fonts.Petaluma, VF.Fonts.Gonville, VF.Fonts.Custom],
-            };
             var testFunc = function (fontName) { return function (assert) {
                 var defaultFontStack = VF.DEFAULT_FONT_STACK;
-                VF.DEFAULT_FONT_STACK = fontStacks[fontName];
+                VF.DEFAULT_FONT_STACK = VF.Test.FONT_STACKS[fontName];
                 var elementId = VF.Test.genID('svg_' + fontName);
                 var title = VF.Test.genTitle('SVG ' + fontName, assert, name);
                 VF.Test.createTestSVG(elementId, title);
@@ -30319,10 +30467,7 @@ VF.Test = (function () {
                 func(testOptions, VF.Renderer.getSVGContext);
                 VF.DEFAULT_FONT_STACK = defaultFontStack;
             }; };
-            QUnit.test(name, testFunc('Bravura'));
-            QUnit.test(name, testFunc('Leland'));
-            QUnit.test(name, testFunc('Gonville'));
-            QUnit.test(name, testFunc('Petaluma'));
+            VF.Test.runTestWithFonts(name, testFunc);
         },
         runNodeTest: function (name, func, params) {
             var fs = VF.shims.fs;
@@ -30330,7 +30475,11 @@ VF.Test = (function () {
             function sanitizeName(name) {
                 return name.replace(/[^a-zA-Z0-9]/g, '_');
             }
-            QUnit.test(name, function (assert) {
+            // Use an arrow function sequence (currying) to handle tests for all three fonts.
+            // This is the same approach as seen above in runSVGTest(...).
+            var testFunc = function (fontName) { return function (assert) {
+                var defaultFontStack = VF.DEFAULT_FONT_STACK;
+                VF.DEFAULT_FONT_STACK = VF.Test.FONT_STACKS[fontName];
                 var elementId = VF.Test.genID('nodecanvas_');
                 var canvas = document.createElement('canvas');
                 canvas.setAttribute('id', elementId);
@@ -30342,14 +30491,32 @@ VF.Test = (function () {
                     assert: assert,
                 };
                 func(testOptions, VF.Renderer.getCanvasContext);
+                VF.DEFAULT_FONT_STACK = defaultFontStack;
                 if (VF.Renderer.lastContext !== null) {
                     var moduleName = sanitizeName(QUnit.current_module);
                     var testName = sanitizeName(QUnit.current_test);
-                    var fileName = VF.Test.NODE_IMAGEDIR + "/" + moduleName + "." + testName + ".png";
+                    var fileName;
+                    if (fontName === 'Bravura' && VF.Test.FONT_STACKS_TO_TEST.length === 1) {
+                        // If we are only testing Bravura, we do not add the font name
+                        // to the output image file's name, which allows visual diffs against
+                        // the previous release: version 3.0.9. In the future, if we decide
+                        // to test all fonts by default, we can remove this check.
+                        fileName = VF.Test.NODE_IMAGEDIR + "/" + moduleName + "." + testName + ".png";
+                    }
+                    else {
+                        fileName = VF.Test.NODE_IMAGEDIR + "/" + moduleName + "." + testName + "." + fontName + ".png";
+                    }
                     var imageData = canvas.toDataURL().split(';base64,').pop();
                     var image = Buffer.from(imageData, 'base64');
                     fs.writeFileSync(fileName, image, { encoding: 'base64' });
                 }
+            }; };
+            VF.Test.runTestWithFonts(name, testFunc);
+        },
+        // Run QUnit.test() for each font that is included in VF.Test.FONT_STACKS_TO_TEST.
+        runTestWithFonts: function (name, func) {
+            VF.Test.FONT_STACKS_TO_TEST.forEach(function (fontName) {
+                QUnit.test(name, func(fontName));
             });
         },
         plotNoteWidth: VF.Note.plotMetrics,
