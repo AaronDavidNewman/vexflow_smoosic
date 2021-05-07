@@ -15,12 +15,11 @@ import { Flow } from './tables';
 import { Tickable } from './tickable';
 import { Stroke } from './strokes';
 import { Stave } from './stave';
-import { BoundingBox } from './boundingbox';
 import { Voice } from './voice';
 import { TickContext } from './tickcontext';
 import { ModifierContext } from './modifiercontext';
 import { Modifier } from './modifier';
-import { RenderContext } from './types/common';
+import { KeyProps, RenderContext } from './types/common';
 import { GlyphProps } from './glyph';
 import { GLYPH_PROPS_VALID_TYPES } from './common';
 import { Fraction } from './fraction';
@@ -63,7 +62,7 @@ export interface NoteRenderOptions {
   glyph_font_size?: number;
   scale?: number;
   font?: string;
-  stroke_px?: number;
+  stroke_px: number;
 }
 
 export interface ParsedNote {
@@ -75,14 +74,14 @@ export interface ParsedNote {
 }
 
 export interface NoteStruct {
-  line: number;
+  line?: number;
   /** The number of dots, which affects the duration. */
-  dots: number;
-  keys: string[];
+  dots?: number;
+  keys?: string[];
   /** The note type (e.g., `r` for rest, `s` for slash notes, etc.). */
-  type: string;
-  align_center: boolean;
-  duration_override: Fraction;
+  type?: string;
+  align_center?: boolean;
+  duration_override?: Fraction;
   /** The time length (e.g., `q` for quarter, `h` for half, `8` for eighth etc.). */
   duration: string;
 }
@@ -97,6 +96,9 @@ export interface NoteStruct {
  * array of them. All notes also have a rendering context and belong to a stave.
  */
 export abstract class Note extends Tickable {
+  keys: string[];
+  keyProps: KeyProps[];
+
   protected stave?: Stave;
   protected render_options: NoteRenderOptions;
   protected duration: string;
@@ -203,7 +205,7 @@ export abstract class Note extends Tickable {
         noteStruct.keys.forEach((k, i) => {
           const result = k.split('/');
           // We have a custom glyph specified after the note eg. /X2
-          customTypes[i] = result && result.length === 3 ? result[2] : type;
+          customTypes[i] = (result && result.length === 3 ? result[2] : type) as string;
         });
       }
     }
@@ -261,6 +263,10 @@ export abstract class Note extends Tickable {
     }
 
     // Set note properties from parameters.
+    this.keys = noteStruct.keys || [];
+    // per-pitch properties
+    this.keyProps = [];
+
     this.duration = initStruct.duration;
     this.dots = initStruct.dots;
     this.noteType = initStruct.type;
@@ -303,6 +309,7 @@ export abstract class Note extends Tickable {
     this.render_options = {
       annotation_spacing: 5,
       glyph_font_scale: 1,
+      stroke_px: 1,
     };
   }
 
@@ -373,7 +380,9 @@ export abstract class Note extends Tickable {
   }
 
   /** Gets the stave line number for the note. */
-  getLineNumber(): number {
+  getLineNumber(
+    // eslint-disable-next-line
+    isTopNote: boolean): number {
     return 0;
   }
 
@@ -435,11 +444,6 @@ export abstract class Note extends Tickable {
     return this.stave.getYForTopText(text_line);
   }
 
-  /** Gets a `BoundingBox` for this note. */
-  getBoundingBox(): BoundingBox | undefined {
-    return undefined;
-  }
-
   /** Returns the voice that this note belongs in. */
   getVoice(): Voice {
     if (!this.voice) throw new Vex.RERR('NoVoice', 'Note has no voice.');
@@ -454,7 +458,8 @@ export abstract class Note extends Tickable {
   }
 
   /** Gets the `TickContext` for this note. */
-  getTickContext(): TickContext | undefined {
+  getTickContext(): TickContext {
+    if (!this.tickContext) throw new Vex.RERR('NoTickContext', 'Note has no tick context.');
     return this.tickContext;
   }
 
@@ -480,11 +485,6 @@ export abstract class Note extends Tickable {
     return false;
   }
 
-  /** Accessors to dots. */
-  getDots(): number {
-    return this.dots;
-  }
-
   /** Accessors to note type. */
   getNoteType(): string {
     return this.noteType;
@@ -503,16 +503,30 @@ export abstract class Note extends Tickable {
   }
 
   /** Attach a modifier to this note. */
-  addModifier(modifier: Modifier, index = 0): this {
+  addModifier(a: number | Modifier, b: number | Modifier = 0): this {
+    let index: number;
+    let modifier: Modifier;
+
+    if (typeof a === 'object' && typeof b === 'number') {
+      index = b;
+      modifier = a;
+    } else {
+      throw new Vex.RERR(
+        'WrongParams',
+        'Call signature to addModifier not supported, use addModifier(modifier, index) instead.'
+      );
+    }
     modifier.setNote(this);
     modifier.setIndex(index);
     this.modifiers.push(modifier);
     this.setPreFormatted(false);
     return this;
   }
-
   /** Get the coordinates for where modifiers begin. */
-  getModifierStartXY(): { x: number; y: number } {
+  getModifierStartXY(
+    // eslint-disable-next-line
+    position?: number, index?: number, options?: any
+  ): { x: number; y: number } {
     if (!this.preFormatted) {
       throw new Vex.RERR('UnformattedNote', "Can't call GetModifierStartXY on an unformatted note");
     }
@@ -595,5 +609,35 @@ export abstract class Note extends Tickable {
   /** Sets preformatted status. */
   setPreFormatted(value: boolean): void {
     this.preFormatted = value;
+  }
+
+  // Get the direction of the stem
+  getStemDirection(): number {
+    throw new Vex.RERR('NoStem', 'No stem attached to this note.');
+  }
+
+  // Get the top and bottom `y` values of the stem.
+  getStemExtents(): Record<string, number> {
+    throw new Vex.RERR('NoStem', 'No stem attached to this note.');
+  }
+
+  // Get the `x` coordinate to the right of the note
+  getTieRightX(): number {
+    let tieStartX = this.getAbsoluteX();
+    const note_glyph_width = this.glyph.getWidth();
+    tieStartX += note_glyph_width / 2;
+    tieStartX += -this.width / 2 + this.width + 2;
+
+    return tieStartX;
+  }
+
+  // Get the `x` coordinate to the left of the note
+  getTieLeftX(): number {
+    let tieEndX = this.getAbsoluteX();
+    const note_glyph_width = this.glyph.getWidth();
+    tieEndX += note_glyph_width / 2;
+    tieEndX -= this.width / 2 + 2;
+
+    return tieEndX;
   }
 }

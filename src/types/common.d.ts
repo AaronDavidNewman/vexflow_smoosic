@@ -11,12 +11,6 @@ export interface Bounds {
   y: number;
 }
 
-/** TODO: Move to GlyphNote */
-export interface GlyphNoteOptions {
-  ignoreTicks: boolean;
-  line: number;
-}
-
 export interface KeyProps {
   stem_down_x_offset: number;
   stem_up_x_offset: number;
@@ -29,14 +23,6 @@ export interface KeyProps {
   stroke: number;
   shift_right: number;
   displaced: boolean;
-}
-
-/** TODO: Move to StaveTempo */
-export interface StaveTempoOptions {
-  bpm: number;
-  dots: number;
-  duration: string;
-  name: string;
 }
 
 export interface TypeProps extends KeyProps {
@@ -75,6 +61,8 @@ export interface RenderContext {
   setLineCap(cap_type: string): RenderContext;
   setLineDash(dash: string): RenderContext;
   scale(x: number, y: number): RenderContext;
+  // eslint-disable-next-line
+  rect(x: number, y: number, width: number, height: number, attributes?: any): RenderContext;
   resize(width: number, height: number): RenderContext;
   fillRect(x: number, y: number, width: number, height: number): RenderContext;
   clearRect(x: number, y: number, width: number, height: number): RenderContext;
@@ -98,7 +86,8 @@ export interface RenderContext {
   fillText(text: string, x: number, y: number): RenderContext;
   save(): RenderContext;
   restore(): RenderContext;
-  openGroup(): Node | undefined;
+  // eslint-disable-next-line
+  openGroup(...args: any[]): any;
   closeGroup(): void;
 
   /**

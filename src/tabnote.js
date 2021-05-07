@@ -274,31 +274,11 @@ export class TabNote extends StemmableNote {
   addToModifierContext(mc) {
     this.setModifierContext(mc);
     for (let i = 0; i < this.modifiers.length; ++i) {
-      this.modifierContext.addModifier(this.modifiers[i]);
+      this.modifierContext.addMember(this.modifiers[i]);
     }
-    this.modifierContext.addModifier(this);
+    this.modifierContext.addMember(this);
     this.preFormatted = false;
     return this;
-  }
-
-  // Get the `x` coordinate to the right of the note
-  getTieRightX() {
-    let tieStartX = this.getAbsoluteX();
-    const note_glyph_width = this.glyph.getWidth();
-    tieStartX += note_glyph_width / 2;
-    tieStartX += -this.width / 2 + this.width + 2;
-
-    return tieStartX;
-  }
-
-  // Get the `x` coordinate to the left of the note
-  getTieLeftX() {
-    let tieEndX = this.getAbsoluteX();
-    const note_glyph_width = this.glyph.getWidth();
-    tieEndX += note_glyph_width / 2;
-    tieEndX -= this.width / 2 + 2;
-
-    return tieEndX;
   }
 
   // Get the default `x` and `y` coordinates for a modifier at a specific

@@ -34,7 +34,9 @@ const Flow = {
   integerToNote: integerToNote,
   durationToTicks: durationToTicks,
   durationToFraction: durationToFraction,
+  durationToNumber: durationToNumber,
   getGlyphProps: getGlyphProps,
+  textWidth: textWidth,
 };
 
 Flow.clefProperties = (clef) => {
@@ -235,7 +237,9 @@ Flow.tabToGlyph = (fret, scale = 1.0) => {
   };
 };
 
-Flow.textWidth = (text) => 7 * text.toString().length;
+function textWidth(text) {
+  return 7 * text.toString().length;
+}
 
 Flow.articulationCodes = (artic) => Flow.articulationCodes.articulations[artic];
 
@@ -703,7 +707,9 @@ function durationToFraction(duration) {
 }
 
 // Convert the `duration` to an number
-Flow.durationToNumber = (duration) => Flow.durationToFraction(duration).value();
+function durationToNumber(duration) {
+  return durationToFraction(duration).value();
+}
 
 // Convert the `duration` to total ticks
 function durationToTicks(duration) {

@@ -103,7 +103,8 @@ export abstract class StemmableNote extends Note {
   }
 
   // Get/set the direction of the stem
-  getStemDirection(): number | undefined {
+  getStemDirection(): number {
+    if (!this.stem_direction) throw new Vex.RERR('NoStem', 'No stem attached to this note.');
     return this.stem_direction;
   }
 
@@ -170,7 +171,7 @@ export abstract class StemmableNote extends Note {
   getStemExtension(): number {
     const glyph = this.getGlyph();
 
-    if (this.stem_extension_override != null) {
+    if (this.stem_extension_override != undefined) {
       return this.stem_extension_override;
     }
 
@@ -188,15 +189,18 @@ export abstract class StemmableNote extends Note {
   }
 
   // Get the top and bottom `y` values of the stem.
-  getStemExtents(): Record<string, number> | undefined {
-    return this.stem?.getExtents();
+  getStemExtents(): Record<string, number> {
+    if (!this.stem) throw new Vex.RERR('NoStem', 'No stem attached to this note.');
+    return this.stem.getExtents();
   }
 
   /** Gets the `y` value for the top modifiers at a specific `textLine`. */
   getYForTopText(textLine: number): number {
     if (!this.stave) throw new Vex.RERR('NoStave', 'No stave attached to this note.');
-    const extents = this.getStemExtents();
-    if (extents) {
+    if (this.hasStem()) {
+      const extents = this.getStemExtents();
+      if (!extents) throw new Vex.RERR('InvalidState', 'Stem does not have extents.');
+
       return Math.min(
         this.stave.getYForTopText(textLine),
         extents.topY - this.render_options.annotation_spacing * (textLine + 1)
@@ -209,8 +213,10 @@ export abstract class StemmableNote extends Note {
   /** Gets the `y` value for the bottom modifiers at a specific `textLine`. */
   getYForBottomText(textLine: number): number {
     if (!this.stave) throw new Vex.RERR('NoStave', 'No stave attached to this note.');
-    const extents = this.getStemExtents();
-    if (extents) {
+    if (this.hasStem()) {
+      const extents = this.getStemExtents();
+      if (!extents) throw new Vex.RERR('InvalidState', 'Stem does not have extents.');
+
       return Math.max(
         this.stave.getYForTopText(textLine),
         extents.baseY + this.render_options.annotation_spacing * textLine

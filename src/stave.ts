@@ -14,7 +14,9 @@ import { Clef } from './clef';
 import { KeySignature } from './keysignature';
 import { TimeSignature } from './timesignature';
 import { Volta } from './stavevolta';
-import { Bounds, StaveTempoOptions, FontInfo } from './types/common';
+import { Bounds, FontInfo } from './types/common';
+import { StaveTempoOptions } from './stavetempo';
+
 export interface StaveLineConfig {
   visible: boolean;
 }
@@ -189,9 +191,7 @@ export class Stave extends Element {
     this.end_x += shift;
     for (let i = 0; i < this.modifiers.length; i++) {
       const mod = this.modifiers[i];
-      if (mod.x !== undefined) {
-        mod.x += shift;
-      }
+      mod.setX(mod.getX() + shift);
     }
     return this;
   }
