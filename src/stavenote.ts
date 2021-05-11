@@ -425,8 +425,9 @@ export class StaveNote extends StemmableNote {
       if (noteHeadStyle) noteHead.setStyle(noteHeadStyle);
     });
 
-    if (this.stave) {
-      this.note_heads.forEach((head) => head.setStave(this.stave));
+    const stave = this.stave;
+    if (stave) {
+      this.note_heads.forEach((head) => head.setStave(stave));
     }
     this.calcNoteDisplacements();
     return this;
@@ -872,11 +873,11 @@ export class StaveNote extends StemmableNote {
   // Add self to modifier context. `mContext` is the `ModifierContext`
   // to be added to.
   addToModifierContext(mContext: ModifierContext): this {
-    this.setModifierContext(mContext);
+    this.modifierContext = mContext;
     for (let i = 0; i < this.modifiers.length; ++i) {
-      mContext.addMember(this.modifiers[i]);
+      this.modifierContext.addMember(this.modifiers[i]);
     }
-    mContext.addMember(this);
+    this.modifierContext.addMember(this);
     this.setPreFormatted(false);
     return this;
   }
