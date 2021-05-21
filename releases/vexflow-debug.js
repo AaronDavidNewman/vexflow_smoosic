@@ -1209,9 +1209,9 @@ exports.Articulation = Articulation;
 
 /***/ }),
 
-/***/ "./src/barnote.js":
+/***/ "./src/barnote.ts":
 /*!************************!*\
-  !*** ./src/barnote.js ***!
+  !*** ./src/barnote.ts ***!
   \************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -1246,11 +1246,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BarNote = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
-var stavebarline_1 = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.js");
+var stavebarline_1 = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
 // To enable logging for this class. Set `Vex.Flow.BarNote.DEBUG` to `true`.
 function L() {
+    // eslint-disable-next-line
     var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
+    for (
+    // eslint-disable-next-line
+    var _i = 0; 
+    // eslint-disable-next-line
+    _i < arguments.length; 
+    // eslint-disable-next-line
+    _i++) {
+        // eslint-disable-next-line
         args[_i] = arguments[_i];
     }
     if (BarNote.DEBUG)
@@ -1291,9 +1299,6 @@ var BarNote = /** @class */ (function (_super) {
         this.setWidth(this.metrics.widths[this.type]);
         return this;
     };
-    BarNote.prototype.getBoundingBox = function () {
-        return _super.prototype.getBoundingBox.call(this);
-    };
     BarNote.prototype.addToModifierContext = function () {
         /* overridden to ignore */
         return this;
@@ -1305,13 +1310,17 @@ var BarNote = /** @class */ (function (_super) {
     };
     // Render note to stave.
     BarNote.prototype.draw = function () {
-        this.checkContext();
+        var ctx = this.checkContext();
         if (!this.stave)
             throw new vex_1.Vex.RERR('NoStave', "Can't draw without a stave.");
         L('Rendering bar line at: ', this.getAbsoluteX());
+        if (this.style)
+            this.applyStyle(ctx);
         var barline = new stavebarline_1.Barline(this.type);
         barline.setX(this.getAbsoluteX());
         barline.draw(this.stave);
+        if (this.style)
+            this.restoreStyle(ctx);
         this.setRendered();
     };
     return BarNote;
@@ -4015,9 +4024,9 @@ exports.GLYPH_PROPS_VALID_TYPES = {
 
 /***/ }),
 
-/***/ "./src/crescendo.js":
+/***/ "./src/crescendo.ts":
 /*!**************************!*\
-  !*** ./src/crescendo.js ***!
+  !*** ./src/crescendo.ts ***!
   \**************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -4055,8 +4064,16 @@ var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
 var tickcontext_1 = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
 // To enable logging for this class. Set `Vex.Flow.Crescendo.DEBUG` to `true`.
 function L() {
+    // eslint-disable-next-line
     var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
+    for (
+    // eslint-disable-next-line
+    var _i = 0; 
+    // eslint-disable-next-line
+    _i < arguments.length; 
+    // eslint-disable-next-line
+    _i++) {
+        // eslint-disable-next-line
         args[_i] = arguments[_i];
     }
     if (Crescendo.DEBUG)
@@ -4087,6 +4104,13 @@ var Crescendo = /** @class */ (function (_super) {
     // Initialize the crescendo's properties
     function Crescendo(note_struct) {
         var _this = _super.call(this, note_struct) || this;
+        _this.options = {
+            // Extensions to the length of the crescendo on either side
+            extend_left: 0,
+            extend_right: 0,
+            // Vertical shift
+            y_shift: 0,
+        };
         _this.setAttribute('type', 'Crescendo');
         // Whether the object is a decrescendo
         _this.decrescendo = false;
@@ -4094,13 +4118,6 @@ var Crescendo = /** @class */ (function (_super) {
         _this.line = note_struct.line || 0;
         // The height at the open end of the cresc/decresc
         _this.height = 15;
-        vex_1.Vex.Merge(_this.render_options, {
-            // Extensions to the length of the crescendo on either side
-            extend_left: 0,
-            extend_right: 0,
-            // Vertical shift
-            y_shift: 0,
-        });
         return _this;
     }
     // Set the line to center the element on
@@ -4126,18 +4143,20 @@ var Crescendo = /** @class */ (function (_super) {
     };
     // Render the Crescendo object onto the canvas
     Crescendo.prototype.draw = function () {
-        this.checkContext();
+        var ctx = this.checkContext();
+        if (!this.stave)
+            throw new vex_1.Vex.RERR('NoStave', "Can't draw without a stave.");
         this.setRendered();
         var tick_context = this.getTickContext();
         var next_context = tickcontext_1.TickContext.getNextContext(tick_context);
         var begin_x = this.getAbsoluteX();
-        var end_x = next_context ? next_context.getX() : this.stave.x + this.stave.width;
+        var end_x = next_context ? next_context.getX() : this.stave.getX() + this.stave.getWidth();
         var y = this.stave.getYForLine(this.line + -3) + 1;
         L('Drawing ', this.decrescendo ? 'decrescendo ' : 'crescendo ', this.height, 'x', begin_x - end_x);
-        renderHairpin(this.context, {
-            begin_x: begin_x - this.render_options.extend_left,
-            end_x: end_x + this.render_options.extend_right,
-            y: y + this.render_options.y_shift,
+        renderHairpin(ctx, {
+            begin_x: begin_x - this.options.extend_left,
+            end_x: end_x + this.options.extend_right,
+            y: y + this.options.y_shift,
             height: this.height,
             reverse: this.decrescendo,
         });
@@ -4189,14 +4208,14 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Curve = exports.Position = void 0;
+exports.Curve = exports.CurvePosition = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var Position;
-(function (Position) {
-    Position[Position["NEAR_HEAD"] = 1] = "NEAR_HEAD";
-    Position[Position["NEAR_TOP"] = 2] = "NEAR_TOP";
-})(Position = exports.Position || (exports.Position = {}));
+var CurvePosition;
+(function (CurvePosition) {
+    CurvePosition[CurvePosition["NEAR_HEAD"] = 1] = "NEAR_HEAD";
+    CurvePosition[CurvePosition["NEAR_TOP"] = 2] = "NEAR_TOP";
+})(CurvePosition = exports.CurvePosition || (exports.CurvePosition = {}));
 var Curve = /** @class */ (function (_super) {
     __extends(Curve, _super);
     // from: Start note
@@ -4218,7 +4237,7 @@ var Curve = /** @class */ (function (_super) {
     }
     Object.defineProperty(Curve, "Position", {
         get: function () {
-            return Position;
+            return CurvePosition;
         },
         enumerable: false,
         configurable: true
@@ -4333,9 +4352,9 @@ exports.Curve = Curve;
 
 /***/ }),
 
-/***/ "./src/dot.js":
+/***/ "./src/dot.ts":
 /*!********************!*\
-  !*** ./src/dot.js ***!
+  !*** ./src/dot.ts ***!
   \********************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -4365,6 +4384,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Dot = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
+var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
 var Dot = /** @class */ (function (_super) {
     __extends(Dot, _super);
     /**
@@ -4399,15 +4420,18 @@ var Dot = /** @class */ (function (_super) {
             var note = dot.getNote();
             var props = void 0;
             var shift = void 0;
-            // Only StaveNote has .getKeyProps()
-            if (typeof note.getKeyProps === 'function') {
+            // If it's a StaveNote
+            if (note instanceof stavenote_1.StaveNote) {
                 props = note.getKeyProps()[dot.getIndex()];
                 shift = note.getRightDisplacedHeadPx();
             }
-            else {
+            else if (note instanceof tabnote_1.TabNote) {
                 // Else it's a TabNote
                 props = { line: 0.5 }; // Shim key props for dot placement
                 shift = 0;
+            }
+            else {
+                throw new vex_1.Vex.RERR('Internal', 'Unexpected instance.');
             }
             var note_id = note.getAttribute('id');
             dot_list.push({ line: props.line, note: note, note_id: note_id, dot: dot });
@@ -4435,7 +4459,7 @@ var Dot = /** @class */ (function (_super) {
                 else {
                     // note is on a line, so shift dot to space above the line
                     half_shiftY = 0.5;
-                    if (last_note != null && !last_note.isRest() && last_line - line === 0.5) {
+                    if (last_note != null && !last_note.isRest() && last_line != null && last_line - line === 0.5) {
                         // previous note on a space, so shift dot to space below the line
                         half_shiftY = -0.5;
                     }
@@ -4479,12 +4503,16 @@ var Dot = /** @class */ (function (_super) {
         return this;
     };
     Dot.prototype.draw = function () {
-        this.checkContext();
+        var ctx = this.checkContext();
         this.setRendered();
-        if (!this.note || this.index === null) {
-            throw new vex_1.Vex.RERR('NoAttachedNote', "Can't draw dot without a note and index.");
+        if (!this.note || this.index === undefined) {
+            throw new vex_1.Vex.RERR('NoNoteIndex', 'Drawing a dot requires a note and an index.');
         }
-        var lineSpace = this.note.stave.options.spacing_between_lines_px;
+        var stave = this.note.getStave();
+        if (!stave) {
+            throw new vex_1.Vex.RERR('NoStave', 'Drawing a dot requires a stave.');
+        }
+        var lineSpace = stave.getOptions().spacing_between_lines_px;
         var start = this.note.getModifierStartXY(this.position, this.index, { forceFlagRight: true });
         // Set the starting y coordinate to the base of the stem for TabNotes
         if (this.note.getCategory() === 'tabnotes') {
@@ -4492,7 +4520,6 @@ var Dot = /** @class */ (function (_super) {
         }
         var x = start.x + this.x_shift + this.width - this.radius;
         var y = start.y + this.y_shift + this.dot_shiftY * lineSpace;
-        var ctx = this.context;
         ctx.beginPath();
         ctx.arc(x, y, this.radius, 0, Math.PI * 2, false);
         ctx.fill();
@@ -5150,7 +5177,7 @@ var modifiercontext_1 = __webpack_require__(/*! ./modifiercontext */ "./src/modi
 var multimeasurerest_1 = __webpack_require__(/*! ./multimeasurerest */ "./src/multimeasurerest.js");
 var renderer_1 = __webpack_require__(/*! ./renderer */ "./src/renderer.js");
 var stave_1 = __webpack_require__(/*! ./stave */ "./src/stave.ts");
-var stavetie_1 = __webpack_require__(/*! ./stavetie */ "./src/stavetie.js");
+var stavetie_1 = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
 var staveline_1 = __webpack_require__(/*! ./staveline */ "./src/staveline.js");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 var glyphnote_1 = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.ts");
@@ -5162,21 +5189,21 @@ var tuplet_1 = __webpack_require__(/*! ./tuplet */ "./src/tuplet.js");
 var voice_1 = __webpack_require__(/*! ./voice */ "./src/voice.ts");
 var beam_1 = __webpack_require__(/*! ./beam */ "./src/beam.ts");
 var curve_1 = __webpack_require__(/*! ./curve */ "./src/curve.ts");
-var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.js");
+var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
 var gracenotegroup_1 = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
 var notesubgroup_1 = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.js");
 var easyscore_1 = __webpack_require__(/*! ./easyscore */ "./src/easyscore.js");
-var timesignote_1 = __webpack_require__(/*! ./timesignote */ "./src/timesignote.js");
+var timesignote_1 = __webpack_require__(/*! ./timesignote */ "./src/timesignote.ts");
 var keysignote_1 = __webpack_require__(/*! ./keysignote */ "./src/keysignote.ts");
 var clefnote_1 = __webpack_require__(/*! ./clefnote */ "./src/clefnote.ts");
 var pedalmarking_1 = __webpack_require__(/*! ./pedalmarking */ "./src/pedalmarking.js");
 var textbracket_1 = __webpack_require__(/*! ./textbracket */ "./src/textbracket.js");
 var vibratobracket_1 = __webpack_require__(/*! ./vibratobracket */ "./src/vibratobracket.ts");
 var ghostnote_1 = __webpack_require__(/*! ./ghostnote */ "./src/ghostnote.ts");
-var barnote_1 = __webpack_require__(/*! ./barnote */ "./src/barnote.js");
-var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.js");
+var barnote_1 = __webpack_require__(/*! ./barnote */ "./src/barnote.ts");
+var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
 var tabstave_1 = __webpack_require__(/*! ./tabstave */ "./src/tabstave.ts");
-var textnote_1 = __webpack_require__(/*! ./textnote */ "./src/textnote.js");
+var textnote_1 = __webpack_require__(/*! ./textnote */ "./src/textnote.ts");
 var textfont_1 = __webpack_require__(/*! ./textfont */ "./src/textfont.ts");
 // To enable logging for this class. Set `Vex.Flow.Factory.DEBUG` to `true`.
 function L() {
@@ -18495,13 +18522,19 @@ var Formatter = /** @class */ (function () {
             firstContext.getMetrics().totalLeftPx;
         var targetWidth = adjustedJustifyWidth;
         var actualWidth = shiftToIdealDistances(calculateIdealDistances(targetWidth));
-        var maxX = adjustedJustifyWidth + lastContext.getMetrics().notePx;
+        var paddingIdeal = 10;
+        var maxX = adjustedJustifyWidth + lastContext.getMetrics().notePx - paddingIdeal;
         var iterations = this.options.maxIterations;
-        while (actualWidth > maxX && iterations > 0) {
+        while ((actualWidth > maxX && iterations > 0) || (actualWidth + paddingIdeal < maxX && iterations > 1)) {
             // If we couldn't fit all the notes into the jusification width, it's because the softmax-scaled
             // widths between different durations differ across stave (e.g., 1 quarter note is not the same pixel-width
             // as 4 16th-notes). Run another pass, now that we know how much to justify.
-            targetWidth -= actualWidth - maxX;
+            if (actualWidth > maxX) {
+                targetWidth -= actualWidth - maxX;
+            }
+            else {
+                targetWidth += (maxX - actualWidth) / 2;
+            }
             actualWidth = shiftToIdealDistances(calculateIdealDistances(targetWidth));
             iterations--;
         }
@@ -19340,6 +19373,8 @@ var Glyph = /** @class */ (function (_super) {
     function Glyph(code, point, options) {
         var _this = _super.call(this) || this;
         _this.bbox = new boundingbox_1.BoundingBox(0, 0, 0, 0);
+        _this.topGlyphs = [];
+        _this.botGlyphs = [];
         _this.scale = 1;
         _this.setAttribute('type', 'Glyph');
         _this.code = code;
@@ -19539,10 +19574,10 @@ var Glyph = /** @class */ (function (_super) {
             x_max: this.metrics.x_max * this.scale * this.metrics.scale,
             width: this.bbox.getW(),
             height: this.bbox.getH(),
-            scale: 1,
-            x_shift: 0,
-            y_shift: 0,
-            outline: [],
+            scale: this.scale * this.metrics.scale,
+            x_shift: this.metrics.x_shift,
+            y_shift: this.metrics.y_shift,
+            outline: this.metrics.outline,
         };
     };
     Glyph.prototype.setOriginX = function (x) {
@@ -19686,9 +19721,9 @@ exports.GlyphNote = GlyphNote;
 
 /***/ }),
 
-/***/ "./src/gracenote.js":
+/***/ "./src/gracenote.ts":
 /*!**************************!*\
-  !*** ./src/gracenote.js ***!
+  !*** ./src/gracenote.ts ***!
   \**************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -19724,13 +19759,17 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GraceNote = void 0;
+var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var GraceNote = /** @class */ (function (_super) {
     __extends(GraceNote, _super);
     function GraceNote(note_struct) {
-        var _this = _super.call(this, __assign({ glyph_font_scale: tables_1.Flow.DEFAULT_NOTATION_FONT_SCALE * GraceNote.SCALE, stroke_px: GraceNote.LEDGER_LINE_OFFSET }, note_struct)) || this;
+        var _this = _super.call(this, __assign({
+            glyph_font_scale: tables_1.Flow.DEFAULT_NOTATION_FONT_SCALE * GraceNote.SCALE,
+            stroke_px: GraceNote.LEDGER_LINE_OFFSET,
+        }, note_struct)) || this;
         _this.setAttribute('type', 'GraceNote');
         _this.slash = note_struct.slash;
         _this.slur = true;
@@ -19760,7 +19799,7 @@ var GraceNote = /** @class */ (function (_super) {
         configurable: true
     });
     GraceNote.prototype.getStemExtension = function () {
-        if (this.stem_extension_override != null) {
+        if (this.stem_extension_override) {
             return this.stem_extension_override;
         }
         var glyph = this.getGlyph();
@@ -19806,15 +19845,15 @@ var GraceNote = /** @class */ (function (_super) {
                 var noteHeadBounds = this.getNoteHeadBounds();
                 var noteStemHeight = stem.getHeight();
                 var x = this.getAbsoluteX();
-                var y = stem_direction === tables_1.Flow.Stem.DOWN
+                var y = stem_direction === stem_1.Stem.DOWN
                     ? noteHeadBounds.y_top - noteStemHeight
                     : noteHeadBounds.y_bottom - noteStemHeight;
-                var defaultStemExtention = stem_direction === tables_1.Flow.Stem.DOWN ? this.glyph.stem_down_extension : this.glyph.stem_up_extension;
+                var defaultStemExtention = stem_direction === stem_1.Stem.DOWN ? this.glyph.stem_down_extension : this.glyph.stem_up_extension;
                 var defaultOffsetY = tables_1.Flow.STEM_HEIGHT;
                 defaultOffsetY -= defaultOffsetY / 2.8;
                 defaultOffsetY += defaultStemExtention;
                 y += defaultOffsetY * staveNoteScale * stem_direction;
-                var offsets = stem_direction === tables_1.Flow.Stem.UP
+                var offsets = stem_direction === stem_1.Stem.UP
                     ? {
                         x1: 1,
                         y1: 0,
@@ -19837,7 +19876,7 @@ var GraceNote = /** @class */ (function (_super) {
                 };
             }
             // FIXME: avoide staff lines, leadger lines or others.
-            var ctx = this.context;
+            var ctx = this.checkContext();
             ctx.save();
             ctx.setLineWidth(1 * offsetScale); // FIXME: use more appropriate value.
             ctx.beginPath();
@@ -19850,6 +19889,8 @@ var GraceNote = /** @class */ (function (_super) {
     };
     GraceNote.prototype.calcBeamedNotesSlashBBox = function (slashStemOffset, slashBeamOffset, protrusions) {
         var beam = this.beam;
+        if (!beam)
+            throw new vex_1.Vex.RERR('NoBeam', "Can't calculate without a beam.");
         var beam_slope = beam.slope;
         var isBeamEndNote = beam.notes[beam.notes.length - 1] === this;
         var scaleX = isBeamEndNote ? -1 : 1;
@@ -19867,7 +19908,7 @@ var GraceNote = /** @class */ (function (_super) {
         var protrusion_beam_dy = Math.sin(slash_angle) * protrusions.beam;
         var stemX = this.getStemX();
         var stem0X = beam.notes[0].getStemX();
-        var stemY = this.beam.getBeamYToDraw() + (stemX - stem0X) * beam_slope;
+        var stemY = beam.getBeamYToDraw() + (stemX - stem0X) * beam_slope;
         var ret = {
             x1: stemX - protrusion_stem_dx,
             y1: stemY + slashStemOffset - protrusion_stem_dy,
@@ -19921,8 +19962,8 @@ var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.js");
 var voice_1 = __webpack_require__(/*! ./voice */ "./src/voice.ts");
 var beam_1 = __webpack_require__(/*! ./beam */ "./src/beam.ts");
-var stavetie_1 = __webpack_require__(/*! ./stavetie */ "./src/stavetie.js");
-var tabtie_1 = __webpack_require__(/*! ./tabtie */ "./src/tabtie.js");
+var stavetie_1 = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
+var tabtie_1 = __webpack_require__(/*! ./tabtie */ "./src/tabtie.ts");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 // To enable logging for this class. Set `GraceNoteGroup.DEBUG` to `true`.
 function L() {
@@ -20134,7 +20175,7 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GraceTabNote = void 0;
-var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.js");
+var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
 /** Implements Crace Tab Note. */
 var GraceTabNote = /** @class */ (function (_super) {
     __extends(GraceTabNote, _super);
@@ -20203,9 +20244,9 @@ var stavetempo_1 = __webpack_require__(/*! ./stavetempo */ "./src/stavetempo.ts"
 var voice_1 = __webpack_require__(/*! ./voice */ "./src/voice.ts");
 var accidental_1 = __webpack_require__(/*! ./accidental */ "./src/accidental.js");
 var beam_1 = __webpack_require__(/*! ./beam */ "./src/beam.ts");
-var stavetie_1 = __webpack_require__(/*! ./stavetie */ "./src/stavetie.js");
+var stavetie_1 = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
 var tabstave_1 = __webpack_require__(/*! ./tabstave */ "./src/tabstave.ts");
-var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.js");
+var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
 var bend_1 = __webpack_require__(/*! ./bend */ "./src/bend.ts");
 var vibrato_1 = __webpack_require__(/*! ./vibrato */ "./src/vibrato.ts");
 var vibratobracket_1 = __webpack_require__(/*! ./vibratobracket */ "./src/vibratobracket.ts");
@@ -20216,29 +20257,29 @@ var tickcontext_1 = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.
 var articulation_1 = __webpack_require__(/*! ./articulation */ "./src/articulation.js");
 var annotation_1 = __webpack_require__(/*! ./annotation */ "./src/annotation.js");
 var chordsymbol_1 = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.js");
-var stavebarline_1 = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.js");
-var notehead_1 = __webpack_require__(/*! ./notehead */ "./src/notehead.js");
+var stavebarline_1 = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
+var notehead_1 = __webpack_require__(/*! ./notehead */ "./src/notehead.ts");
 var staveconnector_1 = __webpack_require__(/*! ./staveconnector */ "./src/staveconnector.js");
 var clefnote_1 = __webpack_require__(/*! ./clefnote */ "./src/clefnote.ts");
 var keysignature_1 = __webpack_require__(/*! ./keysignature */ "./src/keysignature.js");
 var keysignote_1 = __webpack_require__(/*! ./keysignote */ "./src/keysignote.ts");
-var timesignature_1 = __webpack_require__(/*! ./timesignature */ "./src/timesignature.js");
-var timesignote_1 = __webpack_require__(/*! ./timesignote */ "./src/timesignote.js");
+var timesignature_1 = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
+var timesignote_1 = __webpack_require__(/*! ./timesignote */ "./src/timesignote.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
-var tabtie_1 = __webpack_require__(/*! ./tabtie */ "./src/tabtie.js");
+var tabtie_1 = __webpack_require__(/*! ./tabtie */ "./src/tabtie.ts");
 var clef_1 = __webpack_require__(/*! ./clef */ "./src/clef.ts");
-var dot_1 = __webpack_require__(/*! ./dot */ "./src/dot.js");
+var dot_1 = __webpack_require__(/*! ./dot */ "./src/dot.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-var tabslide_1 = __webpack_require__(/*! ./tabslide */ "./src/tabslide.js");
+var tabslide_1 = __webpack_require__(/*! ./tabslide */ "./src/tabslide.ts");
 var tuplet_1 = __webpack_require__(/*! ./tuplet */ "./src/tuplet.js");
-var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.js");
+var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
 var gracetabnote_1 = __webpack_require__(/*! ./gracetabnote */ "./src/gracetabnote.ts");
 var tuning_1 = __webpack_require__(/*! ./tuning */ "./src/tuning.ts");
 var keymanager_1 = __webpack_require__(/*! ./keymanager */ "./src/keymanager.js");
 var stavehairpin_1 = __webpack_require__(/*! ./stavehairpin */ "./src/stavehairpin.js");
 var boundingbox_1 = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 var strokes_1 = __webpack_require__(/*! ./strokes */ "./src/strokes.js");
-var textnote_1 = __webpack_require__(/*! ./textnote */ "./src/textnote.js");
+var textnote_1 = __webpack_require__(/*! ./textnote */ "./src/textnote.ts");
 var curve_1 = __webpack_require__(/*! ./curve */ "./src/curve.ts");
 var textdynamics_1 = __webpack_require__(/*! ./textdynamics */ "./src/textdynamics.js");
 var staveline_1 = __webpack_require__(/*! ./staveline */ "./src/staveline.js");
@@ -20247,13 +20288,13 @@ var pedalmarking_1 = __webpack_require__(/*! ./pedalmarking */ "./src/pedalmarki
 var textbracket_1 = __webpack_require__(/*! ./textbracket */ "./src/textbracket.js");
 var frethandfinger_1 = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.ts");
 var staverepetition_1 = __webpack_require__(/*! ./staverepetition */ "./src/staverepetition.js");
-var barnote_1 = __webpack_require__(/*! ./barnote */ "./src/barnote.js");
+var barnote_1 = __webpack_require__(/*! ./barnote */ "./src/barnote.ts");
 var ghostnote_1 = __webpack_require__(/*! ./ghostnote */ "./src/ghostnote.ts");
 var notesubgroup_1 = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.js");
 var gracenotegroup_1 = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
 var tremolo_1 = __webpack_require__(/*! ./tremolo */ "./src/tremolo.ts");
 var stringnumber_1 = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.js");
-var crescendo_1 = __webpack_require__(/*! ./crescendo */ "./src/crescendo.js");
+var crescendo_1 = __webpack_require__(/*! ./crescendo */ "./src/crescendo.ts");
 var stavevolta_1 = __webpack_require__(/*! ./stavevolta */ "./src/stavevolta.ts");
 var system_1 = __webpack_require__(/*! ./system */ "./src/system.js");
 var factory_1 = __webpack_require__(/*! ./factory */ "./src/factory.js");
@@ -21113,7 +21154,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModifierContext = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-var dot_1 = __webpack_require__(/*! ./dot */ "./src/dot.js");
+var dot_1 = __webpack_require__(/*! ./dot */ "./src/dot.ts");
 var frethandfinger_1 = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.ts");
 var accidental_1 = __webpack_require__(/*! ./accidental */ "./src/accidental.js");
 var notesubgroup_1 = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.js");
@@ -21282,9 +21323,9 @@ var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-var notehead_1 = __webpack_require__(/*! ./notehead */ "./src/notehead.js");
+var notehead_1 = __webpack_require__(/*! ./notehead */ "./src/notehead.ts");
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
-var timesignature_1 = __webpack_require__(/*! ./timesignature */ "./src/timesignature.js");
+var timesignature_1 = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
 var semibrave_rest;
 function get_semibrave_rest() {
     if (!semibrave_rest) {
@@ -22401,9 +22442,9 @@ exports.Note = Note;
 
 /***/ }),
 
-/***/ "./src/notehead.js":
+/***/ "./src/notehead.ts":
 /*!*************************!*\
-  !*** ./src/notehead.js ***!
+  !*** ./src/notehead.ts ***!
   \*************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -22441,10 +22482,19 @@ var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+var boundingbox_1 = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 // To enable logging for this class. Set `Vex.Flow.NoteHead.DEBUG` to `true`.
 function L() {
+    // eslint-disable-next-line
     var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
+    for (
+    // eslint-disable-next-line
+    var _i = 0; 
+    // eslint-disable-next-line
+    _i < arguments.length; 
+    // eslint-disable-next-line
+    _i++) {
+        // eslint-disable-next-line
         args[_i] = arguments[_i];
     }
     if (NoteHead.DEBUG)
@@ -22496,6 +22546,9 @@ var NoteHead = /** @class */ (function (_super) {
     __extends(NoteHead, _super);
     function NoteHead(head_options) {
         var _this = _super.call(this, head_options) || this;
+        _this.custom_glyph = false;
+        _this.stem_up_x_offset = 0;
+        _this.stem_down_x_offset = 0;
         _this.setAttribute('type', 'NoteHead');
         _this.index = head_options.index;
         _this.x = head_options.x || 0;
@@ -22520,7 +22573,7 @@ var NoteHead = /** @class */ (function (_super) {
             _this.stem_down_x_offset = head_options.stem_down_x_offset || 0;
         }
         _this.style = head_options.style;
-        _this.slashed = head_options.slashed;
+        _this.slashed = head_options.slashed || false;
         vex_1.Vex.Merge(_this.render_options, {
             // font size for note heads
             glyph_font_scale: head_options.glyph_font_scale || tables_1.Flow.DEFAULT_NOTATION_FONT_SCALE,
@@ -22593,17 +22646,21 @@ var NoteHead = /** @class */ (function (_super) {
         if (!this.preFormatted) {
             throw new vex_1.Vex.RERR('UnformattedNote', "Can't call getBoundingBox on an unformatted note.");
         }
+        if (!this.stave)
+            throw new vex_1.Vex.RERR('NoStave', "Can't call getBoundingBox without a stave.");
         var spacing = this.stave.getSpacingBetweenLines();
         var half_spacing = spacing / 2;
         var min_y = this.y - half_spacing;
-        return new tables_1.Flow.BoundingBox(this.getAbsoluteX(), min_y, this.width, spacing);
+        return new boundingbox_1.BoundingBox(this.getAbsoluteX(), min_y, this.width, spacing);
     };
     // Set notehead to a provided `stave`
     NoteHead.prototype.setStave = function (stave) {
         var line = this.getLine();
         this.stave = stave;
-        this.setY(stave.getYForNote(line));
-        this.context = this.stave.context;
+        if (this.stave) {
+            this.setY(this.stave.getYForNote(line));
+            this.setContext(this.stave.getContext());
+        }
         return this;
     };
     // Pre-render formatting
@@ -22617,9 +22674,10 @@ var NoteHead = /** @class */ (function (_super) {
     };
     // Draw the notehead
     NoteHead.prototype.draw = function () {
-        this.checkContext();
+        var ctx = this.checkContext();
+        if (!this.stave)
+            throw new vex_1.Vex.RERR('NoStave', "Can't draw without a stave.");
         this.setRendered();
-        var ctx = this.context;
         var head_x = this.getAbsoluteX();
         if (this.custom_glyph) {
             // head_x += this.x_shift;
@@ -23123,7 +23181,7 @@ exports.Ornament = Ornament;
 //
 // A generic text parsing class for VexFlow.
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Parser = exports.X = void 0;
+exports.Parser = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 // To enable logging for this class. Set `Vex.Flow.Parser.DEBUG` to `true`.
 // eslint-disable-next-line
@@ -23135,7 +23193,7 @@ function L() {
     if (Parser.DEBUG)
         vex_1.Vex.L('Vex.Flow.Parser', args);
 }
-exports.X = vex_1.Vex.MakeException('ParserError');
+var X = vex_1.Vex.MakeException('ParserError');
 var NO_ERROR_POS = -1;
 // Converts parser results into an easy to reference list that can be
 // used in triggers. This function returns:
@@ -23293,7 +23351,7 @@ var Parser = /** @class */ (function () {
     Parser.prototype.expect = function (ruleFunc) {
         L('Evaluating rule function:', ruleFunc);
         if (!ruleFunc) {
-            throw new exports.X('Invalid rule function: ' + ruleFunc, ruleFunc);
+            throw new X('Invalid rule function: ' + ruleFunc, ruleFunc);
         }
         var result;
         // Get rule from Grammar class.
@@ -23327,7 +23385,7 @@ var Parser = /** @class */ (function () {
             }
         }
         else {
-            throw new exports.X('Bad grammar! No `token` or `expect` property', rule);
+            throw new X('Bad grammar! No `token` or `expect` property', rule);
         }
         // If there's a trigger attached to this rule, then run it.
         // Make the matches accessible through `state.matches` in the
@@ -24035,9 +24093,9 @@ exports.RaphaelContext = RaphaelContext;
 // the registry. This allows fast look up of elements by attributes like id, type,
 // and class.
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Registry = exports.X = void 0;
+exports.Registry = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
-exports.X = vex_1.Vex.MakeException('RegistryError');
+var X = vex_1.Vex.MakeException('RegistryError');
 // Indexes are represented as maps of maps of maps. This allows
 // for both multi-labeling (e.g., an element can have multiple classes)
 // and efficient lookup.
@@ -24092,7 +24150,7 @@ var Registry = /** @class */ (function () {
     Registry.prototype.register = function (elem, id) {
         id = id || elem.getAttribute('id');
         if (!id) {
-            throw new exports.X("Can't add element without `id` attribute to registry", elem);
+            throw new X("Can't add element without `id` attribute to registry", elem);
         }
         // Manually add id to index, then update other indexes.
         elem.setAttribute('id', id);
@@ -24445,7 +24503,7 @@ exports.Stave = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
-var stavebarline_1 = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.js");
+var stavebarline_1 = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 var staverepetition_1 = __webpack_require__(/*! ./staverepetition */ "./src/staverepetition.js");
 var stavesection_1 = __webpack_require__(/*! ./stavesection */ "./src/stavesection.ts");
@@ -24454,7 +24512,7 @@ var stavetext_1 = __webpack_require__(/*! ./stavetext */ "./src/stavetext.ts");
 var boundingbox_1 = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 var clef_1 = __webpack_require__(/*! ./clef */ "./src/clef.ts");
 var keysignature_1 = __webpack_require__(/*! ./keysignature */ "./src/keysignature.js");
-var timesignature_1 = __webpack_require__(/*! ./timesignature */ "./src/timesignature.js");
+var timesignature_1 = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
 var stavevolta_1 = __webpack_require__(/*! ./stavevolta */ "./src/stavevolta.ts");
 var Stave = /** @class */ (function (_super) {
     __extends(Stave, _super);
@@ -24684,12 +24742,12 @@ var Stave = /** @class */ (function (_super) {
         return (y - this.y) / spacing - headroom;
     };
     Stave.prototype.getYForTopText = function (line) {
-        var l = line || 0;
-        return this.getYForLine(-l - this.options.top_text_position);
+        if (line === void 0) { line = 0; }
+        return this.getYForLine(-line - this.options.top_text_position);
     };
     Stave.prototype.getYForBottomText = function (line) {
-        var l = line || 0;
-        return this.getYForLine(this.options.bottom_text_position + l);
+        if (line === void 0) { line = 0; }
+        return this.getYForLine(this.options.bottom_text_position + line);
     };
     Stave.prototype.getYForNote = function (line) {
         var options = this.options;
@@ -25056,9 +25114,9 @@ exports.Stave = Stave;
 
 /***/ }),
 
-/***/ "./src/stavebarline.js":
+/***/ "./src/stavebarline.ts":
 /*!*****************************!*\
-  !*** ./src/stavebarline.js ***!
+  !*** ./src/stavebarline.ts ***!
   \*****************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -25084,9 +25142,19 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Barline = void 0;
+exports.Barline = exports.BarlineType = void 0;
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
+var BarlineType;
+(function (BarlineType) {
+    BarlineType[BarlineType["SINGLE"] = 1] = "SINGLE";
+    BarlineType[BarlineType["DOUBLE"] = 2] = "DOUBLE";
+    BarlineType[BarlineType["END"] = 3] = "END";
+    BarlineType[BarlineType["REPEAT_BEGIN"] = 4] = "REPEAT_BEGIN";
+    BarlineType[BarlineType["REPEAT_END"] = 5] = "REPEAT_END";
+    BarlineType[BarlineType["REPEAT_BOTH"] = 6] = "REPEAT_BOTH";
+    BarlineType[BarlineType["NONE"] = 7] = "NONE";
+})(BarlineType = exports.BarlineType || (exports.BarlineType = {}));
 var Barline = /** @class */ (function (_super) {
     __extends(Barline, _super);
     /**
@@ -25169,15 +25237,7 @@ var Barline = /** @class */ (function (_super) {
     });
     Object.defineProperty(Barline, "type", {
         get: function () {
-            return {
-                SINGLE: 1,
-                DOUBLE: 2,
-                END: 3,
-                REPEAT_BEGIN: 4,
-                REPEAT_END: 5,
-                REPEAT_BOTH: 6,
-                NONE: 7,
-            };
+            return BarlineType;
         },
         enumerable: false,
         configurable: true
@@ -25245,31 +25305,31 @@ var Barline = /** @class */ (function (_super) {
         }
     };
     Barline.prototype.drawVerticalBar = function (stave, x, double_bar) {
-        stave.checkContext();
+        var staveCtx = stave.checkContext();
         var topY = stave.getTopLineTopY();
         var botY = stave.getBottomLineBottomY();
         if (double_bar) {
-            stave.context.fillRect(x - 3, topY, 1, botY - topY);
+            staveCtx.fillRect(x - 3, topY, 1, botY - topY);
         }
-        stave.context.fillRect(x, topY, 1, botY - topY);
+        staveCtx.fillRect(x, topY, 1, botY - topY);
     };
     Barline.prototype.drawVerticalEndBar = function (stave, x) {
-        stave.checkContext();
+        var staveCtx = stave.checkContext();
         var topY = stave.getTopLineTopY();
         var botY = stave.getBottomLineBottomY();
-        stave.context.fillRect(x - 5, topY, 1, botY - topY);
-        stave.context.fillRect(x - 2, topY, 3, botY - topY);
+        staveCtx.fillRect(x - 5, topY, 1, botY - topY);
+        staveCtx.fillRect(x - 2, topY, 3, botY - topY);
     };
     Barline.prototype.drawRepeatBar = function (stave, x, begin) {
-        stave.checkContext();
+        var staveCtx = stave.checkContext();
         var topY = stave.getTopLineTopY();
         var botY = stave.getBottomLineBottomY();
         var x_shift = 3;
         if (!begin) {
             x_shift = -5;
         }
-        stave.context.fillRect(x + x_shift, topY, 1, botY - topY);
-        stave.context.fillRect(x - 2, topY, 3, botY - topY);
+        staveCtx.fillRect(x + x_shift, topY, 1, botY - topY);
+        staveCtx.fillRect(x - 2, topY, 3, botY - topY);
         var dot_radius = 2;
         // Shift dots left or right
         if (begin) {
@@ -25284,14 +25344,14 @@ var Barline = /** @class */ (function (_super) {
         y_offset = y_offset / 2 - stave.getSpacingBetweenLines() / 2;
         var dot_y = topY + y_offset + dot_radius / 2;
         // draw the top repeat dot
-        stave.context.beginPath();
-        stave.context.arc(dot_x, dot_y, dot_radius, 0, Math.PI * 2, false);
-        stave.context.fill();
+        staveCtx.beginPath();
+        staveCtx.arc(dot_x, dot_y, dot_radius, 0, Math.PI * 2, false);
+        staveCtx.fill();
         // draw the bottom repeat dot
         dot_y += stave.getSpacingBetweenLines();
-        stave.context.beginPath();
-        stave.context.arc(dot_x, dot_y, dot_radius, 0, Math.PI * 2, false);
-        stave.context.fill();
+        staveCtx.beginPath();
+        staveCtx.arc(dot_x, dot_y, dot_radius, 0, Math.PI * 2, false);
+        staveCtx.fill();
     };
     return Barline;
 }(stavemodifier_1.StaveModifier));
@@ -26103,18 +26163,18 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.StaveModifier = exports.Position = void 0;
+exports.StaveModifier = exports.StaveModifierPosition = void 0;
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var Position;
-(function (Position) {
-    Position[Position["CENTER"] = 0] = "CENTER";
-    Position[Position["LEFT"] = 1] = "LEFT";
-    Position[Position["RIGHT"] = 2] = "RIGHT";
-    Position[Position["ABOVE"] = 3] = "ABOVE";
-    Position[Position["BELOW"] = 4] = "BELOW";
-    Position[Position["BEGIN"] = 5] = "BEGIN";
-    Position[Position["END"] = 6] = "END";
-})(Position = exports.Position || (exports.Position = {}));
+var StaveModifierPosition;
+(function (StaveModifierPosition) {
+    StaveModifierPosition[StaveModifierPosition["CENTER"] = 0] = "CENTER";
+    StaveModifierPosition[StaveModifierPosition["LEFT"] = 1] = "LEFT";
+    StaveModifierPosition[StaveModifierPosition["RIGHT"] = 2] = "RIGHT";
+    StaveModifierPosition[StaveModifierPosition["ABOVE"] = 3] = "ABOVE";
+    StaveModifierPosition[StaveModifierPosition["BELOW"] = 4] = "BELOW";
+    StaveModifierPosition[StaveModifierPosition["BEGIN"] = 5] = "BEGIN";
+    StaveModifierPosition[StaveModifierPosition["END"] = 6] = "END";
+})(StaveModifierPosition = exports.StaveModifierPosition || (exports.StaveModifierPosition = {}));
 var StaveModifier = /** @class */ (function (_super) {
     __extends(StaveModifier, _super);
     function StaveModifier() {
@@ -26128,7 +26188,7 @@ var StaveModifier = /** @class */ (function (_super) {
     }
     Object.defineProperty(StaveModifier, "Position", {
         get: function () {
-            return Position;
+            return StaveModifierPosition;
         },
         enumerable: false,
         configurable: true
@@ -26245,10 +26305,10 @@ var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var boundingbox_1 = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
-var notehead_1 = __webpack_require__(/*! ./notehead */ "./src/notehead.js");
+var notehead_1 = __webpack_require__(/*! ./notehead */ "./src/notehead.ts");
 var stemmablenote_1 = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-var dot_1 = __webpack_require__(/*! ./dot */ "./src/dot.js");
+var dot_1 = __webpack_require__(/*! ./dot */ "./src/dot.ts");
 // To enable logging for this class. Set `Vex.Flow.StaveNote.DEBUG` to `true`.
 function L() {
     var args = [];
@@ -26563,7 +26623,6 @@ var StaveNote = /** @class */ (function (_super) {
         return true;
     };
     StaveNote.prototype.reset = function () {
-        var _this = this;
         _super.prototype.reset.call(this);
         // Save prior noteHead styles & reapply them after making new noteheads.
         var noteHeadStyles = this.note_heads.map(function (noteHead) { return noteHead.getStyle(); });
@@ -26573,8 +26632,9 @@ var StaveNote = /** @class */ (function (_super) {
             if (noteHeadStyle)
                 noteHead.setStyle(noteHeadStyle);
         });
-        if (this.stave) {
-            this.note_heads.forEach(function (head) { return head.setStave(_this.stave); });
+        var stave = this.stave;
+        if (stave) {
+            this.note_heads.forEach(function (head) { return head.setStave(stave); });
         }
         this.calcNoteDisplacements();
         return this;
@@ -26963,11 +27023,11 @@ var StaveNote = /** @class */ (function (_super) {
     // Add self to modifier context. `mContext` is the `ModifierContext`
     // to be added to.
     StaveNote.prototype.addToModifierContext = function (mContext) {
-        this.setModifierContext(mContext);
+        this.modifierContext = mContext;
         for (var i = 0; i < this.modifiers.length; ++i) {
-            mContext.addMember(this.modifiers[i]);
+            this.modifierContext.addMember(this.modifiers[i]);
         }
-        mContext.addMember(this);
+        this.modifierContext.addMember(this);
         this.setPreFormatted(false);
         return this;
     };
@@ -27799,7 +27859,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.StaveText = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
-var textnote_1 = __webpack_require__(/*! ./textnote */ "./src/textnote.js");
+var textnote_1 = __webpack_require__(/*! ./textnote */ "./src/textnote.ts");
 var StaveText = /** @class */ (function (_super) {
     __extends(StaveText, _super);
     function StaveText(text, position, options) {
@@ -27903,9 +27963,9 @@ exports.StaveText = StaveText;
 
 /***/ }),
 
-/***/ "./src/stavetie.js":
+/***/ "./src/stavetie.ts":
 /*!*************************!*\
-  !*** ./src/stavetie.js ***!
+  !*** ./src/stavetie.ts ***!
   \*************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -27941,7 +28001,7 @@ var StaveTie = /** @class */ (function (_super) {
     function StaveTie(notes, text) {
         var _this = 
         /**
-         * Notes is a struct that has:
+         * TieNotes is a struct that has:
          *
          *  {
          *    first_note: Note,
@@ -27954,9 +28014,7 @@ var StaveTie = /** @class */ (function (_super) {
         _super.call(this) || this;
         _this.setAttribute('type', 'StaveTie');
         _this.notes = notes;
-        _this.context = null;
         _this.text = text;
-        _this.direction = null;
         _this.render_options = {
             cp1: 8,
             cp2: 12,
@@ -27965,7 +28023,7 @@ var StaveTie = /** @class */ (function (_super) {
             last_x_shift: 0,
             y_shift: 7,
             tie_spacing: 0,
-            font: { family: 'Arial', size: 10, style: '' },
+            font: { family: 'Arial', size: 10, weight: '' },
         };
         _this.font = _this.render_options.font;
         _this.setNotes(notes);
@@ -27996,23 +28054,20 @@ var StaveTie = /** @class */ (function (_super) {
             throw new vex_1.Vex.RuntimeError('BadArguments', 'Tied notes must have similar index sizes');
         }
         // Success. Lets grab 'em notes.
-        this.first_note = notes.first_note;
-        this.first_indices = notes.first_indices;
-        this.last_note = notes.last_note;
-        this.last_indices = notes.last_indices;
+        this.notes = notes;
         return this;
     };
     /**
      * @return {boolean} Returns true if this is a partial bar.
      */
     StaveTie.prototype.isPartial = function () {
-        return !this.first_note || !this.last_note;
+        return !this.notes.first_note || !this.notes.last_note;
     };
     StaveTie.prototype.renderTie = function (params) {
         if (params.first_ys.length === 0 || params.last_ys.length === 0) {
             throw new vex_1.Vex.RERR('BadArguments', 'No Y-values to render');
         }
-        var ctx = this.context;
+        var ctx = this.checkContext();
         var cp1 = this.render_options.cp1;
         var cp2 = this.render_options.cp2;
         if (Math.abs(params.last_x_px - params.first_x_px) < 10) {
@@ -28022,10 +28077,10 @@ var StaveTie = /** @class */ (function (_super) {
         var first_x_shift = this.render_options.first_x_shift;
         var last_x_shift = this.render_options.last_x_shift;
         var y_shift = this.render_options.y_shift * params.direction;
-        for (var i = 0; i < this.first_indices.length; ++i) {
+        for (var i = 0; i < this.notes.first_indices.length; ++i) {
             var cp_x = (params.last_x_px + last_x_shift + (params.first_x_px + first_x_shift)) / 2;
-            var first_y_px = params.first_ys[this.first_indices[i]] + y_shift;
-            var last_y_px = params.last_ys[this.last_indices[i]] + y_shift;
+            var first_y_px = params.first_ys[this.notes.first_indices[i]] + y_shift;
+            var last_y_px = params.last_ys[this.notes.last_indices[i]] + y_shift;
             if (isNaN(first_y_px) || isNaN(last_y_px)) {
                 throw new vex_1.Vex.RERR('BadArguments', 'Bad indices for tie rendering.');
             }
@@ -28040,34 +28095,41 @@ var StaveTie = /** @class */ (function (_super) {
         }
     };
     StaveTie.prototype.renderText = function (first_x_px, last_x_px) {
+        var _a, _b, _c;
         if (!this.text)
             return;
+        var ctx = this.checkContext();
         var center_x = (first_x_px + last_x_px) / 2;
-        center_x -= this.context.measureText(this.text).width / 2;
-        this.context.save();
-        this.context.setFont(this.font.family, this.font.size, this.font.style);
-        this.context.fillText(this.text, center_x + this.render_options.text_shift_x, (this.first_note || this.last_note).getStave().getYForTopText() - 1);
-        this.context.restore();
+        center_x -= ctx.measureText(this.text).width / 2;
+        var stave = (_b = (_a = this.notes.first_note) === null || _a === void 0 ? void 0 : _a.getStave()) !== null && _b !== void 0 ? _b : (_c = this.notes.last_note) === null || _c === void 0 ? void 0 : _c.getStave();
+        ctx.save();
+        ctx.setFont(this.font.family, this.font.size, this.font.weight);
+        ctx.fillText(this.text, center_x + this.render_options.text_shift_x, stave.getYForTopText() - 1);
+        ctx.restore();
     };
     StaveTie.prototype.draw = function () {
         this.checkContext();
         this.setRendered();
-        var first_note = this.first_note;
-        var last_note = this.last_note;
+        var first_note = this.notes.first_note;
+        var last_note = this.notes.last_note;
         var first_x_px;
         var last_x_px;
         var first_ys;
         var last_ys;
-        var stem_direction;
+        var stem_direction = 0;
         if (first_note) {
             first_x_px = first_note.getTieRightX() + this.render_options.tie_spacing;
             stem_direction = first_note.getStemDirection();
             first_ys = first_note.getYs();
         }
         else {
-            first_x_px = last_note.getStave().getTieStartX();
+            var stave = last_note.getStave();
+            if (!stave) {
+                throw new vex_1.Vex.RERR('NoStave', 'Stave required');
+            }
+            first_x_px = stave.getTieStartX();
             first_ys = last_note.getYs();
-            this.first_indices = this.last_indices;
+            this.notes.first_indices = this.notes.last_indices;
         }
         if (last_note) {
             last_x_px = last_note.getTieLeftX() + this.render_options.tie_spacing;
@@ -28075,9 +28137,13 @@ var StaveTie = /** @class */ (function (_super) {
             last_ys = last_note.getYs();
         }
         else {
-            last_x_px = first_note.getStave().getTieEndX();
+            var stave = first_note.getStave();
+            if (!stave) {
+                throw new vex_1.Vex.RERR('NoStave', 'Stave required');
+            }
+            last_x_px = stave.getTieEndX();
             last_ys = first_note.getYs();
-            this.last_indices = this.first_indices;
+            this.notes.last_indices = this.notes.first_indices;
         }
         if (this.direction) {
             stem_direction = this.direction;
@@ -30019,6 +30085,7 @@ var Flow = {
     durationToNumber: durationToNumber,
     getGlyphProps: getGlyphProps,
     textWidth: textWidth,
+    tabToGlyph: tabToGlyph,
 };
 exports.Flow = Flow;
 Flow.clefProperties = function (clef) {
@@ -30172,7 +30239,7 @@ Flow.integerToNote.table = {
     10: 'A#',
     11: 'B',
 };
-Flow.tabToGlyph = function (fret, scale) {
+function tabToGlyph(fret, scale) {
     if (scale === void 0) { scale = 1.0; }
     var glyph = null;
     var width = 0;
@@ -30192,7 +30259,7 @@ Flow.tabToGlyph = function (fret, scale) {
         getWidth: function () { return width * scale; },
         shift_y: shift_y,
     };
-};
+}
 function textWidth(text) {
     return 7 * text.toString().length;
 }
@@ -31190,9 +31257,9 @@ Flow.TIME4_4 = {
 
 /***/ }),
 
-/***/ "./src/tabnote.js":
+/***/ "./src/tabnote.ts":
 /*!************************!*\
-  !*** ./src/tabnote.js ***!
+  !*** ./src/tabnote.ts ***!
   \************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -31229,7 +31296,7 @@ var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
 var stemmablenote_1 = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
-var dot_1 = __webpack_require__(/*! ./dot */ "./src/dot.js");
+var dot_1 = __webpack_require__(/*! ./dot */ "./src/dot.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 // Gets the unused strings grouped together if consecutive.
 //
@@ -31317,6 +31384,7 @@ var TabNote = /** @class */ (function (_super) {
     // and whether to `draw_stem` when rendering the note
     function TabNote(tab_struct, draw_stem) {
         var _this = _super.call(this, tab_struct) || this;
+        _this.glyphs = [];
         _this.setAttribute('type', 'TabNote');
         _this.ghost = false; // Renders parenthesis around notes
         // Note properties
@@ -31342,7 +31410,7 @@ var TabNote = /** @class */ (function (_super) {
         });
         _this.glyph = tables_1.Flow.getGlyphProps(_this.duration, _this.noteType);
         if (!_this.glyph) {
-            throw new vex_1.Vex.RuntimeError('BadArguments', "Invalid note initialization data (No glyph found): " + JSON.stringify(tab_struct));
+            throw new vex_1.Vex.RERR('BadArguments', "Invalid note initialization data (No glyph found): " + JSON.stringify(tab_struct));
         }
         _this.buildStem();
         if (tab_struct.stem_direction) {
@@ -31366,6 +31434,7 @@ var TabNote = /** @class */ (function (_super) {
     TabNote.prototype.reset = function () {
         if (this.stave)
             this.setStave(this.stave);
+        return this;
     };
     // The ModifierContext category
     TabNote.prototype.getCategory = function () {
@@ -31380,7 +31449,9 @@ var TabNote = /** @class */ (function (_super) {
     };
     // Determine if the note has a stem
     TabNote.prototype.hasStem = function () {
-        return this.render_options.draw_stem;
+        if (this.render_options.draw_stem)
+            return true;
+        return false;
     };
     // Get the default stem extension for the note
     TabNote.prototype.getStemExtension = function () {
@@ -31423,13 +31494,12 @@ var TabNote = /** @class */ (function (_super) {
     TabNote.prototype.setStave = function (stave) {
         var _this = this;
         _super.prototype.setStave.call(this, stave);
-        this.context = stave.context;
+        var ctx = stave.getContext();
+        this.setContext(ctx);
         // Calculate the fret number width based on font used
-        var i;
-        if (this.context) {
-            var ctx = this.context;
+        if (ctx) {
             this.width = 0;
-            var _loop_1 = function () {
+            var _loop_1 = function (i) {
                 var glyph = this_1.glyphs[i];
                 var text = '' + glyph.text;
                 if (text.toUpperCase() !== 'X') {
@@ -31442,8 +31512,8 @@ var TabNote = /** @class */ (function (_super) {
                 this_1.width = Math.max(glyph.getWidth(), this_1.width);
             };
             var this_1 = this;
-            for (i = 0; i < this.glyphs.length; ++i) {
-                _loop_1();
+            for (var i = 0; i < this.glyphs.length; ++i) {
+                _loop_1(i);
             }
             this.glyph.getWidth = function () { return _this.width; };
         }
@@ -31451,7 +31521,7 @@ var TabNote = /** @class */ (function (_super) {
         // while the position.str is a 1-based index
         var ys = this.positions.map(function (_a) {
             var line = _a.str;
-            return stave.getYForLine(line - 1);
+            return stave.getYForLine(Number(line) - 1);
         });
         this.setYs(ys);
         if (this.stem) {
@@ -31465,7 +31535,7 @@ var TabNote = /** @class */ (function (_super) {
     };
     // Add self to the provided modifier context `mc`
     TabNote.prototype.addToModifierContext = function (mc) {
-        this.setModifierContext(mc);
+        this.modifierContext = mc;
         for (var i = 0; i < this.modifiers.length; ++i) {
             this.modifierContext.addMember(this.modifiers[i]);
         }
@@ -31500,7 +31570,7 @@ var TabNote = /** @class */ (function (_super) {
     };
     // Get the default line for rest
     TabNote.prototype.getLineForRest = function () {
-        return this.positions[0].str;
+        return Number(this.positions[0].str);
     };
     // Pre-render formatting
     TabNote.prototype.preFormat = function () {
@@ -31517,25 +31587,30 @@ var TabNote = /** @class */ (function (_super) {
     };
     // Get the y position for the stem
     TabNote.prototype.getStemY = function () {
+        // eslint-disable-next-line
         var num_lines = this.stave.getNumLines();
         // The decimal staff line amounts provide optimal spacing between the
         // fret number and the stem
         var stemUpLine = -0.5;
         var stemDownLine = num_lines - 0.5;
         var stemStartLine = stem_1.Stem.UP === this.stem_direction ? stemUpLine : stemDownLine;
+        // eslint-disable-next-line
         return this.stave.getYForLine(stemStartLine);
     };
     // Get the stem extents for the tabnote
     TabNote.prototype.getStemExtents = function () {
+        // eslint-disable-next-line
         return this.stem.getExtents();
     };
     // Draw the fal onto the context
     TabNote.prototype.drawFlag = function () {
-        var _a = this, beam = _a.beam, glyph = _a.glyph, context = _a.context, stem = _a.stem, stem_direction = _a.stem_direction, _b = _a.render_options, draw_stem = _b.draw_stem, glyph_font_scale = _b.glyph_font_scale;
+        var _a = this, beam = _a.beam, glyph = _a.glyph, stem = _a.stem, stem_direction = _a.stem_direction, _b = _a.render_options, draw_stem = _b.draw_stem, glyph_font_scale = _b.glyph_font_scale;
+        var context = this.checkContext();
         var shouldDrawFlag = beam == undefined && draw_stem;
         // Now it's the flag's turn.
         if (glyph.flag && shouldDrawFlag) {
             var flag_x = this.getStemX() + 1;
+            // eslint-disable-next-line
             var flag_y = this.getStemY() - stem.getHeight();
             var flag_code = stem_direction === stem_1.Stem.DOWN
                 ? glyph.code_flag_downstem // Down stems have flags on the left.
@@ -31552,7 +31627,7 @@ var TabNote = /** @class */ (function (_super) {
             // Only draw the dots if enabled
             if (modifier.getCategory() === 'dots' && !_this.render_options.draw_dots)
                 return;
-            modifier.setContext(_this.context);
+            modifier.setContext(_this.getContext());
             modifier.drawWithStyle();
         });
     };
@@ -31560,14 +31635,16 @@ var TabNote = /** @class */ (function (_super) {
     TabNote.prototype.drawStemThrough = function () {
         var stem_x = this.getStemX();
         var stem_y = this.getStemY();
-        var ctx = this.context;
+        var ctx = this.checkContext();
         var stem_through = this.render_options.draw_stem_through_stave;
         var draw_stem = this.render_options.draw_stem;
         if (draw_stem && stem_through) {
+            // eslint-disable-next-line
             var total_lines = this.stave.getNumLines();
-            var strings_used = this.positions.map(function (position) { return position.str; });
+            var strings_used = this.positions.map(function (position) { return Number(position.str); });
             var unused_strings = getUnusedStringGroups(total_lines, strings_used);
-            var stem_lines = getPartialStemLines(stem_y, unused_strings, this.getStave(), this.getStemDirection());
+            // eslint-disable-next-line
+            var stem_lines = getPartialStemLines(stem_y, unused_strings, this.stave, this.getStemDirection());
             ctx.save();
             ctx.setLineWidth(stem_1.Stem.WIDTH);
             stem_lines.forEach(function (bounds) {
@@ -31584,10 +31661,11 @@ var TabNote = /** @class */ (function (_super) {
     };
     // Render the fret positions onto the context
     TabNote.prototype.drawPositions = function () {
-        var ctx = this.context;
+        var ctx = this.checkContext();
         var x = this.getAbsoluteX();
         var ys = this.ys;
         for (var i = 0; i < this.positions.length; ++i) {
+            // eslint-disable-next-line
             var y = ys[i] + this.render_options.y_shift;
             var glyph = this.glyphs[i];
             // Center the fret text beneath the notation note head
@@ -31596,12 +31674,15 @@ var TabNote = /** @class */ (function (_super) {
             // FIXME: Magic numbers.
             ctx.clearRect(tab_x - 2, y - 3, glyph.getWidth() + 4, 6);
             if (glyph.code) {
+                // eslint-disable-next-line
                 glyph_1.Glyph.renderGlyph(ctx, tab_x, y, this.render_options.glyph_font_scale * this.render_options.scale, glyph.code);
             }
             else {
                 ctx.save();
+                // eslint-disable-next-line
                 ctx.setRawFont(this.render_options.font);
                 var text = glyph.text.toString();
+                // eslint-disable-next-line
                 ctx.fillText(text, tab_x, y + 5 * this.render_options.scale);
                 ctx.restore();
             }
@@ -31609,7 +31690,7 @@ var TabNote = /** @class */ (function (_super) {
     };
     // The main rendering function for the entire note
     TabNote.prototype.draw = function () {
-        this.checkContext();
+        var ctx = this.checkContext();
         if (!this.stave) {
             throw new vex_1.Vex.RERR('NoStave', "Can't draw without a stave.");
         }
@@ -31618,19 +31699,19 @@ var TabNote = /** @class */ (function (_super) {
         }
         this.setRendered();
         var render_stem = this.beam == undefined && this.render_options.draw_stem;
-        this.context.openGroup('tabnote', null, { pointerBBox: true });
+        ctx.openGroup('tabnote', null, { pointerBBox: true });
         this.drawPositions();
         this.drawStemThrough();
-        var stem_x = this.getStemX();
-        this.stem.setNoteHeadXBounds(stem_x, stem_x);
-        if (render_stem) {
-            this.context.openGroup('stem', null, { pointerBBox: true });
-            this.stem.setContext(this.context).draw();
-            this.context.closeGroup();
+        if (this.stem && render_stem) {
+            var stem_x = this.getStemX();
+            this.stem.setNoteHeadXBounds(stem_x, stem_x);
+            ctx.openGroup('stem', null, { pointerBBox: true });
+            this.stem.setContext(ctx).draw();
+            ctx.closeGroup();
         }
         this.drawFlag();
         this.drawModifiers();
-        this.context.closeGroup();
+        ctx.closeGroup();
     };
     return TabNote;
 }(stemmablenote_1.StemmableNote));
@@ -31639,9 +31720,9 @@ exports.TabNote = TabNote;
 
 /***/ }),
 
-/***/ "./src/tabslide.js":
+/***/ "./src/tabslide.ts":
 /*!*************************!*\
-  !*** ./src/tabslide.js ***!
+  !*** ./src/tabslide.ts ***!
   \*************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -31671,7 +31752,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TabSlide = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
-var tabtie_1 = __webpack_require__(/*! ./tabtie */ "./src/tabtie.js");
+var tabtie_1 = __webpack_require__(/*! ./tabtie */ "./src/tabtie.ts");
 var TabSlide = /** @class */ (function (_super) {
     __extends(TabSlide, _super);
     function TabSlide(notes, direction) {
@@ -31694,11 +31775,11 @@ var TabSlide = /** @class */ (function (_super) {
             var last_fret = notes.last_note.getPositions()[0].fret;
             direction = parseInt(first_fret, 10) > parseInt(last_fret, 10) ? TabSlide.SLIDE_DOWN : TabSlide.SLIDE_UP;
         }
-        _this.slide_direction = direction;
+        _this.direction = direction;
         _this.render_options.cp1 = 11;
         _this.render_options.cp2 = 14;
         _this.render_options.y_shift = 0.5;
-        _this.setFont({ font: 'Times', size: 10, style: 'bold italic' });
+        _this.setFont({ family: 'Times', size: 10, weight: 'bold italic' });
         _this.setNotes(notes);
         return _this;
     }
@@ -31726,16 +31807,16 @@ var TabSlide = /** @class */ (function (_super) {
         if (params.first_ys.length === 0 || params.last_ys.length === 0) {
             throw new vex_1.Vex.RERR('BadArguments', 'No Y-values to render');
         }
-        var ctx = this.context;
+        var ctx = this.checkContext();
         var first_x_px = params.first_x_px;
         var first_ys = params.first_ys;
         var last_x_px = params.last_x_px;
-        var direction = this.slide_direction;
+        var direction = params.direction;
         if (direction !== TabSlide.SLIDE_UP && direction !== TabSlide.SLIDE_DOWN) {
             throw new vex_1.Vex.RERR('BadSlide', 'Invalid slide direction');
         }
-        for (var i = 0; i < this.first_indices.length; ++i) {
-            var slide_y = first_ys[this.first_indices[i]] + this.render_options.y_shift;
+        for (var i = 0; i < this.notes.first_indices.length; ++i) {
+            var slide_y = first_ys[this.notes.first_indices[i]] + this.render_options.y_shift;
             if (isNaN(slide_y)) {
                 throw new vex_1.Vex.RERR('BadArguments', 'Bad indices for slide rendering.');
             }
@@ -31821,9 +31902,9 @@ exports.TabStave = TabStave;
 
 /***/ }),
 
-/***/ "./src/tabtie.js":
+/***/ "./src/tabtie.ts":
 /*!***********************!*\
-  !*** ./src/tabtie.js ***!
+  !*** ./src/tabtie.ts ***!
   \***********************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -31852,13 +31933,13 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TabTie = void 0;
-var stavetie_1 = __webpack_require__(/*! ./stavetie */ "./src/stavetie.js");
+var stavetie_1 = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
 var TabTie = /** @class */ (function (_super) {
     __extends(TabTie, _super);
     function TabTie(notes, text) {
         var _this = 
         /**
-         * Notes is a struct that has:
+         * TieNotes is a struct that has:
          *
          *  {
          *    first_note: Note,
@@ -31873,6 +31954,7 @@ var TabTie = /** @class */ (function (_super) {
         _this.render_options.cp1 = 9;
         _this.render_options.cp2 = 11;
         _this.render_options.y_shift = 3;
+        _this.direction = -1; // Tab tie's are always face up.
         _this.setNotes(notes);
         return _this;
     }
@@ -31881,43 +31963,6 @@ var TabTie = /** @class */ (function (_super) {
     };
     TabTie.createPulloff = function (notes) {
         return new TabTie(notes, 'P');
-    };
-    TabTie.prototype.draw = function () {
-        this.checkContext();
-        this.setRendered();
-        var first_note = this.first_note;
-        var last_note = this.last_note;
-        var first_x_px;
-        var last_x_px;
-        var first_ys;
-        var last_ys;
-        if (first_note) {
-            first_x_px = first_note.getTieRightX() + this.render_options.tie_spacing;
-            first_ys = first_note.getYs();
-        }
-        else {
-            first_x_px = last_note.getStave().getTieStartX();
-            first_ys = last_note.getYs();
-            this.first_indices = this.last_indices;
-        }
-        if (last_note) {
-            last_x_px = last_note.getTieLeftX() + this.render_options.tie_spacing;
-            last_ys = last_note.getYs();
-        }
-        else {
-            last_x_px = first_note.getStave().getTieEndX();
-            last_ys = first_note.getYs();
-            this.last_indices = this.first_indices;
-        }
-        this.renderTie({
-            first_x_px: first_x_px,
-            last_x_px: last_x_px,
-            first_ys: first_ys,
-            last_ys: last_ys,
-            direction: -1, // Tab tie's are always face up.
-        });
-        this.renderText(first_x_px, last_x_px);
-        return true;
     };
     return TabTie;
 }(stavetie_1.StaveTie));
@@ -32613,9 +32658,9 @@ exports.TextFont = TextFont;
 
 /***/ }),
 
-/***/ "./src/textnote.js":
+/***/ "./src/textnote.ts":
 /*!*************************!*\
-  !*** ./src/textnote.js ***!
+  !*** ./src/textnote.ts ***!
   \*************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -32655,10 +32700,16 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TextNote = void 0;
+exports.TextNote = exports.Justification = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+var Justification;
+(function (Justification) {
+    Justification[Justification["LEFT"] = 1] = "LEFT";
+    Justification[Justification["CENTER"] = 2] = "CENTER";
+    Justification[Justification["RIGHT"] = 3] = "RIGHT";
+})(Justification = exports.Justification || (exports.Justification = {}));
 var TextNote = /** @class */ (function (_super) {
     __extends(TextNote, _super);
     function TextNote(options) {
@@ -32688,11 +32739,7 @@ var TextNote = /** @class */ (function (_super) {
     }
     Object.defineProperty(TextNote, "Justification", {
         get: function () {
-            return {
-                LEFT: 1,
-                CENTER: 2,
-                RIGHT: 3,
-            };
+            return Justification;
         },
         enumerable: false,
         configurable: true
@@ -32775,7 +32822,7 @@ var TextNote = /** @class */ (function (_super) {
     };
     // Pre-render formatting
     TextNote.prototype.preFormat = function () {
-        this.checkContext();
+        var ctx = this.checkContext();
         if (this.preFormatted)
             return;
         if (this.smooth) {
@@ -32786,8 +32833,8 @@ var TextNote = /** @class */ (function (_super) {
                 // Width already set.
             }
             else {
-                this.context.setFont(this.font.family, this.font.size, this.font.weight);
-                this.setWidth(this.context.measureText(this.text).width);
+                ctx.setFont(this.font.family, this.font.size, this.font.weight);
+                this.setWidth(ctx.measureText(this.text).width);
             }
         }
         if (this.justification === TextNote.Justification.CENTER) {
@@ -32802,12 +32849,11 @@ var TextNote = /** @class */ (function (_super) {
     };
     // Renders the TextNote
     TextNote.prototype.draw = function () {
-        this.checkContext();
+        var ctx = this.checkContext();
         if (!this.stave) {
             throw new vex_1.Vex.RERR('NoStave', "Can't draw without a stave.");
         }
         this.setRendered();
-        var ctx = this.context;
         // Reposition to center of note head
         var x = this.getAbsoluteX() + this.tickContext.getMetrics().glyphPx / 2;
         // Align based on tick-context width.
@@ -32821,7 +32867,7 @@ var TextNote = /** @class */ (function (_super) {
         var y;
         if (this.glyph) {
             y = this.stave.getYForLine(this.line + -3);
-            this.glyph.render(this.context, x, y);
+            this.glyph.render(ctx, x, y);
         }
         else {
             y = this.stave.getYForLine(this.line + -3);
@@ -33335,9 +33381,93 @@ exports.TickContext = TickContext;
 
 /***/ }),
 
-/***/ "./src/timesignature.js":
+/***/ "./src/timesigglyph.ts":
+/*!*****************************!*\
+  !*** ./src/timesigglyph.ts ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TimeSignatureGlyph = void 0;
+var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+var TimeSignatureGlyph = /** @class */ (function (_super) {
+    __extends(TimeSignatureGlyph, _super);
+    function TimeSignatureGlyph(timeSignature, topDigits, botDigits, code, point, options) {
+        var _this = _super.call(this, code, point, options) || this;
+        _this.timeSignature = timeSignature;
+        _this.topGlyphs = [];
+        _this.botGlyphs = [];
+        var topWidth = 0;
+        for (var i = 0; i < topDigits.length; ++i) {
+            var num = topDigits[i];
+            var topGlyph = new glyph_1.Glyph('timeSig' + num, _this.timeSignature.point);
+            _this.topGlyphs.push(topGlyph);
+            topWidth += topGlyph.getMetrics().width;
+        }
+        var botWidth = 0;
+        for (var i = 0; i < botDigits.length; ++i) {
+            var num = botDigits[i];
+            var botGlyph = new glyph_1.Glyph('timeSig' + num, _this.timeSignature.point);
+            _this.botGlyphs.push(botGlyph);
+            botWidth += botGlyph.getMetrics().width;
+        }
+        _this.width = Math.max(topWidth, botWidth);
+        _this.xMin = _this.getMetrics().x_min;
+        _this.topStartX = (_this.width - topWidth) / 2.0;
+        _this.botStartX = (_this.width - botWidth) / 2.0;
+        _this.reset();
+        return _this;
+    }
+    TimeSignatureGlyph.prototype.getMetrics = function () {
+        return {
+            x_min: this.xMin,
+            x_max: this.xMin + this.width,
+            width: this.width,
+        };
+    };
+    TimeSignatureGlyph.prototype.renderToStave = function (x) {
+        var start_x = x + this.topStartX;
+        for (var i = 0; i < this.topGlyphs.length; ++i) {
+            var glyph = this.topGlyphs[i];
+            glyph_1.Glyph.renderOutline(this.checkContext(), glyph.getMetrics().outline, this.scale, start_x + this.x_shift, this.stave.getYForLine(this.timeSignature.topLine));
+            start_x += glyph.getMetrics().width;
+        }
+        start_x = x + this.botStartX;
+        for (var i = 0; i < this.botGlyphs.length; ++i) {
+            var glyph = this.botGlyphs[i];
+            this.timeSignature.placeGlyphOnLine(glyph, this.stave, 0);
+            glyph_1.Glyph.renderOutline(this.checkContext(), glyph.getMetrics().outline, this.scale, start_x + glyph.getMetrics().x_shift, this.stave.getYForLine(this.timeSignature.bottomLine));
+            start_x += glyph.getMetrics().width;
+        }
+    };
+    return TimeSignatureGlyph;
+}(glyph_1.Glyph));
+exports.TimeSignatureGlyph = TimeSignatureGlyph;
+
+
+/***/ }),
+
+/***/ "./src/timesignature.ts":
 /*!******************************!*\
-  !*** ./src/timesignature.js ***!
+  !*** ./src/timesignature.ts ***!
   \******************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -33370,6 +33500,7 @@ exports.TimeSignature = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
+var timesigglyph_1 = __webpack_require__(/*! ./timesigglyph */ "./src/timesigglyph.ts");
 var assertIsValidFraction = function (timeSpec) {
     var numbers = timeSpec.split('/').filter(function (number) { return number !== ''; });
     if (numbers.length !== 2) {
@@ -33384,13 +33515,12 @@ var assertIsValidFraction = function (timeSpec) {
 var TimeSignature = /** @class */ (function (_super) {
     __extends(TimeSignature, _super);
     function TimeSignature(timeSpec, customPadding, validate_args) {
-        if (timeSpec === void 0) { timeSpec = null; }
         if (customPadding === void 0) { customPadding = 15; }
         if (validate_args === void 0) { validate_args = true; }
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'TimeSignature');
         _this.validate_args = validate_args;
-        if (timeSpec === null)
+        if (!timeSpec)
             return _this;
         var padding = customPadding;
         _this.point = _this.musicFont.lookupMetric('digits.point');
@@ -33398,7 +33528,7 @@ var TimeSignature = /** @class */ (function (_super) {
         _this.topLine = 2 + fontLineShift;
         _this.bottomLine = 4 + fontLineShift;
         _this.setPosition(stavemodifier_1.StaveModifier.Position.BEGIN);
-        _this.setTimeSig(timeSpec);
+        _this.timeSig = _this.parseTimeSpec(timeSpec);
         _this.setWidth(_this.timeSig.glyph.getMetrics().width);
         _this.setPadding(padding);
         return _this;
@@ -33450,48 +33580,7 @@ var TimeSignature = /** @class */ (function (_super) {
         };
     };
     TimeSignature.prototype.makeTimeSignatureGlyph = function (topDigits, botDigits) {
-        var glyph = new glyph_1.Glyph('timeSig0', this.point);
-        glyph.topGlyphs = [];
-        glyph.botGlyphs = [];
-        var topWidth = 0;
-        for (var i = 0; i < topDigits.length; ++i) {
-            var num = topDigits[i];
-            var topGlyph = new glyph_1.Glyph('timeSig' + num, this.point);
-            glyph.topGlyphs.push(topGlyph);
-            topWidth += topGlyph.getMetrics().width;
-        }
-        var botWidth = 0;
-        for (var i = 0; i < botDigits.length; ++i) {
-            var num = botDigits[i];
-            var botGlyph = new glyph_1.Glyph('timeSig' + num, this.point);
-            glyph.botGlyphs.push(botGlyph);
-            botWidth += botGlyph.getMetrics().width;
-        }
-        var width = topWidth > botWidth ? topWidth : botWidth;
-        var xMin = glyph.getMetrics().x_min;
-        glyph.getMetrics = function () { return ({
-            x_min: xMin,
-            x_max: xMin + width,
-            width: width,
-        }); };
-        var topStartX = (width - topWidth) / 2.0;
-        var botStartX = (width - botWidth) / 2.0;
-        var that = this;
-        glyph.renderToStave = function renderToStave(x) {
-            var start_x = x + topStartX;
-            for (var i = 0; i < this.topGlyphs.length; ++i) {
-                var glyph_2 = this.topGlyphs[i];
-                glyph_1.Glyph.renderOutline(this.context, glyph_2.metrics.outline, glyph_2.scale, start_x + glyph_2.x_shift, this.stave.getYForLine(that.topLine));
-                start_x += glyph_2.getMetrics().width;
-            }
-            start_x = x + botStartX;
-            for (var i = 0; i < this.botGlyphs.length; ++i) {
-                var glyph_3 = this.botGlyphs[i];
-                that.placeGlyphOnLine(glyph_3, this.stave, glyph_3.line);
-                glyph_1.Glyph.renderOutline(this.context, glyph_3.metrics.outline, glyph_3.scale, start_x + glyph_3.x_shift, this.stave.getYForLine(that.bottomLine));
-                start_x += glyph_3.getMetrics().width;
-            }
-        };
+        var glyph = new timesigglyph_1.TimeSignatureGlyph(this, topDigits, botDigits, 'timeSig0', this.point);
         return glyph;
     };
     TimeSignature.prototype.getTimeSig = function () {
@@ -33510,8 +33599,8 @@ var TimeSignature = /** @class */ (function (_super) {
         }
         this.setRendered();
         this.timeSig.glyph.setStave(this.stave);
-        this.timeSig.glyph.setContext(this.stave.context);
-        this.placeGlyphOnLine(this.timeSig.glyph, this.stave, this.timeSig.line);
+        this.timeSig.glyph.setContext(this.stave.getContext());
+        this.placeGlyphOnLine(this.timeSig.glyph, this.stave, 2);
         this.timeSig.glyph.renderToStave(this.x);
     };
     return TimeSignature;
@@ -33521,9 +33610,9 @@ exports.TimeSignature = TimeSignature;
 
 /***/ }),
 
-/***/ "./src/timesignote.js":
+/***/ "./src/timesignote.ts":
 /*!****************************!*\
-  !*** ./src/timesignote.js ***!
+  !*** ./src/timesignote.ts ***!
   \****************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -33549,23 +33638,22 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TimeSigNote = void 0;
+var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
-var timesignature_1 = __webpack_require__(/*! ./timesignature */ "./src/timesignature.js");
+var timesignature_1 = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
 var TimeSigNote = /** @class */ (function (_super) {
     __extends(TimeSigNote, _super);
     function TimeSigNote(timeSpec, customPadding) {
+        var _a, _b;
         var _this = _super.call(this, { duration: 'b' }) || this;
         _this.setAttribute('type', 'TimeSigNote');
         var timeSignature = new timesignature_1.TimeSignature(timeSpec, customPadding);
         _this.timeSig = timeSignature.getTimeSig();
-        _this.setWidth(_this.timeSig.glyph.getMetrics().width);
+        _this.setWidth((_b = (_a = _this.timeSig) === null || _a === void 0 ? void 0 : _a.glyph.getMetrics().width) !== null && _b !== void 0 ? _b : 0);
         // Note properties
         _this.ignore_ticks = true;
         return _this;
     }
-    TimeSigNote.prototype.getBoundingBox = function () {
-        return _super.prototype.getBoundingBox.call(this);
-    };
     TimeSigNote.prototype.addToModifierContext = function () {
         /* overridden to ignore */
         return this;
@@ -33575,13 +33663,17 @@ var TimeSigNote = /** @class */ (function (_super) {
         return this;
     };
     TimeSigNote.prototype.draw = function () {
-        this.stave.checkContext();
+        if (!this.stave)
+            throw new vex_1.Vex.RERR('NoStave', 'No stave attached to this note.');
+        if (!this.timeSig)
+            throw new vex_1.Vex.RERR('NoTimeSignatureInfo', 'No TimeSignatureInfo attached to this note.');
+        var ctx = this.checkContext();
         this.setRendered();
         if (!this.timeSig.glyph.getContext()) {
-            this.timeSig.glyph.setContext(this.context);
+            this.timeSig.glyph.setContext(ctx);
         }
         this.timeSig.glyph.setStave(this.stave);
-        this.timeSig.glyph.setYShift(this.stave.getYForLine(this.timeSig.line) - this.stave.getYForGlyphs());
+        this.timeSig.glyph.setYShift(this.stave.getYForLine(2) - this.stave.getYForGlyphs());
         this.timeSig.glyph.renderToStave(this.getAbsoluteX());
     };
     return TimeSigNote;
@@ -33624,7 +33716,7 @@ exports.Tremolo = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.js");
+var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
 var Tremolo = /** @class */ (function (_super) {
     __extends(Tremolo, _super);

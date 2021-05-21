@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = "./tests/run.js");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -13457,6 +13457,8 @@ var Glyph = /** @class */ (function (_super) {
     function Glyph(code, point, options) {
         var _this = _super.call(this) || this;
         _this.bbox = new boundingbox_1.BoundingBox(0, 0, 0, 0);
+        _this.topGlyphs = [];
+        _this.botGlyphs = [];
         _this.scale = 1;
         _this.setAttribute('type', 'Glyph');
         _this.code = code;
@@ -13656,10 +13658,10 @@ var Glyph = /** @class */ (function (_super) {
             x_max: this.metrics.x_max * this.scale * this.metrics.scale,
             width: this.bbox.getW(),
             height: this.bbox.getH(),
-            scale: 1,
-            x_shift: 0,
-            y_shift: 0,
-            outline: [],
+            scale: this.scale * this.metrics.scale,
+            x_shift: this.metrics.x_shift,
+            y_shift: this.metrics.y_shift,
+            outline: this.metrics.outline,
         };
     };
     Glyph.prototype.setOriginX = function (x) {
@@ -14282,9 +14284,9 @@ exports.Music = Music;
 // the registry. This allows fast look up of elements by attributes like id, type,
 // and class.
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Registry = exports.X = void 0;
+exports.Registry = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
-exports.X = vex_1.Vex.MakeException('RegistryError');
+var X = vex_1.Vex.MakeException('RegistryError');
 // Indexes are represented as maps of maps of maps. This allows
 // for both multi-labeling (e.g., an element can have multiple classes)
 // and efficient lookup.
@@ -14339,7 +14341,7 @@ var Registry = /** @class */ (function () {
     Registry.prototype.register = function (elem, id) {
         id = id || elem.getAttribute('id');
         if (!id) {
-            throw new exports.X("Can't add element without `id` attribute to registry", elem);
+            throw new X("Can't add element without `id` attribute to registry", elem);
         }
         // Manually add id to index, then update other indexes.
         elem.setAttribute('id', id);
@@ -14440,6 +14442,7 @@ var Flow = {
     durationToNumber: durationToNumber,
     getGlyphProps: getGlyphProps,
     textWidth: textWidth,
+    tabToGlyph: tabToGlyph,
 };
 exports.Flow = Flow;
 Flow.clefProperties = function (clef) {
@@ -14593,7 +14596,7 @@ Flow.integerToNote.table = {
     10: 'A#',
     11: 'B',
 };
-Flow.tabToGlyph = function (fret, scale) {
+function tabToGlyph(fret, scale) {
     if (scale === void 0) { scale = 1.0; }
     var glyph = null;
     var width = 0;
@@ -14613,7 +14616,7 @@ Flow.tabToGlyph = function (fret, scale) {
         getWidth: function () { return width * scale; },
         shift_y: shift_y,
     };
-};
+}
 function textWidth(text) {
     return 7 * text.toString().length;
 }
@@ -15899,11 +15902,13 @@ Vex.Prefix.prefix = 'vf-';
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AccidentalTests = void 0;
 /**
  * VexFlow - Accidental Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-Vex.Flow.Test.Accidental = (function () {
+var AccidentalTests = (function () {
     function hasAccidental(note) {
         return note.modifiers.reduce(function (hasAcc, modifier) {
             return hasAcc || modifier.getCategory() === 'accidentals';
@@ -16715,6 +16720,8 @@ Vex.Flow.Test.Accidental = (function () {
     };
     return Accidental;
 })();
+exports.AccidentalTests = AccidentalTests;
+Vex.Flow.Test.Accidental = AccidentalTests;
 
 
 /***/ }),
@@ -16728,11 +16735,13 @@ Vex.Flow.Test.Accidental = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AnnotationTests = void 0;
 /**
  * VexFlow - Annotation Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.Annotation = (function () {
+var AnnotationTests = (function () {
     var runTests = VF.Test.runTests;
     var Annotation = {
         Start: function () {
@@ -17079,6 +17088,8 @@ VF.Test.Annotation = (function () {
     };
     return Annotation;
 })();
+exports.AnnotationTests = AnnotationTests;
+VF.Test.Annotation = AnnotationTests;
 
 
 /***/ }),
@@ -17092,12 +17103,13 @@ VF.Test.Annotation = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ArticulationTests = void 0;
 /**
  * VexFlow - Articulation Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-var VF = Vex.Flow;
-VF.Test.Articulation = (function () {
+var ArticulationTests = (function () {
     var Articulation = {
         Start: function () {
             QUnit.module('Articulation');
@@ -17404,6 +17416,8 @@ VF.Test.Articulation = (function () {
     };
     return Articulation;
 })();
+exports.ArticulationTests = ArticulationTests;
+VF.Test.Articulation = ArticulationTests;
 
 
 /***/ }),
@@ -17421,8 +17435,9 @@ VF.Test.Articulation = (function () {
  * VexFlow - Auto-beaming Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-var VF = Vex.Flow;
-VF.Test.AutoBeamFormatting = (function () {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AutoBeamFormattingTests = void 0;
+var AutoBeamFormattingTests = (function () {
     function concat(a, b) {
         return a.concat(b);
     }
@@ -18064,6 +18079,8 @@ VF.Test.AutoBeamFormatting = (function () {
     };
     return AutoBeamFormatting;
 })();
+exports.AutoBeamFormattingTests = AutoBeamFormattingTests;
+VF.Test.AutoBeamFormatting = AutoBeamFormattingTests;
 
 
 /***/ }),
@@ -18081,8 +18098,10 @@ VF.Test.AutoBeamFormatting = (function () {
  * VexFlow - Auto-beaming Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BachDemoTests = void 0;
 var VF = Vex.Flow;
-VF.Test.BachDemo = (function () {
+var BachDemoTests = (function () {
     function concat(a, b) {
         return a.concat(b);
     }
@@ -18443,6 +18462,8 @@ VF.Test.BachDemo = (function () {
     };
     return BachDemo;
 })();
+exports.BachDemoTests = BachDemoTests;
+VF.Test.BachDemo = BachDemoTests;
 
 
 /***/ }),
@@ -18456,11 +18477,13 @@ VF.Test.BachDemo = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BarlineTests = void 0;
 /**
  * VexFlow - Barline Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.Barline = (function () {
+var BarlineTests = (function () {
     return {
         Start: function () {
             var run = VF.Test.runTests;
@@ -18481,9 +18504,28 @@ VF.Test.Barline = (function () {
                 vf.draw();
                 ok(true, 'Simple Test');
             });
+            run('Style BarNotes', function (options) {
+                var vf = VF.Test.makeFactory(options, 380, 160);
+                var stave = vf.Stave();
+                var notes = [
+                    vf.StaveNote({ keys: ['d/4', 'e/4', 'f/4'], stem_direction: -1, duration: '2' }),
+                    vf.BarNote({ type: 'single' }),
+                    vf
+                        .StaveNote({ keys: ['c/4', 'f/4', 'a/4'], stem_direction: -1, duration: '2' })
+                        .addAccidental(0, vf.Accidental({ type: 'n' }))
+                        .addAccidental(1, vf.Accidental({ type: '#' })),
+                ];
+                notes[1].setStyle({ shadowBlur: 15, shadowColor: 'blue', fillStyle: 'blue', strokeStyle: 'blue' });
+                var voice = vf.Voice().addTickables(notes);
+                vf.Formatter().joinVoices([voice]).formatToStave([voice], stave);
+                vf.draw();
+                ok(true, 'Style');
+            });
         },
     };
 })();
+exports.BarlineTests = BarlineTests;
+VF.Test.Barline = BarlineTests;
 
 
 /***/ }),
@@ -18497,20 +18539,13 @@ VF.Test.Barline = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BeamTests = void 0;
 /**
  * VexFlow - Beam Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-/*
-eslint-disable
-no-var,
-no-undef,
-wrap-iife,
-func-names,
-vars-on-top,
-max-len,
- */
-VF.Test.Beam = (function () {
+var BeamTests = (function () {
     var runTests = VF.Test.runTests;
     function concat(a, b) {
         return a.concat(b);
@@ -19116,6 +19151,8 @@ VF.Test.Beam = (function () {
     };
     return Beam;
 })();
+exports.BeamTests = BeamTests;
+VF.Test.Beam = BeamTests;
 
 
 /***/ }),
@@ -19129,11 +19166,13 @@ VF.Test.Beam = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BendTests = void 0;
 /**
  * VexFlow - Accidental Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.Bend = (function () {
+var BendTests = (function () {
     var Bend = {
         Start: function () {
             QUnit.module('Bend');
@@ -19371,6 +19410,8 @@ VF.Test.Bend = (function () {
     };
     return Bend;
 })();
+exports.BendTests = BendTests;
+VF.Test.Bend = BendTests;
 
 
 /***/ }),
@@ -19384,11 +19425,13 @@ VF.Test.Bend = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BoundingBoxTests = void 0;
 /**
  * VexFlow - Bounding Box Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.BoundingBox = (function () {
+var BoundingBoxTests = (function () {
     var BoundingBox = {
         Start: function () {
             QUnit.module('BoundingBox');
@@ -19440,6 +19483,8 @@ VF.Test.BoundingBox = (function () {
     };
     return BoundingBox;
 })();
+exports.BoundingBoxTests = BoundingBoxTests;
+VF.Test.BoundingBox = BoundingBoxTests;
 
 
 /***/ }),
@@ -19453,11 +19498,13 @@ VF.Test.BoundingBox = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ChordSymbolTests = void 0;
 /**
  * VexFlow - Annotation Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.ChordSymbol = (function () {
+var ChordSymbolTests = (function () {
     var runSVG = VF.Test.runSVGTest;
     var ChordSymbol = {
         Start: function () {
@@ -19808,6 +19855,8 @@ VF.Test.ChordSymbol = (function () {
     };
     return ChordSymbol;
 })();
+exports.ChordSymbolTests = ChordSymbolTests;
+VF.Test.ChordSymbol = ChordSymbolTests;
 
 
 /***/ }),
@@ -19825,7 +19874,9 @@ VF.Test.ChordSymbol = (function () {
  * VexFlow - Clef Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.Clef = (function () {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ClefTests = void 0;
+var ClefTests = (function () {
     var Clef = {
         Start: function () {
             QUnit.module('Clef');
@@ -19955,6 +20006,8 @@ VF.Test.Clef = (function () {
     };
     return Clef;
 })();
+exports.ClefTests = ClefTests;
+VF.Test.Clef = ClefTests;
 
 
 /***/ }),
@@ -19968,12 +20021,13 @@ VF.Test.Clef = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CurveTests = void 0;
 /**
  * VexFlow - Curve Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-var VF = Vex.Flow;
-VF.Test.Curve = (function () {
+var CurveTests = (function () {
     function concat(a, b) {
         return a.concat(b);
     }
@@ -20088,6 +20142,8 @@ VF.Test.Curve = (function () {
         },
     };
 })();
+exports.CurveTests = CurveTests;
+VF.Test.Curve = CurveTests;
 
 
 /***/ }),
@@ -20131,11 +20187,13 @@ exports.notStrictEqual = global.notStrictEqual;
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DotTests = void 0;
 /**
  * VexFlow - Dot Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.Dot = (function () {
+var DotTests = (function () {
     function showNote(note, stave, ctx, x) {
         note.setStave(stave).addToModifierContext(new VF.ModifierContext());
         new VF.TickContext().addTickable(note).preFormat().setX(x);
@@ -20264,6 +20322,8 @@ VF.Test.Dot = (function () {
     };
     return Dot;
 })();
+exports.DotTests = DotTests;
+VF.Test.Dot = DotTests;
 
 
 /***/ }),
@@ -20277,11 +20337,13 @@ VF.Test.Dot = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.EasyScoreTests = void 0;
 /**
  * VexFlow - EasyScore Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-Vex.Flow.Test.EasyScore = (function () {
+var EasyScoreTests = (function () {
     var EasyScore = {
         Start: function () {
             QUnit.module('EasyScore');
@@ -20612,6 +20674,8 @@ Vex.Flow.Test.EasyScore = (function () {
     };
     return EasyScore;
 })();
+exports.EasyScoreTests = EasyScoreTests;
+Vex.Flow.Test.EasyScore = EasyScoreTests;
 
 
 /***/ }),
@@ -20625,11 +20689,13 @@ Vex.Flow.Test.EasyScore = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.FactoryTests = void 0;
 /**
  * VexFlow - Factory Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-Vex.Flow.Test.Factory = (function () {
+var FactoryTests = (function () {
     var Factory = {
         Start: function () {
             QUnit.module('Factory');
@@ -20688,6 +20754,8 @@ Vex.Flow.Test.Factory = (function () {
     };
     return Factory;
 })();
+exports.FactoryTests = FactoryTests;
+Vex.Flow.Test.Factory = FactoryTests;
 
 
 /***/ }),
@@ -20701,19 +20769,22 @@ Vex.Flow.Test.Factory = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.FormatterTests = void 0;
 /**
  * VexFlow - TickContext Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.Formatter = (function () {
+var mocks_1 = __webpack_require__(/*! ./mocks */ "./tests/mocks.js");
+var FormatterTests = (function () {
     var run = VF.Test.runTests;
     var runSVG = VF.Test.runSVGTest;
     var Formatter = {
         Start: function () {
             QUnit.module('Formatter');
             test('TickContext Building', Formatter.buildTickContexts);
-            runSVG('Long measure problems', Formatter.longMeasureProblems);
             runSVG('Justification and alignment with accidentals', Formatter.accidentalJustification);
+            runSVG('Long measure taking full space', Formatter.longMeasureProblems);
             runSVG('Vertical alignment - few unaligned beats', Formatter.unalignedNoteDurations);
             runSVG('Vertical alignment - many unaligned beats', Formatter.unalignedNoteDurations2, { globalSoftmax: false });
             runSVG('Vertical alignment - many unaligned beats (global softmax)', Formatter.unalignedNoteDurations2, {
@@ -20739,46 +20810,9 @@ VF.Test.Formatter = (function () {
                 alpha: 0.5,
             });
         },
-        longMeasureProblems: function (options) {
-            var registry = new VF.Registry();
-            VF.Registry.enableDefaultRegistry(registry);
-            var vf = VF.Test.makeFactory(options, 1500, 300);
-            var score = vf.EasyScore();
-            score.set({
-                time: '4/4',
-            });
-            var notes1 = score.notes('b4/4,b4/8,b4/8,b4/4,b4/4,b4/2,b4/2,b4/4,b4/8,b4/8,b4/4,b4/4,b4/2,b4/2,b4/4,b4/8,b4/8,b4/4,b4/4,b4/2,b4/2,b4/4,b4/2,b4/8,b4/8');
-            var voice1 = new VF.Voice().setMode(VF.Voice.Mode.Soft);
-            var notes2 = score.notes('d3/4,(ab3 f4)/2,d3/4,ab3/4,d3/2,ab3/4,d3/4,ab3/2,d3/4,ab3/4,d3/2,ab3/4,d3/4,ab3/2,d3/4,ab3/4,d3/2,ab3/4,d4/4,d4/2,d4/4', {
-                clef: 'bass',
-            });
-            var voice2 = new VF.Voice().setMode(VF.Voice.Mode.Soft);
-            voice2.addTickables(notes2);
-            voice1.addTickables(notes1);
-            var stave1 = vf.Stave({
-                y: 50,
-                width: 1500,
-            });
-            var stave2 = vf.Stave({
-                y: 200,
-                width: 1500,
-            });
-            vf.StaveConnector({
-                top_stave: stave1,
-                bottom_stave: stave2,
-                type: 'brace',
-            });
-            var formatter = vf.Formatter().joinVoices([voice1]).joinVoices([voice2]);
-            formatter.format([voice1, voice2], 1500);
-            stave1.draw();
-            stave2.draw();
-            voice1.draw(vf.context, stave1);
-            voice2.draw(vf.context, stave2);
-            ok(true);
-        },
         buildTickContexts: function () {
             function createTickable() {
-                return new VF.Test.MockTickable();
+                return new mocks_1.MockTickable();
             }
             var R = VF.RESOLUTION;
             var BEAT = (1 * R) / 4;
@@ -20816,6 +20850,43 @@ VF.Test.Formatter = (function () {
             equal(tickables1[0].getX(), tickables2[0].getX(), 'First notes of both voices have the same X');
             equal(tickables1[2].getX(), tickables2[2].getX(), 'Last notes of both voices have the same X');
             ok(tickables1[1].getX() < tickables2[1].getX(), 'Second note of voice 2 is to the right of the second note of voice 1');
+        },
+        longMeasureProblems: function (options) {
+            var registry = new VF.Registry();
+            VF.Registry.enableDefaultRegistry(registry);
+            var vf = VF.Test.makeFactory(options, 1500, 300);
+            var score = vf.EasyScore();
+            score.set({
+                time: '4/4',
+            });
+            var notes1 = score.notes('b4/4,b4/8,b4/8,b4/4,b4/4,b4/2,b4/2,b4/4,b4/8,b4/8,b4/4,b4/4,b4/2,b4/2,b4/4,b4/8,b4/8,b4/4,b4/4,b4/2,b4/2,b4/4,b4/2,b4/8,b4/8');
+            var voice1 = new VF.Voice().setMode(VF.Voice.Mode.Soft);
+            var notes2 = score.notes('d3/4,(ab3 f4)/2,d3/4,ab3/4,d3/2,ab3/4,d3/4,ab3/2,d3/4,ab3/4,d3/2,ab3/4,d3/4,ab3/2,d3/4,ab3/4,d3/2,ab3/4,d4/4,d4/2,d4/4', {
+                clef: 'bass',
+            });
+            var voice2 = new VF.Voice().setMode(VF.Voice.Mode.Soft);
+            voice2.addTickables(notes2);
+            voice1.addTickables(notes1);
+            var stave1 = vf.Stave({
+                y: 50,
+                width: 1500,
+            });
+            var stave2 = vf.Stave({
+                y: 200,
+                width: 1500,
+            });
+            vf.StaveConnector({
+                top_stave: stave1,
+                bottom_stave: stave2,
+                type: 'brace',
+            });
+            var formatter = vf.Formatter().joinVoices([voice1]).joinVoices([voice2]);
+            formatter.format([voice1, voice2], 1500);
+            stave1.draw();
+            stave2.draw();
+            voice1.draw(vf.context, stave1);
+            voice2.draw(vf.context, stave2);
+            ok(true);
         },
         accidentalJustification: function (options) {
             var vf = VF.Test.makeFactory(options, 600, 300);
@@ -20929,7 +21000,7 @@ VF.Test.Formatter = (function () {
             ok(voice1.tickables[1].getX() > voice2.tickables[1].getX());
         },
         justifyStaveNotes: function (options) {
-            var vf = VF.Test.makeFactory(options, 420, 280);
+            var vf = VF.Test.makeFactory(options, 520, 280);
             var ctx = vf.getContext();
             var score = vf.EasyScore();
             var y = 30;
@@ -20948,7 +21019,7 @@ VF.Test.Formatter = (function () {
                 });
                 y += 210;
             }
-            justifyToWidth(500);
+            justifyToWidth(520);
             vf.draw();
             ok(true);
         },
@@ -21155,11 +21226,11 @@ VF.Test.Formatter = (function () {
             ok(true);
         },
         tightNotes: function (options) {
-            var vf = VF.Test.makeFactory(options, 420, 250);
+            var vf = VF.Test.makeFactory(options, 440, 250);
             vf.getContext().scale(0.8, 0.8);
             var score = vf.EasyScore();
             var system = vf.System({
-                width: 400,
+                width: 450,
                 debugFormatter: true,
                 details: { maxIterations: 10 },
             });
@@ -21183,11 +21254,11 @@ VF.Test.Formatter = (function () {
             ok(true);
         },
         tightNotes2: function (options) {
-            var vf = VF.Test.makeFactory(options, 420, 250);
+            var vf = VF.Test.makeFactory(options, 440, 250);
             vf.getContext().scale(0.8, 0.8);
             var score = vf.EasyScore();
             var system = vf.System({
-                width: 400,
+                width: 440,
                 debugFormatter: true,
             });
             system
@@ -21208,7 +21279,7 @@ VF.Test.Formatter = (function () {
             ok(true);
         },
         annotations: function (options) {
-            var pageWidth = 816;
+            var pageWidth = 916;
             var pageHeight = 600;
             var vf = VF.Test.makeFactory(options, pageWidth, pageHeight);
             var context = vf.getContext();
@@ -21217,27 +21288,27 @@ VF.Test.Formatter = (function () {
             var smar = [
                 {
                     sm: 5,
-                    width: 450,
+                    width: 550,
                     lyrics: lyrics1,
-                    title: '450px,softMax:5',
+                    title: '550px,softMax:5',
                 },
                 {
                     sm: 10,
-                    width: 450,
+                    width: 550,
                     lyrics: lyrics2,
-                    title: '450px,softmax:10,different word order',
+                    title: '550px,softmax:10,different word order',
                 },
                 {
                     sm: 5,
-                    width: 460,
+                    width: 550,
                     lyrics: lyrics2,
-                    title: '460px,softmax:5',
+                    title: '550px,softmax:5',
                 },
                 {
                     sm: 100,
-                    width: 460,
+                    width: 550,
                     lyrics: lyrics2,
-                    title: '460px,softmax:100',
+                    title: '550px,softmax:100',
                 },
             ];
             var rowSize = 140;
@@ -21301,6 +21372,8 @@ VF.Test.Formatter = (function () {
     };
     return Formatter;
 })();
+exports.FormatterTests = FormatterTests;
+VF.Test.Formatter = FormatterTests;
 
 
 /***/ }),
@@ -21322,10 +21395,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FractionTests = void 0;
 var fraction_1 = __webpack_require__(/*! ../src/fraction */ "./src/fraction.ts");
 var declarations_1 = __webpack_require__(/*! ./declarations */ "./tests/declarations.ts");
-exports.FractionTests = {
+var FractionTests = {
     Start: function () {
         declarations_1.QUnit.module('Fraction');
-        declarations_1.test('Basic', exports.FractionTests.basic);
+        declarations_1.test('Basic', FractionTests.basic);
     },
     basic: function () {
         var f_1_2 = new fraction_1.Fraction(1, 2);
@@ -21362,6 +21435,7 @@ exports.FractionTests = {
         // TODO: Add more detailed tests.
     },
 };
+exports.FractionTests = FractionTests;
 
 
 /***/ }),
@@ -21379,6 +21453,8 @@ exports.FractionTests = {
  * VexFlow - Rest Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GhostNoteTests = void 0;
 function createTest(setup) {
     return function (options) {
         var vf = VF.Test.makeFactory(options, 550);
@@ -21390,7 +21466,7 @@ function createTest(setup) {
         ok(true, 'all pass');
     };
 }
-VF.Test.GhostNote = {
+var GhostNoteTests = {
     Start: function () {
         var run = VF.Test.runTests;
         QUnit.module('GhostNote');
@@ -21453,6 +21529,8 @@ VF.Test.GhostNote = {
         }));
     },
 };
+exports.GhostNoteTests = GhostNoteTests;
+VF.Test.GhostNote = GhostNoteTests;
 
 
 /***/ }),
@@ -21466,11 +21544,13 @@ VF.Test.GhostNote = {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GlyphNoteTests = void 0;
 /**
  * VexFlow - GlyphNote Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.GlyphNote = (function () {
+var GlyphNoteTests = (function () {
     var run = VF.Test.runTests;
     var GlyphNote = {
         Start: function () {
@@ -21549,6 +21629,8 @@ VF.Test.GlyphNote = (function () {
     };
     return GlyphNote;
 })();
+exports.GlyphNoteTests = GlyphNoteTests;
+VF.Test.GlyphNote = GlyphNoteTests;
 
 
 /***/ }),
@@ -21562,11 +21644,13 @@ VF.Test.GlyphNote = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GraceNoteTests = void 0;
 /**
  * VexFlow - GraceNote Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.GraceNote = (function () {
+var GraceNoteTests = (function () {
     var stem_test_util = {
         durations: ['8', '16', '32', '64', '128'],
         createNote: function (d, noteT, keys, stem_direction, slash) {
@@ -21931,6 +22015,8 @@ VF.Test.GraceNote = (function () {
     };
     return GraceNote;
 })();
+exports.GraceNoteTests = GraceNoteTests;
+VF.Test.GraceNote = GraceNoteTests;
 
 
 /***/ }),
@@ -21944,11 +22030,13 @@ VF.Test.GraceNote = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GraceTabNoteTests = void 0;
 /**
  * VexFlow - GraceTabNote Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.GraceTabNote = (function () {
+var GraceTabNoteTests = (function () {
     var GraceTabNote = {
         Start: function () {
             QUnit.module('Grace Tab Notes');
@@ -22031,6 +22119,8 @@ VF.Test.GraceTabNote = (function () {
     };
     return GraceTabNote;
 })();
+exports.GraceTabNoteTests = GraceTabNoteTests;
+VF.Test.GraceTabNote = GraceTabNoteTests;
 
 
 /***/ }),
@@ -22044,11 +22134,13 @@ VF.Test.GraceTabNote = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ClefKeySignatureTests = void 0;
 /**
  * VexFlow - Clef-Key Signature Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.ClefKeySignature = (function () {
+var ClefKeySignatureTests = (function () {
     var ClefKeySignature = {
         MAJOR_KEYS: ['C', 'F', 'Bb', 'Eb', 'Ab', 'Db', 'Gb', 'Cb', 'G', 'D', 'A', 'E', 'B', 'F#', 'C#'],
         MINOR_KEYS: ['Am', 'Dm', 'Gm', 'Cm', 'Fm', 'Bbm', 'Ebm', 'Abm', 'Em', 'Bm', 'F#m', 'C#m', 'G#m', 'D#m', 'A#m'],
@@ -22164,6 +22256,8 @@ VF.Test.ClefKeySignature = (function () {
     };
     return ClefKeySignature;
 })();
+exports.ClefKeySignatureTests = ClefKeySignatureTests;
+VF.Test.ClefKeySignature = ClefKeySignatureTests;
 
 
 /***/ }),
@@ -22177,11 +22271,13 @@ VF.Test.ClefKeySignature = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.KeyManagerTests = void 0;
 /**
  * VexFlow - Music Key Management Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.KeyManager = (function () {
+var KeyManagerTests = (function () {
     var KeyManager = {
         Start: function () {
             QUnit.module('KeyManager');
@@ -22251,6 +22347,8 @@ VF.Test.KeyManager = (function () {
     };
     return KeyManager;
 })();
+exports.KeyManagerTests = KeyManagerTests;
+VF.Test.KeyManager = KeyManagerTests;
 
 
 /***/ }),
@@ -22264,11 +22362,13 @@ VF.Test.KeyManager = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.KeySignatureTests = void 0;
 /**
  * VexFlow - Key Signature Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.KeySignature = (function () {
+var KeySignatureTests = (function () {
     function catchError(spec) {
         try {
             VF.keySignature(spec);
@@ -22528,6 +22628,8 @@ VF.Test.KeySignature = (function () {
     };
     return KeySignature;
 })();
+exports.KeySignatureTests = KeySignatureTests;
+VF.Test.KeySignature = KeySignatureTests;
 
 
 /***/ }),
@@ -22541,12 +22643,13 @@ VF.Test.KeySignature = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MockTickable = void 0;
 /**
  * VexFlow - TickContext Mocks
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-/* Mock Tickable */
-VF.Test.MockTickable = (function () {
+var MT = (function () {
     function MockTickable() {
         this.ignore_ticks = false;
     }
@@ -22607,6 +22710,7 @@ VF.Test.MockTickable = (function () {
     };
     return MockTickable;
 })();
+exports.MockTickable = MT;
 
 
 /***/ }),
@@ -22620,11 +22724,13 @@ VF.Test.MockTickable = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ModifierContextTests = void 0;
 /**
  * VexFlow - ModifierContext Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.ModifierContext = (function () {
+var ModifierContextTests = (function () {
     var ModifierContext = {
         Start: function () {
             QUnit.module('ModifierContext');
@@ -22647,6 +22753,8 @@ VF.Test.ModifierContext = (function () {
     };
     return ModifierContext;
 })();
+exports.ModifierContextTests = ModifierContextTests;
+VF.Test.ModifierContext = ModifierContextTests;
 
 
 /***/ }),
@@ -22660,11 +22768,13 @@ VF.Test.ModifierContext = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MultiMeasureRestTests = void 0;
 /**
  * VexFlow - MultiMeasureRest Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.MultiMeasureRest = (function () {
+var MultiMeasureRestTests = (function () {
     return {
         Start: function () {
             QUnit.module('MultiMeasureRest');
@@ -22803,6 +22913,8 @@ VF.Test.MultiMeasureRest = (function () {
         },
     };
 })();
+exports.MultiMeasureRestTests = MultiMeasureRestTests;
+VF.Test.MultiMeasureRest = MultiMeasureRestTests;
 
 
 /***/ }),
@@ -22816,28 +22928,28 @@ VF.Test.MultiMeasureRest = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MusicTests = void 0;
 /**
  * VexFlow - Music API Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.MusicTests = void 0;
 var music_1 = __webpack_require__(/*! ../src/music */ "./src/music.ts");
 var keymanager_1 = __webpack_require__(/*! ../src/keymanager */ "./src/keymanager.js");
 var declarations_1 = __webpack_require__(/*! ./declarations */ "./tests/declarations.ts");
-exports.MusicTests = {
+var MusicTests = {
     Start: function () {
         declarations_1.QUnit.module('MusicTests');
-        declarations_1.test('Valid Notes', exports.MusicTests.validNotes);
-        declarations_1.test('Valid Keys', exports.MusicTests.validKeys);
-        declarations_1.test('Note Values', exports.MusicTests.noteValue);
-        declarations_1.test('Interval Values', exports.MusicTests.intervalValue);
-        declarations_1.test('Relative Notes', exports.MusicTests.relativeNotes);
-        declarations_1.test('Relative Note Names', exports.MusicTests.relativeNoteNames);
-        declarations_1.test('Canonical Notes', exports.MusicTests.canonicalNotes);
-        declarations_1.test('Canonical Intervals', exports.MusicTests.canonicalIntervals);
-        declarations_1.test('Scale Tones', exports.MusicTests.scaleTones);
-        declarations_1.test('Scale Intervals', exports.MusicTests.scaleIntervals);
+        declarations_1.test('Valid Notes', MusicTests.validNotes);
+        declarations_1.test('Valid Keys', MusicTests.validKeys);
+        declarations_1.test('Note Values', MusicTests.noteValue);
+        declarations_1.test('Interval Values', MusicTests.intervalValue);
+        declarations_1.test('Relative Notes', MusicTests.relativeNotes);
+        declarations_1.test('Relative Note Names', MusicTests.relativeNoteNames);
+        declarations_1.test('Canonical Notes', MusicTests.canonicalNotes);
+        declarations_1.test('Canonical Intervals', MusicTests.canonicalIntervals);
+        declarations_1.test('Scale Tones', MusicTests.scaleTones);
+        declarations_1.test('Scale Intervals', MusicTests.scaleIntervals);
     },
     validNotes: function () {
         declarations_1.expect(10);
@@ -23054,6 +23166,7 @@ exports.MusicTests = {
         declarations_1.equal(music.getCanonicalIntervalName(music.getIntervalBetween(music.getNoteValue('d'), music.getNoteValue('c'), -1)), 'M2');
     },
 };
+exports.MusicTests = MusicTests;
 
 
 /***/ }),
@@ -23067,11 +23180,13 @@ exports.MusicTests = {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.NoteHeadTests = void 0;
 /**
  * VexFlow - NoteHead Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.NoteHead = (function () {
+var NoteHeadTests = (function () {
     var NoteHead = {
         Start: function () {
             QUnit.module('NoteHead');
@@ -23221,6 +23336,8 @@ VF.Test.NoteHead = (function () {
     };
     return NoteHead;
 })();
+exports.NoteHeadTests = NoteHeadTests;
+VF.Test.NoteHead = NoteHeadTests;
 
 
 /***/ }),
@@ -23234,13 +23351,15 @@ VF.Test.NoteHead = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.NoteSubGroupTests = void 0;
 /**
  * VexFlow - NoteSubGroup Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  *
  * Author Taehoon Moon 2016
  */
-VF.Test.NoteSubGroup = (function () {
+var NoteSubGroupTests = (function () {
     var NoteSubGroup = {
         Start: function () {
             var run = VF.Test.runTests;
@@ -23444,6 +23563,8 @@ VF.Test.NoteSubGroup = (function () {
     };
     return NoteSubGroup;
 })();
+exports.NoteSubGroupTests = NoteSubGroupTests;
+VF.Test.NoteSubGroup = NoteSubGroupTests;
 
 
 /***/ }),
@@ -23457,12 +23578,14 @@ VF.Test.NoteSubGroup = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.OrnamentTests = void 0;
 /*
   VexFlow - Ornament Tests
   Copyright Mohit Cheppudira 2010 <mohit@muthanna.com>
   Author: Cyril Silverman
 */
-VF.Test.Ornament = (function () {
+var OrnamentTests = (function () {
     var Ornament = {
         Start: function () {
             var runTests = VF.Test.runTests;
@@ -23767,6 +23890,8 @@ VF.Test.Ornament = (function () {
     };
     return Ornament;
 })();
+exports.OrnamentTests = OrnamentTests;
+VF.Test.Ornament = OrnamentTests;
 
 
 /***/ }),
@@ -23780,11 +23905,13 @@ VF.Test.Ornament = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ParserTests = void 0;
 /**
  * VexFlow - Parser Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-Vex.Flow.Test.Parser = (function () {
+var ParserTests = (function () {
     var TestGrammar = function () {
         return {
             begin: function () {
@@ -23960,6 +24087,8 @@ Vex.Flow.Test.Parser = (function () {
     };
     return Parser;
 })();
+exports.ParserTests = ParserTests;
+Vex.Flow.Test.Parser = ParserTests;
 
 
 /***/ }),
@@ -23973,11 +24102,13 @@ Vex.Flow.Test.Parser = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PedalMarkingTests = void 0;
 /**
  * VexFlow - PedalMarking Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.PedalMarking = (function () {
+var PedalMarkingTests = (function () {
     var PedalMarking = {
         test: function (makePedal) {
             return function (options) {
@@ -24039,6 +24170,8 @@ VF.Test.PedalMarking = (function () {
     };
     return PedalMarking;
 })();
+exports.PedalMarkingTests = PedalMarkingTests;
+VF.Test.PedalMarking = PedalMarkingTests;
 
 
 /***/ }),
@@ -24052,6 +24185,8 @@ VF.Test.PedalMarking = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PercussionTests = void 0;
 /**
  * VexFlow - Percussion Tests
  * Copyright Mike Corrigan 2012 <corrigan@gmail.com>
@@ -24066,7 +24201,7 @@ function createSingleMeasureTest(setup) {
         ok(true);
     };
 }
-VF.Test.Percussion = (function () {
+var PercussionTests = (function () {
     function showNote(note_struct, stave, ctx, x) {
         var note = new VF.StaveNote(note_struct).setStave(stave);
         new VF.TickContext().addTickable(note).preFormat().setX(x);
@@ -24233,6 +24368,8 @@ VF.Test.Percussion = (function () {
     };
     return Percussion;
 })();
+exports.PercussionTests = PercussionTests;
+VF.Test.Percussion = PercussionTests;
 
 
 /***/ }),
@@ -24250,7 +24387,9 @@ VF.Test.Percussion = (function () {
  * VexFlow - Registry Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-Vex.Flow.Test.Registry = (function () {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RegistryTests = void 0;
+var RegistryTests = (function () {
     var Registry = {
         Start: function () {
             QUnit.module('Registry');
@@ -24316,6 +24455,8 @@ Vex.Flow.Test.Registry = (function () {
     };
     return Registry;
 })();
+exports.RegistryTests = RegistryTests;
+Vex.Flow.Test.Registry = RegistryTests;
 
 
 /***/ }),
@@ -24329,12 +24470,14 @@ Vex.Flow.Test.Registry = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RestsTests = void 0;
 /**
  * VexFlow - Rest Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  *
  */
-VF.Test.Rests = (function () {
+var RestsTests = (function () {
     var Rests = {
         Start: function () {
             var run = VF.Test.runTests;
@@ -24596,6 +24739,8 @@ VF.Test.Rests = (function () {
     };
     return Rests;
 })();
+exports.RestsTests = RestsTests;
+VF.Test.Rests = RestsTests;
 
 
 /***/ }),
@@ -24609,11 +24754,13 @@ VF.Test.Rests = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RhythmTests = void 0;
 /**
  * VexFlow - Rhythm Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.Rhythm = (function () {
+var RhythmTests = (function () {
     var Rhythm = {
         Start: function () {
             var runTests = VF.Test.runTests;
@@ -25020,6 +25167,8 @@ VF.Test.Rhythm = (function () {
     };
     return Rhythm;
 })();
+exports.RhythmTests = RhythmTests;
+VF.Test.Rhythm = RhythmTests;
 
 
 /***/ }),
@@ -25034,70 +25183,128 @@ VF.Test.Rhythm = (function () {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var vexflow_test_helpers_1 = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.js");
+var accidental_tests_1 = __webpack_require__(/*! ./accidental_tests */ "./tests/accidental_tests.js");
+var stavenote_tests_1 = __webpack_require__(/*! ./stavenote_tests */ "./tests/stavenote_tests.js");
+var voice_tests_1 = __webpack_require__(/*! ./voice_tests */ "./tests/voice_tests.js");
+var notehead_tests_1 = __webpack_require__(/*! ./notehead_tests */ "./tests/notehead_tests.js");
+var tabnote_tests_1 = __webpack_require__(/*! ./tabnote_tests */ "./tests/tabnote_tests.js");
+var tickcontext_tests_1 = __webpack_require__(/*! ./tickcontext_tests */ "./tests/tickcontext_tests.js");
+var modifier_tests_1 = __webpack_require__(/*! ./modifier_tests */ "./tests/modifier_tests.js");
+var dot_tests_1 = __webpack_require__(/*! ./dot_tests */ "./tests/dot_tests.js");
+var bend_tests_1 = __webpack_require__(/*! ./bend_tests */ "./tests/bend_tests.js");
+var formatter_tests_1 = __webpack_require__(/*! ./formatter_tests */ "./tests/formatter_tests.js");
 var fraction_tests_1 = __webpack_require__(/*! ./fraction_tests */ "./tests/fraction_tests.ts");
-var music_tests_1 = __webpack_require__(/*! ./music_tests */ "./tests/music_tests.ts");
+var clef_tests_1 = __webpack_require__(/*! ./clef_tests */ "./tests/clef_tests.js");
+var keysignature_tests_1 = __webpack_require__(/*! ./keysignature_tests */ "./tests/keysignature_tests.js");
+var timesignature_tests_1 = __webpack_require__(/*! ./timesignature_tests */ "./tests/timesignature_tests.js");
+var stavetie_tests_1 = __webpack_require__(/*! ./stavetie_tests */ "./tests/stavetie_tests.js");
+var tabtie_tests_1 = __webpack_require__(/*! ./tabtie_tests */ "./tests/tabtie_tests.js");
+var stave_tests_1 = __webpack_require__(/*! ./stave_tests */ "./tests/stave_tests.js");
+var tabstave_tests_1 = __webpack_require__(/*! ./tabstave_tests */ "./tests/tabstave_tests.js");
+var tabslide_tests_1 = __webpack_require__(/*! ./tabslide_tests */ "./tests/tabslide_tests.js");
+var beam_tests_1 = __webpack_require__(/*! ./beam_tests */ "./tests/beam_tests.js");
+var barline_tests_1 = __webpack_require__(/*! ./barline_tests */ "./tests/barline_tests.js");
+var auto_beam_formatting_tests_1 = __webpack_require__(/*! ./auto_beam_formatting_tests */ "./tests/auto_beam_formatting_tests.js");
+var gracenote_tests_1 = __webpack_require__(/*! ./gracenote_tests */ "./tests/gracenote_tests.js");
+var gracetabnote_tests_1 = __webpack_require__(/*! ./gracetabnote_tests */ "./tests/gracetabnote_tests.js");
+var vibrato_tests_1 = __webpack_require__(/*! ./vibrato_tests */ "./tests/vibrato_tests.js");
+var vibratobracket_tests_1 = __webpack_require__(/*! ./vibratobracket_tests */ "./tests/vibratobracket_tests.js");
+var annotation_tests_1 = __webpack_require__(/*! ./annotation_tests */ "./tests/annotation_tests.js");
+var chordsymbol_tests_1 = __webpack_require__(/*! ./chordsymbol_tests */ "./tests/chordsymbol_tests.js");
 var tuning_tests_1 = __webpack_require__(/*! ./tuning_tests */ "./tests/tuning_tests.ts");
-VF.Test.run = function () {
-    VF.Test.Accidental.Start();
-    VF.Test.StaveNote.Start();
-    VF.Test.Voice.Start();
-    VF.Test.NoteHead.Start();
-    VF.Test.TabNote.Start();
-    VF.Test.TickContext.Start();
-    VF.Test.ModifierContext.Start();
-    VF.Test.Dot.Start();
-    VF.Test.Bend.Start();
-    VF.Test.Formatter.Start();
+var music_tests_1 = __webpack_require__(/*! ./music_tests */ "./tests/music_tests.ts");
+var keymanager_tests_1 = __webpack_require__(/*! ./keymanager_tests */ "./tests/keymanager_tests.js");
+var articulation_tests_1 = __webpack_require__(/*! ./articulation_tests */ "./tests/articulation_tests.js");
+var staveconnector_tests_1 = __webpack_require__(/*! ./staveconnector_tests */ "./tests/staveconnector_tests.js");
+var multimeasurerest_tests_1 = __webpack_require__(/*! ./multimeasurerest_tests */ "./tests/multimeasurerest_tests.js");
+var percussion_tests_1 = __webpack_require__(/*! ./percussion_tests */ "./tests/percussion_tests.js");
+var notesubgroup_tests_1 = __webpack_require__(/*! ./notesubgroup_tests */ "./tests/notesubgroup_tests.js");
+var key_clef_tests_1 = __webpack_require__(/*! ./key_clef_tests */ "./tests/key_clef_tests.js");
+var stavehairpin_tests_1 = __webpack_require__(/*! ./stavehairpin_tests */ "./tests/stavehairpin_tests.js");
+var rhythm_tests_1 = __webpack_require__(/*! ./rhythm_tests */ "./tests/rhythm_tests.js");
+var tuplet_tests_1 = __webpack_require__(/*! ./tuplet_tests */ "./tests/tuplet_tests.js");
+var boundingbox_tests_1 = __webpack_require__(/*! ./boundingbox_tests */ "./tests/boundingbox_tests.js");
+var strokes_tests_1 = __webpack_require__(/*! ./strokes_tests */ "./tests/strokes_tests.js");
+var stringnumber_tests_1 = __webpack_require__(/*! ./stringnumber_tests */ "./tests/stringnumber_tests.js");
+var rests_tests_1 = __webpack_require__(/*! ./rests_tests */ "./tests/rests_tests.js");
+var threevoice_tests_1 = __webpack_require__(/*! ./threevoice_tests */ "./tests/threevoice_tests.js");
+var curve_tests_1 = __webpack_require__(/*! ./curve_tests */ "./tests/curve_tests.js");
+var textnote_tests_1 = __webpack_require__(/*! ./textnote_tests */ "./tests/textnote_tests.js");
+var staveline_tests_1 = __webpack_require__(/*! ./staveline_tests */ "./tests/staveline_tests.js");
+var ornament_tests_1 = __webpack_require__(/*! ./ornament_tests */ "./tests/ornament_tests.js");
+var pedalmarking_tests_1 = __webpack_require__(/*! ./pedalmarking_tests */ "./tests/pedalmarking_tests.js");
+var textbracket_tests_1 = __webpack_require__(/*! ./textbracket_tests */ "./tests/textbracket_tests.js");
+var stavemodifier_tests_1 = __webpack_require__(/*! ./stavemodifier_tests */ "./tests/stavemodifier_tests.js");
+var ghostnote_tests_1 = __webpack_require__(/*! ./ghostnote_tests */ "./tests/ghostnote_tests.js");
+var style_tests_1 = __webpack_require__(/*! ./style_tests */ "./tests/style_tests.js");
+var factory_tests_1 = __webpack_require__(/*! ./factory_tests */ "./tests/factory_tests.js");
+var parser_tests_1 = __webpack_require__(/*! ./parser_tests */ "./tests/parser_tests.js");
+var easyscore_tests_1 = __webpack_require__(/*! ./easyscore_tests */ "./tests/easyscore_tests.js");
+var registry_tests_1 = __webpack_require__(/*! ./registry_tests */ "./tests/registry_tests.js");
+var bach_tests_1 = __webpack_require__(/*! ./bach_tests */ "./tests/bach_tests.js");
+var glyphnote_tests_1 = __webpack_require__(/*! ./glyphnote_tests */ "./tests/glyphnote_tests.js");
+vexflow_test_helpers_1.VexFlowTests.run = function () {
+    accidental_tests_1.AccidentalTests.Start();
+    stavenote_tests_1.StaveNoteTests.Start();
+    voice_tests_1.VoiceTests.Start();
+    notehead_tests_1.NoteHeadTests.Start();
+    tabnote_tests_1.TabNoteTests.Start();
+    tickcontext_tests_1.TickContextTests.Start();
+    modifier_tests_1.ModifierContextTests.Start();
+    dot_tests_1.DotTests.Start();
+    bend_tests_1.BendTests.Start();
+    formatter_tests_1.FormatterTests.Start();
     fraction_tests_1.FractionTests.Start();
-    VF.Test.Clef.Start();
-    VF.Test.KeySignature.Start();
-    VF.Test.TimeSignature.Start();
-    VF.Test.StaveTie.Start();
-    VF.Test.TabTie.Start();
-    VF.Test.Stave.Start();
-    VF.Test.TabStave.Start();
-    VF.Test.TabSlide.Start();
-    VF.Test.Beam.Start();
-    VF.Test.Barline.Start();
-    VF.Test.AutoBeamFormatting.Start();
-    VF.Test.GraceNote.Start();
-    VF.Test.GraceTabNote.Start();
-    VF.Test.Vibrato.Start();
-    VF.Test.VibratoBracket.Start();
-    VF.Test.Annotation.Start();
-    VF.Test.ChordSymbol.Start();
+    clef_tests_1.ClefTests.Start();
+    keysignature_tests_1.KeySignatureTests.Start();
+    timesignature_tests_1.TimeSignatureTests.Start();
+    stavetie_tests_1.StaveTieTests.Start();
+    tabtie_tests_1.TabTieTests.Start();
+    stave_tests_1.StaveTests.Start();
+    tabstave_tests_1.TabStaveTests.Start();
+    tabslide_tests_1.TabSlideTests.Start();
+    beam_tests_1.BeamTests.Start();
+    barline_tests_1.BarlineTests.Start();
+    auto_beam_formatting_tests_1.AutoBeamFormattingTests.Start();
+    gracenote_tests_1.GraceNoteTests.Start();
+    gracetabnote_tests_1.GraceTabNoteTests.Start();
+    vibrato_tests_1.VibratoTests.Start();
+    vibratobracket_tests_1.VibratoBracketTests.Start();
+    annotation_tests_1.AnnotationTests.Start();
+    chordsymbol_tests_1.ChordSymbolTests.Start();
     tuning_tests_1.TuningTests.Start();
     music_tests_1.MusicTests.Start();
-    VF.Test.KeyManager.Start();
-    VF.Test.Articulation.Start();
-    VF.Test.StaveConnector.Start();
-    VF.Test.MultiMeasureRest.Start();
-    VF.Test.Percussion.Start();
-    VF.Test.NoteSubGroup.Start();
-    VF.Test.ClefKeySignature.Start();
-    VF.Test.StaveHairpin.Start();
-    VF.Test.Rhythm.Start();
-    VF.Test.Tuplet.Start();
-    VF.Test.BoundingBox.Start();
-    VF.Test.Strokes.Start();
-    VF.Test.StringNumber.Start();
-    VF.Test.Rests.Start();
-    VF.Test.ThreeVoices.Start();
-    VF.Test.Curve.Start();
-    VF.Test.TextNote.Start();
-    VF.Test.StaveLine.Start();
-    VF.Test.Ornament.Start();
-    VF.Test.PedalMarking.Start();
-    VF.Test.TextBracket.Start();
-    VF.Test.StaveModifier.Start();
-    VF.Test.GhostNote.Start();
-    VF.Test.Style.Start();
-    VF.Test.Factory.Start();
-    VF.Test.Parser.Start();
-    VF.Test.EasyScore.Start();
-    VF.Test.Registry.Start();
-    VF.Test.BachDemo.Start();
-    VF.Test.GlyphNote.Start();
+    keymanager_tests_1.KeyManagerTests.Start();
+    articulation_tests_1.ArticulationTests.Start();
+    staveconnector_tests_1.StaveConnectorTests.Start();
+    multimeasurerest_tests_1.MultiMeasureRestTests.Start();
+    percussion_tests_1.PercussionTests.Start();
+    notesubgroup_tests_1.NoteSubGroupTests.Start();
+    key_clef_tests_1.ClefKeySignatureTests.Start();
+    stavehairpin_tests_1.StaveHairpinTests.Start();
+    rhythm_tests_1.RhythmTests.Start();
+    tuplet_tests_1.TupletTests.Start();
+    boundingbox_tests_1.BoundingBoxTests.Start();
+    strokes_tests_1.StrokesTests.Start();
+    stringnumber_tests_1.StringNumberTests.Start();
+    rests_tests_1.RestsTests.Start();
+    threevoice_tests_1.ThreeVoicesTests.Start();
+    curve_tests_1.CurveTests.Start();
+    textnote_tests_1.TextNoteTests.Start();
+    staveline_tests_1.StaveLineTests.Start();
+    ornament_tests_1.OrnamentTests.Start();
+    pedalmarking_tests_1.PedalMarkingTests.Start();
+    textbracket_tests_1.TextBracketTests.Start();
+    stavemodifier_tests_1.StaveModifierTests.Start();
+    ghostnote_tests_1.GhostNoteTests.Start();
+    style_tests_1.StyleTests.Start();
+    factory_tests_1.FactoryTests.Start();
+    parser_tests_1.ParserTests.Start();
+    easyscore_tests_1.EasyScoreTests.Start();
+    registry_tests_1.RegistryTests.Start();
+    bach_tests_1.BachDemoTests.Start();
+    glyphnote_tests_1.GlyphNoteTests.Start();
 };
 
 
@@ -25112,11 +25319,13 @@ VF.Test.run = function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.StaveTests = void 0;
 /**
  * VexFlow - Basic Stave Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.Stave = (function () {
+var StaveTests = (function () {
     var Stave = {
         Start: function () {
             var runTests = VF.Test.runTests;
@@ -25708,6 +25917,8 @@ VF.Test.Stave = (function () {
     };
     return Stave;
 })();
+exports.StaveTests = StaveTests;
+VF.Test.Stave = StaveTests;
 
 
 /***/ }),
@@ -25721,11 +25932,13 @@ VF.Test.Stave = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.StaveConnectorTests = void 0;
 /**
  * VexFlow - StaveConnector Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.StaveConnector = (function () {
+var StaveConnectorTests = (function () {
     var StaveConnector = {
         Start: function () {
             var runTests = VF.Test.runTests;
@@ -26121,6 +26334,8 @@ VF.Test.StaveConnector = (function () {
     };
     return StaveConnector;
 })();
+exports.StaveConnectorTests = StaveConnectorTests;
+VF.Test.StaveConnector = StaveConnectorTests;
 
 
 /***/ }),
@@ -26134,12 +26349,14 @@ VF.Test.StaveConnector = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.StaveHairpinTests = void 0;
 /**
  * VexFlow - StaveHairpin Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  * Author: Raffaele Viglianti, 2012
  */
-VF.Test.StaveHairpin = (function () {
+var StaveHairpinTests = (function () {
     function drawHairpin(from, to, stave, ctx, type, position, options) {
         var hairpin = new VF.StaveHairpin({ first_note: from, last_note: to }, type);
         hairpin.setContext(ctx);
@@ -26222,6 +26439,8 @@ VF.Test.StaveHairpin = (function () {
         },
     };
 })();
+exports.StaveHairpinTests = StaveHairpinTests;
+VF.Test.StaveHairpin = StaveHairpinTests;
 
 
 /***/ }),
@@ -26235,11 +26454,13 @@ VF.Test.StaveHairpin = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.StaveLineTests = void 0;
 /**
  * VexFlow - StaveLine Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.StaveLine = (function () {
+var StaveLineTests = (function () {
     var StaveLine = {
         Start: function () {
             QUnit.module('StaveLine');
@@ -26365,6 +26586,8 @@ VF.Test.StaveLine = (function () {
     };
     return StaveLine;
 })();
+exports.StaveLineTests = StaveLineTests;
+VF.Test.StaveLine = StaveLineTests;
 
 
 /***/ }),
@@ -26378,11 +26601,13 @@ VF.Test.StaveLine = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.StaveModifierTests = void 0;
 /**
  * VexFlow - StaveModifier Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.StaveModifier = (function () {
+var StaveModifierTests = (function () {
     var StaveModifier = {
         Start: function () {
             QUnit.module('StaveModifier');
@@ -26441,6 +26666,8 @@ VF.Test.StaveModifier = (function () {
     };
     return StaveModifier;
 })();
+exports.StaveModifierTests = StaveModifierTests;
+VF.Test.StaveModifier = StaveModifierTests;
 
 
 /***/ }),
@@ -26454,11 +26681,13 @@ VF.Test.StaveModifier = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.StaveNoteTests = void 0;
 /**
  * VexFlow - StaveNote Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.StaveNote = (function () {
+var StaveNoteTests = (function () {
     var StaveNote = {
         Start: function () {
             var runTests = VF.Test.runTests;
@@ -27351,6 +27580,8 @@ VF.Test.StaveNote = (function () {
     };
     return StaveNote;
 })();
+exports.StaveNoteTests = StaveNoteTests;
+VF.Test.StaveNote = StaveNoteTests;
 
 
 /***/ }),
@@ -27364,11 +27595,13 @@ VF.Test.StaveNote = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.StaveTieTests = void 0;
 /**
  * VexFlow - StaveTie Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.StaveTie = (function () {
+var StaveTieTests = (function () {
     function createTest(notesData, setupTies) {
         return function (options) {
             var vf = VF.Test.makeFactory(options, 300);
@@ -27455,6 +27688,8 @@ VF.Test.StaveTie = (function () {
         },
     };
 })();
+exports.StaveTieTests = StaveTieTests;
+VF.Test.StaveTie = StaveTieTests;
 
 
 /***/ }),
@@ -27468,11 +27703,13 @@ VF.Test.StaveTie = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.StringNumberTests = void 0;
 /**
  * VexFlow - StringNumber Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.StringNumber = (function () {
+var StringNumberTests = (function () {
     var StringNumber = {
         Start: function () {
             var run = VF.Test.runTests;
@@ -27715,6 +27952,8 @@ VF.Test.StringNumber = (function () {
     };
     return StringNumber;
 })();
+exports.StringNumberTests = StringNumberTests;
+VF.Test.StringNumber = StringNumberTests;
 
 
 /***/ }),
@@ -27728,11 +27967,13 @@ VF.Test.StringNumber = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.StrokesTests = void 0;
 /**
  * VexFlow - Stroke Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.Strokes = (function () {
+var StrokesTests = (function () {
     var Strokes = {
         Start: function () {
             var run = VF.Test.runTests;
@@ -28086,6 +28327,8 @@ VF.Test.Strokes = (function () {
     };
     return Strokes;
 })();
+exports.StrokesTests = StrokesTests;
+VF.Test.Strokes = StrokesTests;
 
 
 /***/ }),
@@ -28099,11 +28342,13 @@ VF.Test.Strokes = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.StyleTests = void 0;
 /**
  * VexFlow - Style Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.Style = (function () {
+var StyleTests = (function () {
     var runTests = VF.Test.runTests;
     function FS(fill, stroke) {
         var ret = { fillStyle: fill };
@@ -28200,6 +28445,8 @@ VF.Test.Style = (function () {
     };
     return Style;
 })();
+exports.StyleTests = StyleTests;
+VF.Test.Style = StyleTests;
 
 
 /***/ }),
@@ -28213,11 +28460,13 @@ VF.Test.Style = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TabNoteTests = void 0;
 /**
  * VexFlow - TabNote Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.TabNote = (function () {
+var TabNoteTests = (function () {
     var TabNote = {
         Start: function () {
             QUnit.module('TabNote');
@@ -28693,6 +28942,8 @@ VF.Test.TabNote = (function () {
     };
     return TabNote;
 })();
+exports.TabNoteTests = TabNoteTests;
+VF.Test.TabNote = TabNoteTests;
 
 
 /***/ }),
@@ -28706,11 +28957,13 @@ VF.Test.TabNote = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TabSlideTests = void 0;
 /**
  * VexFlow - TabSlide Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.TabSlide = (function () {
+var TabSlideTests = (function () {
     var TabSlide = {
         Start: function () {
             var runTests = VF.Test.runTests;
@@ -28844,6 +29097,8 @@ VF.Test.TabSlide = (function () {
     };
     return TabSlide;
 })();
+exports.TabSlideTests = TabSlideTests;
+VF.Test.TabSlide = TabSlideTests;
 
 
 /***/ }),
@@ -28857,11 +29112,13 @@ VF.Test.TabSlide = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TabStaveTests = void 0;
 /**
  * VexFlow - TabStave Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.TabStave = (function () {
+var TabStaveTests = (function () {
     var TabStave = {
         Start: function () {
             QUnit.module('TabStave');
@@ -28895,7 +29152,8 @@ VF.Test.TabStave = (function () {
     };
     return TabStave;
 })();
-module.exports = VF.Test.TabStave;
+exports.TabStaveTests = TabStaveTests;
+VF.Test.TabStave = TabStaveTests;
 
 
 /***/ }),
@@ -28909,11 +29167,13 @@ module.exports = VF.Test.TabStave;
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TabTieTests = void 0;
 /**
  * VexFlow - TabTie Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.TabTie = (function () {
+var TabTieTests = (function () {
     var TabTie = {
         Start: function () {
             var run = VF.Test.runTests;
@@ -29094,6 +29354,8 @@ VF.Test.TabTie = (function () {
     };
     return TabTie;
 })();
+exports.TabTieTests = TabTieTests;
+VF.Test.TabTie = TabTieTests;
 
 
 /***/ }),
@@ -29107,11 +29369,13 @@ VF.Test.TabTie = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TextBracketTests = void 0;
 /**
  * VexFlow - TextBracket Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.TextBracket = (function () {
+var TextBracketTests = (function () {
     var TextBracket = {
         Start: function () {
             QUnit.module('TextBracket');
@@ -29210,6 +29474,8 @@ VF.Test.TextBracket = (function () {
     };
     return TextBracket;
 })();
+exports.TextBracketTests = TextBracketTests;
+VF.Test.TextBracket = TextBracketTests;
 
 
 /***/ }),
@@ -29223,11 +29489,13 @@ VF.Test.TextBracket = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TextNoteTests = void 0;
 /**
  * VexFlow - Text Note Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.TextNote = (function () {
+var TextNoteTests = (function () {
     var TextNote = {
         Start: function () {
             var runTests = VF.Test.runTests;
@@ -29431,6 +29699,8 @@ VF.Test.TextNote = (function () {
     };
     return TextNote;
 })();
+exports.TextNoteTests = TextNoteTests;
+VF.Test.TextNote = TextNoteTests;
 
 
 /***/ }),
@@ -29444,11 +29714,13 @@ VF.Test.TextNote = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ThreeVoicesTests = void 0;
 /**
  * VexFlow - Three Voices in single staff tests.
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.ThreeVoices = (function () {
+var ThreeVoicesTests = (function () {
     function concat(a, b) {
         return a.concat(b);
     }
@@ -29579,6 +29851,8 @@ VF.Test.ThreeVoices = (function () {
     };
     return ThreeVoices;
 })();
+exports.ThreeVoicesTests = ThreeVoicesTests;
+VF.Test.ThreeVoices = ThreeVoicesTests;
 
 
 /***/ }),
@@ -29592,11 +29866,14 @@ VF.Test.ThreeVoices = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TickContextTests = void 0;
 /**
  * VexFlow - TickContext Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.TickContext = (function () {
+var mocks_1 = __webpack_require__(/*! ./mocks */ "./tests/mocks.js");
+var TickContextTests = (function () {
     var TickContext = {
         Start: function () {
             QUnit.module('TickContext');
@@ -29609,7 +29886,7 @@ VF.Test.TickContext = (function () {
         },
         tracking: function () {
             function createTickable() {
-                return new VF.Test.MockTickable(VF.Test.TIME4_4);
+                return new mocks_1.MockTickable(VF.Test.TIME4_4);
             }
             var R = VF.RESOLUTION;
             var BEAT = (1 * R) / 4;
@@ -29635,6 +29912,8 @@ VF.Test.TickContext = (function () {
     };
     return TickContext;
 })();
+exports.TickContextTests = TickContextTests;
+VF.Test.TickContext = TickContextTests;
 
 
 /***/ }),
@@ -29648,11 +29927,13 @@ VF.Test.TickContext = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TimeSignatureTests = void 0;
 /**
  * VexFlow - TimeSignature Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.TimeSignature = (function () {
+var TimeSignatureTests = (function () {
     return {
         Start: function () {
             QUnit.module('TimeSignature');
@@ -29742,6 +30023,8 @@ VF.Test.TimeSignature = (function () {
         },
     };
 })();
+exports.TimeSignatureTests = TimeSignatureTests;
+VF.Test.TimeSignature = TimeSignatureTests;
 
 
 /***/ }),
@@ -29755,20 +30038,20 @@ VF.Test.TimeSignature = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TuningTests = void 0;
 /**
  * VexFlow - Tuning Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.TuningTests = void 0;
 var tuning_1 = __webpack_require__(/*! ../src/tuning */ "./src/tuning.ts");
 var declarations_1 = __webpack_require__(/*! ./declarations */ "./tests/declarations.ts");
-exports.TuningTests = {
+var TuningTests = {
     Start: function () {
         declarations_1.QUnit.module('Tuning');
-        declarations_1.test('Standard Tuning', exports.TuningTests.standard);
-        declarations_1.test('Standard Banjo Tuning', exports.TuningTests.banjo);
-        declarations_1.test('Return note for fret', exports.TuningTests.noteForFret);
+        declarations_1.test('Standard Tuning', TuningTests.standard);
+        declarations_1.test('Standard Banjo Tuning', TuningTests.banjo);
+        declarations_1.test('Return note for fret', TuningTests.noteForFret);
     },
     checkStandard: function (tuning) {
         try {
@@ -29813,15 +30096,15 @@ exports.TuningTests = {
         declarations_1.expect(7);
         var tuning = new tuning_1.Tuning();
         tuning.setTuning('standardBanjo');
-        exports.TuningTests.checkStandardBanjo(tuning);
+        TuningTests.checkStandardBanjo(tuning);
     },
     standard: function () {
         declarations_1.expect(16);
         var tuning = new tuning_1.Tuning();
-        exports.TuningTests.checkStandard(tuning);
+        TuningTests.checkStandard(tuning);
         // Test named tuning
         tuning.setTuning('standard');
-        exports.TuningTests.checkStandard(tuning);
+        TuningTests.checkStandard(tuning);
     },
     noteForFret: function () {
         declarations_1.expect(8);
@@ -29846,6 +30129,7 @@ exports.TuningTests = {
         declarations_1.equal(tuning.getNoteForFret(0, 6), 'E/3', 'Low E string');
     },
 };
+exports.TuningTests = TuningTests;
 
 
 /***/ }),
@@ -29859,11 +30143,13 @@ exports.TuningTests = {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TupletTests = void 0;
 /**
  * VexFlow - Tuplet Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.Tuplet = (function () {
+var TupletTests = (function () {
     // Ideally this would be using arrow syntax...
     var set = function (key) {
         return function (value) {
@@ -30325,6 +30611,8 @@ VF.Test.Tuplet = (function () {
     };
     return Tuplet;
 })();
+exports.TupletTests = TupletTests;
+VF.Test.Tuplet = TupletTests;
 
 
 /***/ }),
@@ -30342,8 +30630,11 @@ VF.Test.Tuplet = (function () {
  * VexFlow Test Support Library
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.VexFlowTests = void 0;
 /* eslint-disable global-require */
 /* eslint max-classes-per-file: "off" */
+global.VF = Vex.Flow;
 // Mock out the QUnit stuff for generating svg images,
 // since we don't really care about the assertions.
 if (!global.QUnit) {
@@ -30382,8 +30673,7 @@ if (!global.QUnit) {
     global.strictEqual = QUnit.assertions.strictEqual;
     global.notStrictEqual = QUnit.assertions.notStrictEqual;
 }
-global['VF'] = Vex.Flow;
-VF.Test = (function () {
+var VexFlowTests = (function () {
     var Test = {
         // Test Options.
         RUN_CANVAS_TESTS: true,
@@ -30589,6 +30879,8 @@ VF.Test = (function () {
     Test.testRootSelector = '#vexflow_testoutput';
     return Test;
 })();
+exports.VexFlowTests = VexFlowTests;
+global.VF.Test = VexFlowTests;
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js"), __webpack_require__(/*! ./../node_modules/node-libs-browser/node_modules/buffer/index.js */ "./node_modules/node-libs-browser/node_modules/buffer/index.js").Buffer))
 
@@ -30603,11 +30895,13 @@ VF.Test = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.VibratoTests = void 0;
 /**
  * VexFlow - Vibrato Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.Vibrato = (function () {
+var VibratoTests = (function () {
     var Vibrato = {
         Start: function () {
             var runTests = VF.Test.runTests;
@@ -30718,6 +31012,8 @@ VF.Test.Vibrato = (function () {
     };
     return Vibrato;
 })();
+exports.VibratoTests = VibratoTests;
+VF.Test.Vibrato = VibratoTests;
 
 
 /***/ }),
@@ -30731,13 +31027,15 @@ VF.Test.Vibrato = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.VibratoBracketTests = void 0;
 /**
  * VexFlow - VibratoBracket Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  *
  * Author: Balazs Forian-Szabo
  */
-VF.Test.VibratoBracket = (function () {
+var VibratoBracketTests = (function () {
     function createTest(noteGroup1, setupVibratoBracket) {
         return function (options) {
             var vf = VF.Test.makeFactory(options, 650, 200);
@@ -30786,6 +31084,8 @@ VF.Test.VibratoBracket = (function () {
         },
     };
 })();
+exports.VibratoBracketTests = VibratoBracketTests;
+VF.Test.VibratoBracket = VibratoBracketTests;
 
 
 /***/ }),
@@ -30799,11 +31099,14 @@ VF.Test.VibratoBracket = (function () {
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.VoiceTests = void 0;
 /**
  * VexFlow - Voice Tests
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
-VF.Test.Voice = (function () {
+var mocks_1 = __webpack_require__(/*! ./mocks */ "./tests/mocks.js");
+var VoiceTests = (function () {
     var Voice = {
         Start: function () {
             QUnit.module('Voice');
@@ -30814,7 +31117,7 @@ VF.Test.Voice = (function () {
         strict: function () {
             expect(8);
             function createTickable() {
-                return new VF.Test.MockTickable(VF.Test.TIME4_4);
+                return new mocks_1.MockTickable(VF.Test.TIME4_4);
             }
             var R = VF.RESOLUTION;
             var BEAT = (1 * R) / 4;
@@ -30843,7 +31146,7 @@ VF.Test.Voice = (function () {
         },
         ignore: function () {
             function createTickable() {
-                return new VF.Test.MockTickable(VF.Test.TIME4_4);
+                return new mocks_1.MockTickable(VF.Test.TIME4_4);
             }
             var R = VF.RESOLUTION;
             var BEAT = (1 * R) / 4;
@@ -30885,80 +31188,8 @@ VF.Test.Voice = (function () {
     };
     return Voice;
 })();
-
-
-/***/ }),
-
-/***/ 0:
-/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** multi ./tests/vexflow_test_helpers.js ./tests/mocks.js ./tests/accidental_tests.js ./tests/annotation_tests.js ./tests/articulation_tests.js ./tests/auto_beam_formatting_tests.js ./tests/bach_tests.js ./tests/barline_tests.js ./tests/beam_tests.js ./tests/bend_tests.js ./tests/boundingbox_tests.js ./tests/chordsymbol_tests.js ./tests/clef_tests.js ./tests/curve_tests.js ./tests/dot_tests.js ./tests/easyscore_tests.js ./tests/factory_tests.js ./tests/formatter_tests.js ./tests/ghostnote_tests.js ./tests/glyphnote_tests.js ./tests/gracenote_tests.js ./tests/gracetabnote_tests.js ./tests/key_clef_tests.js ./tests/keymanager_tests.js ./tests/keysignature_tests.js ./tests/modifier_tests.js ./tests/multimeasurerest_tests.js ./tests/notehead_tests.js ./tests/notesubgroup_tests.js ./tests/ornament_tests.js ./tests/parser_tests.js ./tests/pedalmarking_tests.js ./tests/percussion_tests.js ./tests/registry_tests.js ./tests/rests_tests.js ./tests/rhythm_tests.js ./tests/stave_tests.js ./tests/staveconnector_tests.js ./tests/stavehairpin_tests.js ./tests/staveline_tests.js ./tests/stavemodifier_tests.js ./tests/stavenote_tests.js ./tests/stavetie_tests.js ./tests/stringnumber_tests.js ./tests/strokes_tests.js ./tests/style_tests.js ./tests/tabnote_tests.js ./tests/tabslide_tests.js ./tests/tabstave_tests.js ./tests/tabtie_tests.js ./tests/textbracket_tests.js ./tests/textnote_tests.js ./tests/threevoice_tests.js ./tests/tickcontext_tests.js ./tests/timesignature_tests.js ./tests/tuplet_tests.js ./tests/vibrato_tests.js ./tests/vibratobracket_tests.js ./tests/voice_tests.js ./tests/fraction_tests.ts ./tests/music_tests.ts ./tests/tuning_tests.ts ./tests/run.js ***!
-  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(/*! ./tests/vexflow_test_helpers.js */"./tests/vexflow_test_helpers.js");
-__webpack_require__(/*! ./tests/mocks.js */"./tests/mocks.js");
-__webpack_require__(/*! ./tests/accidental_tests.js */"./tests/accidental_tests.js");
-__webpack_require__(/*! ./tests/annotation_tests.js */"./tests/annotation_tests.js");
-__webpack_require__(/*! ./tests/articulation_tests.js */"./tests/articulation_tests.js");
-__webpack_require__(/*! ./tests/auto_beam_formatting_tests.js */"./tests/auto_beam_formatting_tests.js");
-__webpack_require__(/*! ./tests/bach_tests.js */"./tests/bach_tests.js");
-__webpack_require__(/*! ./tests/barline_tests.js */"./tests/barline_tests.js");
-__webpack_require__(/*! ./tests/beam_tests.js */"./tests/beam_tests.js");
-__webpack_require__(/*! ./tests/bend_tests.js */"./tests/bend_tests.js");
-__webpack_require__(/*! ./tests/boundingbox_tests.js */"./tests/boundingbox_tests.js");
-__webpack_require__(/*! ./tests/chordsymbol_tests.js */"./tests/chordsymbol_tests.js");
-__webpack_require__(/*! ./tests/clef_tests.js */"./tests/clef_tests.js");
-__webpack_require__(/*! ./tests/curve_tests.js */"./tests/curve_tests.js");
-__webpack_require__(/*! ./tests/dot_tests.js */"./tests/dot_tests.js");
-__webpack_require__(/*! ./tests/easyscore_tests.js */"./tests/easyscore_tests.js");
-__webpack_require__(/*! ./tests/factory_tests.js */"./tests/factory_tests.js");
-__webpack_require__(/*! ./tests/formatter_tests.js */"./tests/formatter_tests.js");
-__webpack_require__(/*! ./tests/ghostnote_tests.js */"./tests/ghostnote_tests.js");
-__webpack_require__(/*! ./tests/glyphnote_tests.js */"./tests/glyphnote_tests.js");
-__webpack_require__(/*! ./tests/gracenote_tests.js */"./tests/gracenote_tests.js");
-__webpack_require__(/*! ./tests/gracetabnote_tests.js */"./tests/gracetabnote_tests.js");
-__webpack_require__(/*! ./tests/key_clef_tests.js */"./tests/key_clef_tests.js");
-__webpack_require__(/*! ./tests/keymanager_tests.js */"./tests/keymanager_tests.js");
-__webpack_require__(/*! ./tests/keysignature_tests.js */"./tests/keysignature_tests.js");
-__webpack_require__(/*! ./tests/modifier_tests.js */"./tests/modifier_tests.js");
-__webpack_require__(/*! ./tests/multimeasurerest_tests.js */"./tests/multimeasurerest_tests.js");
-__webpack_require__(/*! ./tests/notehead_tests.js */"./tests/notehead_tests.js");
-__webpack_require__(/*! ./tests/notesubgroup_tests.js */"./tests/notesubgroup_tests.js");
-__webpack_require__(/*! ./tests/ornament_tests.js */"./tests/ornament_tests.js");
-__webpack_require__(/*! ./tests/parser_tests.js */"./tests/parser_tests.js");
-__webpack_require__(/*! ./tests/pedalmarking_tests.js */"./tests/pedalmarking_tests.js");
-__webpack_require__(/*! ./tests/percussion_tests.js */"./tests/percussion_tests.js");
-__webpack_require__(/*! ./tests/registry_tests.js */"./tests/registry_tests.js");
-__webpack_require__(/*! ./tests/rests_tests.js */"./tests/rests_tests.js");
-__webpack_require__(/*! ./tests/rhythm_tests.js */"./tests/rhythm_tests.js");
-__webpack_require__(/*! ./tests/stave_tests.js */"./tests/stave_tests.js");
-__webpack_require__(/*! ./tests/staveconnector_tests.js */"./tests/staveconnector_tests.js");
-__webpack_require__(/*! ./tests/stavehairpin_tests.js */"./tests/stavehairpin_tests.js");
-__webpack_require__(/*! ./tests/staveline_tests.js */"./tests/staveline_tests.js");
-__webpack_require__(/*! ./tests/stavemodifier_tests.js */"./tests/stavemodifier_tests.js");
-__webpack_require__(/*! ./tests/stavenote_tests.js */"./tests/stavenote_tests.js");
-__webpack_require__(/*! ./tests/stavetie_tests.js */"./tests/stavetie_tests.js");
-__webpack_require__(/*! ./tests/stringnumber_tests.js */"./tests/stringnumber_tests.js");
-__webpack_require__(/*! ./tests/strokes_tests.js */"./tests/strokes_tests.js");
-__webpack_require__(/*! ./tests/style_tests.js */"./tests/style_tests.js");
-__webpack_require__(/*! ./tests/tabnote_tests.js */"./tests/tabnote_tests.js");
-__webpack_require__(/*! ./tests/tabslide_tests.js */"./tests/tabslide_tests.js");
-__webpack_require__(/*! ./tests/tabstave_tests.js */"./tests/tabstave_tests.js");
-__webpack_require__(/*! ./tests/tabtie_tests.js */"./tests/tabtie_tests.js");
-__webpack_require__(/*! ./tests/textbracket_tests.js */"./tests/textbracket_tests.js");
-__webpack_require__(/*! ./tests/textnote_tests.js */"./tests/textnote_tests.js");
-__webpack_require__(/*! ./tests/threevoice_tests.js */"./tests/threevoice_tests.js");
-__webpack_require__(/*! ./tests/tickcontext_tests.js */"./tests/tickcontext_tests.js");
-__webpack_require__(/*! ./tests/timesignature_tests.js */"./tests/timesignature_tests.js");
-__webpack_require__(/*! ./tests/tuplet_tests.js */"./tests/tuplet_tests.js");
-__webpack_require__(/*! ./tests/vibrato_tests.js */"./tests/vibrato_tests.js");
-__webpack_require__(/*! ./tests/vibratobracket_tests.js */"./tests/vibratobracket_tests.js");
-__webpack_require__(/*! ./tests/voice_tests.js */"./tests/voice_tests.js");
-__webpack_require__(/*! ./tests/fraction_tests.ts */"./tests/fraction_tests.ts");
-__webpack_require__(/*! ./tests/music_tests.ts */"./tests/music_tests.ts");
-__webpack_require__(/*! ./tests/tuning_tests.ts */"./tests/tuning_tests.ts");
-module.exports = __webpack_require__(/*! ./tests/run.js */"./tests/run.js");
+exports.VoiceTests = VoiceTests;
+VF.Test.Voice = VoiceTests;
 
 
 /***/ })
