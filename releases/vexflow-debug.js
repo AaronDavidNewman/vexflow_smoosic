@@ -19682,9 +19682,6 @@ var GlyphNote = /** @class */ (function (_super) {
         }
         return _this;
     }
-    GlyphNote.format = function (notes, state) {
-        return false;
-    };
     GlyphNote.prototype.setGlyph = function (glyph) {
         this.glyph = glyph;
         this.setWidth(this.glyph.getMetrics().width);
@@ -19700,7 +19697,7 @@ var GlyphNote = /** @class */ (function (_super) {
         for (var i = 0; i < this.modifiers.length; ++i) {
             this.modifierContext.addMember(this.modifiers[i]);
         }
-        this.modifierContext.addMember(this);
+        // this.modifierContext.addMember(this);
         this.setPreFormatted(false);
         return this;
     };
@@ -19711,7 +19708,6 @@ var GlyphNote = /** @class */ (function (_super) {
         this.setPreFormatted(true);
         return this;
     };
-    // Draw all key modifiers
     GlyphNote.prototype.drawModifiers = function () {
         var ctx = this.checkContext();
         ctx.openGroup('modifiers');
@@ -21180,7 +21176,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModifierContext = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-var glyphnote_1 = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.ts");
 var dot_1 = __webpack_require__(/*! ./dot */ "./src/dot.ts");
 var frethandfinger_1 = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.ts");
 var accidental_1 = __webpack_require__(/*! ./accidental */ "./src/accidental.js");
@@ -21230,7 +21225,6 @@ var ModifierContext = /** @class */ (function () {
         // members are formatted and rendered before higher ones.
         this.PREFORMAT = [
             stavenote_1.StaveNote,
-            glyphnote_1.GlyphNote,
             dot_1.Dot,
             frethandfinger_1.FretHandFinger,
             accidental_1.Accidental,
