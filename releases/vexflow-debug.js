@@ -19682,6 +19682,9 @@ var GlyphNote = /** @class */ (function (_super) {
         }
         return _this;
     }
+    GlyphNote.format = function (notes, state) {
+        return false;
+    };
     GlyphNote.prototype.setGlyph = function (glyph) {
         this.glyph = glyph;
         this.setWidth(this.glyph.getMetrics().width);
@@ -19690,14 +19693,34 @@ var GlyphNote = /** @class */ (function (_super) {
     GlyphNote.prototype.getBoundingBox = function () {
         return this.glyph.getBoundingBox();
     };
-    /*
-    addToModifierContext() {
-      return this;
-    }
-    */
+    // Add self to modifier context. `mContext` is the `ModifierContext`
+    // to be added to.
+    GlyphNote.prototype.addToModifierContext = function (mContext) {
+        this.modifierContext = mContext;
+        for (var i = 0; i < this.modifiers.length; ++i) {
+            this.modifierContext.addMember(this.modifiers[i]);
+        }
+        this.modifierContext.addMember(this);
+        this.setPreFormatted(false);
+        return this;
+    };
     GlyphNote.prototype.preFormat = function () {
+        if (!this.preFormatted && this.modifierContext) {
+            this.modifierContext.preFormat();
+        }
         this.setPreFormatted(true);
         return this;
+    };
+    // Draw all key modifiers
+    GlyphNote.prototype.drawModifiers = function () {
+        var ctx = this.checkContext();
+        ctx.openGroup('modifiers');
+        for (var i = 0; i < this.modifiers.length; i++) {
+            var modifier = this.modifiers[i];
+            modifier.setContext(ctx);
+            modifier.drawWithStyle();
+        }
+        ctx.closeGroup();
     };
     GlyphNote.prototype.draw = function () {
         if (!this.stave) {
@@ -19714,6 +19737,7 @@ var GlyphNote = /** @class */ (function (_super) {
         this.glyph.setYShift(this.stave.getYForLine(this.options.line) - this.stave.getYForGlyphs());
         var x = this.isCenterAligned() ? this.getAbsoluteX() - this.getWidth() / 2 : this.getAbsoluteX();
         this.glyph.renderToStave(x);
+        this.drawModifiers();
         ctx.closeGroup();
     };
     return GlyphNote;
@@ -21156,6 +21180,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModifierContext = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+var glyphnote_1 = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.ts");
 var dot_1 = __webpack_require__(/*! ./dot */ "./src/dot.ts");
 var frethandfinger_1 = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.ts");
 var accidental_1 = __webpack_require__(/*! ./accidental */ "./src/accidental.js");
@@ -21205,6 +21230,7 @@ var ModifierContext = /** @class */ (function () {
         // members are formatted and rendered before higher ones.
         this.PREFORMAT = [
             stavenote_1.StaveNote,
+            glyphnote_1.GlyphNote,
             dot_1.Dot,
             frethandfinger_1.FretHandFinger,
             accidental_1.Accidental,
