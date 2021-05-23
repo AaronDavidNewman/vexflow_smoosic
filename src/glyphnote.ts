@@ -55,6 +55,7 @@ export class GlyphNote extends Note {
 
     const ctx = this.stave.checkContext();
     this.setRendered();
+    ctx.openGroup('glypheNote', this.getAttribute('id'));
 
     // Context is set when setStave is called on Note
     if (!this.glyph.getContext()) {
@@ -66,5 +67,6 @@ export class GlyphNote extends Note {
 
     const x = this.isCenterAligned() ? this.getAbsoluteX() - this.getWidth() / 2 : this.getAbsoluteX();
     this.glyph.renderToStave(x);
+    ctx.closeGroup();
   }
 }

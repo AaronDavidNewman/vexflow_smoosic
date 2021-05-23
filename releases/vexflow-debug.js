@@ -19705,6 +19705,7 @@ var GlyphNote = /** @class */ (function (_super) {
         }
         var ctx = this.stave.checkContext();
         this.setRendered();
+        ctx.openGroup('glypheNote', this.getAttribute('id'));
         // Context is set when setStave is called on Note
         if (!this.glyph.getContext()) {
             this.glyph.setContext(ctx);
@@ -19713,6 +19714,7 @@ var GlyphNote = /** @class */ (function (_super) {
         this.glyph.setYShift(this.stave.getYForLine(this.options.line) - this.stave.getYForGlyphs());
         var x = this.isCenterAligned() ? this.getAbsoluteX() - this.getWidth() / 2 : this.getAbsoluteX();
         this.glyph.renderToStave(x);
+        ctx.closeGroup();
     };
     return GlyphNote;
 }(note_1.Note));
