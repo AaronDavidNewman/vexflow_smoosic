@@ -151,6 +151,7 @@ export class TextNote extends Note {
   // Pre-render formatting
   preFormat(): void {
     const ctx = this.checkContext();
+    if (!this.tickContext) throw new Vex.RERR('NoTickContext', "Can't preformat without a TickContext.");
 
     if (this.preFormatted) return;
 
@@ -172,22 +173,20 @@ export class TextNote extends Note {
     }
 
     // We reposition to the center of the note head
-    this.rightDisplacedHeadPx = this.tickContext!.getMetrics().glyphPx! / 2;
+    this.rightDisplacedHeadPx = this.tickContext.getMetrics().glyphPx / 2;
     this.setPreFormatted(true);
   }
 
   // Renders the TextNote
   draw(): void {
     const ctx = this.checkContext();
-
-    if (!this.stave) {
-      throw new Vex.RERR('NoStave', "Can't draw without a stave.");
-    }
+    const stave = this.checkStave();
+    if (!this.tickContext) throw new Vex.RERR('NoTickContext', "Can't draw without a TickContext.");
 
     this.setRendered();
 
     // Reposition to center of note head
-    let x = this.getAbsoluteX() + this.tickContext!.getMetrics().glyphPx! / 2;
+    let x = this.getAbsoluteX() + this.tickContext.getMetrics().glyphPx / 2;
 
     // Align based on tick-context width.
     const width = this.getWidth();
@@ -200,10 +199,10 @@ export class TextNote extends Note {
 
     let y;
     if (this.glyph) {
-      y = this.stave.getYForLine(this.line + -3);
+      y = stave.getYForLine(this.line + -3);
       this.glyph.render(ctx, x, y);
     } else {
-      y = this.stave.getYForLine(this.line + -3);
+      y = stave.getYForLine(this.line + -3);
       this.applyStyle(ctx);
       ctx.setFont(this.font.family, this.font.size, this.font.weight);
       ctx.fillText(this.text, x, y);
