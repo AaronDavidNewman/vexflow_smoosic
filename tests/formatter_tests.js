@@ -355,18 +355,10 @@ const FormatterTests = (function () {
       var vf = VF.Test.makeFactory(options, 600, 400);
       var score = vf.EasyScore();
 
-      var stave11 = vf.Stave({ y: 20, width: 275 }).addTrebleGlyph().addTimeSignature('6/8');
-
       var notes11 = score.notes('f4/4, d4/8, g4/4, eb4/8');
       var voice11 = score.voice(notes11, { time: '6/8' });
-
-      var stave21 = vf.Stave({ y: 130, width: 275 }).addTrebleGlyph().addTimeSignature('6/8');
-
       var notes21 = score.notes('d4/8, d4, d4, d4, e4, eb4');
       var voice21 = score.voice(notes21, { time: '6/8' });
-
-      var stave31 = vf.Stave({ y: 250, width: 275 }).addClef('bass').addTimeSignature('6/8');
-
       var notes31 = score.notes('a5/8, a5, a5, a5, a5, a5', { stem: 'down' });
       var voice31 = score.voice(notes31, { time: '6/8' });
 
@@ -382,11 +374,25 @@ const FormatterTests = (function () {
       vf.Beam({ notes: notes31.slice(3, 6) });
 
       var formatter = vf.Formatter().joinVoices([voice11]).joinVoices([voice21]).joinVoices([voice31]);
+      var width = formatter.preCalculateMinTotalWidth([voice11, voice21, voice31]);
+
+      var stave11 = vf
+        .Stave({ y: 20, width: width + 20 })
+        .addTrebleGlyph()
+        .addTimeSignature('6/8');
+      var stave21 = vf
+        .Stave({ y: 130, width: width + 20 })
+        .addTrebleGlyph()
+        .addTimeSignature('6/8');
+      var stave31 = vf
+        .Stave({ y: 250, width: width + 20 })
+        .addClef('bass')
+        .addTimeSignature('6/8');
 
       if (options.params.justify) {
         formatter.formatToStave([voice11, voice21, voice31], stave11);
       } else {
-        formatter.format([voice11, voice21, voice31], 0);
+        formatter.format([voice11, voice21, voice31], width);
       }
 
       for (var i = 0; i < options.params.iterations; i++) {

@@ -13582,7 +13582,7 @@ var Glyph = /** @class */ (function (_super) {
                 defaultValue: point,
             });
         }
-        var scale = metrics.font ? (point * 72.0) / (metrics.font.getResolution() * 100.0) : 1;
+        var scale = (point * 72.0) / (metrics.font.getResolution() * 100.0);
         Glyph.renderOutline(ctx, metrics.outline, scale * metrics.scale, x_pos + metrics.x_shift, y_pos + metrics.y_shift);
         return metrics;
     };
@@ -13634,10 +13634,9 @@ var Glyph = /** @class */ (function (_super) {
         return this;
     };
     Glyph.prototype.reset = function () {
-        var _a, _b;
         this.metrics = Glyph.loadMetrics(this.options.fontStack, this.code, this.options.category);
         // Override point from metrics file
-        if (this.options.category && ((_a = this.metrics) === null || _a === void 0 ? void 0 : _a.font)) {
+        if (this.options.category) {
             this.point = Glyph.lookupFontMetric({
                 category: this.options.category,
                 font: this.metrics.font,
@@ -13646,7 +13645,7 @@ var Glyph = /** @class */ (function (_super) {
                 defaultValue: this.point,
             });
         }
-        this.scale = ((_b = this.metrics) === null || _b === void 0 ? void 0 : _b.font) ? (this.point * 72) / (this.metrics.font.getResolution() * 100) : 1;
+        this.scale = (this.point * 72) / (this.metrics.font.getResolution() * 100);
         this.bbox = Glyph.getOutlineBoundingBox(this.metrics.outline, this.scale * this.metrics.scale, this.metrics.x_shift, this.metrics.y_shift);
     };
     Glyph.prototype.getMetrics = function () {
@@ -13662,6 +13661,8 @@ var Glyph = /** @class */ (function (_super) {
             x_shift: this.metrics.x_shift,
             y_shift: this.metrics.y_shift,
             outline: this.metrics.outline,
+            font: this.metrics.font,
+            ha: this.metrics.ha,
         };
     };
     Glyph.prototype.setOriginX = function (x) {
@@ -14057,10 +14058,7 @@ var Music = /** @class */ (function () {
         configurable: true
     });
     Music.prototype.isValidNoteValue = function (note) {
-        if (note == null || note < 0 || note >= Music.NUM_TONES) {
-            return false;
-        }
-        return true;
+        return note >= 0 && note < Music.NUM_TONES;
     };
     Music.prototype.isValidIntervalValue = function (interval) {
         return this.isValidNoteValue(interval);
@@ -14075,7 +14073,7 @@ var Music = /** @class */ (function () {
         var note = noteString.toLowerCase();
         var regex = /^([cdefgab])(b|bb|n|#|##)?$/;
         var match = regex.exec(note);
-        if (match != null) {
+        if (match !== null) {
             var root = match[1];
             var accidental = match[2];
             return {
@@ -14095,7 +14093,7 @@ var Music = /** @class */ (function () {
         // Support Major, Minor, Melodic Minor, and Harmonic Minor key types.
         var regex = /^([cdefgab])(b|#)?(mel|harm|m|M)?$/;
         var match = regex.exec(key);
-        if (match != null) {
+        if (match !== null) {
             var root = match[1];
             var accidental = match[2];
             var type = match[3];
@@ -14114,14 +14112,14 @@ var Music = /** @class */ (function () {
     };
     Music.prototype.getNoteValue = function (noteString) {
         var value = Music.noteValues[noteString];
-        if (value == null) {
+        if (value === undefined) {
             throw new vex_1.Vex.RERR('BadArguments', "Invalid note name: " + noteString);
         }
         return value.int_val;
     };
     Music.prototype.getIntervalValue = function (intervalString) {
         var value = Music.intervals[intervalString];
-        if (value == null) {
+        if (value === undefined) {
             throw new vex_1.Vex.RERR('BadArguments', "Invalid interval name: " + intervalString);
         }
         return value;
@@ -14138,12 +14136,11 @@ var Music = /** @class */ (function () {
         }
         return Music.diatonic_intervals[intervalValue];
     };
-    /* Given a note, interval, and interval direction, product the
-     * relative note.
+    /**
+     * Given a note, interval, and interval direction, produce the relative note.
      */
     Music.prototype.getRelativeNoteValue = function (noteValue, intervalValue, direction) {
-        if (direction == null)
-            direction = 1;
+        if (direction === void 0) { direction = 1; }
         if (direction !== 1 && direction !== -1) {
             throw new vex_1.Vex.RERR('BadArguments', "Invalid direction: " + direction);
         }
@@ -14185,7 +14182,8 @@ var Music = /** @class */ (function () {
         }
         return relativeNoteName;
     };
-    /* Return scale tones, given intervals. Each successive interval is
+    /**
+     * Return scale tones, given intervals. Each successive interval is
      * relative to the previous one, e.g., Major Scale:
      *
      *   TTSTTTS = [2,2,1,2,2,2,1]
@@ -14203,13 +14201,12 @@ var Music = /** @class */ (function () {
         }
         return tones;
     };
-    /* Returns the interval of a note, given a diatonic scale.
-     *
-     * E.g., Given the scale C, and the note E, returns M3
+    /**
+     * Return the interval of a note, given a diatonic scale.
+     * e.g., given the scale C, and the note E, returns M3.
      */
     Music.prototype.getIntervalBetween = function (note1, note2, direction) {
-        if (direction == null)
-            direction = 1;
+        if (direction === void 0) { direction = 1; }
         if (direction !== 1 && direction !== -1) {
             throw new vex_1.Vex.RERR('BadArguments', "Invalid direction: " + direction);
         }
@@ -14221,10 +14218,12 @@ var Music = /** @class */ (function () {
             difference += Music.NUM_TONES;
         return difference;
     };
-    // Create a scale map that represents the pitch state for a
-    // `keySignature`. For example, passing a `G` to `keySignature` would
-    // return a scale map with every note naturalized except for `F` which
-    // has an `F#` state.
+    /**
+     * Create a scale map that represents the pitch state for a
+     * `keySignature`. For example, passing a `G` to `keySignature` would
+     * return a scale map with every note naturalized except for `F` which
+     * has an `F#` state.
+     */
     Music.prototype.createScaleMap = function (keySignature) {
         var keySigParts = this.getKeyParts(keySignature);
         if (!keySigParts.type)
@@ -14443,6 +14442,8 @@ var Flow = {
     getGlyphProps: getGlyphProps,
     textWidth: textWidth,
     tabToGlyph: tabToGlyph,
+    articulationCodes: articulationCodes,
+    TIME4_4: TIME4_4,
 };
 exports.Flow = Flow;
 Flow.clefProperties = function (clef) {
@@ -14620,7 +14621,9 @@ function tabToGlyph(fret, scale) {
 function textWidth(text) {
     return 7 * text.toString().length;
 }
-Flow.articulationCodes = function (artic) { return Flow.articulationCodes.articulations[artic]; };
+function articulationCodes(artic) {
+    return Flow.articulationCodes.articulations[artic];
+}
 Flow.articulationCodes.articulations = {
     'a.': { code: 'augmentationDot', between_lines: true },
     av: {
@@ -15605,7 +15608,7 @@ Flow.getGlyphProps.duration_codes = {
     },
 };
 // Some defaults
-Flow.TIME4_4 = {
+var TIME4_4 = {
     num_beats: 4,
     beat_value: 4,
     resolution: Flow.RESOLUTION,
@@ -21562,7 +21565,7 @@ var GlyphNoteTests = (function () {
         },
         chordChanges: function (options) {
             VF.Registry.enableDefaultRegistry(new VF.Registry());
-            var vf = VF.Test.makeFactory(options, 300, 400);
+            var vf = VF.Test.makeFactory(options, 300, 200);
             var system = vf.System({
                 x: 50,
                 width: 250,
@@ -22716,6 +22719,7 @@ var MT = (function () {
                 modRightPx: 0,
                 leftDisplacedHeadPx: 0,
                 rightDisplacedHeadPx: 0,
+                glyphPx: 0,
             };
         },
         getWidth: function () {

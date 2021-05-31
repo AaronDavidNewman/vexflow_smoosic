@@ -615,9 +615,9 @@ exports.Accidental = Accidental;
 
 /***/ }),
 
-/***/ "./src/annotation.js":
+/***/ "./src/annotation.ts":
 /*!***************************!*\
-  !*** ./src/annotation.js ***!
+  !*** ./src/annotation.ts ***!
   \***************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -655,13 +655,35 @@ var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var textfont_1 = __webpack_require__(/*! ./textfont */ "./src/textfont.ts");
 // To enable logging for this class. Set `Vex.Flow.Annotation.DEBUG` to `true`.
 function L() {
+    // eslint-disable-next-line
     var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
+    for (
+    // eslint-disable-next-line
+    var _i = 0; 
+    // eslint-disable-next-line
+    _i < arguments.length; 
+    // eslint-disable-next-line
+    _i++) {
+        // eslint-disable-next-line
         args[_i] = arguments[_i];
     }
     if (Annotation.DEBUG)
         vex_1.Vex.L('Vex.Flow.Annotation', args);
 }
+var Justify;
+(function (Justify) {
+    Justify[Justify["LEFT"] = 1] = "LEFT";
+    Justify[Justify["CENTER"] = 2] = "CENTER";
+    Justify[Justify["RIGHT"] = 3] = "RIGHT";
+    Justify[Justify["CENTER_STEM"] = 4] = "CENTER_STEM";
+})(Justify || (Justify = {}));
+var VerticalJustify;
+(function (VerticalJustify) {
+    VerticalJustify[VerticalJustify["TOP"] = 1] = "TOP";
+    VerticalJustify[VerticalJustify["CENTER"] = 2] = "CENTER";
+    VerticalJustify[VerticalJustify["BOTTOM"] = 3] = "BOTTOM";
+    VerticalJustify[VerticalJustify["CENTER_STEM"] = 4] = "CENTER_STEM";
+})(VerticalJustify || (VerticalJustify = {}));
 var Annotation = /** @class */ (function (_super) {
     __extends(Annotation, _super);
     // ## Prototype Methods
@@ -672,8 +694,6 @@ var Annotation = /** @class */ (function (_super) {
     function Annotation(text) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Annotation');
-        _this.note = null;
-        _this.index = null;
         _this.text = text;
         _this.justification = Annotation.Justify.CENTER;
         _this.vert_justification = Annotation.VerticalJustify.TOP;
@@ -689,57 +709,6 @@ var Annotation = /** @class */ (function (_super) {
     Object.defineProperty(Annotation, "CATEGORY", {
         get: function () {
             return 'annotations';
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Annotation, "Justify", {
-        // Text annotations can be positioned and justified relative to the note.
-        get: function () {
-            return {
-                LEFT: 1,
-                CENTER: 2,
-                RIGHT: 3,
-                CENTER_STEM: 4,
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Annotation, "JustifyString", {
-        get: function () {
-            return {
-                left: Annotation.Justify.LEFT,
-                right: Annotation.Justify.RIGHT,
-                center: Annotation.Justify.CENTER,
-                centerStem: Annotation.Justify.CENTER_STEM,
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Annotation, "VerticalJustify", {
-        get: function () {
-            return {
-                TOP: 1,
-                CENTER: 2,
-                BOTTOM: 3,
-                CENTER_STEM: 4,
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Annotation, "VerticalJustifyString", {
-        get: function () {
-            return {
-                above: Annotation.VerticalJustify.TOP,
-                top: Annotation.VerticalJustify.TOP,
-                below: Annotation.VerticalJustify.BOTTOM,
-                bottom: Annotation.VerticalJustify.BOTTOM,
-                center: Annotation.VerticalJustify.CENTER,
-                centerStem: Annotation.VerticalJustify.CENTER_STEM,
-            };
         },
         enumerable: false,
         configurable: true
@@ -800,23 +769,23 @@ var Annotation = /** @class */ (function (_super) {
     };
     // Render text beside the note.
     Annotation.prototype.draw = function () {
-        this.checkContext();
+        var ctx = this.checkContext();
         if (!this.note) {
             throw new vex_1.Vex.RERR('NoNoteForAnnotation', "Can't draw text annotation without an attached note.");
         }
         this.setRendered();
         var start = this.note.getModifierStartXY(modifier_1.Modifier.Position.ABOVE, this.index);
         // We're changing context parameters. Save current state.
-        this.context.save();
+        ctx.save();
         var classString = Object.keys(this.getAttribute('classes')).join(' ');
-        this.context.openGroup(classString, this.getAttribute('id'));
-        this.context.setFont(this.font.family, this.font.size, this.font.weight);
-        var text_width = this.context.measureText(this.text).width;
+        ctx.openGroup(classString, this.getAttribute('id'));
+        ctx.setFont(this.font.family, this.font.size, this.font.weight);
+        var text_width = ctx.measureText(this.text).width;
         // Estimate text height to be the same as the width of an 'm'.
         //
         // This is a hack to work around the inability to measure text height
         // in HTML5 Canvas (and SVG).
-        var text_height = this.context.measureText('m').width;
+        var text_height = ctx.measureText('m').width;
         var x;
         var y;
         if (this.justification === Annotation.Justify.LEFT) {
@@ -831,14 +800,14 @@ var Annotation = /** @class */ (function (_super) {
         else {
             x = this.note.getStemX() - text_width / 2;
         }
-        var stem_ext;
-        var spacing;
+        var stem_ext = {};
+        var spacing = 0;
         var has_stem = this.note.hasStem();
-        var stave = this.note.getStave();
+        var stave = this.note.checkStave();
         // The position of the text varies based on whether or not the note
         // has a stem.
         if (has_stem) {
-            stem_ext = this.note.getStem().getExtents();
+            stem_ext = this.note.checkStem().getExtents();
             spacing = stave.getSpacingBetweenLines();
         }
         if (this.vert_justification === Annotation.VerticalJustify.BOTTOM) {
@@ -866,9 +835,26 @@ var Annotation = /** @class */ (function (_super) {
             y = extents.topY + (extents.baseY - extents.topY) / 2 + text_height / 2;
         }
         L('Rendering annotation: ', this.text, x, y);
-        this.context.fillText(this.text, x, y);
-        this.context.closeGroup();
-        this.context.restore();
+        ctx.fillText(this.text, x, y);
+        ctx.closeGroup();
+        ctx.restore();
+    };
+    // Text annotations can be positioned and justified relative to the note.
+    Annotation.Justify = Justify;
+    Annotation.JustifyString = {
+        left: Annotation.Justify.LEFT,
+        right: Annotation.Justify.RIGHT,
+        center: Annotation.Justify.CENTER,
+        centerStem: Annotation.Justify.CENTER_STEM,
+    };
+    Annotation.VerticalJustify = VerticalJustify;
+    Annotation.VerticalJustifyString = {
+        above: Annotation.VerticalJustify.TOP,
+        top: Annotation.VerticalJustify.TOP,
+        below: Annotation.VerticalJustify.BOTTOM,
+        bottom: Annotation.VerticalJustify.BOTTOM,
+        center: Annotation.VerticalJustify.CENTER,
+        centerStem: Annotation.VerticalJustify.CENTER_STEM,
     };
     return Annotation;
 }(modifier_1.Modifier));
@@ -877,9 +863,9 @@ exports.Annotation = Annotation;
 
 /***/ }),
 
-/***/ "./src/articulation.js":
+/***/ "./src/articulation.ts":
 /*!*****************************!*\
-  !*** ./src/articulation.js ***!
+  !*** ./src/articulation.ts ***!
   \*****************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -918,20 +904,33 @@ var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
+var common_1 = __webpack_require__(/*! ./common */ "./src/common.ts");
 // To enable logging for this class. Set `Vex.Flow.Articulation.DEBUG` to `true`.
 function L() {
+    // eslint-disable-next-line
     var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
+    for (
+    // eslint-disable-next-line
+    var _i = 0; 
+    // eslint-disable-next-line
+    _i < arguments.length; 
+    // eslint-disable-next-line
+    _i++) {
+        // eslint-disable-next-line
         args[_i] = arguments[_i];
     }
     if (Articulation.DEBUG)
         vex_1.Vex.L('Vex.Flow.Articulation', args);
 }
 var _a = modifier_1.Modifier.Position, ABOVE = _a.ABOVE, BELOW = _a.BELOW;
-var roundToNearestHalf = function (mathFn, value) { return mathFn(value / 0.5) * 0.5; };
+function roundToNearestHalf(mathFn, value) {
+    return mathFn(value / 0.5) * 0.5;
+}
 // This includes both staff and ledger lines
-var isWithinLines = function (line, position) { return (position === ABOVE ? line <= 5 : line >= 1); };
-var getRoundingFunction = function (line, position) {
+function isWithinLines(line, position) {
+    return position === ABOVE ? line <= 5 : line >= 1;
+}
+function getRoundingFunction(line, position) {
     if (isWithinLines(line, position)) {
         if (position === ABOVE) {
             return Math.ceil;
@@ -943,8 +942,8 @@ var getRoundingFunction = function (line, position) {
     else {
         return Math.round;
     }
-};
-var snapLineToStaff = function (canSitBetweenLines, line, position, offsetDirection) {
+}
+function snapLineToStaff(canSitBetweenLines, line, position, offsetDirection) {
     // Initially, snap to nearest staff line or space
     var snappedLine = roundToNearestHalf(getRoundingFunction(line, position), line);
     var canSnapToStaffSpace = canSitBetweenLines && isWithinLines(snappedLine, position);
@@ -956,13 +955,12 @@ var snapLineToStaff = function (canSitBetweenLines, line, position, offsetDirect
     else {
         return snappedLine;
     }
-};
-var isStaveNote = function (note) {
+}
+function isStaveNote(note) {
     var noteCategory = note.getCategory();
     return noteCategory === 'stavenotes' || noteCategory === 'gracenotes';
-};
-var getTopY = function (note, textLine) {
-    var stave = note.getStave();
+}
+function getTopY(note, textLine) {
     var stemDirection = note.getStemDirection();
     var _a = note.getStemExtents(), stemTipY = _a.topY, stemBaseY = _a.baseY;
     if (isStaveNote(note)) {
@@ -984,19 +982,18 @@ var getTopY = function (note, textLine) {
                 return stemTipY;
             }
             else {
-                return stave.getYForTopText(textLine);
+                return note.checkStave().getYForTopText(textLine);
             }
         }
         else {
-            return stave.getYForTopText(textLine);
+            return note.checkStave().getYForTopText(textLine);
         }
     }
     else {
         throw new vex_1.Vex.RERR('UnknownCategory', 'Only can get the top and bottom ys of stavenotes and tabnotes');
     }
-};
-var getBottomY = function (note, textLine) {
-    var stave = note.getStave();
+}
+function getBottomY(note, textLine) {
     var stemDirection = note.getStemDirection();
     var _a = note.getStemExtents(), stemTipY = _a.topY, stemBaseY = _a.baseY;
     if (isStaveNote(note)) {
@@ -1015,26 +1012,26 @@ var getBottomY = function (note, textLine) {
     else if (note.getCategory() === 'tabnotes') {
         if (note.hasStem()) {
             if (stemDirection === stem_1.Stem.UP) {
-                return stave.getYForBottomText(textLine);
+                return note.checkStave().getYForBottomText(textLine);
             }
             else {
                 return stemTipY;
             }
         }
         else {
-            return stave.getYForBottomText(textLine);
+            return note.checkStave().getYForBottomText(textLine);
         }
     }
     else {
         throw new vex_1.Vex.RERR('UnknownCategory', 'Only can get the top and bottom ys of stavenotes and tabnotes');
     }
-};
+}
 // Gets the initial offset of the articulation from the y value of the starting position.
 // This is required because the top/bottom text positions already have spacing applied to
 // provide a "visually pleasent" default position. However the y values provided from
 // the stavenote's top/bottom do *not* have any pre-applied spacing. This function
 // normalizes this asymmetry.
-var getInitialOffset = function (note, position) {
+function getInitialOffset(note, position) {
     var isOnStemTip = (position === ABOVE && note.getStemDirection() === stem_1.Stem.UP) ||
         (position === BELOW && note.getStemDirection() === stem_1.Stem.DOWN);
     if (isStaveNote(note)) {
@@ -1055,7 +1052,7 @@ var getInitialOffset = function (note, position) {
             return 0;
         }
     }
-};
+}
 var Articulation = /** @class */ (function (_super) {
     __extends(Articulation, _super);
     // Create a new articulation of type `type`, which is an entry in
@@ -1063,8 +1060,6 @@ var Articulation = /** @class */ (function (_super) {
     function Articulation(type) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Articulation');
-        _this.note = null;
-        _this.index = null;
         _this.type = type;
         _this.position = BELOW;
         _this.render_options = {
@@ -1076,13 +1071,6 @@ var Articulation = /** @class */ (function (_super) {
     Object.defineProperty(Articulation, "CATEGORY", {
         get: function () {
             return 'articulations';
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Articulation, "INITIAL_OFFSET", {
-        get: function () {
-            return -0.5;
         },
         enumerable: false,
         configurable: true
@@ -1110,7 +1098,7 @@ var Articulation = /** @class */ (function (_super) {
         var isBelow = function (artic) { return artic.getPosition() === BELOW; };
         var margin = 0.5;
         var getIncrement = function (articulation, line, position) {
-            return roundToNearestHalf(getRoundingFunction(line, position), articulation.glyph.getMetrics().height / 10 + margin);
+            return roundToNearestHalf(getRoundingFunction(line, position), common_1.check(articulation.glyph.getMetrics().height) / 10 + margin);
         };
         articulations.filter(isAbove).forEach(function (articulation) {
             articulation.setTextLine(state.top_text_line);
@@ -1155,7 +1143,7 @@ var Articulation = /** @class */ (function (_super) {
         }
         var code = (this.position === ABOVE ? this.articulation.aboveCode : this.articulation.belowCode) || this.articulation.code;
         this.glyph = new glyph_1.Glyph(code, this.render_options.font_scale);
-        this.setWidth(this.glyph.getMetrics().width);
+        this.setWidth(common_1.check(this.glyph.getMetrics().width));
     };
     Articulation.prototype.getCategory = function () {
         return Articulation.CATEGORY;
@@ -1163,13 +1151,15 @@ var Articulation = /** @class */ (function (_super) {
     // Render articulation in position next to note.
     Articulation.prototype.draw = function () {
         var _a;
-        var _b = this, note = _b.note, index = _b.index, position = _b.position, glyph = _b.glyph, canSitBetweenLines = _b.articulation.between_lines, textLine = _b.text_line, ctx = _b.context;
-        this.checkContext();
+        var _b, _c;
+        var _d = this, note = _d.note, index = _d.index, position = _d.position, glyph = _d.glyph, textLine = _d.text_line;
+        var canSitBetweenLines = (_c = (_b = this.articulation) === null || _b === void 0 ? void 0 : _b.between_lines) !== null && _c !== void 0 ? _c : false;
+        var ctx = this.checkContext();
         if (!note || index == null) {
             throw new vex_1.Vex.RERR('NoAttachedNote', "Can't draw Articulation without a note and index.");
         }
         this.setRendered();
-        var stave = note.getStave();
+        var stave = note.checkStave();
         var staffSpace = stave.getSpacingBetweenLines();
         var isTab = note.getCategory() === 'tabnotes';
         // Articulations are centered over/under the note head.
@@ -1191,9 +1181,11 @@ var Articulation = /** @class */ (function (_super) {
             _a)[position]();
         if (!isTab) {
             var offsetDirection = position === ABOVE ? -1 : +1;
-            var noteLine = isTab ? note.positions[index].str : note.getKeyProps()[index].line;
+            var noteLine = isTab
+                ? note.getPositions()[index].str
+                : note.getKeyProps()[index].line;
             var distanceFromNote = (note.getYs()[index] - y) / staffSpace;
-            var articLine = distanceFromNote + noteLine;
+            var articLine = distanceFromNote + Number(noteLine);
             var snappedLine = snapLineToStaff(canSitBetweenLines, articLine, position, offsetDirection);
             if (isWithinLines(snappedLine, position))
                 glyph.setOrigin(0.5, 0.5);
@@ -1202,6 +1194,7 @@ var Articulation = /** @class */ (function (_super) {
         L("Rendering articulation at (x: " + x + ", y: " + y + ")");
         glyph.render(ctx, x, y);
     };
+    Articulation.INITIAL_OFFSET = -0.5;
     return Articulation;
 }(modifier_1.Modifier));
 exports.Articulation = Articulation;
@@ -1311,14 +1304,12 @@ var BarNote = /** @class */ (function (_super) {
     // Render note to stave.
     BarNote.prototype.draw = function () {
         var ctx = this.checkContext();
-        if (!this.stave)
-            throw new vex_1.Vex.RERR('NoStave', "Can't draw without a stave.");
         L('Rendering bar line at: ', this.getAbsoluteX());
         if (this.style)
             this.applyStyle(ctx);
         var barline = new stavebarline_1.Barline(this.type);
         barline.setX(this.getAbsoluteX());
-        barline.draw(this.stave);
+        barline.draw(this.checkStave());
         if (this.style)
             this.restoreStyle(ctx);
         this.setRendered();
@@ -1365,7 +1356,7 @@ var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
-var tuplet_1 = __webpack_require__(/*! ./tuplet */ "./src/tuplet.js");
+var tuplet_1 = __webpack_require__(/*! ./tuplet */ "./src/tuplet.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
 function calculateStemDirection(notes) {
     var lineSum = 0;
@@ -1759,7 +1750,7 @@ var Beam = /** @class */ (function (_super) {
             var bracketed = false;
             for (var i = 0; i < tuplet.notes.length; i++) {
                 var note = tuplet.notes[i];
-                if (note.beam === undefined) {
+                if (!note.hasBeam()) {
                     bracketed = true;
                     break;
                 }
@@ -2330,10 +2321,7 @@ var Bend = /** @class */ (function (_super) {
         start.x += 3;
         start.y += 0.5;
         var x_shift = this.x_shift;
-        var stave = this.note.getStave();
-        if (!stave) {
-            throw new vex_1.Vex.RERR('NoStaveForBend', "Can't draw bend without a stave.");
-        }
+        var stave = this.note.checkStave();
         var bend_height = stave.getYForTopText(this.text_line) + 3;
         var annotation_y = stave.getYForTopText(this.text_line) - 1;
         // eslint-disable-next-line
@@ -3756,49 +3744,61 @@ var Clef = /** @class */ (function (_super) {
                 treble: {
                     code: 'gClef',
                     line: 3,
+                    point: 0,
                 },
                 bass: {
                     code: 'fClef',
                     line: 1,
+                    point: 0,
                 },
                 alto: {
                     code: 'cClef',
                     line: 2,
+                    point: 0,
                 },
                 tenor: {
                     code: 'cClef',
                     line: 1,
+                    point: 0,
                 },
                 percussion: {
                     code: 'restMaxima',
                     line: 2,
+                    point: 0,
                 },
                 soprano: {
                     code: 'cClef',
                     line: 4,
+                    point: 0,
                 },
                 'mezzo-soprano': {
                     code: 'cClef',
                     line: 3,
+                    point: 0,
                 },
                 'baritone-c': {
                     code: 'cClef',
                     line: 0,
+                    point: 0,
                 },
                 'baritone-f': {
                     code: 'fClef',
                     line: 2,
+                    point: 0,
                 },
                 subbass: {
                     code: 'fClef',
                     line: 0,
+                    point: 0,
                 },
                 french: {
                     code: 'gClef',
                     line: 4,
+                    point: 0,
                 },
                 tab: {
                     code: '6stringTabClef',
+                    point: 0,
                 },
             };
         },
@@ -3914,7 +3914,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClefNote = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
 var clef_1 = __webpack_require__(/*! ./clef */ "./src/clef.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -3972,15 +3971,14 @@ var ClefNote = /** @class */ (function (_super) {
     };
     ClefNote.prototype.draw = function () {
         var _a;
-        if (!this.stave)
-            throw new vex_1.Vex.RERR('NoStave', "Can't draw without a stave.");
+        var stave = this.checkStave();
         if (!this.glyph.getContext()) {
             this.glyph.setContext(this.getContext());
         }
         this.setRendered();
         var abs_x = this.getAbsoluteX();
-        this.glyph.setStave(this.stave);
-        this.glyph.setYShift(this.stave.getYForLine((_a = this.clef.line) !== null && _a !== void 0 ? _a : 0) - this.stave.getYForGlyphs());
+        this.glyph.setStave(stave);
+        this.glyph.setYShift(stave.getYForLine((_a = this.clef.line) !== null && _a !== void 0 ? _a : 0) - stave.getYForGlyphs());
         this.glyph.renderToStave(abs_x);
         // If the Vex.Flow.Clef has an annotation, such as 8va, draw it.
         if (this.clef_obj.annotation !== undefined) {
@@ -3988,8 +3986,8 @@ var ClefNote = /** @class */ (function (_super) {
             if (!attachment.getContext()) {
                 attachment.setContext(this.getContext());
             }
-            attachment.setStave(this.stave);
-            attachment.setYShift(this.stave.getYForLine(this.clef_obj.annotation.line) - this.stave.getYForGlyphs());
+            attachment.setStave(stave);
+            attachment.setYShift(stave.getYForLine(this.clef_obj.annotation.line) - stave.getYForGlyphs());
             attachment.setXShift(this.clef_obj.annotation.x_shift);
             attachment.renderToStave(abs_x);
         }
@@ -4011,7 +4009,15 @@ exports.ClefNote = ClefNote;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GLYPH_PROPS_VALID_TYPES = void 0;
+exports.GLYPH_PROPS_VALID_TYPES = exports.check = void 0;
+var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+function check(x) {
+    if (x === undefined) {
+        throw new vex_1.Vex.RERR('undefined');
+    }
+    return x;
+}
+exports.check = check;
 //** TODO: Resolve duplication with Flow */
 exports.GLYPH_PROPS_VALID_TYPES = {
     n: { name: 'note' },
@@ -4144,14 +4150,13 @@ var Crescendo = /** @class */ (function (_super) {
     // Render the Crescendo object onto the canvas
     Crescendo.prototype.draw = function () {
         var ctx = this.checkContext();
-        if (!this.stave)
-            throw new vex_1.Vex.RERR('NoStave', "Can't draw without a stave.");
+        var stave = this.checkStave();
         this.setRendered();
         var tick_context = this.getTickContext();
         var next_context = tickcontext_1.TickContext.getNextContext(tick_context);
         var begin_x = this.getAbsoluteX();
-        var end_x = next_context ? next_context.getX() : this.stave.getX() + this.stave.getWidth();
-        var y = this.stave.getYForLine(this.line + -3) + 1;
+        var end_x = next_context ? next_context.getX() : stave.getX() + stave.getWidth();
+        var y = stave.getYForLine(this.line + -3) + 1;
         L('Drawing ', this.decrescendo ? 'decrescendo ' : 'crescendo ', this.height, 'x', begin_x - end_x);
         renderHairpin(ctx, {
             begin_x: begin_x - this.options.extend_left,
@@ -4318,9 +4323,7 @@ var Curve = /** @class */ (function (_super) {
             first_y = first_note.getStemExtents()[metric];
         }
         else {
-            var stave = last_note.getStave();
-            if (!stave)
-                throw new vex_1.Vex.RERR('NoStave', 'No stave attached.');
+            var stave = last_note.checkStave();
             first_x = stave.getTieStartX();
             first_y = last_note.getStemExtents()[metric];
         }
@@ -4330,9 +4333,7 @@ var Curve = /** @class */ (function (_super) {
             last_y = last_note.getStemExtents()[end_metric];
         }
         else {
-            var stave = first_note.getStave();
-            if (!stave)
-                throw new vex_1.Vex.RERR('NoStave', 'No stave attached.');
+            var stave = first_note.checkStave();
             last_x = stave.getTieEndX();
             last_y = first_note.getStemExtents()[end_metric];
         }
@@ -4508,10 +4509,7 @@ var Dot = /** @class */ (function (_super) {
         if (!this.note || this.index === undefined) {
             throw new vex_1.Vex.RERR('NoNoteIndex', 'Drawing a dot requires a note and an index.');
         }
-        var stave = this.note.getStave();
-        if (!stave) {
-            throw new vex_1.Vex.RERR('NoStave', 'Drawing a dot requires a stave.');
-        }
+        var stave = this.note.checkStave();
         var lineSpace = stave.getOptions().spacing_between_lines_px;
         var start = this.note.getModifierStartXY(this.position, this.index, { forceFlagRight: true });
         // Set the starting y coordinate to the base of the stem for TabNotes
@@ -4531,9 +4529,9 @@ exports.Dot = Dot;
 
 /***/ }),
 
-/***/ "./src/easyscore.js":
+/***/ "./src/easyscore.ts":
 /*!**************************!*\
-  !*** ./src/easyscore.js ***!
+  !*** ./src/easyscore.ts ***!
   \**************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -4561,9 +4559,10 @@ exports.EasyScore = exports.Builder = exports.Grammar = exports.X = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 var parser_1 = __webpack_require__(/*! ./parser */ "./src/parser.ts");
-var articulation_1 = __webpack_require__(/*! ./articulation */ "./src/articulation.js");
+var articulation_1 = __webpack_require__(/*! ./articulation */ "./src/articulation.ts");
 var frethandfinger_1 = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.ts");
 // To enable logging for this class. Set `Vex.Flow.EasyScore.DEBUG` to `true`.
+// eslint-disable-next-line
 function L() {
     var args = [];
     for (var _i = 0; _i < arguments.length; _i++) {
@@ -4613,6 +4612,7 @@ var Grammar = /** @class */ (function () {
         var _this = this;
         return {
             expect: [this.LPAREN, this.NOTES, this.RPAREN],
+            // eslint-disable-next-line
             run: function (state) { return _this.builder.addChord(state.matches[1]); },
         };
     };
@@ -4631,7 +4631,11 @@ var Grammar = /** @class */ (function () {
         var _this = this;
         return {
             expect: [this.NOTENAME, this.ACCIDENTAL, this.OCTAVE],
-            run: function (state) { return _this.builder.addSingleNote(state.matches[0], state.matches[1], state.matches[2]); },
+            run: function (state) {
+                // eslint-disable-next-line
+                var s = state;
+                _this.builder.addSingleNote(s.matches[0], s.matches[1], s.matches[2]);
+            },
         };
     };
     Grammar.prototype.ACCIDENTAL = function () {
@@ -4645,6 +4649,7 @@ var Grammar = /** @class */ (function () {
         return {
             expect: [this.DOT],
             zeroOrMore: true,
+            // eslint-disable-next-line
             run: function (state) { return _this.builder.setNoteDots(state.matches); },
         };
     };
@@ -4653,6 +4658,7 @@ var Grammar = /** @class */ (function () {
         return {
             expect: [this.SLASH, this.MAYBESLASH, this.TYPES],
             maybe: true,
+            // eslint-disable-next-line
             run: function (state) { return _this.builder.setNoteType(state.matches[2]); },
         };
     };
@@ -4661,6 +4667,7 @@ var Grammar = /** @class */ (function () {
         return {
             expect: [this.SLASH, this.DURATIONS],
             maybe: true,
+            // eslint-disable-next-line
             run: function (state) { return _this.builder.setNoteDuration(state.matches[1]); },
         };
     };
@@ -4681,6 +4688,7 @@ var Grammar = /** @class */ (function () {
         var unquote = function (str) { return str.slice(1, -1); };
         return {
             expect: [this.KEY, this.EQUALS, this.VAL],
+            // eslint-disable-next-line
             run: function (state) { return _this.builder.addNoteOption(state.matches[0], unquote(state.matches[2])); },
         };
     };
@@ -4747,10 +4755,19 @@ var Grammar = /** @class */ (function () {
     return Grammar;
 }());
 exports.Grammar = Grammar;
+var Piece = /** @class */ (function () {
+    function Piece(duration) {
+        this.chord = [];
+        this.dots = 0;
+        this.options = {};
+        this.duration = duration;
+    }
+    return Piece;
+}());
 var Builder = /** @class */ (function () {
     function Builder(factory) {
-        this.factory = factory;
         this.commitHooks = [];
+        this.factory = factory;
         this.reset();
     }
     Builder.prototype.reset = function (options) {
@@ -4778,13 +4795,7 @@ var Builder = /** @class */ (function () {
     };
     Builder.prototype.resetPiece = function () {
         L('resetPiece');
-        this.piece = {
-            chord: [],
-            duration: this.rollingDuration,
-            dots: 0,
-            type: undefined,
-            options: {},
-        };
+        this.piece = new Piece(this.rollingDuration);
     };
     Builder.prototype.setNoteDots = function (dots) {
         L('setNoteDots:', dots);
@@ -4806,12 +4817,17 @@ var Builder = /** @class */ (function () {
     };
     Builder.prototype.addNote = function (key, accid, octave) {
         L('addNote:', key, accid, octave);
-        this.piece.chord.push({ key: key, accid: accid, octave: octave });
+        this.piece.chord.push({
+            key: key,
+            accid: accid,
+            octave: octave,
+        });
     };
     Builder.prototype.addSingleNote = function (key, accid, octave) {
         L('addSingleNote:', key, accid, octave);
         this.addNote(key, accid, octave);
     };
+    // notes is an array with 3 entries
     Builder.prototype.addChord = function (notes) {
         var _this = this;
         L('startChord');
@@ -4821,7 +4837,7 @@ var Builder = /** @class */ (function () {
         else {
             notes.forEach(function (n) {
                 if (n)
-                    _this.addNote.apply(_this, n);
+                    _this.addNote.apply(_this, n); // n => [string, string | null, string]
             });
         }
         L('endChord');
@@ -4833,12 +4849,20 @@ var Builder = /** @class */ (function () {
         if (!factory)
             return;
         var options = __assign(__assign({}, this.options), this.piece.options);
-        var stem = options.stem, clef = options.clef;
-        var autoStem = stem.toLowerCase() === 'auto';
-        var stemDirection = !autoStem && stem.toLowerCase() === 'up' ? stavenote_1.StaveNote.STEM_UP : stavenote_1.StaveNote.STEM_DOWN;
+        // reset() sets this.options.stem & this.options.clef but we check to make sure nothing has changed.
+        if (options.stem === undefined) {
+            throw new vex_1.Vex.RERR('options.stem is not defined');
+        }
+        if (options.clef === undefined) {
+            throw new vex_1.Vex.RERR('options.clef is not defined');
+        }
+        var stem = options.stem.toLowerCase(); // e.g., auto | up | down
+        var clef = options.clef; // e.g., treble | bass
+        var autoStem = stem === 'auto';
+        var stemDirection = !autoStem && stem === 'up' ? stavenote_1.StaveNote.STEM_UP : stavenote_1.StaveNote.STEM_DOWN;
         // Build StaveNotes.
         var _a = this.piece, chord = _a.chord, duration = _a.duration, dots = _a.dots, type = _a.type;
-        var keys = chord.map(function (note) { return note.key + '/' + note.octave; });
+        var keys = chord.map(function (notePiece) { return notePiece.key + '/' + notePiece.octave; });
         var note = factory.StaveNote({
             keys: keys,
             duration: duration,
@@ -4850,27 +4874,35 @@ var Builder = /** @class */ (function () {
         if (!autoStem)
             note.setStemDirection(stemDirection);
         // Attach accidentals.
-        var accids = chord.map(function (note) { return note.accid || null; });
-        accids.forEach(function (accid, i) {
-            if (accid)
-                note.addAccidental(i, factory.Accidental({ type: accid }));
+        var accidentals = [];
+        chord.forEach(function (notePiece, index) {
+            var accid = notePiece.accid;
+            if (typeof accid === 'string') {
+                var accidental = factory.Accidental({ type: accid });
+                // TODO: Remove "as unknown as Modifier".
+                // This compilation warning will be fixed after factory & accidental are migrated to typescript.
+                note.addAccidental(index, accidental);
+                accidentals.push(accidental);
+            }
+            else {
+                accidentals.push(undefined);
+            }
         });
         // Attach dots.
         for (var i = 0; i < dots; i++)
             note.addDotToAll();
         this.commitHooks.forEach(function (fn) { return fn(options, note, _this); });
         this.elements.notes.push(note);
-        this.elements.accidentals.concat(accids);
+        this.elements.accidentals.push(accidentals);
         this.resetPiece();
     };
     return Builder;
 }());
 exports.Builder = Builder;
-function setId(_a, note) {
-    var id = _a.id;
-    if (id === undefined)
+function setId(options, note) {
+    if (options.id === undefined)
         return;
-    note.setAttribute('id', id);
+    note.setAttribute('id', options.id);
 }
 function setClass(options, note) {
     if (!options.class)
@@ -4894,12 +4926,14 @@ var EasyScore = /** @class */ (function () {
     };
     EasyScore.prototype.setOptions = function (options) {
         var _this = this;
-        this.options = __assign({ factory: null, builder: null, commitHooks: [setId, setClass, articulation_1.Articulation.easyScoreHook, frethandfinger_1.FretHandFinger.easyScoreHook], throwOnError: false }, options);
-        this.factory = this.options.factory;
+        this.options = __assign({ commitHooks: [setId, setClass, articulation_1.Articulation.easyScoreHook, frethandfinger_1.FretHandFinger.easyScoreHook], throwOnError: false }, options);
+        // eslint-disable-next-line
+        this.factory = this.options.factory; // ! operator, because we know it is set in Factory.EasyScore()
         this.builder = this.options.builder || new Builder(this.factory);
         this.grammar = new Grammar(this.builder);
         this.parser = new parser_1.Parser(this.grammar);
-        this.options.commitHooks.forEach(function (commitHook) { return _this.addCommitHook(commitHook); });
+        // eslint-disable-next-line
+        this.options.commitHooks.forEach(function (commitHook) { return _this.addCommitHook(commitHook); }); // ! operator, because this.options.commitHooks is set in the first line of this method.
         return this;
     };
     EasyScore.prototype.setContext = function (context) {
@@ -4916,11 +4950,15 @@ var EasyScore = /** @class */ (function () {
         }
         return result;
     };
+    // TODO: Add stricter typing after migrating Factory
+    // eslint-disable-next-line
     EasyScore.prototype.beam = function (notes, options) {
         if (options === void 0) { options = {}; }
         this.factory.Beam({ notes: notes, options: options });
         return notes;
     };
+    // TODO: Add stricter typing after migrating Factory
+    // eslint-disable-next-line
     EasyScore.prototype.tuplet = function (notes, options) {
         if (options === void 0) { options = {}; }
         this.factory.Tuplet({ notes: notes, options: options });
@@ -4932,13 +4970,16 @@ var EasyScore = /** @class */ (function () {
         this.parse(line, options);
         return this.builder.getElements().notes;
     };
-    EasyScore.prototype.voice = function (notes, voiceOptions) {
-        voiceOptions = __assign({ time: this.defaults.time }, voiceOptions);
-        return this.factory.Voice(voiceOptions).addTickables(notes);
+    // TODO: Add stricter typing after migrating Factory
+    // eslint-disable-next-line
+    EasyScore.prototype.voice = function (notes, options) {
+        options = __assign({ time: this.defaults.time }, options);
+        return this.factory.Voice(options).addTickables(notes);
     };
     EasyScore.prototype.addCommitHook = function (commitHook) {
-        return this.builder.addCommitHook(commitHook);
+        this.builder.addCommitHook(commitHook);
     };
+    EasyScore.DEBUG = false;
     return EasyScore;
 }());
 exports.EasyScore = EasyScore;
@@ -5165,39 +5206,39 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Factory = exports.X = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var accidental_1 = __webpack_require__(/*! ./accidental */ "./src/accidental.js");
-var articulation_1 = __webpack_require__(/*! ./articulation */ "./src/articulation.js");
-var annotation_1 = __webpack_require__(/*! ./annotation */ "./src/annotation.js");
+var articulation_1 = __webpack_require__(/*! ./articulation */ "./src/articulation.ts");
+var annotation_1 = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
 var chordsymbol_1 = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.js");
-var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.js");
+var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
 // import { WidthFormatter } from './widthformatter';
 var frethandfinger_1 = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.ts");
-var stringnumber_1 = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.js");
-var textdynamics_1 = __webpack_require__(/*! ./textdynamics */ "./src/textdynamics.js");
+var stringnumber_1 = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.ts");
+var textdynamics_1 = __webpack_require__(/*! ./textdynamics */ "./src/textdynamics.ts");
 var modifiercontext_1 = __webpack_require__(/*! ./modifiercontext */ "./src/modifiercontext.ts");
 var multimeasurerest_1 = __webpack_require__(/*! ./multimeasurerest */ "./src/multimeasurerest.js");
 var renderer_1 = __webpack_require__(/*! ./renderer */ "./src/renderer.js");
 var stave_1 = __webpack_require__(/*! ./stave */ "./src/stave.ts");
 var stavetie_1 = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
-var staveline_1 = __webpack_require__(/*! ./staveline */ "./src/staveline.js");
+var staveline_1 = __webpack_require__(/*! ./staveline */ "./src/staveline.ts");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 var glyphnote_1 = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.ts");
 var repeatnote_1 = __webpack_require__(/*! ./repeatnote */ "./src/repeatnote.ts");
-var staveconnector_1 = __webpack_require__(/*! ./staveconnector */ "./src/staveconnector.js");
+var staveconnector_1 = __webpack_require__(/*! ./staveconnector */ "./src/staveconnector.ts");
 var system_1 = __webpack_require__(/*! ./system */ "./src/system.js");
 var tickcontext_1 = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
-var tuplet_1 = __webpack_require__(/*! ./tuplet */ "./src/tuplet.js");
+var tuplet_1 = __webpack_require__(/*! ./tuplet */ "./src/tuplet.ts");
 var voice_1 = __webpack_require__(/*! ./voice */ "./src/voice.ts");
 var beam_1 = __webpack_require__(/*! ./beam */ "./src/beam.ts");
 var curve_1 = __webpack_require__(/*! ./curve */ "./src/curve.ts");
 var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
 var gracenotegroup_1 = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
 var notesubgroup_1 = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.js");
-var easyscore_1 = __webpack_require__(/*! ./easyscore */ "./src/easyscore.js");
+var easyscore_1 = __webpack_require__(/*! ./easyscore */ "./src/easyscore.ts");
 var timesignote_1 = __webpack_require__(/*! ./timesignote */ "./src/timesignote.ts");
 var keysignote_1 = __webpack_require__(/*! ./keysignote */ "./src/keysignote.ts");
 var clefnote_1 = __webpack_require__(/*! ./clefnote */ "./src/clefnote.ts");
-var pedalmarking_1 = __webpack_require__(/*! ./pedalmarking */ "./src/pedalmarking.js");
-var textbracket_1 = __webpack_require__(/*! ./textbracket */ "./src/textbracket.js");
+var pedalmarking_1 = __webpack_require__(/*! ./pedalmarking */ "./src/pedalmarking.ts");
+var textbracket_1 = __webpack_require__(/*! ./textbracket */ "./src/textbracket.ts");
 var vibratobracket_1 = __webpack_require__(/*! ./vibratobracket */ "./src/vibratobracket.ts");
 var ghostnote_1 = __webpack_require__(/*! ./ghostnote */ "./src/ghostnote.ts");
 var barnote_1 = __webpack_require__(/*! ./barnote */ "./src/barnote.ts");
@@ -5713,7 +5754,7 @@ var Factory = /** @class */ (function () {
             },
         });
         var pedal = new pedalmarking_1.PedalMarking(params.notes);
-        pedal.setStyle(pedalmarking_1.PedalMarking.StylesString[params.options.style]);
+        pedal.setType(pedalmarking_1.PedalMarking.typeString[params.options.style]);
         pedal.setContext(this.context);
         this.renderQ.push(pedal);
         return pedal;
@@ -17980,9 +18021,9 @@ exports.RobotoSlabTextMetrics = {
 
 /***/ }),
 
-/***/ "./src/formatter.js":
+/***/ "./src/formatter.ts":
 /*!**************************!*\
-  !*** ./src/formatter.js ***!
+  !*** ./src/formatter.ts ***!
   \**************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -18025,14 +18066,59 @@ var beam_1 = __webpack_require__(/*! ./beam */ "./src/beam.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
 var voice_1 = __webpack_require__(/*! ./voice */ "./src/voice.ts");
-var staveconnector_1 = __webpack_require__(/*! ./staveconnector */ "./src/staveconnector.js");
-var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+var staveconnector_1 = __webpack_require__(/*! ./staveconnector */ "./src/staveconnector.ts");
 var modifiercontext_1 = __webpack_require__(/*! ./modifiercontext */ "./src/modifiercontext.ts");
 var tickcontext_1 = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
+var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+var common_1 = __webpack_require__(/*! ./common */ "./src/common.ts");
+// Create `Alignment`s for each tick in `voices`. Also calculate the
+// total number of ticks in voices.
+function createContexts(voices, makeContext, addToContext) {
+    var resolutionMultiplier = Formatter.getResolutionMultiplier(voices);
+    // Initialize tick maps.
+    var tickToContextMap = {};
+    var tickList = [];
+    var contexts = [];
+    // For each voice, extract notes and create a context for every
+    // new tick that hasn't been seen before.
+    voices.forEach(function (voice, voiceIndex) {
+        // Use resolution multiplier as denominator so that no additional expansion
+        // of fractional tick values is needed.
+        var ticksUsed = new fraction_1.Fraction(0, resolutionMultiplier);
+        voice.getTickables().forEach(function (tickable) {
+            var integerTicks = ticksUsed.numerator;
+            // If we have no tick context for this tick, create one.
+            if (!tickToContextMap[integerTicks]) {
+                var newContext = makeContext({ tickID: integerTicks });
+                contexts.push(newContext);
+                tickToContextMap[integerTicks] = newContext;
+                // Maintain a list of unique integerTicks.
+                tickList.push(integerTicks);
+            }
+            // Add this tickable to the TickContext.
+            addToContext(tickable, tickToContextMap[integerTicks], voiceIndex);
+            ticksUsed.add(tickable.getTicks());
+        });
+    });
+    return {
+        map: tickToContextMap,
+        array: contexts,
+        list: tickList.sort(function (a, b) { return a - b; }),
+        resolutionMultiplier: resolutionMultiplier,
+    };
+}
 // To enable logging for this class. Set `Vex.Flow.Formatter.DEBUG` to `true`.
 function L() {
+    // eslint-disable-next-line
     var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
+    for (
+    // eslint-disable-next-line
+    var _i = 0; 
+    // eslint-disable-next-line
+    _i < arguments.length; 
+    // eslint-disable-next-line
+    _i++) {
+        // eslint-disable-next-line
         args[_i] = arguments[_i];
     }
     if (Formatter.DEBUG)
@@ -18058,78 +18144,20 @@ function lookAhead(notes, restLine, i, compare) {
     }
     return nextRestLine;
 }
-// Take an array of `voices` and place aligned tickables in the same context. Returns
-// a mapping from `tick` to `ContextType`, a list of `tick`s, and the resolution
-// multiplier.
-//
-// Params:
-// * `voices`: Array of `Voice` instances.
-// * `ContextType`: A context class (e.g., `ModifierContext`, `TickContext`)
-// * `addToContext`: Function to add tickable to context.
-function createContexts(voices, ContextType, addToContext) {
-    if (!voices || !voices.length) {
-        throw new vex_1.Vex.RERR('BadArgument', 'No voices to format');
-    }
-    // Find out highest common multiple of resolution multipliers.
-    // The purpose of this is to find out a common denominator
-    // for all fractional tick values in all tickables of all voices,
-    // so that the values can be expanded and the numerator used
-    // as an integer tick value.
-    var totalTicks = voices[0].getTotalTicks();
-    var resolutionMultiplier = voices.reduce(function (resolutionMultiplier, voice) {
-        if (!voice.getTotalTicks().equals(totalTicks)) {
-            throw new vex_1.Vex.RERR('TickMismatch', 'Voices should have same total note duration in ticks.');
-        }
-        if (voice.getMode() === voice_1.Voice.Mode.STRICT && !voice.isComplete()) {
-            throw new vex_1.Vex.RERR('IncompleteVoice', 'Voice does not have enough notes.');
-        }
-        return Math.max(resolutionMultiplier, fraction_1.Fraction.LCM(resolutionMultiplier, voice.getResolutionMultiplier()));
-    }, 1);
-    // Initialize tick maps.
-    var tickToContextMap = {};
-    var tickList = [];
-    var contexts = [];
-    // For each voice, extract notes and create a context for every
-    // new tick that hasn't been seen before.
-    voices.forEach(function (voice, voiceIndex) {
-        // Use resolution multiplier as denominator to expand ticks
-        // to suitable integer values, so that no additional expansion
-        // of fractional tick values is needed.
-        var ticksUsed = new fraction_1.Fraction(0, resolutionMultiplier);
-        voice.getTickables().forEach(function (tickable) {
-            var integerTicks = ticksUsed.numerator;
-            // If we have no tick context for this tick, create one.
-            if (!tickToContextMap[integerTicks]) {
-                var newContext = new ContextType({ tickID: integerTicks });
-                contexts.push(newContext);
-                tickToContextMap[integerTicks] = newContext;
-            }
-            // Add this tickable to the TickContext.
-            addToContext(tickable, tickToContextMap[integerTicks], voiceIndex);
-            // Maintain a sorted list of tick contexts.
-            tickList.push(integerTicks);
-            ticksUsed.add(tickable.getTicks());
-        });
-    });
-    return {
-        map: tickToContextMap,
-        array: contexts,
-        list: vex_1.Vex.SortAndUnique(tickList, function (a, b) { return a - b; }, function (a, b) { return a === b; }),
-        resolutionMultiplier: resolutionMultiplier,
-    };
-}
 var Formatter = /** @class */ (function () {
-    function Formatter(options) {
-        this.options = __assign({ softmaxFactor: null, globalSoftmax: false, maxIterations: 2 }, options);
+    function Formatter(formatterOptions) {
+        this.formatterOptions = __assign({ globalSoftmax: false, maxIterations: 2 }, formatterOptions);
+        this.justifyWidth = 0;
+        this.totalCost = 0;
+        this.totalShift = 0;
+        this.durationStats = {};
         // Minimum width required to render all the notes in the voices.
         this.minTotalWidth = 0;
         // This is set to `true` after `minTotalWidth` is calculated.
         this.hasMinTotalWidth = false;
-        // Total number of ticks in the voice.
-        this.totalTicks = new fraction_1.Fraction(0, 1);
         // Arrays of tick and modifier contexts.
-        this.tickContexts = null;
-        this.modiferContexts = null;
+        this.tickContexts = undefined;
+        this.modifierContexts = undefined;
         // Gaps between contexts, for free movement of notes post
         // formatting.
         this.contextGaps = {
@@ -18137,7 +18165,6 @@ var Formatter = /** @class */ (function () {
             gaps: [],
         };
         this.voices = [];
-        this.iterationsCompleted = 0;
         this.lossHistory = [];
     }
     // Helper function to layout "notes" one after the other without
@@ -18145,17 +18172,17 @@ var Formatter = /** @class */ (function () {
     Formatter.SimpleFormat = function (notes, x, _a) {
         if (x === void 0) { x = 0; }
         var _b = _a === void 0 ? {} : _a, _c = _b.paddingBetween, paddingBetween = _c === void 0 ? 10 : _c;
-        notes.reduce(function (x, note) {
+        notes.reduce(function (accumulator, note) {
             note.addToModifierContext(new modifiercontext_1.ModifierContext());
             var tick = new tickcontext_1.TickContext().addTickable(note).preFormat();
             var metrics = tick.getMetrics();
-            tick.setX(x + metrics.totalLeftPx);
-            return x + tick.getWidth() + metrics.totalRightPx + paddingBetween;
+            tick.setX(accumulator + metrics.totalLeftPx);
+            return accumulator + tick.getWidth() + metrics.totalRightPx + paddingBetween;
         }, x);
     };
     // Helper function to plot formatter debug info.
     Formatter.plotDebugging = function (ctx, formatter, xPos, y1, y2, options) {
-        options = __assign({ stavePadding: vex_1.Vex.Flow.DEFAULT_FONT_STACK[0].lookupMetric('stave.padding') }, options);
+        options = __assign({ stavePadding: tables_1.Flow.DEFAULT_FONT_STACK[0].lookupMetric('stave.padding') }, options);
         var x = xPos + options.stavePadding;
         var contextGaps = formatter.contextGaps;
         function stroke(x1, x2, color) {
@@ -18170,7 +18197,7 @@ var Formatter = /** @class */ (function () {
         contextGaps.gaps.forEach(function (gap) {
             stroke(x + gap.x1, x + gap.x2, 'rgba(100,200,100,0.4)');
             ctx.setFillStyle('green');
-            ctx.fillText(Math.round(gap.x2 - gap.x1), x + gap.x1, y2 + 12);
+            ctx.fillText(Math.round(gap.x2 - gap.x1).toString(), x + gap.x1, y2 + 12);
         });
         ctx.setFillStyle('red');
         ctx.fillText("Loss: " + (formatter.totalCost || 0).toFixed(2) + " Shift: " + (formatter.totalShift || 0).toFixed(2) + " Gap: " + contextGaps.total.toFixed(2), x - 20, y2 + 27);
@@ -18182,7 +18209,7 @@ var Formatter = /** @class */ (function () {
     // Parameters:
     // * `ctx` - The rendering context
     // * `stave` - The stave to which to draw (`Stave` or `TabStave`)
-    // * `notes` - Array of `Note` instances (`StaveNote`, `TextNote`, `TabNote`, etc.)
+    // * `notes` - Array of `Note` instances (`Note`, `TextNote`, `TabNote`, etc.)
     // * `params` - One of below:
     //    * Setting `autobeam` only `(context, stave, notes, true)` or
     //      `(ctx, stave, notes, {autobeam: true})`
@@ -18198,7 +18225,7 @@ var Formatter = /** @class */ (function () {
             align_rests: false,
         };
         if (typeof params === 'object') {
-            vex_1.Vex.Merge(options, params);
+            options = __assign(__assign({}, options), params);
         }
         else if (typeof params === 'boolean') {
             options.auto_beam = params;
@@ -18208,7 +18235,9 @@ var Formatter = /** @class */ (function () {
         // Then create beams, if requested.
         var beams = options.auto_beam ? beam_1.Beam.applyAndGetBeams(voice) : [];
         // Instantiate a `Formatter` and format the notes.
-        new Formatter().joinVoices([voice]).formatToStave([voice], stave, { align_rests: options.align_rests, stave: stave });
+        new Formatter()
+            .joinVoices([voice]) // , { align_rests: options.align_rests })
+            .formatToStave([voice], stave, { align_rests: options.align_rests, stave: stave });
         // Render the voice and beams to the stave.
         voice.setStave(stave).draw(ctx, stave);
         beams.forEach(function (beam) { return beam.setContext(ctx).draw(); });
@@ -18222,7 +18251,7 @@ var Formatter = /** @class */ (function () {
     // * `ctx` - The rendering context
     // * `tabstave` - A `TabStave` instance on which to render `TabNote`s.
     // * `stave` - A `Stave` instance on which to render `Note`s.
-    // * `notes` - Array of `Note` instances for the stave (`StaveNote`, `BarNote`, etc.)
+    // * `notes` - Array of `Note` instances for the stave (`Note`, `BarNote`, etc.)
     // * `tabnotes` - Array of `Note` instances for the tab stave (`TabNote`, `BarNote`, etc.)
     // * `autobeam` - Automatically generate beams.
     // * `params` - A configuration object:
@@ -18234,7 +18263,7 @@ var Formatter = /** @class */ (function () {
             align_rests: false,
         };
         if (typeof params === 'object') {
-            vex_1.Vex.Merge(opts, params);
+            opts = __assign(__assign({}, opts), params);
         }
         else if (typeof params === 'boolean') {
             opts.auto_beam = params;
@@ -18247,7 +18276,7 @@ var Formatter = /** @class */ (function () {
         var beams = opts.auto_beam ? beam_1.Beam.applyAndGetBeams(notevoice) : [];
         // Instantiate a `Formatter` and align tab and stave notes.
         new Formatter()
-            .joinVoices([notevoice])
+            .joinVoices([notevoice]) // , { align_rests: opts.align_rests })
             .joinVoices([tabvoice])
             .formatToStave([notevoice, tabvoice], stave, { align_rests: opts.align_rests });
         // Render voices and beams to staves.
@@ -18266,13 +18295,13 @@ var Formatter = /** @class */ (function () {
     Formatter.AlignRestsToNotes = function (notes, alignAllNotes, alignTuplets) {
         notes.forEach(function (note, index) {
             if (note instanceof stavenote_1.StaveNote && note.isRest()) {
-                if (note.tuplet && !alignTuplets)
+                if (note.getTuplet() && !alignTuplets)
                     return;
                 // If activated rests not on default can be rendered as specified.
                 var position = note.getGlyph().position.toUpperCase();
                 if (position !== 'R/4' && position !== 'B/4')
                     return;
-                if (alignAllNotes || note.beam != null) {
+                if (alignAllNotes || note.getBeam()) {
                     // Align rests with previous/next notes.
                     var props = note.getKeyProps()[0];
                     if (index === 0) {
@@ -18282,12 +18311,13 @@ var Formatter = /** @class */ (function () {
                     else if (index > 0 && index < notes.length) {
                         // If previous note is a rest, use its line number.
                         var restLine = void 0;
-                        if (notes[index - 1].isRest()) {
-                            restLine = notes[index - 1].getKeyProps()[0].line;
+                        var prevNote = notes[index - 1];
+                        if (prevNote && prevNote.isRest()) {
+                            restLine = prevNote.keyProps[0].line;
                             props.line = restLine;
                         }
                         else {
-                            restLine = notes[index - 1].getLineForRest();
+                            restLine = prevNote.getLineForRest();
                             // Get the rest line for next valid non-rest note group.
                             props.line = lookAhead(notes, restLine, index, true);
                         }
@@ -18296,7 +18326,6 @@ var Formatter = /** @class */ (function () {
                 }
             }
         });
-        return this;
     };
     // Find all the rests in each of the `voices` and align them
     // to neighboring notes. If `alignAllNotes` is `false`, then only
@@ -18319,6 +18348,7 @@ var Formatter = /** @class */ (function () {
             }
             this.createTickContexts(voices);
         }
+        // eslint-disable-next-line
         var _a = this.tickContexts, contextList = _a.list, contextMap = _a.map;
         // const maxTicks = contextList.map(tick => tick.maxTicks.value()).reduce((a, b) => a + b, 0);
         // Go through each tick context and calculate total width.
@@ -18340,43 +18370,65 @@ var Formatter = /** @class */ (function () {
         }
         return this.minTotalWidth;
     };
+    // calculates the resolution multiplier for `voices`.
+    Formatter.getResolutionMultiplier = function (voices) {
+        if (!voices || !voices.length) {
+            throw new vex_1.Vex.RERR('BadArgument', 'No voices to format');
+        }
+        var totalTicks = voices[0].getTotalTicks();
+        var resolutionMultiplier = voices.reduce(function (accumulator, voice) {
+            if (!voice.getTotalTicks().equals(totalTicks)) {
+                throw new vex_1.Vex.RERR('TickMismatch', 'Voices should have same total note duration in ticks.');
+            }
+            if (voice.getMode() === voice_1.Voice.Mode.STRICT && !voice.isComplete()) {
+                throw new vex_1.Vex.RERR('IncompleteVoice', 'Voice does not have enough notes.');
+            }
+            return Math.max(accumulator, fraction_1.Fraction.LCM(accumulator, voice.getResolutionMultiplier()));
+        }, 1);
+        return resolutionMultiplier;
+    };
     // Create `ModifierContext`s for each tick in `voices`.
     Formatter.prototype.createModifierContexts = function (voices) {
-        var contexts = createContexts(voices, modifiercontext_1.ModifierContext, function (tickable, context) {
+        var fn = function (tickable, context, voiceIndex) {
             return tickable.addToModifierContext(context);
-        });
-        this.modiferContexts = contexts;
+        };
+        var contexts = createContexts(voices, function () { return new modifiercontext_1.ModifierContext(); }, fn);
+        this.modifierContexts = contexts;
         return contexts;
     };
     // Create `TickContext`s for each tick in `voices`. Also calculate the
     // total number of ticks in voices.
     Formatter.prototype.createTickContexts = function (voices) {
-        var contexts = createContexts(voices, tickcontext_1.TickContext, function (tickable, context, voiceIndex) {
+        var fn = function (tickable, context, voiceIndex) {
             return context.addTickable(tickable, voiceIndex);
-        });
-        contexts.array.forEach(function (context) {
-            context.tContexts = contexts.array;
-        });
-        this.totalTicks = voices[0].getTicksUsed().clone();
+        };
+        var contexts = createContexts(voices, function (tick) { return new tickcontext_1.TickContext(tick); }, fn);
         this.tickContexts = contexts;
+        var contextArray = this.tickContexts.array;
+        contextArray.forEach(function (context) {
+            context.tContexts = contextArray;
+        });
         return contexts;
     };
     // This is the core formatter logic. Format voices and justify them
     // to `justifyWidth` pixels. `renderingContext` is required to justify elements
     // that can't retreive widths without a canvas. This method sets the `x` positions
     // of all the tickables/notes in the formatter.
-    Formatter.prototype.preFormat = function (justifyWidth, renderingContext, voices, stave) {
+    Formatter.prototype.preFormat = function (justifyWidth, renderingContext, voicesParam, stave) {
         var _this = this;
         if (justifyWidth === void 0) { justifyWidth = 0; }
         // Initialize context maps.
         var contexts = this.tickContexts;
+        if (!contexts) {
+            throw new vex_1.Vex.RERR('NoTickContexts', 'preFormat requires TickContexs');
+        }
         var contextList = contexts.list, contextMap = contexts.map;
         // Reset loss history for evaluator.
         this.lossHistory = [];
         // If voices and a stave were provided, set the Stave for each voice
         // and preFormat to apply Y values to the notes;
-        if (voices && stave) {
-            voices.forEach(function (voice) { return voice.setStave(stave).preFormat(); });
+        if (voicesParam && stave) {
+            voicesParam.forEach(function (voice) { return voice.setStave(stave).preFormat(); });
         }
         // Now distribute the ticks to each tick context, and assign them their
         // own X positions.
@@ -18403,9 +18455,9 @@ var Formatter = /** @class */ (function () {
             shift = width - metrics.totalLeftPx;
         });
         // Use softmax based on all notes across all staves. (options.globalSoftmax)
-        var options = this.options;
-        var softmaxFactor = options.softmaxFactor || 100;
-        var exp = function (tick) { return Math.pow(softmaxFactor, contextMap[tick].getMaxTicks().value() / totalTicks); };
+        var formatterOptions = this.formatterOptions;
+        var softmaxFactor = formatterOptions.softmaxFactor || 100;
+        var exp = function (tick) { return Math.pow(softmaxFactor, (contextMap[tick].getMaxTicks().value() / totalTicks)); };
         var expTicksUsed = contextList.map(exp).reduce(function (a, b) { return a + b; });
         this.minTotalWidth = x + shift;
         this.hasMinTotalWidth = true;
@@ -18419,10 +18471,10 @@ var Formatter = /** @class */ (function () {
         // Calculate the "distance error" between the tick contexts. The expected distance is the spacing proportional to
         // the softmax of the ticks.
         function calculateIdealDistances(adjustedJustifyWidth) {
-            return contextList.map(function (tick, i) {
+            var distances = contextList.map(function (tick, i) {
                 var context = contextMap[tick];
                 var voices = context.getTickablesByVoice();
-                var backTickable = null;
+                var backTickable;
                 if (i > 0) {
                     var prevContext = contextMap[contextList[i - 1]];
                     var _loop_1 = function (j) {
@@ -18440,7 +18492,6 @@ var Formatter = /** @class */ (function () {
                             var maxTicks_1 = 0;
                             var maxNegativeShiftPx_1 = Infinity;
                             var expectedDistance = 0;
-                            // eslint-disable-next-line
                             matchingVoices.forEach(function (v) {
                                 var ticks = backVoices[v].getTicks().value();
                                 if (ticks > maxTicks_1) {
@@ -18461,12 +18512,11 @@ var Formatter = /** @class */ (function () {
                             maxNegativeShiftPx_1 = Math.min(maxNegativeShiftPx_1, context.getX() - (prevContext.getX() + adjustedJustifyWidth * 0.05));
                             // Calculate the expected distance of the current context from the last matching tickable. The
                             // distance is scaled down by the softmax for the voice.
-                            if (options.globalSoftmax) {
-                                var t_1 = totalTicks;
-                                var exp_1 = function (v) { return Math.pow(softmaxFactor, v / t_1); };
-                                expectedDistance = (exp_1(maxTicks_1) / expTicksUsed) * adjustedJustifyWidth;
+                            if (formatterOptions.globalSoftmax) {
+                                var t = totalTicks;
+                                expectedDistance = (Math.pow(softmaxFactor, (maxTicks_1 / t)) / expTicksUsed) * adjustedJustifyWidth;
                             }
-                            else {
+                            else if (backTickable) {
                                 expectedDistance = backTickable.getVoice().softmax(maxTicks_1) * adjustedJustifyWidth;
                             }
                             return { value: {
@@ -18487,6 +18537,7 @@ var Formatter = /** @class */ (function () {
                 }
                 return { expectedDistance: 0, fromTickablePx: 0, maxNegativeShiftPx: 0 };
             });
+            return distances;
         }
         function shiftToIdealDistances(idealDistances) {
             // Distribute ticks to the contexts based on the calculated distance error.
@@ -18495,9 +18546,9 @@ var Formatter = /** @class */ (function () {
             contextList.forEach(function (tick, index) {
                 var context = contextMap[tick];
                 if (index > 0) {
-                    var x_1 = context.getX();
+                    var contextX = context.getX();
                     var ideal = idealDistances[index];
-                    var errorPx = ideal.fromTickable.getX() + ideal.expectedDistance - (x_1 + spaceAccum);
+                    var errorPx = common_1.check(ideal.fromTickable).getX() + ideal.expectedDistance - (contextX + spaceAccum);
                     var negativeShiftPx = 0;
                     if (errorPx > 0) {
                         spaceAccum += errorPx;
@@ -18506,12 +18557,11 @@ var Formatter = /** @class */ (function () {
                         negativeShiftPx = Math.min(ideal.maxNegativeShiftPx, Math.abs(errorPx));
                         spaceAccum += -negativeShiftPx;
                     }
-                    context.setX(x_1 + spaceAccum);
+                    context.setX(contextX + spaceAccum);
                 }
                 // Move center aligned tickables to middle
                 context.getCenterAlignedTickables().forEach(function (tickable) {
-                    // eslint-disable-line
-                    tickable.center_x_shift = centerX - context.getX();
+                    tickable.setCenterXShift(centerX - context.getX());
                 });
             });
             return lastContext.getX() - firstContext.getX();
@@ -18524,7 +18574,7 @@ var Formatter = /** @class */ (function () {
         var actualWidth = shiftToIdealDistances(calculateIdealDistances(targetWidth));
         var paddingIdeal = 10;
         var maxX = adjustedJustifyWidth + lastContext.getMetrics().notePx - paddingIdeal;
-        var iterations = this.options.maxIterations;
+        var iterations = this.formatterOptions.maxIterations;
         while ((actualWidth > maxX && iterations > 0) || (actualWidth + paddingIdeal < maxX && iterations > 1)) {
             // If we couldn't fit all the notes into the jusification width, it's because the softmax-scaled
             // widths between different durations differ across stave (e.g., 1 quarter note is not the same pixel-width
@@ -18540,23 +18590,26 @@ var Formatter = /** @class */ (function () {
         }
         // Just one context. Done formatting.
         if (contextList.length === 1)
-            return null;
+            return 0;
         this.justifyWidth = justifyWidth;
         return this.evaluate();
     };
     // Calculate the total cost of this formatting decision.
     Formatter.prototype.evaluate = function () {
         var _this = this;
+        if (!this.tickContexts)
+            return 0;
+        var contexts = this.tickContexts;
         var justifyWidth = this.justifyWidth;
         // Calculate available slack per tick context. This works out how much freedom
         // to move a context has in either direction, without affecting other notes.
         this.contextGaps = { total: 0, gaps: [] };
-        this.tickContexts.list.forEach(function (tick, index) {
+        contexts.list.forEach(function (tick, index) {
             if (index === 0)
                 return;
-            var prevTick = _this.tickContexts.list[index - 1];
-            var prevContext = _this.tickContexts.map[prevTick];
-            var context = _this.tickContexts.map[tick];
+            var prevTick = contexts.list[index - 1];
+            var prevContext = contexts.map[prevTick];
+            var context = contexts.map[tick];
             var prevMetrics = prevContext.getMetrics();
             var currMetrics = context.getMetrics();
             // Calculate X position of right edge of previous note
@@ -18572,7 +18625,8 @@ var Formatter = /** @class */ (function () {
         });
         // Calculate mean distance in each voice for each duration type, then calculate
         // how far each note is from the mean.
-        var durationStats = (this.durationStats = {});
+        this.durationStats = {};
+        var durationStats = this.durationStats;
         function updateStats(duration, space) {
             var stats = durationStats[duration];
             if (stats === undefined) {
@@ -18588,12 +18642,12 @@ var Formatter = /** @class */ (function () {
                 var duration = note.getTicks().clone().simplify().toString();
                 var metrics = note.getMetrics();
                 var formatterMetrics = note.getFormatterMetrics();
-                var leftNoteEdge = note.getX() + metrics.notePx + metrics.totalRightPx;
+                var leftNoteEdge = note.getX() + metrics.notePx + metrics.modRightPx + metrics.rightDisplacedHeadPx;
                 var space = 0;
                 if (i < notes.length - 1) {
                     var rightNote = notes[i + 1];
                     var rightMetrics = rightNote.getMetrics();
-                    var rightNoteEdge = rightNote.getX() - rightMetrics.totalLeftPx;
+                    var rightNoteEdge = rightNote.getX() - rightMetrics.modLeftPx - rightMetrics.leftDisplacedHeadPx;
                     space = rightNoteEdge - leftNoteEdge;
                     formatterMetrics.space.used = rightNote.getX() - note.getX();
                     rightNote.getFormatterMetrics().freedom.left = space;
@@ -18633,11 +18687,14 @@ var Formatter = /** @class */ (function () {
     // the formatter should make based on its cost function.
     Formatter.prototype.tune = function (options) {
         var _this = this;
+        if (!this.tickContexts)
+            return 0;
+        var contexts = this.tickContexts;
         options = __assign({ alpha: 0.5 }, options);
         var sum = function (arr) { return arr.reduce(function (a, b) { return a + b; }); };
         // Move `current` tickcontext by `shift` pixels, and adjust the freedom
         // on adjacent tickcontexts.
-        function move(current, prev, next, shift) {
+        function move(current, shift, prev, next) {
             current.setX(current.getX() + shift);
             current.getFormatterMetrics().freedom.left += shift;
             current.getFormatterMetrics().freedom.right -= shift;
@@ -18648,11 +18705,11 @@ var Formatter = /** @class */ (function () {
         }
         var shift = 0;
         this.totalShift = 0;
-        this.tickContexts.list.forEach(function (tick, index, list) {
-            var context = _this.tickContexts.map[tick];
-            var prevContext = index > 0 ? _this.tickContexts.map[list[index - 1]] : null;
-            var nextContext = index < list.length - 1 ? _this.tickContexts.map[list[index + 1]] : null;
-            move(context, prevContext, nextContext, shift);
+        contexts.list.forEach(function (tick, index, list) {
+            var context = contexts.map[tick];
+            var prevContext = index > 0 ? contexts.map[list[index - 1]] : undefined;
+            var nextContext = index < list.length - 1 ? contexts.map[list[index + 1]] : undefined;
+            move(context, shift, prevContext, nextContext);
             var cost = -sum(context.getTickables().map(function (t) { return t.getFormatterMetrics().space.deviation; }));
             if (cost > 0) {
                 shift = -Math.min(context.getFormatterMetrics().freedom.right, Math.abs(cost));
@@ -18665,19 +18722,22 @@ var Formatter = /** @class */ (function () {
                     shift = 0;
                 }
             }
-            shift *= options.alpha;
+            shift *= common_1.check(options).alpha;
             _this.totalShift += shift;
         });
-        this.iterationsCompleted++;
         return this.evaluate();
     };
     // This is the top-level call for all formatting logic completed
     // after `x` *and* `y` values have been computed for the notes
     // in the voices.
     Formatter.prototype.postFormat = function () {
-        var postFormatContexts = function (contexts) { return contexts.list.forEach(function (tick) { return contexts.map[tick].postFormat(); }); };
-        postFormatContexts(this.modiferContexts);
-        postFormatContexts(this.tickContexts);
+        var postFormatContexts = function (contexts) {
+            return contexts.list.forEach(function (tick) { return contexts.map[tick].postFormat(); });
+        };
+        if (this.modifierContexts)
+            postFormatContexts(this.modifierContexts);
+        if (this.tickContexts)
+            postFormatContexts(this.tickContexts);
         return this;
     };
     // Take all `voices` and create `ModifierContext`s out of them. This tells
@@ -18696,11 +18756,11 @@ var Formatter = /** @class */ (function () {
     // Set `options.context` to the rendering context. Set `options.align_rests`
     // to true to enable rest alignment.
     Formatter.prototype.format = function (voices, justifyWidth, options) {
-        var _this = this;
-        var opts = __assign({ align_rests: false, context: null, stave: null }, options);
+        var opts = __assign({ align_rests: false }, options);
         this.voices = voices;
-        if (this.options.softmaxFactor) {
-            this.voices.forEach(function (v) { return v.setSoftmaxFactor(_this.options.softmaxFactor); });
+        var softmaxFactor = this.formatterOptions.softmaxFactor;
+        if (softmaxFactor) {
+            this.voices.forEach(function (v) { return v.setSoftmaxFactor(softmaxFactor); });
         }
         this.alignRests(voices, opts.align_rests);
         this.createTickContexts(voices);
@@ -18712,11 +18772,12 @@ var Formatter = /** @class */ (function () {
     };
     // This method is just like `format` except that the `justifyWidth` is inferred
     // from the `stave`.
-    Formatter.prototype.formatToStave = function (voices, stave, options) {
-        options = __assign({ padding: 10 }, options);
+    Formatter.prototype.formatToStave = function (voices, stave, optionsParam) {
+        var options = __assign({ padding: 10, context: stave.getContext() }, optionsParam);
+        // eslint-disable-next-line
         var justifyWidth = stave.getNoteEndX() - stave.getNoteStartX() - options.padding;
         L('Formatting voices to width: ', justifyWidth);
-        return this.format(voices, justifyWidth, __assign({ context: stave.getContext() }, options));
+        return this.format(voices, justifyWidth, options);
     };
     return Formatter;
 }());
@@ -19260,8 +19321,6 @@ var GhostNote = /** @class */ (function (_super) {
         return this;
     };
     GhostNote.prototype.draw = function () {
-        if (!this.stave)
-            throw new vex_1.Vex.RERR('NoStave', "Can't draw without a stave.");
         // Draw the modifiers
         this.setRendered();
         for (var i = 0; i < this.modifiers.length; ++i) {
@@ -19498,7 +19557,7 @@ var Glyph = /** @class */ (function (_super) {
                 defaultValue: point,
             });
         }
-        var scale = metrics.font ? (point * 72.0) / (metrics.font.getResolution() * 100.0) : 1;
+        var scale = (point * 72.0) / (metrics.font.getResolution() * 100.0);
         Glyph.renderOutline(ctx, metrics.outline, scale * metrics.scale, x_pos + metrics.x_shift, y_pos + metrics.y_shift);
         return metrics;
     };
@@ -19550,10 +19609,9 @@ var Glyph = /** @class */ (function (_super) {
         return this;
     };
     Glyph.prototype.reset = function () {
-        var _a, _b;
         this.metrics = Glyph.loadMetrics(this.options.fontStack, this.code, this.options.category);
         // Override point from metrics file
-        if (this.options.category && ((_a = this.metrics) === null || _a === void 0 ? void 0 : _a.font)) {
+        if (this.options.category) {
             this.point = Glyph.lookupFontMetric({
                 category: this.options.category,
                 font: this.metrics.font,
@@ -19562,7 +19620,7 @@ var Glyph = /** @class */ (function (_super) {
                 defaultValue: this.point,
             });
         }
-        this.scale = ((_b = this.metrics) === null || _b === void 0 ? void 0 : _b.font) ? (this.point * 72) / (this.metrics.font.getResolution() * 100) : 1;
+        this.scale = (this.point * 72) / (this.metrics.font.getResolution() * 100);
         this.bbox = Glyph.getOutlineBoundingBox(this.metrics.outline, this.scale * this.metrics.scale, this.metrics.x_shift, this.metrics.y_shift);
     };
     Glyph.prototype.getMetrics = function () {
@@ -19578,6 +19636,8 @@ var Glyph = /** @class */ (function (_super) {
             x_shift: this.metrics.x_shift,
             y_shift: this.metrics.y_shift,
             outline: this.metrics.outline,
+            font: this.metrics.font,
+            ha: this.metrics.ha,
         };
     };
     Glyph.prototype.setOriginX = function (x) {
@@ -19667,7 +19727,6 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GlyphNote = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
 var GlyphNote = /** @class */ (function (_super) {
     __extends(GlyphNote, _super);
@@ -19697,7 +19756,6 @@ var GlyphNote = /** @class */ (function (_super) {
         for (var i = 0; i < this.modifiers.length; ++i) {
             this.modifierContext.addMember(this.modifiers[i]);
         }
-        // this.modifierContext.addMember(this);
         this.setPreFormatted(false);
         return this;
     };
@@ -19719,18 +19777,16 @@ var GlyphNote = /** @class */ (function (_super) {
         ctx.closeGroup();
     };
     GlyphNote.prototype.draw = function () {
-        if (!this.stave) {
-            throw new vex_1.Vex.RERR('NoStave', 'No stave attached to this note.');
-        }
-        var ctx = this.stave.checkContext();
+        var stave = this.checkStave();
+        var ctx = stave.checkContext();
         this.setRendered();
         ctx.openGroup('glypheNote', this.getAttribute('id'));
         // Context is set when setStave is called on Note
         if (!this.glyph.getContext()) {
             this.glyph.setContext(ctx);
         }
-        this.glyph.setStave(this.stave);
-        this.glyph.setYShift(this.stave.getYForLine(this.options.line) - this.stave.getYForGlyphs());
+        this.glyph.setStave(stave);
+        this.glyph.setYShift(stave.getYForLine(this.options.line) - stave.getYForGlyphs());
         var x = this.isCenterAligned() ? this.getAbsoluteX() - this.getWidth() / 2 : this.getAbsoluteX();
         this.glyph.renderToStave(x);
         this.drawModifiers();
@@ -19981,7 +20037,7 @@ exports.GraceNoteGroup = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.js");
+var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
 var voice_1 = __webpack_require__(/*! ./voice */ "./src/voice.ts");
 var beam_1 = __webpack_require__(/*! ./beam */ "./src/beam.ts");
 var stavetie_1 = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
@@ -20255,7 +20311,7 @@ var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
 var renderer_1 = __webpack_require__(/*! ./renderer */ "./src/renderer.js");
-var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.js");
+var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
 var widthformatter_1 = __webpack_require__(/*! ./widthformatter */ "./src/widthformatter.js");
 var music_1 = __webpack_require__(/*! ./music */ "./src/music.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -20276,12 +20332,12 @@ var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
 var modifiercontext_1 = __webpack_require__(/*! ./modifiercontext */ "./src/modifiercontext.ts");
 var multimeasurerest_1 = __webpack_require__(/*! ./multimeasurerest */ "./src/multimeasurerest.js");
 var tickcontext_1 = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
-var articulation_1 = __webpack_require__(/*! ./articulation */ "./src/articulation.js");
-var annotation_1 = __webpack_require__(/*! ./annotation */ "./src/annotation.js");
+var articulation_1 = __webpack_require__(/*! ./articulation */ "./src/articulation.ts");
+var annotation_1 = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
 var chordsymbol_1 = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.js");
 var stavebarline_1 = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
 var notehead_1 = __webpack_require__(/*! ./notehead */ "./src/notehead.ts");
-var staveconnector_1 = __webpack_require__(/*! ./staveconnector */ "./src/staveconnector.js");
+var staveconnector_1 = __webpack_require__(/*! ./staveconnector */ "./src/staveconnector.ts");
 var clefnote_1 = __webpack_require__(/*! ./clefnote */ "./src/clefnote.ts");
 var keysignature_1 = __webpack_require__(/*! ./keysignature */ "./src/keysignature.js");
 var keysignote_1 = __webpack_require__(/*! ./keysignote */ "./src/keysignote.ts");
@@ -20293,35 +20349,35 @@ var clef_1 = __webpack_require__(/*! ./clef */ "./src/clef.ts");
 var dot_1 = __webpack_require__(/*! ./dot */ "./src/dot.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var tabslide_1 = __webpack_require__(/*! ./tabslide */ "./src/tabslide.ts");
-var tuplet_1 = __webpack_require__(/*! ./tuplet */ "./src/tuplet.js");
+var tuplet_1 = __webpack_require__(/*! ./tuplet */ "./src/tuplet.ts");
 var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
 var gracetabnote_1 = __webpack_require__(/*! ./gracetabnote */ "./src/gracetabnote.ts");
 var tuning_1 = __webpack_require__(/*! ./tuning */ "./src/tuning.ts");
 var keymanager_1 = __webpack_require__(/*! ./keymanager */ "./src/keymanager.js");
 var stavehairpin_1 = __webpack_require__(/*! ./stavehairpin */ "./src/stavehairpin.js");
 var boundingbox_1 = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
-var strokes_1 = __webpack_require__(/*! ./strokes */ "./src/strokes.js");
+var strokes_1 = __webpack_require__(/*! ./strokes */ "./src/strokes.ts");
 var textnote_1 = __webpack_require__(/*! ./textnote */ "./src/textnote.ts");
 var curve_1 = __webpack_require__(/*! ./curve */ "./src/curve.ts");
-var textdynamics_1 = __webpack_require__(/*! ./textdynamics */ "./src/textdynamics.js");
-var staveline_1 = __webpack_require__(/*! ./staveline */ "./src/staveline.js");
+var textdynamics_1 = __webpack_require__(/*! ./textdynamics */ "./src/textdynamics.ts");
+var staveline_1 = __webpack_require__(/*! ./staveline */ "./src/staveline.ts");
 var ornament_1 = __webpack_require__(/*! ./ornament */ "./src/ornament.js");
-var pedalmarking_1 = __webpack_require__(/*! ./pedalmarking */ "./src/pedalmarking.js");
-var textbracket_1 = __webpack_require__(/*! ./textbracket */ "./src/textbracket.js");
+var pedalmarking_1 = __webpack_require__(/*! ./pedalmarking */ "./src/pedalmarking.ts");
+var textbracket_1 = __webpack_require__(/*! ./textbracket */ "./src/textbracket.ts");
 var frethandfinger_1 = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.ts");
-var staverepetition_1 = __webpack_require__(/*! ./staverepetition */ "./src/staverepetition.js");
+var staverepetition_1 = __webpack_require__(/*! ./staverepetition */ "./src/staverepetition.ts");
 var barnote_1 = __webpack_require__(/*! ./barnote */ "./src/barnote.ts");
 var ghostnote_1 = __webpack_require__(/*! ./ghostnote */ "./src/ghostnote.ts");
 var notesubgroup_1 = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.js");
 var gracenotegroup_1 = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
 var tremolo_1 = __webpack_require__(/*! ./tremolo */ "./src/tremolo.ts");
-var stringnumber_1 = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.js");
+var stringnumber_1 = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.ts");
 var crescendo_1 = __webpack_require__(/*! ./crescendo */ "./src/crescendo.ts");
 var stavevolta_1 = __webpack_require__(/*! ./stavevolta */ "./src/stavevolta.ts");
 var system_1 = __webpack_require__(/*! ./system */ "./src/system.js");
 var factory_1 = __webpack_require__(/*! ./factory */ "./src/factory.js");
 var parser_1 = __webpack_require__(/*! ./parser */ "./src/parser.ts");
-var easyscore_1 = __webpack_require__(/*! ./easyscore */ "./src/easyscore.js");
+var easyscore_1 = __webpack_require__(/*! ./easyscore */ "./src/easyscore.ts");
 var registry_1 = __webpack_require__(/*! ./registry */ "./src/registry.ts");
 var stavetext_1 = __webpack_require__(/*! ./stavetext */ "./src/stavetext.ts");
 var glyphnote_1 = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.ts");
@@ -20905,7 +20961,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.KeySigNote = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
 var keysignature_1 = __webpack_require__(/*! ./keysignature */ "./src/keysignature.js");
 var KeySigNote = /** @class */ (function (_super) {
@@ -20923,20 +20978,14 @@ var KeySigNote = /** @class */ (function (_super) {
         return this;
     };
     KeySigNote.prototype.preFormat = function () {
-        if (!this.stave) {
-            throw new vex_1.Vex.RERR('NoStave', 'No stave attached to this note.');
-        }
         this.setPreFormatted(true);
-        this.keySignature.setStave(this.stave);
+        this.keySignature.setStave(this.checkStave());
         this.keySignature.format();
         this.setWidth(this.keySignature.width);
         return this;
     };
     KeySigNote.prototype.draw = function () {
-        if (!this.stave) {
-            throw new vex_1.Vex.RERR('NoStave', 'No stave attached to this note.');
-        }
-        var ctx = this.stave.checkContext();
+        var ctx = this.checkStave().checkContext();
         this.setRendered();
         this.keySignature.setX(this.getAbsoluteX());
         this.keySignature.setContext(ctx);
@@ -21087,6 +21136,11 @@ var Modifier = /** @class */ (function (_super) {
     Modifier.prototype.getModifierContext = function () {
         return this.modifier_context;
     };
+    Modifier.prototype.checkModifierContext = function () {
+        if (!this.modifier_context)
+            throw new vex_1.Vex.RERR('NoModifierContext', 'Modifier Context Required');
+        return this.modifier_context;
+    };
     Modifier.prototype.setModifierContext = function (c) {
         this.modifier_context = c;
         return this;
@@ -21181,11 +21235,11 @@ var frethandfinger_1 = __webpack_require__(/*! ./frethandfinger */ "./src/fretha
 var accidental_1 = __webpack_require__(/*! ./accidental */ "./src/accidental.js");
 var notesubgroup_1 = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.js");
 var gracenotegroup_1 = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
-var strokes_1 = __webpack_require__(/*! ./strokes */ "./src/strokes.js");
-var stringnumber_1 = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.js");
-var articulation_1 = __webpack_require__(/*! ./articulation */ "./src/articulation.js");
+var strokes_1 = __webpack_require__(/*! ./strokes */ "./src/strokes.ts");
+var stringnumber_1 = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.ts");
+var articulation_1 = __webpack_require__(/*! ./articulation */ "./src/articulation.ts");
 var ornament_1 = __webpack_require__(/*! ./ornament */ "./src/ornament.js");
-var annotation_1 = __webpack_require__(/*! ./annotation */ "./src/annotation.js");
+var annotation_1 = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
 var chordsymbol_1 = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.js");
 var bend_1 = __webpack_require__(/*! ./bend */ "./src/bend.ts");
 var vibrato_1 = __webpack_require__(/*! ./vibrato */ "./src/vibrato.ts");
@@ -21520,7 +21574,7 @@ var MultiMeasureRest = /** @class */ (function (_super) {
         }
         if (this.render_options.show_number) {
             var timeSpec = '/' + this.number_of_measures;
-            var timeSig = new timesignature_1.TimeSignature(null, undefined, false);
+            var timeSig = new timesignature_1.TimeSignature(timeSpec, 0, false);
             timeSig.point = this.render_options.number_glyph_point;
             timeSig.setTimeSig(timeSpec);
             timeSig.setStave(stave);
@@ -21754,10 +21808,7 @@ var Music = /** @class */ (function () {
         configurable: true
     });
     Music.prototype.isValidNoteValue = function (note) {
-        if (note == null || note < 0 || note >= Music.NUM_TONES) {
-            return false;
-        }
-        return true;
+        return note >= 0 && note < Music.NUM_TONES;
     };
     Music.prototype.isValidIntervalValue = function (interval) {
         return this.isValidNoteValue(interval);
@@ -21772,7 +21823,7 @@ var Music = /** @class */ (function () {
         var note = noteString.toLowerCase();
         var regex = /^([cdefgab])(b|bb|n|#|##)?$/;
         var match = regex.exec(note);
-        if (match != null) {
+        if (match !== null) {
             var root = match[1];
             var accidental = match[2];
             return {
@@ -21792,7 +21843,7 @@ var Music = /** @class */ (function () {
         // Support Major, Minor, Melodic Minor, and Harmonic Minor key types.
         var regex = /^([cdefgab])(b|#)?(mel|harm|m|M)?$/;
         var match = regex.exec(key);
-        if (match != null) {
+        if (match !== null) {
             var root = match[1];
             var accidental = match[2];
             var type = match[3];
@@ -21811,14 +21862,14 @@ var Music = /** @class */ (function () {
     };
     Music.prototype.getNoteValue = function (noteString) {
         var value = Music.noteValues[noteString];
-        if (value == null) {
+        if (value === undefined) {
             throw new vex_1.Vex.RERR('BadArguments', "Invalid note name: " + noteString);
         }
         return value.int_val;
     };
     Music.prototype.getIntervalValue = function (intervalString) {
         var value = Music.intervals[intervalString];
-        if (value == null) {
+        if (value === undefined) {
             throw new vex_1.Vex.RERR('BadArguments', "Invalid interval name: " + intervalString);
         }
         return value;
@@ -21835,12 +21886,11 @@ var Music = /** @class */ (function () {
         }
         return Music.diatonic_intervals[intervalValue];
     };
-    /* Given a note, interval, and interval direction, product the
-     * relative note.
+    /**
+     * Given a note, interval, and interval direction, produce the relative note.
      */
     Music.prototype.getRelativeNoteValue = function (noteValue, intervalValue, direction) {
-        if (direction == null)
-            direction = 1;
+        if (direction === void 0) { direction = 1; }
         if (direction !== 1 && direction !== -1) {
             throw new vex_1.Vex.RERR('BadArguments', "Invalid direction: " + direction);
         }
@@ -21882,7 +21932,8 @@ var Music = /** @class */ (function () {
         }
         return relativeNoteName;
     };
-    /* Return scale tones, given intervals. Each successive interval is
+    /**
+     * Return scale tones, given intervals. Each successive interval is
      * relative to the previous one, e.g., Major Scale:
      *
      *   TTSTTTS = [2,2,1,2,2,2,1]
@@ -21900,13 +21951,12 @@ var Music = /** @class */ (function () {
         }
         return tones;
     };
-    /* Returns the interval of a note, given a diatonic scale.
-     *
-     * E.g., Given the scale C, and the note E, returns M3
+    /**
+     * Return the interval of a note, given a diatonic scale.
+     * e.g., given the scale C, and the note E, returns M3.
      */
     Music.prototype.getIntervalBetween = function (note1, note2, direction) {
-        if (direction == null)
-            direction = 1;
+        if (direction === void 0) { direction = 1; }
         if (direction !== 1 && direction !== -1) {
             throw new vex_1.Vex.RERR('BadArguments', "Invalid direction: " + direction);
         }
@@ -21918,10 +21968,12 @@ var Music = /** @class */ (function () {
             difference += Music.NUM_TONES;
         return difference;
     };
-    // Create a scale map that represents the pitch state for a
-    // `keySignature`. For example, passing a `G` to `keySignature` would
-    // return a scale map with every note naturalized except for `F` which
-    // has an `F#` state.
+    /**
+     * Create a scale map that represents the pitch state for a
+     * `keySignature`. For example, passing a `G` to `keySignature` would
+     * return a scale map with every note naturalized except for `F` which
+     * has an `F#` state.
+     */
     Music.prototype.createScaleMap = function (keySignature) {
         var keySigParts = this.getKeyParts(keySignature);
         if (!keySigParts.type)
@@ -22061,6 +22113,9 @@ var Note = /** @class */ (function (_super) {
             annotation_spacing: 5,
             glyph_font_scale: 1,
             stroke_px: 1,
+            scale: 1,
+            font: '',
+            y_shift: 0,
         };
         return _this;
     }
@@ -22199,10 +22254,18 @@ var Note = /** @class */ (function (_super) {
         this.setPreFormatted(false);
         return this;
     };
-    // Get and set the target stave.
+    /** Get the target stave. */
     Note.prototype.getStave = function () {
         return this.stave;
     };
+    /** Check and get the target stave. */
+    Note.prototype.checkStave = function () {
+        if (!this.stave) {
+            throw new vex_1.Vex.RERR('NoStave', 'No stave attached to instance');
+        }
+        return this.stave;
+    };
+    /** Set the target stave. */
     Note.prototype.setStave = function (stave) {
         this.stave = stave;
         this.setYs([stave.getYForLine(0)]); // Update Y values if the stave is changed.
@@ -22285,10 +22348,7 @@ var Note = /** @class */ (function (_super) {
      * be rendered.
      */
     Note.prototype.getYForTopText = function (text_line) {
-        if (!this.stave) {
-            throw new vex_1.Vex.RERR('NoStave', 'No stave attached to this note.');
-        }
-        return this.stave.getYForTopText(text_line);
+        return this.checkStave().getYForTopText(text_line);
     };
     /** Returns the voice that this note belongs in. */
     Note.prototype.getVoice = function () {
@@ -22330,6 +22390,21 @@ var Note = /** @class */ (function (_super) {
     Note.prototype.getNoteType = function () {
         return this.noteType;
     };
+    /** Gets the beam. */
+    Note.prototype.getBeam = function () {
+        return this.beam;
+    };
+    /** Checks and gets the beam. */
+    Note.prototype.checkBeam = function () {
+        if (!this.beam) {
+            throw new vex_1.Vex.RERR('NoBeam', 'No beam attached to instance');
+        }
+        return this.beam;
+    };
+    /** Checks it has a beam. */
+    Note.prototype.hasBeam = function () {
+        return this.beam != undefined;
+    };
     /** Sets the beam. */
     Note.prototype.setBeam = function (beam) {
         this.beam = beam;
@@ -22370,19 +22445,8 @@ var Note = /** @class */ (function (_super) {
             y: this.ys[0],
         };
     };
-    // Get bounds and metrics for this note.
-    //
-    // Returns a struct with fields:
-    // `width`: The total width of the note (including modifiers.)
-    // `notePx`: The width of the note head only.
-    // `left_shift`: The horizontal displacement of the note.
-    // `modLeftPx`: Start `X` for left modifiers.
-    // `modRightPx`: Start `X` for right modifiers.
-    // `leftDisplacedHeadPx`: Extra space on left of note.
-    // `rightDisplacedHeadPx`: Extra space on right of note.
+    /** Get the metrics for this note. */
     Note.prototype.getMetrics = function () {
-        //let modLeftPx = 0;
-        //let modRightPx = 0;
         if (!this.preFormatted) {
             throw new vex_1.Vex.RERR('UnformattedNote', "Can't call getMetrics on an unformatted note.");
         }
@@ -22408,6 +22472,7 @@ var Note = /** @class */ (function (_super) {
             // Displaced note head on left or right.
             leftDisplacedHeadPx: this.leftDisplacedHeadPx,
             rightDisplacedHeadPx: this.rightDisplacedHeadPx,
+            glyphPx: 0,
         };
     };
     /**
@@ -22668,9 +22733,7 @@ var NoteHead = /** @class */ (function (_super) {
         if (!this.preFormatted) {
             throw new vex_1.Vex.RERR('UnformattedNote', "Can't call getBoundingBox on an unformatted note.");
         }
-        if (!this.stave)
-            throw new vex_1.Vex.RERR('NoStave', "Can't call getBoundingBox without a stave.");
-        var spacing = this.stave.getSpacingBetweenLines();
+        var spacing = this.checkStave().getSpacingBetweenLines();
         var half_spacing = spacing / 2;
         var min_y = this.y - half_spacing;
         return new boundingbox_1.BoundingBox(this.getAbsoluteX(), min_y, this.width, spacing);
@@ -22697,8 +22760,6 @@ var NoteHead = /** @class */ (function (_super) {
     // Draw the notehead
     NoteHead.prototype.draw = function () {
         var ctx = this.checkContext();
-        if (!this.stave)
-            throw new vex_1.Vex.RERR('NoStave', "Can't draw without a stave.");
         this.setRendered();
         var head_x = this.getAbsoluteX();
         if (this.custom_glyph) {
@@ -22715,7 +22776,7 @@ var NoteHead = /** @class */ (function (_super) {
         }
         var categorySuffix = this.glyph_code + "Stem" + (stem_direction === stem_1.Stem.UP ? 'Up' : 'Down');
         if (this.note_type === 's') {
-            var staveSpace = this.stave.getSpacingBetweenLines();
+            var staveSpace = this.checkStave().getSpacingBetweenLines();
             drawSlashNoteHead(ctx, this.duration, head_x, y, stem_direction, staveSpace);
         }
         else {
@@ -22772,7 +22833,7 @@ exports.NoteSubGroup = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.js");
+var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
 var voice_1 = __webpack_require__(/*! ./voice */ "./src/voice.ts");
 var NoteSubGroup = /** @class */ (function (_super) {
     __extends(NoteSubGroup, _super);
@@ -23432,9 +23493,9 @@ exports.Parser = Parser;
 
 /***/ }),
 
-/***/ "./src/pedalmarking.js":
+/***/ "./src/pedalmarking.ts":
 /*!*****************************!*\
-  !*** ./src/pedalmarking.js ***!
+  !*** ./src/pedalmarking.ts ***!
   \*****************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -23472,8 +23533,16 @@ var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 // To enable logging for this class. Set `Vex.Flow.PedalMarking.DEBUG` to `true`.
 function L() {
+    // eslint-disable-next-line
     var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
+    for (
+    // eslint-disable-next-line
+    var _i = 0; 
+    // eslint-disable-next-line
+    _i < arguments.length; 
+    // eslint-disable-next-line
+    _i++) {
+        // eslint-disable-next-line
         args[_i] = arguments[_i];
     }
     if (PedalMarking.DEBUG)
@@ -23494,7 +23563,7 @@ var PedalMarking = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'PedalMarking');
         _this.notes = notes;
-        _this.style = PedalMarking.TEXT;
+        _this.type = PedalMarking.type.TEXT;
         _this.line = 0;
         // Custom text for the release/depress markings
         _this.custom_depress_text = '';
@@ -23512,47 +23581,13 @@ var PedalMarking = /** @class */ (function (_super) {
         };
         return _this;
     }
-    Object.defineProperty(PedalMarking, "GLYPHS", {
-        // Glyph data
-        get: function () {
-            return {
-                pedal_depress: {
-                    code: 'keyboardPedalPed',
-                    x_shift: -10,
-                    y_shift: 0,
-                },
-                pedal_release: {
-                    code: 'keyboardPedalUp',
-                    x_shift: -2,
-                    y_shift: 3,
-                },
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(PedalMarking, "Styles", {
-        get: function () {
-            return {
-                TEXT: 1,
-                BRACKET: 2,
-                MIXED: 3,
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(PedalMarking, "StylesString", {
-        get: function () {
-            return {
-                text: PedalMarking.Styles.TEXT,
-                bracket: PedalMarking.Styles.BRACKET,
-                mixed: PedalMarking.Styles.MIXED,
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
+    PedalMarking.prototype.setType = function (type) {
+        type = typeof type === 'string' ? PedalMarking.typeString[type] : type;
+        if (type >= PedalMarking.type.TEXT && type <= PedalMarking.type.MIXED) {
+            this.type = type;
+        }
+        return this;
+    };
     // Create a sustain pedal marking. Returns the defaults PedalMarking.
     // Which uses the traditional "Ped" and "*"" markings.
     PedalMarking.createSustain = function (notes) {
@@ -23562,14 +23597,14 @@ var PedalMarking = /** @class */ (function (_super) {
     // Create a sostenuto pedal marking
     PedalMarking.createSostenuto = function (notes) {
         var pedal = new PedalMarking(notes);
-        pedal.setStyle(PedalMarking.Styles.MIXED);
+        pedal.setType(PedalMarking.type.MIXED);
         pedal.setCustomText('Sost. Ped.');
         return pedal;
     };
     // Create an una corda pedal marking
     PedalMarking.createUnaCorda = function (notes) {
         var pedal = new PedalMarking(notes);
-        pedal.setStyle(PedalMarking.Styles.TEXT);
+        pedal.setType(PedalMarking.type.TEXT);
         pedal.setCustomText('una corda', 'tre corda');
         return pedal;
     };
@@ -23580,14 +23615,6 @@ var PedalMarking = /** @class */ (function (_super) {
         this.custom_release_text = release || '';
         return this;
     };
-    // Set the pedal marking style
-    PedalMarking.prototype.setStyle = function (style) {
-        if (style < 1 && style > 3) {
-            throw new vex_1.Vex.RERR('InvalidParameter', 'The style must be one found in PedalMarking.Styles');
-        }
-        this.style = style;
-        return this;
-    };
     // Set the staff line to render the markings on
     PedalMarking.prototype.setLine = function (line) {
         this.line = line;
@@ -23596,18 +23623,17 @@ var PedalMarking = /** @class */ (function (_super) {
     // Draw the bracket based pedal markings
     PedalMarking.prototype.drawBracketed = function () {
         var _this = this;
-        var ctx = this.context;
+        var ctx = this.checkContext();
         var is_pedal_depressed = false;
         var prev_x;
         var prev_y;
-        var pedal = this;
         // Iterate through each note
         this.notes.forEach(function (note, index, notes) {
             // Each note triggers the opposite pedal action
             is_pedal_depressed = !is_pedal_depressed;
             // Get the initial coordinates for the note
             var x = note.getAbsoluteX();
-            var y = note.getStave().getYForBottomText(pedal.line + 3);
+            var y = note.checkStave().getYForBottomText(_this.line + 3);
             // Throw if current note is positioned before the previous note
             if (x < prev_x) {
                 throw new vex_1.Vex.RERR('InvalidConfiguration', 'The notes provided must be in order of ascending x positions');
@@ -23622,24 +23648,24 @@ var PedalMarking = /** @class */ (function (_super) {
             if (is_pedal_depressed) {
                 // Adjustment for release+depress
                 x_shift = prev_is_same ? 5 : 0;
-                if (pedal.style === PedalMarking.Styles.MIXED && !prev_is_same) {
+                if (_this.type === PedalMarking.type.MIXED && !prev_is_same) {
                     // For MIXED style, start with text instead of bracket
-                    if (pedal.custom_depress_text) {
+                    if (_this.custom_depress_text) {
                         // If we have custom text, use instead of the default "Ped" glyph
-                        var text_width = ctx.measureText(pedal.custom_depress_text).width;
-                        ctx.fillText(pedal.custom_depress_text, x - text_width / 2, y);
-                        x_shift = text_width / 2 + pedal.render_options.text_margin_right;
+                        var text_width = ctx.measureText(_this.custom_depress_text).width;
+                        ctx.fillText(_this.custom_depress_text, x - text_width / 2, y);
+                        x_shift = text_width / 2 + _this.render_options.text_margin_right;
                     }
                     else {
                         // Render the Ped glyph in position
                         drawPedalGlyph('pedal_depress', ctx, x, y, point);
-                        x_shift = 20 + pedal.render_options.text_margin_right;
+                        x_shift = 20 + _this.render_options.text_margin_right;
                     }
                 }
                 else {
                     // Draw start bracket
                     ctx.beginPath();
-                    ctx.moveTo(x, y - pedal.render_options.bracket_height);
+                    ctx.moveTo(x, y - _this.render_options.bracket_height);
                     ctx.lineTo(x + x_shift, y);
                     ctx.stroke();
                     ctx.closePath();
@@ -23652,7 +23678,7 @@ var PedalMarking = /** @class */ (function (_super) {
                 ctx.beginPath();
                 ctx.moveTo(prev_x, prev_y);
                 ctx.lineTo(x + x_shift, y);
-                ctx.lineTo(x, y - pedal.render_options.bracket_height);
+                ctx.lineTo(x, y - _this.render_options.bracket_height);
                 ctx.stroke();
                 ctx.closePath();
             }
@@ -23665,30 +23691,29 @@ var PedalMarking = /** @class */ (function (_super) {
     // "Ped" and "*"" symbols if no custom text has been provided.
     PedalMarking.prototype.drawText = function () {
         var _this = this;
-        var ctx = this.context;
+        var ctx = this.checkContext();
         var is_pedal_depressed = false;
-        var pedal = this;
         // Iterate through each note, placing glyphs or custom text accordingly
         this.notes.forEach(function (note) {
             is_pedal_depressed = !is_pedal_depressed;
-            var stave = note.getStave();
+            var stave = note.checkStave();
             var x = note.getAbsoluteX();
-            var y = stave.getYForBottomText(pedal.line + 3);
+            var y = stave.getYForBottomText(_this.line + 3);
             var point = _this.musicFont.lookupMetric("pedalMarking." + (is_pedal_depressed ? 'down' : 'up') + ".point");
             var text_width = 0;
             if (is_pedal_depressed) {
-                if (pedal.custom_depress_text) {
-                    text_width = ctx.measureText(pedal.custom_depress_text).width;
-                    ctx.fillText(pedal.custom_depress_text, x - text_width / 2, y);
+                if (_this.custom_depress_text) {
+                    text_width = ctx.measureText(_this.custom_depress_text).width;
+                    ctx.fillText(_this.custom_depress_text, x - text_width / 2, y);
                 }
                 else {
                     drawPedalGlyph('pedal_depress', ctx, x, y, point);
                 }
             }
             else {
-                if (pedal.custom_release_text) {
-                    text_width = ctx.measureText(pedal.custom_release_text).width;
-                    ctx.fillText(pedal.custom_release_text, x - text_width / 2, y);
+                if (_this.custom_release_text) {
+                    text_width = ctx.measureText(_this.custom_release_text).width;
+                    ctx.fillText(_this.custom_release_text, x - text_width / 2, y);
                 }
                 else {
                     drawPedalGlyph('pedal_release', ctx, x, y, point);
@@ -23705,14 +23730,37 @@ var PedalMarking = /** @class */ (function (_super) {
         ctx.setFillStyle(this.render_options.color);
         ctx.setFont(this.font.family, this.font.size, this.font.weight);
         L('Rendering Pedal Marking');
-        if (this.style === PedalMarking.Styles.BRACKET || this.style === PedalMarking.Styles.MIXED) {
+        if (this.type === PedalMarking.type.BRACKET || this.type === PedalMarking.type.MIXED) {
             ctx.setLineWidth(this.render_options.bracket_line_width);
             this.drawBracketed();
         }
-        else if (this.style === PedalMarking.Styles.TEXT) {
+        else if (this.type === PedalMarking.type.TEXT) {
             this.drawText();
         }
         ctx.restore();
+    };
+    // Glyph data
+    PedalMarking.GLYPHS = {
+        pedal_depress: {
+            code: 'keyboardPedalPed',
+            x_shift: -10,
+            y_shift: 0,
+        },
+        pedal_release: {
+            code: 'keyboardPedalUp',
+            x_shift: -2,
+            y_shift: 3,
+        },
+    };
+    PedalMarking.type = {
+        TEXT: 1,
+        BRACKET: 2,
+        MIXED: 3,
+    };
+    PedalMarking.typeString = {
+        text: PedalMarking.type.TEXT,
+        bracket: PedalMarking.type.BRACKET,
+        mixed: PedalMarking.type.MIXED,
     };
     return PedalMarking;
 }(element_1.Element));
@@ -24527,7 +24575,7 @@ var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var stavebarline_1 = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
-var staverepetition_1 = __webpack_require__(/*! ./staverepetition */ "./src/staverepetition.js");
+var staverepetition_1 = __webpack_require__(/*! ./staverepetition */ "./src/staverepetition.ts");
 var stavesection_1 = __webpack_require__(/*! ./stavesection */ "./src/stavesection.ts");
 var stavetempo_1 = __webpack_require__(/*! ./stavetempo */ "./src/stavetempo.ts");
 var stavetext_1 = __webpack_require__(/*! ./stavetext */ "./src/stavetext.ts");
@@ -25382,9 +25430,9 @@ exports.Barline = Barline;
 
 /***/ }),
 
-/***/ "./src/staveconnector.js":
+/***/ "./src/staveconnector.ts":
 /*!*******************************!*\
-  !*** ./src/staveconnector.js ***!
+  !*** ./src/staveconnector.ts ***!
   \*******************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -25450,45 +25498,6 @@ var StaveConnector = /** @class */ (function (_super) {
         _this.texts = [];
         return _this;
     }
-    Object.defineProperty(StaveConnector, "type", {
-        // SINGLE_LEFT and SINGLE are the same value for compatibility
-        // with older versions of vexflow which didn't have right sided
-        // stave connectors
-        get: function () {
-            return {
-                SINGLE_RIGHT: 0,
-                SINGLE_LEFT: 1,
-                SINGLE: 1,
-                DOUBLE: 2,
-                BRACE: 3,
-                BRACKET: 4,
-                BOLD_DOUBLE_LEFT: 5,
-                BOLD_DOUBLE_RIGHT: 6,
-                THIN_DOUBLE: 7,
-                NONE: 8,
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(StaveConnector, "typeString", {
-        get: function () {
-            return {
-                singleRight: StaveConnector.type.SINGLE_RIGHT,
-                singleLeft: StaveConnector.type.SINGLE_LEFT,
-                single: StaveConnector.type.SINGLE,
-                double: StaveConnector.type.DOUBLE,
-                brace: StaveConnector.type.BRACE,
-                bracket: StaveConnector.type.BRACKET,
-                boldDoubleLeft: StaveConnector.type.BOLD_DOUBLE_LEFT,
-                boldDoubleRight: StaveConnector.type.BOLD_DOUBLE_RIGHT,
-                thinDouble: StaveConnector.type.THIN_DOUBLE,
-                none: StaveConnector.type.NONE,
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
     StaveConnector.prototype.setType = function (type) {
         type = typeof type === 'string' ? StaveConnector.typeString[type] : type;
         if (type >= StaveConnector.type.SINGLE_RIGHT && type <= StaveConnector.type.NONE) {
@@ -25508,7 +25517,7 @@ var StaveConnector = /** @class */ (function (_super) {
     };
     StaveConnector.prototype.setXShift = function (x_shift) {
         if (typeof x_shift !== 'number') {
-            throw vex_1.Vex.RERR('InvalidType', 'x_shift must be a Number');
+            throw new vex_1.Vex.RERR('InvalidType', 'x_shift must be a Number');
         }
         this.x_shift = x_shift;
         return this;
@@ -25524,7 +25533,7 @@ var StaveConnector = /** @class */ (function (_super) {
             this.type === StaveConnector.type.BOLD_DOUBLE_RIGHT ||
             this.type === StaveConnector.type.THIN_DOUBLE;
         if (isRightSidedConnector) {
-            topX = this.top_stave.getX() + this.top_stave.width;
+            topX = this.top_stave.getX() + this.top_stave.getWidth();
         }
         var attachment_height = botY - topY;
         switch (this.type) {
@@ -25611,7 +25620,7 @@ var StaveConnector = /** @class */ (function (_super) {
             ctx.fillRect(topX - 3, topY, width, attachment_height);
         }
         ctx.save();
-        ctx.lineWidth = 2;
+        ctx.setLineWidth(2);
         ctx.setFont(this.font.family, this.font.size, this.font.weight);
         // Add stave connector text
         for (var i = 0; i < this.texts.length; i++) {
@@ -25622,6 +25631,33 @@ var StaveConnector = /** @class */ (function (_super) {
             ctx.fillText('' + text.content, x, y + 4);
         }
         ctx.restore();
+    };
+    // SINGLE_LEFT and SINGLE are the same value for compatibility
+    // with older versions of vexflow which didn't have right sided
+    // stave connectors
+    StaveConnector.type = {
+        SINGLE_RIGHT: 0,
+        SINGLE_LEFT: 1,
+        SINGLE: 1,
+        DOUBLE: 2,
+        BRACE: 3,
+        BRACKET: 4,
+        BOLD_DOUBLE_LEFT: 5,
+        BOLD_DOUBLE_RIGHT: 6,
+        THIN_DOUBLE: 7,
+        NONE: 8,
+    };
+    StaveConnector.typeString = {
+        singleRight: StaveConnector.type.SINGLE_RIGHT,
+        singleLeft: StaveConnector.type.SINGLE_LEFT,
+        single: StaveConnector.type.SINGLE,
+        double: StaveConnector.type.DOUBLE,
+        brace: StaveConnector.type.BRACE,
+        bracket: StaveConnector.type.BRACKET,
+        boldDoubleLeft: StaveConnector.type.BOLD_DOUBLE_LEFT,
+        boldDoubleRight: StaveConnector.type.BOLD_DOUBLE_RIGHT,
+        thinDouble: StaveConnector.type.THIN_DOUBLE,
+        none: StaveConnector.type.NONE,
     };
     return StaveConnector;
 }(element_1.Element));
@@ -25827,9 +25863,9 @@ exports.StaveHairpin = StaveHairpin;
 
 /***/ }),
 
-/***/ "./src/staveline.js":
+/***/ "./src/staveline.ts":
 /*!**************************!*\
-  !*** ./src/staveline.js ***!
+  !*** ./src/staveline.ts ***!
   \**************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -25981,11 +26017,11 @@ var StaveLine = /** @class */ (function (_super) {
             // The width of the line in pixels
             line_width: 1,
             // An array of line/space lengths. Unsupported with Raphael (SVG)
-            line_dash: null,
+            line_dash: undefined,
             // Can draw rounded line end, instead of a square. Unsupported with Raphael (SVG)
             rounded_end: true,
             // The color of the line and arrowheads
-            color: null,
+            color: undefined,
             // Flags to draw arrows on each end of the line
             draw_start_arrow: false,
             draw_end_arrow: false,
@@ -26000,28 +26036,6 @@ var StaveLine = /** @class */ (function (_super) {
         _this.setNotes(notes);
         return _this;
     }
-    Object.defineProperty(StaveLine, "TextVerticalPosition", {
-        // Text Positioning
-        get: function () {
-            return {
-                TOP: 1,
-                BOTTOM: 2,
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(StaveLine, "TextJustification", {
-        get: function () {
-            return {
-                LEFT: 1,
-                CENTER: 2,
-                RIGHT: 3,
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
     // Set the font for the `StaveLine` text
     StaveLine.prototype.setFont = function (font) {
         this.font = font;
@@ -26035,14 +26049,14 @@ var StaveLine = /** @class */ (function (_super) {
     // Set the notes for the `StaveLine`
     StaveLine.prototype.setNotes = function (notes) {
         if (!notes.first_note && !notes.last_note) {
-            throw new vex_1.Vex.RuntimeError('BadArguments', 'Notes needs to have either first_note or last_note set.');
+            throw new vex_1.Vex.RERR('BadArguments', 'Notes needs to have either first_note or last_note set.');
         }
         if (!notes.first_indices)
             notes.first_indices = [0];
         if (!notes.last_indices)
             notes.last_indices = [0];
         if (notes.first_indices.length !== notes.last_indices.length) {
-            throw new vex_1.Vex.RuntimeError('BadArguments', 'Connected notes must have similar index sizes');
+            throw new vex_1.Vex.RERR('BadArguments', 'Connected notes must have similar index sizes');
         }
         // Success. Lets grab 'em notes.
         this.first_note = notes.first_note;
@@ -26090,8 +26104,8 @@ var StaveLine = /** @class */ (function (_super) {
         ctx.save();
         this.applyLineStyle();
         // Cycle through each set of indices and draw lines
-        var start_position;
-        var end_position;
+        var start_position = { x: 0, y: 0 };
+        var end_position = { x: 0, y: 0 };
         this.first_indices.forEach(function (first_index, i) {
             var last_index = _this.last_indices[i];
             // Get initial coordinates for the start/end of the line
@@ -26134,13 +26148,13 @@ var StaveLine = /** @class */ (function (_super) {
             x = end_position.x - text_width;
         }
         // Determine the y value to start the text
-        var y;
+        var y = 0;
         var vertical_position = render_options.text_position_vertical;
         if (vertical_position === StaveLine.TextVerticalPosition.TOP) {
-            y = first_note.getStave().getYForTopText();
+            y = first_note.checkStave().getYForTopText();
         }
         else if (vertical_position === StaveLine.TextVerticalPosition.BOTTOM) {
-            y = first_note.getStave().getYForBottomText(tables_1.Flow.TEXT_HEIGHT_OFFSET_HACK);
+            y = first_note.checkStave().getYForBottomText(tables_1.Flow.TEXT_HEIGHT_OFFSET_HACK);
         }
         // Draw the text
         ctx.save();
@@ -26148,6 +26162,16 @@ var StaveLine = /** @class */ (function (_super) {
         ctx.fillText(this.text, x, y);
         ctx.restore();
         return this;
+    };
+    // Text Positioning
+    StaveLine.TextVerticalPosition = {
+        TOP: 1,
+        BOTTOM: 2,
+    };
+    StaveLine.TextJustification = {
+        LEFT: 1,
+        CENTER: 2,
+        RIGHT: 3,
     };
     return StaveLine;
 }(element_1.Element));
@@ -26248,7 +26272,7 @@ var StaveModifier = /** @class */ (function (_super) {
     };
     StaveModifier.prototype.placeGlyphOnLine = function (glyph, stave, line, customShift) {
         if (customShift === void 0) { customShift = 0; }
-        glyph.setYShift(stave.getYForLine(line) - stave.getYForGlyphs() + customShift);
+        glyph.setYShift(stave.getYForLine(line !== null && line !== void 0 ? line : 0) - stave.getYForGlyphs() + customShift);
     };
     StaveModifier.prototype.getPadding = function (index) {
         return index !== undefined && index < 2 ? 0 : this.padding;
@@ -26622,13 +26646,9 @@ var StaveNote = /** @class */ (function (_super) {
             //
             // We also extend the y for each note by a half notehead because the
             // notehead's origin is centered
-            var topStave = topNote.getStave();
-            if (!topStave)
-                throw new vex_1.Vex.RERR('NoStave', 'No stave attached to top note.');
+            var topStave = topNote.checkStave();
             var topNoteBottomY = topStave.getYForLine(5 - topKeys[0].line + HALF_NOTEHEAD_HEIGHT);
-            var bottomStave = bottomNote.getStave();
-            if (!bottomStave)
-                throw new vex_1.Vex.RERR('NoStave', 'No stave attached to bottom note.');
+            var bottomStave = bottomNote.checkStave();
             var bottomNoteTopY = bottomStave.getYForLine(5 - bottomKeys[bottomKeys.length - 1].line - HALF_NOTEHEAD_HEIGHT);
             var areNotesColliding = bottomNoteTopY != undefined && topNoteBottomY != undefined ? bottomNoteTopY - topNoteBottomY < 0 : false;
             if (areNotesColliding) {
@@ -26894,16 +26914,12 @@ var StaveNote = /** @class */ (function (_super) {
     // Get the `y` coordinate for text placed on the top/bottom of a
     // note at a desired `text_line`
     StaveNote.prototype.getYForTopText = function (textLine) {
-        if (!this.stave)
-            throw new vex_1.Vex.RERR('NoStave', 'No stave attached to this note.');
         var extents = this.getStemExtents();
-        return Math.min(this.stave.getYForTopText(textLine), extents.topY - this.render_options.annotation_spacing * (textLine + 1));
+        return Math.min(this.checkStave().getYForTopText(textLine), extents.topY - this.render_options.annotation_spacing * (textLine + 1));
     };
     StaveNote.prototype.getYForBottomText = function (textLine) {
-        if (!this.stave)
-            throw new vex_1.Vex.RERR('NoStave', 'No stave attached to this note.');
         var extents = this.getStemExtents();
-        return Math.max(this.stave.getYForTopText(textLine), extents.baseY + this.render_options.annotation_spacing * textLine);
+        return Math.max(this.checkStave().getYForTopText(textLine), extents.baseY + this.render_options.annotation_spacing * textLine);
     };
     // Sets the current note to the provided `stave`. This applies
     // `y` values to the `NoteHeads`.
@@ -26966,7 +26982,7 @@ var StaveNote = /** @class */ (function (_super) {
     // and key `index`
     StaveNote.prototype.getModifierStartXY = function (position, index, options) {
         var _a, _b;
-        options = options || {};
+        if (options === void 0) { options = {}; }
         if (!this.preFormatted) {
             throw new vex_1.Vex.RERR('UnformattedNote', "Can't call GetModifierStartXY on an unformatted note");
         }
@@ -27167,14 +27183,12 @@ var StaveNote = /** @class */ (function (_super) {
      * @returns {noteHeadBounds}
      */
     StaveNote.prototype.getNoteHeadBounds = function () {
-        if (!this.stave)
-            throw new vex_1.Vex.RERR('NoStave', 'No stave attached to this note.');
         // Top and bottom Y values for stem.
         var yTop = +Infinity;
         var yBottom = -Infinity;
         var nonDisplacedX;
         var displacedX;
-        var highestLine = this.stave.getNumLines();
+        var highestLine = this.checkStave().getNumLines();
         var lowestLine = 1;
         var highestDisplacedLine;
         var lowestDisplacedLine;
@@ -27226,9 +27240,8 @@ var StaveNote = /** @class */ (function (_super) {
     };
     // Draw the ledger lines between the stave and the highest/lowest keys
     StaveNote.prototype.drawLedgerLines = function () {
-        if (!this.stave)
-            throw new vex_1.Vex.RERR('NoStave', 'No stave attached to this note.');
-        var _a = this, stave = _a.stave, glyph = _a.glyph, stroke_px = _a.render_options.stroke_px;
+        var stave = this.checkStave();
+        var _a = this, glyph = _a.glyph, stroke_px = _a.render_options.stroke_px;
         var ctx = this.checkContext();
         var width = glyph.getWidth() + stroke_px * 2;
         var doubleWidth = 2 * (glyph.getWidth() + stroke_px) - stem_1.Stem.WIDTH / 2;
@@ -27265,13 +27278,13 @@ var StaveNote = /** @class */ (function (_super) {
         for (var line = 6; line <= highest_line; ++line) {
             var normal = non_displaced_x !== undefined && line <= highest_non_displaced_line;
             var displaced = highest_displaced_line !== undefined && line <= highest_displaced_line;
-            drawLedgerLine(stave === null || stave === void 0 ? void 0 : stave.getYForNote(line), normal, displaced);
+            drawLedgerLine(stave.getYForNote(line), normal, displaced);
         }
         // Draw ledger lines above the staff:
         for (var line = 0; line >= lowest_line; --line) {
             var normal = non_displaced_x !== undefined && line >= lowest_non_displaced_line;
             var displaced = lowest_displaced_line !== undefined && line >= lowest_displaced_line;
-            drawLedgerLine(stave === null || stave === void 0 ? void 0 : stave.getYForNote(line), normal, displaced);
+            drawLedgerLine(stave.getYForNote(line), normal, displaced);
         }
         this.restoreStyle(ctx, style);
     };
@@ -27394,9 +27407,6 @@ var StaveNote = /** @class */ (function (_super) {
     // Draws all the `StaveNote` parts. This is the main drawing method.
     StaveNote.prototype.draw = function () {
         var _a;
-        if (!this.stave) {
-            throw new vex_1.Vex.RERR('NoStave', "Can't draw without a stave.");
-        }
         if (this.ys.length === 0) {
             throw new vex_1.Vex.RERR('NoYValues', "Can't draw note without Y values.");
         }
@@ -27431,9 +27441,9 @@ exports.StaveNote = StaveNote;
 
 /***/ }),
 
-/***/ "./src/staverepetition.js":
+/***/ "./src/staverepetition.ts":
 /*!********************************!*\
-  !*** ./src/staverepetition.js ***!
+  !*** ./src/staverepetition.ts ***!
   \********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -27473,33 +27483,14 @@ var Repetition = /** @class */ (function (_super) {
         _this.font = {
             family: 'times',
             size: 12,
-            weight: 'bold italic',
+            weight: 'bold',
+            style: 'italic',
         };
         return _this;
     }
     Object.defineProperty(Repetition, "CATEGORY", {
         get: function () {
             return 'repetitions';
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Repetition, "type", {
-        get: function () {
-            return {
-                NONE: 1,
-                CODA_LEFT: 2,
-                CODA_RIGHT: 3,
-                SEGNO_LEFT: 4,
-                SEGNO_RIGHT: 5,
-                DC: 6,
-                DC_AL_CODA: 7,
-                DC_AL_FINE: 8,
-                DS: 9,
-                DS_AL_CODA: 10,
-                DS_AL_FINE: 11,
-                FINE: 12, // Fine at end of stave
-            };
         },
         enumerable: false,
         configurable: true
@@ -27519,7 +27510,7 @@ var Repetition = /** @class */ (function (_super) {
         this.setRendered();
         switch (this.symbol_type) {
             case Repetition.type.CODA_RIGHT:
-                this.drawCodaFixed(stave, x + stave.width);
+                this.drawCodaFixed(stave, x + stave.getWidth());
                 break;
             case Repetition.type.CODA_LEFT:
                 this.drawSymbolText(stave, x, 'Coda', true);
@@ -27528,7 +27519,7 @@ var Repetition = /** @class */ (function (_super) {
                 this.drawSignoFixed(stave, x);
                 break;
             case Repetition.type.SEGNO_RIGHT:
-                this.drawSignoFixed(stave, x + stave.width);
+                this.drawSignoFixed(stave, x + stave.getWidth());
                 break;
             case Repetition.type.DC:
                 this.drawSymbolText(stave, x, 'D.C.', false);
@@ -27557,13 +27548,13 @@ var Repetition = /** @class */ (function (_super) {
         return this;
     };
     Repetition.prototype.drawCodaFixed = function (stave, x) {
-        var y = stave.getYForTopText(stave.options.num_lines) + this.y_shift;
-        glyph_1.Glyph.renderGlyph(stave.context, this.x + x + this.x_shift, y + 25, 40, 'coda', { category: 'coda' });
+        var y = stave.getYForTopText(stave.getNumLines()) + this.y_shift;
+        glyph_1.Glyph.renderGlyph(stave.checkContext(), this.x + x + this.x_shift, y + 25, 40, 'coda', { category: 'coda' });
         return this;
     };
     Repetition.prototype.drawSignoFixed = function (stave, x) {
-        var y = stave.getYForTopText(stave.options.num_lines) + this.y_shift;
-        glyph_1.Glyph.renderGlyph(stave.context, this.x + x + this.x_shift, y + 25, 30, 'segno', { category: 'segno' });
+        var y = stave.getYForTopText(stave.getNumLines()) + this.y_shift;
+        glyph_1.Glyph.renderGlyph(stave.checkContext(), this.x + x + this.x_shift, y + 25, 30, 'segno', { category: 'segno' });
         return this;
     };
     Repetition.prototype.drawSymbolText = function (stave, x, text, draw_coda) {
@@ -27575,26 +27566,40 @@ var Repetition = /** @class */ (function (_super) {
         var symbol_x = x + this.x_shift;
         if (this.symbol_type === Repetition.type.CODA_LEFT) {
             // Offset Coda text to right of stave beginning
-            text_x = this.x + stave.options.vertical_bar_width;
+            text_x = this.x + stave.getOptions().vertical_bar_width;
             symbol_x = text_x + ctx.measureText(text).width + 12;
         }
         else if (this.symbol_type === Repetition.type.DS) {
-            var modifierWidth = stave.start_x - this.x;
-            text_x = this.x + x + this.x_shift + stave.width - 5 - modifierWidth - ctx.measureText(text).width;
+            var modifierWidth = stave.getNoteStartX() - this.x;
+            text_x = this.x + x + this.x_shift + stave.getWidth() - 5 - modifierWidth - ctx.measureText(text).width;
             // TODO this is weird. setting the x position should probably be refactored, parameters aren't clear here.
         }
         else {
             // Offset Signo text to left stave end
-            symbol_x = this.x + x + stave.width - 5 + this.x_shift;
+            symbol_x = this.x + x + stave.getWidth() - 5 + this.x_shift;
             text_x = symbol_x - +ctx.measureText(text).width - 12;
         }
-        var y = stave.getYForTopText(stave.options.num_lines) + this.y_shift;
+        var y = stave.getYForTopText(stave.getNumLines()) + this.y_shift;
         if (draw_coda) {
             glyph_1.Glyph.renderGlyph(ctx, symbol_x, y, 40, 'coda', { category: 'coda' });
         }
         ctx.fillText(text, text_x, y + 5);
         ctx.restore();
         return this;
+    };
+    Repetition.type = {
+        NONE: 1,
+        CODA_LEFT: 2,
+        CODA_RIGHT: 3,
+        SEGNO_LEFT: 4,
+        SEGNO_RIGHT: 5,
+        DC: 6,
+        DC_AL_CODA: 7,
+        DC_AL_FINE: 8,
+        DS: 9,
+        DS_AL_CODA: 10,
+        DS_AL_FINE: 11,
+        FINE: 12, // Fine at end of stave
     };
     return Repetition;
 }(stavemodifier_1.StaveModifier));
@@ -28123,7 +28128,7 @@ var StaveTie = /** @class */ (function (_super) {
         var ctx = this.checkContext();
         var center_x = (first_x_px + last_x_px) / 2;
         center_x -= ctx.measureText(this.text).width / 2;
-        var stave = (_b = (_a = this.notes.first_note) === null || _a === void 0 ? void 0 : _a.getStave()) !== null && _b !== void 0 ? _b : (_c = this.notes.last_note) === null || _c === void 0 ? void 0 : _c.getStave();
+        var stave = (_b = (_a = this.notes.first_note) === null || _a === void 0 ? void 0 : _a.checkStave()) !== null && _b !== void 0 ? _b : (_c = this.notes.last_note) === null || _c === void 0 ? void 0 : _c.checkStave();
         ctx.save();
         ctx.setFont(this.font.family, this.font.size, this.font.weight);
         ctx.fillText(this.text, center_x + this.render_options.text_shift_x, stave.getYForTopText() - 1);
@@ -28145,10 +28150,7 @@ var StaveTie = /** @class */ (function (_super) {
             first_ys = first_note.getYs();
         }
         else {
-            var stave = last_note.getStave();
-            if (!stave) {
-                throw new vex_1.Vex.RERR('NoStave', 'Stave required');
-            }
+            var stave = last_note.checkStave();
             first_x_px = stave.getTieStartX();
             first_ys = last_note.getYs();
             this.notes.first_indices = this.notes.last_indices;
@@ -28159,10 +28161,7 @@ var StaveTie = /** @class */ (function (_super) {
             last_ys = last_note.getYs();
         }
         else {
-            var stave = first_note.getStave();
-            if (!stave) {
-                throw new vex_1.Vex.RERR('NoStave', 'Stave required');
-            }
+            var stave = first_note.checkStave();
             last_x_px = stave.getTieEndX();
             last_ys = first_note.getYs();
             this.notes.last_indices = this.notes.first_indices;
@@ -28569,6 +28568,12 @@ var StemmableNote = /** @class */ (function (_super) {
     StemmableNote.prototype.getStem = function () {
         return this.stem;
     };
+    StemmableNote.prototype.checkStem = function () {
+        if (!this.stem) {
+            throw new vex_1.Vex.RERR('NoStem', 'No stem attached to instance');
+        }
+        return this.stem;
+    };
     StemmableNote.prototype.setStem = function (stem) {
         this.stem = stem;
         return this;
@@ -28718,30 +28723,28 @@ var StemmableNote = /** @class */ (function (_super) {
     };
     /** Gets the `y` value for the top modifiers at a specific `textLine`. */
     StemmableNote.prototype.getYForTopText = function (textLine) {
-        if (!this.stave)
-            throw new vex_1.Vex.RERR('NoStave', 'No stave attached to this note.');
+        var stave = this.checkStave();
         if (this.hasStem()) {
             var extents = this.getStemExtents();
             if (!extents)
                 throw new vex_1.Vex.RERR('InvalidState', 'Stem does not have extents.');
-            return Math.min(this.stave.getYForTopText(textLine), extents.topY - this.render_options.annotation_spacing * (textLine + 1));
+            return Math.min(stave.getYForTopText(textLine), extents.topY - this.render_options.annotation_spacing * (textLine + 1));
         }
         else {
-            return this.stave.getYForTopText(textLine);
+            return stave.getYForTopText(textLine);
         }
     };
     /** Gets the `y` value for the bottom modifiers at a specific `textLine`. */
     StemmableNote.prototype.getYForBottomText = function (textLine) {
-        if (!this.stave)
-            throw new vex_1.Vex.RERR('NoStave', 'No stave attached to this note.');
+        var stave = this.checkStave();
         if (this.hasStem()) {
             var extents = this.getStemExtents();
             if (!extents)
                 throw new vex_1.Vex.RERR('InvalidState', 'Stem does not have extents.');
-            return Math.max(this.stave.getYForTopText(textLine), extents.baseY + this.render_options.annotation_spacing * textLine);
+            return Math.max(stave.getYForTopText(textLine), extents.baseY + this.render_options.annotation_spacing * textLine);
         }
         else {
-            return this.stave.getYForBottomText(textLine);
+            return stave.getYForBottomText(textLine);
         }
     };
     StemmableNote.prototype.hasFlag = function () {
@@ -28769,9 +28772,9 @@ exports.StemmableNote = StemmableNote;
 
 /***/ }),
 
-/***/ "./src/stringnumber.js":
+/***/ "./src/stringnumber.ts":
 /*!*****************************!*\
-  !*** ./src/stringnumber.js ***!
+  !*** ./src/stringnumber.ts ***!
   \*****************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -28805,14 +28808,12 @@ var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var renderer_1 = __webpack_require__(/*! ./renderer */ "./src/renderer.js");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+var stemmablenote_1 = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
 var StringNumber = /** @class */ (function (_super) {
     __extends(StringNumber, _super);
     function StringNumber(number) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'StringNumber');
-        _this.note = null;
-        _this.last_note = null;
-        _this.index = null;
         _this.string_number = number;
         _this.setWidth(20); // ???
         _this.position = modifier_1.Modifier.Position.ABOVE; // Default position above stem or note head
@@ -28844,7 +28845,7 @@ var StringNumber = /** @class */ (function (_super) {
         var right_shift = state.right_shift;
         var num_spacing = 1;
         if (!nums || nums.length === 0)
-            return this;
+            return false;
         var nums_list = [];
         var prev_note = null;
         var shift_left = 0;
@@ -28860,6 +28861,9 @@ var StringNumber = /** @class */ (function (_super) {
                 num = nums[i];
                 note = num.getNote();
                 pos = num.getPosition();
+                if (!(note instanceof stavenote_1.StaveNote)) {
+                    throw new vex_1.Vex.RERR('NoStaveNote');
+                }
                 var props = note.getKeyProps()[num.getIndex()];
                 if (note !== prev_note) {
                     for (var n = 0; n < note.keys.length; ++n) {
@@ -28925,20 +28929,6 @@ var StringNumber = /** @class */ (function (_super) {
     StringNumber.prototype.getCategory = function () {
         return StringNumber.CATEGORY;
     };
-    StringNumber.prototype.getNote = function () {
-        return this.note;
-    };
-    StringNumber.prototype.setNote = function (note) {
-        this.note = note;
-        return this;
-    };
-    StringNumber.prototype.getIndex = function () {
-        return this.index;
-    };
-    StringNumber.prototype.setIndex = function (index) {
-        this.index = index;
-        return this;
-    };
     StringNumber.prototype.setLineEndType = function (leg) {
         if (leg >= renderer_1.Renderer.LineEndType.NONE && leg <= renderer_1.Renderer.LineEndType.DOWN) {
             this.leg = leg;
@@ -28971,7 +28961,7 @@ var StringNumber = /** @class */ (function (_super) {
             throw new vex_1.Vex.RERR('NoAttachedNote', "Can't draw string number without a note and index.");
         }
         this.setRendered();
-        var line_space = this.note.stave.options.spacing_between_lines_px;
+        var line_space = this.note.checkStave().getOptions().spacing_between_lines_px;
         var start = this.note.getModifierStartXY(this.position, this.index);
         var dot_x = start.x + this.x_shift + this.x_offset;
         var dot_y = start.y + this.y_shift + this.y_offset;
@@ -28981,7 +28971,7 @@ var StringNumber = /** @class */ (function (_super) {
                 var stem_ext = this.note.getStemExtents();
                 var top_1 = stem_ext.topY;
                 var bottom = stem_ext.baseY + 2;
-                if (this.note.stem_direction === stavenote_1.StaveNote.STEM_DOWN) {
+                if (this.note.getStemDirection() === stavenote_1.StaveNote.STEM_DOWN) {
                     top_1 = stem_ext.baseY;
                     bottom = stem_ext.topY - 2;
                 }
@@ -29006,16 +28996,16 @@ var StringNumber = /** @class */ (function (_super) {
         ctx.save();
         ctx.beginPath();
         ctx.arc(dot_x, dot_y, this.radius, 0, Math.PI * 2, false);
-        ctx.lineWidth = 1.5;
+        ctx.setLineWidth(1.5);
         ctx.stroke();
         ctx.setFont(this.font.family, this.font.size, this.font.weight);
         var x = dot_x - ctx.measureText(this.string_number).width / 2;
         ctx.fillText('' + this.string_number, x, dot_y + 4.5);
-        if (this.last_note != null) {
+        if (this.last_note instanceof stemmablenote_1.StemmableNote) {
             var end = this.last_note.getStemX() - this.note.getX() + 5;
-            ctx.strokeStyle = '#000000';
-            ctx.lineCap = 'round';
-            ctx.lineWidth = 0.6;
+            ctx.setStrokeStyle('#000000');
+            ctx.setLineCap('round');
+            ctx.setLineWidth(0.6);
             if (this.dashed) {
                 renderer_1.Renderer.drawDashedLine(ctx, dot_x + 10, dot_y, dot_x + end, dot_y, [3, 3]);
             }
@@ -29048,9 +29038,9 @@ exports.StringNumber = StringNumber;
 
 /***/ }),
 
-/***/ "./src/strokes.js":
+/***/ "./src/strokes.ts":
 /*!************************!*\
-  !*** ./src/strokes.js ***!
+  !*** ./src/strokes.ts ***!
   \************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -29084,18 +29074,17 @@ var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
+var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
 var Stroke = /** @class */ (function (_super) {
     __extends(Stroke, _super);
     function Stroke(type, options) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Stroke');
-        _this.note = null;
         _this.options = vex_1.Vex.Merge({}, options);
         // multi voice - span stroke across all voices if true
         _this.all_voices = 'all_voices' in _this.options ? _this.options.all_voices : true;
         // multi voice - end note of stroke, set in draw()
-        _this.note_end = null;
-        _this.index = null;
         _this.type = type;
         _this.position = modifier_1.Modifier.Position.LEFT;
         _this.render_options = {
@@ -29119,27 +29108,12 @@ var Stroke = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    Object.defineProperty(Stroke, "Type", {
-        get: function () {
-            return {
-                BRUSH_DOWN: 1,
-                BRUSH_UP: 2,
-                ROLL_DOWN: 3,
-                ROLL_UP: 4,
-                RASQUEDO_DOWN: 5,
-                RASQUEDO_UP: 6,
-                ARPEGGIO_DIRECTIONLESS: 7, // Arpeggiated chord without upwards or downwards arrow
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
     // Arrange strokes inside `ModifierContext`
     Stroke.format = function (strokes, state) {
         var left_shift = state.left_shift;
         var stroke_spacing = 0;
         if (!strokes || strokes.length === 0)
-            return this;
+            return false;
         var strokeList = strokes.map(function (stroke) {
             var note = stroke.getNote();
             if (note instanceof stavenote_1.StaveNote) {
@@ -29147,9 +29121,12 @@ var Stroke = /** @class */ (function (_super) {
                 var shift = note.getLeftDisplacedHeadPx();
                 return { line: line, shift: shift, stroke: stroke };
             }
-            else {
+            else if (note instanceof tabnote_1.TabNote) {
                 var string = note.getPositions()[stroke.getIndex()].str;
                 return { line: string, shift: 0, stroke: stroke };
+            }
+            else {
+                throw new vex_1.Vex.RERR('Internal', 'Unexpexted');
             }
         });
         var strokeShift = left_shift;
@@ -29173,7 +29150,7 @@ var Stroke = /** @class */ (function (_super) {
         return this;
     };
     Stroke.prototype.draw = function () {
-        this.checkContext();
+        var ctx = this.checkContext();
         this.setRendered();
         if (!(this.note && this.index != null)) {
             throw new vex_1.Vex.RERR('NoAttachedNote', "Can't draw stroke without a note and index.");
@@ -29183,22 +29160,25 @@ var Stroke = /** @class */ (function (_super) {
         var topY = start.y;
         var botY = start.y;
         var x = start.x - 5;
-        var line_space = this.note.stave.options.spacing_between_lines_px;
-        var notes = this.getModifierContext().getMembers(this.note.getCategory());
+        var line_space = this.note.checkStave().getOptions().spacing_between_lines_px;
+        var notes = this.checkModifierContext().getMembers(this.note.getCategory());
         for (var i = 0; i < notes.length; i++) {
-            ys = notes[i].getYs();
-            for (var n = 0; n < ys.length; n++) {
-                if (this.note === notes[i] || this.all_voices) {
-                    topY = vex_1.Vex.Min(topY, ys[n]);
-                    botY = vex_1.Vex.Max(botY, ys[n]);
+            var note = notes[i];
+            if (note instanceof note_1.Note) {
+                ys = note.getYs();
+                for (var n = 0; n < ys.length; n++) {
+                    if (this.note === notes[i] || this.all_voices) {
+                        topY = vex_1.Vex.Min(topY, ys[n]);
+                        botY = vex_1.Vex.Max(botY, ys[n]);
+                    }
                 }
             }
         }
-        var arrow;
-        var arrow_shift_x;
-        var arrow_y;
-        var text_shift_x;
-        var text_y;
+        var arrow = '';
+        var arrow_shift_x = 0;
+        var arrow_y = 0;
+        var text_shift_x = 0;
+        var text_y = 0;
         switch (this.type) {
             case Stroke.Type.BRUSH_DOWN:
                 arrow = 'arrowheadBlackUp';
@@ -29266,19 +29246,19 @@ var Stroke = /** @class */ (function (_super) {
         var strokeLine = 'straight';
         // Draw the stroke
         if (this.type === Stroke.Type.BRUSH_DOWN || this.type === Stroke.Type.BRUSH_UP) {
-            this.context.fillRect(x + this.x_shift, topY, 1, botY - topY);
+            ctx.fillRect(x + this.x_shift, topY, 1, botY - topY);
         }
         else {
             strokeLine = 'wiggly';
             if (this.note instanceof stavenote_1.StaveNote) {
                 for (var i = topY; i <= botY; i += line_space) {
-                    glyph_1.Glyph.renderGlyph(this.context, x + this.x_shift - 4, i, this.render_options.font_scale, 'vexWiggleArpeggioUp');
+                    glyph_1.Glyph.renderGlyph(ctx, x + this.x_shift - 4, i, this.render_options.font_scale, 'vexWiggleArpeggioUp');
                 }
             }
             else {
                 var i = void 0;
                 for (i = topY; i <= botY; i += 10) {
-                    glyph_1.Glyph.renderGlyph(this.context, x + this.x_shift - 4, i, this.render_options.font_scale, 'vexWiggleArpeggioUp');
+                    glyph_1.Glyph.renderGlyph(ctx, x + this.x_shift - 4, i, this.render_options.font_scale, 'vexWiggleArpeggioUp');
                 }
                 if (this.type === Stroke.Type.RASQUEDO_DOWN) {
                     text_y = i + 0.25 * line_space;
@@ -29289,16 +29269,25 @@ var Stroke = /** @class */ (function (_super) {
             return; // skip drawing arrow heads or text
         }
         // Draw the arrow head
-        glyph_1.Glyph.renderGlyph(this.context, x + this.x_shift + arrow_shift_x, arrow_y, this.render_options.font_scale, arrow, {
+        glyph_1.Glyph.renderGlyph(ctx, x + this.x_shift + arrow_shift_x, arrow_y, this.render_options.font_scale, arrow, {
             category: "stroke." + arrow + "." + strokeLine,
         });
         // Draw the rasquedo "R"
         if (this.type === Stroke.Type.RASQUEDO_DOWN || this.type === Stroke.Type.RASQUEDO_UP) {
-            this.context.save();
-            this.context.setFont(this.font.family, this.font.size, this.font.weight);
-            this.context.fillText('R', x + text_shift_x, text_y);
-            this.context.restore();
+            ctx.save();
+            ctx.setFont(this.font.family, this.font.size, this.font.weight);
+            ctx.fillText('R', x + text_shift_x, text_y);
+            ctx.restore();
         }
+    };
+    Stroke.Type = {
+        BRUSH_DOWN: 1,
+        BRUSH_UP: 2,
+        ROLL_DOWN: 3,
+        ROLL_UP: 4,
+        RASQUEDO_DOWN: 5,
+        RASQUEDO_UP: 6,
+        ARPEGGIO_DIRECTIONLESS: 7, // Arpeggiated chord without upwards or downwards arrow
     };
     return Stroke;
 }(modifier_1.Modifier));
@@ -29947,7 +29936,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.System = void 0;
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var factory_1 = __webpack_require__(/*! ./factory */ "./src/factory.js");
-var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.js");
+var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
 var System = /** @class */ (function (_super) {
     __extends(System, _super);
@@ -30108,6 +30097,8 @@ var Flow = {
     getGlyphProps: getGlyphProps,
     textWidth: textWidth,
     tabToGlyph: tabToGlyph,
+    articulationCodes: articulationCodes,
+    TIME4_4: TIME4_4,
 };
 exports.Flow = Flow;
 Flow.clefProperties = function (clef) {
@@ -30285,7 +30276,9 @@ function tabToGlyph(fret, scale) {
 function textWidth(text) {
     return 7 * text.toString().length;
 }
-Flow.articulationCodes = function (artic) { return Flow.articulationCodes.articulations[artic]; };
+function articulationCodes(artic) {
+    return Flow.articulationCodes.articulations[artic];
+}
 Flow.articulationCodes.articulations = {
     'a.': { code: 'augmentationDot', between_lines: true },
     av: {
@@ -31270,7 +31263,7 @@ Flow.getGlyphProps.duration_codes = {
     },
 };
 // Some defaults
-Flow.TIME4_4 = {
+var TIME4_4 = {
     num_beats: 4,
     beat_value: 4,
     resolution: Flow.RESOLUTION,
@@ -31609,31 +31602,27 @@ var TabNote = /** @class */ (function (_super) {
     };
     // Get the y position for the stem
     TabNote.prototype.getStemY = function () {
-        // eslint-disable-next-line
-        var num_lines = this.stave.getNumLines();
+        var num_lines = this.checkStave().getNumLines();
         // The decimal staff line amounts provide optimal spacing between the
         // fret number and the stem
         var stemUpLine = -0.5;
         var stemDownLine = num_lines - 0.5;
         var stemStartLine = stem_1.Stem.UP === this.stem_direction ? stemUpLine : stemDownLine;
-        // eslint-disable-next-line
-        return this.stave.getYForLine(stemStartLine);
+        return this.checkStave().getYForLine(stemStartLine);
     };
     // Get the stem extents for the tabnote
     TabNote.prototype.getStemExtents = function () {
-        // eslint-disable-next-line
-        return this.stem.getExtents();
+        return this.checkStem().getExtents();
     };
     // Draw the fal onto the context
     TabNote.prototype.drawFlag = function () {
-        var _a = this, beam = _a.beam, glyph = _a.glyph, stem = _a.stem, stem_direction = _a.stem_direction, _b = _a.render_options, draw_stem = _b.draw_stem, glyph_font_scale = _b.glyph_font_scale;
+        var _a = this, beam = _a.beam, glyph = _a.glyph, stem_direction = _a.stem_direction, _b = _a.render_options, draw_stem = _b.draw_stem, glyph_font_scale = _b.glyph_font_scale;
         var context = this.checkContext();
         var shouldDrawFlag = beam == undefined && draw_stem;
         // Now it's the flag's turn.
         if (glyph.flag && shouldDrawFlag) {
             var flag_x = this.getStemX() + 1;
-            // eslint-disable-next-line
-            var flag_y = this.getStemY() - stem.getHeight();
+            var flag_y = this.getStemY() - this.checkStem().getHeight();
             var flag_code = stem_direction === stem_1.Stem.DOWN
                 ? glyph.code_flag_downstem // Down stems have flags on the left.
                 : glyph.code_flag_upstem;
@@ -31661,12 +31650,10 @@ var TabNote = /** @class */ (function (_super) {
         var stem_through = this.render_options.draw_stem_through_stave;
         var draw_stem = this.render_options.draw_stem;
         if (draw_stem && stem_through) {
-            // eslint-disable-next-line
-            var total_lines = this.stave.getNumLines();
+            var total_lines = this.checkStave().getNumLines();
             var strings_used = this.positions.map(function (position) { return Number(position.str); });
             var unused_strings = getUnusedStringGroups(total_lines, strings_used);
-            // eslint-disable-next-line
-            var stem_lines = getPartialStemLines(stem_y, unused_strings, this.stave, this.getStemDirection());
+            var stem_lines = getPartialStemLines(stem_y, unused_strings, this.checkStave(), this.getStemDirection());
             ctx.save();
             ctx.setLineWidth(stem_1.Stem.WIDTH);
             stem_lines.forEach(function (bounds) {
@@ -31687,7 +31674,6 @@ var TabNote = /** @class */ (function (_super) {
         var x = this.getAbsoluteX();
         var ys = this.ys;
         for (var i = 0; i < this.positions.length; ++i) {
-            // eslint-disable-next-line
             var y = ys[i] + this.render_options.y_shift;
             var glyph = this.glyphs[i];
             // Center the fret text beneath the notation note head
@@ -31696,15 +31682,12 @@ var TabNote = /** @class */ (function (_super) {
             // FIXME: Magic numbers.
             ctx.clearRect(tab_x - 2, y - 3, glyph.getWidth() + 4, 6);
             if (glyph.code) {
-                // eslint-disable-next-line
                 glyph_1.Glyph.renderGlyph(ctx, tab_x, y, this.render_options.glyph_font_scale * this.render_options.scale, glyph.code);
             }
             else {
                 ctx.save();
-                // eslint-disable-next-line
                 ctx.setRawFont(this.render_options.font);
                 var text = glyph.text.toString();
-                // eslint-disable-next-line
                 ctx.fillText(text, tab_x, y + 5 * this.render_options.scale);
                 ctx.restore();
             }
@@ -31713,9 +31696,6 @@ var TabNote = /** @class */ (function (_super) {
     // The main rendering function for the entire note
     TabNote.prototype.draw = function () {
         var ctx = this.checkContext();
-        if (!this.stave) {
-            throw new vex_1.Vex.RERR('NoStave', "Can't draw without a stave.");
-        }
         if (this.ys.length === 0) {
             throw new vex_1.Vex.RERR('NoYValues', "Can't draw note without Y values.");
         }
@@ -31993,9 +31973,9 @@ exports.TabTie = TabTie;
 
 /***/ }),
 
-/***/ "./src/textbracket.js":
+/***/ "./src/textbracket.ts":
 /*!****************************!*\
-  !*** ./src/textbracket.js ***!
+  !*** ./src/textbracket.ts ***!
   \****************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -32037,24 +32017,37 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TextBracket = void 0;
+exports.TextBracket = exports.TextBracketPosition = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var renderer_1 = __webpack_require__(/*! ./renderer */ "./src/renderer.js");
 // To enable logging for this class. Set `Vex.Flow.TextBracket.DEBUG` to `true`.
 function L() {
+    // eslint-disable-next-line
     var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
+    for (
+    // eslint-disable-next-line
+    var _i = 0; 
+    // eslint-disable-next-line
+    _i < arguments.length; 
+    // eslint-disable-next-line
+    _i++) {
+        // eslint-disable-next-line
         args[_i] = arguments[_i];
     }
     if (TextBracket.DEBUG)
         vex_1.Vex.L('Vex.Flow.TextBracket', args);
 }
+var TextBracketPosition;
+(function (TextBracketPosition) {
+    TextBracketPosition[TextBracketPosition["TOP"] = 1] = "TOP";
+    TextBracketPosition[TextBracketPosition["BOTTOM"] = -1] = "BOTTOM";
+})(TextBracketPosition = exports.TextBracketPosition || (exports.TextBracketPosition = {}));
 var TextBracket = /** @class */ (function (_super) {
     __extends(TextBracket, _super);
     function TextBracket(_a) {
-        var start = _a.start, stop = _a.stop, _b = _a.text, text = _b === void 0 ? '' : _b, _c = _a.superscript, superscript = _c === void 0 ? '' : _c, _d = _a.position, position = _d === void 0 ? TextBracket.Positions.TOP : _d;
+        var start = _a.start, stop = _a.stop, _b = _a.text, text = _b === void 0 ? '' : _b, _c = _a.superscript, superscript = _c === void 0 ? '' : _c, _d = _a.position, position = _d === void 0 ? TextBracket.Position.TOP : _d;
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'TextBracket');
         _this.start = start;
@@ -32082,12 +32075,24 @@ var TextBracket = /** @class */ (function (_super) {
         return _this;
     }
     Object.defineProperty(TextBracket, "Positions", {
-        // FIXME: Modifier.Position is singular while this is plural, make consistent
         get: function () {
-            return {
-                TOP: 1,
-                BOTTOM: -1,
-            };
+            L('Positions is deprecated, use Position instead.');
+            return TextBracket.Position;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(TextBracket, "Position", {
+        get: function () {
+            return TextBracketPosition;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(TextBracket, "PositionsString", {
+        get: function () {
+            L('PositionsString is deprecated, use PositionString instead.');
+            return TextBracket.PositionsString;
         },
         enumerable: false,
         configurable: true
@@ -32095,8 +32100,8 @@ var TextBracket = /** @class */ (function (_super) {
     Object.defineProperty(TextBracket, "PositionString", {
         get: function () {
             return {
-                top: TextBracket.Positions.TOP,
-                bottom: TextBracket.Positions.BOTTOM,
+                top: TextBracket.Position.TOP,
+                bottom: TextBracket.Position.BOTTOM,
             };
         },
         enumerable: false,
@@ -32132,15 +32137,15 @@ var TextBracket = /** @class */ (function (_super) {
     };
     // Draw the octave bracket on the rendering context
     TextBracket.prototype.draw = function () {
-        var ctx = this.context;
+        var ctx = this.checkContext();
         this.setRendered();
         var y = 0;
         switch (this.position) {
-            case TextBracket.Positions.TOP:
-                y = this.start.getStave().getYForTopText(this.line);
+            case TextBracket.Position.TOP:
+                y = this.start.checkStave().getYForTopText(this.line);
                 break;
-            case TextBracket.Positions.BOTTOM:
-                y = this.start.getStave().getYForBottomText(this.line + tables_1.Flow.TEXT_HEIGHT_OFFSET_HACK);
+            case TextBracket.Position.BOTTOM:
+                y = this.start.checkStave().getYForBottomText(this.line + tables_1.Flow.TEXT_HEIGHT_OFFSET_HACK);
                 break;
             default:
                 throw new vex_1.Vex.RERR('InvalidPosition', "The position " + this.position + " is invalid");
@@ -32170,11 +32175,11 @@ var TextBracket = /** @class */ (function (_super) {
         var line_y = super_y;
         var end_x = stop.x + this.stop.getGlyph().getWidth();
         // Adjust x and y coordinates based on position
-        if (this.position === TextBracket.Positions.TOP) {
+        if (this.position === TextBracket.Position.TOP) {
             start_x += main_width + superscript_width + 5;
             line_y -= super_height / 2.7;
         }
-        else if (this.position === TextBracket.Positions.BOTTOM) {
+        else if (this.position === TextBracket.Position.BOTTOM) {
             line_y += super_height / 2.7;
             start_x += main_width + 2;
             if (!this.render_options.underline_superscript) {
@@ -32210,9 +32215,9 @@ exports.TextBracket = TextBracket;
 
 /***/ }),
 
-/***/ "./src/textdynamics.js":
+/***/ "./src/textdynamics.ts":
 /*!*****************************!*\
-  !*** ./src/textdynamics.js ***!
+  !*** ./src/textdynamics.ts ***!
   \*****************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -32247,10 +32252,19 @@ exports.TextDynamics = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+var common_1 = __webpack_require__(/*! ./common */ "./src/common.ts");
 // To enable logging for this class. Set `Vex.Flow.TextDynamics.DEBUG` to `true`.
 function L() {
+    // eslint-disable-next-line
     var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
+    for (
+    // eslint-disable-next-line
+    var _i = 0; 
+    // eslint-disable-next-line
+    _i < arguments.length; 
+    // eslint-disable-next-line
+    _i++) {
+        // eslint-disable-next-line
         args[_i] = arguments[_i];
     }
     if (TextDynamics.DEBUG)
@@ -32323,7 +32337,7 @@ var TextDynamics = /** @class */ (function (_super) {
             var glyph_data = TextDynamics.GLYPHS[letter];
             if (!glyph_data)
                 throw new vex_1.Vex.RERR('Invalid dynamics character: ' + letter);
-            var size = _this.render_options.glyph_font_size;
+            var size = common_1.check(_this.render_options.glyph_font_size);
             var glyph = new glyph_1.Glyph(glyph_data.code, size, { category: 'textNote' });
             // Add the glyph
             _this.glyphs.push(glyph);
@@ -32339,12 +32353,12 @@ var TextDynamics = /** @class */ (function (_super) {
         var _this = this;
         this.setRendered();
         var x = this.getAbsoluteX();
-        var y = this.stave.getYForLine(this.line + -3);
+        var y = this.checkStave().getYForLine(this.line + -3);
         L('Rendering Dynamics: ', this.sequence);
         var letter_x = x;
         this.glyphs.forEach(function (glyph, index) {
             var current_letter = _this.sequence[index];
-            glyph.render(_this.context, letter_x, y);
+            glyph.render(_this.checkContext(), letter_x, y);
             letter_x += TextDynamics.GLYPHS[current_letter].width;
         });
     };
@@ -32845,6 +32859,8 @@ var TextNote = /** @class */ (function (_super) {
     // Pre-render formatting
     TextNote.prototype.preFormat = function () {
         var ctx = this.checkContext();
+        if (!this.tickContext)
+            throw new vex_1.Vex.RERR('NoTickContext', "Can't preformat without a TickContext.");
         if (this.preFormatted)
             return;
         if (this.smooth) {
@@ -32872,9 +32888,9 @@ var TextNote = /** @class */ (function (_super) {
     // Renders the TextNote
     TextNote.prototype.draw = function () {
         var ctx = this.checkContext();
-        if (!this.stave) {
-            throw new vex_1.Vex.RERR('NoStave', "Can't draw without a stave.");
-        }
+        var stave = this.checkStave();
+        if (!this.tickContext)
+            throw new vex_1.Vex.RERR('NoTickContext', "Can't draw without a TickContext.");
         this.setRendered();
         // Reposition to center of note head
         var x = this.getAbsoluteX() + this.tickContext.getMetrics().glyphPx / 2;
@@ -32888,11 +32904,11 @@ var TextNote = /** @class */ (function (_super) {
         }
         var y;
         if (this.glyph) {
-            y = this.stave.getYForLine(this.line + -3);
+            y = stave.getYForLine(this.line + -3);
             this.glyph.render(ctx, x, y);
         }
         else {
-            y = this.stave.getYForLine(this.line + -3);
+            y = stave.getYForLine(this.line + -3);
             this.applyStyle(ctx);
             ctx.setFont(this.font.family, this.font.size, this.font.weight);
             ctx.fillText(this.text, x, y);
@@ -33050,6 +33066,11 @@ var Tickable = /** @class */ (function (_super) {
             return this.center_x_shift;
         }
         return 0;
+    };
+    /** Sets the center x shift. */
+    Tickable.prototype.setCenterXShift = function (centerXShift) {
+        this.center_x_shift = centerXShift;
+        return this;
     };
     // Checks if tickable is center aligned. */
     Tickable.prototype.isCenterAligned = function () {
@@ -33430,9 +33451,11 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TimeSignatureGlyph = void 0;
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+var common_1 = __webpack_require__(/*! ./common */ "./src/common.ts");
 var TimeSignatureGlyph = /** @class */ (function (_super) {
     __extends(TimeSignatureGlyph, _super);
     function TimeSignatureGlyph(timeSignature, topDigits, botDigits, code, point, options) {
+        var _a;
         var _this = _super.call(this, code, point, options) || this;
         _this.timeSignature = timeSignature;
         _this.topGlyphs = [];
@@ -33442,14 +33465,14 @@ var TimeSignatureGlyph = /** @class */ (function (_super) {
             var num = topDigits[i];
             var topGlyph = new glyph_1.Glyph('timeSig' + num, _this.timeSignature.point);
             _this.topGlyphs.push(topGlyph);
-            topWidth += topGlyph.getMetrics().width;
+            topWidth += (_a = topGlyph.getMetrics().width) !== null && _a !== void 0 ? _a : 0;
         }
         var botWidth = 0;
         for (var i = 0; i < botDigits.length; ++i) {
             var num = botDigits[i];
             var botGlyph = new glyph_1.Glyph('timeSig' + num, _this.timeSignature.point);
             _this.botGlyphs.push(botGlyph);
-            botWidth += botGlyph.getMetrics().width;
+            botWidth += common_1.check(botGlyph.getMetrics().width);
         }
         _this.width = Math.max(topWidth, botWidth);
         _this.xMin = _this.getMetrics().x_min;
@@ -33466,18 +33489,19 @@ var TimeSignatureGlyph = /** @class */ (function (_super) {
         };
     };
     TimeSignatureGlyph.prototype.renderToStave = function (x) {
+        var stave = common_1.check(this.stave);
         var start_x = x + this.topStartX;
         for (var i = 0; i < this.topGlyphs.length; ++i) {
             var glyph = this.topGlyphs[i];
-            glyph_1.Glyph.renderOutline(this.checkContext(), glyph.getMetrics().outline, this.scale, start_x + this.x_shift, this.stave.getYForLine(this.timeSignature.topLine));
-            start_x += glyph.getMetrics().width;
+            glyph_1.Glyph.renderOutline(this.checkContext(), glyph.getMetrics().outline, this.scale, start_x + this.x_shift, stave.getYForLine(this.timeSignature.topLine));
+            start_x += common_1.check(glyph.getMetrics().width);
         }
         start_x = x + this.botStartX;
         for (var i = 0; i < this.botGlyphs.length; ++i) {
             var glyph = this.botGlyphs[i];
-            this.timeSignature.placeGlyphOnLine(glyph, this.stave, 0);
-            glyph_1.Glyph.renderOutline(this.checkContext(), glyph.getMetrics().outline, this.scale, start_x + glyph.getMetrics().x_shift, this.stave.getYForLine(this.timeSignature.bottomLine));
-            start_x += glyph.getMetrics().width;
+            this.timeSignature.placeGlyphOnLine(glyph, stave, 0);
+            glyph_1.Glyph.renderOutline(this.checkContext(), glyph.getMetrics().outline, this.scale, start_x + glyph.getMetrics().x_shift, stave.getYForLine(this.timeSignature.bottomLine));
+            start_x += common_1.check(glyph.getMetrics().width);
         }
     };
     return TimeSignatureGlyph;
@@ -33523,6 +33547,7 @@ var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 var timesigglyph_1 = __webpack_require__(/*! ./timesigglyph */ "./src/timesigglyph.ts");
+var common_1 = __webpack_require__(/*! ./common */ "./src/common.ts");
 var assertIsValidFraction = function (timeSpec) {
     var numbers = timeSpec.split('/').filter(function (number) { return number !== ''; });
     if (numbers.length !== 2) {
@@ -33537,13 +33562,12 @@ var assertIsValidFraction = function (timeSpec) {
 var TimeSignature = /** @class */ (function (_super) {
     __extends(TimeSignature, _super);
     function TimeSignature(timeSpec, customPadding, validate_args) {
+        if (timeSpec === void 0) { timeSpec = '4/4'; }
         if (customPadding === void 0) { customPadding = 15; }
         if (validate_args === void 0) { validate_args = true; }
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'TimeSignature');
         _this.validate_args = validate_args;
-        if (!timeSpec)
-            return _this;
         var padding = customPadding;
         _this.point = _this.musicFont.lookupMetric('digits.point');
         var fontLineShift = _this.musicFont.lookupMetric('digits.shiftLine', 0);
@@ -33551,7 +33575,7 @@ var TimeSignature = /** @class */ (function (_super) {
         _this.bottomLine = 4 + fontLineShift;
         _this.setPosition(stavemodifier_1.StaveModifier.Position.BEGIN);
         _this.timeSig = _this.parseTimeSpec(timeSpec);
-        _this.setWidth(_this.timeSig.glyph.getMetrics().width);
+        _this.setWidth(common_1.check(_this.timeSig.glyph.getMetrics().width));
         _this.setPadding(padding);
         return _this;
     }
@@ -33622,7 +33646,7 @@ var TimeSignature = /** @class */ (function (_super) {
         this.setRendered();
         this.timeSig.glyph.setStave(this.stave);
         this.timeSig.glyph.setContext(this.stave.getContext());
-        this.placeGlyphOnLine(this.timeSig.glyph, this.stave, 2);
+        this.placeGlyphOnLine(this.timeSig.glyph, this.stave, this.timeSig.line);
         this.timeSig.glyph.renderToStave(this.x);
     };
     return TimeSignature;
@@ -33685,8 +33709,7 @@ var TimeSigNote = /** @class */ (function (_super) {
         return this;
     };
     TimeSigNote.prototype.draw = function () {
-        if (!this.stave)
-            throw new vex_1.Vex.RERR('NoStave', 'No stave attached to this note.');
+        var stave = this.checkStave();
         if (!this.timeSig)
             throw new vex_1.Vex.RERR('NoTimeSignatureInfo', 'No TimeSignatureInfo attached to this note.');
         var ctx = this.checkContext();
@@ -33694,8 +33717,8 @@ var TimeSigNote = /** @class */ (function (_super) {
         if (!this.timeSig.glyph.getContext()) {
             this.timeSig.glyph.setContext(ctx);
         }
-        this.timeSig.glyph.setStave(this.stave);
-        this.timeSig.glyph.setYShift(this.stave.getYForLine(2) - this.stave.getYForGlyphs());
+        this.timeSig.glyph.setStave(stave);
+        this.timeSig.glyph.setYShift(stave.getYForLine(2) - stave.getYForGlyphs());
         this.timeSig.glyph.renderToStave(this.getAbsoluteX());
     };
     return TimeSigNote;
@@ -33903,9 +33926,9 @@ exports.Tuning = Tuning;
 
 /***/ }),
 
-/***/ "./src/tuplet.js":
+/***/ "./src/tuplet.ts":
 /*!***********************!*\
-  !*** ./src/tuplet.js ***!
+  !*** ./src/tuplet.ts ***!
   \***********************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -33975,16 +33998,19 @@ exports.Tuplet = void 0;
  */
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.js");
+var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
+var common_1 = __webpack_require__(/*! ./common */ "./src/common.ts");
 var Tuplet = /** @class */ (function (_super) {
     __extends(Tuplet, _super);
     function Tuplet(notes, options) {
         var _this = _super.call(this) || this;
+        _this.numerator_glyphs = [];
+        _this.denom_glyphs = [];
         _this.setAttribute('type', 'Tuplet');
         if (!notes || !notes.length) {
-            throw new vex_1.Vex.RuntimeError('BadArguments', 'No notes provided for tuplet.');
+            throw new vex_1.Vex.RERR('BadArguments', 'No notes provided for tuplet.');
         }
         _this.options = vex_1.Vex.Merge({}, options);
         _this.notes = notes;
@@ -33999,7 +34025,7 @@ var Tuplet = /** @class */ (function (_super) {
             _this.bracketed = _this.options.bracketed;
         }
         else {
-            _this.bracketed = notes.some(function (note) { return note.beam === undefined; });
+            _this.bracketed = notes.some(function (note) { return !note.hasBeam(); });
         }
         _this.ratioed =
             'ratioed' in _this.options ? _this.options.ratioed : Math.abs(_this.notes_occupied - _this.num_notes) > 1;
@@ -34119,13 +34145,13 @@ var Tuplet = /** @class */ (function (_super) {
         var n = this.num_notes;
         while (n >= 1) {
             this.numerator_glyphs.unshift(new glyph_1.Glyph('timeSig' + (n % 10), this.point));
-            n = parseInt(n / 10, 10);
+            n = parseInt((n / 10).toString(), 10);
         }
         this.denom_glyphs = [];
         n = this.notes_occupied;
         while (n >= 1) {
             this.denom_glyphs.unshift(new glyph_1.Glyph('timeSig' + (n % 10), this.point));
-            n = parseInt(n / 10, 10);
+            n = parseInt((n / 10).toString(), 10);
         }
     };
     // determine how many tuplets are nested within this tuplet
@@ -34160,7 +34186,7 @@ var Tuplet = /** @class */ (function (_super) {
         var first_note = this.notes[0];
         var y_pos;
         if (this.location === Tuplet.LOCATION_TOP) {
-            y_pos = first_note.getStave().getYForLine(0) - 15;
+            y_pos = first_note.checkStave().getYForLine(0) - 15;
             // y_pos = first_note.getStemExtents().topY - 10;
             for (var i = 0; i < this.notes.length; ++i) {
                 var top_y = this.notes[i].getStemDirection() === stem_1.Stem.UP
@@ -34172,7 +34198,7 @@ var Tuplet = /** @class */ (function (_super) {
             }
         }
         else {
-            y_pos = first_note.getStave().getYForLine(4) + 20;
+            y_pos = first_note.checkStave().getYForLine(4) + 20;
             for (var i = 0; i < this.notes.length; ++i) {
                 var bottom_y = this.notes[i].getStemDirection() === stem_1.Stem.UP
                     ? this.notes[i].getStemExtents().baseY + 20
@@ -34186,7 +34212,7 @@ var Tuplet = /** @class */ (function (_super) {
     };
     Tuplet.prototype.draw = function () {
         var _this = this;
-        this.checkContext();
+        var ctx = this.checkContext();
         this.setRendered();
         // determine x value of left bound of tuplet
         var first_note = this.notes[0];
@@ -34201,7 +34227,7 @@ var Tuplet = /** @class */ (function (_super) {
         }
         // determine y value for tuplet
         this.y_pos = this.getYPosition();
-        var addGlyphWidth = function (width, glyph) { return width + glyph.getMetrics().width; };
+        var addGlyphWidth = function (width, glyph) { return width + common_1.check(glyph.getMetrics().width); };
         // calculate total width of tuplet notation
         var width = this.numerator_glyphs.reduce(addGlyphWidth, 0);
         if (this.ratioed) {
@@ -34215,35 +34241,35 @@ var Tuplet = /** @class */ (function (_super) {
             var line_width = this.width / 2 - width / 2 - 5;
             // only draw the bracket if it has positive length
             if (line_width > 0) {
-                this.context.fillRect(this.x_pos, this.y_pos, line_width, 1);
-                this.context.fillRect(this.x_pos + this.width / 2 + width / 2 + 5, this.y_pos, line_width, 1);
-                this.context.fillRect(this.x_pos, this.y_pos + (this.location === Tuplet.LOCATION_BOTTOM), 1, this.location * 10);
-                this.context.fillRect(this.x_pos + this.width, this.y_pos + (this.location === Tuplet.LOCATION_BOTTOM), 1, this.location * 10);
+                ctx.fillRect(this.x_pos, this.y_pos, line_width, 1);
+                ctx.fillRect(this.x_pos + this.width / 2 + width / 2 + 5, this.y_pos, line_width, 1);
+                ctx.fillRect(this.x_pos, this.y_pos + (this.location === Tuplet.LOCATION_BOTTOM ? 1 : 0), 1, this.location * 10);
+                ctx.fillRect(this.x_pos + this.width, this.y_pos + (this.location === Tuplet.LOCATION_BOTTOM ? 1 : 0), 1, this.location * 10);
             }
         }
         // draw numerator glyphs
         var shiftY = this.musicFont.lookupMetric('digits.shiftY', 0);
         var x_offset = 0;
         this.numerator_glyphs.forEach(function (glyph) {
-            glyph.render(_this.context, notation_start_x + x_offset, _this.y_pos + _this.point / 3 - 2 + shiftY);
-            x_offset += glyph.getMetrics().width;
+            glyph.render(ctx, notation_start_x + x_offset, _this.y_pos + _this.point / 3 - 2 + shiftY);
+            x_offset += common_1.check(glyph.getMetrics().width);
         });
         // display colon and denominator if the ratio is to be shown
         if (this.ratioed) {
             var colon_x = notation_start_x + x_offset + this.point * 0.16;
             var colon_radius = this.point * 0.06;
-            this.context.beginPath();
-            this.context.arc(colon_x, this.y_pos - this.point * 0.08, colon_radius, 0, Math.PI * 2, true);
-            this.context.closePath();
-            this.context.fill();
-            this.context.beginPath();
-            this.context.arc(colon_x, this.y_pos + this.point * 0.12, colon_radius, 0, Math.PI * 2, true);
-            this.context.closePath();
-            this.context.fill();
+            ctx.beginPath();
+            ctx.arc(colon_x, this.y_pos - this.point * 0.08, colon_radius, 0, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(colon_x, this.y_pos + this.point * 0.12, colon_radius, 0, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.fill();
             x_offset += this.point * 0.32;
             this.denom_glyphs.forEach(function (glyph) {
-                glyph.render(_this.context, notation_start_x + x_offset, _this.y_pos + _this.point / 3 - 2 + shiftY);
-                x_offset += glyph.getMetrics().width;
+                glyph.render(ctx, notation_start_x + x_offset, _this.y_pos + _this.point / 3 - 2 + shiftY);
+                x_offset += common_1.check(glyph.getMetrics().width);
             });
         }
     };
@@ -34677,17 +34703,17 @@ var VibratoBracket = /** @class */ (function (_super) {
     VibratoBracket.prototype.draw = function () {
         var ctx = this.checkContext();
         this.setRendered();
-        var y = this.start
-            ? this.start.getStave().getYForTopText(this.line)
-            : this.stop.getStave().getYForTopText(this.line);
+        var y = (this.start && this.start.checkStave().getYForTopText(this.line)) ||
+            (this.stop && this.stop.checkStave().getYForTopText(this.line)) ||
+            0;
         // If start note is not set then vibrato will be drawn
         // from the beginning of the stave
-        var start_x = this.start ? this.start.getAbsoluteX() : this.stop.getStave().getTieStartX();
+        var start_x = (this.start && this.start.getAbsoluteX()) || (this.stop && this.stop.checkStave().getTieStartX()) || 0;
         // If stop note is not set then vibrato will be drawn
         // until the end of the stave
-        var stop_x = this.stop
-            ? this.stop.getAbsoluteX() - this.stop.getWidth() - 5
-            : this.start.getStave().getTieEndX() - 10;
+        var stop_x = (this.stop && this.stop.getAbsoluteX() - this.stop.getWidth() - 5) ||
+            (this.start && this.start.checkStave().getTieEndX() - 10) ||
+            0;
         this.render_options.vibrato_width = stop_x - start_x;
         L('Rendering VibratoBracket: start_x:', start_x, 'stop_x:', stop_x, 'y:', y);
         vibrato_1.Vibrato.renderVibrato(ctx, start_x, y, this.render_options);
@@ -34746,6 +34772,7 @@ var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
+var common_1 = __webpack_require__(/*! ./common */ "./src/common.ts");
 var VoiceMode;
 (function (VoiceMode) {
     VoiceMode[VoiceMode["STRICT"] = 1] = "STRICT";
@@ -34844,17 +34871,13 @@ var Voice = /** @class */ (function (_super) {
     };
     // Get the bounding box for the voice
     Voice.prototype.getBoundingBox = function () {
-        var stave;
         var boundingBox;
         var bb;
         var i;
         if (!this.boundingBox) {
-            if (!this.stave)
-                throw new vex_1.Vex.RERR('NoStave', "Can't get bounding box without stave.");
-            stave = this.stave;
             boundingBox = undefined;
             for (i = 0; i < this.tickables.length; ++i) {
-                this.tickables[i].setStave(stave);
+                this.tickables[i].setStave(common_1.check(this.stave));
                 bb = this.tickables[i].getBoundingBox();
                 if (!bb)
                     continue;
@@ -34956,10 +34979,7 @@ var Voice = /** @class */ (function (_super) {
     Voice.prototype.preFormat = function () {
         if (this.preFormatted)
             return this;
-        var stave = this.stave;
-        if (!stave) {
-            throw new vex_1.Vex.RERR('NoStave', "Can't preFormat without stave.");
-        }
+        var stave = common_1.check(this.stave);
         this.tickables.forEach(function (tickable) {
             if (!tickable.getStave()) {
                 tickable.setStave(stave);
@@ -35030,7 +35050,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WidthFormatter = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
-var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.js");
+var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
 // To enable logging for this class. Set `Vex.Flow.Formatter.DEBUG` to `true`.
 function L() {
     var args = [];
