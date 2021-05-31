@@ -25,9 +25,7 @@ import { GLYPH_PROPS_VALID_TYPES } from './common';
 import { Fraction } from './fraction';
 import { Beam } from './beam';
 
-export interface Metrics {
-  totalLeftPx?: number;
-  totalRightPx?: number;
+export interface NoteMetrics {
   /** The total width of the note (including modifiers). */
   width: number;
   glyphWidth?: number;
@@ -564,19 +562,8 @@ export abstract class Note extends Tickable {
     };
   }
 
-  // Get bounds and metrics for this note.
-  //
-  // Returns a struct with fields:
-  // `width`: The total width of the note (including modifiers.)
-  // `notePx`: The width of the note head only.
-  // `left_shift`: The horizontal displacement of the note.
-  // `modLeftPx`: Start `X` for left modifiers.
-  // `modRightPx`: Start `X` for right modifiers.
-  // `leftDisplacedHeadPx`: Extra space on left of note.
-  // `rightDisplacedHeadPx`: Extra space on right of note.
-  getMetrics() {
-    //let modLeftPx = 0;
-    //let modRightPx = 0;
+  /** Get the metrics for this note. */
+  getMetrics(): NoteMetrics {
     if (!this.preFormatted) {
       throw new Vex.RERR('UnformattedNote', "Can't call getMetrics on an unformatted note.");
     }
