@@ -4,6 +4,9 @@ export const LelandMetrics = {
 
   stave: {
     padding: 12,
+    endPaddingMax: 12,
+    endPaddingMin: 6,
+    unalignedNotePadding: 10
   },
 
   clef: {
