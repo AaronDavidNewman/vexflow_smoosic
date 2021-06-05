@@ -9081,6 +9081,9 @@ exports.BravuraMetrics = {
     smufl: true,
     stave: {
         padding: 12,
+        endPaddingMax: 10,
+        endPaddingMin: 5,
+        unalignedNotePadding: 10
     },
     clef: {
         default: {
@@ -10601,6 +10604,9 @@ exports.GonvilleMetrics = {
     smufl: false,
     stave: {
         padding: 12,
+        endPaddingMax: 12,
+        endPaddingMin: 6,
+        unalignedNotePadding: 10
     },
     clef: {
         default: {
@@ -12049,6 +12055,9 @@ exports.LelandMetrics = {
     smufl: true,
     stave: {
         padding: 12,
+        endPaddingMax: 12,
+        endPaddingMin: 6,
+        unalignedNotePadding: 10
     },
     clef: {
         default: {
@@ -15735,6 +15744,9 @@ exports.PetalumaMetrics = {
     smufl: true,
     stave: {
         padding: 15,
+        endPaddingMax: 15,
+        endPaddingMin: 8,
+        unalignedNotePadding: 11
     },
     clef: {
         default: {
@@ -18146,7 +18158,7 @@ function lookAhead(notes, restLine, i, compare) {
 }
 var Formatter = /** @class */ (function () {
     function Formatter(formatterOptions) {
-        this.formatterOptions = __assign({ globalSoftmax: false, maxIterations: 2 }, formatterOptions);
+        this.formatterOptions = __assign({ globalSoftmax: false, maxIterations: 5 }, formatterOptions);
         this.justifyWidth = 0;
         this.totalCost = 0;
         this.totalShift = 0;
@@ -18327,6 +18339,13 @@ var Formatter = /** @class */ (function () {
             }
         });
     };
+    Formatter.estimateJustifiedMinWidth = function (voices, formatterOptions) {
+        var formatter = new Formatter(formatterOptions);
+        voices.forEach(function (voice) {
+            formatter.joinVoices([voice]);
+        });
+        return formatter.preCalculateMinTotalWidth(voices);
+    };
     // Find all the rests in each of the `voices` and align them
     // to neighboring notes. If `alignAllNotes` is `false`, then only
     // align non-beamed notes.
@@ -18338,6 +18357,8 @@ var Formatter = /** @class */ (function () {
     };
     // Calculate the minimum width required to align and format `voices`.
     Formatter.prototype.preCalculateMinTotalWidth = function (voices) {
+        var unalignedPadding = tables_1.Flow.DEFAULT_FONT_STACK[0].lookupMetric('stave.unalignedNotePadding');
+        var unalignedCtxCount = 0;
         // Cache results.
         if (this.hasMinTotalWidth)
             return this.minTotalWidth;
@@ -18355,12 +18376,16 @@ var Formatter = /** @class */ (function () {
         this.minTotalWidth = contextList
             .map(function (tick) {
             var context = contextMap[tick];
+            // context.setPadding(5);
             context.preFormat();
+            if (context.getTickables().length < voices.length) {
+                unalignedCtxCount += 1;
+            }
             return context.getWidth();
         })
             .reduce(function (a, b) { return a + b; }, 0);
         this.hasMinTotalWidth = true;
-        return this.minTotalWidth;
+        return this.minTotalWidth + unalignedPadding * unalignedCtxCount;
     };
     // Get minimum width required to render all voices. Either `format` or
     // `preCalculateMinTotalWidth` must be called before this method.
@@ -18572,17 +18597,20 @@ var Formatter = /** @class */ (function () {
             firstContext.getMetrics().totalLeftPx;
         var targetWidth = adjustedJustifyWidth;
         var actualWidth = shiftToIdealDistances(calculateIdealDistances(targetWidth));
-        var paddingIdeal = 10;
-        var maxX = adjustedJustifyWidth + lastContext.getMetrics().notePx - paddingIdeal;
+        var musicFont = tables_1.Flow.DEFAULT_FONT_STACK[0];
+        // The min padding we allow to the left of the right bar, before moving things left
+        var paddingMin = musicFont.lookupMetric('stave.endPaddingMin');
+        // the max padding we allow to the left of the right bar, before moving things back right.
+        var paddingMax = musicFont.lookupMetric('stave.endPaddingMax');
+        var maxX = adjustedJustifyWidth + lastContext.getMetrics().notePx - paddingMin;
         var iterations = this.formatterOptions.maxIterations;
-        while ((actualWidth > maxX && iterations > 0) || (actualWidth + paddingIdeal < maxX && iterations > 1)) {
-            // If we couldn't fit all the notes into the jusification width, it's because the softmax-scaled
-            // widths between different durations differ across stave (e.g., 1 quarter note is not the same pixel-width
-            // as 4 16th-notes). Run another pass, now that we know how much to justify.
+        while ((actualWidth > maxX && iterations > 0) || (actualWidth + paddingMax < maxX && iterations > 1)) {
+            // If we couldn't fit all the notes into the jusification width, recalculate softmax over a smaller width
             if (actualWidth > maxX) {
                 targetWidth -= actualWidth - maxX;
             }
             else {
+                // If we overshoot and add too much right padding, split the difference and move right again
                 targetWidth += (maxX - actualWidth) / 2;
             }
             actualWidth = shiftToIdealDistances(calculateIdealDistances(targetWidth));
@@ -18773,7 +18801,9 @@ var Formatter = /** @class */ (function () {
     // This method is just like `format` except that the `justifyWidth` is inferred
     // from the `stave`.
     Formatter.prototype.formatToStave = function (voices, stave, optionsParam) {
-        var options = __assign({ padding: 10, context: stave.getContext() }, optionsParam);
+        var musicFont = tables_1.Flow.DEFAULT_FONT_STACK[0];
+        var padding = musicFont.lookupMetric('stave.padding') + musicFont.lookupMetric('stave.endPaddingMax');
+        var options = __assign({ padding: padding, context: stave.getContext() }, optionsParam);
         // eslint-disable-next-line
         var justifyWidth = stave.getNoteEndX() - stave.getNoteStartX() - options.padding;
         L('Formatting voices to width: ', justifyWidth);
@@ -24632,6 +24662,16 @@ var Stave = /** @class */ (function (_super) {
         _this.addEndModifier(new stavebarline_1.Barline(_this.options.right_bar ? BARTYPE.SINGLE : BARTYPE.NONE));
         return _this;
     }
+    Object.defineProperty(Stave, "defaultPadding", {
+        // This is the sum of the padding that normally goes on left + right of a stave during
+        // drawing.  Used to size staves correctly with content width
+        get: function () {
+            var musicFont = tables_1.Flow.DEFAULT_FONT_STACK[0];
+            return musicFont.lookupMetric('stave.padding') + musicFont.lookupMetric('stave.endPaddingMax');
+        },
+        enumerable: false,
+        configurable: true
+    });
     Stave.prototype.space = function (spacing) {
         return this.options.spacing_between_lines_px * spacing;
     };
@@ -27150,16 +27190,24 @@ var StaveNote = /** @class */ (function (_super) {
     };
     // Pre-render formatting
     StaveNote.prototype.preFormat = function () {
+        var _a, _b, _c;
         if (this.preFormatted)
             return;
         if (this.modifierContext)
             this.modifierContext.preFormat();
-        var width = this.getGlyphWidth() + this.leftDisplacedHeadPx + this.rightDisplacedHeadPx;
-        // For upward flagged notes, the width of the flag needs to be added
-        if (this.shouldDrawFlag() && this.stem_direction === stem_1.Stem.UP) {
-            width += this.getGlyphWidth();
-            // TODO: Add flag width as a separate metric
+        var glyphWidth = this.getGlyphWidth();
+        var noteWidth;
+        var flagWidth = (_c = (_b = (_a = this.flag) === null || _a === void 0 ? void 0 : _a.getMetrics()) === null || _b === void 0 ? void 0 : _b.width) !== null && _c !== void 0 ? _c : 0;
+        if (this.shouldDrawFlag() && this.stem_direction === stem_1.Stem.DOWN) {
+            noteWidth = Math.max(flagWidth + tables_1.Flow.STEM_WIDTH, glyphWidth);
         }
+        else if (this.shouldDrawFlag() && this.stem_direction === stem_1.Stem.UP) {
+            noteWidth = flagWidth + glyphWidth + tables_1.Flow.STEM_WIDTH;
+        }
+        else {
+            noteWidth = glyphWidth;
+        }
+        var width = noteWidth + this.leftDisplacedHeadPx + this.rightDisplacedHeadPx;
         this.setWidth(width);
         this.setPreFormatted(true);
     };
@@ -29936,6 +29984,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.System = void 0;
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var factory_1 = __webpack_require__(/*! ./factory */ "./src/factory.js");
+var stave_1 = __webpack_require__(/*! ./stave */ "./src/stave.ts");
 var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
 var System = /** @class */ (function (_super) {
@@ -30014,7 +30063,7 @@ var System = /** @class */ (function (_super) {
         this.parts.forEach(function (part) { return part.stave.setNoteStartX(startX); });
         var justifyWidth = this.options.noPadding
             ? this.options.width - this.options.x
-            : this.options.width - (startX - this.options.x) - this.musicFont.lookupMetric('stave.padding');
+            : this.options.width - (startX - this.options.x) - stave_1.Stave.defaultPadding;
         formatter.format(allVoices, this.options.noJustification ? 0 : justifyWidth);
         for (var i = 0; i < this.options.formatIterations; i++) {
             formatter.tune({ alpha: this.options.details.alpha });

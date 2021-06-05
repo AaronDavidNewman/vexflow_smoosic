@@ -5917,6 +5917,9 @@ exports.BravuraMetrics = {
     smufl: true,
     stave: {
         padding: 12,
+        endPaddingMax: 10,
+        endPaddingMin: 5,
+        unalignedNotePadding: 10
     },
     clef: {
         default: {
@@ -7437,6 +7440,9 @@ exports.GonvilleMetrics = {
     smufl: false,
     stave: {
         padding: 12,
+        endPaddingMax: 12,
+        endPaddingMin: 6,
+        unalignedNotePadding: 10
     },
     clef: {
         default: {
@@ -8885,6 +8891,9 @@ exports.LelandMetrics = {
     smufl: true,
     stave: {
         padding: 12,
+        endPaddingMax: 12,
+        endPaddingMin: 6,
+        unalignedNotePadding: 10
     },
     clef: {
         default: {
@@ -12571,6 +12580,9 @@ exports.PetalumaMetrics = {
     smufl: true,
     stave: {
         padding: 15,
+        endPaddingMax: 15,
+        endPaddingMin: 8,
+        unalignedNotePadding: 11
     },
     clef: {
         default: {
@@ -15946,75 +15958,22 @@ var AccidentalTests = (function () {
         formatAccidentalSpaces: function (options) {
             var vf = VF.Test.makeFactory(options, 750, 280);
             var context = vf.getContext();
+            var score = vf.EasyScore();
             var softmaxFactor = 100;
-            // Create the notes
-            var notes = [
-                new VF.StaveNote({
-                    keys: ['e##/5'],
-                    duration: '8d',
-                })
-                    .addAccidental(0, new VF.Accidental('##'))
-                    .addDotToAll(),
-                new VF.StaveNote({
-                    keys: ['b/4'],
-                    duration: '16',
-                }).addAccidental(0, new VF.Accidental('b')),
-                new VF.StaveNote({
-                    keys: ['f/3'],
-                    duration: '8',
-                }),
-                new VF.StaveNote({
-                    keys: ['a/3'],
-                    duration: '16',
-                }),
-                new VF.StaveNote({
-                    keys: ['e/4', 'g/4'],
-                    duration: '16',
-                })
-                    .addAccidental(0, new VF.Accidental('bb'))
-                    .addAccidental(1, new VF.Accidental('bb')),
-                new VF.StaveNote({
-                    keys: ['d/4'],
-                    duration: '16',
-                }),
-                new VF.StaveNote({
-                    keys: ['e/4', 'g/4'],
-                    duration: '16',
-                })
-                    .addAccidental(0, new VF.Accidental('#'))
-                    .addAccidental(1, new VF.Accidental('#')),
-                new VF.StaveNote({
-                    keys: ['g/4'],
-                    duration: '32',
-                }),
-                new VF.StaveNote({
-                    keys: ['a/4'],
-                    duration: '32',
-                }),
-                new VF.StaveNote({
-                    keys: ['g/4'],
-                    duration: '16',
-                }),
-                new VF.StaveNote({
-                    keys: ['d/4'],
-                    duration: 'q',
-                }),
-            ];
-            var beams = VF.Beam.generateBeams(notes);
-            var voice = new VF.Voice({
-                num_beats: 4,
-                beat_value: 4,
-            });
-            voice.addTickables(notes);
-            var formatter = new VF.Formatter({ softmaxFactor: softmaxFactor }).joinVoices([voice]);
-            var width = formatter.preCalculateMinTotalWidth([voice]);
-            var stave = new VF.Stave(10, 40, width + 20);
-            stave.setContext(context).draw();
-            formatter.format([voice], width);
-            voice.draw(context, stave);
-            beams.forEach(function (b) {
-                b.setContext(context).draw();
-            });
+            var notes = score
+                .beam(score.notes('e##5/8., b4/16'))
+                .concat(score.beam(score.notes('f3/8, a3/16, (ebb4 gbb4)/16 ')))
+                .concat(score.beam(score.notes('d4/16, (e#4 g#4)/16, g4/32, a4/32, g4/16')))
+                .concat(score.notes('d4/4'));
+            var voice = score.voice(notes, { time: '4/4' });
+            var width = VF.Formatter.estimateJustifiedMinWidth([voice], { softmaxFactor: softmaxFactor });
+            vf.System({
+                x: 10,
+                y: 40,
+                width: width + VF.Stave.defaultPadding,
+                details: { softmaxFactor: softmaxFactor },
+            }).addStave({ voices: [voice] });
+            vf.draw();
             notes.forEach(function (note) {
                 VF.Test.plotNoteWidth(context, note, 30);
             });
@@ -19524,14 +19483,12 @@ var ChordSymbolTests = (function () {
             var vf = VF.Test.makeFactory(options, 650, 650);
             var ctx = vf.getContext();
             ctx.scale(1.5, 1.5);
-            ctx.fillStyle = '#221';
-            ctx.strokeStyle = '#221';
             function newNote(keys, duration, chordSymbol) {
                 return new VF.StaveNote({ keys: keys, duration: duration }).addModifier(chordSymbol, 0);
             }
             function draw(chords, y) {
                 var notes = [];
-                var stave = new VF.Stave(10, y, 450).addClef('treble').setContext(ctx).draw();
+                var stave = new VF.Stave(10, y, 650 / 1.5).addClef('treble').setContext(ctx).draw();
                 notes.push(newNote(['C/4'], 'q', chords[0]));
                 notes.push(newNote(['C/4'], 'q', chords[1]));
                 notes.push(newNote(['C/4'], 'q', chords[2]));
@@ -19546,7 +19503,7 @@ var ChordSymbolTests = (function () {
                 .addText('C')
                 .addGlyph('halfDiminished', { symbolModifier: VF.ChordSymbol.symbolModifiers.SUPERSCRIPT }));
             chords.push(vf
-                .ChordSymbol({ reportWidth: false })
+                .ChordSymbol({ reportWidth: true })
                 .addText('D')
                 .addGlyph('halfDiminished', { symbolModifier: VF.ChordSymbol.symbolModifiers.SUPERSCRIPT }));
             draw(chords, 10);
@@ -19596,7 +19553,7 @@ var ChordSymbolTests = (function () {
             }
             function draw(c1, c2, y) {
                 var notes = [];
-                var stave = new VF.Stave(10, y, 450).addClef('treble').setContext(ctx).draw();
+                var stave = new VF.Stave(10, y, 430).addClef('treble').setContext(ctx).draw();
                 notes.push(newNote(['e/4', 'a/4', 'd/5'], 'h', c1).addAccidental(0, new VF.Accidental('b')));
                 notes.push(newNote(['c/4', 'e/4', 'b/4'], 'h', c2));
                 VF.Formatter.FormatAndDraw(ctx, stave, notes);
@@ -19641,7 +19598,7 @@ var ChordSymbolTests = (function () {
             }
             function draw(chords, y) {
                 var notes = [];
-                var stave = new VF.Stave(10, y, 450).addClef('treble').setContext(ctx).draw();
+                var stave = new VF.Stave(10, y, 750 / 1.5).addClef('treble').setContext(ctx).draw();
                 notes.push(newNote(['c/4'], 'q', chords[0]));
                 notes.push(newNote(['c/4'], 'q', chords[1]));
                 notes.push(newNote(['c/4'], 'q', chords[2]));
@@ -19678,7 +19635,7 @@ var ChordSymbolTests = (function () {
                 .addGlyphOrText('b9', { symbolModifier: VF.ChordSymbol.symbolModifiers.SUPERSCRIPT })
                 .addGlyphOrText('#11', { symbolModifier: VF.ChordSymbol.symbolModifiers.SUBSCRIPT })
                 .addGlyph('rightParenTall')
-                .setReportWidth(false));
+                .setReportWidth(true));
             draw(chords, 40);
             chords = [];
             chords.push(vf
@@ -19735,7 +19692,7 @@ var ChordSymbolTests = (function () {
             }
             function draw(chord1, chord2, y) {
                 var notes = [];
-                var stave = new VF.Stave(10, y, 450).addClef('treble').setContext(ctx).draw();
+                var stave = new VF.Stave(10, y, 500 / 2).addClef('treble').setContext(ctx).draw();
                 notes.push(newNote(['e/4', 'a/4', 'd/5'], 'h', chord1).addAccidental(0, new VF.Accidental('b')));
                 notes.push(newNote(['c/4', 'e/4', 'B/4'], 'h', chord2));
                 VF.Formatter.FormatAndDraw(ctx, stave, notes);
@@ -19783,7 +19740,7 @@ var ChordSymbolTests = (function () {
             }
             function draw(chords, chords2, y) {
                 var notes = [];
-                var stave = new VF.Stave(10, y, 450).addClef('treble').setContext(ctx).draw();
+                var stave = new VF.Stave(10, y, 600 / 1.5).addClef('treble').setContext(ctx).draw();
                 notes.push(newNote(['c/4', 'f/4', 'a/4'], 'q', chords[0], chords2[0]));
                 notes.push(newNote(['c/4', 'e/4', 'b/4'], 'q', chords[1], chords2[1]).addAccidental(2, new VF.Accidental('b')));
                 notes.push(newNote(['c/4', 'e/4', 'g/4'], 'q', chords[2], chords2[2]));
@@ -19814,7 +19771,7 @@ var ChordSymbolTests = (function () {
             }
             function draw(chords, y) {
                 var notes = [];
-                var stave = new VF.Stave(10, y, 400).addClef('treble').setContext(ctx).draw();
+                var stave = new VF.Stave(10, y, 600 / 1.5).addClef('treble').setContext(ctx).draw();
                 notes.push(newNote(['c/4', 'f/4', 'a/4'], 'q', chords[0]));
                 notes.push(newNote(['c/4', 'e/4', 'b/4'], 'q', chords[1]).addAccidental(2, new VF.Accidental('b')));
                 notes.push(newNote(['c/4', 'e/4', 'g/4'], 'q', chords[2]));
@@ -19840,7 +19797,7 @@ var ChordSymbolTests = (function () {
             }
             function draw(chords, y) {
                 var notes = [];
-                var stave = new VF.Stave(10, y, 400).addClef('treble').setContext(ctx).draw();
+                var stave = new VF.Stave(10, y, 600 / 1.5).addClef('treble').setContext(ctx).draw();
                 notes.push(newNote(['c/4', 'f/4', 'a/4'], 'q', chords[0]));
                 notes.push(newNote(['c/4', 'e/4', 'b/4'], 'q', chords[1]).addAccidental(2, new VF.Accidental('b')));
                 notes.push(newNote(['c/4', 'e/4', 'g/4'], 'q', chords[2]));
@@ -20782,6 +20739,14 @@ var mocks_1 = __webpack_require__(/*! ./mocks */ "./tests/mocks.js");
 var FormatterTests = (function () {
     var run = VF.Test.runTests;
     var runSVG = VF.Test.runSVGTest;
+    // Should this be a static call in glyph?  Or font?
+    var glyphWidth = function (vexGlyph) {
+        var vf = VF.DEFAULT_FONT_STACK[0].getGlyphs()[vexGlyph];
+        return (vf.x_max - vf.x_min) * glyphPixels();
+    };
+    var glyphPixels = function () {
+        return 96 * (38 / (VF.DefaultFontStack[0].getResolution() * 72));
+    };
     var Formatter = {
         Start: function () {
             QUnit.module('Formatter');
@@ -20795,7 +20760,7 @@ var FormatterTests = (function () {
             });
             runSVG('StaveNote - Justification', Formatter.justifyStaveNotes);
             runSVG('Notes with Tab', Formatter.notesWithTab);
-            runSVG('Multiple Staves - Justified', Formatter.multiStaves, { justify: true, iterations: 0 });
+            runSVG('Multiple Staves - Justified', Formatter.multiStaves);
             runSVG('Softmax', Formatter.softMax);
             runSVG('Mixtime', Formatter.mixTime);
             runSVG('Tight', Formatter.tightNotes);
@@ -20870,21 +20835,17 @@ var FormatterTests = (function () {
             var voice2 = new VF.Voice().setMode(VF.Voice.Mode.Soft);
             voice2.addTickables(notes2);
             voice1.addTickables(notes1);
+            var formatter = vf.Formatter().joinVoices([voice1]).joinVoices([voice2]);
+            var width = formatter.preCalculateMinTotalWidth([voice1, voice2]);
+            formatter.format([voice1, voice2], width);
             var stave1 = vf.Stave({
                 y: 50,
-                width: 1500,
+                width: width + VF.Stave.defaultPadding,
             });
             var stave2 = vf.Stave({
                 y: 200,
-                width: 1500,
+                width: width + VF.Stave.defaultPadding,
             });
-            vf.StaveConnector({
-                top_stave: stave1,
-                bottom_stave: stave2,
-                type: 'brace',
-            });
-            var formatter = vf.Formatter().joinVoices([voice1]).joinVoices([voice2]);
-            formatter.format([voice1, voice2], 1500);
             stave1.draw();
             stave2.draw();
             voice1.draw(vf.context, stave1);
@@ -20902,9 +20863,9 @@ var FormatterTests = (function () {
             beams = beams.concat(beams, VF.Beam.generateBeams(notes21.slice(1, 3)));
             beams = beams.concat(VF.Beam.generateBeams(notes21.slice(3)));
             var formatter = vf.Formatter({ softmaxFactor: 10 }).joinVoices([voice11]).joinVoices([voice21]);
-            var width = formatter.preCalculateMinTotalWidth([voice11, voice21]) + 50;
-            var stave11 = vf.Stave({ y: 20, width: width + 30 });
-            var stave21 = vf.Stave({ y: 130, width: width + 30 });
+            var width = formatter.preCalculateMinTotalWidth([voice11, voice21]);
+            var stave11 = vf.Stave({ y: 20, width: width + VF.Stave.defaultPadding });
+            var stave21 = vf.Stave({ y: 130, width: width + VF.Stave.defaultPadding });
             formatter.format([voice11, voice21], width);
             vf.StaveConnector({
                 top_stave: stave11,
@@ -20942,9 +20903,9 @@ var FormatterTests = (function () {
             var formatter = new VF.Formatter();
             formatter.joinVoices([voice11]);
             formatter.joinVoices([voice21]);
-            var width = formatter.preCalculateMinTotalWidth([voice11, voice21]) + 50;
-            var stave11 = vf.Stave({ y: 20, width: width + 20 });
-            var stave21 = vf.Stave({ y: 130, width: width + 20 });
+            var width = formatter.preCalculateMinTotalWidth([voice11, voice21]);
+            var stave11 = vf.Stave({ y: 20, width: width + VF.Stave.defaultPadding });
+            var stave21 = vf.Stave({ y: 130, width: width + VF.Stave.defaultPadding });
             formatter.format([voice11, voice21], width);
             stave11.setContext(ctx).draw();
             stave21.setContext(ctx).draw();
@@ -20994,8 +20955,8 @@ var FormatterTests = (function () {
             formatter.joinVoices([voice2]);
             var width = formatter.preCalculateMinTotalWidth([voice1, voice2]);
             formatter.format([voice1, voice2], width);
-            var stave1 = new VF.Stave(10, 40, width + 50);
-            var stave2 = new VF.Stave(10, 100, width + 50);
+            var stave1 = new VF.Stave(10, 40, width + VF.Stave.defaultPadding);
+            var stave2 = new VF.Stave(10, 100, width + VF.Stave.defaultPadding);
             stave1.setContext(context).draw();
             stave2.setContext(context).draw();
             voice1.draw(context, stave1);
@@ -21067,65 +21028,52 @@ var FormatterTests = (function () {
         multiStaves: function (options) {
             var vf = VF.Test.makeFactory(options, 600, 400);
             var score = vf.EasyScore();
-            var stave11 = vf.Stave({ y: 20, width: 275 }).addTrebleGlyph().addTimeSignature('6/8');
+            var staffY = [20, 130, 250];
+            var x = 10;
             var notes11 = score.notes('f4/4, d4/8, g4/4, eb4/8');
             var voice11 = score.voice(notes11, { time: '6/8' });
-            var stave21 = vf.Stave({ y: 130, width: 275 }).addTrebleGlyph().addTimeSignature('6/8');
             var notes21 = score.notes('d4/8, d4, d4, d4, e4, eb4');
             var voice21 = score.voice(notes21, { time: '6/8' });
-            var stave31 = vf.Stave({ y: 250, width: 275 }).addClef('bass').addTimeSignature('6/8');
             var notes31 = score.notes('a5/8, a5, a5, a5, a5, a5', { stem: 'down' });
             var voice31 = score.voice(notes31, { time: '6/8' });
-            vf.StaveConnector({
-                top_stave: stave21,
-                bottom_stave: stave31,
-                type: 'brace',
-            });
             vf.Beam({ notes: notes21.slice(0, 3) });
             vf.Beam({ notes: notes21.slice(3, 6) });
             vf.Beam({ notes: notes31.slice(0, 3) });
             vf.Beam({ notes: notes31.slice(3, 6) });
-            var formatter = vf.Formatter().joinVoices([voice11]).joinVoices([voice21]).joinVoices([voice31]);
-            if (options.params.justify) {
-                formatter.formatToStave([voice11, voice21, voice31], stave11);
-            }
-            else {
-                formatter.format([voice11, voice21, voice31], 0);
-            }
-            for (var i = 0; i < options.params.iterations; i++) {
-                formatter.tune();
-            }
-            var stave12 = vf.Stave({
-                x: stave11.width + stave11.x,
-                y: stave11.y,
-                width: stave11.width,
-            });
+            var width = VF.Formatter.estimateJustifiedMinWidth([voice11, voice21, voice31]);
+            // *2 for padding between clef and time sig
+            var symbolWidth = width + glyphWidth('gClef') + glyphWidth('timeSig8') * 2 + VF.Stave.defaultPadding;
+            var system = vf.System({ x: x, y: staffY[0], width: symbolWidth, spaceBetweenStaves: 10 });
+            x += symbolWidth;
+            system
+                .addStave({ voices: [voice11] })
+                .addClef('treble')
+                .addTimeSignature('6/8');
+            system
+                .addStave({ voices: [voice21] })
+                .addClef('treble')
+                .addTimeSignature('6/8');
+            system
+                .addStave({ voices: [voice31] })
+                .addClef('bass')
+                .addTimeSignature('6/8');
             var notes12 = score.notes('ab4/4, bb4/8, (cb5 eb5)/4[stem="down"], d5/8[stem="down"]');
             var voice12 = score.voice(notes12, { time: '6/8' });
-            vf.Stave({
-                x: stave21.width + stave21.x,
-                y: stave21.y,
-                width: stave21.width,
-            });
             var notes22 = score.notes('(eb4 ab4)/4., (c4 eb4 ab4)/4, db5/8', { stem: 'up' });
             var voice22 = score.voice(notes22, { time: '6/8' });
-            vf.Stave({
-                x: stave31.width + stave31.x,
-                y: stave31.y,
-                width: stave31.width,
-            });
             var notes32 = score.notes('a5/8, a5, a5, a5, a5, a5', { stem: 'down' });
             var voice32 = score.voice(notes32, { time: '6/8' });
-            formatter = vf.Formatter().joinVoices([voice12]).joinVoices([voice22]).joinVoices([voice32]);
-            if (options.params.justify) {
-                formatter.formatToStave([voice12, voice22, voice32], stave12);
-            }
-            else {
-                formatter.format([voice12, voice22, voice32], 0);
-            }
-            for (var j = 0; j < options.params.iterations; j++) {
-                formatter.tune();
-            }
+            width = VF.Formatter.estimateJustifiedMinWidth([voice12, voice22, voice32]);
+            symbolWidth = width + VF.Stave.defaultPadding;
+            system = vf.System({ x: x, y: staffY[0], width: symbolWidth, spaceBetweenStaves: 10 });
+            voice12.setStave(vf.Stave({
+                x: voice11.stave.width + voice11.stave.x,
+                y: voice11.stave.y,
+                width: symbolWidth,
+            }));
+            system.addStave({ voices: [voice12] });
+            system.addStave({ voices: [voice22] });
+            system.addStave({ voices: [voice32] });
             vf.Beam({ notes: notes32.slice(0, 3) });
             vf.Beam({ notes: notes32.slice(3, 6) });
             vf.draw();
@@ -21176,21 +21124,21 @@ var FormatterTests = (function () {
             vf.getContext().scale(0.8, 0.8);
             function draw(y, factor) {
                 var score = vf.EasyScore();
+                var notes = score
+                    .notes('C#5/h, a4/q')
+                    .concat(score.beam(score.notes('Abb4/8, A4/8')))
+                    .concat(score.beam(score.notes('A4/16, A#4, A4, Ab4/32, A4')));
+                var voice = score.voice(notes, { time: '5/4' });
+                var voiceWidth = VF.Formatter.estimateJustifiedMinWidth([voice]);
+                var staffWidth = voiceWidth + glyphWidth('gClef') + glyphWidth('timeSig8') * 2 + VF.Stave.defaultPadding;
                 var system = vf.System({
                     x: 100,
                     y: y,
-                    width: 500,
+                    width: staffWidth,
                     details: { softmaxFactor: factor },
                 });
                 system
-                    .addStave({
-                    voices: [
-                        score.voice(score
-                            .notes('C#5/h, a4/q')
-                            .concat(score.beam(score.notes('Abb4/8, A4/8')))
-                            .concat(score.beam(score.notes('A4/16, A#4, A4, Ab4/32, A4'))), { time: '5/4' }),
-                    ],
-                })
+                    .addStave({ voices: [voice] })
                     .addClef('treble')
                     .addTimeSignature('5/4');
                 vf.draw();
@@ -21206,23 +21154,23 @@ var FormatterTests = (function () {
             var vf = VF.Test.makeFactory(options, 420, 250);
             vf.getContext().scale(0.8, 0.8);
             var score = vf.EasyScore();
+            var notes1 = score.notes('C#5/q, B4').concat(score.beam(score.notes('A4/8, E4, C4, D4')));
+            var voice1 = score.voice(notes1);
+            var notes2 = score.notes('C#5/q, B4, B4').concat(score.tuplet(score.beam(score.notes('A4/8, E4, C4'))));
+            var voice2 = score.voice(notes2);
+            var voiceWidth = VF.Formatter.estimateJustifiedMinWidth([voice1, voice2]);
+            var staffWidth = voiceWidth + glyphWidth('gClef') + glyphWidth('timeSig8') * 2 + VF.Stave.defaultPadding;
             var system = vf.System({
                 details: { softmaxFactor: 100 },
-                width: 500,
+                width: staffWidth,
                 debugFormatter: true,
             });
             system
-                .addStave({
-                voices: [score.voice(score.notes('C#5/q, B4').concat(score.beam(score.notes('A4/8, E4, C4, D4'))))],
-            })
+                .addStave({ voices: [voice1] })
                 .addClef('treble')
                 .addTimeSignature('4/4');
             system
-                .addStave({
-                voices: [
-                    score.voice(score.notes('C#5/q, B4, B4').concat(score.tuplet(score.beam(score.notes('A4/8, E4, C4'))))),
-                ],
-            })
+                .addStave({ voices: [voice2] })
                 .addClef('treble')
                 .addTimeSignature('4/4');
             vf.draw();
@@ -21232,25 +21180,23 @@ var FormatterTests = (function () {
             var vf = VF.Test.makeFactory(options, 440, 250);
             vf.getContext().scale(0.8, 0.8);
             var score = vf.EasyScore();
+            var notes1 = score.beam(score.notes('B4/16, B4, B4, B4, B4, B4, B4, B4')).concat(score.notes('B4/q, B4'));
+            var notes2 = score.notes('B4/q, B4').concat(score.beam(score.notes('B4/16, B4, B4, B4, B4, B4, B4, B4')));
+            var voice1 = score.voice(notes1);
+            var voice2 = score.voice(notes2);
+            var voiceWidth = VF.Formatter.estimateJustifiedMinWidth([voice1, voice2]);
+            var staffWidth = voiceWidth + glyphWidth('gClef') + glyphWidth('timeSig8') * 2 + VF.Stave.defaultPadding;
             var system = vf.System({
-                width: 450,
+                details: { softmaxFactor: 100 },
+                width: staffWidth,
                 debugFormatter: true,
-                details: { maxIterations: 10 },
             });
             system
-                .addStave({
-                voices: [
-                    score.voice(score.beam(score.notes('B4/16, B4, B4, B4, B4, B4, B4, B4')).concat(score.notes('B4/q, B4'))),
-                ],
-            })
+                .addStave({ voices: [voice1] })
                 .addClef('treble')
                 .addTimeSignature('4/4');
             system
-                .addStave({
-                voices: [
-                    score.voice(score.notes('B4/q, B4').concat(score.beam(score.notes('B4/16, B4, B4, B4, B4, B4, B4, B4')))),
-                ],
-            })
+                .addStave({ voices: [voice2] })
                 .addClef('treble')
                 .addTimeSignature('4/4');
             vf.draw();
@@ -21260,22 +21206,22 @@ var FormatterTests = (function () {
             var vf = VF.Test.makeFactory(options, 440, 250);
             vf.getContext().scale(0.8, 0.8);
             var score = vf.EasyScore();
+            var notes1 = score.beam(score.notes('B4/16, B4, B4, B4, B4, B4, B4, B4')).concat(score.notes('B4/q, B4'));
+            var voice1 = score.voice(notes1);
+            var notes2 = score.notes('B4/w');
+            var voice2 = score.voice(notes2);
+            var voiceWidth = VF.Formatter.estimateJustifiedMinWidth([voice1, voice2]);
+            var staffWidth = voiceWidth + glyphWidth('gClef') + glyphWidth('timeSig8') * 2 + VF.Stave.defaultPadding;
             var system = vf.System({
-                width: 440,
+                width: staffWidth,
                 debugFormatter: true,
             });
             system
-                .addStave({
-                voices: [
-                    score.voice(score.beam(score.notes('B4/16, B4, B4, B4, B4, B4, B4, B4')).concat(score.notes('B4/q, B4'))),
-                ],
-            })
+                .addStave({ voices: [voice1] })
                 .addClef('treble')
                 .addTimeSignature('4/4');
             system
-                .addStave({
-                voices: [score.voice(score.notes('B4/w'))],
-            })
+                .addStave({ voices: [voice2] })
                 .addClef('treble')
                 .addTimeSignature('4/4');
             vf.draw();
@@ -23819,7 +23765,13 @@ var OrnamentTests = (function () {
         },
         jazzOrnaments: function (options) {
             expect(0);
-            var vf = VF.Test.makeFactory(options, 950, 400);
+            var glyphWidth = function (vexGlyph) {
+                var vf = VF.DEFAULT_FONT_STACK[0].getGlyphs()[vexGlyph];
+                return (vf.x_max - vf.x_min) * (96 * (38 / (VF.DefaultFontStack[0].getResolution() * 72)));
+            };
+            var lineWidth = 960;
+            var xinc = lineWidth / 3;
+            var vf = VF.Test.makeFactory(options, lineWidth, 400);
             var ctx = vf.getContext();
             ctx.scale(1, 1);
             ctx.fillStyle = '#221';
@@ -23835,7 +23787,6 @@ var OrnamentTests = (function () {
                 return rv;
             }
             var xStart = 10;
-            var xWidth = 300;
             var yStart = 10;
             var staffHeight = 70;
             function draw(modifiers, keys, x, width, y, stemDirection) {
@@ -23855,7 +23806,7 @@ var OrnamentTests = (function () {
                 }).setMode(VF.Voice.Mode.SOFT);
                 voice.addTickables(notes);
                 var formatter = new VF.Formatter({ softmaxFactor: 2 }).joinVoices([voice]);
-                formatter.format([voice], xWidth);
+                formatter.format([voice], width - (VF.Stave.defaultPadding + glyphWidth('gClef')));
                 stave.setContext(ctx).draw();
                 voice.draw(ctx, stave);
             }
@@ -23866,22 +23817,22 @@ var OrnamentTests = (function () {
             mods.push(new VF.Ornament('doit'));
             mods.push(new VF.Ornament('fall'));
             mods.push(new VF.Ornament('doitLong'));
-            draw(mods, ['a/5'], curX, xWidth, curY, -1);
-            curX += xWidth;
+            draw(mods, ['a/5'], curX, xinc, curY, -1);
+            curX += xinc;
             mods = [];
             mods.push(new VF.Ornament('fallLong'));
             mods.push(new VF.Ornament('bend'));
             mods.push(new VF.Ornament('plungerClosed'));
             mods.push(new VF.Ornament('plungerOpen'));
             mods.push(new VF.Ornament('bend'));
-            draw(mods, ['a/5'], curX, xWidth, curY, -1);
-            curX += xWidth;
+            draw(mods, ['a/5'], curX, xinc, curY, -1);
+            curX += xinc;
             mods = [];
             mods.push(new VF.Ornament('flip'));
             mods.push(new VF.Ornament('jazzTurn'));
             mods.push(new VF.Ornament('smear'));
             mods.push(new VF.Ornament('doit'));
-            draw(mods, ['a/5'], curX, xWidth, curY, 1);
+            draw(mods, ['a/5'], curX, xinc, curY, 1);
             curX = xStart;
             curY += staffHeight;
             mods = [];
@@ -23889,22 +23840,22 @@ var OrnamentTests = (function () {
             mods.push(new VF.Ornament('doit'));
             mods.push(new VF.Ornament('fall'));
             mods.push(new VF.Ornament('doitLong'));
-            draw(mods, ['e/5'], curX, xWidth, curY);
-            curX += xWidth;
+            draw(mods, ['e/5'], curX, xinc, curY);
+            curX += xinc;
             mods = [];
             mods.push(new VF.Ornament('fallLong'));
             mods.push(new VF.Ornament('bend'));
             mods.push(new VF.Ornament('plungerClosed'));
             mods.push(new VF.Ornament('plungerOpen'));
             mods.push(new VF.Ornament('bend'));
-            draw(mods, ['e/5'], curX, xWidth, curY);
-            curX += xWidth;
+            draw(mods, ['e/5'], curX, xinc, curY);
+            curX += xinc;
             mods = [];
             mods.push(new VF.Ornament('flip'));
             mods.push(new VF.Ornament('jazzTurn'));
             mods.push(new VF.Ornament('smear'));
             mods.push(new VF.Ornament('doit'));
-            draw(mods, ['e/5'], curX, xWidth, curY);
+            draw(mods, ['e/5'], curX, xinc, curY);
             curX = xStart;
             curY += staffHeight;
             mods = [];
@@ -23912,22 +23863,22 @@ var OrnamentTests = (function () {
             mods.push(new VF.Ornament('doit'));
             mods.push(new VF.Ornament('fall'));
             mods.push(new VF.Ornament('doitLong'));
-            draw(mods, ['e/4'], curX, xWidth, curY);
-            curX += xWidth;
+            draw(mods, ['e/4'], curX, xinc, curY);
+            curX += xinc;
             mods = [];
             mods.push(new VF.Ornament('fallLong'));
             mods.push(new VF.Ornament('bend'));
             mods.push(new VF.Ornament('plungerClosed'));
             mods.push(new VF.Ornament('plungerOpen'));
             mods.push(new VF.Ornament('bend'));
-            draw(mods, ['e/4'], curX, xWidth, curY);
-            curX += xWidth;
+            draw(mods, ['e/4'], curX, xinc, curY);
+            curX += xinc;
             mods = [];
             mods.push(new VF.Ornament('flip'));
             mods.push(new VF.Ornament('jazzTurn'));
             mods.push(new VF.Ornament('smear'));
             mods.push(new VF.Ornament('doit'));
-            draw(mods, ['e/4'], curX, xWidth, curY);
+            draw(mods, ['e/4'], curX, xinc, curY);
         },
     };
     return Ornament;
