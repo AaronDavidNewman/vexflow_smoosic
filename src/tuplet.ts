@@ -44,7 +44,7 @@
  * }
  */
 
-import { Vex } from './vex';
+import { RuntimeError } from './util';
 import { Element } from './element';
 import { Formatter } from './formatter';
 import { Glyph } from './glyph';
@@ -54,13 +54,13 @@ import { StemmableNote } from './stemmablenote';
 import { check } from './common';
 
 export interface TupletOptions {
-  beats_occupied: number;
-  bracketed: boolean;
-  location: number;
-  notes_occupied: number;
-  num_notes: number;
-  ratioed: boolean;
-  y_offset: number;
+  beats_occupied?: number;
+  bracketed?: boolean;
+  location?: number;
+  notes_occupied?: number;
+  num_notes?: number;
+  ratioed?: boolean;
+  y_offset?: number;
 }
 
 export class Tuplet extends Element {
@@ -94,12 +94,12 @@ export class Tuplet extends Element {
     super();
     this.setAttribute('type', 'Tuplet');
     if (!notes || !notes.length) {
-      throw new Vex.RERR('BadArguments', 'No notes provided for tuplet.');
+      throw new RuntimeError('BadArguments', 'No notes provided for tuplet.');
     }
 
-    this.options = Vex.Merge({}, options);
+    this.options = { ...options };
     this.notes = notes;
-    this.num_notes = 'num_notes' in this.options ? this.options.num_notes : notes.length;
+    this.num_notes = this.options.num_notes != undefined ? this.options.num_notes : notes.length;
 
     // We accept beats_occupied, but warn that it's deprecated:
     // the preferred property name is now notes_occupied.
@@ -107,14 +107,14 @@ export class Tuplet extends Element {
       this.beatsOccupiedDeprecationWarning();
     }
     this.notes_occupied = this.options.notes_occupied || this.options.beats_occupied || 2;
-    if ('bracketed' in this.options) {
+    if (this.options.bracketed != undefined) {
       this.bracketed = this.options.bracketed;
     } else {
       this.bracketed = notes.some((note) => !note.hasBeam());
     }
 
     this.ratioed =
-      'ratioed' in this.options ? this.options.ratioed : Math.abs(this.notes_occupied - this.num_notes) > 1;
+      this.options.ratioed != undefined ? this.options.ratioed : Math.abs(this.notes_occupied - this.num_notes) > 1;
     this.point = this.musicFont.lookupMetric('digits.tupletPoint');
     this.y_pos = 16;
     this.x_pos = 100;
@@ -163,7 +163,7 @@ export class Tuplet extends Element {
     if (!location) {
       location = Tuplet.LOCATION_TOP;
     } else if (location !== Tuplet.LOCATION_TOP && location !== Tuplet.LOCATION_BOTTOM) {
-      throw new Vex.RERR('BadArgument', 'Invalid tuplet location: ' + location);
+      throw new RuntimeError('BadArgument', 'Invalid tuplet location: ' + location);
     }
 
     this.location = location;

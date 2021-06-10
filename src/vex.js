@@ -6,15 +6,9 @@
 //
 
 /* eslint max-classes-per-file: "off" */
+import { RuntimeError, log } from './util';
 
 const Vex = () => {};
-
-// Default log function sends all arguments to console.
-Vex.L = (block, args) => {
-  if (!args) return;
-  const line = Array.prototype.slice.call(args).join(' ');
-  window.console.log(block + ': ' + line);
-};
 
 Vex.MakeException = (name) => {
   const exception = class extends Error {
@@ -29,18 +23,6 @@ Vex.MakeException = (name) => {
   return exception;
 };
 
-// Default runtime exception.
-class RuntimeError extends Error {
-  constructor(code, message) {
-    super('[RuntimeError] ' + code + ':' + message);
-    this.code = code;
-  }
-}
-
-// Shortcut method for `RuntimeError`.
-Vex.RuntimeError = RuntimeError;
-Vex.RERR = Vex.RuntimeError;
-
 // Merge `destination` hash with `source` hash, overwriting like keys
 // in `source` if necessary.
 Vex.Merge = (destination, source) => {
@@ -51,9 +33,6 @@ Vex.Merge = (destination, source) => {
   return destination;
 };
 
-// DEPRECATED. Use `Math.*`.
-Vex.Min = Math.min;
-Vex.Max = Math.max;
 Vex.forEach = (a, fn) => {
   for (let i = 0; i < a.length; i++) {
     fn(a[i], i);
@@ -107,12 +86,12 @@ Vex.Contains = (a, obj) => {
 // Get the 2D Canvas context from DOM element `canvas_sel`.
 Vex.getCanvasContext = (canvas_sel) => {
   if (!canvas_sel) {
-    throw new Vex.RERR('BadArgument', 'Invalid canvas selector: ' + canvas_sel);
+    throw new RuntimeError('BadArgument', 'Invalid canvas selector: ' + canvas_sel);
   }
 
   const canvas = document.getElementById(canvas_sel);
   if (!(canvas && canvas.getContext)) {
-    throw new Vex.RERR('UnsupportedBrowserError', 'This browser does not support HTML5 Canvas');
+    throw new RuntimeError('UnsupportedBrowserError', 'This browser does not support HTML5 Canvas');
   }
 
   return canvas.getContext('2d');
@@ -139,19 +118,7 @@ Vex.BM = (s, f) => {
   const start_time = new Date().getTime();
   f();
   const elapsed = new Date().getTime() - start_time;
-  Vex.L(s + elapsed + 'ms');
-};
-
-// Get stack trace.
-Vex.StackTrace = () => {
-  const err = new Error();
-  return err.stack;
-};
-
-// Dump warning to console.
-Vex.W = (...args) => {
-  const line = args.join(' ');
-  window.console.log('Warning: ', line, Vex.StackTrace());
+  log(s + elapsed + 'ms');
 };
 
 // Used by various classes (e.g., SVGContext) to provide a

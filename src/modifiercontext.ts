@@ -5,7 +5,7 @@
 // This class implements various types of members to notes (e.g. bends,
 // fingering positions etc.)
 
-import { Vex } from './vex';
+import { RuntimeError, log } from './util';
 import { StaveNote } from './stavenote';
 import { GlyphNote } from './glyphnote';
 import { Dot } from './dot';
@@ -43,7 +43,7 @@ export type ModifierContextMember = Modifier | StaveNote | TabNote;
 function L(
   // eslint-disable-next-line
   ...args: any[]) {
-  if (ModifierContext.DEBUG) Vex.L('Vex.Flow.ModifierContext', args);
+  if (ModifierContext.DEBUG) log('Vex.Flow.ModifierContext', args);
 }
 
 export class ModifierContext {
@@ -143,7 +143,7 @@ export class ModifierContext {
 
   getMetrics(): ModifierContextMetrics {
     if (!this.formatted) {
-      throw new Vex.RERR('UnformattedMember', 'Unformatted member has no metrics.');
+      throw new RuntimeError('UnformattedMember', 'Unformatted member has no metrics.');
     }
 
     return {

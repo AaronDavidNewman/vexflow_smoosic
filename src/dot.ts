@@ -3,12 +3,13 @@
 //
 // This class implements dot modifiers for notes.
 
-import { Vex } from './vex';
+import { RuntimeError } from './util';
 import { Modifier } from './modifier';
 import { Note } from './note';
 import { StaveNote } from './stavenote';
 import { TabNote } from './tabnote';
 import { ModifierContextState } from './modifiercontext';
+import { GraceNote } from './gracenote';
 
 export class Dot extends Modifier {
   protected note?: Note;
@@ -37,14 +38,15 @@ export class Dot extends Modifier {
 
       // If it's a StaveNote
       if (note instanceof StaveNote) {
-        props = note.getKeyProps()[dot.getIndex()];
+        const index = dot.checkIndex();
+        props = note.getKeyProps()[index];
         shift = note.getRightDisplacedHeadPx();
       } else if (note instanceof TabNote) {
         // Else it's a TabNote
         props = { line: 0.5 }; // Shim key props for dot placement
         shift = 0;
       } else {
-        throw new Vex.RERR('Internal', 'Unexpected instance.');
+        throw new RuntimeError('Internal', 'Unexpected instance.');
       }
 
       const note_id = note.getAttribute('id');
@@ -127,8 +129,7 @@ export class Dot extends Modifier {
 
   setNote(note: Note): this {
     this.note = note;
-
-    if (this.note.getCategory() === 'gracenotes') {
+    if (note.getCategory() === GraceNote.CATEGORY) {
       this.radius *= 0.5;
       this.setWidth(3);
     }
@@ -142,19 +143,17 @@ export class Dot extends Modifier {
 
   draw(): void {
     const ctx = this.checkContext();
+    const note = this.checkAttachedNote();
     this.setRendered();
-    if (!this.note || this.index === undefined) {
-      throw new Vex.RERR('NoNoteIndex', 'Drawing a dot requires a note and an index.');
-    }
 
-    const stave = this.note.checkStave();
+    const stave = note.checkStave();
     const lineSpace = stave.getOptions().spacing_between_lines_px;
 
-    const start = this.note.getModifierStartXY(this.position, this.index, { forceFlagRight: true });
+    const start = note.getModifierStartXY(this.position, this.index, { forceFlagRight: true });
 
     // Set the starting y coordinate to the base of the stem for TabNotes
-    if (this.note.getCategory() === 'tabnotes') {
-      start.y = this.note.getStemExtents().baseY;
+    if (note.getCategory() === TabNote.CATEGORY) {
+      start.y = note.getStemExtents().baseY;
     }
 
     const x = start.x + this.x_shift + this.width - this.radius;

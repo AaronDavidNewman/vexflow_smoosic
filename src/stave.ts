@@ -1,9 +1,9 @@
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 
-import { Vex } from './vex';
+import { RuntimeError } from './util';
 import { Element, ElementStyle } from './element';
 import { Flow } from './tables';
-import { Barline } from './stavebarline';
+import { Barline, BarlineType } from './stavebarline';
 import { StaveModifier } from './stavemodifier';
 import { Repetition } from './staverepetition';
 import { StaveSection } from './stavesection';
@@ -22,7 +22,7 @@ export interface StaveLineConfig {
 }
 
 export interface StaveOptions {
-  //[name: string]: any;
+  // [name: string]: any;
   spacing: number;
   thickness: number;
   x_shift: number;
@@ -51,7 +51,8 @@ export class Stave extends Element {
   protected options: StaveOptions;
   protected endClef?: string;
   protected width: number;
-  protected height?: number;
+  // Initialised in resetLines called in constructor
+  protected height: number = 0;
   protected y: number;
 
   protected formatted: boolean;
@@ -106,15 +107,14 @@ export class Stave extends Element {
       line_config: [],
     };
     this.bounds = { x: this.x, y: this.y, w: this.width, h: 0 };
-    Vex.Merge(this.options, options);
+    this.options = { ...this.options, ...options };
 
     this.resetLines();
 
-    const BARTYPE = Barline.type;
     // beg bar
-    this.addModifier(new Barline(this.options.left_bar ? BARTYPE.SINGLE : BARTYPE.NONE));
+    this.addModifier(new Barline(this.options.left_bar ? BarlineType.SINGLE : BarlineType.NONE));
     // end bar
-    this.addEndModifier(new Barline(this.options.right_bar ? BARTYPE.SINGLE : BARTYPE.NONE));
+    this.addEndModifier(new Barline(this.options.right_bar ? BarlineType.SINGLE : BarlineType.NONE));
   }
 
   space(spacing: number): number {
@@ -182,6 +182,10 @@ export class Stave extends Element {
     return this;
   }
 
+  getY(): number {
+    return this.y;
+  }
+
   getTopLineTopY(): number {
     return this.getYForLine(0) - Flow.STAVE_LINE_THICKNESS / 2;
   }
@@ -239,7 +243,7 @@ export class Stave extends Element {
    */
   getModifierXShift(index = 0): number {
     if (typeof index !== 'number') {
-      throw new Vex.RERR('InvalidIndex', 'Must be of number type');
+      throw new RuntimeError('InvalidIndex', 'Must be of number type');
     }
 
     if (!this.formatted) this.format();
@@ -255,7 +259,7 @@ export class Stave extends Element {
 
     let start_x = this.start_x - this.x;
     const begBarline = this.modifiers[0] as Barline;
-    if (begBarline.getType() === Barline.type.REPEAT_BEGIN && start_x > begBarline.getWidth()) {
+    if (begBarline.getType() === BarlineType.REPEAT_BEGIN && start_x > begBarline.getWidth()) {
       start_x -= begBarline.getWidth();
     }
 
@@ -305,7 +309,7 @@ export class Stave extends Element {
     return this;
   }
 
-  getHeight(): number | undefined {
+  getHeight(): number {
     return this.height;
   }
 
@@ -392,7 +396,7 @@ export class Stave extends Element {
   // Bar Line functions
   setBegBarType(type: number): this {
     // Only valid bar types at beginning of stave is none, single or begin repeat
-    const { SINGLE, REPEAT_BEGIN, NONE } = Barline.type;
+    const { SINGLE, REPEAT_BEGIN, NONE } = BarlineType;
     if (type === SINGLE || type === REPEAT_BEGIN || type === NONE) {
       (this.modifiers[0] as Barline).setType(type);
       this.formatted = false;
@@ -402,7 +406,7 @@ export class Stave extends Element {
 
   setEndBarType(type: number): this {
     // Repeat end not valid at end of stave
-    if (type !== Barline.type.REPEAT_BEGIN) {
+    if (type !== BarlineType.REPEAT_BEGIN) {
       (this.modifiers[1] as Barline).setType(type);
       this.formatted = false;
     }
@@ -558,13 +562,13 @@ export class Stave extends Element {
       clefs: 3,
     });
 
-    if (begModifiers.length > 1 && begBarline.getType() === Barline.type.REPEAT_BEGIN) {
+    if (begModifiers.length > 1 && begBarline.getType() === BarlineType.REPEAT_BEGIN) {
       begModifiers.push(begModifiers.splice(0, 1)[0]);
-      begModifiers.splice(0, 0, new Barline(Barline.type.SINGLE));
+      begModifiers.splice(0, 0, new Barline(BarlineType.SINGLE));
     }
 
     if (endModifiers.indexOf(endBarline) > 0) {
-      endModifiers.splice(0, 0, new Barline(Barline.type.NONE));
+      endModifiers.splice(0, 0, new Barline(BarlineType.NONE));
     }
 
     let width;
@@ -598,7 +602,7 @@ export class Stave extends Element {
 
     for (let i = 0; i < endModifiers.length; i++) {
       modifier = endModifiers[i];
-      lastBarlineIdx = modifier.getCategory() === 'barlines' ? i : lastBarlineIdx;
+      lastBarlineIdx = modifier.getCategory() === Barline.CATEGORY ? i : lastBarlineIdx;
 
       widths.right = 0;
       widths.left = 0;
@@ -731,23 +735,23 @@ export class Stave extends Element {
    * Configure properties of the lines in the Stave
    * @param line_number The index of the line to configure.
    * @param line_config An configuration object for the specified line.
-   * @throws Vex.RERR "StaveConfigError" When the specified line number is out of
+   * @throws RuntimeError "StaveConfigError" When the specified line number is out of
    *   range of the number of lines specified in the constructor.
    */
   setConfigForLine(line_number: number, line_config: StaveLineConfig): this {
     if (line_number >= this.options.num_lines || line_number < 0) {
-      throw new Vex.RERR(
+      throw new RuntimeError(
         'StaveConfigError',
         'The line number must be within the range of the number of lines in the Stave.'
       );
     }
 
     if (line_config.visible === undefined) {
-      throw new Vex.RERR('StaveConfigError', "The line configuration object is missing the 'visible' property.");
+      throw new RuntimeError('StaveConfigError', "The line configuration object is missing the 'visible' property.");
     }
 
     if (typeof line_config.visible !== 'boolean') {
-      throw new Vex.RERR(
+      throw new RuntimeError(
         'StaveConfigError',
         "The line configuration objects 'visible' property must be true or false."
       );
@@ -763,13 +767,13 @@ export class Stave extends Element {
    * @param lines_configuration An array of line configuration objects.  These objects
    *   are of the same format as the single one passed in to setLineConfiguration().
    *   The caller can set null for any line config entry if it is desired that the default be used
-   * @throws Vex.RERR "StaveConfigError" When the lines_configuration array does not have
+   * @throws RuntimeError "StaveConfigError" When the lines_configuration array does not have
    *   exactly the same number of elements as the num_lines configuration object set in
    *   the constructor.
    */
   setConfigForLines(lines_configuration: StaveLineConfig[]): this {
     if (lines_configuration.length !== this.options.num_lines) {
-      throw new Vex.RERR(
+      throw new RuntimeError(
         'StaveConfigError',
         'The length of the lines configuration array must match the number of lines in the Stave'
       );
@@ -783,7 +787,10 @@ export class Stave extends Element {
       if (!lines_configuration[line_config]) {
         lines_configuration[line_config] = this.options.line_config[line_config];
       }
-      Vex.Merge(this.options.line_config[line_config], lines_configuration[line_config]);
+      this.options.line_config[line_config] = {
+        ...this.options.line_config[line_config],
+        ...lines_configuration[line_config],
+      };
     }
 
     this.options.line_config = lines_configuration;

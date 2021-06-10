@@ -7,7 +7,7 @@
 //
 // See `tests/notehead_tests.js` for usage examples.
 
-import { Vex } from './vex';
+import { RuntimeError, log } from './util';
 import { Flow } from './tables';
 import { Note, NoteStruct } from './note';
 import { Stem } from './stem';
@@ -22,7 +22,7 @@ import { ElementStyle } from './element';
 function L(
   // eslint-disable-next-line
   ...args: any []) {
-  if (NoteHead.DEBUG) Vex.L('Vex.Flow.NoteHead', args);
+  if (NoteHead.DEBUG) log('Vex.Flow.NoteHead', args);
 }
 
 export interface NoteHeadStruct extends NoteStruct {
@@ -137,7 +137,7 @@ export class NoteHead extends Note {
     // regular notes, rests, or other custom codes.
     this.glyph = Flow.getGlyphProps(this.duration, this.note_type);
     if (!this.glyph) {
-      throw new Vex.RuntimeError(
+      throw new RuntimeError(
         'BadArguments',
         `No glyph found for duration '${this.duration}' and type '${this.note_type}'`
       );
@@ -155,12 +155,15 @@ export class NoteHead extends Note {
     this.style = head_options.style;
     this.slashed = head_options.slashed || false;
 
-    Vex.Merge(this.render_options, {
-      // font size for note heads
-      glyph_font_scale: head_options.glyph_font_scale || Flow.DEFAULT_NOTATION_FONT_SCALE,
-      // number of stroke px to the left and right of head
-      stroke_px: 3,
-    });
+    this.render_options = {
+      ...this.render_options,
+      ...{
+        // font size for note heads
+        glyph_font_scale: head_options.glyph_font_scale || Flow.DEFAULT_NOTATION_FONT_SCALE,
+        // number of stroke px to the left and right of head
+        stroke_px: 3,
+      },
+    };
 
     this.setWidth(this.glyph.getWidth(this.render_options.glyph_font_scale));
   }
@@ -231,7 +234,7 @@ export class NoteHead extends Note {
   // Get the `BoundingBox` for the `NoteHead`
   getBoundingBox(): BoundingBox {
     if (!this.preFormatted) {
-      throw new Vex.RERR('UnformattedNote', "Can't call getBoundingBox on an unformatted note.");
+      throw new RuntimeError('UnformattedNote', "Can't call getBoundingBox on an unformatted note.");
     }
     const spacing = this.checkStave().getSpacingBetweenLines();
     const half_spacing = spacing / 2;

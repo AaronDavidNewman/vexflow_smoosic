@@ -4,7 +4,7 @@
 //
 // This file implements `Beams` that span over a set of `StemmableNotes`.
 
-import { Vex } from './vex';
+import { RuntimeError } from './util';
 import { Flow } from './tables';
 import { Element } from './element';
 import { Fraction } from './fraction';
@@ -14,6 +14,8 @@ import { Note } from './note';
 import { StemmableNote } from './stemmablenote';
 import { Voice } from './voice';
 import { RenderContext } from './types/common';
+import { TabNote } from './tabnote';
+import { StaveNote } from './stavenote';
 
 function calculateStemDirection(notes: StemmableNote[]) {
   let lineSum = 0;
@@ -185,7 +187,7 @@ export class Beam extends Element {
     // Convert beam groups to tick amounts
     const tickGroups = config.groups.map((group) => {
       if (!group.multiply) {
-        throw new Vex.RERR('InvalidBeamGroups', 'The beam groups must be an array of Vex.Flow.Fractions');
+        throw new RuntimeError('InvalidBeamGroups', 'The beam groups must be an array of Vex.Flow.Fractions');
       }
       return group.clone().multiply(Flow.RESOLUTION, 1);
     });
@@ -435,18 +437,18 @@ export class Beam extends Element {
     this.setAttribute('type', 'Beam');
 
     if (!notes || notes === []) {
-      throw new Vex.RERR('BadArguments', 'No notes provided for beam.');
+      throw new RuntimeError('BadArguments', 'No notes provided for beam.');
     }
 
     if (notes.length === 1) {
-      throw new Vex.RERR('BadArguments', 'Too few notes for beam.');
+      throw new RuntimeError('BadArguments', 'Too few notes for beam.');
     }
 
     // Validate beam line, direction and ticks.
     this.ticks = notes[0].getIntrinsicTicks();
 
     if (this.ticks >= Flow.durationToTicks('4')) {
-      throw new Vex.RERR('BadArguments', 'Beams can only be applied to notes shorter than a quarter note.');
+      throw new RuntimeError('BadArguments', 'Beams can only be applied to notes shorter than a quarter note.');
     }
 
     let i; // shared iterator
@@ -464,9 +466,9 @@ export class Beam extends Element {
 
     let stem_direction = this.stem_direction;
     // Figure out optimal stem direction based on given notes
-    if (auto_stem && notes[0].getCategory() === 'stavenotes') {
+    if (auto_stem && notes[0].getCategory() === StaveNote.CATEGORY) {
       stem_direction = calculateStemDirection(notes);
-    } else if (auto_stem && notes[0].getCategory() === 'tabnotes') {
+    } else if (auto_stem && notes[0].getCategory() === TabNote.CATEGORY) {
       // Auto Stem TabNotes
       const stem_weight = notes.reduce((memo, note) => memo + note.getStemDirection(), 0);
 
@@ -697,7 +699,7 @@ export class Beam extends Element {
           stem.setVisibility(true).setStemlet(true, totalBeamWidth + stemlet_extension);
         }
       } else {
-        throw new Vex.RERR('NoStem', 'stem undefined.');
+        throw new RuntimeError('NoStem', 'stem undefined.');
       }
     }
   }
@@ -878,7 +880,7 @@ export class Beam extends Element {
           ctx.closePath();
           ctx.fill();
         } else {
-          throw new Vex.RERR('NoLastBeamX', 'lastBeamX undefined.');
+          throw new RuntimeError('NoLastBeamX', 'lastBeamX undefined.');
         }
       }
 
@@ -898,7 +900,7 @@ export class Beam extends Element {
     if (this.postFormatted) return;
 
     // Calculate a smart slope if we're not forcing the beams to be flat.
-    if (this.notes[0].getCategory() === 'tabnotes' || this.render_options.flat_beams) {
+    if (this.notes[0].getCategory() === TabNote.CATEGORY || this.render_options.flat_beams) {
       this.calculateFlatSlope();
     } else {
       this.calculateSlope();

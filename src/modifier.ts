@@ -13,7 +13,7 @@
 // in multi-voice staves, all modifiers to notes on the same `tick` are part of the same
 // `ModifierContext`. This ensures that multiple voices don't trample all over each other.
 
-import { Vex } from './vex';
+import { RuntimeError } from './util';
 import { Element } from './element';
 import { ModifierContext } from './modifiercontext';
 import { Note } from './note';
@@ -27,16 +27,17 @@ export enum ModifierPosition {
 }
 
 // To enable logging for this class. Set `Vex.Flow.Modifier.DEBUG` to `true`.
-// function L(...args) { if (Modifier.DEBUG) Vex.L('Vex.Flow.Modifier', args); }
+// function L(...args) { if (Modifier.DEBUG) log('Vex.Flow.Modifier', args); }
 
 export class Modifier extends Element {
+  // Modifiers are attached to a note and an index. An index is a specific head in a chord.
   protected note?: Note;
+  protected index?: number;
 
   protected width: number;
   protected text_line: number;
   protected position: ModifierPosition;
   protected y_shift: number;
-  protected index: number;
   protected x_shift: number;
 
   private spacingFromNextModifier: number;
@@ -67,15 +68,9 @@ export class Modifier extends Element {
 
     this.width = 0;
 
-    // Modifiers are attached to a note and an index. An index is a
-    // specific head in a chord.
-    this.note = undefined;
-    this.index = 0;
-
     // The `text_line` is reserved space above or below a stave.
     this.text_line = 0;
     this.position = Modifier.Position.LEFT;
-    this.modifier_context = undefined;
     this.x_shift = 0;
     this.y_shift = 0;
     this.spacingFromNextModifier = 0;
@@ -104,7 +99,14 @@ export class Modifier extends Element {
 
   // Get and set attached note (`StaveNote`, `TabNote`, etc.)
   getNote(): Note {
-    if (!this.note) throw new Vex.RERR('NoNote', 'Modifier has no note.');
+    if (!this.note) throw new RuntimeError('NoNote', 'Modifier has no note.');
+    return this.note;
+  }
+
+  checkAttachedNote(): Note {
+    if (!this.note || this.index === undefined) {
+      throw new RuntimeError('NoAttachedNote', `Can't draw ${this.getCategory()} without a note and index.`);
+    }
     return this.note;
   }
 
@@ -114,7 +116,14 @@ export class Modifier extends Element {
   }
 
   // Get and set note index, which is a specific note in a chord.
-  getIndex(): number {
+  getIndex(): number | undefined {
+    return this.index;
+  }
+
+  checkIndex(): number {
+    if (this.index === undefined) {
+      throw new RuntimeError('NoIndex', 'Modifier has an invalid index.');
+    }
     return this.index;
   }
 
@@ -129,7 +138,7 @@ export class Modifier extends Element {
   }
 
   checkModifierContext(): ModifierContext {
-    if (!this.modifier_context) throw new Vex.RERR('NoModifierContext', 'Modifier Context Required');
+    if (!this.modifier_context) throw new RuntimeError('NoModifierContext', 'Modifier Context Required');
     return this.modifier_context;
   }
 
@@ -188,7 +197,7 @@ export class Modifier extends Element {
   // Render the modifier onto the canvas.
   draw(): void {
     this.checkContext();
-    throw new Vex.RERR('MethodNotImplemented', 'draw() not implemented for this modifier.');
+    throw new RuntimeError('MethodNotImplemented', 'draw() not implemented for this modifier.');
   }
 
   // aligns sub notes of NoteSubGroup (or GraceNoteGroup) to the main note with correct x-offset

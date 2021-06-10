@@ -22,7 +22,7 @@ export interface FontGlyph {
   y_min?: number;
   y_max?: number;
   ha: number;
-  o?: string;
+  o: string;
   leftSideBearing?: number;
   advanceWidth?: number;
   cached_outline?: string[];
@@ -87,6 +87,4 @@ const Fonts = {
   Custom: new Font('Custom', CustomMetrics, CustomFont),
 };
 
-const DefaultFontStack = [Fonts.Bravura, Fonts.Gonville, Fonts.Custom];
-
-export { Fonts, DefaultFontStack, Font };
+export { Fonts, Font };

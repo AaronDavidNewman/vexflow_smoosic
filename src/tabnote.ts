@@ -7,7 +7,7 @@
 //
 // See `tests/tabnote_tests.js` for usage examples
 
-import { Vex } from './vex';
+import { RuntimeError } from './util';
 import { Flow } from './tables';
 import { Modifier } from './modifier';
 import { Stem } from './stem';
@@ -135,27 +135,30 @@ export class TabNote extends StemmableNote {
     this.positions = tab_struct.positions;
 
     // Render Options
-    Vex.Merge(this.render_options, {
-      // font size for note heads and rests
-      glyph_font_scale: Flow.DEFAULT_TABLATURE_FONT_SCALE,
-      // Flag to draw a stem
-      draw_stem,
-      // Flag to draw dot modifiers
-      draw_dots: draw_stem,
-      // Flag to extend the main stem through the stave and fret positions
-      draw_stem_through_stave: false,
-      // vertical shift from stave line
-      y_shift: 0,
-      // normal glyph scale
-      scale: 1.0,
-      // default tablature font
-      font: '10pt Arial',
-    });
+    this.render_options = {
+      ...this.render_options,
+      ...{
+        // font size for note heads and rests
+        glyph_font_scale: Flow.DEFAULT_TABLATURE_FONT_SCALE,
+        // Flag to draw a stem
+        draw_stem,
+        // Flag to draw dot modifiers
+        draw_dots: draw_stem,
+        // Flag to extend the main stem through the stave and fret positions
+        draw_stem_through_stave: false,
+        // vertical shift from stave line
+        y_shift: 0,
+        // normal glyph scale
+        scale: 1.0,
+        // default tablature font
+        font: '10pt Arial',
+      },
+    };
 
     this.glyph = Flow.getGlyphProps(this.duration, this.noteType);
 
     if (!this.glyph) {
-      throw new Vex.RERR(
+      throw new RuntimeError(
         'BadArguments',
         `Invalid note initialization data (No glyph found): ${JSON.stringify(tab_struct)}`
       );
@@ -296,11 +299,11 @@ export class TabNote extends StemmableNote {
   // `position` at a fret position `index`
   getModifierStartXY(position: number, index: number): { x: number; y: number } {
     if (!this.preFormatted) {
-      throw new Vex.RERR('UnformattedNote', "Can't call GetModifierStartXY on an unformatted note");
+      throw new RuntimeError('UnformattedNote', "Can't call GetModifierStartXY on an unformatted note");
     }
 
     if (this.ys.length === 0) {
-      throw new Vex.RERR('NoYValues', 'No Y-Values calculated for this note.');
+      throw new RuntimeError('NoYValues', 'No Y-Values calculated for this note.');
     }
 
     let x = 0;
@@ -387,7 +390,7 @@ export class TabNote extends StemmableNote {
     // Draw the modifiers
     this.modifiers.forEach((modifier) => {
       // Only draw the dots if enabled
-      if (modifier.getCategory() === 'dots' && !this.render_options.draw_dots) return;
+      if (modifier.getCategory() === Dot.CATEGORY && !this.render_options.draw_dots) return;
 
       modifier.setContext(this.getContext());
       modifier.drawWithStyle();
@@ -457,20 +460,20 @@ export class TabNote extends StemmableNote {
     const ctx = this.checkContext();
 
     if (this.ys.length === 0) {
-      throw new Vex.RERR('NoYValues', "Can't draw note without Y values.");
+      throw new RuntimeError('NoYValues', "Can't draw note without Y values.");
     }
 
     this.setRendered();
     const render_stem = this.beam == undefined && this.render_options.draw_stem;
 
-    ctx.openGroup('tabnote', null, { pointerBBox: true });
+    ctx.openGroup('tabnote', undefined, { pointerBBox: true });
     this.drawPositions();
     this.drawStemThrough();
 
     if (this.stem && render_stem) {
       const stem_x = this.getStemX();
       this.stem.setNoteHeadXBounds(stem_x, stem_x);
-      ctx.openGroup('stem', null, { pointerBBox: true });
+      ctx.openGroup('stem', undefined, { pointerBBox: true });
       this.stem.setContext(ctx).draw();
       ctx.closeGroup();
     }

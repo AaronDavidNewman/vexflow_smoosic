@@ -8,7 +8,7 @@
 // In order to create "Sostenuto", and "una corda" markings, you must set
 // custom text for the release/depress pedal markings.
 
-import { Vex } from './vex';
+import { RuntimeError, log } from './util';
 import { Element } from './element';
 import { Glyph } from './glyph';
 import { FontInfo, RenderContext } from './types/common';
@@ -18,13 +18,13 @@ import { StaveNote } from './stavenote';
 function L(
   // eslint-disable-next-line
   ...args: any[]) {
-  if (PedalMarking.DEBUG) Vex.L('Vex.Flow.PedalMarking', args);
+  if (PedalMarking.DEBUG) log('Vex.Flow.PedalMarking', args);
 }
 
 // Draws a pedal glyph with the provided `name` on a rendering `context`
 // at the coordinates `x` and `y. Takes into account the glyph data
 // coordinate shifts.
-function drawPedalGlyph(name: string, context: RenderContext, x: number, y: number, point: number) {
+function drawPedalGlyph(name: string, context: RenderContext, x: number, y: number, point: number): void {
   const glyph_data = PedalMarking.GLYPHS[name];
   const glyph = new Glyph(glyph_data.code, point, { category: 'pedalMarking' });
   glyph.render(context, x + glyph_data.x_shift, y + glyph_data.y_shift);
@@ -163,7 +163,7 @@ export class PedalMarking extends Element {
 
       // Throw if current note is positioned before the previous note
       if (x < prev_x) {
-        throw new Vex.RERR('InvalidConfiguration', 'The notes provided must be in order of ascending x positions');
+        throw new RuntimeError('InvalidConfiguration', 'The notes provided must be in order of ascending x positions');
       }
 
       // Determine if the previous or next note are the same

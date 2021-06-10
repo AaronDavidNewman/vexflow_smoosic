@@ -6,6 +6,7 @@
 /* eslint max-classes-per-file: "off" */
 
 import { Vex } from './vex';
+import { RuntimeError, log } from './util';
 import { StaveNote } from './stavenote';
 import { Match, Parser, Result, Rule, RuleFunction } from './parser';
 import { Articulation } from './articulation';
@@ -19,7 +20,7 @@ import { Voice } from './voice';
 // To enable logging for this class. Set `Vex.Flow.EasyScore.DEBUG` to `true`.
 // eslint-disable-next-line
 function L(...args: any[]): void {
-  if (EasyScore.DEBUG) Vex.L('Vex.Flow.EasyScore', args);
+  if (EasyScore.DEBUG) log('Vex.Flow.EasyScore', args);
 }
 
 export const X = Vex.MakeException('EasyScoreError');
@@ -340,10 +341,10 @@ export class Builder {
 
     // reset() sets this.options.stem & this.options.clef but we check to make sure nothing has changed.
     if (options.stem === undefined) {
-      throw new Vex.RERR('options.stem is not defined');
+      throw new RuntimeError('options.stem is not defined');
     }
     if (options.clef === undefined) {
-      throw new Vex.RERR('options.clef is not defined');
+      throw new RuntimeError('options.clef is not defined');
     }
     const stem: string = options.stem.toLowerCase(); // e.g., auto | up | down
     const clef: string = options.clef; // e.g., treble | bass
