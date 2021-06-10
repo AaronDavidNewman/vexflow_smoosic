@@ -2451,7 +2451,7 @@ exports.BoundingBoxComputation = BoundingBoxComputation;
 // of general functions and properties that can be inherited by all VexFlow elements.
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Element = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var registry_1 = __webpack_require__(/*! ./registry */ "./src/registry.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 /**
@@ -2618,7 +2618,7 @@ var Element = /** @class */ (function () {
     /** Validates and returns the context. */
     Element.prototype.checkContext = function () {
         if (!this.context) {
-            throw new vex_1.Vex.RERR('NoContext', 'No rendering context attached to instance');
+            throw new util_1.RuntimeError('NoContext', 'No rendering context attached to instance.');
         }
         return this.context;
     };
@@ -2640,7 +2640,7 @@ exports.Element = Element;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Font = exports.DefaultFontStack = exports.Fonts = void 0;
+exports.Font = exports.Fonts = void 0;
 var bravura_glyphs_1 = __webpack_require__(/*! ./fonts/bravura_glyphs */ "./src/fonts/bravura_glyphs.ts");
 var bravura_metrics_1 = __webpack_require__(/*! ./fonts/bravura_metrics */ "./src/fonts/bravura_metrics.ts");
 var gonville_glyphs_1 = __webpack_require__(/*! ./fonts/gonville_glyphs */ "./src/fonts/gonville_glyphs.ts");
@@ -2699,8 +2699,6 @@ var Fonts = {
     Custom: new Font('Custom', custom_metrics_1.CustomMetrics, custom_glyphs_1.CustomFont),
 };
 exports.Fonts = Fonts;
-var DefaultFontStack = [Fonts.Bravura, Fonts.Gonville, Fonts.Custom];
-exports.DefaultFontStack = DefaultFontStack;
 
 
 /***/ }),
@@ -13128,7 +13126,7 @@ exports.PetalumaMetrics = {
 // @author incompleteopus (modifications)
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Fraction = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 /** Fraction represents a rational number. */
 var Fraction = /** @class */ (function () {
     /** Constructs providing numerator and denominator. */
@@ -13142,7 +13140,7 @@ var Fraction = /** @class */ (function () {
      */
     Fraction.GCD = function (a, b) {
         if (typeof a !== 'number' || typeof b !== 'number') {
-            throw new vex_1.Vex.RERR('BadArgument', "Invalid numbers: " + a + ", " + b);
+            throw new util_1.RuntimeError('BadArgument', "Invalid numbers: " + a + ", " + b);
         }
         var t;
         while (b !== 0) {
@@ -13411,11 +13409,11 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Glyph = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var boundingboxcomputation_1 = __webpack_require__(/*! ./boundingboxcomputation */ "./src/boundingboxcomputation.ts");
 var boundingbox_1 = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
+var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 function processOutline(outline, originX, originY, scaleX, scaleY, 
 // eslint-disable-next-line
 outlineFns) {
@@ -13494,7 +13492,6 @@ var Glyph = /** @class */ (function (_super) {
     }
     // eslint-disable-next-line
     Glyph.prototype.draw = function () { };
-    ;
     /*
       Static methods used to implement loading and rendering glyphs.
   
@@ -13511,7 +13508,7 @@ var Glyph = /** @class */ (function (_super) {
     };
     Glyph.lookupGlyph = function (fontStack, code) {
         if (!fontStack) {
-            throw new vex_1.Vex.RERR('BAD_FONTSTACK', 'Font stack is misconfigured');
+            throw new util_1.RuntimeError('BAD_FONTSTACK', 'Font stack is misconfigured');
         }
         var glyph;
         var font;
@@ -13521,7 +13518,7 @@ var Glyph = /** @class */ (function (_super) {
             if (glyph)
                 return { glyph: glyph, font: font };
         }
-        throw new vex_1.Vex.RERR('BadGlyph', "Glyph " + code + " does not exist in font.");
+        throw new util_1.RuntimeError('BadGlyph', "Glyph " + code + " does not exist in font.");
     };
     Glyph.loadMetrics = function (fontStack, code, category) {
         var _a = Glyph.lookupGlyph(fontStack, code), glyph = _a.glyph, font = _a.font;
@@ -13565,7 +13562,7 @@ var Glyph = /** @class */ (function (_super) {
             };
         }
         else {
-            throw new vex_1.Vex.RERR('BadGlyph', "Glyph " + code + " has no outline defined.");
+            throw new util_1.RuntimeError('BadGlyph', "Glyph " + code + " has no outline defined.");
         }
     };
     /**
@@ -13662,7 +13659,7 @@ var Glyph = /** @class */ (function (_super) {
     };
     Glyph.prototype.getMetrics = function () {
         if (!this.metrics) {
-            throw new vex_1.Vex.RuntimeError('BadGlyph', "Glyph " + this.code + " is not initialized.");
+            throw new util_1.RuntimeError('BadGlyph', "Glyph " + this.code + " is not initialized.");
         }
         return {
             x_min: this.metrics.x_min * this.scale * this.metrics.scale,
@@ -13695,7 +13692,7 @@ var Glyph = /** @class */ (function (_super) {
     };
     Glyph.prototype.render = function (ctx, x, y) {
         if (!this.metrics) {
-            throw new vex_1.Vex.RuntimeError('BadGlyph', "Glyph " + this.code + " is not initialized.");
+            throw new util_1.RuntimeError('BadGlyph', "Glyph " + this.code + " is not initialized.");
         }
         var outline = this.metrics.outline;
         var scale = this.scale * this.metrics.scale;
@@ -13707,10 +13704,10 @@ var Glyph = /** @class */ (function (_super) {
     Glyph.prototype.renderToStave = function (x) {
         var context = this.checkContext();
         if (!this.metrics) {
-            throw new vex_1.Vex.RuntimeError('BadGlyph', "Glyph " + this.code + " is not initialized.");
+            throw new util_1.RuntimeError('BadGlyph', "Glyph " + this.code + " is not initialized.");
         }
         if (!this.stave) {
-            throw new vex_1.Vex.RuntimeError('GlyphError', 'No valid stave');
+            throw new util_1.RuntimeError('GlyphError', 'No valid stave');
         }
         var outline = this.metrics.outline;
         var scale = this.scale * this.metrics.scale;
@@ -13742,7 +13739,7 @@ exports.Glyph = Glyph;
 // This class implements diatonic key management.
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.KeyManager = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var music_1 = __webpack_require__(/*! ./music */ "./src/music.ts");
 var KeyManager = /** @class */ (function () {
     function KeyManager(key) {
@@ -13764,7 +13761,7 @@ var KeyManager = /** @class */ (function () {
             this.keyString += this.keyParts.accidental;
         var is_supported_type = music_1.Music.scaleTypes[this.keyParts.type];
         if (!is_supported_type) {
-            throw new vex_1.Vex.RERR('BadArguments', "Unsupported key type: " + this.key);
+            throw new util_1.RuntimeError('BadArguments', "Unsupported key type: " + this.key);
         }
         this.scale = this.music.getScaleTones(this.music.getNoteValue(this.keyString), music_1.Music.scaleTypes[this.keyParts.type]);
         this.scaleMap = {};
@@ -13867,7 +13864,7 @@ exports.KeyManager = KeyManager;
 // This class implements some standard music theory routines.
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Music = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var Music = /** @class */ (function () {
     function Music() {
     }
@@ -14077,10 +14074,10 @@ var Music = /** @class */ (function () {
     };
     Music.prototype.getNoteParts = function (noteString) {
         if (!noteString || noteString.length < 1) {
-            throw new vex_1.Vex.RERR('BadArguments', 'Invalid note name: ' + noteString);
+            throw new util_1.RuntimeError('BadArguments', 'Invalid note name: ' + noteString);
         }
         if (noteString.length > 3) {
-            throw new vex_1.Vex.RERR('BadArguments', 'Invalid note name: ' + noteString);
+            throw new util_1.RuntimeError('BadArguments', 'Invalid note name: ' + noteString);
         }
         var note = noteString.toLowerCase();
         var regex = /^([cdefgab])(b|bb|n|#|##)?$/;
@@ -14094,12 +14091,12 @@ var Music = /** @class */ (function () {
             };
         }
         else {
-            throw new vex_1.Vex.RERR('BadArguments', 'Invalid note name: ' + noteString);
+            throw new util_1.RuntimeError('BadArguments', 'Invalid note name: ' + noteString);
         }
     };
     Music.prototype.getKeyParts = function (keyString) {
         if (!keyString || keyString.length < 1) {
-            throw new vex_1.Vex.RERR('BadArguments', 'Invalid key: ' + keyString);
+            throw new util_1.RuntimeError('BadArguments', 'Invalid key: ' + keyString);
         }
         var key = keyString.toLowerCase();
         // Support Major, Minor, Melodic Minor, and Harmonic Minor key types.
@@ -14119,32 +14116,32 @@ var Music = /** @class */ (function () {
             };
         }
         else {
-            throw new vex_1.Vex.RERR('BadArguments', "Invalid key: " + keyString);
+            throw new util_1.RuntimeError('BadArguments', "Invalid key: " + keyString);
         }
     };
     Music.prototype.getNoteValue = function (noteString) {
         var value = Music.noteValues[noteString];
         if (value === undefined) {
-            throw new vex_1.Vex.RERR('BadArguments', "Invalid note name: " + noteString);
+            throw new util_1.RuntimeError('BadArguments', "Invalid note name: " + noteString);
         }
         return value.int_val;
     };
     Music.prototype.getIntervalValue = function (intervalString) {
         var value = Music.intervals[intervalString];
         if (value === undefined) {
-            throw new vex_1.Vex.RERR('BadArguments', "Invalid interval name: " + intervalString);
+            throw new util_1.RuntimeError('BadArguments', "Invalid interval name: " + intervalString);
         }
         return value;
     };
     Music.prototype.getCanonicalNoteName = function (noteValue) {
         if (!this.isValidNoteValue(noteValue)) {
-            throw new vex_1.Vex.RERR('BadArguments', "Invalid note value: " + noteValue);
+            throw new util_1.RuntimeError('BadArguments', "Invalid note value: " + noteValue);
         }
         return Music.canonical_notes[noteValue];
     };
     Music.prototype.getCanonicalIntervalName = function (intervalValue) {
         if (!this.isValidIntervalValue(intervalValue)) {
-            throw new vex_1.Vex.RERR('BadArguments', "Invalid interval value: " + intervalValue);
+            throw new util_1.RuntimeError('BadArguments', "Invalid interval value: " + intervalValue);
         }
         return Music.diatonic_intervals[intervalValue];
     };
@@ -14154,7 +14151,7 @@ var Music = /** @class */ (function () {
     Music.prototype.getRelativeNoteValue = function (noteValue, intervalValue, direction) {
         if (direction === void 0) { direction = 1; }
         if (direction !== 1 && direction !== -1) {
-            throw new vex_1.Vex.RERR('BadArguments', "Invalid direction: " + direction);
+            throw new util_1.RuntimeError('BadArguments', "Invalid direction: " + direction);
         }
         var sum = (noteValue + direction * intervalValue) % Music.NUM_TONES;
         if (sum < 0)
@@ -14172,14 +14169,14 @@ var Music = /** @class */ (function () {
             // Possibly wrap around. (Add +1 for modulo operator)
             var reverse_interval = ((noteValue + 1 + (rootValue + 1)) % Music.NUM_TONES) * multiplier;
             if (Math.abs(reverse_interval) > 2) {
-                throw new vex_1.Vex.RERR('BadArguments', "Notes not related: " + root + ", " + noteValue + ")");
+                throw new util_1.RuntimeError('BadArguments', "Notes not related: " + root + ", " + noteValue + ")");
             }
             else {
                 interval = reverse_interval;
             }
         }
         if (Math.abs(interval) > 2) {
-            throw new vex_1.Vex.RERR('BadArguments', "Notes not related: " + root + ", " + noteValue + ")");
+            throw new util_1.RuntimeError('BadArguments', "Notes not related: " + root + ", " + noteValue + ")");
         }
         var relativeNoteName = parts.root;
         if (interval > 0) {
@@ -14220,10 +14217,10 @@ var Music = /** @class */ (function () {
     Music.prototype.getIntervalBetween = function (note1, note2, direction) {
         if (direction === void 0) { direction = 1; }
         if (direction !== 1 && direction !== -1) {
-            throw new vex_1.Vex.RERR('BadArguments', "Invalid direction: " + direction);
+            throw new util_1.RuntimeError('BadArguments', "Invalid direction: " + direction);
         }
         if (!this.isValidNoteValue(note1) || !this.isValidNoteValue(note2)) {
-            throw new vex_1.Vex.RERR('BadArguments', "Invalid notes: " + note1 + ", " + note2);
+            throw new util_1.RuntimeError('BadArguments', "Invalid notes: " + note1 + ", " + note2);
         }
         var difference = direction === 1 ? note2 - note1 : note1 - note2;
         if (difference < 0)
@@ -14239,13 +14236,13 @@ var Music = /** @class */ (function () {
     Music.prototype.createScaleMap = function (keySignature) {
         var keySigParts = this.getKeyParts(keySignature);
         if (!keySigParts.type)
-            throw new vex_1.Vex.RERR('BadArguments', 'Unsupported key type: undefined');
+            throw new util_1.RuntimeError('BadArguments', 'Unsupported key type: undefined');
         var scaleName = Music.scaleTypes[keySigParts.type];
         var keySigString = keySigParts.root;
         if (keySigParts.accidental)
             keySigString += keySigParts.accidental;
         if (!scaleName)
-            throw new vex_1.Vex.RERR('BadArguments', 'Unsupported key type: ' + keySignature);
+            throw new util_1.RuntimeError('BadArguments', 'Unsupported key type: ' + keySignature);
         var scale = this.getScaleTones(this.getNoteValue(keySigString), scaleName);
         var noteLocation = Music.root_indices[keySigParts.root];
         var scaleMap = {};
@@ -14423,6 +14420,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Flow = void 0;
 /* eslint-disable key-spacing */
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var font_1 = __webpack_require__(/*! ./font */ "./src/font.ts");
@@ -14431,7 +14429,11 @@ var Flow = {
     STEM_HEIGHT: 35,
     STAVE_LINE_THICKNESS: 1,
     RESOLUTION: 16384,
-    DEFAULT_FONT_STACK: font_1.DefaultFontStack,
+    /**
+     * Customize this to choose a different music font.
+     * For example: Vex.Flow.DEFAULT_FONT_STACK = [Fonts.Petaluma, Fonts.Custom];
+     */
+    DEFAULT_FONT_STACK: [font_1.Fonts.Bravura, font_1.Fonts.Gonville, font_1.Fonts.Custom],
     DEFAULT_NOTATION_FONT_SCALE: 39,
     DEFAULT_TABLATURE_FONT_SCALE: 39,
     SLASH_NOTEHEAD_WIDTH: 15,
@@ -14460,10 +14462,10 @@ var Flow = {
 exports.Flow = Flow;
 Flow.clefProperties = function (clef) {
     if (!clef)
-        throw new vex_1.Vex.RERR('BadArgument', 'Invalid clef: ' + clef);
+        throw new util_1.RuntimeError('BadArgument', 'Invalid clef: ' + clef);
     var props = Flow.clefProperties.values[clef];
     if (!props)
-        throw new vex_1.Vex.RERR('BadArgument', 'Invalid clef: ' + clef);
+        throw new util_1.RuntimeError('BadArgument', 'Invalid clef: ' + clef);
     return props;
 };
 Flow.clefProperties.values = {
@@ -14495,12 +14497,12 @@ function keyProperties(key, clef, params) {
     }
     var pieces = key.split('/');
     if (pieces.length < 2) {
-        throw new vex_1.Vex.RERR('BadArguments', "Key must have note + octave and an optional glyph: " + key);
+        throw new util_1.RuntimeError('BadArguments', "Key must have note + octave and an optional glyph: " + key);
     }
     var k = pieces[0].toUpperCase();
     var value = Flow.keyProperties.note_values[k];
     if (!value)
-        throw new vex_1.Vex.RERR('BadArguments', 'Invalid key name: ' + k);
+        throw new util_1.RuntimeError('BadArguments', 'Invalid key name: ' + k);
     if (value.octave)
         pieces[1] = value.octave;
     var octave = parseInt(pieces[1], 10);
@@ -14584,14 +14586,14 @@ Flow.keyProperties.note_values = {
 };
 function integerToNote(integer) {
     if (typeof integer === 'undefined') {
-        throw new vex_1.Vex.RERR('BadArguments', 'Undefined integer for integerToNote');
+        throw new util_1.RuntimeError('BadArguments', 'Undefined integer for integerToNote');
     }
     if (integer < -2) {
-        throw new vex_1.Vex.RERR('BadArguments', "integerToNote requires integer > -2: " + integer);
+        throw new util_1.RuntimeError('BadArguments', "integerToNote requires integer > -2: " + integer);
     }
     var noteValue = Flow.integerToNote.table[integer];
     if (!noteValue) {
-        throw new vex_1.Vex.RERR('BadArguments', "Unknown note value for integer: " + integer);
+        throw new util_1.RuntimeError('BadArguments', "Unknown note value for integer: " + integer);
     }
     return noteValue;
 }
@@ -14996,7 +14998,7 @@ Flow.ornamentCodes.ornaments = {
 Flow.keySignature = function (spec) {
     var keySpec = Flow.keySignature.keySpecs[spec];
     if (!keySpec) {
-        throw new vex_1.Vex.RERR('BadKeySignature', "Bad key signature spec: '" + spec + "'");
+        throw new util_1.RuntimeError('BadKeySignature', "Bad key signature spec: '" + spec + "'");
     }
     if (!keySpec.acc) {
         return [];
@@ -15071,7 +15073,7 @@ Flow.sanitizeDuration = function (duration) {
         duration = alias;
     }
     if (Flow.durationToTicks.durations[duration] === undefined) {
-        throw new vex_1.Vex.RERR('BadArguments', "The provided duration is not valid: " + duration);
+        throw new util_1.RuntimeError('BadArguments', "The provided duration is not valid: " + duration);
     }
     return duration;
 };
@@ -15644,7 +15646,7 @@ var TIME4_4 = {
 // This class implements varies types of tunings for tablature.
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Tuning = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 /** Tuning implements varies types of tunings for tablature. */
 var Tuning = /** @class */ (function () {
@@ -15690,7 +15692,7 @@ var Tuning = /** @class */ (function () {
         this.numStrings = 0;
         var keys = noteString.split(/\s*,\s*/);
         if (keys.length === 0) {
-            throw new vex_1.Vex.RERR('BadArguments', "Invalid tuning string: " + noteString);
+            throw new util_1.RuntimeError('BadArguments', "Invalid tuning string: " + noteString);
         }
         this.numStrings = keys.length;
         for (var i = 0; i < this.numStrings; ++i) {
@@ -15701,7 +15703,7 @@ var Tuning = /** @class */ (function () {
     Tuning.prototype.getValueForString = function (stringNum) {
         var s = Number(stringNum);
         if (s < 1 || s > this.numStrings) {
-            throw new vex_1.Vex.RERR('BadArguments', "String number must be between 1 and " + this.numStrings + ":" + stringNum);
+            throw new util_1.RuntimeError('BadArguments', "String number must be between 1 and " + this.numStrings + ":" + stringNum);
         }
         return this.tuningValues[s - 1];
     };
@@ -15710,7 +15712,7 @@ var Tuning = /** @class */ (function () {
         var stringValue = this.getValueForString(stringNum);
         var f = Number(fretNum);
         if (f < 0) {
-            throw new vex_1.Vex.RERR('BadArguments', "Fret number must be 0 or higher: " + fretNum);
+            throw new util_1.RuntimeError('BadArguments', "Fret number must be 0 or higher: " + fretNum);
         }
         return stringValue + f;
     };
@@ -15724,6 +15726,85 @@ var Tuning = /** @class */ (function () {
     return Tuning;
 }());
 exports.Tuning = Tuning;
+
+
+/***/ }),
+
+/***/ "./src/util.ts":
+/*!*********************!*\
+  !*** ./src/util.ts ***!
+  \*********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.warn = exports.log = exports.RuntimeError = void 0;
+var RuntimeError = /** @class */ (function (_super) {
+    __extends(RuntimeError, _super);
+    function RuntimeError(code, message) {
+        var _this = _super.call(this, '[RuntimeError] ' + code + ':' + message) || this;
+        _this.code = code;
+        return _this;
+    }
+    return RuntimeError;
+}(Error));
+exports.RuntimeError = RuntimeError;
+// Default log function sends all arguments to console.
+function log(block) {
+    // eslint-disable-next-line
+    var args = [];
+    for (
+    // eslint-disable-next-line
+    var _i = 1; 
+    // eslint-disable-next-line
+    _i < arguments.length; 
+    // eslint-disable-next-line
+    _i++) {
+        // eslint-disable-next-line
+        args[_i - 1] = arguments[_i];
+    }
+    if (!args)
+        return;
+    var line = Array.prototype.slice.call(args).join(' ');
+    window.console.log(block + ': ' + line);
+}
+exports.log = log;
+// Dump warning to console.
+function warn() {
+    // eslint-disable-next-line
+    var args = [];
+    for (
+    // eslint-disable-next-line
+    var _i = 0; 
+    // eslint-disable-next-line
+    _i < arguments.length; 
+    // eslint-disable-next-line
+    _i++) {
+        // eslint-disable-next-line
+        args[_i] = arguments[_i];
+    }
+    var line = args.join(' ');
+    var err = new Error();
+    window.console.log('Warning: ', line, err.stack);
+}
+exports.warn = warn;
 
 
 /***/ }),
@@ -15761,15 +15842,9 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Vex = void 0;
 /* eslint max-classes-per-file: "off" */
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var Vex = function () { };
 exports.Vex = Vex;
-// Default log function sends all arguments to console.
-Vex.L = function (block, args) {
-    if (!args)
-        return;
-    var line = Array.prototype.slice.call(args).join(' ');
-    window.console.log(block + ': ' + line);
-};
 Vex.MakeException = function (name) {
     var exception = /** @class */ (function (_super) {
         __extends(exception, _super);
@@ -15784,19 +15859,6 @@ Vex.MakeException = function (name) {
     }(Error));
     return exception;
 };
-// Default runtime exception.
-var RuntimeError = /** @class */ (function (_super) {
-    __extends(RuntimeError, _super);
-    function RuntimeError(code, message) {
-        var _this = _super.call(this, '[RuntimeError] ' + code + ':' + message) || this;
-        _this.code = code;
-        return _this;
-    }
-    return RuntimeError;
-}(Error));
-// Shortcut method for `RuntimeError`.
-Vex.RuntimeError = RuntimeError;
-Vex.RERR = Vex.RuntimeError;
 // Merge `destination` hash with `source` hash, overwriting like keys
 // in `source` if necessary.
 Vex.Merge = function (destination, source) {
@@ -15806,9 +15868,6 @@ Vex.Merge = function (destination, source) {
     }
     return destination;
 };
-// DEPRECATED. Use `Math.*`.
-Vex.Min = Math.min;
-Vex.Max = Math.max;
 Vex.forEach = function (a, fn) {
     for (var i = 0; i < a.length; i++) {
         fn(a[i], i);
@@ -15856,11 +15915,11 @@ Vex.Contains = function (a, obj) {
 // Get the 2D Canvas context from DOM element `canvas_sel`.
 Vex.getCanvasContext = function (canvas_sel) {
     if (!canvas_sel) {
-        throw new Vex.RERR('BadArgument', 'Invalid canvas selector: ' + canvas_sel);
+        throw new util_1.RuntimeError('BadArgument', 'Invalid canvas selector: ' + canvas_sel);
     }
     var canvas = document.getElementById(canvas_sel);
     if (!(canvas && canvas.getContext)) {
-        throw new Vex.RERR('UnsupportedBrowserError', 'This browser does not support HTML5 Canvas');
+        throw new util_1.RuntimeError('UnsupportedBrowserError', 'This browser does not support HTML5 Canvas');
     }
     return canvas.getContext('2d');
 };
@@ -15884,21 +15943,7 @@ Vex.BM = function (s, f) {
     var start_time = new Date().getTime();
     f();
     var elapsed = new Date().getTime() - start_time;
-    Vex.L(s + elapsed + 'ms');
-};
-// Get stack trace.
-Vex.StackTrace = function () {
-    var err = new Error();
-    return err.stack;
-};
-// Dump warning to console.
-Vex.W = function () {
-    var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
-    }
-    var line = args.join(' ');
-    window.console.log('Warning: ', line, Vex.StackTrace());
+    util_1.log(s + elapsed + 'ms');
 };
 // Used by various classes (e.g., SVGContext) to provide a
 // unique prefix to element names (or other keys in shared namespaces).
@@ -20745,7 +20790,7 @@ var FormatterTests = (function () {
         return (vf.x_max - vf.x_min) * glyphPixels();
     };
     var glyphPixels = function () {
-        return 96 * (38 / (VF.DefaultFontStack[0].getResolution() * 72));
+        return 96 * (38 / (VF.DEFAULT_FONT_STACK[0].getResolution() * 72));
     };
     var Formatter = {
         Start: function () {
@@ -20808,7 +20853,7 @@ var FormatterTests = (function () {
             // TODO: add this after pull request #68 is merged to master
             // throws(
             //   function() { formatter.getMinTotalWidth(); },
-            //   Vex.RERR,
+            //   RuntimeError,
             //   "Expected to throw exception"
             // );
             ok(formatter.preCalculateMinTotalWidth([voice1, voice2]), 'Successfully runs preCalculateMinTotalWidth');
@@ -23767,7 +23812,7 @@ var OrnamentTests = (function () {
             expect(0);
             var glyphWidth = function (vexGlyph) {
                 var vf = VF.DEFAULT_FONT_STACK[0].getGlyphs()[vexGlyph];
-                return (vf.x_max - vf.x_min) * (96 * (38 / (VF.DefaultFontStack[0].getResolution() * 72)));
+                return (vf.x_max - vf.x_min) * (96 * (38 / (VF.DEFAULT_FONT_STACK[0].getResolution() * 72)));
             };
             var lineWidth = 960;
             var xinc = lineWidth / 3;
@@ -30677,8 +30722,8 @@ var VexFlowTests = (function () {
         NODE_IMAGEDIR: 'images',
         // Default font properties for tests.
         Font: { size: 10 },
-        // Customize this array to test more fonts (e.g., ['Bravura', 'Gonville', 'Petaluma']).
-        FONT_STACKS_TO_TEST: ['Bravura'],
+        // Customize this array to test fewer fonts (e.g., ['Bravura', 'Petaluma']).
+        FONT_STACKS_TO_TEST: ['Bravura', 'Gonville', 'Petaluma'],
         FONT_STACKS: {
             Bravura: [VF.Fonts.Bravura, VF.Fonts.Gonville, VF.Fonts.Custom],
             Gonville: [VF.Fonts.Gonville, VF.Fonts.Bravura, VF.Fonts.Custom],

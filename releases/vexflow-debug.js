@@ -132,12 +132,14 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Accidental = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var music_1 = __webpack_require__(/*! ./music */ "./src/music.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+var gracenotegroup_1 = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
+var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
 // To enable logging for this class. Set `Vex.Flow.Accidental.DEBUG` to `true`.
 function L() {
     var args = [];
@@ -145,7 +147,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (Accidental.DEBUG)
-        vex_1.Vex.L('Vex.Flow.Accidental', args);
+        util_1.log('Vex.Flow.Accidental', args);
 }
 var getGlyphWidth = function (glyph) { return glyph.getMetrics().width; };
 // An `Accidental` inherits from `Modifier`, and is formatted within a
@@ -160,9 +162,6 @@ var Accidental = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Accidental');
         L('New accidental: ', type);
-        _this.note = null;
-        // The `index` points to a specific note in a chord.
-        _this.index = null;
         _this.type = type;
         _this.position = modifier_1.Modifier.Position.LEFT;
         _this.render_options = {
@@ -176,7 +175,7 @@ var Accidental = /** @class */ (function (_super) {
         };
         _this.accidental = tables_1.Flow.accidentalCodes(_this.type);
         if (!_this.accidental) {
-            throw new vex_1.Vex.RERR('ArgumentError', "Unknown accidental type: " + type);
+            throw new util_1.RuntimeError('ArgumentError', "Unknown accidental type: " + type);
         }
         // Cautionary accidentals have parentheses around them
         _this.cautionary = false;
@@ -209,7 +208,8 @@ var Accidental = /** @class */ (function (_super) {
             var acc = accidentals[i];
             var note = acc.getNote();
             var stave = note.getStave();
-            var props = note.getKeyProps()[acc.getIndex()];
+            var index = acc.checkIndex();
+            var props = note.getKeyProps()[index];
             if (note !== prevNote) {
                 // Iterate through all notes to get the displaced pixels
                 for (var n = 0; n < note.keys.length; ++n) {
@@ -530,7 +530,7 @@ var Accidental = /** @class */ (function (_super) {
                 });
                 // process grace notes
                 note.getModifiers().forEach(function (modifier) {
-                    if (modifier.getCategory() === 'gracenotegroups') {
+                    if (modifier.getCategory() === gracenotegroup_1.GraceNoteGroup.CATEGORY) {
                         modifier.getGraceNotes().forEach(processNote);
                     }
                 });
@@ -564,11 +564,11 @@ var Accidental = /** @class */ (function (_super) {
     // Attach this accidental to `note`, which must be a `StaveNote`.
     Accidental.prototype.setNote = function (note) {
         if (!note) {
-            throw new vex_1.Vex.RERR('ArgumentError', "Bad note value: " + note);
+            throw new util_1.RuntimeError('ArgumentError', "Bad note value: " + note);
         }
         this.note = note;
         // Accidentals attached to grace notes are rendered smaller.
-        if (this.note.getCategory() === 'gracenotes') {
+        if (note.getCategory() === gracenote_1.GraceNote.CATEGORY) {
             this.render_options.font_scale = 25;
             this.reset();
         }
@@ -582,11 +582,10 @@ var Accidental = /** @class */ (function (_super) {
     };
     // Render accidental onto canvas.
     Accidental.prototype.draw = function () {
-        var _a = this, context = _a.context, type = _a.type, position = _a.position, note = _a.note, index = _a.index, cautionary = _a.cautionary, x_shift = _a.x_shift, y_shift = _a.y_shift, glyph = _a.glyph, parenLeft = _a.parenLeft, parenRight = _a.parenRight, _b = _a.render_options, parenLeftPadding = _b.parenLeftPadding, parenRightPadding = _b.parenRightPadding;
+        var _a = this, context = _a.context, type = _a.type, position = _a.position, index = _a.index, cautionary = _a.cautionary, x_shift = _a.x_shift, y_shift = _a.y_shift, glyph = _a.glyph, parenLeft = _a.parenLeft, parenRight = _a.parenRight, _b = _a.render_options, parenLeftPadding = _b.parenLeftPadding, parenRightPadding = _b.parenRightPadding;
         this.checkContext();
-        if (!(note && index != null)) {
-            throw new vex_1.Vex.RERR('NoAttachedNote', "Can't draw accidental without a note and index.");
-        }
+        var note = this.checkAttachedNote();
+        this.setRendered();
         // Figure out the start `x` and `y` coordinates for note and index.
         var start = note.getModifierStartXY(position, index);
         var accX = start.x + x_shift;
@@ -606,7 +605,6 @@ var Accidental = /** @class */ (function (_super) {
             accX -= parenLeftPadding;
             parenLeft.render(context, accX, accY);
         }
-        this.setRendered();
     };
     return Accidental;
 }(modifier_1.Modifier));
@@ -649,26 +647,19 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Annotation = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var textfont_1 = __webpack_require__(/*! ./textfont */ "./src/textfont.ts");
 // To enable logging for this class. Set `Vex.Flow.Annotation.DEBUG` to `true`.
+// eslint-disable-next-line
 function L() {
-    // eslint-disable-next-line
     var args = [];
-    for (
-    // eslint-disable-next-line
-    var _i = 0; 
-    // eslint-disable-next-line
-    _i < arguments.length; 
-    // eslint-disable-next-line
-    _i++) {
-        // eslint-disable-next-line
+    for (var _i = 0; _i < arguments.length; _i++) {
         args[_i] = arguments[_i];
     }
     if (Annotation.DEBUG)
-        vex_1.Vex.L('Vex.Flow.Annotation', args);
+        util_1.log('Vex.Flow.Annotation', args);
 }
 var Justify;
 (function (Justify) {
@@ -770,11 +761,9 @@ var Annotation = /** @class */ (function (_super) {
     // Render text beside the note.
     Annotation.prototype.draw = function () {
         var ctx = this.checkContext();
-        if (!this.note) {
-            throw new vex_1.Vex.RERR('NoNoteForAnnotation', "Can't draw text annotation without an attached note.");
-        }
+        var note = this.checkAttachedNote();
         this.setRendered();
-        var start = this.note.getModifierStartXY(modifier_1.Modifier.Position.ABOVE, this.index);
+        var start = note.getModifierStartXY(modifier_1.Modifier.Position.ABOVE, this.index);
         // We're changing context parameters. Save current state.
         ctx.save();
         var classString = Object.keys(this.getAttribute('classes')).join(' ');
@@ -798,16 +787,16 @@ var Annotation = /** @class */ (function (_super) {
             x = start.x - text_width / 2;
         } /* CENTER_STEM */
         else {
-            x = this.note.getStemX() - text_width / 2;
+            x = note.getStemX() - text_width / 2;
         }
         var stem_ext = {};
         var spacing = 0;
-        var has_stem = this.note.hasStem();
-        var stave = this.note.checkStave();
+        var has_stem = note.hasStem();
+        var stave = note.checkStave();
         // The position of the text varies based on whether or not the note
         // has a stem.
         if (has_stem) {
-            stem_ext = this.note.checkStem().getExtents();
+            stem_ext = note.checkStem().getExtents();
             spacing = stave.getSpacingBetweenLines();
         }
         if (this.vert_justification === Annotation.VerticalJustify.BOTTOM) {
@@ -815,23 +804,23 @@ var Annotation = /** @class */ (function (_super) {
             // is bottom-right.
             y = stave.getYForBottomText(this.text_line + tables_1.Flow.TEXT_HEIGHT_OFFSET_HACK);
             if (has_stem) {
-                var stem_base = this.note.getStemDirection() === 1 ? stem_ext.baseY : stem_ext.topY;
+                var stem_base = note.getStemDirection() === 1 ? stem_ext.baseY : stem_ext.topY;
                 y = Math.max(y, stem_base + spacing * (this.text_line + 2));
             }
         }
         else if (this.vert_justification === Annotation.VerticalJustify.CENTER) {
-            var yt = this.note.getYForTopText(this.text_line) - 1;
+            var yt = note.getYForTopText(this.text_line) - 1;
             var yb = stave.getYForBottomText(this.text_line);
             y = yt + (yb - yt) / 2 + text_height / 2;
         }
         else if (this.vert_justification === Annotation.VerticalJustify.TOP) {
-            y = Math.min(stave.getYForTopText(this.text_line), this.note.getYs()[0] - 10);
+            y = Math.min(stave.getYForTopText(this.text_line), note.getYs()[0] - 10);
             if (has_stem) {
                 y = Math.min(y, stem_ext.topY - 5 - spacing * this.text_line);
             }
         } /* CENTER_STEM */
         else {
-            var extents = this.note.getStemExtents();
+            var extents = note.getStemExtents();
             y = extents.topY + (extents.baseY - extents.topY) / 2 + text_height / 2;
         }
         L('Rendering annotation: ', this.text, x, y);
@@ -899,12 +888,15 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Articulation = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
+var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 var common_1 = __webpack_require__(/*! ./common */ "./src/common.ts");
+var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
+var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
 // To enable logging for this class. Set `Vex.Flow.Articulation.DEBUG` to `true`.
 function L() {
     // eslint-disable-next-line
@@ -920,7 +912,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (Articulation.DEBUG)
-        vex_1.Vex.L('Vex.Flow.Articulation', args);
+        util_1.log('Vex.Flow.Articulation', args);
 }
 var _a = modifier_1.Modifier.Position, ABOVE = _a.ABOVE, BELOW = _a.BELOW;
 function roundToNearestHalf(mathFn, value) {
@@ -958,7 +950,7 @@ function snapLineToStaff(canSitBetweenLines, line, position, offsetDirection) {
 }
 function isStaveNote(note) {
     var noteCategory = note.getCategory();
-    return noteCategory === 'stavenotes' || noteCategory === 'gracenotes';
+    return noteCategory === stavenote_1.StaveNote.CATEGORY || noteCategory === gracenote_1.GraceNote.CATEGORY;
 }
 function getTopY(note, textLine) {
     var stemDirection = note.getStemDirection();
@@ -976,7 +968,7 @@ function getTopY(note, textLine) {
             return Math.min.apply(Math, note.getYs());
         }
     }
-    else if (note.getCategory() === 'tabnotes') {
+    else if (note.getCategory() === tabnote_1.TabNote.CATEGORY) {
         if (note.hasStem()) {
             if (stemDirection === stem_1.Stem.UP) {
                 return stemTipY;
@@ -990,7 +982,7 @@ function getTopY(note, textLine) {
         }
     }
     else {
-        throw new vex_1.Vex.RERR('UnknownCategory', 'Only can get the top and bottom ys of stavenotes and tabnotes');
+        throw new util_1.RuntimeError('UnknownCategory', 'Only can get the top and bottom ys of stavenotes and tabnotes');
     }
 }
 function getBottomY(note, textLine) {
@@ -1009,7 +1001,7 @@ function getBottomY(note, textLine) {
             return Math.max.apply(Math, note.getYs());
         }
     }
-    else if (note.getCategory() === 'tabnotes') {
+    else if (note.getCategory() === tabnote_1.TabNote.CATEGORY) {
         if (note.hasStem()) {
             if (stemDirection === stem_1.Stem.UP) {
                 return note.checkStave().getYForBottomText(textLine);
@@ -1023,7 +1015,7 @@ function getBottomY(note, textLine) {
         }
     }
     else {
-        throw new vex_1.Vex.RERR('UnknownCategory', 'Only can get the top and bottom ys of stavenotes and tabnotes');
+        throw new util_1.RuntimeError('UnknownCategory', 'Only can get the top and bottom ys of stavenotes and tabnotes');
     }
 }
 // Gets the initial offset of the articulation from the y value of the starting position.
@@ -1139,7 +1131,7 @@ var Articulation = /** @class */ (function (_super) {
     Articulation.prototype.reset = function () {
         this.articulation = tables_1.Flow.articulationCodes(this.type);
         if (!this.articulation) {
-            throw new vex_1.Vex.RERR('ArgumentError', "Articulation not found: " + this.type);
+            throw new util_1.RuntimeError('ArgumentError', "Articulation not found: " + this.type);
         }
         var code = (this.position === ABOVE ? this.articulation.aboveCode : this.articulation.belowCode) || this.articulation.code;
         this.glyph = new glyph_1.Glyph(code, this.render_options.font_scale);
@@ -1152,16 +1144,15 @@ var Articulation = /** @class */ (function (_super) {
     Articulation.prototype.draw = function () {
         var _a;
         var _b, _c;
-        var _d = this, note = _d.note, index = _d.index, position = _d.position, glyph = _d.glyph, textLine = _d.text_line;
-        var canSitBetweenLines = (_c = (_b = this.articulation) === null || _b === void 0 ? void 0 : _b.between_lines) !== null && _c !== void 0 ? _c : false;
         var ctx = this.checkContext();
-        if (!note || index == null) {
-            throw new vex_1.Vex.RERR('NoAttachedNote', "Can't draw Articulation without a note and index.");
-        }
+        var note = this.checkAttachedNote();
         this.setRendered();
+        var index = this.checkIndex();
+        var _d = this, position = _d.position, glyph = _d.glyph, textLine = _d.text_line;
+        var canSitBetweenLines = (_c = (_b = this.articulation) === null || _b === void 0 ? void 0 : _b.between_lines) !== null && _c !== void 0 ? _c : false;
         var stave = note.checkStave();
         var staffSpace = stave.getSpacingBetweenLines();
-        var isTab = note.getCategory() === 'tabnotes';
+        var isTab = note.getCategory() === tabnote_1.TabNote.CATEGORY;
         // Articulations are centered over/under the note head.
         var x = note.getModifierStartXY(position, index).x;
         var shouldSitOutsideStaff = !canSitBetweenLines || isTab;
@@ -1237,7 +1228,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BarNote = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
 var stavebarline_1 = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
 // To enable logging for this class. Set `Vex.Flow.BarNote.DEBUG` to `true`.
@@ -1255,19 +1246,19 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (BarNote.DEBUG)
-        vex_1.Vex.L('Vex.Flow.BarNote', args);
+        util_1.log('Vex.Flow.BarNote', args);
 }
 var BarNote = /** @class */ (function (_super) {
     __extends(BarNote, _super);
     function BarNote(type) {
         var _a;
-        if (type === void 0) { type = stavebarline_1.Barline.type.SINGLE; }
+        if (type === void 0) { type = stavebarline_1.BarlineType.SINGLE; }
         var _this = _super.call(this, { duration: 'b' }) || this;
         _this.setAttribute('type', 'BarNote');
         _this.metrics = {
             widths: {},
         };
-        var TYPE = stavebarline_1.Barline.type;
+        var TYPE = stavebarline_1.BarlineType;
         _this.metrics.widths = (_a = {},
             _a[TYPE.SINGLE] = 8,
             _a[TYPE.DOUBLE] = 12,
@@ -1282,7 +1273,7 @@ var BarNote = /** @class */ (function (_super) {
         _this.setType(type);
         return _this;
     }
-    // Get and set the type of Bar note. `type` must be one of `Vex.Flow.Barline.type`.
+    // Get and set the type of bar note. `type` must be one of `BarlineType`.
     BarNote.prototype.getType = function () {
         return this.type;
     };
@@ -1352,12 +1343,14 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Beam = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
 var tuplet_1 = __webpack_require__(/*! ./tuplet */ "./src/tuplet.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
+var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
+var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 function calculateStemDirection(notes) {
     var lineSum = 0;
     notes.forEach(function (note) {
@@ -1391,15 +1384,15 @@ var Beam = /** @class */ (function (_super) {
         _this.y_shift = 0;
         _this.setAttribute('type', 'Beam');
         if (!notes || notes === []) {
-            throw new vex_1.Vex.RERR('BadArguments', 'No notes provided for beam.');
+            throw new util_1.RuntimeError('BadArguments', 'No notes provided for beam.');
         }
         if (notes.length === 1) {
-            throw new vex_1.Vex.RERR('BadArguments', 'Too few notes for beam.');
+            throw new util_1.RuntimeError('BadArguments', 'Too few notes for beam.');
         }
         // Validate beam line, direction and ticks.
         _this.ticks = notes[0].getIntrinsicTicks();
         if (_this.ticks >= tables_1.Flow.durationToTicks('4')) {
-            throw new vex_1.Vex.RERR('BadArguments', 'Beams can only be applied to notes shorter than a quarter note.');
+            throw new util_1.RuntimeError('BadArguments', 'Beams can only be applied to notes shorter than a quarter note.');
         }
         var i; // shared iterator
         var note;
@@ -1413,10 +1406,10 @@ var Beam = /** @class */ (function (_super) {
         }
         var stem_direction = _this.stem_direction;
         // Figure out optimal stem direction based on given notes
-        if (auto_stem && notes[0].getCategory() === 'stavenotes') {
+        if (auto_stem && notes[0].getCategory() === stavenote_1.StaveNote.CATEGORY) {
             stem_direction = calculateStemDirection(notes);
         }
-        else if (auto_stem && notes[0].getCategory() === 'tabnotes') {
+        else if (auto_stem && notes[0].getCategory() === tabnote_1.TabNote.CATEGORY) {
             // Auto Stem TabNotes
             var stem_weight = notes.reduce(function (memo, note) { return memo + note.getStemDirection(); }, 0);
             stem_direction = stem_weight > -1 ? stem_1.Stem.UP : stem_1.Stem.DOWN;
@@ -1542,7 +1535,7 @@ var Beam = /** @class */ (function (_super) {
         // Convert beam groups to tick amounts
         var tickGroups = config.groups.map(function (group) {
             if (!group.multiply) {
-                throw new vex_1.Vex.RERR('InvalidBeamGroups', 'The beam groups must be an array of Vex.Flow.Fractions');
+                throw new util_1.RuntimeError('InvalidBeamGroups', 'The beam groups must be an array of Vex.Flow.Fractions');
             }
             return group.clone().multiply(tables_1.Flow.RESOLUTION, 1);
         });
@@ -1917,7 +1910,7 @@ var Beam = /** @class */ (function (_super) {
                 }
             }
             else {
-                throw new vex_1.Vex.RERR('NoStem', 'stem undefined.');
+                throw new util_1.RuntimeError('NoStem', 'stem undefined.');
             }
         }
     };
@@ -2083,7 +2076,7 @@ var Beam = /** @class */ (function (_super) {
                     ctx.fill();
                 }
                 else {
-                    throw new vex_1.Vex.RERR('NoLastBeamX', 'lastBeamX undefined.');
+                    throw new util_1.RuntimeError('NoLastBeamX', 'lastBeamX undefined.');
                 }
             }
             beamY += beamThickness * 1.5;
@@ -2100,7 +2093,7 @@ var Beam = /** @class */ (function (_super) {
         if (this.postFormatted)
             return;
         // Calculate a smart slope if we're not forcing the beams to be flat.
-        if (this.notes[0].getCategory() === 'tabnotes' || this.render_options.flat_beams) {
+        if (this.notes[0].getCategory() === tabnote_1.TabNote.CATEGORY || this.render_options.flat_beams) {
             this.calculateFlatSlope();
         }
         else {
@@ -2161,7 +2154,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Bend = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 /**
@@ -2303,7 +2296,7 @@ var Bend = /** @class */ (function (_super) {
             }
             else {
                 var additional_width = bend.type === Bend.UP ? this.render_options.bend_width : this.render_options.release_width;
-                bend.width = vex_1.Vex.Max(additional_width, measure_text(bend.text)) + 3;
+                bend.width = Math.max(additional_width, measure_text(bend.text)) + 3;
                 bend.draw_width = bend.width / 2;
                 total_width += bend.width;
             }
@@ -2313,15 +2306,13 @@ var Bend = /** @class */ (function (_super) {
     };
     Bend.prototype.draw = function () {
         var ctx = this.checkContext();
-        if (!(this.note && this.index != null)) {
-            throw new vex_1.Vex.RERR('NoNoteForBend', "Can't draw bend without a note or index.");
-        }
+        var note = this.checkAttachedNote();
         this.setRendered();
-        var start = this.note.getModifierStartXY(modifier_1.Modifier.Position.RIGHT, this.index);
+        var start = note.getModifierStartXY(modifier_1.Modifier.Position.RIGHT, this.index);
         start.x += 3;
         start.y += 0.5;
         var x_shift = this.x_shift;
-        var stave = this.note.checkStave();
+        var stave = note.checkStave();
         var bend_height = stave.getYForTopText(this.text_line) + 3;
         var annotation_y = stave.getYForTopText(this.text_line) - 1;
         // eslint-disable-next-line
@@ -2403,7 +2394,7 @@ var Bend = /** @class */ (function (_super) {
             start.x += last_drawn_width;
         }
         if (!last_bend || last_bend.x == undefined) {
-            throw new vex_1.Vex.RERR('NoLastBendForBend', 'Internal error.');
+            throw new util_1.RuntimeError('NoLastBendForBend', 'Internal error.');
         }
         // Final arrowhead and text
         if (last_bend.type === Bend.UP) {
@@ -2667,7 +2658,7 @@ exports.BoundingBoxComputation = BoundingBoxComputation;
 // Copyright Mohit Cheppudira 2010
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CanvasContext = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 /** @constructor */
 var CanvasContext = /** @class */ (function () {
     function CanvasContext(context) {
@@ -2707,7 +2698,7 @@ var CanvasContext = /** @class */ (function () {
     });
     CanvasContext.SanitizeCanvasDims = function (width, height) {
         if (Math.max(width, height) > this.CANVAS_BROWSER_SIZE_LIMIT) {
-            vex_1.Vex.W('Canvas dimensions exceed browser limit. Cropping to ' + this.CANVAS_BROWSER_SIZE_LIMIT);
+            util_1.warn('Canvas dimensions exceed browser limit. Cropping to ' + this.CANVAS_BROWSER_SIZE_LIMIT);
             if (width > this.CANVAS_BROWSER_SIZE_LIMIT) {
                 width = this.CANVAS_BROWSER_SIZE_LIMIT;
                 // note: Math.min return 0 for undefined, NaN for null. Would change inputs.
@@ -2875,7 +2866,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChordSymbol = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var textfont_1 = __webpack_require__(/*! ./textfont */ "./src/textfont.ts");
@@ -2887,7 +2878,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (ChordSymbol.DEBUG)
-        vex_1.Vex.L('Vex.Flow.ChordSymbol', args);
+        util_1.log('Vex.Flow.ChordSymbol', args);
 }
 var ChordSymbol = /** @class */ (function (_super) {
     __extends(ChordSymbol, _super);
@@ -2898,8 +2889,6 @@ var ChordSymbol = /** @class */ (function (_super) {
     function ChordSymbol() {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'ChordSymbol');
-        _this.note = null;
-        _this.index = null;
         _this.symbolBlocks = [];
         _this.horizontal = ChordSymbol.horizontalJustify.LEFT;
         _this.vertical = ChordSymbol.verticalJustify.TOP;
@@ -3024,7 +3013,7 @@ var ChordSymbol = /** @class */ (function (_super) {
     };
     Object.defineProperty(ChordSymbol, "engravingFontResolution", {
         get: function () {
-            return vex_1.Vex.Flow.DEFAULT_FONT_STACK[0].getResolution();
+            return tables_1.Flow.DEFAULT_FONT_STACK[0].getResolution();
         },
         enumerable: false,
         configurable: true
@@ -3174,21 +3163,21 @@ var ChordSymbol = /** @class */ (function (_super) {
     });
     Object.defineProperty(ChordSymbol, "chordSymbolMetrics", {
         get: function () {
-            return vex_1.Vex.Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.chordSymbol;
+            return tables_1.Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.chordSymbol;
         },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(ChordSymbol, "lowerKerningText", {
         get: function () {
-            return vex_1.Vex.Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.chordSymbol.global.lowerKerningText;
+            return tables_1.Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.chordSymbol.global.lowerKerningText;
         },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(ChordSymbol, "upperKerningText", {
         get: function () {
-            return vex_1.Vex.Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.chordSymbol.global.upperKerningText;
+            return tables_1.Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.chordSymbol.global.upperKerningText;
         },
         enumerable: false,
         configurable: true
@@ -3553,26 +3542,24 @@ var ChordSymbol = /** @class */ (function (_super) {
     // Render text and glyphs above/below the note
     ChordSymbol.prototype.draw = function () {
         var _this = this;
-        this.checkContext();
+        var ctx = this.checkContext();
+        var note = this.checkAttachedNote();
         this.setRendered();
-        if (!this.note) {
-            throw new vex_1.Vex.RERR('NoNoteForAnnotation', "Can't draw text annotation without an attached note.");
-        }
         // We're changing context parameters. Save current state.
-        this.context.save();
+        ctx.save();
         var classString = Object.keys(this.getAttribute('classes')).join(' ');
-        this.context.openGroup(classString, this.getAttribute('id'));
-        var start = this.note.getModifierStartXY(modifier_1.Modifier.Position.ABOVE, this.index);
-        this.context.setFont(this.font.family, this.font.size, this.font.weight);
+        ctx.openGroup(classString, this.getAttribute('id'));
+        var start = note.getModifierStartXY(modifier_1.Modifier.Position.ABOVE, this.index);
+        ctx.setFont(this.font.family, this.font.size, this.font.weight);
         var y;
         var stem_ext;
         var spacing;
-        var has_stem = this.note.hasStem();
-        var stave = this.note.getStave();
+        var has_stem = note.hasStem();
+        var stave = note.getStave();
         // The position of the text varies based on whether or not the note
         // has a stem.
         if (has_stem) {
-            stem_ext = this.note.getStem().getExtents();
+            stem_ext = note.getStem().getExtents();
             spacing = stave.getSpacingBetweenLines();
         }
         if (this.vertical === ChordSymbol.verticalJustify.BOTTOM) {
@@ -3580,13 +3567,13 @@ var ChordSymbol = /** @class */ (function (_super) {
             // is bottom-right.
             y = stave.getYForBottomText(this.text_line + tables_1.Flow.TEXT_HEIGHT_OFFSET_HACK);
             if (has_stem) {
-                var stem_base = this.note.getStemDirection() === 1 ? stem_ext.baseY : stem_ext.topY;
+                var stem_base = note.getStemDirection() === 1 ? stem_ext.baseY : stem_ext.topY;
                 y = Math.max(y, stem_base + spacing * (this.text_line + 2));
             }
         }
         else {
             // (this.vertical === ChordSymbol.verticalJustify.TOP)
-            y = Math.min(stave.getYForTopText(this.text_line), this.note.getYs()[0] - 10);
+            y = Math.min(stave.getYForTopText(this.text_line), note.getYs()[0] - 10);
             if (has_stem) {
                 y = Math.min(y, stem_ext.topY - 5 - spacing * this.text_line);
             }
@@ -3602,7 +3589,7 @@ var ChordSymbol = /** @class */ (function (_super) {
             x = start.x - this.getWidth() / 2;
         } /* CENTER_STEM */
         else {
-            x = this.note.getStemX() - this.getWidth() / 2;
+            x = note.getStemX() - this.getWidth() / 2;
         }
         L('Rendering ChordSymbol: ', this.text, x, y);
         this.symbolBlocks.forEach(function (symbol) {
@@ -3620,39 +3607,39 @@ var ChordSymbol = /** @class */ (function (_super) {
             L('curY sup/sub ', curY);
             if (symbol.symbolType === ChordSymbol.symbolTypes.TEXT) {
                 if (sp || sub) {
-                    _this.context.save();
-                    _this.context.setFont(_this.font.family, _this.font.size * ChordSymbol.superSubRatio, _this.font.weight);
+                    ctx.save();
+                    ctx.setFont(_this.font.family, _this.font.size * ChordSymbol.superSubRatio, _this.font.weight);
                 }
                 // We estimate the text width, fill it in with the empirical value so the
                 // formatting is even.
-                /* const textDim = this.context.measureText(symbol.text);
+                /* const textDim = ctx.measureText(symbol.text);
                 symbol.width = textDim.width; */
                 L('Rendering Text: ', symbol.text, x + symbol.xShift, curY + symbol.yShift);
-                _this.context.fillText(symbol.text, x + symbol.xShift, curY + symbol.yShift);
+                ctx.fillText(symbol.text, x + symbol.xShift, curY + symbol.yShift);
                 if (sp || sub) {
-                    _this.context.restore();
+                    ctx.restore();
                 }
             }
             else if (symbol.symbolType === ChordSymbol.symbolTypes.GLYPH) {
                 curY += symbol.yShift;
                 L('Rendering Glyph: ', symbol.glyph.code, x + symbol.xShift, curY);
-                symbol.glyph.render(_this.context, x + symbol.xShift, curY);
+                symbol.glyph.render(ctx, x + symbol.xShift, curY);
             }
             else if (symbol.symbolType === ChordSymbol.symbolTypes.LINE) {
                 L('Rendering Line : ', symbol.width, x, curY);
-                _this.context.beginPath();
-                _this.context.setLineWidth(1); // ?
-                _this.context.moveTo(x, y);
-                _this.context.lineTo(x + symbol.width, curY);
-                _this.context.stroke();
+                ctx.beginPath();
+                ctx.setLineWidth(1); // ?
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + symbol.width, curY);
+                ctx.stroke();
             }
             x += symbol.width;
             if (symbol.vAlign) {
                 x += symbol.xShift;
             }
         });
-        this.context.closeGroup();
-        this.context.restore();
+        ctx.closeGroup();
+        ctx.restore();
     };
     return ChordSymbol;
 }(modifier_1.Modifier));
@@ -3695,7 +3682,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Clef = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 // To enable logging for this class, set `Vex.Flow.Clef.DEBUG` to `true`.
@@ -3713,7 +3700,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (Clef.DEBUG)
-        vex_1.Vex.L('Vex.Flow.Clef', args);
+        util_1.log('Vex.Flow.Clef', args);
 }
 var Clef = /** @class */ (function (_super) {
     __extends(Clef, _super);
@@ -3839,7 +3826,7 @@ var Clef = /** @class */ (function (_super) {
     };
     Clef.prototype.getWidth = function () {
         if (this.type === 'tab' && !this.stave) {
-            throw new vex_1.Vex.RERR('ClefError', "Can't get width without stave.");
+            throw new util_1.RuntimeError('ClefError', "Can't get width without stave.");
         }
         return this.width;
     };
@@ -3848,7 +3835,7 @@ var Clef = /** @class */ (function (_super) {
         if (this.type !== 'tab')
             return this;
         if (!this.glyph)
-            throw new vex_1.Vex.RERR('ClefError', "Can't set stave without glyph.");
+            throw new util_1.RuntimeError('ClefError', "Can't set stave without glyph.");
         var numLines = this.stave.getOptions().num_lines;
         var point = this.musicFont.lookupMetric("clef.lineCount." + numLines + ".point");
         var shiftY = this.musicFont.lookupMetric("clef.lineCount." + numLines + ".shiftY");
@@ -3858,11 +3845,11 @@ var Clef = /** @class */ (function (_super) {
     };
     Clef.prototype.draw = function () {
         if (!this.x)
-            throw new vex_1.Vex.RERR('ClefError', "Can't draw clef without x.");
+            throw new util_1.RuntimeError('ClefError', "Can't draw clef without x.");
         if (!this.stave)
-            throw new vex_1.Vex.RERR('ClefError', "Can't draw clef without stave.");
+            throw new util_1.RuntimeError('ClefError', "Can't draw clef without stave.");
         if (!this.glyph)
-            throw new vex_1.Vex.RERR('ClefError', "Can't draw clef without glyph.");
+            throw new util_1.RuntimeError('ClefError', "Can't draw clef without glyph.");
         this.setRendered();
         this.glyph.setStave(this.stave);
         this.glyph.setContext(this.stave.getContext());
@@ -4010,10 +3997,10 @@ exports.ClefNote = ClefNote;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GLYPH_PROPS_VALID_TYPES = exports.check = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 function check(x) {
     if (x === undefined) {
-        throw new vex_1.Vex.RERR('undefined');
+        throw new util_1.RuntimeError('undefined');
     }
     return x;
 }
@@ -4065,7 +4052,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Crescendo = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
 var tickcontext_1 = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
 // To enable logging for this class. Set `Vex.Flow.Crescendo.DEBUG` to `true`.
@@ -4083,7 +4070,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (Crescendo.DEBUG)
-        vex_1.Vex.L('Vex.Flow.Crescendo', args);
+        util_1.log('Vex.Flow.Crescendo', args);
 }
 // Private helper to draw the hairpin
 function renderHairpin(ctx, params) {
@@ -4214,7 +4201,7 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Curve = exports.CurvePosition = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var CurvePosition;
 (function (CurvePosition) {
@@ -4259,7 +4246,7 @@ var Curve = /** @class */ (function (_super) {
     });
     Curve.prototype.setNotes = function (from, to) {
         if (!from && !to) {
-            throw new vex_1.Vex.RERR('BadArguments', 'Curve needs to have either first_note or last_note set.');
+            throw new util_1.RuntimeError('BadArguments', 'Curve needs to have either first_note or last_note set.');
         }
         this.from = from;
         this.to = to;
@@ -4383,10 +4370,11 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Dot = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
+var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
 var Dot = /** @class */ (function (_super) {
     __extends(Dot, _super);
     /**
@@ -4423,7 +4411,8 @@ var Dot = /** @class */ (function (_super) {
             var shift = void 0;
             // If it's a StaveNote
             if (note instanceof stavenote_1.StaveNote) {
-                props = note.getKeyProps()[dot.getIndex()];
+                var index = dot.checkIndex();
+                props = note.getKeyProps()[index];
                 shift = note.getRightDisplacedHeadPx();
             }
             else if (note instanceof tabnote_1.TabNote) {
@@ -4432,7 +4421,7 @@ var Dot = /** @class */ (function (_super) {
                 shift = 0;
             }
             else {
-                throw new vex_1.Vex.RERR('Internal', 'Unexpected instance.');
+                throw new util_1.RuntimeError('Internal', 'Unexpected instance.');
             }
             var note_id = note.getAttribute('id');
             dot_list.push({ line: props.line, note: note, note_id: note_id, dot: dot });
@@ -4493,7 +4482,7 @@ var Dot = /** @class */ (function (_super) {
     };
     Dot.prototype.setNote = function (note) {
         this.note = note;
-        if (this.note.getCategory() === 'gracenotes') {
+        if (note.getCategory() === gracenote_1.GraceNote.CATEGORY) {
             this.radius *= 0.5;
             this.setWidth(3);
         }
@@ -4505,16 +4494,14 @@ var Dot = /** @class */ (function (_super) {
     };
     Dot.prototype.draw = function () {
         var ctx = this.checkContext();
+        var note = this.checkAttachedNote();
         this.setRendered();
-        if (!this.note || this.index === undefined) {
-            throw new vex_1.Vex.RERR('NoNoteIndex', 'Drawing a dot requires a note and an index.');
-        }
-        var stave = this.note.checkStave();
+        var stave = note.checkStave();
         var lineSpace = stave.getOptions().spacing_between_lines_px;
-        var start = this.note.getModifierStartXY(this.position, this.index, { forceFlagRight: true });
+        var start = note.getModifierStartXY(this.position, this.index, { forceFlagRight: true });
         // Set the starting y coordinate to the base of the stem for TabNotes
-        if (this.note.getCategory() === 'tabnotes') {
-            start.y = this.note.getStemExtents().baseY;
+        if (note.getCategory() === tabnote_1.TabNote.CATEGORY) {
+            start.y = note.getStemExtents().baseY;
         }
         var x = start.x + this.x_shift + this.width - this.radius;
         var y = start.y + this.y_shift + this.dot_shiftY * lineSpace;
@@ -4557,6 +4544,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EasyScore = exports.Builder = exports.Grammar = exports.X = void 0;
 /* eslint max-classes-per-file: "off" */
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 var parser_1 = __webpack_require__(/*! ./parser */ "./src/parser.ts");
 var articulation_1 = __webpack_require__(/*! ./articulation */ "./src/articulation.ts");
@@ -4569,7 +4557,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (EasyScore.DEBUG)
-        vex_1.Vex.L('Vex.Flow.EasyScore', args);
+        util_1.log('Vex.Flow.EasyScore', args);
 }
 exports.X = vex_1.Vex.MakeException('EasyScoreError');
 var Grammar = /** @class */ (function () {
@@ -4851,10 +4839,10 @@ var Builder = /** @class */ (function () {
         var options = __assign(__assign({}, this.options), this.piece.options);
         // reset() sets this.options.stem & this.options.clef but we check to make sure nothing has changed.
         if (options.stem === undefined) {
-            throw new vex_1.Vex.RERR('options.stem is not defined');
+            throw new util_1.RuntimeError('options.stem is not defined');
         }
         if (options.clef === undefined) {
-            throw new vex_1.Vex.RERR('options.clef is not defined');
+            throw new util_1.RuntimeError('options.clef is not defined');
         }
         var stem = options.stem.toLowerCase(); // e.g., auto | up | down
         var clef = options.clef; // e.g., treble | bass
@@ -5005,7 +4993,7 @@ exports.EasyScore = EasyScore;
 // of general functions and properties that can be inherited by all VexFlow elements.
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Element = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var registry_1 = __webpack_require__(/*! ./registry */ "./src/registry.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 /**
@@ -5172,7 +5160,7 @@ var Element = /** @class */ (function () {
     /** Validates and returns the context. */
     Element.prototype.checkContext = function () {
         if (!this.context) {
-            throw new vex_1.Vex.RERR('NoContext', 'No rendering context attached to instance');
+            throw new util_1.RuntimeError('NoContext', 'No rendering context attached to instance.');
         }
         return this.context;
     };
@@ -5205,6 +5193,7 @@ exports.Element = Element;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Factory = exports.X = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var accidental_1 = __webpack_require__(/*! ./accidental */ "./src/accidental.js");
 var articulation_1 = __webpack_require__(/*! ./articulation */ "./src/articulation.ts");
 var annotation_1 = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
@@ -5232,7 +5221,7 @@ var beam_1 = __webpack_require__(/*! ./beam */ "./src/beam.ts");
 var curve_1 = __webpack_require__(/*! ./curve */ "./src/curve.ts");
 var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
 var gracenotegroup_1 = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
-var notesubgroup_1 = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.js");
+var notesubgroup_1 = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.ts");
 var easyscore_1 = __webpack_require__(/*! ./easyscore */ "./src/easyscore.ts");
 var timesignote_1 = __webpack_require__(/*! ./timesignote */ "./src/timesignote.ts");
 var keysignote_1 = __webpack_require__(/*! ./keysignote */ "./src/keysignote.ts");
@@ -5253,7 +5242,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (Factory.DEBUG)
-        vex_1.Vex.L('Vex.Flow.Factory', args);
+        util_1.log('Vex.Flow.Factory', args);
 }
 exports.X = vex_1.Vex.MakeException('FactoryError');
 function setDefaults(params, defaults) {
@@ -5804,7 +5793,7 @@ exports.Factory = Factory;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Font = exports.DefaultFontStack = exports.Fonts = void 0;
+exports.Font = exports.Fonts = void 0;
 var bravura_glyphs_1 = __webpack_require__(/*! ./fonts/bravura_glyphs */ "./src/fonts/bravura_glyphs.ts");
 var bravura_metrics_1 = __webpack_require__(/*! ./fonts/bravura_metrics */ "./src/fonts/bravura_metrics.ts");
 var gonville_glyphs_1 = __webpack_require__(/*! ./fonts/gonville_glyphs */ "./src/fonts/gonville_glyphs.ts");
@@ -5863,8 +5852,6 @@ var Fonts = {
     Custom: new Font('Custom', custom_metrics_1.CustomMetrics, custom_glyphs_1.CustomFont),
 };
 exports.Fonts = Fonts;
-var DefaultFontStack = [Fonts.Bravura, Fonts.Gonville, Fonts.Custom];
-exports.DefaultFontStack = DefaultFontStack;
 
 
 /***/ }),
@@ -18074,6 +18061,7 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Formatter = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var beam_1 = __webpack_require__(/*! ./beam */ "./src/beam.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
@@ -18134,7 +18122,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (Formatter.DEBUG)
-        vex_1.Vex.L('Vex.Flow.Formatter', args);
+        util_1.log('Vex.Flow.Formatter', args);
 }
 // Helper function to locate the next non-rest note(s).
 function lookAhead(notes, restLine, i, compare) {
@@ -18351,62 +18339,82 @@ var Formatter = /** @class */ (function () {
     // align non-beamed notes.
     Formatter.prototype.alignRests = function (voices, alignAllNotes) {
         if (!voices || !voices.length) {
-            throw new vex_1.Vex.RERR('BadArgument', 'No voices to format rests');
+            throw new util_1.RuntimeError('BadArgument', 'No voices to format rests');
         }
         voices.forEach(function (voice) { return Formatter.AlignRestsToNotes(voice.getTickables(), alignAllNotes); });
     };
     // Calculate the minimum width required to align and format `voices`.
     Formatter.prototype.preCalculateMinTotalWidth = function (voices) {
         var unalignedPadding = tables_1.Flow.DEFAULT_FONT_STACK[0].lookupMetric('stave.unalignedNotePadding');
+        // Calculate additional padding based on 3 methods:
+        // 1) unaligned beats in voices, 2) variance of width, 3) variance of durations
         var unalignedCtxCount = 0;
+        var wsum = 0;
+        var dsum = 0;
+        var widths = [];
+        var durations = [];
         // Cache results.
         if (this.hasMinTotalWidth)
             return this.minTotalWidth;
         // Create tick contexts if not already created.
         if (!this.tickContexts) {
             if (!voices) {
-                throw new vex_1.Vex.RERR('BadArgument', "'voices' required to run preCalculateMinTotalWidth");
+                throw new util_1.RuntimeError('BadArgument', "'voices' required to run preCalculateMinTotalWidth");
             }
             this.createTickContexts(voices);
         }
         // eslint-disable-next-line
         var _a = this.tickContexts, contextList = _a.list, contextMap = _a.map;
-        // const maxTicks = contextList.map(tick => tick.maxTicks.value()).reduce((a, b) => a + b, 0);
         // Go through each tick context and calculate total width.
         this.minTotalWidth = contextList
             .map(function (tick) {
             var context = contextMap[tick];
-            // context.setPadding(5);
             context.preFormat();
             if (context.getTickables().length < voices.length) {
                 unalignedCtxCount += 1;
             }
-            return context.getWidth();
+            var width = context.getWidth();
+            var duration = context.getMaxTicks().value();
+            wsum += width;
+            dsum += duration;
+            widths.push(width);
+            durations.push(duration);
+            return width;
         })
             .reduce(function (a, b) { return a + b; }, 0);
         this.hasMinTotalWidth = true;
-        return this.minTotalWidth + unalignedPadding * unalignedCtxCount;
+        // normalized STDDEV of widths/durations gives us padding hints.
+        var wavg = wsum / contextList.length;
+        var wvar = widths.map(function (ll) { return Math.pow(ll - wavg, 2); }).reduce(function (a, b) { return a + b; });
+        var wpads = Math.pow(wvar / contextList.length, 0.5) / wavg;
+        var davg = dsum / contextList.length;
+        var dvar = durations.map(function (ll) { return Math.pow(ll - davg, 2); }).reduce(function (a, b) { return a + b; });
+        var dpads = Math.pow(dvar / contextList.length, 0.5) / davg;
+        // Find max of 3 methods and use that
+        var padmax = Math.max(dpads, wpads) * contextList.length * unalignedPadding;
+        var unalignedPad = unalignedPadding * unalignedCtxCount;
+        return this.minTotalWidth + Math.max(unalignedPad, padmax);
     };
     // Get minimum width required to render all voices. Either `format` or
     // `preCalculateMinTotalWidth` must be called before this method.
     Formatter.prototype.getMinTotalWidth = function () {
         if (!this.hasMinTotalWidth) {
-            throw new vex_1.Vex.RERR('NoMinTotalWidth', "Call 'preCalculateMinTotalWidth' or 'preFormat' before calling 'getMinTotalWidth'");
+            throw new util_1.RuntimeError('NoMinTotalWidth', "Call 'preCalculateMinTotalWidth' or 'preFormat' before calling 'getMinTotalWidth'");
         }
         return this.minTotalWidth;
     };
     // calculates the resolution multiplier for `voices`.
     Formatter.getResolutionMultiplier = function (voices) {
         if (!voices || !voices.length) {
-            throw new vex_1.Vex.RERR('BadArgument', 'No voices to format');
+            throw new util_1.RuntimeError('BadArgument', 'No voices to format');
         }
         var totalTicks = voices[0].getTotalTicks();
         var resolutionMultiplier = voices.reduce(function (accumulator, voice) {
             if (!voice.getTotalTicks().equals(totalTicks)) {
-                throw new vex_1.Vex.RERR('TickMismatch', 'Voices should have same total note duration in ticks.');
+                throw new util_1.RuntimeError('TickMismatch', 'Voices should have same total note duration in ticks.');
             }
             if (voice.getMode() === voice_1.Voice.Mode.STRICT && !voice.isComplete()) {
-                throw new vex_1.Vex.RERR('IncompleteVoice', 'Voice does not have enough notes.');
+                throw new util_1.RuntimeError('IncompleteVoice', 'Voice does not have enough notes.');
             }
             return Math.max(accumulator, fraction_1.Fraction.LCM(accumulator, voice.getResolutionMultiplier()));
         }, 1);
@@ -18414,7 +18422,7 @@ var Formatter = /** @class */ (function () {
     };
     // Create `ModifierContext`s for each tick in `voices`.
     Formatter.prototype.createModifierContexts = function (voices) {
-        var fn = function (tickable, context, voiceIndex) {
+        var fn = function (tickable, context) {
             return tickable.addToModifierContext(context);
         };
         var contexts = createContexts(voices, function () { return new modifiercontext_1.ModifierContext(); }, fn);
@@ -18445,7 +18453,7 @@ var Formatter = /** @class */ (function () {
         // Initialize context maps.
         var contexts = this.tickContexts;
         if (!contexts) {
-            throw new vex_1.Vex.RERR('NoTickContexts', 'preFormat requires TickContexs');
+            throw new util_1.RuntimeError('NoTickContexts', 'preFormat requires TickContexs');
         }
         var contextList = contexts.list, contextMap = contexts.map;
         // Reset loss history for evaluator.
@@ -18834,7 +18842,7 @@ exports.Formatter = Formatter;
 // @author incompleteopus (modifications)
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Fraction = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 /** Fraction represents a rational number. */
 var Fraction = /** @class */ (function () {
     /** Constructs providing numerator and denominator. */
@@ -18848,7 +18856,7 @@ var Fraction = /** @class */ (function () {
      */
     Fraction.GCD = function (a, b) {
         if (typeof a !== 'number' || typeof b !== 'number') {
-            throw new vex_1.Vex.RERR('BadArgument', "Invalid numbers: " + a + ", " + b);
+            throw new util_1.RuntimeError('BadArgument', "Invalid numbers: " + a + ", " + b);
         }
         var t;
         while (b !== 0) {
@@ -19109,7 +19117,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FretHandFinger = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 /**
  * @constructor
@@ -19154,7 +19162,8 @@ var FretHandFinger = /** @class */ (function (_super) {
             var num = nums[i];
             var note = num.getNote();
             var pos = num.getPosition();
-            var props = note.getKeyProps()[num.getIndex()];
+            var index = num.checkIndex();
+            var props = note.getKeyProps()[index];
             if (note !== prev_note) {
                 for (var n = 0; n < note.keys.length; ++n) {
                     if (left_shift === 0) {
@@ -19240,13 +19249,10 @@ var FretHandFinger = /** @class */ (function (_super) {
         return this;
     };
     FretHandFinger.prototype.draw = function () {
-        this.checkContext();
-        if (!this.note || this.index == null) {
-            throw new vex_1.Vex.RERR('NoAttachedNote', "Can't draw string number without a note and index.");
-        }
-        this.setRendered();
         var ctx = this.checkContext();
-        var start = this.note.getModifierStartXY(this.position, this.index);
+        var note = this.checkAttachedNote();
+        this.setRendered();
+        var start = note.getModifierStartXY(this.position, this.index);
         var dot_x = start.x + this.x_shift + this.x_offset;
         var dot_y = start.y + this.y_shift + this.y_offset + 5;
         switch (this.position) {
@@ -19265,7 +19271,7 @@ var FretHandFinger = /** @class */ (function (_super) {
                 dot_x += 1;
                 break;
             default:
-                throw new vex_1.Vex.RERR('InvalidPostion', "The position " + this.position + " does not exist");
+                throw new util_1.RuntimeError('InvalidPosition', "The position " + this.position + " does not exist");
         }
         ctx.save();
         ctx.setFont(this.font.family, this.font.size, this.font.weight);
@@ -19308,7 +19314,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GhostNote = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var stemmablenote_1 = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
 var GhostNote = /** @class */ (function (_super) {
     __extends(GhostNote, _super);
@@ -19317,7 +19323,7 @@ var GhostNote = /** @class */ (function (_super) {
         var _this = this;
         // Sanity check
         if (!parameter) {
-            throw new vex_1.Vex.RERR('BadArguments', 'Ghost note must have valid initialization data to identify duration.');
+            throw new util_1.RuntimeError('BadArguments', 'Ghost note must have valid initialization data to identify duration.');
         }
         var note_struct;
         // Preserve backwards-compatibility
@@ -19328,7 +19334,7 @@ var GhostNote = /** @class */ (function (_super) {
             note_struct = parameter;
         }
         else {
-            throw new vex_1.Vex.RuntimeError('BadArguments', 'Ghost note must have valid initialization data to identify ' + 'duration.');
+            throw new util_1.RuntimeError('BadArguments', 'Ghost note must have valid initialization data to identify ' + 'duration.');
         }
         _this = _super.call(this, note_struct) || this;
         _this.setAttribute('type', 'GhostNote');
@@ -19404,11 +19410,11 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Glyph = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var boundingboxcomputation_1 = __webpack_require__(/*! ./boundingboxcomputation */ "./src/boundingboxcomputation.ts");
 var boundingbox_1 = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
+var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 function processOutline(outline, originX, originY, scaleX, scaleY, 
 // eslint-disable-next-line
 outlineFns) {
@@ -19487,7 +19493,6 @@ var Glyph = /** @class */ (function (_super) {
     }
     // eslint-disable-next-line
     Glyph.prototype.draw = function () { };
-    ;
     /*
       Static methods used to implement loading and rendering glyphs.
   
@@ -19504,7 +19509,7 @@ var Glyph = /** @class */ (function (_super) {
     };
     Glyph.lookupGlyph = function (fontStack, code) {
         if (!fontStack) {
-            throw new vex_1.Vex.RERR('BAD_FONTSTACK', 'Font stack is misconfigured');
+            throw new util_1.RuntimeError('BAD_FONTSTACK', 'Font stack is misconfigured');
         }
         var glyph;
         var font;
@@ -19514,7 +19519,7 @@ var Glyph = /** @class */ (function (_super) {
             if (glyph)
                 return { glyph: glyph, font: font };
         }
-        throw new vex_1.Vex.RERR('BadGlyph', "Glyph " + code + " does not exist in font.");
+        throw new util_1.RuntimeError('BadGlyph', "Glyph " + code + " does not exist in font.");
     };
     Glyph.loadMetrics = function (fontStack, code, category) {
         var _a = Glyph.lookupGlyph(fontStack, code), glyph = _a.glyph, font = _a.font;
@@ -19558,7 +19563,7 @@ var Glyph = /** @class */ (function (_super) {
             };
         }
         else {
-            throw new vex_1.Vex.RERR('BadGlyph', "Glyph " + code + " has no outline defined.");
+            throw new util_1.RuntimeError('BadGlyph', "Glyph " + code + " has no outline defined.");
         }
     };
     /**
@@ -19655,7 +19660,7 @@ var Glyph = /** @class */ (function (_super) {
     };
     Glyph.prototype.getMetrics = function () {
         if (!this.metrics) {
-            throw new vex_1.Vex.RuntimeError('BadGlyph', "Glyph " + this.code + " is not initialized.");
+            throw new util_1.RuntimeError('BadGlyph', "Glyph " + this.code + " is not initialized.");
         }
         return {
             x_min: this.metrics.x_min * this.scale * this.metrics.scale,
@@ -19688,7 +19693,7 @@ var Glyph = /** @class */ (function (_super) {
     };
     Glyph.prototype.render = function (ctx, x, y) {
         if (!this.metrics) {
-            throw new vex_1.Vex.RuntimeError('BadGlyph', "Glyph " + this.code + " is not initialized.");
+            throw new util_1.RuntimeError('BadGlyph', "Glyph " + this.code + " is not initialized.");
         }
         var outline = this.metrics.outline;
         var scale = this.scale * this.metrics.scale;
@@ -19700,10 +19705,10 @@ var Glyph = /** @class */ (function (_super) {
     Glyph.prototype.renderToStave = function (x) {
         var context = this.checkContext();
         if (!this.metrics) {
-            throw new vex_1.Vex.RuntimeError('BadGlyph', "Glyph " + this.code + " is not initialized.");
+            throw new util_1.RuntimeError('BadGlyph', "Glyph " + this.code + " is not initialized.");
         }
         if (!this.stave) {
-            throw new vex_1.Vex.RuntimeError('GlyphError', 'No valid stave');
+            throw new util_1.RuntimeError('GlyphError', 'No valid stave');
         }
         var outline = this.metrics.outline;
         var scale = this.scale * this.metrics.scale;
@@ -19810,7 +19815,7 @@ var GlyphNote = /** @class */ (function (_super) {
         var stave = this.checkStave();
         var ctx = stave.checkContext();
         this.setRendered();
-        ctx.openGroup('glypheNote', this.getAttribute('id'));
+        ctx.openGroup('glyphNote', this.getAttribute('id'));
         // Context is set when setStave is called on Note
         if (!this.glyph.getContext()) {
             this.glyph.setContext(ctx);
@@ -19867,7 +19872,7 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GraceNote = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
@@ -19998,7 +20003,7 @@ var GraceNote = /** @class */ (function (_super) {
     GraceNote.prototype.calcBeamedNotesSlashBBox = function (slashStemOffset, slashBeamOffset, protrusions) {
         var beam = this.beam;
         if (!beam)
-            throw new vex_1.Vex.RERR('NoBeam', "Can't calculate without a beam.");
+            throw new util_1.RuntimeError('NoBeam', "Can't calculate without a beam.");
         var beam_slope = beam.slope;
         var isBeamEndNote = beam.notes[beam.notes.length - 1] === this;
         var scaleX = isBeamEndNote ? -1 : 1;
@@ -20064,7 +20069,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GraceNoteGroup = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
@@ -20074,21 +20079,14 @@ var stavetie_1 = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
 var tabtie_1 = __webpack_require__(/*! ./tabtie */ "./src/tabtie.ts");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 // To enable logging for this class. Set `GraceNoteGroup.DEBUG` to `true`.
+// eslint-disable-next-line
 function L() {
-    // eslint-disable-next-line
     var args = [];
-    for (
-    // eslint-disable-next-line
-    var _i = 0; 
-    // eslint-disable-next-line
-    _i < arguments.length; 
-    // eslint-disable-next-line
-    _i++) {
-        // eslint-disable-next-line
+    for (var _i = 0; _i < arguments.length; _i++) {
         args[_i] = arguments[_i];
     }
     if (GraceNoteGroup.DEBUG)
-        vex_1.Vex.L('Vex.Flow.GraceNoteGroup', args);
+        util_1.log('Vex.Flow.GraceNoteGroup', args);
 }
 /** GraceNoteGroup is used to format and render grace notes. */
 var GraceNoteGroup = /** @class */ (function (_super) {
@@ -20183,10 +20181,6 @@ var GraceNoteGroup = /** @class */ (function (_super) {
         }
         return this;
     };
-    GraceNoteGroup.prototype.setNote = function (note) {
-        this.note = note;
-        return this;
-    };
     GraceNoteGroup.prototype.setWidth = function (width) {
         this.width = width;
         return this;
@@ -20198,26 +20192,22 @@ var GraceNoteGroup = /** @class */ (function (_super) {
         return this.grace_notes;
     };
     GraceNoteGroup.prototype.draw = function () {
-        var _this = this;
-        this.checkContext();
-        var note = this.getNote();
-        L('Drawing grace note group for:', note);
-        if (!(note && this.index !== null)) {
-            throw new vex_1.Vex.RuntimeError('NoAttachedNote', "Can't draw grace note without a parent note and parent note index.");
-        }
+        var ctx = this.checkContext();
+        var note = this.checkAttachedNote();
         this.setRendered();
+        L('Drawing grace note group for:', note);
         this.alignSubNotesWithNote(this.getGraceNotes(), note); // Modifier function
         // Draw notes
         this.grace_notes.forEach(function (graceNote) {
-            graceNote.setContext(_this.getContext()).draw();
+            graceNote.setContext(ctx).draw();
         });
         // Draw beam
         this.beams.forEach(function (beam) {
-            beam.setContext(_this.getContext()).draw();
+            beam.setContext(ctx).draw();
         });
         if (this.show_slur) {
             // Create and draw slur
-            var is_stavenote = this.getNote().getCategory() === stavenote_1.StaveNote.CATEGORY;
+            var is_stavenote = note.getCategory() === stavenote_1.StaveNote.CATEGORY;
             var TieClass = is_stavenote ? stavetie_1.StaveTie : tabtie_1.TabTie;
             this.slur = new TieClass({
                 last_note: this.grace_notes[0],
@@ -20227,7 +20217,7 @@ var GraceNoteGroup = /** @class */ (function (_super) {
             });
             this.slur.render_options.cp2 = 12;
             this.slur.render_options.y_shift = (is_stavenote ? 7 : 5) + this.render_options.slur_y_shift;
-            this.slur.setContext(this.getContext()).draw();
+            this.slur.setContext(ctx).draw();
         }
     };
     return GraceNoteGroup;
@@ -20284,10 +20274,8 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GraceTabNote = void 0;
 var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
-/** Implements Crace Tab Note. */
 var GraceTabNote = /** @class */ (function (_super) {
     __extends(GraceTabNote, _super);
-    /** Constructor providing a stave note struct */
     function GraceTabNote(note_struct) {
         var _this = _super.call(this, note_struct, false) || this;
         _this.setAttribute('type', 'GraceTabNote');
@@ -20309,11 +20297,9 @@ var GraceTabNote = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    /** Returns the category. */
     GraceTabNote.prototype.getCategory = function () {
         return GraceTabNote.CATEGORY;
     };
-    /** Draws the note. */
     GraceTabNote.prototype.draw = function () {
         _super.prototype.draw.call(this);
         this.setRendered();
@@ -20384,7 +20370,7 @@ var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
 var gracetabnote_1 = __webpack_require__(/*! ./gracetabnote */ "./src/gracetabnote.ts");
 var tuning_1 = __webpack_require__(/*! ./tuning */ "./src/tuning.ts");
 var keymanager_1 = __webpack_require__(/*! ./keymanager */ "./src/keymanager.js");
-var stavehairpin_1 = __webpack_require__(/*! ./stavehairpin */ "./src/stavehairpin.js");
+var stavehairpin_1 = __webpack_require__(/*! ./stavehairpin */ "./src/stavehairpin.ts");
 var boundingbox_1 = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 var strokes_1 = __webpack_require__(/*! ./strokes */ "./src/strokes.ts");
 var textnote_1 = __webpack_require__(/*! ./textnote */ "./src/textnote.ts");
@@ -20398,7 +20384,7 @@ var frethandfinger_1 = __webpack_require__(/*! ./frethandfinger */ "./src/fretha
 var staverepetition_1 = __webpack_require__(/*! ./staverepetition */ "./src/staverepetition.ts");
 var barnote_1 = __webpack_require__(/*! ./barnote */ "./src/barnote.ts");
 var ghostnote_1 = __webpack_require__(/*! ./ghostnote */ "./src/ghostnote.ts");
-var notesubgroup_1 = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.js");
+var notesubgroup_1 = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.ts");
 var gracenotegroup_1 = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
 var tremolo_1 = __webpack_require__(/*! ./tremolo */ "./src/tremolo.ts");
 var stringnumber_1 = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.ts");
@@ -20494,7 +20480,6 @@ vex_1.Vex.Flow.RepeatNote = repeatnote_1.RepeatNote;
 vex_1.Vex.Flow.Font = font_1.Font;
 vex_1.Vex.Flow.Fonts = font_1.Fonts;
 vex_1.Vex.Flow.TextFont = textfont_1.TextFont;
-vex_1.Vex.Flow.DefaultFontStack = font_1.DefaultFontStack;
 vex_1.Vex.Flow.PetalumaScriptTextMetrics = petalumascript_textmetrics_1.PetalumaScriptTextMetrics;
 vex_1.Vex.Flow.RobotoSlabTextMetrics = robotoslab_textmetrics_1.RobotoSlabTextMetrics;
 exports.default = vex_1.Vex;
@@ -20518,7 +20503,7 @@ exports.default = vex_1.Vex;
 // This class implements diatonic key management.
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.KeyManager = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var music_1 = __webpack_require__(/*! ./music */ "./src/music.ts");
 var KeyManager = /** @class */ (function () {
     function KeyManager(key) {
@@ -20540,7 +20525,7 @@ var KeyManager = /** @class */ (function () {
             this.keyString += this.keyParts.accidental;
         var is_supported_type = music_1.Music.scaleTypes[this.keyParts.type];
         if (!is_supported_type) {
-            throw new vex_1.Vex.RERR('BadArguments', "Unsupported key type: " + this.key);
+            throw new util_1.RuntimeError('BadArguments', "Unsupported key type: " + this.key);
         }
         this.scale = this.music.getScaleTones(this.music.getNoteValue(this.keyString), music_1.Music.scaleTypes[this.keyParts.type]);
         this.scaleMap = {};
@@ -20661,7 +20646,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.KeySignature = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -20911,7 +20896,7 @@ var KeySignature = /** @class */ (function (_super) {
     };
     KeySignature.prototype.format = function () {
         if (!this.stave) {
-            throw new vex_1.Vex.RERR('KeySignatureError', "Can't draw key signature without stave.");
+            throw new util_1.RuntimeError('KeySignatureError', "Can't draw key signature without stave.");
         }
         this.width = 0;
         this.glyphs = [];
@@ -20940,10 +20925,10 @@ var KeySignature = /** @class */ (function (_super) {
     };
     KeySignature.prototype.draw = function () {
         if (!this.x) {
-            throw new vex_1.Vex.RERR('KeySignatureError', "Can't draw key signature without x.");
+            throw new util_1.RuntimeError('KeySignatureError', "Can't draw key signature without x.");
         }
         if (!this.stave) {
-            throw new vex_1.Vex.RERR('KeySignatureError', "Can't draw key signature without stave.");
+            throw new util_1.RuntimeError('KeySignatureError', "Can't draw key signature without stave.");
         }
         if (!this.formatted)
             this.format();
@@ -21068,7 +21053,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Modifier = exports.ModifierPosition = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var ModifierPosition;
 (function (ModifierPosition) {
@@ -21079,21 +21064,16 @@ var ModifierPosition;
     ModifierPosition[ModifierPosition["BELOW"] = 4] = "BELOW";
 })(ModifierPosition = exports.ModifierPosition || (exports.ModifierPosition = {}));
 // To enable logging for this class. Set `Vex.Flow.Modifier.DEBUG` to `true`.
-// function L(...args) { if (Modifier.DEBUG) Vex.L('Vex.Flow.Modifier', args); }
+// function L(...args) { if (Modifier.DEBUG) log('Vex.Flow.Modifier', args); }
 var Modifier = /** @class */ (function (_super) {
     __extends(Modifier, _super);
     function Modifier() {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Modifier');
         _this.width = 0;
-        // Modifiers are attached to a note and an index. An index is a
-        // specific head in a chord.
-        _this.note = undefined;
-        _this.index = 0;
         // The `text_line` is reserved space above or below a stave.
         _this.text_line = 0;
         _this.position = Modifier.Position.LEFT;
-        _this.modifier_context = undefined;
         _this.x_shift = 0;
         _this.y_shift = 0;
         _this.spacingFromNextModifier = 0;
@@ -21147,7 +21127,13 @@ var Modifier = /** @class */ (function (_super) {
     // Get and set attached note (`StaveNote`, `TabNote`, etc.)
     Modifier.prototype.getNote = function () {
         if (!this.note)
-            throw new vex_1.Vex.RERR('NoNote', 'Modifier has no note.');
+            throw new util_1.RuntimeError('NoNote', 'Modifier has no note.');
+        return this.note;
+    };
+    Modifier.prototype.checkAttachedNote = function () {
+        if (!this.note || this.index === undefined) {
+            throw new util_1.RuntimeError('NoAttachedNote', "Can't draw " + this.getCategory() + " without a note and index.");
+        }
         return this.note;
     };
     Modifier.prototype.setNote = function (note) {
@@ -21156,6 +21142,12 @@ var Modifier = /** @class */ (function (_super) {
     };
     // Get and set note index, which is a specific note in a chord.
     Modifier.prototype.getIndex = function () {
+        return this.index;
+    };
+    Modifier.prototype.checkIndex = function () {
+        if (this.index === undefined) {
+            throw new util_1.RuntimeError('NoIndex', 'Modifier has an invalid index.');
+        }
         return this.index;
     };
     Modifier.prototype.setIndex = function (index) {
@@ -21168,7 +21160,7 @@ var Modifier = /** @class */ (function (_super) {
     };
     Modifier.prototype.checkModifierContext = function () {
         if (!this.modifier_context)
-            throw new vex_1.Vex.RERR('NoModifierContext', 'Modifier Context Required');
+            throw new util_1.RuntimeError('NoModifierContext', 'Modifier Context Required');
         return this.modifier_context;
     };
     Modifier.prototype.setModifierContext = function (c) {
@@ -21218,7 +21210,7 @@ var Modifier = /** @class */ (function (_super) {
     // Render the modifier onto the canvas.
     Modifier.prototype.draw = function () {
         this.checkContext();
-        throw new vex_1.Vex.RERR('MethodNotImplemented', 'draw() not implemented for this modifier.');
+        throw new util_1.RuntimeError('MethodNotImplemented', 'draw() not implemented for this modifier.');
     };
     // aligns sub notes of NoteSubGroup (or GraceNoteGroup) to the main note with correct x-offset
     Modifier.prototype.alignSubNotesWithNote = function (subNotes, note) {
@@ -21258,12 +21250,12 @@ exports.Modifier = Modifier;
 // fingering positions etc.)
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModifierContext = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 var dot_1 = __webpack_require__(/*! ./dot */ "./src/dot.ts");
 var frethandfinger_1 = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.ts");
 var accidental_1 = __webpack_require__(/*! ./accidental */ "./src/accidental.js");
-var notesubgroup_1 = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.js");
+var notesubgroup_1 = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.ts");
 var gracenotegroup_1 = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
 var strokes_1 = __webpack_require__(/*! ./strokes */ "./src/strokes.ts");
 var stringnumber_1 = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.ts");
@@ -21288,7 +21280,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (ModifierContext.DEBUG)
-        vex_1.Vex.L('Vex.Flow.ModifierContext', args);
+        util_1.log('Vex.Flow.ModifierContext', args);
 }
 var ModifierContext = /** @class */ (function () {
     function ModifierContext() {
@@ -21360,7 +21352,7 @@ var ModifierContext = /** @class */ (function () {
     };
     ModifierContext.prototype.getMetrics = function () {
         if (!this.formatted) {
-            throw new vex_1.Vex.RERR('UnformattedMember', 'Unformatted member has no metrics.');
+            throw new util_1.RuntimeError('UnformattedMember', 'Unformatted member has no metrics.');
         }
         return {
             width: this.state.left_shift + this.state.right_shift + this.spacing,
@@ -21432,6 +21424,7 @@ var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var notehead_1 = __webpack_require__(/*! ./notehead */ "./src/notehead.ts");
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 var timesignature_1 = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
+var stavebarline_1 = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
 var semibrave_rest;
 function get_semibrave_rest() {
     if (!semibrave_rest) {
@@ -21585,7 +21578,7 @@ var MultiMeasureRest = /** @class */ (function (_super) {
         // FIXME: getNoteStartX() returns x+5(barline width) and
         // getNoteEndX() returns x + width(no barline width) by default. how to fix?
         var begModifiers = stave.getModifiers(stavemodifier_1.StaveModifier.Position.BEGIN);
-        if (begModifiers.length === 1 && begModifiers[0].getCategory() === 'barlines') {
+        if (begModifiers.length === 1 && begModifiers[0].getCategory() === stavebarline_1.Barline.CATEGORY) {
             left -= begModifiers[0].getWidth();
         }
         if (!isNaN(this.render_options.padding_left)) {
@@ -21635,7 +21628,7 @@ exports.MultiMeasureRest = MultiMeasureRest;
 // This class implements some standard music theory routines.
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Music = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var Music = /** @class */ (function () {
     function Music() {
     }
@@ -21845,10 +21838,10 @@ var Music = /** @class */ (function () {
     };
     Music.prototype.getNoteParts = function (noteString) {
         if (!noteString || noteString.length < 1) {
-            throw new vex_1.Vex.RERR('BadArguments', 'Invalid note name: ' + noteString);
+            throw new util_1.RuntimeError('BadArguments', 'Invalid note name: ' + noteString);
         }
         if (noteString.length > 3) {
-            throw new vex_1.Vex.RERR('BadArguments', 'Invalid note name: ' + noteString);
+            throw new util_1.RuntimeError('BadArguments', 'Invalid note name: ' + noteString);
         }
         var note = noteString.toLowerCase();
         var regex = /^([cdefgab])(b|bb|n|#|##)?$/;
@@ -21862,12 +21855,12 @@ var Music = /** @class */ (function () {
             };
         }
         else {
-            throw new vex_1.Vex.RERR('BadArguments', 'Invalid note name: ' + noteString);
+            throw new util_1.RuntimeError('BadArguments', 'Invalid note name: ' + noteString);
         }
     };
     Music.prototype.getKeyParts = function (keyString) {
         if (!keyString || keyString.length < 1) {
-            throw new vex_1.Vex.RERR('BadArguments', 'Invalid key: ' + keyString);
+            throw new util_1.RuntimeError('BadArguments', 'Invalid key: ' + keyString);
         }
         var key = keyString.toLowerCase();
         // Support Major, Minor, Melodic Minor, and Harmonic Minor key types.
@@ -21887,32 +21880,32 @@ var Music = /** @class */ (function () {
             };
         }
         else {
-            throw new vex_1.Vex.RERR('BadArguments', "Invalid key: " + keyString);
+            throw new util_1.RuntimeError('BadArguments', "Invalid key: " + keyString);
         }
     };
     Music.prototype.getNoteValue = function (noteString) {
         var value = Music.noteValues[noteString];
         if (value === undefined) {
-            throw new vex_1.Vex.RERR('BadArguments', "Invalid note name: " + noteString);
+            throw new util_1.RuntimeError('BadArguments', "Invalid note name: " + noteString);
         }
         return value.int_val;
     };
     Music.prototype.getIntervalValue = function (intervalString) {
         var value = Music.intervals[intervalString];
         if (value === undefined) {
-            throw new vex_1.Vex.RERR('BadArguments', "Invalid interval name: " + intervalString);
+            throw new util_1.RuntimeError('BadArguments', "Invalid interval name: " + intervalString);
         }
         return value;
     };
     Music.prototype.getCanonicalNoteName = function (noteValue) {
         if (!this.isValidNoteValue(noteValue)) {
-            throw new vex_1.Vex.RERR('BadArguments', "Invalid note value: " + noteValue);
+            throw new util_1.RuntimeError('BadArguments', "Invalid note value: " + noteValue);
         }
         return Music.canonical_notes[noteValue];
     };
     Music.prototype.getCanonicalIntervalName = function (intervalValue) {
         if (!this.isValidIntervalValue(intervalValue)) {
-            throw new vex_1.Vex.RERR('BadArguments', "Invalid interval value: " + intervalValue);
+            throw new util_1.RuntimeError('BadArguments', "Invalid interval value: " + intervalValue);
         }
         return Music.diatonic_intervals[intervalValue];
     };
@@ -21922,7 +21915,7 @@ var Music = /** @class */ (function () {
     Music.prototype.getRelativeNoteValue = function (noteValue, intervalValue, direction) {
         if (direction === void 0) { direction = 1; }
         if (direction !== 1 && direction !== -1) {
-            throw new vex_1.Vex.RERR('BadArguments', "Invalid direction: " + direction);
+            throw new util_1.RuntimeError('BadArguments', "Invalid direction: " + direction);
         }
         var sum = (noteValue + direction * intervalValue) % Music.NUM_TONES;
         if (sum < 0)
@@ -21940,14 +21933,14 @@ var Music = /** @class */ (function () {
             // Possibly wrap around. (Add +1 for modulo operator)
             var reverse_interval = ((noteValue + 1 + (rootValue + 1)) % Music.NUM_TONES) * multiplier;
             if (Math.abs(reverse_interval) > 2) {
-                throw new vex_1.Vex.RERR('BadArguments', "Notes not related: " + root + ", " + noteValue + ")");
+                throw new util_1.RuntimeError('BadArguments', "Notes not related: " + root + ", " + noteValue + ")");
             }
             else {
                 interval = reverse_interval;
             }
         }
         if (Math.abs(interval) > 2) {
-            throw new vex_1.Vex.RERR('BadArguments', "Notes not related: " + root + ", " + noteValue + ")");
+            throw new util_1.RuntimeError('BadArguments', "Notes not related: " + root + ", " + noteValue + ")");
         }
         var relativeNoteName = parts.root;
         if (interval > 0) {
@@ -21988,10 +21981,10 @@ var Music = /** @class */ (function () {
     Music.prototype.getIntervalBetween = function (note1, note2, direction) {
         if (direction === void 0) { direction = 1; }
         if (direction !== 1 && direction !== -1) {
-            throw new vex_1.Vex.RERR('BadArguments', "Invalid direction: " + direction);
+            throw new util_1.RuntimeError('BadArguments', "Invalid direction: " + direction);
         }
         if (!this.isValidNoteValue(note1) || !this.isValidNoteValue(note2)) {
-            throw new vex_1.Vex.RERR('BadArguments', "Invalid notes: " + note1 + ", " + note2);
+            throw new util_1.RuntimeError('BadArguments', "Invalid notes: " + note1 + ", " + note2);
         }
         var difference = direction === 1 ? note2 - note1 : note1 - note2;
         if (difference < 0)
@@ -22007,13 +22000,13 @@ var Music = /** @class */ (function () {
     Music.prototype.createScaleMap = function (keySignature) {
         var keySigParts = this.getKeyParts(keySignature);
         if (!keySigParts.type)
-            throw new vex_1.Vex.RERR('BadArguments', 'Unsupported key type: undefined');
+            throw new util_1.RuntimeError('BadArguments', 'Unsupported key type: undefined');
         var scaleName = Music.scaleTypes[keySigParts.type];
         var keySigString = keySigParts.root;
         if (keySigParts.accidental)
             keySigString += keySigParts.accidental;
         if (!scaleName)
-            throw new vex_1.Vex.RERR('BadArguments', 'Unsupported key type: ' + keySignature);
+            throw new util_1.RuntimeError('BadArguments', 'Unsupported key type: ' + keySignature);
         var scale = this.getScaleTones(this.getNoteValue(keySigString), scaleName);
         var noteLocation = Music.root_indices[keySigParts.root];
         var scaleMap = {};
@@ -22073,6 +22066,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Note = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var tickable_1 = __webpack_require__(/*! ./tickable */ "./src/tickable.ts");
 var common_1 = __webpack_require__(/*! ./common */ "./src/common.ts");
@@ -22096,12 +22090,12 @@ var Note = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Note');
         if (!noteStruct) {
-            throw new vex_1.Vex.RuntimeError('BadArguments', 'Note must have valid initialization data to identify duration and type.');
+            throw new util_1.RuntimeError('BadArguments', 'Note must have valid initialization data to identify duration and type.');
         }
         /** Parses `noteStruct` and get note properties. */
         var initStruct = Note.parseNoteStruct(noteStruct);
         if (!initStruct) {
-            throw new vex_1.Vex.RuntimeError('BadArguments', "Invalid note initialization object: " + JSON.stringify(noteStruct));
+            throw new util_1.RuntimeError('BadArguments', "Invalid note initialization object: " + JSON.stringify(noteStruct));
         }
         // Set note properties from parameters.
         _this.keys = noteStruct.keys || [];
@@ -22291,7 +22285,7 @@ var Note = /** @class */ (function (_super) {
     /** Check and get the target stave. */
     Note.prototype.checkStave = function () {
         if (!this.stave) {
-            throw new vex_1.Vex.RERR('NoStave', 'No stave attached to instance');
+            throw new util_1.RuntimeError('NoStave', 'No stave attached to instance');
         }
         return this.stave;
     };
@@ -22369,7 +22363,7 @@ var Note = /** @class */ (function (_super) {
      */
     Note.prototype.getYs = function () {
         if (this.ys.length === 0) {
-            throw new vex_1.Vex.RERR('NoYValues', 'No Y-values calculated for this note.');
+            throw new util_1.RuntimeError('NoYValues', 'No Y-values calculated for this note.');
         }
         return this.ys;
     };
@@ -22383,7 +22377,7 @@ var Note = /** @class */ (function (_super) {
     /** Returns the voice that this note belongs in. */
     Note.prototype.getVoice = function () {
         if (!this.voice)
-            throw new vex_1.Vex.RERR('NoVoice', 'Note has no voice.');
+            throw new util_1.RuntimeError('NoVoice', 'Note has no voice.');
         return this.voice;
     };
     /** Attaches this note to `voice`. */
@@ -22395,7 +22389,7 @@ var Note = /** @class */ (function (_super) {
     /** Gets the `TickContext` for this note. */
     Note.prototype.getTickContext = function () {
         if (!this.tickContext)
-            throw new vex_1.Vex.RERR('NoTickContext', 'Note has no tick context.');
+            throw new util_1.RuntimeError('NoTickContext', 'Note has no tick context.');
         return this.tickContext;
     };
     /** Sets the `TickContext` for this note. */
@@ -22427,7 +22421,7 @@ var Note = /** @class */ (function (_super) {
     /** Checks and gets the beam. */
     Note.prototype.checkBeam = function () {
         if (!this.beam) {
-            throw new vex_1.Vex.RERR('NoBeam', 'No beam attached to instance');
+            throw new util_1.RuntimeError('NoBeam', 'No beam attached to instance');
         }
         return this.beam;
     };
@@ -22455,7 +22449,7 @@ var Note = /** @class */ (function (_super) {
             modifier = a;
         }
         else {
-            throw new vex_1.Vex.RERR('WrongParams', 'Call signature to addModifier not supported, use addModifier(modifier, index) instead.');
+            throw new util_1.RuntimeError('WrongParams', 'Call signature to addModifier not supported, use addModifier(modifier, index) instead.');
         }
         modifier.setNote(this);
         modifier.setIndex(index);
@@ -22464,11 +22458,10 @@ var Note = /** @class */ (function (_super) {
         return this;
     };
     /** Get the coordinates for where modifiers begin. */
-    Note.prototype.getModifierStartXY = function (
     // eslint-disable-next-line
-    position, index, options) {
+    Note.prototype.getModifierStartXY = function (position, index, options) {
         if (!this.preFormatted) {
-            throw new vex_1.Vex.RERR('UnformattedNote', "Can't call GetModifierStartXY on an unformatted note");
+            throw new util_1.RuntimeError('UnformattedNote', "Can't call GetModifierStartXY on an unformatted note");
         }
         return {
             x: this.getAbsoluteX(),
@@ -22478,7 +22471,7 @@ var Note = /** @class */ (function (_super) {
     /** Get the metrics for this note. */
     Note.prototype.getMetrics = function () {
         if (!this.preFormatted) {
-            throw new vex_1.Vex.RERR('UnformattedNote', "Can't call getMetrics on an unformatted note.");
+            throw new util_1.RuntimeError('UnformattedNote', "Can't call getMetrics on an unformatted note.");
         }
         var modLeftPx = this.modifierContext ? this.modifierContext.state.left_shift : 0;
         var modRightPx = this.modifierContext ? this.modifierContext.state.right_shift : 0;
@@ -22512,7 +22505,7 @@ var Note = /** @class */ (function (_super) {
      */
     Note.prototype.getAbsoluteX = function () {
         if (!this.tickContext) {
-            throw new vex_1.Vex.RERR('NoTickContext', 'Note needs a TickContext assigned for an X-Value');
+            throw new util_1.RuntimeError('NoTickContext', 'Note needs a TickContext assigned for an X-Value');
         }
         // Position note to left edge of tick context.
         var x = this.tickContext.getX();
@@ -22530,11 +22523,11 @@ var Note = /** @class */ (function (_super) {
     };
     // Get the direction of the stem
     Note.prototype.getStemDirection = function () {
-        throw new vex_1.Vex.RERR('NoStem', 'No stem attached to this note.');
+        throw new util_1.RuntimeError('NoStem', 'No stem attached to this note.');
     };
     // Get the top and bottom `y` values of the stem.
     Note.prototype.getStemExtents = function () {
-        throw new vex_1.Vex.RERR('NoStem', 'No stem attached to this note.');
+        throw new util_1.RuntimeError('NoStem', 'No stem attached to this note.');
     };
     // Get the `x` coordinate to the right of the note
     Note.prototype.getTieRightX = function () {
@@ -22591,9 +22584,20 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NoteHead = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
@@ -22615,7 +22619,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (NoteHead.DEBUG)
-        vex_1.Vex.L('Vex.Flow.NoteHead', args);
+        util_1.log('Vex.Flow.NoteHead', args);
 }
 // Draw slashnote head manually. No glyph exists for this.
 //
@@ -22679,7 +22683,7 @@ var NoteHead = /** @class */ (function (_super) {
         // regular notes, rests, or other custom codes.
         _this.glyph = tables_1.Flow.getGlyphProps(_this.duration, _this.note_type);
         if (!_this.glyph) {
-            throw new vex_1.Vex.RuntimeError('BadArguments', "No glyph found for duration '" + _this.duration + "' and type '" + _this.note_type + "'");
+            throw new util_1.RuntimeError('BadArguments', "No glyph found for duration '" + _this.duration + "' and type '" + _this.note_type + "'");
         }
         _this.glyph_code = _this.glyph.code_head;
         _this.x_shift = head_options.x_shift || 0;
@@ -22691,7 +22695,7 @@ var NoteHead = /** @class */ (function (_super) {
         }
         _this.style = head_options.style;
         _this.slashed = head_options.slashed || false;
-        vex_1.Vex.Merge(_this.render_options, {
+        _this.render_options = __assign(__assign({}, _this.render_options), {
             // font size for note heads
             glyph_font_scale: head_options.glyph_font_scale || tables_1.Flow.DEFAULT_NOTATION_FONT_SCALE,
             // number of stroke px to the left and right of head
@@ -22761,7 +22765,7 @@ var NoteHead = /** @class */ (function (_super) {
     // Get the `BoundingBox` for the `NoteHead`
     NoteHead.prototype.getBoundingBox = function () {
         if (!this.preFormatted) {
-            throw new vex_1.Vex.RERR('UnformattedNote', "Can't call getBoundingBox on an unformatted note.");
+            throw new util_1.RuntimeError('UnformattedNote', "Can't call getBoundingBox on an unformatted note.");
         }
         var spacing = this.checkStave().getSpacingBetweenLines();
         var half_spacing = spacing / 2;
@@ -22826,9 +22830,9 @@ exports.NoteHead = NoteHead;
 
 /***/ }),
 
-/***/ "./src/notesubgroup.js":
+/***/ "./src/notesubgroup.ts":
 /*!*****************************!*\
-  !*** ./src/notesubgroup.js ***!
+  !*** ./src/notesubgroup.ts ***!
   \*****************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -22860,7 +22864,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NoteSubGroup = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
@@ -22870,12 +22873,10 @@ var NoteSubGroup = /** @class */ (function (_super) {
     function NoteSubGroup(subNotes) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'NoteSubGroup');
-        _this.note = null;
-        _this.index = null;
         _this.position = modifier_1.Modifier.Position.LEFT;
         _this.subNotes = subNotes;
         _this.subNotes.forEach(function (subNote) {
-            subNote.ignore_ticks = false;
+            subNote.setIgnoreTicks(false);
         });
         _this.width = 0;
         _this.preFormatted = false;
@@ -22918,26 +22919,19 @@ var NoteSubGroup = /** @class */ (function (_super) {
         this.setWidth(this.formatter.getMinTotalWidth());
         this.preFormatted = true;
     };
-    NoteSubGroup.prototype.setNote = function (note) {
-        this.note = note;
-    };
     NoteSubGroup.prototype.setWidth = function (width) {
         this.width = width;
+        return this;
     };
     NoteSubGroup.prototype.getWidth = function () {
         return this.width;
     };
     NoteSubGroup.prototype.draw = function () {
-        var _this = this;
-        this.checkContext();
-        var note = this.getNote();
-        if (!(note && this.index !== null)) {
-            throw new vex_1.Vex.RuntimeError('NoAttachedNote', "Can't draw notes without a parent note and parent note index.");
-        }
+        var ctx = this.checkContext();
+        var note = this.checkAttachedNote();
         this.setRendered();
         this.alignSubNotesWithNote(this.subNotes, note); // Modifier function
-        // Draw notes
-        this.subNotes.forEach(function (subNote) { return subNote.setContext(_this.context).drawWithStyle(); });
+        this.subNotes.forEach(function (subNote) { return subNote.setContext(ctx).drawWithStyle(); });
     };
     return NoteSubGroup;
 }(modifier_1.Modifier));
@@ -22982,12 +22976,13 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Ornament = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var tickcontext_1 = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
 // To enable logging for this class. Set `Vex.Flow.Ornament.DEBUG` to `true`.
 function L() {
     var args = [];
@@ -22995,7 +22990,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (Ornament.DEBUG)
-        vex_1.Vex.L('Vex.Flow.Ornament', args);
+        util_1.log('Vex.Flow.Ornament', args);
 }
 var Ornament = /** @class */ (function (_super) {
     __extends(Ornament, _super);
@@ -23004,8 +22999,6 @@ var Ornament = /** @class */ (function (_super) {
     function Ornament(type) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Ornament');
-        _this.note = null;
-        _this.index = null;
         _this.type = type;
         _this.delayed = false;
         _this.accidentalUpper = null;
@@ -23028,7 +23021,7 @@ var Ornament = /** @class */ (function (_super) {
         _this.stemUpYOffset = metrics && metrics.stemUpYOffset ? metrics.stemUpYOffset : 0;
         _this.ornamentAlignWithNoteHead = Ornament.ornamentAlignWithNoteHead.indexOf(_this.type) >= 0;
         if (!_this.ornament) {
-            throw new vex_1.Vex.RERR('ArgumentError', "Ornament not found: '" + _this.type + "'");
+            throw new util_1.RuntimeError('ArgumentError', "Ornament not found: '" + _this.type + "'");
         }
         _this.x_shift = metrics ? metrics.xOffset : 0;
         _this.y_shift = metrics ? metrics.yOffset : 0;
@@ -23191,23 +23184,20 @@ var Ornament = /** @class */ (function (_super) {
     };
     // Render ornament in position next to note.
     Ornament.prototype.draw = function () {
-        this.checkContext();
-        if (!this.note || this.index == null) {
-            throw new vex_1.Vex.RERR('NoAttachedNote', "Can't draw Ornament without a note and index.");
-        }
+        var ctx = this.checkContext();
+        var note = this.checkAttachedNote();
         this.setRendered();
-        var ctx = this.context;
-        var stemDir = this.note.getStemDirection();
-        var stave = this.note.getStave();
+        var stemDir = note.getStemDirection();
+        var stave = note.getStave();
         var classString = Object.keys(this.getAttribute('classes')).join(' ');
-        this.context.openGroup(classString, this.getAttribute('id'));
+        ctx.openGroup(classString, this.getAttribute('id'));
         // Get stem extents
-        var stemExtents = this.note.getStem().getExtents();
+        var stemExtents = note.getStem().getExtents();
         var y = stemDir === stavenote_1.StaveNote.STEM_DOWN ? stemExtents.baseY : stemExtents.topY;
         // TabNotes don't have stems attached to them. Tab stems are rendered
         // outside the stave.
-        if (this.note.getCategory() === 'tabnotes') {
-            if (this.note.hasStem()) {
+        if (note.getCategory() === tabnote_1.TabNote.CATEGORY) {
+            if (note.hasStem()) {
                 if (stemDir === stavenote_1.StaveNote.STEM_DOWN) {
                     y = stave.getYForTopText(this.text_line);
                 }
@@ -23221,13 +23211,13 @@ var Ornament = /** @class */ (function (_super) {
         var spacing = stave.getSpacingBetweenLines();
         var lineSpacing = 1;
         // Beamed stems are longer than quarter note stems, adjust accordingly
-        if (!isPlacedOnNoteheadSide && this.note.beam) {
+        if (!isPlacedOnNoteheadSide && note.beam) {
             lineSpacing += 0.5;
         }
         var totalSpacing = spacing * (this.text_line + lineSpacing);
         var glyphYBetweenLines = y - totalSpacing;
         // Get initial coordinates for the modifier position
-        var start = this.note.getModifierStartXY(this.position, this.index);
+        var start = note.getModifierStartXY(this.position, this.index);
         var glyphX = start.x;
         // If the ornament is aligned with the note head, don't consider the stave y
         // but use the 'natural' modifier y
@@ -23244,7 +23234,7 @@ var Ornament = /** @class */ (function (_super) {
             }
             else {
                 delayXShift += this.glyph.getMetrics().width / 2;
-                var nextContext = tickcontext_1.TickContext.getNextContext(this.note.getTickContext());
+                var nextContext = tickcontext_1.TickContext.getNextContext(note.getTickContext());
                 if (nextContext) {
                     delayXShift += (nextContext.getX() - startX) * 0.5;
                 }
@@ -23261,18 +23251,18 @@ var Ornament = /** @class */ (function (_super) {
             glyphY -= this.accidentalLower.getMetrics().height;
             glyphY -= this.render_options.accidentalLowerPadding;
         }
-        if (this.stemUpYOffset && this.note.hasStem() && this.note.getStemDirection() === 1) {
+        if (this.stemUpYOffset && note.hasStem() && note.getStemDirection() === 1) {
             glyphY += this.stemUpYOffset;
         }
-        if (this.note.getLineNumber() < 5 && Ornament.ornamentNoteTransition.indexOf(this.type) >= 0) {
-            glyphY = this.note.getStave().getBoundingBox().y + 40;
+        if (note.getLineNumber() < 5 && Ornament.ornamentNoteTransition.indexOf(this.type) >= 0) {
+            glyphY = note.getStave().getBoundingBox().y + 40;
         }
         this.glyph.render(ctx, glyphX + this.x_shift, glyphY);
         if (this.accidentalUpper) {
             glyphY -= this.glyph.getMetrics().height + this.render_options.accidentalUpperPadding;
             this.accidentalUpper.render(ctx, glyphX, glyphY);
         }
-        this.context.closeGroup();
+        ctx.closeGroup();
     };
     return Ornament;
 }(modifier_1.Modifier));
@@ -23296,6 +23286,7 @@ exports.Ornament = Ornament;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Parser = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 // To enable logging for this class. Set `Vex.Flow.Parser.DEBUG` to `true`.
 // eslint-disable-next-line
 function L() {
@@ -23304,7 +23295,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (Parser.DEBUG)
-        vex_1.Vex.L('Vex.Flow.Parser', args);
+        util_1.log('Vex.Flow.Parser', args);
 }
 var X = vex_1.Vex.MakeException('ParserError');
 var NO_ERROR_POS = -1;
@@ -23558,7 +23549,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PedalMarking = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 // To enable logging for this class. Set `Vex.Flow.PedalMarking.DEBUG` to `true`.
@@ -23576,7 +23567,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (PedalMarking.DEBUG)
-        vex_1.Vex.L('Vex.Flow.PedalMarking', args);
+        util_1.log('Vex.Flow.PedalMarking', args);
 }
 // Draws a pedal glyph with the provided `name` on a rendering `context`
 // at the coordinates `x` and `y. Takes into account the glyph data
@@ -23666,7 +23657,7 @@ var PedalMarking = /** @class */ (function (_super) {
             var y = note.checkStave().getYForBottomText(_this.line + 3);
             // Throw if current note is positioned before the previous note
             if (x < prev_x) {
-                throw new vex_1.Vex.RERR('InvalidConfiguration', 'The notes provided must be in order of ascending x positions');
+                throw new util_1.RuntimeError('InvalidConfiguration', 'The notes provided must be in order of ascending x positions');
             }
             // Determine if the previous or next note are the same
             // as the current note. We need to keep track of this for
@@ -24313,14 +24304,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Renderer = void 0;
 var canvascontext_1 = __webpack_require__(/*! ./canvascontext */ "./src/canvascontext.js");
 var raphaelcontext_1 = __webpack_require__(/*! ./raphaelcontext */ "./src/raphaelcontext.js");
-var svgcontext_1 = __webpack_require__(/*! ./svgcontext */ "./src/svgcontext.js");
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var svgcontext_1 = __webpack_require__(/*! ./svgcontext */ "./src/svgcontext.ts");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var lastContext = null;
 var Renderer = /** @class */ (function () {
     function Renderer(elementId, backend) {
         this.elementId = elementId;
         if (!this.elementId) {
-            throw new vex_1.Vex.RERR('BadArgument', 'Invalid id for renderer.');
+            throw new util_1.RuntimeError('BadArgument', 'Invalid id for renderer.');
         }
         this.element = document.getElementById(elementId);
         if (!this.element)
@@ -24332,7 +24323,7 @@ var Renderer = /** @class */ (function () {
         if (this.backend === Renderer.Backends.CANVAS) {
             // Create context.
             if (!this.element.getContext) {
-                throw new vex_1.Vex.RERR('BadElement', "Can't get canvas context from element: " + elementId);
+                throw new util_1.RuntimeError('BadElement', "Can't get canvas context from element: " + elementId);
             }
             this.ctx = Renderer.bolsterCanvasContext(this.element.getContext('2d'));
         }
@@ -24343,7 +24334,7 @@ var Renderer = /** @class */ (function () {
             this.ctx = new svgcontext_1.SVGContext(this.element);
         }
         else {
-            throw new vex_1.Vex.RERR('InvalidBackend', "No support for backend: " + this.backend);
+            throw new util_1.RuntimeError('InvalidBackend', "No support for backend: " + this.backend);
         }
     }
     Object.defineProperty(Renderer, "Backends", {
@@ -24471,7 +24462,7 @@ var Renderer = /** @class */ (function () {
         var _a;
         if (this.backend === Renderer.Backends.CANVAS) {
             if (!this.element.getContext) {
-                throw new vex_1.Vex.RERR('BadElement', "Can't get canvas context from element: " + this.elementId);
+                throw new util_1.RuntimeError('BadElement', "Can't get canvas context from element: " + this.elementId);
             }
             _a = canvascontext_1.CanvasContext.SanitizeCanvasDims(width, height), width = _a[0], height = _a[1];
             var devicePixelRatio_1 = window.devicePixelRatio || 1;
@@ -24600,7 +24591,7 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Stave = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var stavebarline_1 = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
@@ -24618,6 +24609,8 @@ var Stave = /** @class */ (function (_super) {
     __extends(Stave, _super);
     function Stave(x, y, width, options) {
         var _this = _super.call(this) || this;
+        // Initialised in resetLines called in constructor
+        _this.height = 0;
         _this.setAttribute('type', 'Stave');
         _this.x = x;
         _this.y = y;
@@ -24653,13 +24646,12 @@ var Stave = /** @class */ (function (_super) {
             line_config: [],
         };
         _this.bounds = { x: _this.x, y: _this.y, w: _this.width, h: 0 };
-        vex_1.Vex.Merge(_this.options, options);
+        _this.options = __assign(__assign({}, _this.options), options);
         _this.resetLines();
-        var BARTYPE = stavebarline_1.Barline.type;
         // beg bar
-        _this.addModifier(new stavebarline_1.Barline(_this.options.left_bar ? BARTYPE.SINGLE : BARTYPE.NONE));
+        _this.addModifier(new stavebarline_1.Barline(_this.options.left_bar ? stavebarline_1.BarlineType.SINGLE : stavebarline_1.BarlineType.NONE));
         // end bar
-        _this.addEndModifier(new stavebarline_1.Barline(_this.options.right_bar ? BARTYPE.SINGLE : BARTYPE.NONE));
+        _this.addEndModifier(new stavebarline_1.Barline(_this.options.right_bar ? stavebarline_1.BarlineType.SINGLE : stavebarline_1.BarlineType.NONE));
         return _this;
     }
     Object.defineProperty(Stave, "defaultPadding", {
@@ -24725,6 +24717,9 @@ var Stave = /** @class */ (function (_super) {
         this.y = y;
         return this;
     };
+    Stave.prototype.getY = function () {
+        return this.y;
+    };
     Stave.prototype.getTopLineTopY = function () {
         return this.getYForLine(0) - tables_1.Flow.STAVE_LINE_THICKNESS / 2;
     };
@@ -24770,7 +24765,7 @@ var Stave = /** @class */ (function (_super) {
     Stave.prototype.getModifierXShift = function (index) {
         if (index === void 0) { index = 0; }
         if (typeof index !== 'number') {
-            throw new vex_1.Vex.RERR('InvalidIndex', 'Must be of number type');
+            throw new util_1.RuntimeError('InvalidIndex', 'Must be of number type');
         }
         if (!this.formatted)
             this.format();
@@ -24783,7 +24778,7 @@ var Stave = /** @class */ (function (_super) {
         }
         var start_x = this.start_x - this.x;
         var begBarline = this.modifiers[0];
-        if (begBarline.getType() === stavebarline_1.Barline.type.REPEAT_BEGIN && start_x > begBarline.getWidth()) {
+        if (begBarline.getType() === stavebarline_1.BarlineType.REPEAT_BEGIN && start_x > begBarline.getWidth()) {
             start_x -= begBarline.getWidth();
         }
         return start_x;
@@ -24887,7 +24882,7 @@ var Stave = /** @class */ (function (_super) {
     // Bar Line functions
     Stave.prototype.setBegBarType = function (type) {
         // Only valid bar types at beginning of stave is none, single or begin repeat
-        var _a = stavebarline_1.Barline.type, SINGLE = _a.SINGLE, REPEAT_BEGIN = _a.REPEAT_BEGIN, NONE = _a.NONE;
+        var SINGLE = stavebarline_1.BarlineType.SINGLE, REPEAT_BEGIN = stavebarline_1.BarlineType.REPEAT_BEGIN, NONE = stavebarline_1.BarlineType.NONE;
         if (type === SINGLE || type === REPEAT_BEGIN || type === NONE) {
             this.modifiers[0].setType(type);
             this.formatted = false;
@@ -24896,7 +24891,7 @@ var Stave = /** @class */ (function (_super) {
     };
     Stave.prototype.setEndBarType = function (type) {
         // Repeat end not valid at end of stave
-        if (type !== stavebarline_1.Barline.type.REPEAT_BEGIN) {
+        if (type !== stavebarline_1.BarlineType.REPEAT_BEGIN) {
             this.modifiers[1].setType(type);
             this.formatted = false;
         }
@@ -25029,12 +25024,12 @@ var Stave = /** @class */ (function (_super) {
             barlines: 2,
             clefs: 3,
         });
-        if (begModifiers.length > 1 && begBarline.getType() === stavebarline_1.Barline.type.REPEAT_BEGIN) {
+        if (begModifiers.length > 1 && begBarline.getType() === stavebarline_1.BarlineType.REPEAT_BEGIN) {
             begModifiers.push(begModifiers.splice(0, 1)[0]);
-            begModifiers.splice(0, 0, new stavebarline_1.Barline(stavebarline_1.Barline.type.SINGLE));
+            begModifiers.splice(0, 0, new stavebarline_1.Barline(stavebarline_1.BarlineType.SINGLE));
         }
         if (endModifiers.indexOf(endBarline) > 0) {
-            endModifiers.splice(0, 0, new stavebarline_1.Barline(stavebarline_1.Barline.type.NONE));
+            endModifiers.splice(0, 0, new stavebarline_1.Barline(stavebarline_1.BarlineType.NONE));
         }
         var width;
         var padding;
@@ -25062,7 +25057,7 @@ var Stave = /** @class */ (function (_super) {
         var lastBarlineIdx = 0;
         for (var i = 0; i < endModifiers.length; i++) {
             modifier = endModifiers[i];
-            lastBarlineIdx = modifier.getCategory() === 'barlines' ? i : lastBarlineIdx;
+            lastBarlineIdx = modifier.getCategory() === stavebarline_1.Barline.CATEGORY ? i : lastBarlineIdx;
             widths.right = 0;
             widths.left = 0;
             widths.paddingRight = 0;
@@ -25175,18 +25170,18 @@ var Stave = /** @class */ (function (_super) {
      * Configure properties of the lines in the Stave
      * @param line_number The index of the line to configure.
      * @param line_config An configuration object for the specified line.
-     * @throws Vex.RERR "StaveConfigError" When the specified line number is out of
+     * @throws RuntimeError "StaveConfigError" When the specified line number is out of
      *   range of the number of lines specified in the constructor.
      */
     Stave.prototype.setConfigForLine = function (line_number, line_config) {
         if (line_number >= this.options.num_lines || line_number < 0) {
-            throw new vex_1.Vex.RERR('StaveConfigError', 'The line number must be within the range of the number of lines in the Stave.');
+            throw new util_1.RuntimeError('StaveConfigError', 'The line number must be within the range of the number of lines in the Stave.');
         }
         if (line_config.visible === undefined) {
-            throw new vex_1.Vex.RERR('StaveConfigError', "The line configuration object is missing the 'visible' property.");
+            throw new util_1.RuntimeError('StaveConfigError', "The line configuration object is missing the 'visible' property.");
         }
         if (typeof line_config.visible !== 'boolean') {
-            throw new vex_1.Vex.RERR('StaveConfigError', "The line configuration objects 'visible' property must be true or false.");
+            throw new util_1.RuntimeError('StaveConfigError', "The line configuration objects 'visible' property must be true or false.");
         }
         this.options.line_config[line_number] = line_config;
         return this;
@@ -25196,13 +25191,13 @@ var Stave = /** @class */ (function (_super) {
      * @param lines_configuration An array of line configuration objects.  These objects
      *   are of the same format as the single one passed in to setLineConfiguration().
      *   The caller can set null for any line config entry if it is desired that the default be used
-     * @throws Vex.RERR "StaveConfigError" When the lines_configuration array does not have
+     * @throws RuntimeError "StaveConfigError" When the lines_configuration array does not have
      *   exactly the same number of elements as the num_lines configuration object set in
      *   the constructor.
      */
     Stave.prototype.setConfigForLines = function (lines_configuration) {
         if (lines_configuration.length !== this.options.num_lines) {
-            throw new vex_1.Vex.RERR('StaveConfigError', 'The length of the lines configuration array must match the number of lines in the Stave');
+            throw new util_1.RuntimeError('StaveConfigError', 'The length of the lines configuration array must match the number of lines in the Stave');
         }
         // Make sure the defaults are present in case an incomplete set of
         //  configuration options were supplied.
@@ -25212,7 +25207,7 @@ var Stave = /** @class */ (function (_super) {
             if (!lines_configuration[line_config]) {
                 lines_configuration[line_config] = this.options.line_config[line_config];
             }
-            vex_1.Vex.Merge(this.options.line_config[line_config], lines_configuration[line_config]);
+            this.options.line_config[line_config] = __assign(__assign({}, this.options.line_config[line_config]), lines_configuration[line_config]);
         }
         this.options.line_config = lines_configuration;
         return this;
@@ -25274,7 +25269,7 @@ var Barline = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Barline');
         _this.thickness = tables_1.Flow.STAVE_LINE_THICKNESS;
-        var TYPE = Barline.type;
+        var TYPE = BarlineType;
         _this.widths = {};
         _this.widths[TYPE.SINGLE] = 5;
         _this.widths[TYPE.DOUBLE] = 5;
@@ -25355,13 +25350,13 @@ var Barline = /** @class */ (function (_super) {
     Object.defineProperty(Barline, "typeString", {
         get: function () {
             return {
-                single: Barline.type.SINGLE,
-                double: Barline.type.DOUBLE,
-                end: Barline.type.END,
-                repeatBegin: Barline.type.REPEAT_BEGIN,
-                repeatEnd: Barline.type.REPEAT_END,
-                repeatBoth: Barline.type.REPEAT_BOTH,
-                none: Barline.type.NONE,
+                single: BarlineType.SINGLE,
+                double: BarlineType.DOUBLE,
+                end: BarlineType.END,
+                repeatBegin: BarlineType.REPEAT_BEGIN,
+                repeatEnd: BarlineType.REPEAT_END,
+                repeatBoth: BarlineType.REPEAT_BOTH,
+                none: BarlineType.NONE,
             };
         },
         enumerable: false,
@@ -25385,16 +25380,16 @@ var Barline = /** @class */ (function (_super) {
         stave.checkContext();
         this.setRendered();
         switch (this.type) {
-            case Barline.type.SINGLE:
+            case BarlineType.SINGLE:
                 this.drawVerticalBar(stave, this.x, false);
                 break;
-            case Barline.type.DOUBLE:
+            case BarlineType.DOUBLE:
                 this.drawVerticalBar(stave, this.x, true);
                 break;
-            case Barline.type.END:
+            case BarlineType.END:
                 this.drawVerticalEndBar(stave, this.x);
                 break;
-            case Barline.type.REPEAT_BEGIN:
+            case BarlineType.REPEAT_BEGIN:
                 // If the barline is shifted over (in front of clef/time/key)
                 // Draw vertical bar at the beginning.
                 this.drawRepeatBar(stave, this.x, true);
@@ -25402,10 +25397,10 @@ var Barline = /** @class */ (function (_super) {
                     this.drawVerticalBar(stave, stave.getX());
                 }
                 break;
-            case Barline.type.REPEAT_END:
+            case BarlineType.REPEAT_END:
                 this.drawRepeatBar(stave, this.x, false);
                 break;
-            case Barline.type.REPEAT_BOTH:
+            case BarlineType.REPEAT_BOTH:
                 this.drawRepeatBar(stave, this.x, false);
                 this.drawRepeatBar(stave, this.x, true);
                 break;
@@ -25495,15 +25490,26 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StaveConnector = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 function drawBoldDoubleLine(ctx, type, topX, topY, botY) {
     if (type !== StaveConnector.type.BOLD_DOUBLE_LEFT && type !== StaveConnector.type.BOLD_DOUBLE_RIGHT) {
-        throw new vex_1.Vex.RERR('InvalidConnector', 'A REPEAT_BEGIN or REPEAT_END type must be provided.');
+        throw new util_1.RuntimeError('InvalidConnector', 'A REPEAT_BEGIN or REPEAT_END type must be provided.');
     }
     var x_shift = 3;
     var variableWidth = 3.5; // Width for avoiding anti-aliasing width issues
@@ -25548,16 +25554,16 @@ var StaveConnector = /** @class */ (function (_super) {
     StaveConnector.prototype.setText = function (text, options) {
         this.texts.push({
             content: text,
-            options: vex_1.Vex.Merge({ shift_x: 0, shift_y: 0 }, options),
+            options: __assign({ shift_x: 0, shift_y: 0 }, options),
         });
         return this;
     };
     StaveConnector.prototype.setFont = function (font) {
-        vex_1.Vex.Merge(this.font, font);
+        this.font = __assign(__assign({}, this.font), font);
     };
     StaveConnector.prototype.setXShift = function (x_shift) {
         if (typeof x_shift !== 'number') {
-            throw new vex_1.Vex.RERR('InvalidType', 'x_shift must be a Number');
+            throw new util_1.RuntimeError('InvalidType', 'x_shift must be a Number');
         }
         this.x_shift = x_shift;
         return this;
@@ -25647,7 +25653,7 @@ var StaveConnector = /** @class */ (function (_super) {
             case StaveConnector.type.NONE:
                 break;
             default:
-                throw new vex_1.Vex.RERR('InvalidType', "The provided StaveConnector.type (" + this.type + ") is invalid");
+                throw new util_1.RuntimeError('InvalidType', "The provided StaveConnector.type (" + this.type + ") is invalid.");
         }
         if (this.type !== StaveConnector.type.BRACE &&
             this.type !== StaveConnector.type.BOLD_DOUBLE_LEFT &&
@@ -25706,9 +25712,9 @@ exports.StaveConnector = StaveConnector;
 
 /***/ }),
 
-/***/ "./src/stavehairpin.js":
+/***/ "./src/stavehairpin.ts":
 /*!*****************************!*\
-  !*** ./src/stavehairpin.js ***!
+  !*** ./src/stavehairpin.ts ***!
   \*****************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -25739,7 +25745,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StaveHairpin = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var StaveHairpin = /** @class */ (function (_super) {
@@ -25771,21 +25777,13 @@ var StaveHairpin = /** @class */ (function (_super) {
             height: 10,
             y_shift: 0,
             left_shift_px: 0,
-            right_shift_px: 0, // right horizontal offset
+            right_shift_px: 0,
+            right_shift_ticks: 0,
+            left_shift_ticks: 0,
         };
         _this.setNotes(notes);
         return _this;
     }
-    Object.defineProperty(StaveHairpin, "type", {
-        get: function () {
-            return {
-                CRESC: 1,
-                DECRESC: 2,
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
     /* Helper function to convert ticks into pixels.
      * Requires a Formatter with voices joined and formatted (to
      * get pixels per tick)
@@ -25803,7 +25801,7 @@ var StaveHairpin = /** @class */ (function (_super) {
     StaveHairpin.FormatByTicksAndDraw = function (ctx, formatter, notes, type, position, options) {
         var ppt = formatter.pixelsPerTick;
         if (ppt == null) {
-            throw new vex_1.Vex.RuntimeError('BadArguments', 'A valid Formatter must be provide to draw offsets by ticks.');
+            throw new util_1.RuntimeError('BadArguments', 'A valid Formatter must be provide to draw offsets by ticks.');
         }
         var l_shift_px = ppt * options.left_shift_ticks;
         var r_shift_px = ppt * options.right_shift_ticks;
@@ -25812,6 +25810,8 @@ var StaveHairpin = /** @class */ (function (_super) {
             y_shift: options.y_shift,
             left_shift_px: l_shift_px,
             right_shift_px: r_shift_px,
+            right_shift_ticks: 0,
+            left_shift_ticks: 0,
         };
         new StaveHairpin({
             first_note: notes.first_note,
@@ -25844,7 +25844,7 @@ var StaveHairpin = /** @class */ (function (_super) {
      */
     StaveHairpin.prototype.setNotes = function (notes) {
         if (!notes.first_note && !notes.last_note) {
-            throw new vex_1.Vex.RuntimeError('BadArguments', 'Hairpin needs to have either first_note or last_note set.');
+            throw new util_1.RuntimeError('BadArguments', 'Hairpin needs to have either first_note or last_note set.');
         }
         // Success. Lets grab 'em notes.
         this.first_note = notes.first_note;
@@ -25885,16 +25885,21 @@ var StaveHairpin = /** @class */ (function (_super) {
         this.setRendered();
         var firstNote = this.first_note;
         var lastNote = this.last_note;
+        if (!firstNote || !lastNote)
+            throw new util_1.RuntimeError('NoNote', 'Notes required to draw');
         var start = firstNote.getModifierStartXY(this.position, 0);
         var end = lastNote.getModifierStartXY(this.position, 0);
         this.renderHairpin({
             first_x: start.x,
             last_x: end.x,
-            first_y: firstNote.getStave().y + firstNote.getStave().height,
-            last_y: lastNote.getStave().y + lastNote.getStave().height,
-            staff_height: firstNote.getStave().height,
+            first_y: firstNote.checkStave().getY() + firstNote.checkStave().getHeight(),
+            last_y: lastNote.checkStave().getY() + lastNote.checkStave().getHeight(),
+            staff_height: firstNote.checkStave().getHeight(),
         });
-        return true;
+    };
+    StaveHairpin.type = {
+        CRESC: 1,
+        DECRESC: 2,
     };
     return StaveHairpin;
 }(element_1.Element));
@@ -25938,14 +25943,14 @@ exports.StaveLine = void 0;
 // A simple line is often used for notating glissando articulations, but you
 // can format a `StaveLine` with arrows or colors for more pedagogical
 // purposes, such as diagrams.
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 // Attribution: Arrow rendering implementations based off of
 // Patrick Horgan's article, "Drawing lines and arcs with
 // arrow heads on  HTML5 Canvas"
 //
-// Draw an arrow head that connects between 3 coordinates
+// Draw an arrow head that connects between 3 coordinates.
 function drawArrowHead(ctx, x0, y0, x1, y1, x2, y2) {
     // all cases do this.
     ctx.beginPath();
@@ -25957,12 +25962,12 @@ function drawArrowHead(ctx, x0, y0, x1, y1, x2, y2) {
     ctx.fill();
 }
 // Helper function to draw a line with arrow heads
-function drawArrowLine(ctx, point1, point2, config) {
+function drawArrowLine(ctx, pt1, pt2, config) {
     var both_arrows = config.draw_start_arrow && config.draw_end_arrow;
-    var x1 = point1.x;
-    var y1 = point1.y;
-    var x2 = point2.x;
-    var y2 = point2.y;
+    var x1 = pt1.x;
+    var y1 = pt1.y;
+    var x2 = pt2.x;
+    var y2 = pt2.y;
     // For ends with arrow we actually want to stop before we get to the arrow
     // so that wide lines won't put a flat end on the arrow.
     var distance = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
@@ -26056,9 +26061,9 @@ var StaveLine = /** @class */ (function (_super) {
             padding_right: 3,
             // The width of the line in pixels
             line_width: 1,
-            // An array of line/space lengths. Unsupported with Raphael (SVG)
+            // An array of line/space lengths. Unsupported with Raphael (SVG).
             line_dash: undefined,
-            // Can draw rounded line end, instead of a square. Unsupported with Raphael (SVG)
+            // Can draw rounded line end, instead of a square. Unsupported with Raphael (SVG).
             rounded_end: true,
             // The color of the line and arrowheads
             color: undefined,
@@ -26089,14 +26094,14 @@ var StaveLine = /** @class */ (function (_super) {
     // Set the notes for the `StaveLine`
     StaveLine.prototype.setNotes = function (notes) {
         if (!notes.first_note && !notes.last_note) {
-            throw new vex_1.Vex.RERR('BadArguments', 'Notes needs to have either first_note or last_note set.');
+            throw new util_1.RuntimeError('BadArguments', 'Notes needs to have either first_note or last_note set.');
         }
         if (!notes.first_indices)
             notes.first_indices = [0];
         if (!notes.last_indices)
             notes.last_indices = [0];
         if (notes.first_indices.length !== notes.last_indices.length) {
-            throw new vex_1.Vex.RERR('BadArguments', 'Connected notes must have similar index sizes');
+            throw new util_1.RuntimeError('BadArguments', 'Connected notes must have similar index sizes');
         }
         // Success. Lets grab 'em notes.
         this.first_note = notes.first_note;
@@ -26128,9 +26133,11 @@ var StaveLine = /** @class */ (function (_super) {
         if (this.font) {
             ctx.setFont(this.font.family, this.font.size, this.font.weight);
         }
-        if (this.render_options.color) {
-            ctx.setStrokeStyle(this.render_options.color);
-            ctx.setFillStyle(this.render_options.color);
+        var render_options = this.render_options;
+        var color = render_options.color;
+        if (color) {
+            ctx.setStrokeStyle(color);
+            ctx.setFillStyle(color);
         }
     };
     // Renders the `StaveLine` on the context
@@ -26388,6 +26395,7 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StaveNote = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var boundingbox_1 = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
@@ -26402,7 +26410,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (StaveNote.DEBUG)
-        vex_1.Vex.L('Vex.Flow.StaveNote', args);
+        util_1.log('Vex.Flow.StaveNote', args);
 }
 var isInnerNoteIndex = function (note, index) {
     return index === (note.getStemDirection() === stem_1.Stem.UP ? note.keyProps.length - 1 : 0);
@@ -26435,7 +26443,7 @@ var StaveNote = /** @class */ (function (_super) {
         // Pull note rendering properties
         _this.glyph = tables_1.Flow.getGlyphProps(_this.duration, _this.noteType);
         if (!_this.glyph) {
-            throw new vex_1.Vex.RuntimeError('BadArguments', "Invalid note initialization data (No glyph found): " + JSON.stringify(noteStruct));
+            throw new util_1.RuntimeError('BadArguments', "Invalid note initialization data (No glyph found): " + JSON.stringify(noteStruct));
         }
         // if true, displace note to right
         _this.displaced = false;
@@ -26446,7 +26454,7 @@ var StaveNote = /** @class */ (function (_super) {
         _this.note_heads = [];
         _this.modifiers = [];
         _this.ledgerLineStyle = {};
-        vex_1.Vex.Merge(_this.render_options, {
+        _this.render_options = __assign(__assign({}, _this.render_options), {
             // font size for note heads and rests
             glyph_font_scale: noteStruct.glyph_font_scale || tables_1.Flow.DEFAULT_NOTATION_FONT_SCALE,
             // number of stroke px to the left and right of head
@@ -26595,7 +26603,7 @@ var StaveNote = /** @class */ (function (_super) {
             return true;
         }
         if (!noteM)
-            throw new vex_1.Vex.RERR('InvalidState', 'noteM not defined.');
+            throw new util_1.RuntimeError('InvalidState', 'noteM not defined.');
         // Check middle voice stem intersection with lower voice
         if (noteM.minLine < noteL.maxLine + 0.5) {
             if (!noteM.isrest) {
@@ -26667,7 +26675,7 @@ var StaveNote = /** @class */ (function (_super) {
             hasStave = hasStave && notes[i].getStave() != undefined;
         }
         if (!hasStave) {
-            throw new vex_1.Vex.RERR('Stave Missing', 'All notes must have a stave - Vex.Flow.ModifierContext.formatMultiVoice!');
+            throw new util_1.RuntimeError('Stave Missing', 'All notes must have a stave - Vex.Flow.ModifierContext.formatMultiVoice!');
         }
         var xShift = 0;
         for (var i = 0; i < notes.length - 1; i++) {
@@ -26816,7 +26824,7 @@ var StaveNote = /** @class */ (function (_super) {
             var options = { octave_shift: this.octave_shift || 0 };
             var props = tables_1.Flow.keyProperties(key, this.clef, options);
             if (!props) {
-                throw new vex_1.Vex.RuntimeError('BadArguments', "Invalid key for note properties: " + key);
+                throw new util_1.RuntimeError('BadArguments', "Invalid key for note properties: " + key);
             }
             // Override line placement for default rests
             if (props.key === 'R') {
@@ -26850,7 +26858,7 @@ var StaveNote = /** @class */ (function (_super) {
         lastLine = undefined;
         this.keyProps.forEach(function (key) {
             if (lastLine && key.line < lastLine) {
-                vex_1.Vex.W('Unsorted keys in note will be sorted. ' + 'See https://github.com/0xfe/vexflow/issues/104 for details.');
+                util_1.warn('Unsorted keys in note will be sorted. ' + 'See https://github.com/0xfe/vexflow/issues/104 for details.');
             }
             lastLine = key.line;
         });
@@ -26860,7 +26868,7 @@ var StaveNote = /** @class */ (function (_super) {
     StaveNote.prototype.getBoundingBox = function () {
         var _a, _b;
         if (!this.preFormatted) {
-            throw new vex_1.Vex.RERR('UnformattedNote', "Can't call getBoundingBox on an unformatted note.");
+            throw new util_1.RuntimeError('UnformattedNote', "Can't call getBoundingBox on an unformatted note.");
         }
         var _c = this.getMetrics(), w = _c.width, modLeftPx = _c.modLeftPx, leftDisplacedHeadPx = _c.leftDisplacedHeadPx;
         var x = this.getAbsoluteX() - modLeftPx - leftDisplacedHeadPx;
@@ -26909,7 +26917,7 @@ var StaveNote = /** @class */ (function (_super) {
     // If `isTopNote` is `true` then get the top note's line number instead
     StaveNote.prototype.getLineNumber = function (isTopNote) {
         if (!this.keyProps.length) {
-            throw new vex_1.Vex.RERR('NoKeyProps', "Can't get bottom note line, because note is not initialized properly.");
+            throw new util_1.RuntimeError('NoKeyProps', "Can't get bottom note line, because note is not initialized properly.");
         }
         var resultLine = this.keyProps[0].line;
         // No precondition assumed for sortedness of keyProps array
@@ -27024,10 +27032,10 @@ var StaveNote = /** @class */ (function (_super) {
         var _a, _b;
         if (options === void 0) { options = {}; }
         if (!this.preFormatted) {
-            throw new vex_1.Vex.RERR('UnformattedNote', "Can't call GetModifierStartXY on an unformatted note");
+            throw new util_1.RuntimeError('UnformattedNote', "Can't call GetModifierStartXY on an unformatted note");
         }
         if (this.ys.length === 0) {
-            throw new vex_1.Vex.RERR('NoYValues', 'No Y-Values calculated for this note.');
+            throw new util_1.RuntimeError('NoYValues', 'No Y-Values calculated for this note.');
         }
         var _c = modifier_1.Modifier.Position, ABOVE = _c.ABOVE, BELOW = _c.BELOW, LEFT = _c.LEFT, RIGHT = _c.RIGHT;
         var x = 0;
@@ -27128,7 +27136,7 @@ var StaveNote = /** @class */ (function (_super) {
             modifier = b;
         }
         else {
-            throw new vex_1.Vex.RERR('WrongParams', 'Call signature to addModifier not supported, use addModifier(modifier, index) instead.');
+            throw new util_1.RuntimeError('WrongParams', 'Call signature to addModifier not supported, use addModifier(modifier, index) instead.');
         }
         modifier.setNote(this);
         modifier.setIndex(index);
@@ -27165,13 +27173,13 @@ var StaveNote = /** @class */ (function (_super) {
     // Get all accidentals in the `ModifierContext`
     StaveNote.prototype.getAccidentals = function () {
         if (!this.modifierContext)
-            throw new vex_1.Vex.RERR('NoModifierContext', 'No modifier context attached to this note.');
+            throw new util_1.RuntimeError('NoModifierContext', 'No modifier context attached to this note.');
         return this.modifierContext.getMembers('accidentals');
     };
     // Get all dots in the `ModifierContext`
     StaveNote.prototype.getDots = function () {
         if (!this.modifierContext)
-            throw new vex_1.Vex.RERR('NoModifierContext', 'No modifier context attached to this note.');
+            throw new util_1.RuntimeError('NoModifierContext', 'No modifier context attached to this note.');
         return this.modifierContext.getMembers('dots');
     };
     // Get the width of the note if it is displaced. Used for `Voice`
@@ -27296,7 +27304,7 @@ var StaveNote = /** @class */ (function (_super) {
         if (this.isRest())
             return;
         if (!ctx) {
-            throw new vex_1.Vex.RERR('NoCanvasContext', "Can't draw without a canvas context.");
+            throw new util_1.RuntimeError('NoCanvasContext', "Can't draw without a canvas context.");
         }
         var _b = this.getNoteHeadBounds(), highest_line = _b.highest_line, lowest_line = _b.lowest_line, highest_displaced_line = _b.highest_displaced_line, highest_non_displaced_line = _b.highest_non_displaced_line, lowest_displaced_line = _b.lowest_displaced_line, lowest_non_displaced_line = _b.lowest_non_displaced_line, displaced_x = _b.displaced_x, non_displaced_x = _b.non_displaced_x;
         var min_x = Math.min(displaced_x !== null && displaced_x !== void 0 ? displaced_x : 0, non_displaced_x !== null && non_displaced_x !== void 0 ? non_displaced_x : 0);
@@ -27342,7 +27350,8 @@ var StaveNote = /** @class */ (function (_super) {
         ctx.openGroup('modifiers');
         for (var i = 0; i < this.modifiers.length; i++) {
             var modifier = this.modifiers[i];
-            var notehead = this.note_heads[modifier.getIndex()];
+            var index = modifier.checkIndex();
+            var notehead = this.note_heads[index];
             var noteheadStyle = notehead.getStyle();
             notehead.applyStyle(ctx, noteheadStyle);
             modifier.setContext(ctx);
@@ -27362,7 +27371,7 @@ var StaveNote = /** @class */ (function (_super) {
         var _a;
         var ctx = this.checkContext();
         if (!ctx) {
-            throw new vex_1.Vex.RERR('NoCanvasContext', "Can't draw without a canvas context.");
+            throw new util_1.RuntimeError('NoCanvasContext', "Can't draw without a canvas context.");
         }
         if (this.shouldDrawFlag()) {
             var _b = this.getNoteHeadBounds(), y_top = _b.y_top, y_bottom = _b.y_bottom;
@@ -27456,7 +27465,7 @@ var StaveNote = /** @class */ (function (_super) {
     StaveNote.prototype.draw = function () {
         var _a;
         if (this.ys.length === 0) {
-            throw new vex_1.Vex.RERR('NoYValues', "Can't draw note without Y values.");
+            throw new util_1.RuntimeError('NoYValues', "Can't draw note without Y values.");
         }
         var ctx = this.checkContext();
         var xBegin = this.getNoteHeadBeginX();
@@ -27932,7 +27941,7 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StaveText = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 var textnote_1 = __webpack_require__(/*! ./textnote */ "./src/textnote.ts");
 var StaveText = /** @class */ (function (_super) {
@@ -27948,7 +27957,7 @@ var StaveText = /** @class */ (function (_super) {
             shift_y: 0,
             justification: textnote_1.TextNote.Justification.CENTER,
         };
-        vex_1.Vex.Merge(_this.options, options);
+        _this.options = __assign(__assign({}, _this.options), options);
         _this.font = {
             family: 'times',
             size: 16,
@@ -28025,7 +28034,7 @@ var StaveText = /** @class */ (function (_super) {
                 }
                 break;
             default:
-                throw new vex_1.Vex.RERR('InvalidPosition', 'Value Must be in Modifier.Position.');
+                throw new util_1.RuntimeError('InvalidPosition', 'Value Must be in Modifier.Position.');
         }
         ctx.fillText('' + this.text, x, y + 4);
         ctx.restore();
@@ -28069,7 +28078,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StaveTie = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var StaveTie = /** @class */ (function (_super) {
     __extends(StaveTie, _super);
@@ -28119,14 +28128,14 @@ var StaveTie = /** @class */ (function (_super) {
      */
     StaveTie.prototype.setNotes = function (notes) {
         if (!notes.first_note && !notes.last_note) {
-            throw new vex_1.Vex.RuntimeError('BadArguments', 'Tie needs to have either first_note or last_note set.');
+            throw new util_1.RuntimeError('BadArguments', 'Tie needs to have either first_note or last_note set.');
         }
         if (!notes.first_indices)
             notes.first_indices = [0];
         if (!notes.last_indices)
             notes.last_indices = [0];
         if (notes.first_indices.length !== notes.last_indices.length) {
-            throw new vex_1.Vex.RuntimeError('BadArguments', 'Tied notes must have similar index sizes');
+            throw new util_1.RuntimeError('BadArguments', 'Tied notes must have similar index sizes');
         }
         // Success. Lets grab 'em notes.
         this.notes = notes;
@@ -28140,7 +28149,7 @@ var StaveTie = /** @class */ (function (_super) {
     };
     StaveTie.prototype.renderTie = function (params) {
         if (params.first_ys.length === 0 || params.last_ys.length === 0) {
-            throw new vex_1.Vex.RERR('BadArguments', 'No Y-values to render');
+            throw new util_1.RuntimeError('BadArguments', 'No Y-values to render');
         }
         var ctx = this.checkContext();
         var cp1 = this.render_options.cp1;
@@ -28157,7 +28166,7 @@ var StaveTie = /** @class */ (function (_super) {
             var first_y_px = params.first_ys[this.notes.first_indices[i]] + y_shift;
             var last_y_px = params.last_ys[this.notes.last_indices[i]] + y_shift;
             if (isNaN(first_y_px) || isNaN(last_y_px)) {
-                throw new vex_1.Vex.RERR('BadArguments', 'Bad indices for tie rendering.');
+                throw new util_1.RuntimeError('BadArguments', 'Bad indices for tie rendering.');
             }
             var top_cp_y = (first_y_px + last_y_px) / 2 + cp1 * params.direction;
             var bottom_cp_y = (first_y_px + last_y_px) / 2 + cp2 * params.direction;
@@ -28378,7 +28387,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Stem = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 // To enable logging for this class. Set `Vex.Flow.Stem.DEBUG` to `true`.
@@ -28389,7 +28398,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (Stem.DEBUG)
-        vex_1.Vex.L('Vex.Flow.Stem', args);
+        util_1.log('Vex.Flow.Stem', args);
 }
 var Stem = /** @class */ (function (_super) {
     __extends(Stem, _super);
@@ -28497,7 +28506,7 @@ var Stem = /** @class */ (function (_super) {
         return unsigned_height * this.stem_direction;
     };
     Stem.prototype.getBoundingBox = function () {
-        throw new vex_1.Vex.RERR('NotImplemented', 'getBoundingBox() not implemented.');
+        throw new util_1.RuntimeError('NotImplemented', 'getBoundingBox() not implemented.');
     };
     // Get the y coordinates for the very base of the stem to the top of
     // the extension
@@ -28600,7 +28609,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StemmableNote = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -28618,7 +28627,7 @@ var StemmableNote = /** @class */ (function (_super) {
     };
     StemmableNote.prototype.checkStem = function () {
         if (!this.stem) {
-            throw new vex_1.Vex.RERR('NoStem', 'No stem attached to instance');
+            throw new util_1.RuntimeError('NoStem', 'No stem attached to instance');
         }
         return this.stem;
     };
@@ -28693,14 +28702,14 @@ var StemmableNote = /** @class */ (function (_super) {
     // Get/set the direction of the stem
     StemmableNote.prototype.getStemDirection = function () {
         if (!this.stem_direction)
-            throw new vex_1.Vex.RERR('NoStem', 'No stem attached to this note.');
+            throw new util_1.RuntimeError('NoStem', 'No stem attached to this note.');
         return this.stem_direction;
     };
     StemmableNote.prototype.setStemDirection = function (direction) {
         if (!direction)
             direction = stem_1.Stem.UP;
         if (direction !== stem_1.Stem.UP && direction !== stem_1.Stem.DOWN) {
-            throw new vex_1.Vex.RERR('BadArgument', "Invalid stem direction: " + direction);
+            throw new util_1.RuntimeError('BadArgument', "Invalid stem direction: " + direction);
         }
         this.stem_direction = direction;
         if (this.stem) {
@@ -28766,7 +28775,7 @@ var StemmableNote = /** @class */ (function (_super) {
     // Get the top and bottom `y` values of the stem.
     StemmableNote.prototype.getStemExtents = function () {
         if (!this.stem)
-            throw new vex_1.Vex.RERR('NoStem', 'No stem attached to this note.');
+            throw new util_1.RuntimeError('NoStem', 'No stem attached to this note.');
         return this.stem.getExtents();
     };
     /** Gets the `y` value for the top modifiers at a specific `textLine`. */
@@ -28775,7 +28784,7 @@ var StemmableNote = /** @class */ (function (_super) {
         if (this.hasStem()) {
             var extents = this.getStemExtents();
             if (!extents)
-                throw new vex_1.Vex.RERR('InvalidState', 'Stem does not have extents.');
+                throw new util_1.RuntimeError('InvalidState', 'Stem does not have extents.');
             return Math.min(stave.getYForTopText(textLine), extents.topY - this.render_options.annotation_spacing * (textLine + 1));
         }
         else {
@@ -28788,7 +28797,7 @@ var StemmableNote = /** @class */ (function (_super) {
         if (this.hasStem()) {
             var extents = this.getStemExtents();
             if (!extents)
-                throw new vex_1.Vex.RERR('InvalidState', 'Stem does not have extents.');
+                throw new util_1.RuntimeError('InvalidState', 'Stem does not have extents.');
             return Math.max(stave.getYForTopText(textLine), extents.baseY + this.render_options.annotation_spacing * textLine);
         }
         else {
@@ -28852,7 +28861,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StringNumber = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var renderer_1 = __webpack_require__(/*! ./renderer */ "./src/renderer.js");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
@@ -28898,41 +28907,34 @@ var StringNumber = /** @class */ (function (_super) {
         var prev_note = null;
         var shift_left = 0;
         var shift_right = 0;
-        var i;
-        var num;
-        var note;
-        var pos;
-        for (i = 0; i < nums.length; ++i) {
-            num = nums[i];
-            note = num.getNote();
-            for (i = 0; i < nums.length; ++i) {
-                num = nums[i];
-                note = num.getNote();
-                pos = num.getPosition();
-                if (!(note instanceof stavenote_1.StaveNote)) {
-                    throw new vex_1.Vex.RERR('NoStaveNote');
-                }
-                var props = note.getKeyProps()[num.getIndex()];
-                if (note !== prev_note) {
-                    for (var n = 0; n < note.keys.length; ++n) {
-                        if (left_shift === 0) {
-                            shift_left = Math.max(note.getLeftDisplacedHeadPx(), shift_left);
-                        }
-                        if (right_shift === 0) {
-                            shift_right = Math.max(note.getRightDisplacedHeadPx(), shift_right);
-                        }
-                    }
-                    prev_note = note;
-                }
-                nums_list.push({
-                    pos: pos,
-                    note: note,
-                    num: num,
-                    line: props.line,
-                    shiftL: shift_left,
-                    shiftR: shift_right,
-                });
+        for (var i = 0; i < nums.length; ++i) {
+            var num = nums[i];
+            var note = num.getNote();
+            var pos = num.getPosition();
+            if (!(note instanceof stavenote_1.StaveNote)) {
+                throw new util_1.RuntimeError('NoStaveNote');
             }
+            var index = num.checkIndex();
+            var props = note.getKeyProps()[index];
+            if (note !== prev_note) {
+                for (var n = 0; n < note.keys.length; ++n) {
+                    if (left_shift === 0) {
+                        shift_left = Math.max(note.getLeftDisplacedHeadPx(), shift_left);
+                    }
+                    if (right_shift === 0) {
+                        shift_right = Math.max(note.getRightDisplacedHeadPx(), shift_right);
+                    }
+                }
+                prev_note = note;
+            }
+            nums_list.push({
+                pos: pos,
+                note: note,
+                num: num,
+                line: props.line,
+                shiftL: shift_left,
+                shiftR: shift_right,
+            });
         }
         // Sort string numbers by line number.
         nums_list.sort(function (a, b) { return b.line - a.line; });
@@ -28943,11 +28945,11 @@ var StringNumber = /** @class */ (function (_super) {
         var x_widthR = 0;
         var last_line = null;
         var last_note = null;
-        for (i = 0; i < nums_list.length; ++i) {
+        for (var i = 0; i < nums_list.length; ++i) {
             var num_shift = 0;
-            note = nums_list[i].note;
-            pos = nums_list[i].pos;
-            num = nums_list[i].num;
+            var note = nums_list[i].note;
+            var pos = nums_list[i].pos;
+            var num = nums_list[i].num;
             var line = nums_list[i].line;
             var shiftL = nums_list[i].shiftL;
             var shiftR = nums_list[i].shiftR;
@@ -29005,29 +29007,27 @@ var StringNumber = /** @class */ (function (_super) {
     };
     StringNumber.prototype.draw = function () {
         var ctx = this.checkContext();
-        if (!(this.note && this.index != null)) {
-            throw new vex_1.Vex.RERR('NoAttachedNote', "Can't draw string number without a note and index.");
-        }
+        var note = this.checkAttachedNote();
         this.setRendered();
-        var line_space = this.note.checkStave().getOptions().spacing_between_lines_px;
-        var start = this.note.getModifierStartXY(this.position, this.index);
+        var line_space = note.checkStave().getOptions().spacing_between_lines_px;
+        var start = note.getModifierStartXY(this.position, this.index);
         var dot_x = start.x + this.x_shift + this.x_offset;
         var dot_y = start.y + this.y_shift + this.y_offset;
         switch (this.position) {
             case modifier_1.Modifier.Position.ABOVE:
             case modifier_1.Modifier.Position.BELOW: {
-                var stem_ext = this.note.getStemExtents();
+                var stem_ext = note.getStemExtents();
                 var top_1 = stem_ext.topY;
                 var bottom = stem_ext.baseY + 2;
-                if (this.note.getStemDirection() === stavenote_1.StaveNote.STEM_DOWN) {
+                if (note.getStemDirection() === stavenote_1.StaveNote.STEM_DOWN) {
                     top_1 = stem_ext.baseY;
                     bottom = stem_ext.topY - 2;
                 }
                 if (this.position === modifier_1.Modifier.Position.ABOVE) {
-                    dot_y = this.note.hasStem() ? top_1 - line_space * 1.75 : start.y - line_space * 1.75;
+                    dot_y = note.hasStem() ? top_1 - line_space * 1.75 : start.y - line_space * 1.75;
                 }
                 else {
-                    dot_y = this.note.hasStem() ? bottom + line_space * 1.5 : start.y + line_space * 1.75;
+                    dot_y = note.hasStem() ? bottom + line_space * 1.5 : start.y + line_space * 1.75;
                 }
                 dot_y += this.y_shift + this.y_offset;
                 break;
@@ -29039,7 +29039,7 @@ var StringNumber = /** @class */ (function (_super) {
                 dot_x += this.radius / 2 + 6;
                 break;
             default:
-                throw new vex_1.Vex.RERR('InvalidPosition', "The position " + this.position + " is invalid");
+                throw new util_1.RuntimeError('InvalidPosition', "The position " + this.position + " is invalid");
         }
         ctx.save();
         ctx.beginPath();
@@ -29050,7 +29050,7 @@ var StringNumber = /** @class */ (function (_super) {
         var x = dot_x - ctx.measureText(this.string_number).width / 2;
         ctx.fillText('' + this.string_number, x, dot_y + 4.5);
         if (this.last_note instanceof stemmablenote_1.StemmableNote) {
-            var end = this.last_note.getStemX() - this.note.getX() + 5;
+            var end = this.last_note.getStemX() - note.getX() + 5;
             ctx.setStrokeStyle('#000000');
             ctx.setLineCap('round');
             ctx.setLineWidth(0.6);
@@ -29116,9 +29116,20 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Stroke = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -29129,7 +29140,7 @@ var Stroke = /** @class */ (function (_super) {
     function Stroke(type, options) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Stroke');
-        _this.options = vex_1.Vex.Merge({}, options);
+        _this.options = __assign({}, options);
         // multi voice - span stroke across all voices if true
         _this.all_voices = 'all_voices' in _this.options ? _this.options.all_voices : true;
         // multi voice - end note of stroke, set in draw()
@@ -29164,17 +29175,18 @@ var Stroke = /** @class */ (function (_super) {
             return false;
         var strokeList = strokes.map(function (stroke) {
             var note = stroke.getNote();
+            var index = stroke.checkIndex();
             if (note instanceof stavenote_1.StaveNote) {
-                var line = note.getKeyProps()[stroke.getIndex()].line;
+                var line = note.getKeyProps()[index].line;
                 var shift = note.getLeftDisplacedHeadPx();
                 return { line: line, shift: shift, stroke: stroke };
             }
             else if (note instanceof tabnote_1.TabNote) {
-                var string = note.getPositions()[stroke.getIndex()].str;
+                var string = note.getPositions()[index].str;
                 return { line: string, shift: 0, stroke: stroke };
             }
             else {
-                throw new vex_1.Vex.RERR('Internal', 'Unexpexted');
+                throw new util_1.RuntimeError('Internal', 'Unexpexted');
             }
         });
         var strokeShift = left_shift;
@@ -29199,25 +29211,23 @@ var Stroke = /** @class */ (function (_super) {
     };
     Stroke.prototype.draw = function () {
         var ctx = this.checkContext();
+        var note = this.checkAttachedNote();
         this.setRendered();
-        if (!(this.note && this.index != null)) {
-            throw new vex_1.Vex.RERR('NoAttachedNote', "Can't draw stroke without a note and index.");
-        }
-        var start = this.note.getModifierStartXY(this.position, this.index);
-        var ys = this.note.getYs();
+        var start = note.getModifierStartXY(this.position, this.index);
+        var ys = note.getYs();
         var topY = start.y;
         var botY = start.y;
         var x = start.x - 5;
-        var line_space = this.note.checkStave().getOptions().spacing_between_lines_px;
-        var notes = this.checkModifierContext().getMembers(this.note.getCategory());
+        var line_space = note.checkStave().getOptions().spacing_between_lines_px;
+        var notes = this.checkModifierContext().getMembers(note.getCategory());
         for (var i = 0; i < notes.length; i++) {
-            var note = notes[i];
-            if (note instanceof note_1.Note) {
-                ys = note.getYs();
+            var note_2 = notes[i];
+            if (note_2 instanceof note_1.Note) {
+                ys = note_2.getYs();
                 for (var n = 0; n < ys.length; n++) {
                     if (this.note === notes[i] || this.all_voices) {
-                        topY = vex_1.Vex.Min(topY, ys[n]);
-                        botY = vex_1.Vex.Max(botY, ys[n]);
+                        topY = Math.min(topY, ys[n]);
+                        botY = Math.max(botY, ys[n]);
                     }
                 }
             }
@@ -29245,7 +29255,7 @@ var Stroke = /** @class */ (function (_super) {
                 arrow = 'arrowheadBlackUp';
                 arrow_shift_x = -3;
                 text_shift_x = this.x_shift + arrow_shift_x - 2;
-                if (this.note instanceof stavenote_1.StaveNote) {
+                if (note instanceof stavenote_1.StaveNote) {
                     topY += 1.5 * line_space;
                     if ((botY - topY) % 2 !== 0) {
                         botY += 0.5 * line_space;
@@ -29268,7 +29278,7 @@ var Stroke = /** @class */ (function (_super) {
                 arrow = 'arrowheadBlackDown';
                 arrow_shift_x = -4;
                 text_shift_x = this.x_shift + arrow_shift_x - 1;
-                if (this.note instanceof stavenote_1.StaveNote) {
+                if (note instanceof stavenote_1.StaveNote) {
                     arrow_y = line_space / 2;
                     topY += 0.5 * line_space;
                     if ((botY - topY) % 2 === 0) {
@@ -29289,7 +29299,7 @@ var Stroke = /** @class */ (function (_super) {
                 botY += line_space; // * 0.5 can lead to slight underlap instead of overlap sometimes
                 break;
             default:
-                throw new vex_1.Vex.RERR('InvalidType', "The stroke type " + this.type + " does not exist");
+                throw new util_1.RuntimeError('InvalidType', "The stroke type " + this.type + " does not exist");
         }
         var strokeLine = 'straight';
         // Draw the stroke
@@ -29298,7 +29308,7 @@ var Stroke = /** @class */ (function (_super) {
         }
         else {
             strokeLine = 'wiggly';
-            if (this.note instanceof stavenote_1.StaveNote) {
+            if (note instanceof stavenote_1.StaveNote) {
                 for (var i = topY; i <= botY; i += line_space) {
                     glyph_1.Glyph.renderGlyph(ctx, x + this.x_shift - 4, i, this.render_options.font_scale, 'vexWiggleArpeggioUp');
                 }
@@ -29344,9 +29354,9 @@ exports.Stroke = Stroke;
 
 /***/ }),
 
-/***/ "./src/svgcontext.js":
+/***/ "./src/svgcontext.ts":
 /*!***************************!*\
-  !*** ./src/svgcontext.js ***!
+  !*** ./src/svgcontext.ts ***!
   \***************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -29355,38 +29365,51 @@ exports.Stroke = Stroke;
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // @author Gregory Ristow (2015)
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SVGContext = void 0;
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var attrNamesToIgnoreMap = {
     path: {
         x: true,
         y: true,
         width: true,
         height: true,
+        'font-family': true,
+        'font-weight': true,
+        'font-style': true,
+        'font-size': true,
     },
-    rect: {},
+    rect: {
+        'font-family': true,
+        'font-weight': true,
+        'font-style': true,
+        'font-size': true,
+    },
     text: {
         width: true,
         height: true,
     },
 };
-{
-    var fontAttrNamesToIgnore = {
-        'font-family': true,
-        'font-weight': true,
-        'font-style': true,
-        'font-size': true,
-    };
-    vex_1.Vex.Merge(attrNamesToIgnoreMap.rect, fontAttrNamesToIgnore);
-    vex_1.Vex.Merge(attrNamesToIgnoreMap.path, fontAttrNamesToIgnore);
-}
+// Create the SVG in the SVG namespace:
+var SVG_NS = 'http://www.w3.org/2000/svg';
 var SVGContext = /** @class */ (function () {
     function SVGContext(element) {
-        // element is the parent DOM object
+        this.width = 0;
+        this.height = 0;
+        this.fontSize = 0;
         this.element = element;
-        // Create the SVG in the SVG namespace:
-        this.svgNS = 'http://www.w3.org/2000/svg';
         var svg = this.create('svg');
         // Add it to the canvas:
         this.element.appendChild(svg);
@@ -29403,26 +29426,15 @@ var SVGContext = /** @class */ (function () {
             'font-size': '8pt',
             'font-weight': 'normal',
         };
-        this.attributes = {
-            'stroke-width': 0.3,
-            fill: 'black',
-            stroke: 'black',
+        var defaultAttributes = {
             'stroke-dasharray': 'none',
             'font-family': 'Arial',
             'font-size': '10pt',
             'font-weight': 'normal',
             'font-style': 'normal',
         };
-        this.background_attributes = {
-            'stroke-width': 0,
-            fill: 'white',
-            stroke: 'white',
-            'stroke-dasharray': 'none',
-            'font-family': 'Arial',
-            'font-size': '10pt',
-            'font-weight': 'normal',
-            'font-style': 'normal',
-        };
+        this.attributes = __assign({ 'stroke-width': 0.3, fill: 'black', stroke: 'black' }, defaultAttributes);
+        this.background_attributes = __assign({ 'stroke-width': 0, fill: 'white', stroke: 'white' }, defaultAttributes);
         this.shadow_attributes = {
             width: 0,
             color: 'black',
@@ -29432,7 +29444,7 @@ var SVGContext = /** @class */ (function () {
         this.iePolyfill();
     }
     SVGContext.prototype.create = function (svgElementType) {
-        return document.createElementNS(this.svgNS, svgElementType);
+        return document.createElementNS(SVG_NS, svgElementType);
     };
     // Allow grouping elements in containers for interactivity.
     SVGContext.prototype.openGroup = function (cls, id, attrs) {
@@ -29457,7 +29469,7 @@ var SVGContext = /** @class */ (function () {
         this.parent.appendChild(elem);
     };
     // Tests if the browser is Internet Explorer; if it is,
-    // we do some tricks to improve text layout.  See the
+    // we do some tricks to improve text layout. See the
     // note at ieMeasureTextFix() for details.
     SVGContext.prototype.iePolyfill = function () {
         if (typeof navigator !== 'undefined') {
@@ -29504,8 +29516,8 @@ var SVGContext = /** @class */ (function () {
         // Store the font size so that if the browser is Internet
         // Explorer we can fix its calculations of text width.
         this.fontSize = Number(size);
-        vex_1.Vex.Merge(this.attributes, fontAttributes);
-        vex_1.Vex.Merge(this.state, fontAttributes);
+        this.attributes = __assign(__assign({}, this.attributes), fontAttributes);
+        this.state = __assign(__assign({}, this.state), fontAttributes);
         return this;
     };
     SVGContext.prototype.setRawFont = function (font) {
@@ -29513,12 +29525,15 @@ var SVGContext = /** @class */ (function () {
         // Assumes size first, splits on space -- which is presently
         // how all existing modules are calling this.
         var fontArray = font.split(' ');
-        this.attributes['font-family'] = fontArray[1];
-        this.state['font-family'] = fontArray[1];
-        this.attributes['font-size'] = fontArray[0];
-        this.state['font-size'] = fontArray[0];
-        // Saves fontSize for IE polyfill
-        this.fontSize = Number(fontArray[0].match(/\d+/));
+        var family = fontArray[1];
+        var size = fontArray[0];
+        this.attributes['font-family'] = family;
+        this.state['font-family'] = family;
+        this.attributes['font-size'] = size;
+        this.state['font-size'] = size;
+        // Saves fontSize for IE polyfill.
+        // Use the Number() function to parse the array returned by String.prototype.match()!
+        this.fontSize = Number(size.match(/\d+/));
         return this;
     };
     SVGContext.prototype.setFillStyle = function (style) {
@@ -29534,8 +29549,8 @@ var SVGContext = /** @class */ (function () {
         this.attributes.stroke = style;
         return this;
     };
-    SVGContext.prototype.setShadowColor = function (style) {
-        this.shadow_attributes.color = style;
+    SVGContext.prototype.setShadowColor = function (color) {
+        this.shadow_attributes.color = color;
         return this;
     };
     SVGContext.prototype.setShadowBlur = function (blur) {
@@ -29545,16 +29560,21 @@ var SVGContext = /** @class */ (function () {
     SVGContext.prototype.setLineWidth = function (width) {
         this.attributes['stroke-width'] = width;
         this.lineWidth = width;
+        return this;
     };
-    // @param array {lineDash} as [dashInt, spaceInt, dashInt, spaceInt, etc...]
+    /**
+     * @param lineDash an array of integers in the form of [dash, space, dash, space, etc...]
+     * @returns this
+     *
+     * See: [SVG `stroke-dasharray` attribute](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray)
+     */
     SVGContext.prototype.setLineDash = function (lineDash) {
         if (Object.prototype.toString.call(lineDash) === '[object Array]') {
-            lineDash = lineDash.join(', ');
-            this.attributes['stroke-dasharray'] = lineDash;
+            this.attributes['stroke-dasharray'] = lineDash.join(',');
             return this;
         }
         else {
-            throw new vex_1.Vex.RERR('ArgumentError', 'lineDash must be an array of integers.');
+            throw new util_1.RuntimeError('ArgumentError', 'lineDash must be an array of integers.');
         }
     };
     SVGContext.prototype.setLineCap = function (lineCap) {
@@ -29569,9 +29589,9 @@ var SVGContext = /** @class */ (function () {
     SVGContext.prototype.resize = function (width, height) {
         this.width = width;
         this.height = height;
-        this.element.style.width = width;
-        this.svg.style.width = width;
-        this.svg.style.height = height;
+        this.element.style.width = width.toString();
+        this.svg.style.width = width.toString();
+        this.svg.style.height = height.toString();
         var attributes = {
             width: width,
             height: height,
@@ -29598,19 +29618,16 @@ var SVGContext = /** @class */ (function () {
         this.setViewBox(0, 0, visibleWidth, visibleHeight);
         return this;
     };
-    SVGContext.prototype.setViewBox = function () {
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i] = arguments[_i];
-        }
-        // Override for "x y w h" style:
-        if (args.length === 1) {
-            var viewBox = args[0];
-            this.svg.setAttribute('viewBox', viewBox);
+    /**
+     * 1 arg: string in the "x y w h" format
+     * 4 args: x:number, y:number, w:number, h:number
+     */
+    SVGContext.prototype.setViewBox = function (viewBox_or_minX, minY, width, height) {
+        if (typeof viewBox_or_minX === 'string') {
+            this.svg.setAttribute('viewBox', viewBox_or_minX);
         }
         else {
-            var xMin = args[0], yMin = args[1], width = args[2], height = args[3];
-            var viewBoxString = xMin + ' ' + yMin + ' ' + width + ' ' + height;
+            var viewBoxString = viewBox_or_minX + ' ' + minY + ' ' + width + ' ' + height;
             this.svg.setAttribute('viewBox', viewBoxString);
         }
     };
@@ -29658,12 +29675,7 @@ var SVGContext = /** @class */ (function () {
                 stroke: 'black',
             };
         }
-        vex_1.Vex.Merge(attributes, {
-            x: x,
-            y: y,
-            width: width,
-            height: height,
-        });
+        attributes = __assign(__assign({}, attributes), { x: x, y: y, width: width, height: height });
         this.applyAttributes(rectangle, attributes);
         this.add(rectangle);
         return this;
@@ -29725,8 +29737,7 @@ var SVGContext = /** @class */ (function () {
         this.pen.y = y;
         return this;
     };
-    // This is an attempt (hack) to simulate the HTML5 canvas
-    // arc method.
+    // This is an attempt (hack) to simulate the HTML5 canvas arc method.
     SVGContext.prototype.arc = function (x, y, radius, startAngle, endAngle, antiClockwise) {
         function normalizeAngle(angle) {
             while (angle < 0) {
@@ -29739,6 +29750,7 @@ var SVGContext = /** @class */ (function () {
         }
         startAngle = normalizeAngle(startAngle);
         endAngle = normalizeAngle(endAngle);
+        // Swap the start and end angles if necessary.
         if (startAngle > endAngle) {
             var tmp = startAngle;
             startAngle = endAngle;
@@ -29771,10 +29783,9 @@ var SVGContext = /** @class */ (function () {
         else if (endAngle - startAngle > Math.PI) {
             largeArcFlag = 1;
         }
-        this.path +=
-            'M' + x1 + ' ' + y1 + ' A' + radius + ' ' + radius + ' 0 ' + largeArcFlag + ' ' + sweepFlag + ' ' + x2 + ' ' + y2;
+        this.path += "M" + x1 + " " + y1 + " A" + radius + " " + radius + " 0 " + largeArcFlag + " " + sweepFlag + " " + x2 + " " + y2;
         if (!isNaN(this.pen.x) && !isNaN(this.pen.y)) {
-            this.peth += 'M' + this.pen.x + ' ' + this.pen.y;
+            this.path += 'M' + this.pen.x + ' ' + this.pen.y;
         }
     };
     SVGContext.prototype.closePath = function () {
@@ -29809,9 +29820,7 @@ var SVGContext = /** @class */ (function () {
         this.glow();
         var path = this.create('path');
         if (typeof attributes === 'undefined') {
-            attributes = {};
-            vex_1.Vex.Merge(attributes, this.attributes);
-            attributes.stroke = 'none';
+            attributes = __assign(__assign({}, this.attributes), { stroke: 'none' });
         }
         attributes.d = this.path;
         this.applyAttributes(path, attributes);
@@ -29822,11 +29831,7 @@ var SVGContext = /** @class */ (function () {
         // If our current path is set to glow, make it glow.
         this.glow();
         var path = this.create('path');
-        var attributes = {};
-        vex_1.Vex.Merge(attributes, this.attributes);
-        attributes.fill = 'none';
-        attributes['stroke-width'] = this.lineWidth;
-        attributes.d = this.path;
+        var attributes = __assign(__assign({}, this.attributes), { fill: 'none', 'stroke-width': this.lineWidth, d: this.path });
         this.applyAttributes(path, attributes);
         this.add(path);
         return this;
@@ -29843,7 +29848,7 @@ var SVGContext = /** @class */ (function () {
         this.svg.appendChild(txt);
         var bbox = txt.getBBox();
         if (this.ie && text !== '' && this.attributes['font-style'] === 'italic') {
-            bbox = this.ieMeasureTextFix(bbox, text);
+            bbox = this.ieMeasureTextFix(bbox);
         }
         this.svg.removeChild(txt);
         return bbox;
@@ -29872,17 +29877,15 @@ var SVGContext = /** @class */ (function () {
     };
     SVGContext.prototype.fillText = function (text, x, y) {
         if (!text || text.length <= 0) {
-            return;
+            return this;
         }
-        var attributes = {};
-        vex_1.Vex.Merge(attributes, this.attributes);
-        attributes.stroke = 'none';
-        attributes.x = x;
-        attributes.y = y;
+        var attributes = __assign(__assign({}, this.attributes), { stroke: 'none', x: x,
+            y: y });
         var txt = this.create('text');
         txt.textContent = text;
         this.applyAttributes(txt, attributes);
         this.add(txt);
+        return this;
     };
     SVGContext.prototype.save = function () {
         // TODO(mmuthanna): State needs to be deep-copied.
@@ -29914,23 +29917,26 @@ var SVGContext = /** @class */ (function () {
     };
     SVGContext.prototype.restore = function () {
         // TODO(0xfe): State needs to be deep-restored.
-        var state = this.state_stack.pop();
-        this.state['font-family'] = state.state['font-family'];
-        this.state['font-weight'] = state.state['font-weight'];
-        this.state['font-style'] = state.state['font-style'];
-        this.state['font-size'] = state.state['font-size'];
-        this.state.scale = state.state.scale;
-        this.attributes['font-family'] = state.attributes['font-family'];
-        this.attributes['font-weight'] = state.attributes['font-weight'];
-        this.attributes['font-style'] = state.attributes['font-style'];
-        this.attributes['font-size'] = state.attributes['font-size'];
-        this.attributes.fill = state.attributes.fill;
-        this.attributes.stroke = state.attributes.stroke;
-        this.attributes['stroke-width'] = state.attributes['stroke-width'];
-        this.attributes['stroke-dasharray'] = state.attributes['stroke-dasharray'];
-        this.shadow_attributes.width = state.shadow_attributes.width;
-        this.shadow_attributes.color = state.shadow_attributes.color;
-        this.lineWidth = state.lineWidth;
+        var savedState = this.state_stack.pop();
+        if (savedState) {
+            var state = savedState;
+            this.state['font-family'] = state.state['font-family'];
+            this.state['font-weight'] = state.state['font-weight'];
+            this.state['font-style'] = state.state['font-style'];
+            this.state['font-size'] = state.state['font-size'];
+            this.state.scale = state.state.scale;
+            this.attributes['font-family'] = state.attributes['font-family'];
+            this.attributes['font-weight'] = state.attributes['font-weight'];
+            this.attributes['font-style'] = state.attributes['font-style'];
+            this.attributes['font-size'] = state.attributes['font-size'];
+            this.attributes.fill = state.attributes.fill;
+            this.attributes.stroke = state.attributes.stroke;
+            this.attributes['stroke-width'] = state.attributes['stroke-width'];
+            this.attributes['stroke-dasharray'] = state.attributes['stroke-dasharray'];
+            this.shadow_attributes.width = state.shadow_attributes.width;
+            this.shadow_attributes.color = state.shadow_attributes.color;
+            this.lineWidth = state.lineWidth;
+        }
         return this;
     };
     return SVGContext;
@@ -30115,6 +30121,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Flow = void 0;
 /* eslint-disable key-spacing */
 var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var font_1 = __webpack_require__(/*! ./font */ "./src/font.ts");
@@ -30123,7 +30130,11 @@ var Flow = {
     STEM_HEIGHT: 35,
     STAVE_LINE_THICKNESS: 1,
     RESOLUTION: 16384,
-    DEFAULT_FONT_STACK: font_1.DefaultFontStack,
+    /**
+     * Customize this to choose a different music font.
+     * For example: Vex.Flow.DEFAULT_FONT_STACK = [Fonts.Petaluma, Fonts.Custom];
+     */
+    DEFAULT_FONT_STACK: [font_1.Fonts.Bravura, font_1.Fonts.Gonville, font_1.Fonts.Custom],
     DEFAULT_NOTATION_FONT_SCALE: 39,
     DEFAULT_TABLATURE_FONT_SCALE: 39,
     SLASH_NOTEHEAD_WIDTH: 15,
@@ -30152,10 +30163,10 @@ var Flow = {
 exports.Flow = Flow;
 Flow.clefProperties = function (clef) {
     if (!clef)
-        throw new vex_1.Vex.RERR('BadArgument', 'Invalid clef: ' + clef);
+        throw new util_1.RuntimeError('BadArgument', 'Invalid clef: ' + clef);
     var props = Flow.clefProperties.values[clef];
     if (!props)
-        throw new vex_1.Vex.RERR('BadArgument', 'Invalid clef: ' + clef);
+        throw new util_1.RuntimeError('BadArgument', 'Invalid clef: ' + clef);
     return props;
 };
 Flow.clefProperties.values = {
@@ -30187,12 +30198,12 @@ function keyProperties(key, clef, params) {
     }
     var pieces = key.split('/');
     if (pieces.length < 2) {
-        throw new vex_1.Vex.RERR('BadArguments', "Key must have note + octave and an optional glyph: " + key);
+        throw new util_1.RuntimeError('BadArguments', "Key must have note + octave and an optional glyph: " + key);
     }
     var k = pieces[0].toUpperCase();
     var value = Flow.keyProperties.note_values[k];
     if (!value)
-        throw new vex_1.Vex.RERR('BadArguments', 'Invalid key name: ' + k);
+        throw new util_1.RuntimeError('BadArguments', 'Invalid key name: ' + k);
     if (value.octave)
         pieces[1] = value.octave;
     var octave = parseInt(pieces[1], 10);
@@ -30276,14 +30287,14 @@ Flow.keyProperties.note_values = {
 };
 function integerToNote(integer) {
     if (typeof integer === 'undefined') {
-        throw new vex_1.Vex.RERR('BadArguments', 'Undefined integer for integerToNote');
+        throw new util_1.RuntimeError('BadArguments', 'Undefined integer for integerToNote');
     }
     if (integer < -2) {
-        throw new vex_1.Vex.RERR('BadArguments', "integerToNote requires integer > -2: " + integer);
+        throw new util_1.RuntimeError('BadArguments', "integerToNote requires integer > -2: " + integer);
     }
     var noteValue = Flow.integerToNote.table[integer];
     if (!noteValue) {
-        throw new vex_1.Vex.RERR('BadArguments', "Unknown note value for integer: " + integer);
+        throw new util_1.RuntimeError('BadArguments', "Unknown note value for integer: " + integer);
     }
     return noteValue;
 }
@@ -30688,7 +30699,7 @@ Flow.ornamentCodes.ornaments = {
 Flow.keySignature = function (spec) {
     var keySpec = Flow.keySignature.keySpecs[spec];
     if (!keySpec) {
-        throw new vex_1.Vex.RERR('BadKeySignature', "Bad key signature spec: '" + spec + "'");
+        throw new util_1.RuntimeError('BadKeySignature', "Bad key signature spec: '" + spec + "'");
     }
     if (!keySpec.acc) {
         return [];
@@ -30763,7 +30774,7 @@ Flow.sanitizeDuration = function (duration) {
         duration = alias;
     }
     if (Flow.durationToTicks.durations[duration] === undefined) {
-        throw new vex_1.Vex.RERR('BadArguments', "The provided duration is not valid: " + duration);
+        throw new util_1.RuntimeError('BadArguments', "The provided duration is not valid: " + duration);
     }
     return duration;
 };
@@ -31353,9 +31364,20 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TabNote = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
@@ -31456,7 +31478,7 @@ var TabNote = /** @class */ (function (_super) {
         // The fret positions in the note. An array of `{ str: X, fret: X }`
         _this.positions = tab_struct.positions;
         // Render Options
-        vex_1.Vex.Merge(_this.render_options, {
+        _this.render_options = __assign(__assign({}, _this.render_options), {
             // font size for note heads and rests
             glyph_font_scale: tables_1.Flow.DEFAULT_TABLATURE_FONT_SCALE,
             // Flag to draw a stem
@@ -31474,7 +31496,7 @@ var TabNote = /** @class */ (function (_super) {
         });
         _this.glyph = tables_1.Flow.getGlyphProps(_this.duration, _this.noteType);
         if (!_this.glyph) {
-            throw new vex_1.Vex.RERR('BadArguments', "Invalid note initialization data (No glyph found): " + JSON.stringify(tab_struct));
+            throw new util_1.RuntimeError('BadArguments', "Invalid note initialization data (No glyph found): " + JSON.stringify(tab_struct));
         }
         _this.buildStem();
         if (tab_struct.stem_direction) {
@@ -31611,10 +31633,10 @@ var TabNote = /** @class */ (function (_super) {
     // `position` at a fret position `index`
     TabNote.prototype.getModifierStartXY = function (position, index) {
         if (!this.preFormatted) {
-            throw new vex_1.Vex.RERR('UnformattedNote', "Can't call GetModifierStartXY on an unformatted note");
+            throw new util_1.RuntimeError('UnformattedNote', "Can't call GetModifierStartXY on an unformatted note");
         }
         if (this.ys.length === 0) {
-            throw new vex_1.Vex.RERR('NoYValues', 'No Y-Values calculated for this note.');
+            throw new util_1.RuntimeError('NoYValues', 'No Y-Values calculated for this note.');
         }
         var x = 0;
         if (position === modifier_1.Modifier.Position.LEFT) {
@@ -31685,7 +31707,7 @@ var TabNote = /** @class */ (function (_super) {
         // Draw the modifiers
         this.modifiers.forEach(function (modifier) {
             // Only draw the dots if enabled
-            if (modifier.getCategory() === 'dots' && !_this.render_options.draw_dots)
+            if (modifier.getCategory() === dot_1.Dot.CATEGORY && !_this.render_options.draw_dots)
                 return;
             modifier.setContext(_this.getContext());
             modifier.drawWithStyle();
@@ -31746,17 +31768,17 @@ var TabNote = /** @class */ (function (_super) {
     TabNote.prototype.draw = function () {
         var ctx = this.checkContext();
         if (this.ys.length === 0) {
-            throw new vex_1.Vex.RERR('NoYValues', "Can't draw note without Y values.");
+            throw new util_1.RuntimeError('NoYValues', "Can't draw note without Y values.");
         }
         this.setRendered();
         var render_stem = this.beam == undefined && this.render_options.draw_stem;
-        ctx.openGroup('tabnote', null, { pointerBBox: true });
+        ctx.openGroup('tabnote', undefined, { pointerBBox: true });
         this.drawPositions();
         this.drawStemThrough();
         if (this.stem && render_stem) {
             var stem_x = this.getStemX();
             this.stem.setNoteHeadXBounds(stem_x, stem_x);
-            ctx.openGroup('stem', null, { pointerBBox: true });
+            ctx.openGroup('stem', undefined, { pointerBBox: true });
             this.stem.setContext(ctx).draw();
             ctx.closeGroup();
         }
@@ -31802,7 +31824,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TabSlide = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var tabtie_1 = __webpack_require__(/*! ./tabtie */ "./src/tabtie.ts");
 var TabSlide = /** @class */ (function (_super) {
     __extends(TabSlide, _super);
@@ -31856,7 +31878,7 @@ var TabSlide = /** @class */ (function (_super) {
     };
     TabSlide.prototype.renderTie = function (params) {
         if (params.first_ys.length === 0 || params.last_ys.length === 0) {
-            throw new vex_1.Vex.RERR('BadArguments', 'No Y-values to render');
+            throw new util_1.RuntimeError('BadArguments', 'No Y-values to render');
         }
         var ctx = this.checkContext();
         var first_x_px = params.first_x_px;
@@ -31864,12 +31886,12 @@ var TabSlide = /** @class */ (function (_super) {
         var last_x_px = params.last_x_px;
         var direction = params.direction;
         if (direction !== TabSlide.SLIDE_UP && direction !== TabSlide.SLIDE_DOWN) {
-            throw new vex_1.Vex.RERR('BadSlide', 'Invalid slide direction');
+            throw new util_1.RuntimeError('BadSlide', 'Invalid slide direction');
         }
         for (var i = 0; i < this.notes.first_indices.length; ++i) {
             var slide_y = first_ys[this.notes.first_indices[i]] + this.render_options.y_shift;
             if (isNaN(slide_y)) {
-                throw new vex_1.Vex.RERR('BadArguments', 'Bad indices for slide rendering.');
+                throw new util_1.RuntimeError('BadArguments', 'Bad indices for slide rendering.');
             }
             ctx.beginPath();
             ctx.moveTo(first_x_px, slide_y + 3 * direction);
@@ -32067,7 +32089,7 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TextBracket = exports.TextBracketPosition = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var renderer_1 = __webpack_require__(/*! ./renderer */ "./src/renderer.js");
@@ -32086,7 +32108,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (TextBracket.DEBUG)
-        vex_1.Vex.L('Vex.Flow.TextBracket', args);
+        util_1.log('Vex.Flow.TextBracket', args);
 }
 var TextBracketPosition;
 (function (TextBracketPosition) {
@@ -32197,7 +32219,7 @@ var TextBracket = /** @class */ (function (_super) {
                 y = this.start.checkStave().getYForBottomText(this.line + tables_1.Flow.TEXT_HEIGHT_OFFSET_HACK);
                 break;
             default:
-                throw new vex_1.Vex.RERR('InvalidPosition', "The position " + this.position + " is invalid");
+                throw new util_1.RuntimeError('InvalidPosition', "The position " + this.position + " is invalid.");
         }
         // Get the preliminary start and stop coordintates for the bracket
         var start = { x: this.start.getAbsoluteX(), y: y };
@@ -32296,9 +32318,20 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TextDynamics = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var common_1 = __webpack_require__(/*! ./common */ "./src/common.ts");
@@ -32317,7 +32350,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (TextDynamics.DEBUG)
-        vex_1.Vex.L('Vex.Flow.TextDynamics', args);
+        util_1.log('Vex.Flow.TextDynamics', args);
 }
 var TextDynamics = /** @class */ (function (_super) {
     __extends(TextDynamics, _super);
@@ -32332,7 +32365,7 @@ var TextDynamics = /** @class */ (function (_super) {
         _this.sequence = text_struct.text.toLowerCase();
         _this.line = text_struct.line || 0;
         _this.glyphs = [];
-        vex_1.Vex.Merge(_this.render_options, {
+        _this.render_options = __assign(__assign({}, _this.render_options), {
             glyph_font_size: 40,
         });
         L('New Dynamics Text: ', _this.sequence);
@@ -32385,7 +32418,7 @@ var TextDynamics = /** @class */ (function (_super) {
             // Get the glyph data for the letter
             var glyph_data = TextDynamics.GLYPHS[letter];
             if (!glyph_data)
-                throw new vex_1.Vex.RERR('Invalid dynamics character: ' + letter);
+                throw new util_1.RuntimeError('Invalid dynamics character: ' + letter);
             var size = common_1.check(_this.render_options.glyph_font_size);
             var glyph = new glyph_1.Glyph(glyph_data.code, size, { category: 'textNote' });
             // Add the glyph
@@ -32436,7 +32469,7 @@ exports.TextDynamics = TextDynamics;
 //
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TextFont = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var petalumascript_textmetrics_1 = __webpack_require__(/*! ./fonts/petalumascript_textmetrics */ "./src/fonts/petalumascript_textmetrics.ts");
 var robotoslab_textmetrics_1 = __webpack_require__(/*! ./fonts/robotoslab_textmetrics */ "./src/fonts/robotoslab_textmetrics.ts");
 // To enable logging for this class. Set `Vex.Flow.TextFont.DEBUG` to `true`.
@@ -32454,7 +32487,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (TextFont.DEBUG)
-        vex_1.Vex.L('Vex.Flow.TextFont', args);
+        util_1.log('Vex.Flow.TextFont', args);
 }
 var TextFont = /** @class */ (function () {
     // ## Prototype Methods
@@ -32473,7 +32506,7 @@ var TextFont = /** @class */ (function () {
         this.style = '';
         this.attrs = { type: 'TextFont' };
         if (!params.name) {
-            throw new vex_1.Vex.RERR('BadArgument', 'Font constructor must specify a name');
+            throw new util_1.RuntimeError('BadArgument', 'Font constructor must specify a name');
         }
         var fontData = params.glyphs ? params : TextFont.getFontDataByName(params.name);
         if (!fontData) {
@@ -32481,13 +32514,13 @@ var TextFont = /** @class */ (function () {
                 TextFont.registerFont(params);
             }
             else {
-                throw new vex_1.Vex.RERR('BadArgument', 'Unknown font, must have glyph metrics and resolution');
+                throw new util_1.RuntimeError('BadArgument', 'Unknown font, must have glyph metrics and resolution');
             }
         }
         else {
-            vex_1.Vex.Merge(this, fontData);
+            this.updateParams(fontData);
         }
-        vex_1.Vex.Merge(this, params);
+        this.updateParams(params);
         this.updateCacheKey();
     }
     Object.defineProperty(TextFont, "CATEGORY", {
@@ -32617,7 +32650,7 @@ var TextFont = /** @class */ (function () {
     // method will always return a fallback font if there are no matches.
     TextFont.getTextFontFromVexFontData = function (fd) {
         var i = 0;
-        var selectedFont = null;
+        var selectedFont = undefined;
         var fallback = TextFont.fontRegistry[0];
         var candidates = [];
         var families = fd.family.split(',');
@@ -32680,6 +32713,26 @@ var TextFont = /** @class */ (function () {
             L('registering font ' + fontData.name);
             TextFont.registryInstance.push(fontData);
         }
+    };
+    TextFont.prototype.updateParams = function (params) {
+        if (params.name)
+            this.name = params.name;
+        if (params.resolution)
+            this.resolution = params.resolution;
+        if (params.glyphs)
+            this.glyphs = params.glyphs;
+        this.family = params.family;
+        this.serifs = params.serifs;
+        if (params.monospaced)
+            this.monospaced = params.monospaced;
+        this.italic = params.italic;
+        this.bold = params.bold;
+        if (params.maxSizeGlyph)
+            this.maxSizeGlyph = params.maxSizeGlyph;
+        if (params.superscriptOffset)
+            this.superscriptOffset = params.superscriptOffset;
+        if (params.subscriptOffset)
+            this.subscriptOffset = params.subscriptOffset;
     };
     // Create a hash with the current font data, so we can cache computed widths
     TextFont.prototype.updateCacheKey = function () {
@@ -32786,7 +32839,7 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TextNote = exports.Justification = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var Justification;
@@ -32812,7 +32865,7 @@ var TextNote = /** @class */ (function (_super) {
         if (options.glyph) {
             var struct = TextNote.GLYPHS[options.glyph];
             if (!struct)
-                throw new vex_1.Vex.RERR('Invalid glyph type: ' + options.glyph);
+                throw new util_1.RuntimeError('Invalid glyph type: ' + options.glyph);
             _this.glyph = new glyph_1.Glyph(struct.code, 40, { category: 'textNote' });
             _this.setWidth(_this.glyph.getMetrics().width);
         }
@@ -32909,7 +32962,7 @@ var TextNote = /** @class */ (function (_super) {
     TextNote.prototype.preFormat = function () {
         var ctx = this.checkContext();
         if (!this.tickContext)
-            throw new vex_1.Vex.RERR('NoTickContext', "Can't preformat without a TickContext.");
+            throw new util_1.RuntimeError('NoTickContext', "Can't preformat without a TickContext.");
         if (this.preFormatted)
             return;
         if (this.smooth) {
@@ -32939,7 +32992,7 @@ var TextNote = /** @class */ (function (_super) {
         var ctx = this.checkContext();
         var stave = this.checkStave();
         if (!this.tickContext)
-            throw new vex_1.Vex.RERR('NoTickContext', "Can't draw without a TickContext.");
+            throw new util_1.RuntimeError('NoTickContext', "Can't draw without a TickContext.");
         this.setRendered();
         // Reposition to center of note head
         var x = this.getAbsoluteX() + this.tickContext.getMetrics().glyphPx / 2;
@@ -33013,7 +33066,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Tickable = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
@@ -33078,6 +33131,9 @@ var Tickable = /** @class */ (function (_super) {
     Tickable.prototype.shouldIgnoreTicks = function () {
         return this.ignore_ticks;
     };
+    Tickable.prototype.setIgnoreTicks = function (flag) {
+        this.ignore_ticks = flag;
+    };
     /** Sets width of note. Used by the formatter for positioning. */
     Tickable.prototype.setWidth = function (width) {
         this.width = width;
@@ -33085,7 +33141,7 @@ var Tickable = /** @class */ (function (_super) {
     /** Gets width of note. Used by the formatter for positioning. */
     Tickable.prototype.getWidth = function () {
         if (!this.preFormatted) {
-            throw new vex_1.Vex.RERR('UnformattedNote', "Can't call GetWidth on an unformatted note.");
+            throw new util_1.RuntimeError('UnformattedNote', "Can't call GetWidth on an unformatted note.");
         }
         return this.width + (this.modifierContext ? this.modifierContext.getWidth() : 0);
     };
@@ -33101,7 +33157,7 @@ var Tickable = /** @class */ (function (_super) {
     /** Gets `X` position of this tick context. */
     Tickable.prototype.getX = function () {
         if (!this.tickContext) {
-            throw new vex_1.Vex.RERR('NoTickContext', 'Note needs a TickContext assigned for an X-Value');
+            throw new util_1.RuntimeError('NoTickContext', 'Note needs a TickContext assigned for an X-Value');
         }
         return this.tickContext.getX() + this.x_shift;
     };
@@ -33136,7 +33192,7 @@ var Tickable = /** @class */ (function (_super) {
      */
     Tickable.prototype.getVoice = function () {
         if (!this.voice)
-            throw new vex_1.Vex.RERR('NoVoice', 'Tickable has no voice.');
+            throw new util_1.RuntimeError('NoVoice', 'Tickable has no voice.');
         return this.voice;
     };
     /** Sets the associated voice. */
@@ -33286,7 +33342,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TickContext = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var tickable_1 = __webpack_require__(/*! ./tickable */ "./src/tickable.ts");
 var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
 /**
@@ -33411,7 +33467,7 @@ var TickContext = /** @class */ (function (_super) {
     };
     TickContext.prototype.addTickable = function (tickable, voiceIndex) {
         if (!tickable) {
-            throw new vex_1.Vex.RERR('BadArgument', 'Invalid tickable added.');
+            throw new util_1.RuntimeError('BadArgument', 'Invalid tickable added.');
         }
         if (!tickable.shouldIgnoreTicks()) {
             this.ignore_ticks = false;
@@ -33592,7 +33648,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TimeSignature = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 var timesigglyph_1 = __webpack_require__(/*! ./timesigglyph */ "./src/timesigglyph.ts");
@@ -33600,11 +33656,11 @@ var common_1 = __webpack_require__(/*! ./common */ "./src/common.ts");
 var assertIsValidFraction = function (timeSpec) {
     var numbers = timeSpec.split('/').filter(function (number) { return number !== ''; });
     if (numbers.length !== 2) {
-        throw new vex_1.Vex.RERR('BadTimeSignature', "Invalid time spec: " + timeSpec + ". Must be in the form \"<numerator>/<denominator>\"");
+        throw new util_1.RuntimeError('BadTimeSignature', "Invalid time spec: " + timeSpec + ". Must be in the form \"<numerator>/<denominator>\"");
     }
     numbers.forEach(function (number) {
         if (isNaN(Number(number))) {
-            throw new vex_1.Vex.RERR('BadTimeSignature', "Invalid time spec: " + timeSpec + ". Must contain two valid numbers.");
+            throw new util_1.RuntimeError('BadTimeSignature', "Invalid time spec: " + timeSpec + ". Must contain two valid numbers.");
         }
     });
 };
@@ -33687,10 +33743,10 @@ var TimeSignature = /** @class */ (function (_super) {
     };
     TimeSignature.prototype.draw = function () {
         if (!this.x) {
-            throw new vex_1.Vex.RERR('TimeSignatureError', "Can't draw time signature without x.");
+            throw new util_1.RuntimeError('TimeSignatureError', "Can't draw time signature without x.");
         }
         if (!this.stave) {
-            throw new vex_1.Vex.RERR('TimeSignatureError', "Can't draw time signature without stave.");
+            throw new util_1.RuntimeError('TimeSignatureError', "Can't draw time signature without stave.");
         }
         this.setRendered();
         this.timeSig.glyph.setStave(this.stave);
@@ -33733,7 +33789,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TimeSigNote = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
 var timesignature_1 = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
 var TimeSigNote = /** @class */ (function (_super) {
@@ -33760,7 +33816,7 @@ var TimeSigNote = /** @class */ (function (_super) {
     TimeSigNote.prototype.draw = function () {
         var stave = this.checkStave();
         if (!this.timeSig)
-            throw new vex_1.Vex.RERR('NoTimeSignatureInfo', 'No TimeSignatureInfo attached to this note.');
+            throw new util_1.RuntimeError('NoTimeSignatureInfo', 'No TimeSignatureInfo attached to this note.');
         var ctx = this.checkContext();
         this.setRendered();
         if (!this.timeSig.glyph.getContext()) {
@@ -33807,7 +33863,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Tremolo = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
@@ -33834,19 +33889,17 @@ var Tremolo = /** @class */ (function (_super) {
     };
     Tremolo.prototype.draw = function () {
         var ctx = this.checkContext();
-        if (!(this.note && this.index != null)) {
-            throw new vex_1.Vex.RERR('NoAttachedNote', "Can't draw Tremolo without a note and index.");
-        }
+        var note = this.checkAttachedNote();
         this.setRendered();
-        var stemDirection = this.note.getStemDirection();
-        var start = this.note.getModifierStartXY(this.position, this.index);
+        var stemDirection = note.getStemDirection();
+        var start = note.getModifierStartXY(this.position, this.index);
         var x = start.x;
-        var isGraceNote = this.note.getCategory() === 'gracenotes';
+        var isGraceNote = note.getCategory() === gracenote_1.GraceNote.CATEGORY;
         var scale = isGraceNote ? gracenote_1.GraceNote.SCALE : 1;
         var category = "tremolo." + (isGraceNote ? 'grace' : 'default');
         this.y_spacing = this.musicFont.lookupMetric(category + ".spacing") * stemDirection;
         var height = this.num * this.y_spacing;
-        var y = this.note.getStemExtents().baseY - height;
+        var y = note.getStemExtents().baseY - height;
         if (stemDirection < 0) {
             y += this.musicFont.lookupMetric(category + ".offsetYStemDown") * scale;
         }
@@ -33891,7 +33944,7 @@ exports.Tremolo = Tremolo;
 // This class implements varies types of tunings for tablature.
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Tuning = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 /** Tuning implements varies types of tunings for tablature. */
 var Tuning = /** @class */ (function () {
@@ -33937,7 +33990,7 @@ var Tuning = /** @class */ (function () {
         this.numStrings = 0;
         var keys = noteString.split(/\s*,\s*/);
         if (keys.length === 0) {
-            throw new vex_1.Vex.RERR('BadArguments', "Invalid tuning string: " + noteString);
+            throw new util_1.RuntimeError('BadArguments', "Invalid tuning string: " + noteString);
         }
         this.numStrings = keys.length;
         for (var i = 0; i < this.numStrings; ++i) {
@@ -33948,7 +34001,7 @@ var Tuning = /** @class */ (function () {
     Tuning.prototype.getValueForString = function (stringNum) {
         var s = Number(stringNum);
         if (s < 1 || s > this.numStrings) {
-            throw new vex_1.Vex.RERR('BadArguments', "String number must be between 1 and " + this.numStrings + ":" + stringNum);
+            throw new util_1.RuntimeError('BadArguments', "String number must be between 1 and " + this.numStrings + ":" + stringNum);
         }
         return this.tuningValues[s - 1];
     };
@@ -33957,7 +34010,7 @@ var Tuning = /** @class */ (function () {
         var stringValue = this.getValueForString(stringNum);
         var f = Number(fretNum);
         if (f < 0) {
-            throw new vex_1.Vex.RERR('BadArguments', "Fret number must be 0 or higher: " + fretNum);
+            throw new util_1.RuntimeError('BadArguments', "Fret number must be 0 or higher: " + fretNum);
         }
         return stringValue + f;
     };
@@ -34000,6 +34053,17 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Tuplet = void 0;
 /**
@@ -34045,7 +34109,7 @@ exports.Tuplet = void 0;
  *     with articulations, etc...
  * }
  */
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -34059,25 +34123,25 @@ var Tuplet = /** @class */ (function (_super) {
         _this.denom_glyphs = [];
         _this.setAttribute('type', 'Tuplet');
         if (!notes || !notes.length) {
-            throw new vex_1.Vex.RERR('BadArguments', 'No notes provided for tuplet.');
+            throw new util_1.RuntimeError('BadArguments', 'No notes provided for tuplet.');
         }
-        _this.options = vex_1.Vex.Merge({}, options);
+        _this.options = __assign({}, options);
         _this.notes = notes;
-        _this.num_notes = 'num_notes' in _this.options ? _this.options.num_notes : notes.length;
+        _this.num_notes = _this.options.num_notes != undefined ? _this.options.num_notes : notes.length;
         // We accept beats_occupied, but warn that it's deprecated:
         // the preferred property name is now notes_occupied.
         if (_this.options.beats_occupied) {
             _this.beatsOccupiedDeprecationWarning();
         }
         _this.notes_occupied = _this.options.notes_occupied || _this.options.beats_occupied || 2;
-        if ('bracketed' in _this.options) {
+        if (_this.options.bracketed != undefined) {
             _this.bracketed = _this.options.bracketed;
         }
         else {
             _this.bracketed = notes.some(function (note) { return !note.hasBeam(); });
         }
         _this.ratioed =
-            'ratioed' in _this.options ? _this.options.ratioed : Math.abs(_this.notes_occupied - _this.num_notes) > 1;
+            _this.options.ratioed != undefined ? _this.options.ratioed : Math.abs(_this.notes_occupied - _this.num_notes) > 1;
         _this.point = _this.musicFont.lookupMetric('digits.tupletPoint');
         _this.y_pos = 16;
         _this.x_pos = 100;
@@ -34143,7 +34207,7 @@ var Tuplet = /** @class */ (function (_super) {
             location = Tuplet.LOCATION_TOP;
         }
         else if (location !== Tuplet.LOCATION_TOP && location !== Tuplet.LOCATION_BOTTOM) {
-            throw new vex_1.Vex.RERR('BadArgument', 'Invalid tuplet location: ' + location);
+            throw new util_1.RuntimeError('BadArgument', 'Invalid tuplet location: ' + location);
         }
         this.location = location;
         return this;
@@ -34329,6 +34393,85 @@ exports.Tuplet = Tuplet;
 
 /***/ }),
 
+/***/ "./src/util.ts":
+/*!*********************!*\
+  !*** ./src/util.ts ***!
+  \*********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.warn = exports.log = exports.RuntimeError = void 0;
+var RuntimeError = /** @class */ (function (_super) {
+    __extends(RuntimeError, _super);
+    function RuntimeError(code, message) {
+        var _this = _super.call(this, '[RuntimeError] ' + code + ':' + message) || this;
+        _this.code = code;
+        return _this;
+    }
+    return RuntimeError;
+}(Error));
+exports.RuntimeError = RuntimeError;
+// Default log function sends all arguments to console.
+function log(block) {
+    // eslint-disable-next-line
+    var args = [];
+    for (
+    // eslint-disable-next-line
+    var _i = 1; 
+    // eslint-disable-next-line
+    _i < arguments.length; 
+    // eslint-disable-next-line
+    _i++) {
+        // eslint-disable-next-line
+        args[_i - 1] = arguments[_i];
+    }
+    if (!args)
+        return;
+    var line = Array.prototype.slice.call(args).join(' ');
+    window.console.log(block + ': ' + line);
+}
+exports.log = log;
+// Dump warning to console.
+function warn() {
+    // eslint-disable-next-line
+    var args = [];
+    for (
+    // eslint-disable-next-line
+    var _i = 0; 
+    // eslint-disable-next-line
+    _i < arguments.length; 
+    // eslint-disable-next-line
+    _i++) {
+        // eslint-disable-next-line
+        args[_i] = arguments[_i];
+    }
+    var line = args.join(' ');
+    var err = new Error();
+    window.console.log('Warning: ', line, err.stack);
+}
+exports.warn = warn;
+
+
+/***/ }),
+
 /***/ "./src/vex.js":
 /*!********************!*\
   !*** ./src/vex.js ***!
@@ -34362,15 +34505,9 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Vex = void 0;
 /* eslint max-classes-per-file: "off" */
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var Vex = function () { };
 exports.Vex = Vex;
-// Default log function sends all arguments to console.
-Vex.L = function (block, args) {
-    if (!args)
-        return;
-    var line = Array.prototype.slice.call(args).join(' ');
-    window.console.log(block + ': ' + line);
-};
 Vex.MakeException = function (name) {
     var exception = /** @class */ (function (_super) {
         __extends(exception, _super);
@@ -34385,19 +34522,6 @@ Vex.MakeException = function (name) {
     }(Error));
     return exception;
 };
-// Default runtime exception.
-var RuntimeError = /** @class */ (function (_super) {
-    __extends(RuntimeError, _super);
-    function RuntimeError(code, message) {
-        var _this = _super.call(this, '[RuntimeError] ' + code + ':' + message) || this;
-        _this.code = code;
-        return _this;
-    }
-    return RuntimeError;
-}(Error));
-// Shortcut method for `RuntimeError`.
-Vex.RuntimeError = RuntimeError;
-Vex.RERR = Vex.RuntimeError;
 // Merge `destination` hash with `source` hash, overwriting like keys
 // in `source` if necessary.
 Vex.Merge = function (destination, source) {
@@ -34407,9 +34531,6 @@ Vex.Merge = function (destination, source) {
     }
     return destination;
 };
-// DEPRECATED. Use `Math.*`.
-Vex.Min = Math.min;
-Vex.Max = Math.max;
 Vex.forEach = function (a, fn) {
     for (var i = 0; i < a.length; i++) {
         fn(a[i], i);
@@ -34457,11 +34578,11 @@ Vex.Contains = function (a, obj) {
 // Get the 2D Canvas context from DOM element `canvas_sel`.
 Vex.getCanvasContext = function (canvas_sel) {
     if (!canvas_sel) {
-        throw new Vex.RERR('BadArgument', 'Invalid canvas selector: ' + canvas_sel);
+        throw new util_1.RuntimeError('BadArgument', 'Invalid canvas selector: ' + canvas_sel);
     }
     var canvas = document.getElementById(canvas_sel);
     if (!(canvas && canvas.getContext)) {
-        throw new Vex.RERR('UnsupportedBrowserError', 'This browser does not support HTML5 Canvas');
+        throw new util_1.RuntimeError('UnsupportedBrowserError', 'This browser does not support HTML5 Canvas');
     }
     return canvas.getContext('2d');
 };
@@ -34485,21 +34606,7 @@ Vex.BM = function (s, f) {
     var start_time = new Date().getTime();
     f();
     var elapsed = new Date().getTime() - start_time;
-    Vex.L(s + elapsed + 'ms');
-};
-// Get stack trace.
-Vex.StackTrace = function () {
-    var err = new Error();
-    return err.stack;
-};
-// Dump warning to console.
-Vex.W = function () {
-    var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
-    }
-    var line = args.join(' ');
-    window.console.log('Warning: ', line, Vex.StackTrace());
+    util_1.log(s + elapsed + 'ms');
 };
 // Used by various classes (e.g., SVGContext) to provide a
 // unique prefix to element names (or other keys in shared namespaces).
@@ -34539,7 +34646,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Vibrato = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var bend_1 = __webpack_require__(/*! ./bend */ "./src/bend.ts");
 var Vibrato = /** @class */ (function (_super) {
@@ -34606,13 +34712,11 @@ var Vibrato = /** @class */ (function (_super) {
     };
     Vibrato.prototype.draw = function () {
         var ctx = this.checkContext();
-        if (!this.note) {
-            throw new vex_1.Vex.RERR('NoNoteForVibrato', "Can't draw vibrato without an attached note.");
-        }
+        var note = this.checkAttachedNote();
         this.setRendered();
-        var start = this.note.getModifierStartXY(modifier_1.Modifier.Position.RIGHT, this.index);
+        var start = note.getModifierStartXY(modifier_1.Modifier.Position.RIGHT, this.index);
         var vx = start.x + this.x_shift;
-        var vy = this.note.getYForTopText(this.text_line) + 2;
+        var vy = note.getYForTopText(this.text_line) + 2;
         Vibrato.renderVibrato(ctx, vx, vy, this.render_options);
     };
     // Static rendering method that can be called from
@@ -34695,7 +34799,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VibratoBracket = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var vibrato_1 = __webpack_require__(/*! ./vibrato */ "./src/vibrato.ts");
 // To enable logging for this class. Set `Vex.Flow.VibratoBracket.DEBUG` to `true`.
@@ -34713,7 +34817,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (VibratoBracket.DEBUG)
-        vex_1.Vex.L('Vex.Flow.VibratoBracket', args);
+        util_1.log('Vex.Flow.VibratoBracket', args);
 }
 var VibratoBracket = /** @class */ (function (_super) {
     __extends(VibratoBracket, _super);
@@ -34817,7 +34921,7 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Voice = exports.VoiceMode = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
 var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
@@ -34846,7 +34950,7 @@ var Voice = /** @class */ (function (_super) {
             }
         }
         // Default time sig is 4/4
-        _this.time = vex_1.Vex.Merge({
+        _this.time = __assign({
             num_beats: 4,
             beat_value: 4,
             resolution: tables_1.Flow.RESOLUTION,
@@ -34940,7 +35044,7 @@ var Voice = /** @class */ (function (_super) {
     // and preformatters to associate them with the right modifierContexts.
     Voice.prototype.getVoiceGroup = function () {
         if (!this.voiceGroup) {
-            throw new vex_1.Vex.RERR('NoVoiceGroup', 'No voice group for voice.');
+            throw new util_1.RuntimeError('NoVoiceGroup', 'No voice group for voice.');
         }
         return this.voiceGroup;
     };
@@ -35002,7 +35106,7 @@ var Voice = /** @class */ (function (_super) {
             if ((this.mode === Voice.Mode.STRICT || this.mode === Voice.Mode.FULL) &&
                 this.ticksUsed.greaterThan(this.totalTicks)) {
                 this.ticksUsed.subtract(ticks);
-                throw new vex_1.Vex.RERR('BadArgument', 'Too many ticks.');
+                throw new util_1.RuntimeError('BadArgument', 'Too many ticks.');
             }
             // Track the smallest tickable for formatting.
             if (ticks.lessThan(this.smallestTickCount)) {
@@ -35051,7 +35155,7 @@ var Voice = /** @class */ (function (_super) {
             if (stave)
                 tickable.setStave(stave);
             if (!tickable.getStave()) {
-                throw new vex_1.Vex.RuntimeError('MissingStave', 'The voice cannot draw tickables without staves.');
+                throw new util_1.RuntimeError('MissingStave', 'The voice cannot draw tickables without staves.');
             }
             if (i === 0)
                 boundingBox = tickable.getBoundingBox();
