@@ -11,7 +11,7 @@ import { Registry } from './registry';
 import { BoundingBox } from './boundingbox';
 import { Font } from './font';
 import { RenderContext } from './types/common';
-import { Flow } from './tables';
+import { Flow } from './flow';
 
 /** Element attributes. */
 export interface ElementAttributes {
@@ -27,7 +27,7 @@ export interface ElementAttributes {
 /** Element style */
 export interface ElementStyle {
   shadowColor?: string;
-  shadowBlur?: string;
+  shadowBlur?: number;
   fillStyle?: string;
   strokeStyle?: string;
   lineWidth?: number;

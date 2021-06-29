@@ -17,10 +17,9 @@
 // See `tests/formatter_tests.js` for usage examples. The helper functions included
 // here (`FormatAndDraw`, `FormatAndDrawTab`) also serve as useful usage examples.
 
-import { Vex } from './vex';
-import { RuntimeError, log } from './util';
+import { RuntimeError, midLine, log, check } from './util';
 import { Beam } from './beam';
-import { Flow } from './tables';
+import { Flow } from './flow';
 import { Fraction } from './fraction';
 import { Voice } from './voice';
 import { StaveConnector } from './staveconnector';
@@ -35,7 +34,6 @@ import { TabStave } from './tabstave';
 import { TabNote } from './tabnote';
 import { BoundingBox } from './boundingbox';
 import { StaveNote } from './stavenote';
-import { check } from './common';
 
 interface Distance {
   maxNegativeShiftPx: number;
@@ -117,10 +115,8 @@ function createContexts<T>(
 }
 
 // To enable logging for this class. Set `Vex.Flow.Formatter.DEBUG` to `true`.
-function L(
-  // eslint-disable-next-line
-  ...args: any[]
-) {
+// eslint-disable-next-line
+function L(...args: any[]) {
   if (Formatter.DEBUG) log('Vex.Flow.Formatter', args);
 }
 
@@ -142,7 +138,7 @@ function lookAhead(notes: Note[], restLine: number, i: number, compare: boolean)
   if (compare && restLine !== nextRestLine) {
     const top = Math.max(restLine, nextRestLine);
     const bot = Math.min(restLine, nextRestLine);
-    nextRestLine = Vex.MidLine(top, bot);
+    nextRestLine = midLine(top, bot);
   }
   return nextRestLine;
 }
@@ -731,10 +727,8 @@ export class Formatter {
     let targetWidth = adjustedJustifyWidth;
     let actualWidth = shiftToIdealDistances(calculateIdealDistances(targetWidth));
     const musicFont = Flow.DEFAULT_FONT_STACK[0];
-    // The min padding we allow to the left of the right bar, before moving things left
-    const paddingMin = musicFont.lookupMetric('stave.endPaddingMin');
-    // the max padding we allow to the left of the right bar, before moving things back right.
     const paddingMax = musicFont.lookupMetric('stave.endPaddingMax');
+    const paddingMin = musicFont.lookupMetric('stave.endPaddingMin');
     const maxX = adjustedJustifyWidth + lastContext.getMetrics().notePx - paddingMin;
 
     let iterations = this.formatterOptions.maxIterations;
@@ -964,7 +958,7 @@ export class Formatter {
     const options: FormatOptions = { padding, /*stave,*/ context: stave.getContext(), ...optionsParam };
 
     // eslint-disable-next-line
-    const justifyWidth = stave.getNoteEndX() - stave.getNoteStartX() - options.padding!;
+    const justifyWidth = stave.getNoteEndX() - stave.getNoteStartX() - Stave.defaultPadding;
     L('Formatting voices to width: ', justifyWidth);
     return this.format(voices, justifyWidth, options);
   }

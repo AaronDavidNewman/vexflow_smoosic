@@ -138,7 +138,7 @@ const AccidentalTests = (function () {
       var stave = vf.Stave({ x: 0, y: 10, width: 780 });
       var score = vf.EasyScore();
 
-      var accids = Object.keys(VF.accidentalCodes.accidentals).filter(function (accid) {
+      var accids = Object.keys(VF.accidentalMap).filter(function (accid) {
         return accid !== '{' && accid !== '}';
       });
 

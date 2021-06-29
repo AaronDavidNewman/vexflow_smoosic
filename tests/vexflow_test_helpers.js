@@ -3,17 +3,12 @@
  * Copyright Mohit Muthanna 2010 <mohit@muthanna.com>
  */
 
-/* eslint-disable global-require */
+const VF = Vex.Flow;
 
-/* eslint max-classes-per-file: "off" */
-
-global.VF = Vex.Flow;
-
-// Mock out the QUnit stuff for generating svg images,
-// since we don't really care about the assertions.
-if (!global.QUnit) {
-  global.QUnit = {};
-  QUnit = global.QUnit;
+// When generating PNG images for the visual regression tests,
+// we mock out the QUnit methods (since we don't care about assertions).
+function setupQUnitMockObject() {
+  const QUnit = {};
 
   QUnit.assertions = {
     ok: () => true,
@@ -32,13 +27,13 @@ if (!global.QUnit) {
     QUnit.current_module = name;
   };
 
-  /* eslint-disable */
   QUnit.test = (name, func) => {
     QUnit.current_test = name;
     VF.shims.process.stdout.write(' \u001B[0G' + QUnit.current_module + ' :: ' + name + '\u001B[0K');
     func(QUnit.assertions);
   };
 
+  global.QUnit = QUnit;
   global.test = QUnit.test;
   global.ok = QUnit.assertions.ok;
   global.equal = QUnit.assertions.equal;
@@ -57,7 +52,6 @@ const VexFlowTests = (function () {
     // Test Options.
     RUN_CANVAS_TESTS: true,
     RUN_SVG_TESTS: true,
-    RUN_RAPHAEL_TESTS: false,
     RUN_NODE_TESTS: false,
 
     // Where images are stored for NodeJS tests.
@@ -93,9 +87,6 @@ const VexFlowTests = (function () {
       if (VF.Test.RUN_SVG_TESTS) {
         VF.Test.runSVGTest(name, func, params);
       }
-      if (VF.Test.RUN_RAPHAEL_TESTS) {
-        VF.Test.runRaphaelTest(name, func, params);
-      }
       if (VF.Test.RUN_NODE_TESTS) {
         VF.Test.runNodeTest(name, func, params);
       }
@@ -110,25 +101,10 @@ const VexFlowTests = (function () {
       }
     },
 
-    createTestCanvas: function (testId, testName) {
+    createTest: function (testId, testName, tagName) {
       var testContainer = $('<div></div>').addClass('testcanvas');
-
       testContainer.append($('<div></div>').addClass('name').text(testName));
-
-      testContainer.append(
-        $('<canvas></canvas>').addClass('vex-tabdiv').attr('id', testId).addClass('name').text(name)
-      );
-
-      $(VF.Test.testRootSelector).append(testContainer);
-    },
-
-    createTestSVG: function (testId, testName) {
-      var testContainer = $('<div></div>').addClass('testcanvas');
-
-      testContainer.append($('<div></div>').addClass('name').text(testName));
-
-      testContainer.append($('<div></div>').addClass('vex-tabdiv').attr('id', testId));
-
+      testContainer.append($(`<${tagName}></${tagName}>`).addClass('vex-tabdiv').attr('id', testId));
       $(VF.Test.testRootSelector).append(testContainer);
     },
 
@@ -154,7 +130,7 @@ const VexFlowTests = (function () {
         var elementId = VF.Test.genID('canvas_');
         var title = VF.Test.genTitle('Canvas', assert, name);
 
-        VF.Test.createTestCanvas(elementId, title);
+        VF.Test.createTest(elementId, title, 'canvas');
 
         var testOptions = {
           backend: VF.Renderer.Backends.CANVAS,
@@ -167,24 +143,6 @@ const VexFlowTests = (function () {
       });
     },
 
-    runRaphaelTest: function (name, func, params) {
-      QUnit.test(name, function (assert) {
-        var elementId = VF.Test.genID('raphael_');
-        var title = VF.Test.genTitle('Raphael', assert, name);
-
-        VF.Test.createTestSVG(elementId, title);
-
-        var testOptions = {
-          elementId: elementId,
-          backend: VF.Renderer.Backends.RAPHAEL,
-          params: params,
-          assert: assert,
-        };
-
-        func(testOptions, VF.Renderer.getRaphaelContext);
-      });
-    },
-
     runSVGTest: function (name, func, params) {
       if (!VF.Test.RUN_SVG_TESTS) return;
 
@@ -194,7 +152,7 @@ const VexFlowTests = (function () {
         var elementId = VF.Test.genID('svg_' + fontName);
         var title = VF.Test.genTitle('SVG ' + fontName, assert, name);
 
-        VF.Test.createTestSVG(elementId, title);
+        VF.Test.createTest(elementId, title, 'div');
 
         var testOptions = {
           elementId: elementId,
@@ -310,6 +268,11 @@ const VexFlowTests = (function () {
   return Test;
 })();
 
+if (!global.QUnit) {
+  setupQUnitMockObject();
+}
+
+global.VF = VF;
 global.VF.Test = VexFlowTests;
 
 export { VexFlowTests };

@@ -9,9 +9,8 @@
 //
 // See `tests/stavenote_tests.js` for usage examples.
 
-import { Vex } from './vex';
-import { RuntimeError, log, warn } from './util';
-import { Flow } from './tables';
+import { RuntimeError, log, midLine, warn } from './util';
+import { Flow } from './flow';
 import { BoundingBox } from './boundingbox';
 import { Stem } from './stem';
 import { NoteHead } from './notehead';
@@ -87,7 +86,7 @@ function shiftRestVertical(rest: StaveNoteFormatSettings, note: StaveNoteFormatS
 
 // Called from formatNotes :: center a rest between two notes
 function centerRest(rest: StaveNoteFormatSettings, noteU: StaveNoteFormatSettings, noteL: StaveNoteFormatSettings) {
-  const delta = rest.line - Vex.MidLine(noteU.minLine, noteL.maxLine);
+  const delta = rest.line - midLine(noteU.minLine, noteL.maxLine);
   rest.note.setKeyLine(0, rest.note.getKeyLine(0) - delta);
   rest.line -= delta;
   rest.maxLine -= delta;
@@ -643,7 +642,7 @@ export class StaveNote extends StemmableNote {
 
   // Gets the line number of the bottom note in the chord.
   // If `isTopNote` is `true` then get the top note's line number instead
-  getLineNumber(isTopNote: boolean): number {
+  getLineNumber(isTopNote?: boolean): number {
     if (!this.keyProps.length) {
       throw new RuntimeError('NoKeyProps', "Can't get bottom note line, because note is not initialized properly.");
     }
@@ -772,7 +771,7 @@ export class StaveNote extends StemmableNote {
       const lastLine = this.keyProps[this.keyProps.length - 1].line;
       const top = Math.max(restLine, lastLine);
       const bot = Math.min(restLine, lastLine);
-      restLine = Vex.MidLine(top, bot);
+      restLine = midLine(top, bot);
     }
 
     return restLine;

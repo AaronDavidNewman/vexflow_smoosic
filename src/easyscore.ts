@@ -5,8 +5,7 @@
 
 /* eslint max-classes-per-file: "off" */
 
-import { Vex } from './vex';
-import { RuntimeError, log } from './util';
+import { RuntimeError, MakeException, log } from './util';
 import { StaveNote } from './stavenote';
 import { Match, Parser, Result, Rule, RuleFunction } from './parser';
 import { Articulation } from './articulation';
@@ -23,7 +22,7 @@ function L(...args: any[]): void {
   if (EasyScore.DEBUG) log('Vex.Flow.EasyScore', args);
 }
 
-export const X = Vex.MakeException('EasyScoreError');
+export const X = MakeException('EasyScoreError');
 
 type IDUpdate = { id: string };
 type ClassUpdate = { class: string };
@@ -494,7 +493,7 @@ export class EasyScore {
 
   // TODO: Add stricter typing after migrating Factory
   // eslint-disable-next-line
-  voice(notes: StaveNote[], options: any): Voice {
+  voice(notes: StaveNote[], options?: any): Voice {
     options = { time: this.defaults.time, ...options };
     return this.factory.Voice(options).addTickables(notes);
   }

@@ -10,9 +10,8 @@
 // surround a note are called *modifiers*, and every note has an associated
 // array of them. All notes also have a rendering context and belong to a stave.
 
-import { Vex } from './vex';
-import { RuntimeError } from './util';
-import { Flow } from './tables';
+import { RuntimeError, drawDot } from './util';
+import { Flow } from './flow';
 import { Tickable } from './tickable';
 import { Stroke } from './strokes';
 import { Stave } from './stave';
@@ -22,7 +21,6 @@ import { ModifierContext } from './modifiercontext';
 import { Modifier } from './modifier';
 import { KeyProps, RenderContext } from './types/common';
 import { GlyphProps } from './glyph';
-import { GLYPH_PROPS_VALID_TYPES } from './common';
 import { Fraction } from './fraction';
 import { Beam } from './beam';
 
@@ -99,7 +97,7 @@ export abstract class Note extends Tickable {
   keyProps: KeyProps[];
 
   protected stave?: Stave;
-  protected render_options: NoteRenderOptions;
+  render_options: NoteRenderOptions;
   protected duration: string;
   protected dots: number;
   protected leftDisplacedHeadPx: number;
@@ -153,7 +151,7 @@ export abstract class Note extends Tickable {
     stroke(xPost2, xEnd, 'red');
     stroke(xEnd, xFreedomRight, '#DD0');
     stroke(xStart - note.getXShift(), xStart, '#BBB'); // Shift
-    Vex.drawDot(ctx, xAbs + note.getXShift(), y, 'blue');
+    drawDot(ctx, xAbs + note.getXShift(), y, 'blue');
 
     const formatterMetrics = note.getFormatterMetrics();
     if (formatterMetrics.iterations > 0) {
@@ -191,7 +189,7 @@ export abstract class Note extends Tickable {
 
     // If specified type is invalid, return undefined
     let type = noteStruct.type;
-    if (type && !GLYPH_PROPS_VALID_TYPES[type]) {
+    if (type && !Flow.validTypes[type]) {
       return undefined;
     }
 
@@ -391,7 +389,7 @@ export abstract class Note extends Tickable {
   /** Gets the stave line number for the note. */
   getLineNumber(
     // eslint-disable-next-line
-    isTopNote: boolean
+    isTopNote?: boolean
   ): number {
     return 0;
   }
@@ -547,8 +545,10 @@ export abstract class Note extends Tickable {
     return this;
   }
   /** Get the coordinates for where modifiers begin. */
-  // eslint-disable-next-line
-  getModifierStartXY(position?: number, index?: number, options?: any): { x: number; y: number } {
+  getModifierStartXY(
+    // eslint-disable-next-line
+    position?: number, index?: number, options?: any
+  ): { x: number; y: number } {
     if (!this.preFormatted) {
       throw new RuntimeError('UnformattedNote', "Can't call GetModifierStartXY on an unformatted note");
     }

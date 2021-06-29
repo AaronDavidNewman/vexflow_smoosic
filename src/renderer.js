@@ -1,10 +1,9 @@
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
-// Support for different rendering contexts: Canvas, Raphael
+// Support for different rendering contexts: Canvas & SVG
 
 import { CanvasContext } from './canvascontext';
-import { RaphaelContext } from './raphaelcontext';
 import { SVGContext } from './svgcontext';
 import { RuntimeError } from './util';
 
@@ -14,9 +13,7 @@ export class Renderer {
   static get Backends() {
     return {
       CANVAS: 1,
-      RAPHAEL: 2,
-      SVG: 3,
-      VML: 4,
+      SVG: 2,
     };
   }
 
@@ -60,10 +57,6 @@ export class Renderer {
     return Renderer.buildContext(elementId, Renderer.Backends.CANVAS, width, height, background);
   }
 
-  static getRaphaelContext(elementId, width, height, background) {
-    return Renderer.buildContext(elementId, Renderer.Backends.RAPHAEL, width, height, background);
-  }
-
   static getSVGContext(elementId, width, height, background) {
     return Renderer.buildContext(elementId, Renderer.Backends.SVG, width, height, background);
   }
@@ -73,6 +66,8 @@ export class Renderer {
       return new CanvasContext(ctx);
     }
 
+    // Modify the CanvasRenderingContext2D to include the following methods, if they do not already exist.
+    // setLineDash exists natively: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash
     const methodNames = [
       'clear',
       'setFont',
@@ -140,22 +135,17 @@ export class Renderer {
     this.element = document.getElementById(elementId);
     if (!this.element) this.element = elementId;
 
-    // Verify backend and create context
     this.ctx = null;
     this.paper = null;
     this.backend = backend;
     if (this.backend === Renderer.Backends.CANVAS) {
-      // Create context.
       if (!this.element.getContext) {
         throw new RuntimeError('BadElement', `Can't get canvas context from element: ${elementId}`);
       }
       this.ctx = Renderer.bolsterCanvasContext(this.element.getContext('2d'));
-    } else if (this.backend === Renderer.Backends.RAPHAEL) {
-      this.ctx = new RaphaelContext(this.element);
-    } else if (this.backend === Renderer.Backends.SVG) {
-      this.ctx = new SVGContext(this.element);
     } else {
-      throw new RuntimeError('InvalidBackend', `No support for backend: ${this.backend}`);
+      // Default to SVG (Renderer.Backends.SVG)
+      this.ctx = new SVGContext(this.element);
     }
   }
 

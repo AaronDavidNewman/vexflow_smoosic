@@ -9,7 +9,7 @@
 // purposes, such as diagrams.
 import { RuntimeError } from './util';
 import { Element } from './element';
-import { Flow } from './tables';
+import { Flow } from './flow';
 import { FontInfo, RenderContext } from './types/common';
 import { StaveNote } from './stavenote';
 
@@ -203,9 +203,9 @@ export class StaveLine extends Element {
 
       // The width of the line in pixels
       line_width: 1,
-      // An array of line/space lengths. Unsupported with Raphael (SVG).
+      // An array of line/space lengths. (TODO/QUESTION: Is this supported in SVG?).
       line_dash: undefined,
-      // Can draw rounded line end, instead of a square. Unsupported with Raphael (SVG).
+      // Can draw rounded line end, instead of a square. (TODO/QUESTION: Is this supported in SVG?).
       rounded_end: true,
       // The color of the line and arrowheads
       color: undefined,

@@ -5,10 +5,13 @@ export const PetalumaMetrics = {
   stave: {
     padding: 15,
     endPaddingMax: 15,
-    endPaddingMin: 8,
-    unalignedNotePadding: 11
+    endPaddingMin: 7
   },
-
+  accidental: {
+    noteheadAccidentalPadding: 1,
+    leftPadding: 2,
+    accidentalSpacing: 3
+  },
   clef: {
     default: {
       point: 32,

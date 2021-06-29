@@ -5,11 +5,10 @@
 // See tables.js for the internal time signatures
 // representation
 
-import { RuntimeError } from './util';
+import { RuntimeError, check } from './util';
 import { Glyph } from './glyph';
 import { StaveModifier } from './stavemodifier';
 import { TimeSignatureGlyph } from './timesigglyph';
-import { check } from './common';
 
 export interface TimeSignatureInfo {
   glyph: Glyph;
@@ -39,7 +38,7 @@ export class TimeSignature extends StaveModifier {
   bottomLine: number;
   topLine: number;
 
-  protected timeSig: TimeSignatureInfo;
+  protected info: TimeSignatureInfo;
   protected validate_args: boolean;
 
   static get CATEGORY(): string {
@@ -73,8 +72,8 @@ export class TimeSignature extends StaveModifier {
     this.topLine = 2 + fontLineShift;
     this.bottomLine = 4 + fontLineShift;
     this.setPosition(StaveModifier.Position.BEGIN);
-    this.timeSig = this.parseTimeSpec(timeSpec);
-    this.setWidth(check<number>(this.timeSig.glyph.getMetrics().width));
+    this.info = this.parseTimeSpec(timeSpec);
+    this.setWidth(check<number>(this.info.glyph.getMetrics().width));
     this.setPadding(padding);
   }
 
@@ -109,12 +108,12 @@ export class TimeSignature extends StaveModifier {
     return glyph;
   }
 
-  getTimeSig(): TimeSignatureInfo | undefined {
-    return this.timeSig;
+  getInfo(): TimeSignatureInfo {
+    return this.info;
   }
 
   setTimeSig(timeSpec: string): this {
-    this.timeSig = this.parseTimeSpec(timeSpec);
+    this.info = this.parseTimeSpec(timeSpec);
     return this;
   }
 
@@ -128,9 +127,9 @@ export class TimeSignature extends StaveModifier {
     }
 
     this.setRendered();
-    this.timeSig.glyph.setStave(this.stave);
-    this.timeSig.glyph.setContext(this.stave.getContext());
-    this.placeGlyphOnLine(this.timeSig.glyph, this.stave, this.timeSig.line);
-    this.timeSig.glyph.renderToStave(this.x);
+    this.info.glyph.setStave(this.stave);
+    this.info.glyph.setContext(this.stave.getContext());
+    this.placeGlyphOnLine(this.info.glyph, this.stave, this.info.line);
+    this.info.glyph.renderToStave(this.x);
   }
 }
