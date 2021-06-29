@@ -441,7 +441,7 @@ var Accidental = /** @class */ (function (_super) {
             }
         });
         // update the overall layout with the full width of the accidental shapes:
-        state.left_shift += totalShift;
+        state.left_shift += totalShift + 2;
     };
     // Helper function to determine whether two lines of accidentals collide vertically
     Accidental.checkCollision = function (line1, line2) {
