@@ -8,7 +8,11 @@ export const LelandMetrics = {
     endPaddingMin: 6,
     unalignedNotePadding: 10
   },
-
+  accidental: {
+    noteheadAccidentalPadding: 1,
+    leftPadding: 2,
+    accidentalSpacing: 3
+  },
   clef: {
     default: {
       point: 32,
