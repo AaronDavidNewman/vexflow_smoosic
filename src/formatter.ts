@@ -376,7 +376,7 @@ export class Formatter {
     return formatter.preCalculateMinTotalWidth(voices);
   }
 
-  constructor(formatterOptions?: FormatterOptions) {
+  constructor(formatterOptions: Partial<FormatterOptions> = {}) {
     this.formatterOptions = {
       globalSoftmax: false,
       maxIterations: 5,

@@ -1,3 +1,7 @@
+/**
+ * The Gonville font was created by Simon Tatham.
+ * https://www.chiark.greenend.org.uk/~sgtatham/gonville/
+ */
 export const GonvilleMetrics = {
   name: 'Gonville',
   smufl: false,
@@ -10,7 +14,7 @@ export const GonvilleMetrics = {
   accidental: {
     noteheadAccidentalPadding: 1,
     leftPadding: 2,
-    accidentalSpacing: 3
+    accidentalSpacing: 3,
   },
   clef: {
     default: {
