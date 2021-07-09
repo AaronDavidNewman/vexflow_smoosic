@@ -17,8 +17,8 @@
     "url": "https://github.com/0xfe/vexflow/issues"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^4.28.0",
-    "@typescript-eslint/parser": "^4.28.0",
+    "@typescript-eslint/eslint-plugin": "^4.28.2",
+    "@typescript-eslint/parser": "^4.28.2",
     "browserify": "^17.0.0",
     "canvas": "^2.8.0",
     "docco": "^0.8.1",
@@ -27,7 +27,7 @@
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-prettier": "^3.4.0",
     "glob": "^7.1.7",
-    "grunt": "^1.0.4",
+    "grunt": "^1.4.1",
     "grunt-bump": "^0.8.0",
     "grunt-cli": "^1.4.3",
     "grunt-concurrent": "^3.0.0",
@@ -50,7 +50,7 @@
     "ts-loader": "^9.2.3",
     "typedoc": "^0.21.2",
     "typescript": "^4.3.4",
-    "webpack": "^5.40.0",
+    "webpack": "^5.44.0",
     "webpack-dev-server": "^3.11.2",
     "webpack-inject-plugin": "^1.5.5"
   },

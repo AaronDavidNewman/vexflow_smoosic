@@ -749,17 +749,14 @@ export class Formatter {
     const musicFont = Flow.DEFAULT_FONT_STACK[0];
     const paddingMax = musicFont.lookupMetric('stave.endPaddingMax');
     const paddingMin = musicFont.lookupMetric('stave.endPaddingMin');
-    const maxX = adjustedJustifyWidth + lastContext.getMetrics().notePx - paddingMin;
+    const maxX = adjustedJustifyWidth - paddingMin;
 
     let iterations = this.formatterOptions.maxIterations;
     while ((actualWidth > maxX && iterations > 0) || (actualWidth + paddingMax < maxX && iterations > 1)) {
-      // If we couldn't fit all the notes into the jusification width, recalculate softmax over a smaller width
-      if (actualWidth > maxX) {
-        targetWidth -= actualWidth - maxX;
-      } else {
-        // If we overshoot and add too much right padding, split the difference and move right again
-        targetWidth += (maxX - actualWidth) / 2;
-      }
+      // If we couldn't fit all the notes into the jusification width, it's because the softmax-scaled
+      // widths between different durations differ across stave (e.g., 1 quarter note is not the same pixel-width
+      // as 4 16th-notes). Run another pass, now that we know how much to justify.
+      targetWidth -= actualWidth - maxX;
       actualWidth = shiftToIdealDistances(calculateIdealDistances(targetWidth));
       iterations--;
     }
@@ -973,9 +970,7 @@ export class Formatter {
   // This method is just like `format` except that the `justifyWidth` is inferred
   // from the `stave`.
   formatToStave(voices: Voice[], stave: Stave, optionsParam?: FormatOptions): this {
-    const musicFont = Flow.DEFAULT_FONT_STACK[0];
-    const padding = musicFont.lookupMetric('stave.padding') + musicFont.lookupMetric('stave.endPaddingMax');
-    const options: FormatOptions = { padding, /*stave,*/ context: stave.getContext(), ...optionsParam };
+    const options: FormatOptions = { padding: 10, /*stave,*/ context: stave.getContext(), ...optionsParam };
 
     // eslint-disable-next-line
     const justifyWidth = stave.getNoteEndX() - stave.getNoteStartX() - Stave.defaultPadding;
