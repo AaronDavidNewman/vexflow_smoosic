@@ -53,13 +53,13 @@ export interface StaveNoteFormatSettings {
 }
 
 export interface StaveNoteStruct extends NoteStruct {
-  stem_down_x_offset: number;
-  stem_up_x_offset: number;
-  stroke_px: number;
-  glyph_font_scale: number;
-  stem_direction: number;
+  stem_down_x_offset?: number;
+  stem_up_x_offset?: number;
+  stroke_px?: number;
+  glyph_font_scale?: number;
+  stem_direction?: number;
   auto_stem: boolean;
-  octave_shift: number;
+  octave_shift?: number;
   clef: string;
 }
 
@@ -100,13 +100,13 @@ export class StaveNote extends StemmableNote {
   maxLine: number = 0;
 
   protected readonly clef: string;
-  protected readonly octave_shift: number;
+  protected readonly octave_shift?: number;
 
   protected displaced: boolean;
   protected dot_shiftY: number;
   protected use_default_head_x: boolean;
   protected note_heads: NoteHead[];
-  protected ledgerLineStyle?: ElementStyle;
+  protected ledgerLineStyle: ElementStyle;
   protected flagStyle?: ElementStyle;
 
   static get CATEGORY(): string {
@@ -370,7 +370,8 @@ export class StaveNote extends StemmableNote {
   constructor(noteStruct: StaveNoteStruct) {
     super(noteStruct);
     this.setAttribute('type', 'StaveNote');
-
+    // Ledger Lines default width 2.0
+    this.ledgerLineStyle = { lineWidth: 2.0 };
     this.clef = noteStruct.clef;
     this.octave_shift = noteStruct.octave_shift;
 
@@ -839,7 +840,8 @@ export class StaveNote extends StemmableNote {
   setLedgerLineStyle(style: ElementStyle): void {
     this.ledgerLineStyle = style;
   }
-  getLedgerLineStyle(): ElementStyle | undefined {
+
+  getLedgerLineStyle(): ElementStyle {
     return this.ledgerLineStyle;
   }
 
