@@ -1,3 +1,8 @@
+/*!
+ * VexFlow 3.0.9   2021-07-09T20:39:10.740Z   ad9a957bed4f2593e63d0ac9b072baa14494114a
+ * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
+ * http://www.vexflow.com   http://github.com/0xfe/vexflow
+ */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -7,103 +12,17 @@
 		exports["Vex"] = factory();
 	else
 		root["Vex"] = factory();
-})(window, function() {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/index.js");
-/******/ })
-/************************************************************************/
-/******/ ({
+})(this, function() {
+return /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/accidental.js":
+/***/ "./src/accidental.ts":
 /*!***************************!*\
-  !*** ./src/accidental.js ***!
+  !*** ./src/accidental.ts ***!
   \***************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // @author Mohit Cheppudira
@@ -130,17 +49,18 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Accidental = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var music_1 = __webpack_require__(/*! ./music */ "./src/music.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var gracenotegroup_1 = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
 var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
 // To enable logging for this class. Set `Vex.Flow.Accidental.DEBUG` to `true`.
+// eslint-disable-next-line
 function L() {
     var args = [];
     for (var _i = 0; _i < arguments.length; _i++) {
@@ -149,7 +69,6 @@ function L() {
     if (Accidental.DEBUG)
         util_1.log('Vex.Flow.Accidental', args);
 }
-var getGlyphWidth = function (glyph) { return glyph.getMetrics().width; };
 // An `Accidental` inherits from `Modifier`, and is formatted within a
 // `ModifierContext`.
 var Accidental = /** @class */ (function (_super) {
@@ -158,7 +77,6 @@ var Accidental = /** @class */ (function (_super) {
     // `Vex.Flow.accidentalCodes.accidentals` table in `tables.js`. For
     // example: `#`, `##`, `b`, `n`, etc.
     function Accidental(type) {
-        if (type === void 0) { type = null; }
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Accidental');
         L('New accidental: ', type);
@@ -173,14 +91,12 @@ var Accidental = /** @class */ (function (_super) {
             parenLeftPadding: 2,
             parenRightPadding: 2,
         };
-        _this.accidental = tables_1.Flow.accidentalCodes(_this.type);
+        _this.accidental = flow_1.Flow.accidentalCodes(_this.type);
         if (!_this.accidental) {
             throw new util_1.RuntimeError('ArgumentError', "Unknown accidental type: " + type);
         }
         // Cautionary accidentals have parentheses around them
         _this.cautionary = false;
-        _this.parenLeft = null;
-        _this.parenRight = null;
         _this.reset();
         return _this;
     }
@@ -194,9 +110,11 @@ var Accidental = /** @class */ (function (_super) {
     // Arrange accidentals inside a ModifierContext.
     Accidental.format = function (accidentals, state) {
         var _this = this;
-        var noteheadAccidentalPadding = 1;
+        var musicFont = flow_1.Flow.DEFAULT_FONT_STACK[0];
+        var noteheadAccidentalPadding = musicFont.lookupMetric('accidental.noteheadAccidentalPadding');
         var leftShift = state.left_shift + noteheadAccidentalPadding;
-        var accidentalSpacing = 3;
+        var accidentalSpacing = musicFont.lookupMetric('accidental.accidentalSpacing');
+        var additionalPadding = musicFont.lookupMetric('accidental.leftPadding'); // padding to the left of all accidentals
         // If there are no accidentals, we needn't format their positions
         if (!accidentals || accidentals.length === 0)
             return;
@@ -218,7 +136,7 @@ var Accidental = /** @class */ (function (_super) {
                 prevNote = note;
             }
             if (stave) {
-                var lineSpace = stave.options.spacing_between_lines_px;
+                var lineSpace = stave.getOptions().spacing_between_lines_px;
                 var y = stave.getYForLine(props.line);
                 var accLine = Math.round((y / lineSpace) * 2) / 2;
                 accList.push({ y: y, line: accLine, shift: shiftL, acc: acc, lineSpace: lineSpace });
@@ -247,6 +165,7 @@ var Accidental = /** @class */ (function (_super) {
                     dblSharpLine: true,
                     numAcc: 0,
                     width: 0,
+                    column: 0,
                 });
             }
             // if this accidental is not a flat, the accidental needs 3.0 lines lower
@@ -313,7 +232,10 @@ var Accidental = /** @class */ (function (_super) {
                 for (var _i = 0; _i < arguments.length; _i++) {
                     indexPairs[_i] = arguments[_i];
                 }
-                return indexPairs.map(getGroupLines).every(function (lines) { return !_this.checkCollision.apply(_this, lines); });
+                return indexPairs.map(getGroupLines).every(function (_a) {
+                    var line1 = _a[0], line2 = _a[1];
+                    return !_this.checkCollision(line1, line2);
+                });
             };
             // Set columns for the lines in this group:
             var groupLength = groupEnd - groupStart + 1;
@@ -378,7 +300,7 @@ var Accidental = /** @class */ (function (_super) {
             }
             else {
                 for (groupMember = i; groupMember <= groupEnd; groupMember++) {
-                    column = tables_1.Flow.accidentalColumnsTable[groupLength][endCase][groupMember - i];
+                    column = flow_1.Flow.accidentalColumnsTable[groupLength][endCase][groupMember - i];
                     lineList[groupMember].column = column;
                     totalColumns = totalColumns > column ? totalColumns : column;
                 }
@@ -441,7 +363,7 @@ var Accidental = /** @class */ (function (_super) {
             }
         });
         // update the overall layout with the full width of the accidental shapes:
-        state.left_shift += totalShift + 2;
+        state.left_shift += totalShift + additionalPadding;
     };
     // Helper function to determine whether two lines of accidentals collide vertically
     Accidental.checkCollision = function (line1, line2) {
@@ -543,8 +465,8 @@ var Accidental = /** @class */ (function (_super) {
         this.glyph = new glyph_1.Glyph(this.accidental.code, fontScale);
         this.glyph.setOriginX(1.0);
         if (this.cautionary) {
-            this.parenLeft = new glyph_1.Glyph(tables_1.Flow.accidentalCodes('{').code, fontScale);
-            this.parenRight = new glyph_1.Glyph(tables_1.Flow.accidentalCodes('}').code, fontScale);
+            this.parenLeft = new glyph_1.Glyph(flow_1.Flow.accidentalCodes('{').code, fontScale);
+            this.parenRight = new glyph_1.Glyph(flow_1.Flow.accidentalCodes('}').code, fontScale);
             this.parenLeft.setOriginX(1.0);
             this.parenRight.setOriginX(1.0);
         }
@@ -554,12 +476,12 @@ var Accidental = /** @class */ (function (_super) {
     };
     Accidental.prototype.getWidth = function () {
         var parenWidth = this.cautionary
-            ? getGlyphWidth(this.parenLeft) +
-                getGlyphWidth(this.parenRight) +
+            ? util_1.check(this.parenLeft).getMetrics().width +
+                util_1.check(this.parenRight).getMetrics().width +
                 this.render_options.parenLeftPadding +
                 this.render_options.parenRightPadding
             : 0;
-        return getGlyphWidth(this.glyph) + parenWidth;
+        return this.glyph.getMetrics().width + parenWidth;
     };
     // Attach this accidental to `note`, which must be a `StaveNote`.
     Accidental.prototype.setNote = function (note) {
@@ -572,6 +494,7 @@ var Accidental = /** @class */ (function (_super) {
             this.render_options.font_scale = 25;
             this.reset();
         }
+        return this;
     };
     // If called, draws parenthesis around accidental.
     Accidental.prototype.setAsCautionary = function () {
@@ -582,8 +505,8 @@ var Accidental = /** @class */ (function (_super) {
     };
     // Render accidental onto canvas.
     Accidental.prototype.draw = function () {
-        var _a = this, context = _a.context, type = _a.type, position = _a.position, index = _a.index, cautionary = _a.cautionary, x_shift = _a.x_shift, y_shift = _a.y_shift, glyph = _a.glyph, parenLeft = _a.parenLeft, parenRight = _a.parenRight, _b = _a.render_options, parenLeftPadding = _b.parenLeftPadding, parenRightPadding = _b.parenRightPadding;
-        this.checkContext();
+        var _a = this, type = _a.type, position = _a.position, index = _a.index, cautionary = _a.cautionary, x_shift = _a.x_shift, y_shift = _a.y_shift, glyph = _a.glyph, parenLeft = _a.parenLeft, parenRight = _a.parenRight, _b = _a.render_options, parenLeftPadding = _b.parenLeftPadding, parenRightPadding = _b.parenRightPadding;
+        var ctx = this.checkContext();
         var note = this.checkAttachedNote();
         this.setRendered();
         // Figure out the start `x` and `y` coordinates for note and index.
@@ -592,18 +515,18 @@ var Accidental = /** @class */ (function (_super) {
         var accY = start.y + y_shift;
         L('Rendering: ', type, accX, accY);
         if (!cautionary) {
-            glyph.render(context, accX, accY);
+            glyph.render(ctx, accX, accY);
         }
         else {
             // Render the accidental in parentheses.
-            parenRight.render(context, accX, accY);
-            accX -= getGlyphWidth(parenRight);
+            util_1.check(parenRight).render(ctx, accX, accY);
+            accX -= util_1.check(parenRight).getMetrics().width;
             accX -= parenRightPadding;
             accX -= this.accidental.parenRightPaddingAdjustment;
-            glyph.render(context, accX, accY);
-            accX -= getGlyphWidth(glyph);
+            glyph.render(ctx, accX, accY);
+            accX -= glyph.getMetrics().width;
             accX -= parenLeftPadding;
-            parenLeft.render(context, accX, accY);
+            util_1.check(parenLeft).render(ctx, accX, accY);
         }
     };
     return Accidental;
@@ -617,10 +540,8 @@ exports.Accidental = Accidental;
 /*!***************************!*\
   !*** ./src/annotation.ts ***!
   \***************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -645,10 +566,10 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Annotation = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var textfont_1 = __webpack_require__(/*! ./textfont */ "./src/textfont.ts");
 // To enable logging for this class. Set `Vex.Flow.Annotation.DEBUG` to `true`.
@@ -694,7 +615,7 @@ var Annotation = /** @class */ (function (_super) {
             weight: '',
         };
         // The default width is calculated from the text.
-        _this.setWidth(tables_1.Flow.textWidth(text));
+        _this.setWidth(flow_1.Flow.textWidth(text));
         return _this;
     }
     Object.defineProperty(Annotation, "CATEGORY", {
@@ -718,7 +639,7 @@ var Annotation = /** @class */ (function (_super) {
                 weight: 'normal',
             });
             // Calculate if the vertical extent will exceed a single line and adjust accordingly.
-            var numLines = Math.floor(textFont.maxHeight / tables_1.Flow.STAVE_LINE_DISTANCE) + 1;
+            var numLines = Math.floor(textFont.maxHeight / flow_1.Flow.STAVE_LINE_DISTANCE) + 1;
             // Get the string width from the font metrics
             testWidth = textFont.getWidthForString(annotation.text);
             width = Math.max(width, testWidth);
@@ -802,7 +723,7 @@ var Annotation = /** @class */ (function (_super) {
         if (this.vert_justification === Annotation.VerticalJustify.BOTTOM) {
             // HACK: We need to compensate for the text's height since its origin
             // is bottom-right.
-            y = stave.getYForBottomText(this.text_line + tables_1.Flow.TEXT_HEIGHT_OFFSET_HACK);
+            y = stave.getYForBottomText(this.text_line + flow_1.Flow.TEXT_HEIGHT_OFFSET_HACK);
             if (has_stem) {
                 var stem_base = note.getStemDirection() === 1 ? stem_ext.baseY : stem_ext.topY;
                 y = Math.max(y, stem_base + spacing * (this.text_line + 2));
@@ -856,10 +777,8 @@ exports.Annotation = Annotation;
 /*!*****************************!*\
   !*** ./src/articulation.ts ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Larry Kuhns.
@@ -886,15 +805,14 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Articulation = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-var common_1 = __webpack_require__(/*! ./common */ "./src/common.ts");
 var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
 var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
 // To enable logging for this class. Set `Vex.Flow.Articulation.DEBUG` to `true`.
@@ -1090,7 +1008,7 @@ var Articulation = /** @class */ (function (_super) {
         var isBelow = function (artic) { return artic.getPosition() === BELOW; };
         var margin = 0.5;
         var getIncrement = function (articulation, line, position) {
-            return roundToNearestHalf(getRoundingFunction(line, position), common_1.check(articulation.glyph.getMetrics().height) / 10 + margin);
+            return roundToNearestHalf(getRoundingFunction(line, position), util_1.check(articulation.glyph.getMetrics().height) / 10 + margin);
         };
         articulations.filter(isAbove).forEach(function (articulation) {
             articulation.setTextLine(state.top_text_line);
@@ -1129,13 +1047,13 @@ var Articulation = /** @class */ (function (_super) {
             .map(function (artic) { return note.addModifier(artic, 0); });
     };
     Articulation.prototype.reset = function () {
-        this.articulation = tables_1.Flow.articulationCodes(this.type);
+        this.articulation = flow_1.Flow.articulationCodes(this.type);
         if (!this.articulation) {
             throw new util_1.RuntimeError('ArgumentError', "Articulation not found: " + this.type);
         }
         var code = (this.position === ABOVE ? this.articulation.aboveCode : this.articulation.belowCode) || this.articulation.code;
-        this.glyph = new glyph_1.Glyph(code, this.render_options.font_scale);
-        this.setWidth(common_1.check(this.glyph.getMetrics().width));
+        this.glyph = new glyph_1.Glyph(code !== null && code !== void 0 ? code : '', this.render_options.font_scale);
+        this.setWidth(util_1.check(this.glyph.getMetrics().width));
     };
     Articulation.prototype.getCategory = function () {
         return Articulation.CATEGORY;
@@ -1197,10 +1115,8 @@ exports.Articulation = Articulation;
 /*!************************!*\
   !*** ./src/barnote.ts ***!
   \************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -1226,7 +1142,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.BarNote = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
@@ -1316,10 +1232,8 @@ exports.BarNote = BarNote;
 /*!*********************!*\
   !*** ./src/beam.ts ***!
   \*********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -1341,10 +1255,10 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Beam = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
 var tuplet_1 = __webpack_require__(/*! ./tuplet */ "./src/tuplet.ts");
@@ -1383,7 +1297,7 @@ var Beam = /** @class */ (function (_super) {
         _this.slope = 0;
         _this.y_shift = 0;
         _this.setAttribute('type', 'Beam');
-        if (!notes || notes === []) {
+        if (!notes || notes.length === 0) {
             throw new util_1.RuntimeError('BadArguments', 'No notes provided for beam.');
         }
         if (notes.length === 1) {
@@ -1391,7 +1305,7 @@ var Beam = /** @class */ (function (_super) {
         }
         // Validate beam line, direction and ticks.
         _this.ticks = notes[0].getIntrinsicTicks();
-        if (_this.ticks >= tables_1.Flow.durationToTicks('4')) {
+        if (_this.ticks >= flow_1.Flow.durationToTicks('4')) {
             throw new util_1.RuntimeError('BadArguments', 'Beams can only be applied to notes shorter than a quarter note.');
         }
         var i; // shared iterator
@@ -1537,7 +1451,7 @@ var Beam = /** @class */ (function (_super) {
             if (!group.multiply) {
                 throw new util_1.RuntimeError('InvalidBeamGroups', 'The beam groups must be an array of Vex.Flow.Fractions');
             }
-            return group.clone().multiply(tables_1.Flow.RESOLUTION, 1);
+            return group.clone().multiply(flow_1.Flow.RESOLUTION, 1);
         });
         var unprocessedNotes = notes;
         var currentTickGroup = 0;
@@ -1569,7 +1483,7 @@ var Beam = /** @class */ (function (_super) {
                 var ticksPerGroup = tickGroups[currentTickGroup].clone();
                 var totalTicks = getTotalTicks(currentGroup).add(currentGroupTotalTicks);
                 // Double the amount of ticks in a group, if it's an unbeamable tuplet
-                var unbeamable = tables_1.Flow.durationToNumber(unprocessedNote.getDuration()) < 8;
+                var unbeamable = flow_1.Flow.durationToNumber(unprocessedNote.getDuration()) < 8;
                 if (unbeamable && unprocessedNote.getTuplet()) {
                     ticksPerGroup.numerator *= 2;
                 }
@@ -1610,7 +1524,7 @@ var Beam = /** @class */ (function (_super) {
                 if (group.length > 1) {
                     var beamable_1 = true;
                     group.forEach(function (note) {
-                        if (note.getIntrinsicTicks() >= tables_1.Flow.durationToTicks('4')) {
+                        if (note.getIntrinsicTicks() >= flow_1.Flow.durationToTicks('4')) {
                             beamable_1 = false;
                         }
                     });
@@ -1726,7 +1640,7 @@ var Beam = /** @class */ (function (_super) {
                 beam.render_options.show_stemlets = true;
             }
             if (config.secondary_breaks) {
-                beam.render_options.secondary_break_ticks = tables_1.Flow.durationToTicks(config.secondary_breaks);
+                beam.render_options.secondary_break_ticks = flow_1.Flow.durationToTicks(config.secondary_breaks);
             }
             if (config.flat_beams === true) {
                 beam.render_options.flat_beams = true;
@@ -1919,10 +1833,10 @@ var Beam = /** @class */ (function (_super) {
         if (duration === '4') {
             return BEAM_LEFT;
         }
-        var lookup_duration = "" + tables_1.Flow.durationToNumber(duration) / 2;
-        var prev_note_gets_beam = prev_tick < tables_1.Flow.durationToTicks(lookup_duration);
-        var next_note_gets_beam = next_tick < tables_1.Flow.durationToTicks(lookup_duration);
-        var note_gets_beam = tick < tables_1.Flow.durationToTicks(lookup_duration);
+        var lookup_duration = "" + flow_1.Flow.durationToNumber(duration) / 2;
+        var prev_note_gets_beam = prev_tick < flow_1.Flow.durationToTicks(lookup_duration);
+        var next_note_gets_beam = next_tick < flow_1.Flow.durationToTicks(lookup_duration);
+        var note_gets_beam = tick < flow_1.Flow.durationToTicks(lookup_duration);
         if (prev_note_gets_beam && next_note_gets_beam && note_gets_beam) {
             return BEAM_BOTH;
         }
@@ -1936,7 +1850,7 @@ var Beam = /** @class */ (function (_super) {
     };
     // Get the x coordinates for the beam lines of specific `duration`
     Beam.prototype.getBeamLines = function (duration) {
-        var tick_of_duration = tables_1.Flow.durationToTicks(duration);
+        var tick_of_duration = flow_1.Flow.durationToTicks(duration);
         var beam_started = false;
         var beam_lines = [];
         var current_beam = undefined;
@@ -2127,10 +2041,8 @@ exports.Beam = Beam;
 /*!*********************!*\
   !*** ./src/bend.ts ***!
   \*********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -2152,10 +2064,10 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Bend = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 /**
    @param text Text for bend ("Full", "Half", etc.) (DEPRECATED)
@@ -2284,7 +2196,7 @@ var Bend = /** @class */ (function (_super) {
                 text_width = ctxThat.measureText(text).width;
             }
             else {
-                text_width = tables_1.Flow.textWidth(text);
+                text_width = flow_1.Flow.textWidth(text);
             }
             return text_width;
         }
@@ -2415,16 +2327,14 @@ exports.Bend = Bend;
 /*!****************************!*\
   !*** ./src/boundingbox.ts ***!
   \****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 // Vex Music Notation
 // Mohit Muthanna <mohit@muthanna.com>
 //
 // Copyright Mohit Muthanna 2010
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.BoundingBox = void 0;
 // Bounding boxes for interactive notation
 var BoundingBox = /** @class */ (function () {
@@ -2508,16 +2418,14 @@ exports.BoundingBox = BoundingBox;
 /*!***************************************!*\
   !*** ./src/boundingboxcomputation.ts ***!
   \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
 // ## Description
 //
 // Object which computes metrics for a bounding box by continuously
 // taking canvas path commands
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.BoundingBoxComputation = void 0;
 // Warning: This file is merely a crutch to get bounding box information without
 // explicit metadata. This is likely to get deprecated following SMuFL support.
@@ -2641,29 +2549,31 @@ exports.BoundingBoxComputation = BoundingBoxComputation;
 
 /***/ }),
 
-/***/ "./src/canvascontext.js":
+/***/ "./src/canvascontext.ts":
 /*!******************************!*\
-  !*** ./src/canvascontext.js ***!
+  !*** ./src/canvascontext.ts ***!
   \******************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Mohit Muthanna <mohit@muthanna.com>
 //
-// A rendering context for the Raphael backend.
+// A rendering context for the Canvas backend (CanvasRenderingContext2D).
 //
 // Copyright Mohit Cheppudira 2010
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CanvasContext = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-/** @constructor */
 var CanvasContext = /** @class */ (function () {
+    /**
+     * This constructor is only called if Renderer.USE_CANVAS_PROXY is true.
+     * In most instances, we do not need to
+     * See Renderer.bolsterCanvasContext().
+     * @param context
+     */
     function CanvasContext(context) {
-        // Use a name that is unlikely to clash with a canvas context
-        // property
+        // Use a name that is unlikely to clash with a canvas context property.
         this.vexFlowCanvasContext = context;
         if (!context.canvas) {
             this.canvas = {
@@ -2691,7 +2601,7 @@ var CanvasContext = /** @class */ (function () {
     });
     Object.defineProperty(CanvasContext, "CANVAS_BROWSER_SIZE_LIMIT", {
         get: function () {
-            return 32767; // Chrome/Firefox. Could be determined more precisely by npm module canvas-size
+            return 32767; // Chrome/Firefox. Could be determined more precisely by npm module canvas-size.
         },
         enumerable: false,
         configurable: true
@@ -2712,10 +2622,17 @@ var CanvasContext = /** @class */ (function () {
     CanvasContext.prototype.clear = function () {
         this.vexFlowCanvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
     };
-    // Containers not implemented
-    CanvasContext.prototype.openGroup = function () { };
-    CanvasContext.prototype.closeGroup = function () { };
-    CanvasContext.prototype.add = function () { };
+    // eslint-disable-next-line
+    CanvasContext.prototype.openGroup = function (cls, id, attrs) {
+        // Containers not implemented.
+    };
+    CanvasContext.prototype.closeGroup = function () {
+        // Containers not implemented.
+    };
+    // eslint-disable-next-line
+    CanvasContext.prototype.add = function (child) {
+        // Containers not implemented.
+    };
     CanvasContext.prototype.setFont = function (family, size, weight) {
         this.vexFlowCanvasContext.font = (weight || '') + ' ' + size + 'pt ' + family;
         return this;
@@ -2728,16 +2645,27 @@ var CanvasContext = /** @class */ (function () {
         this.vexFlowCanvasContext.fillStyle = style;
         return this;
     };
+    // TODO: What is this method supposed to do?
+    // The SVGContext version doesn't do much...
+    // It only fills the area behind some tab number annotations.
     CanvasContext.prototype.setBackgroundFillStyle = function (style) {
-        this.background_fillStyle = style;
+        /*
+        // The CanvasContext version only sets a field which is never referenced anywhere else.
+        // Should it fill the entire canvas rect? For example:
+        const oldFillStyle = this.vexFlowCanvasContext.fillStyle;
+        this.vexFlowCanvasContext.fillStyle = style;
+        this.vexFlowCanvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this.vexFlowCanvasContext.fillStyle = oldFillStyle;
+        */
+        this.background_fillStyle = style; // BUG? It is never referenced anywhere else.
         return this;
     };
     CanvasContext.prototype.setStrokeStyle = function (style) {
         this.vexFlowCanvasContext.strokeStyle = style;
         return this;
     };
-    CanvasContext.prototype.setShadowColor = function (style) {
-        this.vexFlowCanvasContext.shadowColor = style;
+    CanvasContext.prototype.setShadowColor = function (color) {
+        this.vexFlowCanvasContext.shadowColor = color;
         return this;
     };
     CanvasContext.prototype.setShadowBlur = function (blur) {
@@ -2748,81 +2676,101 @@ var CanvasContext = /** @class */ (function () {
         this.vexFlowCanvasContext.lineWidth = width;
         return this;
     };
-    CanvasContext.prototype.setLineCap = function (cap_type) {
-        this.vexFlowCanvasContext.lineCap = cap_type;
+    CanvasContext.prototype.setLineCap = function (capType) {
+        this.vexFlowCanvasContext.lineCap = capType;
         return this;
     };
-    // setLineDash: is the one native method in a canvas context
+    // setLineDash is the one native method in a canvas context
     // that begins with set, therefore we don't bolster the method
-    // if it already exists (see renderer.bolsterCanvasContext).
+    // if it already exists (see Renderer.bolsterCanvasContext).
     // If it doesn't exist, we bolster it and assume it's looking for
     // a ctx.lineDash method, as previous versions of VexFlow
     // expected.
     CanvasContext.prototype.setLineDash = function (dash) {
+        // eslint-disable-next-line
         this.vexFlowCanvasContext.lineDash = dash;
         return this;
     };
+    // Only called if Renderer.USE_CANVAS_PROXY is true.
     CanvasContext.prototype.scale = function (x, y) {
-        return this.vexFlowCanvasContext.scale(parseFloat(x), parseFloat(y));
+        this.vexFlowCanvasContext.scale(x, y);
+        return this;
     };
+    // renderer.js calls ctx.scale() instead, so this method is never used.
+    // eslint-disable-next-line
     CanvasContext.prototype.resize = function (width, height) {
-        var _a;
-        _a = this.SanitizeCanvasDims(parseInt(width, 10), parseInt(height, 10)), width = _a[0], height = _a[1];
-        return this.vexFlowCanvasContext.resize(width, height);
+        // Do nothing for now.
+        // CanvasRenderingContext2D does not have a resize function.
+        return this;
     };
     CanvasContext.prototype.rect = function (x, y, width, height) {
-        return this.vexFlowCanvasContext.rect(x, y, width, height);
+        this.vexFlowCanvasContext.rect(x, y, width, height);
+        return this;
     };
     CanvasContext.prototype.fillRect = function (x, y, width, height) {
-        return this.vexFlowCanvasContext.fillRect(x, y, width, height);
+        this.vexFlowCanvasContext.fillRect(x, y, width, height);
+        return this;
     };
     CanvasContext.prototype.clearRect = function (x, y, width, height) {
-        return this.vexFlowCanvasContext.clearRect(x, y, width, height);
+        this.vexFlowCanvasContext.clearRect(x, y, width, height);
+        return this;
     };
     CanvasContext.prototype.beginPath = function () {
-        return this.vexFlowCanvasContext.beginPath();
+        this.vexFlowCanvasContext.beginPath();
+        return this;
     };
     CanvasContext.prototype.moveTo = function (x, y) {
-        return this.vexFlowCanvasContext.moveTo(x, y);
+        this.vexFlowCanvasContext.moveTo(x, y);
+        return this;
     };
     CanvasContext.prototype.lineTo = function (x, y) {
-        return this.vexFlowCanvasContext.lineTo(x, y);
+        this.vexFlowCanvasContext.lineTo(x, y);
+        return this;
     };
-    CanvasContext.prototype.bezierCurveTo = function (x1, y1, x2, y2, x, y) {
-        return this.vexFlowCanvasContext.bezierCurveTo(x1, y1, x2, y2, x, y);
+    CanvasContext.prototype.bezierCurveTo = function (cp1x, cp1y, cp2x, cp2y, x, y) {
+        this.vexFlowCanvasContext.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y);
+        return this;
     };
-    CanvasContext.prototype.quadraticCurveTo = function (x1, y1, x, y) {
-        return this.vexFlowCanvasContext.quadraticCurveTo(x1, y1, x, y);
+    CanvasContext.prototype.quadraticCurveTo = function (cpx, cpy, x, y) {
+        this.vexFlowCanvasContext.quadraticCurveTo(cpx, cpy, x, y);
+        return this;
     };
-    // This is an attempt (hack) to simulate the HTML5 canvas
-    // arc method.
+    // This is an attempt (hack) to simulate the HTML5 canvas arc method.
     CanvasContext.prototype.arc = function (x, y, radius, startAngle, endAngle, antiClockwise) {
-        return this.vexFlowCanvasContext.arc(x, y, radius, startAngle, endAngle, antiClockwise);
+        this.vexFlowCanvasContext.arc(x, y, radius, startAngle, endAngle, antiClockwise);
+        return this;
     };
-    // Adapted from the source for Raphael's Element.glow
     CanvasContext.prototype.glow = function () {
-        return this.vexFlowCanvasContext.glow();
+        // Do nothing for now.
+        // CanvasRenderingContext2D does not have a glow function.
+        return this;
     };
     CanvasContext.prototype.fill = function () {
-        return this.vexFlowCanvasContext.fill();
+        this.vexFlowCanvasContext.fill();
+        return this;
     };
     CanvasContext.prototype.stroke = function () {
-        return this.vexFlowCanvasContext.stroke();
+        this.vexFlowCanvasContext.stroke();
+        return this;
     };
     CanvasContext.prototype.closePath = function () {
-        return this.vexFlowCanvasContext.closePath();
+        this.vexFlowCanvasContext.closePath();
+        return this;
     };
     CanvasContext.prototype.measureText = function (text) {
         return this.vexFlowCanvasContext.measureText(text);
     };
     CanvasContext.prototype.fillText = function (text, x, y) {
-        return this.vexFlowCanvasContext.fillText(text, x, y);
+        this.vexFlowCanvasContext.fillText(text, x, y);
+        return this;
     };
     CanvasContext.prototype.save = function () {
-        return this.vexFlowCanvasContext.save();
+        this.vexFlowCanvasContext.save();
+        return this;
     };
     CanvasContext.prototype.restore = function () {
-        return this.vexFlowCanvasContext.restore();
+        this.vexFlowCanvasContext.restore();
+        return this;
     };
     return CanvasContext;
 }());
@@ -2831,14 +2779,12 @@ exports.CanvasContext = CanvasContext;
 
 /***/ }),
 
-/***/ "./src/chordsymbol.js":
+/***/ "./src/chordsymbol.ts":
 /*!****************************!*\
-  !*** ./src/chordsymbol.js ***!
+  !*** ./src/chordsymbol.ts ***!
   \****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -2864,14 +2810,15 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ChordSymbol = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var textfont_1 = __webpack_require__(/*! ./textfont */ "./src/textfont.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 // To enable logging for this class. Set `Vex.Flow.ChordSymbol.DEBUG` to `true`.
+// eslint-disable-next-line
 function L() {
     var args = [];
     for (var _i = 0; _i < arguments.length; _i++) {
@@ -2895,8 +2842,8 @@ var ChordSymbol = /** @class */ (function (_super) {
         _this.useKerning = true;
         _this.reportWidth = true;
         var fontFamily = 'Arial';
-        if (_this.musicFont.name === 'Petaluma') {
-            fontFamily = 'Petaluma Script,Arial';
+        if (_this.musicFont.getName() === 'Petaluma') {
+            fontFamily = 'petalumaScript,Arial';
         }
         else {
             fontFamily = 'Roboto Slab,Times';
@@ -2916,54 +2863,9 @@ var ChordSymbol = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    Object.defineProperty(ChordSymbol, "horizontalJustify", {
-        // Chord symbols can be positioned and justified relative to the note.
-        get: function () {
-            return {
-                LEFT: 1,
-                CENTER: 2,
-                RIGHT: 3,
-                CENTER_STEM: 4,
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(ChordSymbol, "horizontalJustifyString", {
-        get: function () {
-            return {
-                left: ChordSymbol.horizontalJustify.LEFT,
-                right: ChordSymbol.horizontalJustify.RIGHT,
-                center: ChordSymbol.horizontalJustify.CENTER,
-                centerStem: ChordSymbol.horizontalJustify.CENTER_STEM,
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(ChordSymbol, "verticalJustify", {
-        get: function () {
-            return {
-                TOP: 1,
-                BOTTOM: 2,
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
     Object.defineProperty(ChordSymbol, "superSubRatio", {
         get: function () {
             return ChordSymbol.chordSymbolMetrics.global.superSubRatio;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(ChordSymbol, "DEBUG", {
-        get: function () {
-            return ChordSymbol.debug;
-        },
-        set: function (val) {
-            ChordSymbol.debug = val;
         },
         enumerable: false,
         configurable: true
@@ -2981,23 +2883,12 @@ var ChordSymbol = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    Object.defineProperty(ChordSymbol, "verticalJustifyString", {
-        get: function () {
-            return {
-                top: ChordSymbol.verticalJustify.TOP,
-                above: ChordSymbol.verticalJustify.TOP,
-                below: ChordSymbol.verticalJustify.BOTTOM,
-                bottom: ChordSymbol.verticalJustify.BOTTOM,
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
+    // eslint-disable-next-line
     ChordSymbol.getMetricForGlyph = function (glyphCode) {
         if (ChordSymbol.chordSymbolMetrics[glyphCode]) {
             return ChordSymbol.chordSymbolMetrics[glyphCode];
         }
-        return null;
+        return undefined;
     };
     ChordSymbol.prototype.getYOffsetForText = function (text) {
         var acc = 0;
@@ -3006,14 +2897,14 @@ var ChordSymbol = /** @class */ (function (_super) {
         for (ix = 0; ix < text.length; ++ix) {
             var metric = this.textFont.getMetricForCharacter(text[ix]);
             if (metric) {
-                acc = metric.y < acc ? metric.y : acc;
+                acc = metric.y_max < acc ? metric.y_max : acc;
             }
         }
         return ix > 0 ? -1 * (acc / resolution) : 0;
     };
     Object.defineProperty(ChordSymbol, "engravingFontResolution", {
         get: function () {
-            return tables_1.Flow.DEFAULT_FONT_STACK[0].getResolution();
+            return flow_1.Flow.DEFAULT_FONT_STACK[0].getResolution();
         },
         enumerable: false,
         configurable: true
@@ -3070,114 +2961,24 @@ var ChordSymbol = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    Object.defineProperty(ChordSymbol, "glyphs", {
-        // Glyph data
-        get: function () {
-            return {
-                diminished: {
-                    code: 'csymDiminished',
-                },
-                dim: {
-                    code: 'csymDiminished',
-                },
-                halfDiminished: {
-                    code: 'csymHalfDiminished',
-                },
-                '+': {
-                    code: 'csymAugmented',
-                },
-                augmented: {
-                    code: 'csymAugmented',
-                },
-                majorSeventh: {
-                    code: 'csymMajorSeventh',
-                },
-                minor: {
-                    code: 'csymMinor',
-                },
-                '-': {
-                    code: 'csymMinor',
-                },
-                '(': {
-                    code: 'csymParensLeftTall',
-                },
-                leftParen: {
-                    code: 'csymParensLeftTall',
-                },
-                ')': {
-                    code: 'csymParensRightTall',
-                },
-                rightParen: {
-                    code: 'csymParensRightTall',
-                },
-                leftBracket: {
-                    code: 'csymBracketLeftTall',
-                },
-                rightBracket: {
-                    code: 'csymBracketRightTall',
-                },
-                leftParenTall: {
-                    code: 'csymParensLeftVeryTall',
-                },
-                rightParenTall: {
-                    code: 'csymParensRightVeryTall',
-                },
-                '/': {
-                    code: 'csymDiagonalArrangementSlash',
-                },
-                over: {
-                    code: 'csymDiagonalArrangementSlash',
-                },
-                '#': {
-                    code: 'accidentalSharp',
-                },
-                b: {
-                    code: 'accidentalFlat',
-                },
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(ChordSymbol, "symbolTypes", {
-        get: function () {
-            return {
-                GLYPH: 1,
-                TEXT: 2,
-                LINE: 3,
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(ChordSymbol, "symbolModifiers", {
-        get: function () {
-            return {
-                NONE: 1,
-                SUBSCRIPT: 2,
-                SUPERSCRIPT: 3,
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
     Object.defineProperty(ChordSymbol, "chordSymbolMetrics", {
+        // eslint-disable-next-line
         get: function () {
-            return tables_1.Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.chordSymbol;
+            return flow_1.Flow.DEFAULT_FONT_STACK[0].getMetrics().glyphs.chordSymbol;
         },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(ChordSymbol, "lowerKerningText", {
         get: function () {
-            return tables_1.Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.chordSymbol.global.lowerKerningText;
+            return flow_1.Flow.DEFAULT_FONT_STACK[0].getMetrics().glyphs.chordSymbol.global.lowerKerningText;
         },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(ChordSymbol, "upperKerningText", {
         get: function () {
-            return tables_1.Flow.DEFAULT_FONT_STACK[0].metrics.glyphs.chordSymbol.global.upperKerningText;
+            return flow_1.Flow.DEFAULT_FONT_STACK[0].getMetrics().glyphs.chordSymbol.global.upperKerningText;
         },
         enumerable: false,
         configurable: true
@@ -3186,6 +2987,7 @@ var ChordSymbol = /** @class */ (function (_super) {
     // try to estimate the width of the whole chord symbol, based on the
     // sum of the widths of the individual blocks.  Also estimate how many
     // lines above/below the staff we need`
+    // eslint-disable-next-line
     ChordSymbol.format = function (instances, state) {
         if (!instances || instances.length === 0)
             return false;
@@ -3340,13 +3142,13 @@ var ChordSymbol = /** @class */ (function (_super) {
         }
         var symbol = this.symbolBlocks[j];
         var kernConst = ChordSymbol.kerningOffset * this.pointsToPixels;
-        var prevSymbol = j > 0 ? this.symbolBlocks[j - 1] : null;
+        var prevSymbol = j > 0 ? this.symbolBlocks[j - 1] : undefined;
         var rv = 0;
         // Move things into the '/' over bar
         if (symbol.symbolType === ChordSymbol.symbolTypes.GLYPH && symbol.glyph.code === ChordSymbol.glyphs.over.code) {
             rv += symbol.glyph.metrics.x_shift;
         }
-        if (prevSymbol !== null &&
+        if (prevSymbol !== undefined &&
             prevSymbol.symbolType === ChordSymbol.symbolTypes.GLYPH &&
             prevSymbol.glyph.code === ChordSymbol.glyphs.over.code) {
             rv += prevSymbol.glyph.metrics.x_shift;
@@ -3368,7 +3170,7 @@ var ChordSymbol = /** @class */ (function (_super) {
             if (symbol.text[0] >= 'a' && symbol.text[0] <= 'z') {
                 rv += kernConst / 2;
             }
-            if (ChordSymbol.upperKerningText.some(function (xx) { return xx === prevSymbol.text[prevSymbol.text.length - 1]; })) {
+            if (ChordSymbol.upperKerningText.some(function (xx) { return xx === (prevSymbol === null || prevSymbol === void 0 ? void 0 : prevSymbol.text[prevSymbol.text.length - 1]); })) {
                 rv += kernConst / 2;
             }
         }
@@ -3377,8 +3179,9 @@ var ChordSymbol = /** @class */ (function (_super) {
     // ### getSymbolBlock
     // ChordSymbol allows multiple blocks so we can mix glyphs and font text.
     // Each block can have its own vertical orientation
+    // eslint-disable-next-line
     ChordSymbol.prototype.getSymbolBlock = function (parameters) {
-        parameters = parameters == null ? {} : parameters;
+        parameters = parameters == undefined ? {} : parameters;
         var symbolType = parameters.symbolType ? parameters.symbolType : ChordSymbol.symbolTypes.TEXT;
         var text = parameters.text ? parameters.text : '';
         var symbolModifier = parameters.symbolModifier ? parameters.symbolModifier : ChordSymbol.symbolModifiers.NONE;
@@ -3392,6 +3195,8 @@ var ChordSymbol = /** @class */ (function (_super) {
             xShift: xShift,
             yShift: yShift,
             vAlign: vAlign,
+            width: 0,
+            glyph: undefined,
         };
         rv.width = 0;
         // Note: all symbol widths are resolution and font-independent.  We convert to
@@ -3419,6 +3224,7 @@ var ChordSymbol = /** @class */ (function (_super) {
     };
     // ### addSymbolBlock
     // Add a symbol to this chord, could be text, glyph or line.
+    // eslint-disable-next-line
     ChordSymbol.prototype.addSymbolBlock = function (parameters) {
         this.symbolBlocks.push(this.getSymbolBlock(parameters));
         return this;
@@ -3427,6 +3233,7 @@ var ChordSymbol = /** @class */ (function (_super) {
     // chord symbol parts easily
     // ### addText
     // Add a text block
+    // eslint-disable-next-line
     ChordSymbol.prototype.addText = function (text, parameters) {
         parameters = parameters == null ? {} : parameters;
         parameters.text = text;
@@ -3454,6 +3261,7 @@ var ChordSymbol = /** @class */ (function (_super) {
         var symbolModifier = ChordSymbol.symbolModifiers.SUPERSCRIPT;
         return this.addSymbolBlock({ glyph: glyph, symbolType: symbolType, symbolModifier: symbolModifier });
     };
+    // eslint-disable-next-line
     ChordSymbol.prototype.addGlyph = function (glyph, parameters) {
         parameters = parameters == null ? {} : parameters;
         parameters.glyph = glyph;
@@ -3465,6 +3273,7 @@ var ChordSymbol = /** @class */ (function (_super) {
     // available, use text from the font.  E.g.:
     // `addGlyphOrText("(+5#11)")`
     // will use text for the '5' and '11', and glyphs for everything else.
+    // eslint-disable-next-line
     ChordSymbol.prototype.addGlyphOrText = function (text, parameters) {
         parameters = parameters == null ? {} : parameters;
         var str = '';
@@ -3487,6 +3296,7 @@ var ChordSymbol = /** @class */ (function (_super) {
     };
     // ### Add a line of the given width, used as a continuation of the previous
     // symbol in analysis, or lyrics, etc.
+    // eslint-disable-next-line
     ChordSymbol.prototype.addLine = function (width, parameters) {
         parameters = parameters == null ? {} : parameters;
         parameters.symbolType = ChordSymbol.symbolTypes.LINE;
@@ -3534,10 +3344,10 @@ var ChordSymbol = /** @class */ (function (_super) {
         return rv;
     };
     ChordSymbol.prototype.isSuperscript = function (symbol) {
-        return symbol.symbolModifier !== null && symbol.symbolModifier === ChordSymbol.symbolModifiers.SUPERSCRIPT;
+        return symbol.symbolModifier !== undefined && symbol.symbolModifier === ChordSymbol.symbolModifiers.SUPERSCRIPT;
     };
     ChordSymbol.prototype.isSubscript = function (symbol) {
-        return symbol.symbolModifier !== null && symbol.symbolModifier === ChordSymbol.symbolModifiers.SUBSCRIPT;
+        return symbol.symbolModifier !== undefined && symbol.symbolModifier === ChordSymbol.symbolModifiers.SUBSCRIPT;
     };
     // Render text and glyphs above/below the note
     ChordSymbol.prototype.draw = function () {
@@ -3552,21 +3362,17 @@ var ChordSymbol = /** @class */ (function (_super) {
         var start = note.getModifierStartXY(modifier_1.Modifier.Position.ABOVE, this.index);
         ctx.setFont(this.font.family, this.font.size, this.font.weight);
         var y;
-        var stem_ext;
-        var spacing;
-        var has_stem = note.hasStem();
-        var stave = note.getStave();
         // The position of the text varies based on whether or not the note
         // has a stem.
-        if (has_stem) {
-            stem_ext = note.getStem().getExtents();
-            spacing = stave.getSpacingBetweenLines();
-        }
+        var has_stem = note.hasStem();
+        var stave = note.checkStave();
         if (this.vertical === ChordSymbol.verticalJustify.BOTTOM) {
             // HACK: We need to compensate for the text's height since its origin
             // is bottom-right.
-            y = stave.getYForBottomText(this.text_line + tables_1.Flow.TEXT_HEIGHT_OFFSET_HACK);
+            y = stave.getYForBottomText(this.text_line + flow_1.Flow.TEXT_HEIGHT_OFFSET_HACK);
             if (has_stem) {
+                var stem_ext = note.checkStem().getExtents();
+                var spacing = stave.getSpacingBetweenLines();
                 var stem_base = note.getStemDirection() === 1 ? stem_ext.baseY : stem_ext.topY;
                 y = Math.max(y, stem_base + spacing * (this.text_line + 2));
             }
@@ -3575,6 +3381,8 @@ var ChordSymbol = /** @class */ (function (_super) {
             // (this.vertical === ChordSymbol.verticalJustify.TOP)
             y = Math.min(stave.getYForTopText(this.text_line), note.getYs()[0] - 10);
             if (has_stem) {
+                var stem_ext = note.checkStem().getExtents();
+                var spacing = stave.getSpacingBetweenLines();
                 y = Math.min(y, stem_ext.topY - 5 - spacing * this.text_line);
             }
         }
@@ -3591,7 +3399,7 @@ var ChordSymbol = /** @class */ (function (_super) {
         else {
             x = note.getStemX() - this.getWidth() / 2;
         }
-        L('Rendering ChordSymbol: ', this.text, x, y);
+        L('Rendering ChordSymbol: ', this.textFont, x, y);
         this.symbolBlocks.forEach(function (symbol) {
             var sp = _this.isSuperscript(symbol);
             var sub = _this.isSubscript(symbol);
@@ -3641,6 +3449,103 @@ var ChordSymbol = /** @class */ (function (_super) {
         ctx.closeGroup();
         ctx.restore();
     };
+    ChordSymbol.DEBUG = false;
+    // Chord symbols can be positioned and justified relative to the note.
+    ChordSymbol.horizontalJustify = {
+        LEFT: 1,
+        CENTER: 2,
+        RIGHT: 3,
+        CENTER_STEM: 4,
+    };
+    ChordSymbol.horizontalJustifyString = {
+        left: ChordSymbol.horizontalJustify.LEFT,
+        right: ChordSymbol.horizontalJustify.RIGHT,
+        center: ChordSymbol.horizontalJustify.CENTER,
+        centerStem: ChordSymbol.horizontalJustify.CENTER_STEM,
+    };
+    ChordSymbol.verticalJustify = {
+        TOP: 1,
+        BOTTOM: 2,
+    };
+    ChordSymbol.verticalJustifyString = {
+        top: ChordSymbol.verticalJustify.TOP,
+        above: ChordSymbol.verticalJustify.TOP,
+        below: ChordSymbol.verticalJustify.BOTTOM,
+        bottom: ChordSymbol.verticalJustify.BOTTOM,
+    };
+    // Glyph data
+    ChordSymbol.glyphs = {
+        diminished: {
+            code: 'csymDiminished',
+        },
+        dim: {
+            code: 'csymDiminished',
+        },
+        halfDiminished: {
+            code: 'csymHalfDiminished',
+        },
+        '+': {
+            code: 'csymAugmented',
+        },
+        augmented: {
+            code: 'csymAugmented',
+        },
+        majorSeventh: {
+            code: 'csymMajorSeventh',
+        },
+        minor: {
+            code: 'csymMinor',
+        },
+        '-': {
+            code: 'csymMinor',
+        },
+        '(': {
+            code: 'csymParensLeftTall',
+        },
+        leftParen: {
+            code: 'csymParensLeftTall',
+        },
+        ')': {
+            code: 'csymParensRightTall',
+        },
+        rightParen: {
+            code: 'csymParensRightTall',
+        },
+        leftBracket: {
+            code: 'csymBracketLeftTall',
+        },
+        rightBracket: {
+            code: 'csymBracketRightTall',
+        },
+        leftParenTall: {
+            code: 'csymParensLeftVeryTall',
+        },
+        rightParenTall: {
+            code: 'csymParensRightVeryTall',
+        },
+        '/': {
+            code: 'csymDiagonalArrangementSlash',
+        },
+        over: {
+            code: 'csymDiagonalArrangementSlash',
+        },
+        '#': {
+            code: 'accidentalSharp',
+        },
+        b: {
+            code: 'accidentalFlat',
+        },
+    };
+    ChordSymbol.symbolTypes = {
+        GLYPH: 1,
+        TEXT: 2,
+        LINE: 3,
+    };
+    ChordSymbol.symbolModifiers = {
+        NONE: 1,
+        SUBSCRIPT: 2,
+        SUPERSCRIPT: 3,
+    };
     return ChordSymbol;
 }(modifier_1.Modifier));
 exports.ChordSymbol = ChordSymbol;
@@ -3652,10 +3557,8 @@ exports.ChordSymbol = ChordSymbol;
 /*!*********************!*\
   !*** ./src/clef.ts ***!
   \*********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna Cheppudira 2013.
 // Co-author: Benjamin W. Bohl
@@ -3680,7 +3583,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Clef = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
@@ -3875,10 +3778,8 @@ exports.Clef = Clef;
 /*!*************************!*\
   !*** ./src/clefnote.ts ***!
   \*************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Copyright Mohit Muthanna 2010
@@ -3899,7 +3800,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ClefNote = void 0;
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
 var clef_1 = __webpack_require__(/*! ./clef */ "./src/clef.ts");
@@ -3986,45 +3887,12 @@ exports.ClefNote = ClefNote;
 
 /***/ }),
 
-/***/ "./src/common.ts":
-/*!***********************!*\
-  !*** ./src/common.ts ***!
-  \***********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.GLYPH_PROPS_VALID_TYPES = exports.check = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-function check(x) {
-    if (x === undefined) {
-        throw new util_1.RuntimeError('undefined');
-    }
-    return x;
-}
-exports.check = check;
-//** TODO: Resolve duplication with Flow */
-exports.GLYPH_PROPS_VALID_TYPES = {
-    n: { name: 'note' },
-    r: { name: 'rest' },
-    h: { name: 'harmonic' },
-    m: { name: 'muted' },
-    s: { name: 'slash' },
-};
-
-
-/***/ }),
-
 /***/ "./src/crescendo.ts":
 /*!**************************!*\
   !*** ./src/crescendo.ts ***!
   \**************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -4050,7 +3918,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Crescendo = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
@@ -4164,10 +4032,8 @@ exports.Crescendo = Crescendo;
 /*!**********************!*\
   !*** ./src/curve.ts ***!
   \**********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // VexFlow - Music Engraving for HTML5
 // Copyright Mohit Muthanna 2010
@@ -4199,7 +4065,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Curve = exports.CurvePosition = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
@@ -4344,10 +4210,8 @@ exports.Curve = Curve;
 /*!********************!*\
   !*** ./src/dot.ts ***!
   \********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // VexFlow - Music Engraving for HTML5
 // Copyright Mohit Muthanna 2010
@@ -4368,7 +4232,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Dot = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -4520,10 +4384,8 @@ exports.Dot = Dot;
 /*!**************************!*\
   !*** ./src/easyscore.ts ***!
   \**************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -4540,10 +4402,9 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.EasyScore = exports.Builder = exports.Grammar = exports.X = void 0;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.EasyScore = exports.Builder = exports.Grammar = void 0;
 /* eslint max-classes-per-file: "off" */
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 var parser_1 = __webpack_require__(/*! ./parser */ "./src/parser.ts");
@@ -4559,7 +4420,7 @@ function L() {
     if (EasyScore.DEBUG)
         util_1.log('Vex.Flow.EasyScore', args);
 }
-exports.X = vex_1.Vex.MakeException('EasyScoreError');
+var X = util_1.MakeException('EasyScoreError');
 var Grammar = /** @class */ (function () {
     function Grammar(builder) {
         this.builder = builder;
@@ -4934,7 +4795,7 @@ var EasyScore = /** @class */ (function () {
         this.builder.reset(options);
         var result = this.parser.parse(line);
         if (!result.success && this.options.throwOnError) {
-            throw new exports.X('Error parsing line: ' + line, result);
+            throw new X('Error parsing line: ' + line, result);
         }
         return result;
     };
@@ -4979,10 +4840,8 @@ exports.EasyScore = EasyScore;
 /*!************************!*\
   !*** ./src/element.ts ***!
   \************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // @author Mohit Cheppudira
@@ -4991,11 +4850,11 @@ exports.EasyScore = EasyScore;
 //
 // This file implements a generic base class for VexFlow, with implementations
 // of general functions and properties that can be inherited by all VexFlow elements.
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Element = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var registry_1 = __webpack_require__(/*! ./registry */ "./src/registry.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 /**
  * Element implements a generic base class for VexFlow, with implementations
  * of general functions and properties that can be inherited by all VexFlow elements.
@@ -5012,8 +4871,8 @@ var Element = /** @class */ (function () {
             classes: {},
         };
         this.rendered = false;
-        this.fontStack = tables_1.Flow.DEFAULT_FONT_STACK;
-        this.musicFont = tables_1.Flow.DEFAULT_FONT_STACK[0];
+        this.fontStack = flow_1.Flow.DEFAULT_FONT_STACK;
+        this.musicFont = flow_1.Flow.DEFAULT_FONT_STACK[0];
         // If a default registry exist, then register with it right away.
         (_c = registry_1.Registry.getDefaultRegistry()) === null || _c === void 0 ? void 0 : _c.register(this);
     }
@@ -5172,14 +5031,12 @@ exports.Element = Element;
 
 /***/ }),
 
-/***/ "./src/factory.js":
+/***/ "./src/factory.ts":
 /*!************************!*\
-  !*** ./src/factory.js ***!
+  !*** ./src/factory.ts ***!
   \************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // @author Mohit Cheppudira
@@ -5190,22 +5047,32 @@ exports.Element = Element;
 // become the canonical way to use VexFlow.
 //
 // *This API is currently DRAFT*
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Factory = exports.X = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Factory = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var accidental_1 = __webpack_require__(/*! ./accidental */ "./src/accidental.js");
+var accidental_1 = __webpack_require__(/*! ./accidental */ "./src/accidental.ts");
 var articulation_1 = __webpack_require__(/*! ./articulation */ "./src/articulation.ts");
 var annotation_1 = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
-var chordsymbol_1 = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.js");
-var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
+var chordsymbol_1 = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.ts");
 // import { WidthFormatter } from './widthformatter';
+var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
 var frethandfinger_1 = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.ts");
 var stringnumber_1 = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.ts");
 var textdynamics_1 = __webpack_require__(/*! ./textdynamics */ "./src/textdynamics.ts");
 var modifiercontext_1 = __webpack_require__(/*! ./modifiercontext */ "./src/modifiercontext.ts");
-var multimeasurerest_1 = __webpack_require__(/*! ./multimeasurerest */ "./src/multimeasurerest.js");
-var renderer_1 = __webpack_require__(/*! ./renderer */ "./src/renderer.js");
+var multimeasurerest_1 = __webpack_require__(/*! ./multimeasurerest */ "./src/multimeasurerest.ts");
+var renderer_1 = __webpack_require__(/*! ./renderer */ "./src/renderer.ts");
 var stave_1 = __webpack_require__(/*! ./stave */ "./src/stave.ts");
 var stavetie_1 = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
 var staveline_1 = __webpack_require__(/*! ./staveline */ "./src/staveline.ts");
@@ -5213,7 +5080,7 @@ var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 var glyphnote_1 = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.ts");
 var repeatnote_1 = __webpack_require__(/*! ./repeatnote */ "./src/repeatnote.ts");
 var staveconnector_1 = __webpack_require__(/*! ./staveconnector */ "./src/staveconnector.ts");
-var system_1 = __webpack_require__(/*! ./system */ "./src/system.js");
+var system_1 = __webpack_require__(/*! ./system */ "./src/system.ts");
 var tickcontext_1 = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
 var tuplet_1 = __webpack_require__(/*! ./tuplet */ "./src/tuplet.ts");
 var voice_1 = __webpack_require__(/*! ./voice */ "./src/voice.ts");
@@ -5236,6 +5103,7 @@ var tabstave_1 = __webpack_require__(/*! ./tabstave */ "./src/tabstave.ts");
 var textnote_1 = __webpack_require__(/*! ./textnote */ "./src/textnote.ts");
 var textfont_1 = __webpack_require__(/*! ./textfont */ "./src/textfont.ts");
 // To enable logging for this class. Set `Vex.Flow.Factory.DEBUG` to `true`.
+// eslint-disable-next-line
 function L() {
     var args = [];
     for (var _i = 0; _i < arguments.length; _i++) {
@@ -5244,23 +5112,16 @@ function L() {
     if (Factory.DEBUG)
         util_1.log('Vex.Flow.Factory', args);
 }
-exports.X = vex_1.Vex.MakeException('FactoryError');
-function setDefaults(params, defaults) {
-    if (params === void 0) { params = {}; }
-    var default_options = defaults.options;
-    params = Object.assign(defaults, params);
-    params.options = Object.assign(default_options, params.options);
-    return params;
-}
+var X = util_1.MakeException('FactoryError');
 var Factory = /** @class */ (function () {
     function Factory(options) {
+        if (options === void 0) { options = {}; }
         L('New factory: ', options);
         var defaults = {
             stave: {
                 space: 10,
             },
             renderer: {
-                context: null,
                 elementId: '',
                 backend: renderer_1.Renderer.Backends.SVG,
                 width: 500,
@@ -5268,9 +5129,9 @@ var Factory = /** @class */ (function () {
                 background: '#FFF',
             },
             font: {
-                face: 'Arial',
-                point: 10,
-                style: '',
+                family: 'Arial',
+                size: 10,
+                weight: '',
             },
         };
         this.options = defaults;
@@ -5279,34 +5140,39 @@ var Factory = /** @class */ (function () {
     Factory.newFromElementId = function (elementId, width, height) {
         if (width === void 0) { width = 500; }
         if (height === void 0) { height = 200; }
-        return new Factory({ renderer: { elementId: elementId, width: width, height: height } });
+        return new Factory({ renderer: { elementId: elementId, width: width, height: height, backend: renderer_1.Renderer.Backends.SVG } });
     };
     Factory.prototype.reset = function () {
         this.renderQ = [];
         this.systems = [];
         this.staves = [];
         this.voices = [];
-        this.stave = null; // current stave
+        this.stave = undefined; // current stave
     };
     Factory.prototype.getOptions = function () {
         return this.options;
     };
     Factory.prototype.setOptions = function (options) {
-        for (var _i = 0, _a = ['stave', 'renderer', 'font']; _i < _a.length; _i++) {
-            var key = _a[_i];
-            Object.assign(this.options[key], options[key]);
-        }
-        if (this.options.renderer.elementId !== null || this.options.renderer.context) {
+        if (options === void 0) { options = {}; }
+        if (options.stave)
+            this.options.stave = options.stave;
+        if (options.renderer)
+            this.options.renderer = options.renderer;
+        if (options.font)
+            this.options.font = options.font;
+        if (this.options.renderer.elementId !== null) {
             this.initRenderer();
         }
         this.reset();
     };
     Factory.prototype.initRenderer = function () {
+        if (!this.options.renderer)
+            throw new util_1.RuntimeError('NoRenderer');
         var _a = this.options.renderer, elementId = _a.elementId, backend = _a.backend, width = _a.width, height = _a.height, background = _a.background;
         if (elementId === '') {
-            throw new exports.X('HTML DOM element not set in Factory');
+            throw new X('HTML DOM element not set in Factory', this);
         }
-        this.context = renderer_1.Renderer.buildContext(elementId, backend, width, height, background);
+        this.context = renderer_1.Renderer.buildContext(elementId, backend !== null && backend !== void 0 ? backend : renderer_1.Renderer.Backends.SVG, width, height, background);
     };
     Factory.prototype.getContext = function () {
         return this.context;
@@ -5323,32 +5189,44 @@ var Factory = /** @class */ (function () {
     };
     // Returns pixels from current stave spacing.
     Factory.prototype.space = function (spacing) {
+        if (!this.options.stave)
+            throw new util_1.RuntimeError('NoStave');
         return this.options.stave.space * spacing;
     };
-    Factory.prototype.Stave = function (params) {
-        params = setDefaults(params, {
+    Factory.prototype.Stave = function (paramsP) {
+        if (paramsP === void 0) { paramsP = {}; }
+        if (!this.options.renderer)
+            throw new util_1.RuntimeError('NoRenderer');
+        if (!this.options.stave)
+            throw new util_1.RuntimeError('NoStave');
+        var params = __assign({
             x: 0,
             y: 0,
             width: this.options.renderer.width - this.space(1),
             options: {
                 spacing_between_lines_px: this.options.stave.space,
             },
-        });
+        }, paramsP);
         var stave = new stave_1.Stave(params.x, params.y, params.width, params.options);
         this.staves.push(stave);
         stave.setContext(this.context);
         this.stave = stave;
         return stave;
     };
-    Factory.prototype.TabStave = function (params) {
-        params = setDefaults(params, {
+    Factory.prototype.TabStave = function (paramsP) {
+        if (paramsP === void 0) { paramsP = {}; }
+        if (!this.options.renderer)
+            throw new util_1.RuntimeError('NoRenderer');
+        if (!this.options.stave)
+            throw new util_1.RuntimeError('NoStave');
+        var params = __assign({
             x: 0,
             y: 0,
             width: this.options.renderer.width - this.space(1),
             options: {
                 spacing_between_lines_px: this.options.stave.space * 1.3,
             },
-        });
+        }, paramsP);
         var stave = new tabstave_1.TabStave(params.x, params.y, params.width, params.options);
         this.staves.push(stave);
         stave.setContext(this.context);
@@ -5396,10 +5274,7 @@ var Factory = /** @class */ (function () {
         return textNote;
     };
     Factory.prototype.BarNote = function (params) {
-        params = setDefaults(params, {
-            type: 'single',
-            options: {},
-        });
+        if (params === void 0) { params = {}; }
         var barNote = new barnote_1.BarNote(params.type);
         if (this.stave)
             barNote.setStave(this.stave);
@@ -5407,13 +5282,15 @@ var Factory = /** @class */ (function () {
         this.renderQ.push(barNote);
         return barNote;
     };
-    Factory.prototype.ClefNote = function (params) {
-        params = setDefaults(params, {
+    Factory.prototype.ClefNote = function (paramsP) {
+        if (paramsP === void 0) { paramsP = {}; }
+        var params = __assign({
             type: 'treble',
             options: {
                 size: 'default',
+                annotation: undefined,
             },
-        });
+        }, paramsP);
         var clefNote = new clefnote_1.ClefNote(params.type, params.options.size, params.options.annotation);
         if (this.stave)
             clefNote.setStave(this.stave);
@@ -5421,11 +5298,11 @@ var Factory = /** @class */ (function () {
         this.renderQ.push(clefNote);
         return clefNote;
     };
-    Factory.prototype.TimeSigNote = function (params) {
-        params = setDefaults(params, {
+    Factory.prototype.TimeSigNote = function (paramsP) {
+        if (paramsP === void 0) { paramsP = {}; }
+        var params = __assign({
             time: '4/4',
-            options: {},
-        });
+        }, paramsP);
         var timeSigNote = new timesignote_1.TimeSigNote(params.time);
         if (this.stave)
             timeSigNote.setStave(this.stave);
@@ -5462,16 +5339,13 @@ var Factory = /** @class */ (function () {
         return group;
     };
     Factory.prototype.Accidental = function (params) {
-        params = setDefaults(params, {
-            type: null,
-            options: {},
-        });
         var accid = new accidental_1.Accidental(params.type);
         accid.setContext(this.context);
         return accid;
     };
-    Factory.prototype.Annotation = function (params) {
-        params = setDefaults(params, {
+    Factory.prototype.Annotation = function (paramsP) {
+        if (paramsP === void 0) { paramsP = {}; }
+        var params = __assign({
             text: 'p',
             vJustify: 'below',
             hJustify: 'center',
@@ -5479,7 +5353,7 @@ var Factory = /** @class */ (function () {
             fontSize: 14,
             fontWeight: 'bold italic',
             options: {},
-        });
+        }, paramsP);
         var annotation = new annotation_1.Annotation(params.text);
         annotation.setJustification(params.hJustify);
         annotation.setVerticalJustification(params.vJustify);
@@ -5487,14 +5361,14 @@ var Factory = /** @class */ (function () {
         annotation.setContext(this.context);
         return annotation;
     };
-    Factory.prototype.ChordSymbol = function (params) {
-        params = setDefaults(params, {
+    Factory.prototype.ChordSymbol = function (paramsP) {
+        if (paramsP === void 0) { paramsP = {}; }
+        var params = __assign({
             vJustify: 'top',
             hJustify: 'center',
             kerning: true,
             reportWidth: true,
-            options: {},
-        });
+        }, paramsP);
         var chordSymbol = new chordsymbol_1.ChordSymbol();
         chordSymbol.setHorizontal(params.hJustify);
         chordSymbol.setVertical(params.vJustify);
@@ -5502,8 +5376,11 @@ var Factory = /** @class */ (function () {
         chordSymbol.setReportWidth(params.reportWidth);
         // There is a default font based on the engraving font.  Only set then
         // font if it is specific, else use the default
-        if (typeof params.fontFamily === 'string') {
-            chordSymbol.setFont(params.fontFamily, params.fontSize, params.fontWeight);
+        if (typeof params.fontFamily === 'string' && typeof params.fontSize === 'number') {
+            if (typeof params.fontWeight === 'string')
+                chordSymbol.setFont(params.fontFamily, params.fontSize, params.fontWeight);
+            else
+                chordSymbol.setFont(params.fontFamily, params.fontSize, '');
         }
         else if (typeof params.fontSize === 'number') {
             chordSymbol.setFontSize(params.fontSize);
@@ -5511,25 +5388,25 @@ var Factory = /** @class */ (function () {
         chordSymbol.setContext(this.context);
         return chordSymbol;
     };
-    Factory.prototype.Articulation = function (params) {
-        params = setDefaults(params, {
+    Factory.prototype.Articulation = function (paramsP) {
+        if (paramsP === void 0) { paramsP = {}; }
+        var params = __assign({
             type: 'a.',
             position: 'above',
-            options: {},
-        });
+        }, paramsP);
         var articulation = new articulation_1.Articulation(params.type);
         articulation.setPosition(params.position);
         articulation.setContext(this.context);
         return articulation;
     };
-    Factory.prototype.TextDynamics = function (params) {
-        params = setDefaults(params, {
+    Factory.prototype.TextDynamics = function (paramsP) {
+        if (paramsP === void 0) { paramsP = {}; }
+        var params = __assign({
             text: 'p',
             duration: 'q',
             dots: 0,
             line: 0,
-            options: {},
-        });
+        }, paramsP);
         var text = new textdynamics_1.TextDynamics({
             text: params.text,
             line: params.line,
@@ -5542,23 +5419,17 @@ var Factory = /** @class */ (function () {
         this.renderQ.push(text);
         return text;
     };
-    Factory.prototype.Fingering = function (params) {
-        params = setDefaults(params, {
+    Factory.prototype.Fingering = function (paramsP) {
+        var params = __assign({
             number: '0',
             position: 'left',
-            options: {},
-        });
+        }, paramsP);
         var fingering = new frethandfinger_1.FretHandFinger(params.number);
         fingering.setPosition(params.position);
         fingering.setContext(this.context);
         return fingering;
     };
     Factory.prototype.StringNumber = function (params) {
-        params = setDefaults(params, {
-            number: '0',
-            position: 'left',
-            options: {},
-        });
         var stringNumber = new stringnumber_1.StringNumber(params.number);
         stringNumber.setPosition(params.position);
         stringNumber.setContext(this.context);
@@ -5571,120 +5442,85 @@ var Factory = /** @class */ (function () {
         return new modifiercontext_1.ModifierContext();
     };
     Factory.prototype.MultiMeasureRest = function (params) {
+        if (params.number_of_measures === undefined)
+            throw new util_1.RuntimeError('NoNumberOfMeasures');
         var multimeasurerest = new multimeasurerest_1.MultiMeasureRest(params.number_of_measures, params);
         multimeasurerest.setContext(this.context);
         this.renderQ.push(multimeasurerest);
         return multimeasurerest;
     };
-    Factory.prototype.Voice = function (params) {
-        params = setDefaults(params, {
+    Factory.prototype.Voice = function (paramsP) {
+        if (paramsP === void 0) { paramsP = {}; }
+        var params = __assign({
             time: '4/4',
-            options: {},
-        });
+        }, paramsP);
         var voice = new voice_1.Voice(params.time, params.options);
         this.voices.push(voice);
         return voice;
     };
     Factory.prototype.StaveConnector = function (params) {
-        params = setDefaults(params, {
-            top_stave: null,
-            bottom_stave: null,
-            type: 'double',
-            options: {},
-        });
         var connector = new staveconnector_1.StaveConnector(params.top_stave, params.bottom_stave);
         connector.setType(params.type).setContext(this.context);
         this.renderQ.push(connector);
         return connector;
     };
     Factory.prototype.Formatter = function (options) {
+        if (options === void 0) { options = {}; }
         return new formatter_1.Formatter(options);
     };
-    Factory.prototype.Tuplet = function (params) {
-        params = setDefaults(params, {
+    Factory.prototype.Tuplet = function (paramsP) {
+        if (paramsP === void 0) { paramsP = {}; }
+        var params = __assign({
             notes: [],
             options: {},
-        });
+        }, paramsP);
         var tuplet = new tuplet_1.Tuplet(params.notes, params.options).setContext(this.context);
         this.renderQ.push(tuplet);
         return tuplet;
     };
     Factory.prototype.Beam = function (params) {
-        params = setDefaults(params, {
-            notes: [],
-            options: {
-                autoStem: false,
-                secondaryBeamBreaks: [],
-            },
-        });
-        var beam = new beam_1.Beam(params.notes, params.options.autoStem).setContext(this.context);
-        beam.breakSecondaryAt(params.options.secondaryBeamBreaks);
+        var _a, _b, _c;
+        var beam = new beam_1.Beam(params.notes, (_a = params.options) === null || _a === void 0 ? void 0 : _a.autoStem).setContext(this.context);
+        beam.breakSecondaryAt((_c = (_b = params.options) === null || _b === void 0 ? void 0 : _b.secondaryBeamBreaks) !== null && _c !== void 0 ? _c : []);
         this.renderQ.push(beam);
         return beam;
     };
     Factory.prototype.Curve = function (params) {
-        params = setDefaults(params, {
-            from: null,
-            to: null,
-            options: {},
-        });
         var curve = new curve_1.Curve(params.from, params.to, params.options).setContext(this.context);
         this.renderQ.push(curve);
         return curve;
     };
     Factory.prototype.StaveTie = function (params) {
-        params = setDefaults(params, {
-            from: null,
-            to: null,
-            first_indices: [0],
-            last_indices: [0],
-            text: null,
-            options: {
-                direction: undefined,
-            },
-        });
+        var _a;
         var tie = new stavetie_1.StaveTie({
             first_note: params.from,
             last_note: params.to,
             first_indices: params.first_indices,
             last_indices: params.last_indices,
         }, params.text);
-        if (params.options.direction)
+        if ((_a = params.options) === null || _a === void 0 ? void 0 : _a.direction)
             tie.setDirection(params.options.direction);
         tie.setContext(this.context);
         this.renderQ.push(tie);
         return tie;
     };
     Factory.prototype.StaveLine = function (params) {
-        params = setDefaults(params, {
-            from: null,
-            to: null,
-            first_indices: [0],
-            last_indices: [0],
-            options: {},
-        });
+        var _a, _b;
         var line = new staveline_1.StaveLine({
             first_note: params.from,
             last_note: params.to,
             first_indices: params.first_indices,
             last_indices: params.last_indices,
         });
-        if (params.options.text)
+        if ((_a = params.options) === null || _a === void 0 ? void 0 : _a.text)
             line.setText(params.options.text);
-        if (params.options.font)
+        if ((_b = params.options) === null || _b === void 0 ? void 0 : _b.font)
             line.setFont(params.options.font);
         line.setContext(this.context);
         this.renderQ.push(line);
         return line;
     };
     Factory.prototype.VibratoBracket = function (params) {
-        params = setDefaults(params, {
-            from: null,
-            to: null,
-            options: {
-                harsh: false,
-            },
-        });
         var vibratoBracket = new vibratobracket_1.VibratoBracket({
             start: params.from,
             stop: params.to,
@@ -5698,15 +5534,6 @@ var Factory = /** @class */ (function () {
         return vibratoBracket;
     };
     Factory.prototype.TextBracket = function (params) {
-        params = setDefaults(params, {
-            from: null,
-            to: null,
-            text: '',
-            options: {
-                superscript: '',
-                position: 1,
-            },
-        });
         var textBracket = new textbracket_1.TextBracket({
             start: params.from,
             stop: params.to,
@@ -5734,32 +5561,30 @@ var Factory = /** @class */ (function () {
         params.factory = this;
         return new easyscore_1.EasyScore(params);
     };
-    Factory.prototype.PedalMarking = function (params) {
-        if (params === void 0) { params = {}; }
-        params = setDefaults(params, {
+    Factory.prototype.PedalMarking = function (paramsP) {
+        if (paramsP === void 0) { paramsP = {}; }
+        var params = __assign({
             notes: [],
             options: {
                 style: 'mixed',
             },
-        });
+        }, paramsP);
         var pedal = new pedalmarking_1.PedalMarking(params.notes);
         pedal.setType(pedalmarking_1.PedalMarking.typeString[params.options.style]);
         pedal.setContext(this.context);
         this.renderQ.push(pedal);
         return pedal;
     };
-    Factory.prototype.NoteSubGroup = function (params) {
-        if (params === void 0) { params = {}; }
-        params = setDefaults(params, {
+    Factory.prototype.NoteSubGroup = function (paramsP) {
+        if (paramsP === void 0) { paramsP = {}; }
+        var params = __assign({
             notes: [],
-            options: {},
-        });
+        }, paramsP);
         var group = new notesubgroup_1.NoteSubGroup(params.notes);
         group.setContext(this.context);
         return group;
     };
     Factory.prototype.TextFont = function (params) {
-        if (params === void 0) { params = {}; }
         params.factory = this;
         var textFont = new textfont_1.TextFont(params);
         return textFont;
@@ -5783,16 +5608,115 @@ exports.Factory = Factory;
 
 /***/ }),
 
+/***/ "./src/flow.ts":
+/*!*********************!*\
+  !*** ./src/flow.ts ***!
+  \*********************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Flow = void 0;
+var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.ts");
+var accidental_1 = __webpack_require__(/*! ./accidental */ "./src/accidental.ts");
+var annotation_1 = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
+var articulation_1 = __webpack_require__(/*! ./articulation */ "./src/articulation.ts");
+var stavebarline_1 = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
+var barnote_1 = __webpack_require__(/*! ./barnote */ "./src/barnote.ts");
+var beam_1 = __webpack_require__(/*! ./beam */ "./src/beam.ts");
+var bend_1 = __webpack_require__(/*! ./bend */ "./src/bend.ts");
+var boundingbox_1 = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
+var chordsymbol_1 = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.ts");
+var clef_1 = __webpack_require__(/*! ./clef */ "./src/clef.ts");
+var clefnote_1 = __webpack_require__(/*! ./clefnote */ "./src/clefnote.ts");
+var crescendo_1 = __webpack_require__(/*! ./crescendo */ "./src/crescendo.ts");
+var curve_1 = __webpack_require__(/*! ./curve */ "./src/curve.ts");
+var dot_1 = __webpack_require__(/*! ./dot */ "./src/dot.ts");
+var easyscore_1 = __webpack_require__(/*! ./easyscore */ "./src/easyscore.ts");
+var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
+var factory_1 = __webpack_require__(/*! ./factory */ "./src/factory.ts");
+var font_1 = __webpack_require__(/*! ./font */ "./src/font.ts");
+var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
+var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
+var frethandfinger_1 = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.ts");
+var ghostnote_1 = __webpack_require__(/*! ./ghostnote */ "./src/ghostnote.ts");
+var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+var glyphnote_1 = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.ts");
+var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
+var gracenotegroup_1 = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
+var gracetabnote_1 = __webpack_require__(/*! ./gracetabnote */ "./src/gracetabnote.ts");
+var keymanager_1 = __webpack_require__(/*! ./keymanager */ "./src/keymanager.ts");
+var keysignature_1 = __webpack_require__(/*! ./keysignature */ "./src/keysignature.ts");
+var keysignote_1 = __webpack_require__(/*! ./keysignote */ "./src/keysignote.ts");
+var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
+var modifiercontext_1 = __webpack_require__(/*! ./modifiercontext */ "./src/modifiercontext.ts");
+var multimeasurerest_1 = __webpack_require__(/*! ./multimeasurerest */ "./src/multimeasurerest.ts");
+var music_1 = __webpack_require__(/*! ./music */ "./src/music.ts");
+var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
+var notehead_1 = __webpack_require__(/*! ./notehead */ "./src/notehead.ts");
+var notesubgroup_1 = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.ts");
+var ornament_1 = __webpack_require__(/*! ./ornament */ "./src/ornament.ts");
+var parser_1 = __webpack_require__(/*! ./parser */ "./src/parser.ts");
+var pedalmarking_1 = __webpack_require__(/*! ./pedalmarking */ "./src/pedalmarking.ts");
+var registry_1 = __webpack_require__(/*! ./registry */ "./src/registry.ts");
+var renderer_1 = __webpack_require__(/*! ./renderer */ "./src/renderer.ts");
+var repeatnote_1 = __webpack_require__(/*! ./repeatnote */ "./src/repeatnote.ts");
+var staverepetition_1 = __webpack_require__(/*! ./staverepetition */ "./src/staverepetition.ts");
+var stave_1 = __webpack_require__(/*! ./stave */ "./src/stave.ts");
+var staveconnector_1 = __webpack_require__(/*! ./staveconnector */ "./src/staveconnector.ts");
+var stavehairpin_1 = __webpack_require__(/*! ./stavehairpin */ "./src/stavehairpin.ts");
+var staveline_1 = __webpack_require__(/*! ./staveline */ "./src/staveline.ts");
+var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
+var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+var stavetempo_1 = __webpack_require__(/*! ./stavetempo */ "./src/stavetempo.ts");
+var stavetext_1 = __webpack_require__(/*! ./stavetext */ "./src/stavetext.ts");
+var stavetie_1 = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
+var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
+var stringnumber_1 = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.ts");
+var strokes_1 = __webpack_require__(/*! ./strokes */ "./src/strokes.ts");
+var system_1 = __webpack_require__(/*! ./system */ "./src/system.ts");
+var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
+var tabslide_1 = __webpack_require__(/*! ./tabslide */ "./src/tabslide.ts");
+var tabstave_1 = __webpack_require__(/*! ./tabstave */ "./src/tabstave.ts");
+var tabtie_1 = __webpack_require__(/*! ./tabtie */ "./src/tabtie.ts");
+var textbracket_1 = __webpack_require__(/*! ./textbracket */ "./src/textbracket.ts");
+var textdynamics_1 = __webpack_require__(/*! ./textdynamics */ "./src/textdynamics.ts");
+var textfont_1 = __webpack_require__(/*! ./textfont */ "./src/textfont.ts");
+var textnote_1 = __webpack_require__(/*! ./textnote */ "./src/textnote.ts");
+var tickcontext_1 = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
+var timesignature_1 = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
+var timesignote_1 = __webpack_require__(/*! ./timesignote */ "./src/timesignote.ts");
+var tremolo_1 = __webpack_require__(/*! ./tremolo */ "./src/tremolo.ts");
+var tuning_1 = __webpack_require__(/*! ./tuning */ "./src/tuning.ts");
+var tuplet_1 = __webpack_require__(/*! ./tuplet */ "./src/tuplet.ts");
+var vibrato_1 = __webpack_require__(/*! ./vibrato */ "./src/vibrato.ts");
+var vibratobracket_1 = __webpack_require__(/*! ./vibratobracket */ "./src/vibratobracket.ts");
+var voice_1 = __webpack_require__(/*! ./voice */ "./src/voice.ts");
+var stavevolta_1 = __webpack_require__(/*! ./stavevolta */ "./src/stavevolta.ts");
+exports.Flow = __assign(__assign({}, tables_1.Tables), { Accidental: accidental_1.Accidental, Annotation: annotation_1.Annotation, Articulation: articulation_1.Articulation, Barline: stavebarline_1.Barline, BarNote: barnote_1.BarNote, Beam: beam_1.Beam, Bend: bend_1.Bend, BoundingBox: boundingbox_1.BoundingBox, ChordSymbol: chordsymbol_1.ChordSymbol, Clef: clef_1.Clef, ClefNote: clefnote_1.ClefNote, Crescendo: crescendo_1.Crescendo, Curve: curve_1.Curve, Dot: dot_1.Dot, EasyScore: easyscore_1.EasyScore, Element: element_1.Element, Factory: factory_1.Factory, Font: font_1.Font, Fonts: font_1.Fonts, Formatter: formatter_1.Formatter, Fraction: fraction_1.Fraction, FretHandFinger: frethandfinger_1.FretHandFinger, GhostNote: ghostnote_1.GhostNote, Glyph: glyph_1.Glyph, GlyphNote: glyphnote_1.GlyphNote, GraceNote: gracenote_1.GraceNote, GraceNoteGroup: gracenotegroup_1.GraceNoteGroup, GraceTabNote: gracetabnote_1.GraceTabNote, KeyManager: keymanager_1.KeyManager, KeySignature: keysignature_1.KeySignature, KeySigNote: keysignote_1.KeySigNote, Modifier: modifier_1.Modifier, ModifierContext: modifiercontext_1.ModifierContext, MultiMeasureRest: multimeasurerest_1.MultiMeasureRest, Music: music_1.Music, Note: note_1.Note, NoteHead: notehead_1.NoteHead, NoteSubGroup: notesubgroup_1.NoteSubGroup, Ornament: ornament_1.Ornament, Parser: parser_1.Parser, PedalMarking: pedalmarking_1.PedalMarking, Registry: registry_1.Registry, Renderer: renderer_1.Renderer, RepeatNote: repeatnote_1.RepeatNote, Repetition: staverepetition_1.Repetition, Stave: stave_1.Stave, StaveConnector: staveconnector_1.StaveConnector, StaveHairpin: stavehairpin_1.StaveHairpin, StaveLine: staveline_1.StaveLine, StaveModifier: stavemodifier_1.StaveModifier, StaveNote: stavenote_1.StaveNote, StaveTempo: stavetempo_1.StaveTempo, StaveText: stavetext_1.StaveText, StaveTie: stavetie_1.StaveTie, Stem: stem_1.Stem, StringNumber: stringnumber_1.StringNumber, Stroke: strokes_1.Stroke, System: system_1.System, TabNote: tabnote_1.TabNote, TabSlide: tabslide_1.TabSlide, TabStave: tabstave_1.TabStave, TabTie: tabtie_1.TabTie, TextBracket: textbracket_1.TextBracket, TextDynamics: textdynamics_1.TextDynamics, TextFont: textfont_1.TextFont, TextNote: textnote_1.TextNote, TickContext: tickcontext_1.TickContext, TimeSignature: timesignature_1.TimeSignature, TimeSigNote: timesignote_1.TimeSigNote, Tremolo: tremolo_1.Tremolo, Tuning: tuning_1.Tuning, Tuplet: tuplet_1.Tuplet, Vibrato: vibrato_1.Vibrato, VibratoBracket: vibratobracket_1.VibratoBracket, Voice: voice_1.Voice, Volta: stavevolta_1.Volta });
+
+
+/***/ }),
+
 /***/ "./src/font.ts":
 /*!*********************!*\
   !*** ./src/font.ts ***!
   \*********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Font = exports.Fonts = void 0;
 var bravura_glyphs_1 = __webpack_require__(/*! ./fonts/bravura_glyphs */ "./src/fonts/bravura_glyphs.ts");
 var bravura_metrics_1 = __webpack_require__(/*! ./fonts/bravura_metrics */ "./src/fonts/bravura_metrics.ts");
@@ -5860,12 +5784,10 @@ exports.Fonts = Fonts;
 /*!*************************************!*\
   !*** ./src/fonts/bravura_glyphs.ts ***!
   \*************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.BravuraFont = void 0;
 exports.BravuraFont = {
     "glyphs": {
@@ -9056,13 +8978,15 @@ exports.BravuraFont = {
 /*!**************************************!*\
   !*** ./src/fonts/bravura_metrics.ts ***!
   \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.BravuraMetrics = void 0;
+/**
+ * The Bravura font was created by Daniel Spreadbury @ Steinberg.
+ * https://github.com/steinbergmedia/bravura/
+ */
 exports.BravuraMetrics = {
     name: 'Bravura',
     smufl: true,
@@ -9071,6 +8995,11 @@ exports.BravuraMetrics = {
         endPaddingMax: 10,
         endPaddingMin: 5,
         unalignedNotePadding: 10
+    },
+    accidental: {
+        noteheadAccidentalPadding: 1,
+        leftPadding: 2,
+        accidentalSpacing: 3,
     },
     clef: {
         default: {
@@ -9555,12 +9484,10 @@ exports.BravuraMetrics = {
 /*!************************************!*\
   !*** ./src/fonts/custom_glyphs.ts ***!
   \************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CustomFont = void 0;
 exports.CustomFont = {
     'resolution': 1000,
@@ -9648,12 +9575,10 @@ exports.CustomFont = {
 /*!*************************************!*\
   !*** ./src/fonts/custom_metrics.ts ***!
   \*************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CustomMetrics = void 0;
 exports.CustomMetrics = {
     name: 'Vexflow-Custom',
@@ -9668,12 +9593,10 @@ exports.CustomMetrics = {
 /*!**************************************!*\
   !*** ./src/fonts/gonville_glyphs.ts ***!
   \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.GonvilleFont = void 0;
 exports.GonvilleFont = {
     'glyphs': {
@@ -10579,21 +10502,28 @@ exports.GonvilleFont = {
 /*!***************************************!*\
   !*** ./src/fonts/gonville_metrics.ts ***!
   \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.GonvilleMetrics = void 0;
+/**
+ * The Gonville font was created by Simon Tatham.
+ * https://www.chiark.greenend.org.uk/~sgtatham/gonville/
+ */
 exports.GonvilleMetrics = {
     name: 'Gonville',
     smufl: false,
     stave: {
         padding: 12,
-        endPaddingMax: 12,
-        endPaddingMin: 6,
+        endPaddingMax: 10,
+        endPaddingMin: 5,
         unalignedNotePadding: 10
+    },
+    accidental: {
+        noteheadAccidentalPadding: 1,
+        leftPadding: 2,
+        accidentalSpacing: 3,
     },
     clef: {
         default: {
@@ -10958,12 +10888,10 @@ exports.GonvilleMetrics = {
 /*!************************************!*\
   !*** ./src/fonts/leland_glyphs.js ***!
   \************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.LelandFont = void 0;
 exports.LelandFont = {
     "glyphs": {
@@ -12030,12 +11958,10 @@ exports.LelandFont = {
 /*!*************************************!*\
   !*** ./src/fonts/leland_metrics.js ***!
   \*************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.LelandMetrics = void 0;
 exports.LelandMetrics = {
     name: 'Leland',
@@ -12045,6 +11971,11 @@ exports.LelandMetrics = {
         endPaddingMax: 12,
         endPaddingMin: 6,
         unalignedNotePadding: 10
+    },
+    accidental: {
+        noteheadAccidentalPadding: 1,
+        leftPadding: 2,
+        accidentalSpacing: 3
     },
     clef: {
         default: {
@@ -12523,12 +12454,10 @@ exports.LelandMetrics = {
 /*!**************************************!*\
   !*** ./src/fonts/petaluma_glyphs.ts ***!
   \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.PetalumaFont = void 0;
 exports.PetalumaFont = {
     "glyphs": {
@@ -15719,21 +15648,28 @@ exports.PetalumaFont = {
 /*!***************************************!*\
   !*** ./src/fonts/petaluma_metrics.ts ***!
   \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.PetalumaMetrics = void 0;
+/**
+ * The Petaluma font was created by Steinberg Media.
+ * https://github.com/steinbergmedia/petaluma
+ */
 exports.PetalumaMetrics = {
     name: 'Petaluma',
     smufl: true,
     stave: {
         padding: 15,
         endPaddingMax: 15,
-        endPaddingMin: 8,
-        unalignedNotePadding: 11
+        endPaddingMin: 7,
+        unalignedNotePadding: 12
+    },
+    accidental: {
+        noteheadAccidentalPadding: 1,
+        leftPadding: 2,
+        accidentalSpacing: 3,
     },
     clef: {
         default: {
@@ -16265,12 +16201,10 @@ exports.PetalumaMetrics = {
 /*!*************************************************!*\
   !*** ./src/fonts/petalumascript_textmetrics.ts ***!
   \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.PetalumaScriptTextMetrics = void 0;
 exports.PetalumaScriptTextMetrics = {
     name: 'petalumaScript',
@@ -17144,12 +17078,10 @@ exports.PetalumaScriptTextMetrics = {
 /*!*********************************************!*\
   !*** ./src/fonts/robotoslab_textmetrics.ts ***!
   \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports) => {
 
-"use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.RobotoSlabTextMetrics = void 0;
 exports.RobotoSlabTextMetrics = {
     name: 'Roboto Slab',
@@ -18024,10 +17956,8 @@ exports.RobotoSlabTextMetrics = {
 /*!**************************!*\
   !*** ./src/formatter.ts ***!
   \**************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -18058,19 +17988,18 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Formatter = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var beam_1 = __webpack_require__(/*! ./beam */ "./src/beam.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
 var voice_1 = __webpack_require__(/*! ./voice */ "./src/voice.ts");
 var staveconnector_1 = __webpack_require__(/*! ./staveconnector */ "./src/staveconnector.ts");
 var modifiercontext_1 = __webpack_require__(/*! ./modifiercontext */ "./src/modifiercontext.ts");
 var tickcontext_1 = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
+var stave_1 = __webpack_require__(/*! ./stave */ "./src/stave.ts");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-var common_1 = __webpack_require__(/*! ./common */ "./src/common.ts");
 // Create `Alignment`s for each tick in `voices`. Also calculate the
 // total number of ticks in voices.
 function createContexts(voices, makeContext, addToContext) {
@@ -18108,17 +18037,10 @@ function createContexts(voices, makeContext, addToContext) {
     };
 }
 // To enable logging for this class. Set `Vex.Flow.Formatter.DEBUG` to `true`.
+// eslint-disable-next-line
 function L() {
-    // eslint-disable-next-line
     var args = [];
-    for (
-    // eslint-disable-next-line
-    var _i = 0; 
-    // eslint-disable-next-line
-    _i < arguments.length; 
-    // eslint-disable-next-line
-    _i++) {
-        // eslint-disable-next-line
+    for (var _i = 0; _i < arguments.length; _i++) {
         args[_i] = arguments[_i];
     }
     if (Formatter.DEBUG)
@@ -18140,12 +18062,13 @@ function lookAhead(notes, restLine, i, compare) {
     if (compare && restLine !== nextRestLine) {
         var top_1 = Math.max(restLine, nextRestLine);
         var bot = Math.min(restLine, nextRestLine);
-        nextRestLine = vex_1.Vex.MidLine(top_1, bot);
+        nextRestLine = util_1.midLine(top_1, bot);
     }
     return nextRestLine;
 }
 var Formatter = /** @class */ (function () {
     function Formatter(formatterOptions) {
+        if (formatterOptions === void 0) { formatterOptions = {}; }
         this.formatterOptions = __assign({ globalSoftmax: false, maxIterations: 5 }, formatterOptions);
         this.justifyWidth = 0;
         this.totalCost = 0;
@@ -18182,7 +18105,7 @@ var Formatter = /** @class */ (function () {
     };
     // Helper function to plot formatter debug info.
     Formatter.plotDebugging = function (ctx, formatter, xPos, y1, y2, options) {
-        options = __assign({ stavePadding: tables_1.Flow.DEFAULT_FONT_STACK[0].lookupMetric('stave.padding') }, options);
+        options = __assign({ stavePadding: flow_1.Flow.DEFAULT_FONT_STACK[0].lookupMetric('stave.padding') }, options);
         var x = xPos + options.stavePadding;
         var contextGaps = formatter.contextGaps;
         function stroke(x1, x2, color) {
@@ -18231,7 +18154,7 @@ var Formatter = /** @class */ (function () {
             options.auto_beam = params;
         }
         // Start by creating a voice and adding all the notes to it.
-        var voice = new voice_1.Voice(tables_1.Flow.TIME4_4).setMode(voice_1.Voice.Mode.SOFT).addTickables(notes);
+        var voice = new voice_1.Voice(flow_1.Flow.TIME4_4).setMode(voice_1.Voice.Mode.SOFT).addTickables(notes);
         // Then create beams, if requested.
         var beams = options.auto_beam ? beam_1.Beam.applyAndGetBeams(voice) : [];
         // Instantiate a `Formatter` and format the notes.
@@ -18269,9 +18192,9 @@ var Formatter = /** @class */ (function () {
             opts.auto_beam = params;
         }
         // Create a `4/4` voice for `notes`.
-        var notevoice = new voice_1.Voice(tables_1.Flow.TIME4_4).setMode(voice_1.Voice.Mode.SOFT).addTickables(notes);
+        var notevoice = new voice_1.Voice(flow_1.Flow.TIME4_4).setMode(voice_1.Voice.Mode.SOFT).addTickables(notes);
         // Create a `4/4` voice for `tabnotes`.
-        var tabvoice = new voice_1.Voice(tables_1.Flow.TIME4_4).setMode(voice_1.Voice.Mode.SOFT).addTickables(tabnotes);
+        var tabvoice = new voice_1.Voice(flow_1.Flow.TIME4_4).setMode(voice_1.Voice.Mode.SOFT).addTickables(tabnotes);
         // Then create beams, if requested.
         var beams = opts.auto_beam ? beam_1.Beam.applyAndGetBeams(notevoice) : [];
         // Instantiate a `Formatter` and align tab and stave notes.
@@ -18343,9 +18266,27 @@ var Formatter = /** @class */ (function () {
         }
         voices.forEach(function (voice) { return Formatter.AlignRestsToNotes(voice.getTickables(), alignAllNotes); });
     };
-    // Calculate the minimum width required to align and format `voices`.
+    /**
+     * Estimate the width required to render 'voices'.  This is done by:
+     * 1. Sum the widths of all the tick contexts
+     * 2. Estimate the padding.
+     * The latter is done by calculating the padding 3 different ways, and taking the
+     * greatest value:
+     * 1. the padding required for unaligned notes in different voices
+     * 2. the padding based on the stddev of the tickable widths
+     * 3. the padding based on the stddev of the tickable durations.
+     *
+     * The last 2 quantities estimate a 'width entropy', where notes might need more
+     * room than the proportional formatting gives them.  A measure of all same duration
+     * and width will need no extra padding, and all these quantities will be
+     * zero in that case.
+     *
+     * @param {Voice []} voices - the voices that contain the notes
+     * @returns {number} - the estimated width in pixels
+     */
     Formatter.prototype.preCalculateMinTotalWidth = function (voices) {
-        var unalignedPadding = tables_1.Flow.DEFAULT_FONT_STACK[0].lookupMetric('stave.unalignedNotePadding');
+        var _this = this;
+        var unalignedPadding = flow_1.Flow.DEFAULT_FONT_STACK[0].lookupMetric('stave.unalignedNotePadding');
         // Calculate additional padding based on 3 methods:
         // 1) unaligned beats in voices, 2) variance of width, 3) variance of durations
         var unalignedCtxCount = 0;
@@ -18365,32 +18306,36 @@ var Formatter = /** @class */ (function () {
         }
         // eslint-disable-next-line
         var _a = this.tickContexts, contextList = _a.list, contextMap = _a.map;
-        // Go through each tick context and calculate total width.
-        this.minTotalWidth = contextList
-            .map(function (tick) {
+        this.minTotalWidth = 0;
+        // Go through each tick context and calculate total width,
+        // and also accumulate values used in padding hints
+        contextList.forEach(function (tick) {
             var context = contextMap[tick];
             context.preFormat();
+            // If this TC doesn't have all the voices on it, it's unaligned.
+            // so increment the unaligned padding accumulator
             if (context.getTickables().length < voices.length) {
                 unalignedCtxCount += 1;
             }
+            // calculate the 'width entropy' over all the tickables
+            context.getTickables().forEach(function (tt) {
+                wsum += tt.getMetrics().width;
+                dsum += tt.getTicks().value();
+                widths.push(tt.getMetrics().width);
+                durations.push(tt.getTicks().value());
+            });
             var width = context.getWidth();
-            var duration = context.getMaxTicks().value();
-            wsum += width;
-            dsum += duration;
-            widths.push(width);
-            durations.push(duration);
-            return width;
-        })
-            .reduce(function (a, b) { return a + b; }, 0);
+            _this.minTotalWidth += width;
+        });
         this.hasMinTotalWidth = true;
-        // normalized STDDEV of widths/durations gives us padding hints.
-        var wavg = wsum / contextList.length;
+        // normalized (0-1) STDDEV of widths/durations gives us padding hints.
+        var wavg = wsum > 0 ? wsum / widths.length : 1 / widths.length;
         var wvar = widths.map(function (ll) { return Math.pow(ll - wavg, 2); }).reduce(function (a, b) { return a + b; });
-        var wpads = Math.pow(wvar / contextList.length, 0.5) / wavg;
-        var davg = dsum / contextList.length;
+        var wpads = Math.pow(wvar / widths.length, 0.5) / wavg;
+        var davg = dsum / durations.length;
         var dvar = durations.map(function (ll) { return Math.pow(ll - davg, 2); }).reduce(function (a, b) { return a + b; });
-        var dpads = Math.pow(dvar / contextList.length, 0.5) / davg;
-        // Find max of 3 methods and use that
+        var dpads = Math.pow(dvar / durations.length, 0.5) / davg;
+        // Find max of 3 methods pad the width with that
         var padmax = Math.max(dpads, wpads) * contextList.length * unalignedPadding;
         var unalignedPad = unalignedPadding * unalignedCtxCount;
         return this.minTotalWidth + Math.max(unalignedPad, padmax);
@@ -18581,7 +18526,7 @@ var Formatter = /** @class */ (function () {
                 if (index > 0) {
                     var contextX = context.getX();
                     var ideal = idealDistances[index];
-                    var errorPx = common_1.check(ideal.fromTickable).getX() + ideal.expectedDistance - (contextX + spaceAccum);
+                    var errorPx = util_1.check(ideal.fromTickable).getX() + ideal.expectedDistance - (contextX + spaceAccum);
                     var negativeShiftPx = 0;
                     if (errorPx > 0) {
                         spaceAccum += errorPx;
@@ -18605,22 +18550,16 @@ var Formatter = /** @class */ (function () {
             firstContext.getMetrics().totalLeftPx;
         var targetWidth = adjustedJustifyWidth;
         var actualWidth = shiftToIdealDistances(calculateIdealDistances(targetWidth));
-        var musicFont = tables_1.Flow.DEFAULT_FONT_STACK[0];
-        // The min padding we allow to the left of the right bar, before moving things left
-        var paddingMin = musicFont.lookupMetric('stave.endPaddingMin');
-        // the max padding we allow to the left of the right bar, before moving things back right.
+        var musicFont = flow_1.Flow.DEFAULT_FONT_STACK[0];
         var paddingMax = musicFont.lookupMetric('stave.endPaddingMax');
-        var maxX = adjustedJustifyWidth + lastContext.getMetrics().notePx - paddingMin;
+        var paddingMin = musicFont.lookupMetric('stave.endPaddingMin');
+        var maxX = adjustedJustifyWidth - paddingMin;
         var iterations = this.formatterOptions.maxIterations;
         while ((actualWidth > maxX && iterations > 0) || (actualWidth + paddingMax < maxX && iterations > 1)) {
-            // If we couldn't fit all the notes into the jusification width, recalculate softmax over a smaller width
-            if (actualWidth > maxX) {
-                targetWidth -= actualWidth - maxX;
-            }
-            else {
-                // If we overshoot and add too much right padding, split the difference and move right again
-                targetWidth += (maxX - actualWidth) / 2;
-            }
+            // If we couldn't fit all the notes into the jusification width, it's because the softmax-scaled
+            // widths between different durations differ across stave (e.g., 1 quarter note is not the same pixel-width
+            // as 4 16th-notes). Run another pass, now that we know how much to justify.
+            targetWidth -= actualWidth - maxX;
             actualWidth = shiftToIdealDistances(calculateIdealDistances(targetWidth));
             iterations--;
         }
@@ -18758,7 +18697,7 @@ var Formatter = /** @class */ (function () {
                     shift = 0;
                 }
             }
-            shift *= common_1.check(options).alpha;
+            shift *= util_1.check(options).alpha;
             _this.totalShift += shift;
         });
         return this.evaluate();
@@ -18809,11 +18748,9 @@ var Formatter = /** @class */ (function () {
     // This method is just like `format` except that the `justifyWidth` is inferred
     // from the `stave`.
     Formatter.prototype.formatToStave = function (voices, stave, optionsParam) {
-        var musicFont = tables_1.Flow.DEFAULT_FONT_STACK[0];
-        var padding = musicFont.lookupMetric('stave.padding') + musicFont.lookupMetric('stave.endPaddingMax');
-        var options = __assign({ padding: padding, context: stave.getContext() }, optionsParam);
+        var options = __assign({ padding: 10, context: stave.getContext() }, optionsParam);
         // eslint-disable-next-line
-        var justifyWidth = stave.getNoteEndX() - stave.getNoteStartX() - options.padding;
+        var justifyWidth = stave.getNoteEndX() - stave.getNoteStartX() - stave_1.Stave.defaultPadding;
         L('Formatting voices to width: ', justifyWidth);
         return this.format(voices, justifyWidth, options);
     };
@@ -18828,10 +18765,8 @@ exports.Formatter = Formatter;
 /*!*************************!*\
   !*** ./src/fraction.ts ***!
   \*************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -18840,7 +18775,7 @@ exports.Formatter = Formatter;
 //
 // @author zz85
 // @author incompleteopus (modifications)
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Fraction = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 /** Fraction represents a rational number. */
@@ -19091,10 +19026,8 @@ exports.Fraction = Fraction;
 /*!*******************************!*\
   !*** ./src/frethandfinger.ts ***!
   \*******************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // VexFlow - Music Engraving for HTML5
 // Copyright Mohit Muthanna 2010
@@ -19115,7 +19048,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.FretHandFinger = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -19240,6 +19173,9 @@ var FretHandFinger = /** @class */ (function (_super) {
         this.finger = finger;
         return this;
     };
+    FretHandFinger.prototype.getFretHandFinger = function () {
+        return this.finger;
+    };
     FretHandFinger.prototype.setOffsetX = function (x) {
         this.x_offset = x;
         return this;
@@ -19289,10 +19225,8 @@ exports.FretHandFinger = FretHandFinger;
 /*!**************************!*\
   !*** ./src/ghostnote.ts ***!
   \**************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -19312,7 +19246,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.GhostNote = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var stemmablenote_1 = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
@@ -19376,10 +19310,8 @@ exports.GhostNote = GhostNote;
 /*!**********************!*\
   !*** ./src/glyph.ts ***!
   \**********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 var __extends = (this && this.__extends) || (function () {
@@ -19408,13 +19340,13 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Glyph = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var boundingboxcomputation_1 = __webpack_require__(/*! ./boundingboxcomputation */ "./src/boundingboxcomputation.ts");
 var boundingbox_1 = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 function processOutline(outline, originX, originY, scaleX, scaleY, 
 // eslint-disable-next-line
 outlineFns) {
@@ -19560,6 +19492,8 @@ var Glyph = /** @class */ (function (_super) {
                 ha: ha,
                 outline: outline,
                 font: font,
+                width: x_max - x_min,
+                height: ha,
             };
         }
         else {
@@ -19581,7 +19515,7 @@ var Glyph = /** @class */ (function (_super) {
     point, 
     /** The glyph code in font.getGlyphs() */
     val, options) {
-        var params = __assign({ fontStack: tables_1.Flow.DEFAULT_FONT_STACK }, options);
+        var params = __assign({ fontStack: flow_1.Flow.DEFAULT_FONT_STACK }, options);
         var metrics = Glyph.loadMetrics(params.fontStack, val, params.category);
         if (params.category && metrics.font) {
             point = Glyph.lookupFontMetric({
@@ -19728,10 +19662,8 @@ exports.Glyph = Glyph;
 /*!**************************!*\
   !*** ./src/glyphnote.ts ***!
   \**************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 var __extends = (this && this.__extends) || (function () {
@@ -19760,7 +19692,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.GlyphNote = void 0;
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
 var GlyphNote = /** @class */ (function (_super) {
@@ -19838,10 +19770,8 @@ exports.GlyphNote = GlyphNote;
 /*!**************************!*\
   !*** ./src/gracenote.ts ***!
   \**************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 var __extends = (this && this.__extends) || (function () {
@@ -19870,17 +19800,17 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.GraceNote = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var GraceNote = /** @class */ (function (_super) {
     __extends(GraceNote, _super);
     function GraceNote(note_struct) {
         var _this = _super.call(this, __assign({
-            glyph_font_scale: tables_1.Flow.DEFAULT_NOTATION_FONT_SCALE * GraceNote.SCALE,
+            glyph_font_scale: flow_1.Flow.DEFAULT_NOTATION_FONT_SCALE * GraceNote.SCALE,
             stroke_px: GraceNote.LEDGER_LINE_OFFSET,
         }, note_struct)) || this;
         _this.setAttribute('type', 'GraceNote');
@@ -19931,7 +19861,7 @@ var GraceNote = /** @class */ (function (_super) {
     };
     // FIXME: move this to more basic class.
     GraceNote.prototype.getStaveNoteScale = function () {
-        return this.render_options.glyph_font_scale / tables_1.Flow.DEFAULT_NOTATION_FONT_SCALE;
+        return this.render_options.glyph_font_scale / flow_1.Flow.DEFAULT_NOTATION_FONT_SCALE;
     };
     GraceNote.prototype.draw = function () {
         _super.prototype.draw.call(this);
@@ -19962,7 +19892,7 @@ var GraceNote = /** @class */ (function (_super) {
                     ? noteHeadBounds.y_top - noteStemHeight
                     : noteHeadBounds.y_bottom - noteStemHeight;
                 var defaultStemExtention = stem_direction === stem_1.Stem.DOWN ? this.glyph.stem_down_extension : this.glyph.stem_up_extension;
-                var defaultOffsetY = tables_1.Flow.STEM_HEIGHT;
+                var defaultOffsetY = flow_1.Flow.STEM_HEIGHT;
                 defaultOffsetY -= defaultOffsetY / 2.8;
                 defaultOffsetY += defaultStemExtention;
                 y += defaultOffsetY * staveNoteScale * stem_direction;
@@ -20041,10 +19971,8 @@ exports.GraceNote = GraceNote;
 /*!*******************************!*\
   !*** ./src/gracenotegroup.ts ***!
   \*******************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -20067,10 +19995,10 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.GraceNoteGroup = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
 var voice_1 = __webpack_require__(/*! ./voice */ "./src/voice.ts");
@@ -20105,7 +20033,7 @@ var GraceNoteGroup = /** @class */ (function (_super) {
         _this.voice = new voice_1.Voice({
             num_beats: 4,
             beat_value: 4,
-            resolution: tables_1.Flow.RESOLUTION,
+            resolution: flow_1.Flow.RESOLUTION,
         }).setStrict(false);
         _this.render_options = {
             slur_y_shift: 0,
@@ -20231,10 +20159,8 @@ exports.GraceNoteGroup = GraceNoteGroup;
 /*!*****************************!*\
   !*** ./src/gracetabnote.ts ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // @author Balazs Forian-Szabo
@@ -20271,7 +20197,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.GraceTabNote = void 0;
 var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
 var GraceTabNote = /** @class */ (function (_super) {
@@ -20311,197 +20237,19 @@ exports.GraceTabNote = GraceTabNote;
 
 /***/ }),
 
-/***/ "./src/index.js":
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-Object.defineProperty(exports, "__esModule", { value: true });
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
-var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
-var renderer_1 = __webpack_require__(/*! ./renderer */ "./src/renderer.js");
-var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
-var widthformatter_1 = __webpack_require__(/*! ./widthformatter */ "./src/widthformatter.js");
-var music_1 = __webpack_require__(/*! ./music */ "./src/music.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-var stave_1 = __webpack_require__(/*! ./stave */ "./src/stave.ts");
-var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
-var stavetempo_1 = __webpack_require__(/*! ./stavetempo */ "./src/stavetempo.ts");
-var voice_1 = __webpack_require__(/*! ./voice */ "./src/voice.ts");
-var accidental_1 = __webpack_require__(/*! ./accidental */ "./src/accidental.js");
-var beam_1 = __webpack_require__(/*! ./beam */ "./src/beam.ts");
-var stavetie_1 = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
-var tabstave_1 = __webpack_require__(/*! ./tabstave */ "./src/tabstave.ts");
-var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
-var bend_1 = __webpack_require__(/*! ./bend */ "./src/bend.ts");
-var vibrato_1 = __webpack_require__(/*! ./vibrato */ "./src/vibrato.ts");
-var vibratobracket_1 = __webpack_require__(/*! ./vibratobracket */ "./src/vibratobracket.ts");
-var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
-var modifiercontext_1 = __webpack_require__(/*! ./modifiercontext */ "./src/modifiercontext.ts");
-var multimeasurerest_1 = __webpack_require__(/*! ./multimeasurerest */ "./src/multimeasurerest.js");
-var tickcontext_1 = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
-var articulation_1 = __webpack_require__(/*! ./articulation */ "./src/articulation.ts");
-var annotation_1 = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
-var chordsymbol_1 = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.js");
-var stavebarline_1 = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
-var notehead_1 = __webpack_require__(/*! ./notehead */ "./src/notehead.ts");
-var staveconnector_1 = __webpack_require__(/*! ./staveconnector */ "./src/staveconnector.ts");
-var clefnote_1 = __webpack_require__(/*! ./clefnote */ "./src/clefnote.ts");
-var keysignature_1 = __webpack_require__(/*! ./keysignature */ "./src/keysignature.js");
-var keysignote_1 = __webpack_require__(/*! ./keysignote */ "./src/keysignote.ts");
-var timesignature_1 = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
-var timesignote_1 = __webpack_require__(/*! ./timesignote */ "./src/timesignote.ts");
-var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
-var tabtie_1 = __webpack_require__(/*! ./tabtie */ "./src/tabtie.ts");
-var clef_1 = __webpack_require__(/*! ./clef */ "./src/clef.ts");
-var dot_1 = __webpack_require__(/*! ./dot */ "./src/dot.ts");
-var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-var tabslide_1 = __webpack_require__(/*! ./tabslide */ "./src/tabslide.ts");
-var tuplet_1 = __webpack_require__(/*! ./tuplet */ "./src/tuplet.ts");
-var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
-var gracetabnote_1 = __webpack_require__(/*! ./gracetabnote */ "./src/gracetabnote.ts");
-var tuning_1 = __webpack_require__(/*! ./tuning */ "./src/tuning.ts");
-var keymanager_1 = __webpack_require__(/*! ./keymanager */ "./src/keymanager.js");
-var stavehairpin_1 = __webpack_require__(/*! ./stavehairpin */ "./src/stavehairpin.ts");
-var boundingbox_1 = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
-var strokes_1 = __webpack_require__(/*! ./strokes */ "./src/strokes.ts");
-var textnote_1 = __webpack_require__(/*! ./textnote */ "./src/textnote.ts");
-var curve_1 = __webpack_require__(/*! ./curve */ "./src/curve.ts");
-var textdynamics_1 = __webpack_require__(/*! ./textdynamics */ "./src/textdynamics.ts");
-var staveline_1 = __webpack_require__(/*! ./staveline */ "./src/staveline.ts");
-var ornament_1 = __webpack_require__(/*! ./ornament */ "./src/ornament.js");
-var pedalmarking_1 = __webpack_require__(/*! ./pedalmarking */ "./src/pedalmarking.ts");
-var textbracket_1 = __webpack_require__(/*! ./textbracket */ "./src/textbracket.ts");
-var frethandfinger_1 = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.ts");
-var staverepetition_1 = __webpack_require__(/*! ./staverepetition */ "./src/staverepetition.ts");
-var barnote_1 = __webpack_require__(/*! ./barnote */ "./src/barnote.ts");
-var ghostnote_1 = __webpack_require__(/*! ./ghostnote */ "./src/ghostnote.ts");
-var notesubgroup_1 = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.ts");
-var gracenotegroup_1 = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
-var tremolo_1 = __webpack_require__(/*! ./tremolo */ "./src/tremolo.ts");
-var stringnumber_1 = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.ts");
-var crescendo_1 = __webpack_require__(/*! ./crescendo */ "./src/crescendo.ts");
-var stavevolta_1 = __webpack_require__(/*! ./stavevolta */ "./src/stavevolta.ts");
-var system_1 = __webpack_require__(/*! ./system */ "./src/system.js");
-var factory_1 = __webpack_require__(/*! ./factory */ "./src/factory.js");
-var parser_1 = __webpack_require__(/*! ./parser */ "./src/parser.ts");
-var easyscore_1 = __webpack_require__(/*! ./easyscore */ "./src/easyscore.ts");
-var registry_1 = __webpack_require__(/*! ./registry */ "./src/registry.ts");
-var stavetext_1 = __webpack_require__(/*! ./stavetext */ "./src/stavetext.ts");
-var glyphnote_1 = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.ts");
-var repeatnote_1 = __webpack_require__(/*! ./repeatnote */ "./src/repeatnote.ts");
-var textfont_1 = __webpack_require__(/*! ./textfont */ "./src/textfont.ts");
-var petalumascript_textmetrics_1 = __webpack_require__(/*! ./fonts/petalumascript_textmetrics */ "./src/fonts/petalumascript_textmetrics.ts");
-var robotoslab_textmetrics_1 = __webpack_require__(/*! ./fonts/robotoslab_textmetrics */ "./src/fonts/robotoslab_textmetrics.ts");
-var font_1 = __webpack_require__(/*! ./font */ "./src/font.ts");
-vex_1.Vex.Flow = tables_1.Flow;
-vex_1.Vex.Flow.Element = element_1.Element;
-vex_1.Vex.Flow.Fraction = fraction_1.Fraction;
-vex_1.Vex.Flow.Renderer = renderer_1.Renderer;
-vex_1.Vex.Flow.Formatter = formatter_1.Formatter;
-vex_1.Vex.Flow.WidthFormatter = widthformatter_1.WidthFormatter;
-vex_1.Vex.Flow.Music = music_1.Music;
-vex_1.Vex.Flow.Glyph = glyph_1.Glyph;
-vex_1.Vex.Flow.Stave = stave_1.Stave;
-vex_1.Vex.Flow.StaveNote = stavenote_1.StaveNote;
-vex_1.Vex.Flow.StaveModifier = stavemodifier_1.StaveModifier;
-vex_1.Vex.Flow.StaveTempo = stavetempo_1.StaveTempo;
-vex_1.Vex.Flow.Voice = voice_1.Voice;
-vex_1.Vex.Flow.Accidental = accidental_1.Accidental;
-vex_1.Vex.Flow.Beam = beam_1.Beam;
-vex_1.Vex.Flow.StaveTie = stavetie_1.StaveTie;
-vex_1.Vex.Flow.TabStave = tabstave_1.TabStave;
-vex_1.Vex.Flow.TabNote = tabnote_1.TabNote;
-vex_1.Vex.Flow.Bend = bend_1.Bend;
-vex_1.Vex.Flow.Vibrato = vibrato_1.Vibrato;
-vex_1.Vex.Flow.VibratoBracket = vibratobracket_1.VibratoBracket;
-vex_1.Vex.Flow.Note = note_1.Note;
-vex_1.Vex.Flow.ModifierContext = modifiercontext_1.ModifierContext;
-vex_1.Vex.Flow.MultiMeasureRest = multimeasurerest_1.MultiMeasureRest;
-vex_1.Vex.Flow.TickContext = tickcontext_1.TickContext;
-vex_1.Vex.Flow.Articulation = articulation_1.Articulation;
-vex_1.Vex.Flow.Annotation = annotation_1.Annotation;
-vex_1.Vex.Flow.ChordSymbol = chordsymbol_1.ChordSymbol;
-vex_1.Vex.Flow.Barline = stavebarline_1.Barline;
-vex_1.Vex.Flow.NoteHead = notehead_1.NoteHead;
-vex_1.Vex.Flow.StaveConnector = staveconnector_1.StaveConnector;
-vex_1.Vex.Flow.ClefNote = clefnote_1.ClefNote;
-vex_1.Vex.Flow.KeySignature = keysignature_1.KeySignature;
-vex_1.Vex.Flow.KeySigNote = keysignote_1.KeySigNote;
-vex_1.Vex.Flow.TimeSignature = timesignature_1.TimeSignature;
-vex_1.Vex.Flow.TimeSigNote = timesignote_1.TimeSigNote;
-vex_1.Vex.Flow.Stem = stem_1.Stem;
-vex_1.Vex.Flow.TabTie = tabtie_1.TabTie;
-vex_1.Vex.Flow.Clef = clef_1.Clef;
-vex_1.Vex.Flow.Dot = dot_1.Dot;
-vex_1.Vex.Flow.Modifier = modifier_1.Modifier;
-vex_1.Vex.Flow.TabSlide = tabslide_1.TabSlide;
-vex_1.Vex.Flow.Tuplet = tuplet_1.Tuplet;
-vex_1.Vex.Flow.GraceNote = gracenote_1.GraceNote;
-vex_1.Vex.Flow.GraceTabNote = gracetabnote_1.GraceTabNote;
-vex_1.Vex.Flow.Tuning = tuning_1.Tuning;
-vex_1.Vex.Flow.KeyManager = keymanager_1.KeyManager;
-vex_1.Vex.Flow.StaveHairpin = stavehairpin_1.StaveHairpin;
-vex_1.Vex.Flow.BoundingBox = boundingbox_1.BoundingBox;
-vex_1.Vex.Flow.Stroke = strokes_1.Stroke;
-vex_1.Vex.Flow.TextNote = textnote_1.TextNote;
-vex_1.Vex.Flow.Curve = curve_1.Curve;
-vex_1.Vex.Flow.TextDynamics = textdynamics_1.TextDynamics;
-vex_1.Vex.Flow.StaveLine = staveline_1.StaveLine;
-vex_1.Vex.Flow.Ornament = ornament_1.Ornament;
-vex_1.Vex.Flow.PedalMarking = pedalmarking_1.PedalMarking;
-vex_1.Vex.Flow.TextBracket = textbracket_1.TextBracket;
-vex_1.Vex.Flow.FretHandFinger = frethandfinger_1.FretHandFinger;
-vex_1.Vex.Flow.Repetition = staverepetition_1.Repetition;
-vex_1.Vex.Flow.BarNote = barnote_1.BarNote;
-vex_1.Vex.Flow.GhostNote = ghostnote_1.GhostNote;
-vex_1.Vex.Flow.NoteSubGroup = notesubgroup_1.NoteSubGroup;
-vex_1.Vex.Flow.GraceNoteGroup = gracenotegroup_1.GraceNoteGroup;
-vex_1.Vex.Flow.Tremolo = tremolo_1.Tremolo;
-vex_1.Vex.Flow.StringNumber = stringnumber_1.StringNumber;
-vex_1.Vex.Flow.Crescendo = crescendo_1.Crescendo;
-vex_1.Vex.Flow.Volta = stavevolta_1.Volta;
-vex_1.Vex.Flow.System = system_1.System;
-vex_1.Vex.Flow.Factory = factory_1.Factory;
-vex_1.Vex.Flow.Parser = parser_1.Parser;
-vex_1.Vex.Flow.EasyScore = easyscore_1.EasyScore;
-vex_1.Vex.Flow.Registry = registry_1.Registry;
-vex_1.Vex.Flow.StaveText = stavetext_1.StaveText;
-vex_1.Vex.Flow.GlyphNote = glyphnote_1.GlyphNote;
-vex_1.Vex.Flow.RepeatNote = repeatnote_1.RepeatNote;
-vex_1.Vex.Flow.Font = font_1.Font;
-vex_1.Vex.Flow.Fonts = font_1.Fonts;
-vex_1.Vex.Flow.TextFont = textfont_1.TextFont;
-vex_1.Vex.Flow.PetalumaScriptTextMetrics = petalumascript_textmetrics_1.PetalumaScriptTextMetrics;
-vex_1.Vex.Flow.RobotoSlabTextMetrics = robotoslab_textmetrics_1.RobotoSlabTextMetrics;
-exports.default = vex_1.Vex;
-
-
-/***/ }),
-
-/***/ "./src/keymanager.js":
+/***/ "./src/keymanager.ts":
 /*!***************************!*\
-  !*** ./src/keymanager.js ***!
+  !*** ./src/keymanager.ts ***!
   \***************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 //
 // This class implements diatonic key management.
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.KeyManager = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var music_1 = __webpack_require__(/*! ./music */ "./src/music.ts");
@@ -20591,7 +20339,7 @@ var KeyManager = /** @class */ (function () {
             this.scaleMap[modparts.root] = modparts.root;
             return {
                 note: modparts.root,
-                accidental: null,
+                accidental: undefined,
                 change: true,
             };
         }
@@ -20613,14 +20361,12 @@ exports.KeyManager = KeyManager;
 
 /***/ }),
 
-/***/ "./src/keysignature.js":
+/***/ "./src/keysignature.ts":
 /*!*****************************!*\
-  !*** ./src/keysignature.js ***!
+  !*** ./src/keysignature.ts ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Cyril Silverman
@@ -20644,10 +20390,10 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.KeySignature = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var KeySignature = /** @class */ (function (_super) {
@@ -20655,6 +20401,7 @@ var KeySignature = /** @class */ (function (_super) {
     // Create a new Key Signature based on a `key_spec`
     function KeySignature(keySpec, cancelKeySpec, alterKeySpec) {
         var _this = _super.call(this) || this;
+        _this.accList = [];
         _this.setAttribute('type', 'KeySignature');
         _this.setKeySig(keySpec, cancelKeySpec, alterKeySpec);
         _this.setPosition(stavemodifier_1.StaveModifier.Position.BEGIN);
@@ -20671,72 +20418,6 @@ var KeySignature = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    Object.defineProperty(KeySignature, "accidentalSpacing", {
-        // Space between natural and following accidental depending
-        // on vertical position
-        get: function () {
-            return {
-                '#': {
-                    above: 6,
-                    below: 4,
-                },
-                b: {
-                    above: 4,
-                    below: 7,
-                },
-                n: {
-                    above: 4,
-                    below: 1,
-                },
-                '##': {
-                    above: 6,
-                    below: 4,
-                },
-                bb: {
-                    above: 4,
-                    below: 7,
-                },
-                db: {
-                    above: 4,
-                    below: 7,
-                },
-                d: {
-                    above: 4,
-                    below: 7,
-                },
-                bbs: {
-                    above: 4,
-                    below: 7,
-                },
-                '++': {
-                    above: 6,
-                    below: 4,
-                },
-                '+': {
-                    above: 6,
-                    below: 4,
-                },
-                '+-': {
-                    above: 6,
-                    below: 4,
-                },
-                '++-': {
-                    above: 6,
-                    below: 4,
-                },
-                bs: {
-                    above: 4,
-                    below: 10,
-                },
-                bss: {
-                    above: 4,
-                    below: 10,
-                },
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
     KeySignature.prototype.getCategory = function () {
         return KeySignature.CATEGORY;
     };
@@ -20744,7 +20425,7 @@ var KeySignature = /** @class */ (function (_super) {
     // the provided `acc`. If `nextAcc` is also provided, the appropriate
     // spacing will be included in the glyph's position
     KeySignature.prototype.convertToGlyph = function (acc, nextAcc) {
-        var accGlyphData = tables_1.Flow.accidentalCodes(acc.type);
+        var accGlyphData = flow_1.Flow.accidentalCodes(acc.type);
         var glyph = new glyph_1.Glyph(accGlyphData.code, this.glyphFontScale);
         // Determine spacing between current accidental and the next accidental
         var extraWidth = 1;
@@ -20756,7 +20437,7 @@ var KeySignature = /** @class */ (function (_super) {
             }
         }
         // Place the glyph on the stave
-        this.placeGlyphOnLine(glyph, this.stave, acc.line);
+        this.placeGlyphOnLine(glyph, this.checkStave(), acc.line);
         this.glyphs.push(glyph);
         var xPosition = this.xPositions[this.xPositions.length - 1];
         var glyphWidth = glyph.getMetrics().width + extraWidth;
@@ -20774,7 +20455,7 @@ var KeySignature = /** @class */ (function (_super) {
     };
     KeySignature.prototype.convertToCancelAccList = function (spec) {
         // Get the accidental list for the cancelled key signature
-        var cancel_accList = tables_1.Flow.keySignature(spec);
+        var cancel_accList = flow_1.Flow.keySignature(spec);
         // If the cancelled key has a different accidental type, ie: # vs b
         var different_types = this.accList.length > 0 && cancel_accList.length > 0 && cancel_accList[0].type !== this.accList[0].type;
         // Determine how many naturals needed to add
@@ -20895,15 +20576,13 @@ var KeySignature = /** @class */ (function (_super) {
         }
     };
     KeySignature.prototype.format = function () {
-        if (!this.stave) {
-            throw new util_1.RuntimeError('KeySignatureError', "Can't draw key signature without stave.");
-        }
+        var stave = this.checkStave();
         this.width = 0;
         this.glyphs = [];
         this.xPositions = [0]; // initialize with initial x position
-        this.accList = tables_1.Flow.keySignature(this.keySpec);
+        this.accList = flow_1.Flow.keySignature(util_1.check(this.keySpec));
         var accList = this.accList;
-        var firstAccidentalType = accList.length > 0 ? accList[0].type : null;
+        var firstAccidentalType = accList.length > 0 ? accList[0].type : undefined;
         var cancelAccList;
         if (this.cancelKeySpec) {
             cancelAccList = this.convertToCancelAccList(this.cancelKeySpec);
@@ -20912,7 +20591,7 @@ var KeySignature = /** @class */ (function (_super) {
             this.convertToAlterAccList(this.alterKeySpec);
         }
         if (this.accList.length > 0) {
-            var clef = (this.position === stavemodifier_1.StaveModifier.Position.END ? this.stave.endClef : this.stave.clef) || this.stave.clef;
+            var clef = (this.position === stavemodifier_1.StaveModifier.Position.END ? stave.getEndClef() : stave.getClef()) || stave.getClef();
             if (cancelAccList) {
                 this.convertAccLines(clef, cancelAccList.type, cancelAccList.accList);
             }
@@ -20937,9 +20616,69 @@ var KeySignature = /** @class */ (function (_super) {
             var glyph = this.glyphs[i];
             var x = this.x + this.xPositions[i];
             glyph.setStave(this.stave);
-            glyph.setContext(this.stave.context);
+            glyph.setContext(this.stave.checkContext());
             glyph.renderToStave(x);
         }
+    };
+    // Space between natural and following accidental depending
+    // on vertical position
+    KeySignature.accidentalSpacing = {
+        '#': {
+            above: 6,
+            below: 4,
+        },
+        b: {
+            above: 4,
+            below: 7,
+        },
+        n: {
+            above: 4,
+            below: 1,
+        },
+        '##': {
+            above: 6,
+            below: 4,
+        },
+        bb: {
+            above: 4,
+            below: 7,
+        },
+        db: {
+            above: 4,
+            below: 7,
+        },
+        d: {
+            above: 4,
+            below: 7,
+        },
+        bbs: {
+            above: 4,
+            below: 7,
+        },
+        '++': {
+            above: 6,
+            below: 4,
+        },
+        '+': {
+            above: 6,
+            below: 4,
+        },
+        '+-': {
+            above: 6,
+            below: 4,
+        },
+        '++-': {
+            above: 6,
+            below: 4,
+        },
+        bs: {
+            above: 4,
+            below: 10,
+        },
+        bss: {
+            above: 4,
+            below: 10,
+        },
     };
     return KeySignature;
 }(stavemodifier_1.StaveModifier));
@@ -20952,10 +20691,8 @@ exports.KeySignature = KeySignature;
 /*!***************************!*\
   !*** ./src/keysignote.ts ***!
   \***************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Mark Meeus 2019
@@ -20974,10 +20711,10 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.KeySigNote = void 0;
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
-var keysignature_1 = __webpack_require__(/*! ./keysignature */ "./src/keysignature.js");
+var keysignature_1 = __webpack_require__(/*! ./keysignature */ "./src/keysignature.ts");
 var KeySigNote = /** @class */ (function (_super) {
     __extends(KeySigNote, _super);
     function KeySigNote(keySpec, cancelKeySpec, alterKeySpec) {
@@ -20995,8 +20732,7 @@ var KeySigNote = /** @class */ (function (_super) {
     KeySigNote.prototype.preFormat = function () {
         this.setPreFormatted(true);
         this.keySignature.setStave(this.checkStave());
-        this.keySignature.format();
-        this.setWidth(this.keySignature.width);
+        this.setWidth(this.keySignature.getWidth());
         return this;
     };
     KeySigNote.prototype.draw = function () {
@@ -21017,10 +20753,8 @@ exports.KeySigNote = KeySigNote;
 /*!*************************!*\
   !*** ./src/modifier.ts ***!
   \*************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -21051,7 +20785,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Modifier = exports.ModifierPosition = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
@@ -21167,7 +20901,6 @@ var Modifier = /** @class */ (function (_super) {
         this.modifier_context = c;
         return this;
     };
-    // Get and set articulation position.
     Modifier.prototype.getPosition = function () {
         return this.position;
     };
@@ -21237,10 +20970,8 @@ exports.Modifier = Modifier;
 /*!********************************!*\
   !*** ./src/modifiercontext.ts ***!
   \********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -21248,21 +20979,21 @@ exports.Modifier = Modifier;
 //
 // This class implements various types of members to notes (e.g. bends,
 // fingering positions etc.)
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ModifierContext = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 var dot_1 = __webpack_require__(/*! ./dot */ "./src/dot.ts");
 var frethandfinger_1 = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.ts");
-var accidental_1 = __webpack_require__(/*! ./accidental */ "./src/accidental.js");
+var accidental_1 = __webpack_require__(/*! ./accidental */ "./src/accidental.ts");
 var notesubgroup_1 = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.ts");
 var gracenotegroup_1 = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
 var strokes_1 = __webpack_require__(/*! ./strokes */ "./src/strokes.ts");
 var stringnumber_1 = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.ts");
 var articulation_1 = __webpack_require__(/*! ./articulation */ "./src/articulation.ts");
-var ornament_1 = __webpack_require__(/*! ./ornament */ "./src/ornament.js");
+var ornament_1 = __webpack_require__(/*! ./ornament */ "./src/ornament.ts");
 var annotation_1 = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
-var chordsymbol_1 = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.js");
+var chordsymbol_1 = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.ts");
 var bend_1 = __webpack_require__(/*! ./bend */ "./src/bend.ts");
 var vibrato_1 = __webpack_require__(/*! ./vibrato */ "./src/vibrato.ts");
 // To enable logging for this class. Set `Vex.Flow.ModifierContext.DEBUG` to `true`.
@@ -21387,14 +21118,12 @@ exports.ModifierContext = ModifierContext;
 
 /***/ }),
 
-/***/ "./src/multimeasurerest.js":
+/***/ "./src/multimeasurerest.ts":
 /*!*********************************!*\
-  !*** ./src/multimeasurerest.js ***!
+  !*** ./src/multimeasurerest.ts ***!
   \*********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // VexFlow - Music Engraving for HTML5
 // Copyright Mohit Muthanna 2010
@@ -21415,10 +21144,21 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.MultiMeasureRest = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var notehead_1 = __webpack_require__(/*! ./notehead */ "./src/notehead.ts");
@@ -21464,18 +21204,14 @@ var MultiMeasureRest = /** @class */ (function (_super) {
             show_number: true,
             number_line: -0.5,
             number_glyph_point: point,
-            padding_left: undefined,
-            padding_right: undefined,
             line: 2,
             spacing_between_lines_px: 10,
-            line_thickness: undefined,
             serif_thickness: 2,
             use_symbols: false,
-            symbol_spacing: undefined,
             /* same as NoteHead. */
-            semibrave_rest_glyph_scale: tables_1.Flow.DEFAULT_NOTATION_FONT_SCALE,
+            semibrave_rest_glyph_scale: flow_1.Flow.DEFAULT_NOTATION_FONT_SCALE,
         };
-        vex_1.Vex.Merge(_this.render_options, options);
+        _this.render_options = __assign(__assign({}, _this.render_options), options);
         _this.render_options.number_line += fontLineShift;
         _this.number_of_measures = number_of_measures;
         _this.xs = {
@@ -21494,8 +21230,14 @@ var MultiMeasureRest = /** @class */ (function (_super) {
     MultiMeasureRest.prototype.getStave = function () {
         return this.stave;
     };
+    MultiMeasureRest.prototype.checkStave = function () {
+        if (!this.stave) {
+            throw new util_1.RuntimeError('NoStave', 'No stave attached to instance');
+        }
+        return this.stave;
+    };
     MultiMeasureRest.prototype.drawLine = function (ctx, left, right, sbl) {
-        var y = this.stave.getYForLine(this.render_options.line);
+        var y = this.checkStave().getYForLine(this.render_options.line);
         var padding = (right - left) * 0.1;
         left += padding;
         right -= padding;
@@ -21504,7 +21246,7 @@ var MultiMeasureRest = /** @class */ (function (_super) {
             height: sbl,
         };
         var lineThicknessHalf = sbl * 0.25;
-        if (!isNaN(this.render_options.line_thickness)) {
+        if (this.render_options.line_thickness != undefined) {
             lineThicknessHalf = this.render_options.line_thickness * 0.5;
         }
         ctx.save();
@@ -21525,6 +21267,7 @@ var MultiMeasureRest = /** @class */ (function (_super) {
         ctx.fill();
     };
     MultiMeasureRest.prototype.drawSymbols = function (ctx, left, right, sbl) {
+        var stave = this.checkStave();
         var n4 = Math.floor(this.number_of_measures / 4);
         var n = this.number_of_measures % 4;
         var n2 = Math.floor(n / 2);
@@ -21541,14 +21284,14 @@ var MultiMeasureRest = /** @class */ (function (_super) {
             },
         };
         var spacing = semibrave_rest_width * 1.35;
-        if (!isNaN(this.render_options.symbol_spacing)) {
+        if (this.render_options.symbol_spacing != undefined) {
             spacing = this.render_options.symbol_spacing;
         }
         var width = n4 * glyphs[2].width + n2 * glyphs[2].width + n1 * glyphs[1].width + (n4 + n2 + n1 - 1) * spacing;
         var x = left + (right - left) * 0.5 - width * 0.5;
-        var yTop = this.stave.getYForLine(this.render_options.line - 1);
-        var yMiddle = this.stave.getYForLine(this.render_options.line);
-        var yBottom = this.stave.getYForLine(this.render_options.line + 1);
+        var yTop = stave.getYForLine(this.render_options.line - 1);
+        var yMiddle = stave.getYForLine(this.render_options.line);
+        var yBottom = stave.getYForLine(this.render_options.line + 1);
         ctx.save();
         ctx.setStrokeStyle('none');
         ctx.setLineWidth(0);
@@ -21568,10 +21311,9 @@ var MultiMeasureRest = /** @class */ (function (_super) {
         ctx.restore();
     };
     MultiMeasureRest.prototype.draw = function () {
-        this.checkContext();
+        var ctx = this.checkContext();
         this.setRendered();
-        var ctx = this.context;
-        var stave = this.stave;
+        var stave = this.checkStave();
         var sbl = this.render_options.spacing_between_lines_px;
         var left = stave.getNoteStartX();
         var right = stave.getNoteEndX();
@@ -21581,10 +21323,10 @@ var MultiMeasureRest = /** @class */ (function (_super) {
         if (begModifiers.length === 1 && begModifiers[0].getCategory() === stavebarline_1.Barline.CATEGORY) {
             left -= begModifiers[0].getWidth();
         }
-        if (!isNaN(this.render_options.padding_left)) {
+        if (this.render_options.padding_left != undefined) {
             left = stave.getX() + this.render_options.padding_left;
         }
-        if (!isNaN(this.render_options.padding_right)) {
+        if (this.render_options.padding_right != undefined) {
             right = stave.getX() + stave.getWidth() - this.render_options.padding_right;
         }
         this.xs.left = left;
@@ -21601,7 +21343,7 @@ var MultiMeasureRest = /** @class */ (function (_super) {
             timeSig.point = this.render_options.number_glyph_point;
             timeSig.setTimeSig(timeSpec);
             timeSig.setStave(stave);
-            timeSig.x = left + (right - left) * 0.5 - timeSig.timeSig.glyph.getMetrics().width * 0.5;
+            timeSig.setX(left + (right - left) * 0.5 - timeSig.getInfo().glyph.getMetrics().width * 0.5);
             timeSig.bottomLine = this.render_options.number_line;
             timeSig.setContext(ctx).draw();
         }
@@ -21617,16 +21359,14 @@ exports.MultiMeasureRest = MultiMeasureRest;
 /*!**********************!*\
   !*** ./src/music.ts ***!
   \**********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 // This class implements some standard music theory routines.
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Music = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var Music = /** @class */ (function () {
@@ -22032,10 +21772,8 @@ exports.Music = Music;
 /*!*********************!*\
   !*** ./src/note.ts ***!
   \*********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -22063,13 +21801,11 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Note = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var tickable_1 = __webpack_require__(/*! ./tickable */ "./src/tickable.ts");
-var common_1 = __webpack_require__(/*! ./common */ "./src/common.ts");
 /**
  * Note implements an abstract interface for notes and chords that
  * are rendered on a stave. Notes have some common properties: All of them
@@ -22115,8 +21851,8 @@ var Note = /** @class */ (function (_super) {
         }
         _this.modifiers = [];
         // Get the glyph code for this note from the font.
-        _this.glyph = tables_1.Flow.getGlyphProps(_this.duration, _this.noteType);
-        _this.customGlyphs = _this.customTypes.map(function (t) { return tables_1.Flow.getGlyphProps(_this.duration, t); });
+        _this.glyph = flow_1.Flow.getGlyphProps(_this.duration, _this.noteType);
+        _this.customGlyphs = _this.customTypes.map(function (t) { return flow_1.Flow.getGlyphProps(_this.duration, t); });
         // Note to play for audio players.
         _this.playNote = undefined;
         // Positioning contexts used by the Formatter.
@@ -22184,7 +21920,7 @@ var Note = /** @class */ (function (_super) {
         stroke(xPost2, xEnd, 'red');
         stroke(xEnd, xFreedomRight, '#DD0');
         stroke(xStart - note.getXShift(), xStart, '#BBB'); // Shift
-        vex_1.Vex.drawDot(ctx, xAbs + note.getXShift(), y, 'blue');
+        util_1.drawDot(ctx, xAbs + note.getXShift(), y, 'blue');
         var formatterMetrics = note.getFormatterMetrics();
         if (formatterMetrics.iterations > 0) {
             var spaceDeviation = formatterMetrics.space.deviation;
@@ -22215,7 +21951,7 @@ var Note = /** @class */ (function (_super) {
         }
         // If specified type is invalid, return undefined
         var type = noteStruct.type;
-        if (type && !common_1.GLYPH_PROPS_VALID_TYPES[type]) {
+        if (type && !flow_1.Flow.validTypes[type]) {
             return undefined;
         }
         // If no type specified, check duration or custom types
@@ -22231,7 +21967,7 @@ var Note = /** @class */ (function (_super) {
             }
         }
         // Calculate the tick duration of the note
-        var ticks = tables_1.Flow.durationToTicks(durationProps.duration);
+        var ticks = flow_1.Flow.durationToTicks(durationProps.duration);
         if (!ticks) {
             return undefined;
         }
@@ -22458,8 +22194,9 @@ var Note = /** @class */ (function (_super) {
         return this;
     };
     /** Get the coordinates for where modifiers begin. */
+    Note.prototype.getModifierStartXY = function (
     // eslint-disable-next-line
-    Note.prototype.getModifierStartXY = function (position, index, options) {
+    position, index, options) {
         if (!this.preFormatted) {
             throw new util_1.RuntimeError('UnformattedNote', "Can't call GetModifierStartXY on an unformatted note");
         }
@@ -22556,10 +22293,8 @@ exports.Note = Note;
 /*!*************************!*\
   !*** ./src/notehead.ts ***!
   \*************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -22595,10 +22330,10 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.NoteHead = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
@@ -22630,15 +22365,15 @@ function L() {
 // * `y`: the y coordinate to draw at
 // * `stem_direction`: the direction of the stem
 function drawSlashNoteHead(ctx, duration, x, y, stem_direction, staveSpace) {
-    var width = tables_1.Flow.SLASH_NOTEHEAD_WIDTH;
+    var width = flow_1.Flow.SLASH_NOTEHEAD_WIDTH;
     ctx.save();
-    ctx.setLineWidth(tables_1.Flow.STEM_WIDTH);
+    ctx.setLineWidth(flow_1.Flow.STEM_WIDTH);
     var fill = false;
-    if (tables_1.Flow.durationToNumber(duration) > 2) {
+    if (flow_1.Flow.durationToNumber(duration) > 2) {
         fill = true;
     }
     if (!fill)
-        x -= (tables_1.Flow.STEM_WIDTH / 2) * stem_direction;
+        x -= (flow_1.Flow.STEM_WIDTH / 2) * stem_direction;
     ctx.beginPath();
     ctx.moveTo(x, y + staveSpace);
     ctx.lineTo(x, y + 1);
@@ -22652,7 +22387,7 @@ function drawSlashNoteHead(ctx, duration, x, y, stem_direction, staveSpace) {
     else {
         ctx.stroke();
     }
-    if (tables_1.Flow.durationToFraction(duration).equals(0.5)) {
+    if (flow_1.Flow.durationToFraction(duration).equals(0.5)) {
         var breve_lines = [-3, -1, width + 1, width + 3];
         for (var i = 0; i < breve_lines.length; i++) {
             ctx.beginPath();
@@ -22678,10 +22413,10 @@ var NoteHead = /** @class */ (function (_super) {
         _this.duration = head_options.duration;
         _this.displaced = head_options.displaced || false;
         _this.stem_direction = head_options.stem_direction || stavenote_1.StaveNote.STEM_UP;
-        _this.line = head_options.line;
+        _this.line = head_options.line || 0;
         // Get glyph code based on duration and note type. This could be
         // regular notes, rests, or other custom codes.
-        _this.glyph = tables_1.Flow.getGlyphProps(_this.duration, _this.note_type);
+        _this.glyph = flow_1.Flow.getGlyphProps(_this.duration, _this.note_type);
         if (!_this.glyph) {
             throw new util_1.RuntimeError('BadArguments', "No glyph found for duration '" + _this.duration + "' and type '" + _this.note_type + "'");
         }
@@ -22697,7 +22432,7 @@ var NoteHead = /** @class */ (function (_super) {
         _this.slashed = head_options.slashed || false;
         _this.render_options = __assign(__assign({}, _this.render_options), {
             // font size for note heads
-            glyph_font_scale: head_options.glyph_font_scale || tables_1.Flow.DEFAULT_NOTATION_FONT_SCALE,
+            glyph_font_scale: head_options.glyph_font_scale || flow_1.Flow.DEFAULT_NOTATION_FONT_SCALE,
             // number of stroke px to the left and right of head
             stroke_px: 3,
         });
@@ -22834,10 +22569,8 @@ exports.NoteHead = NoteHead;
 /*!*****************************!*\
   !*** ./src/notesubgroup.ts ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Taehoon Moon 2016
@@ -22862,9 +22595,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.NoteSubGroup = void 0;
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
 var voice_1 = __webpack_require__(/*! ./voice */ "./src/voice.ts");
@@ -22884,7 +22617,7 @@ var NoteSubGroup = /** @class */ (function (_super) {
         _this.voice = new voice_1.Voice({
             num_beats: 4,
             beat_value: 4,
-            resolution: tables_1.Flow.RESOLUTION,
+            resolution: flow_1.Flow.RESOLUTION,
         }).setStrict(false);
         _this.voice.addTickables(_this.subNotes);
         return _this;
@@ -22940,14 +22673,12 @@ exports.NoteSubGroup = NoteSubGroup;
 
 /***/ }),
 
-/***/ "./src/ornament.js":
+/***/ "./src/ornament.ts":
 /*!*************************!*\
-  !*** ./src/ornament.js ***!
+  !*** ./src/ornament.ts ***!
   \*************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Cyril Silverman
@@ -22974,10 +22705,10 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Ornament = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var tickcontext_1 = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
@@ -22985,8 +22716,16 @@ var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
 // To enable logging for this class. Set `Vex.Flow.Ornament.DEBUG` to `true`.
 function L() {
+    // eslint-disable-next-line
     var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
+    for (
+    // eslint-disable-next-line
+    var _i = 0; 
+    // eslint-disable-next-line
+    _i < arguments.length; 
+    // eslint-disable-next-line
+    _i++) {
+        // eslint-disable-next-line
         args[_i] = arguments[_i];
     }
     if (Ornament.DEBUG)
@@ -23001,14 +22740,12 @@ var Ornament = /** @class */ (function (_super) {
         _this.setAttribute('type', 'Ornament');
         _this.type = type;
         _this.delayed = false;
-        _this.accidentalUpper = null;
-        _this.accidentalLower = null;
         _this.render_options = {
             font_scale: 38,
             accidentalLowerPadding: 3,
             accidentalUpperPadding: 3,
         };
-        _this.ornament = tables_1.Flow.ornamentCodes(_this.type);
+        _this.ornament = flow_1.Flow.ornamentCodes(_this.type);
         // new ornaments have their origin at the origin, and have more specific
         // metrics.  Legacy ornaments do some
         // x scaling, and have hard-coded metrics
@@ -23077,15 +22814,18 @@ var Ornament = /** @class */ (function (_super) {
             if (Ornament.ornamentArticulation.indexOf(ornament.type) >= 0) {
                 // Unfortunately we don't know the stem direction.  So we base it
                 // on the line number, but also allow it to be overridden.
+                if (!ornament.note) {
+                    throw new util_1.RuntimeError('NoAttachedNote');
+                }
                 if (ornament.note.getLineNumber() >= 3 || ornament.getPosition() === modifier_1.Modifier.Position.ABOVE) {
                     state.top_text_line += increment;
                     ornament.y_shift += yOffset;
-                    yOffset -= ornament.glyph.bbox.h;
+                    yOffset -= ornament.glyph.bbox.getH();
                 }
                 else {
                     state.text_line += increment;
                     ornament.y_shift += yOffset;
-                    yOffset += ornament.glyph.bbox.h;
+                    yOffset += ornament.glyph.bbox.getH();
                 }
             }
             else {
@@ -23157,8 +22897,9 @@ var Ornament = /** @class */ (function (_super) {
     // ### getMetrics
     // legacy ornaments have hard-coded metrics.  If additional ornament types are
     // added, get their metrics here.
+    // eslint-disable-next-line
     Ornament.prototype.getMetrics = function () {
-        return this.getFontStack()[0].metrics.glyphs.jazzOrnaments[this.ornament.code];
+        return this.getFontStack()[0].getMetrics().glyphs.jazzOrnaments[this.ornament.code];
     };
     Ornament.prototype.getCategory = function () {
         return Ornament.CATEGORY;
@@ -23171,14 +22912,14 @@ var Ornament = /** @class */ (function (_super) {
     // Set the upper accidental for the ornament
     Ornament.prototype.setUpperAccidental = function (accid) {
         var scale = this.render_options.font_scale / 1.3;
-        this.accidentalUpper = new glyph_1.Glyph(tables_1.Flow.accidentalCodes(accid).code, scale);
+        this.accidentalUpper = new glyph_1.Glyph(flow_1.Flow.accidentalCodes(accid).code, scale);
         this.accidentalUpper.setOrigin(0.5, 1.0);
         return this;
     };
     // Set the lower accidental for the ornament
     Ornament.prototype.setLowerAccidental = function (accid) {
         var scale = this.render_options.font_scale / 1.3;
-        this.accidentalLower = new glyph_1.Glyph(tables_1.Flow.accidentalCodes(accid).code, scale);
+        this.accidentalLower = new glyph_1.Glyph(flow_1.Flow.accidentalCodes(accid).code, scale);
         this.accidentalLower.setOrigin(0.5, 1.0);
         return this;
     };
@@ -23188,11 +22929,11 @@ var Ornament = /** @class */ (function (_super) {
         var note = this.checkAttachedNote();
         this.setRendered();
         var stemDir = note.getStemDirection();
-        var stave = note.getStave();
+        var stave = note.checkStave();
         var classString = Object.keys(this.getAttribute('classes')).join(' ');
         ctx.openGroup(classString, this.getAttribute('id'));
         // Get stem extents
-        var stemExtents = note.getStem().getExtents();
+        var stemExtents = note.checkStem().getExtents();
         var y = stemDir === stavenote_1.StaveNote.STEM_DOWN ? stemExtents.baseY : stemExtents.topY;
         // TabNotes don't have stems attached to them. Tab stems are rendered
         // outside the stave.
@@ -23211,7 +22952,7 @@ var Ornament = /** @class */ (function (_super) {
         var spacing = stave.getSpacingBetweenLines();
         var lineSpacing = 1;
         // Beamed stems are longer than quarter note stems, adjust accordingly
-        if (!isPlacedOnNoteheadSide && note.beam) {
+        if (!isPlacedOnNoteheadSide && note.hasBeam()) {
             lineSpacing += 0.5;
         }
         var totalSpacing = spacing * (this.text_line + lineSpacing);
@@ -23239,7 +22980,7 @@ var Ornament = /** @class */ (function (_super) {
                     delayXShift += (nextContext.getX() - startX) * 0.5;
                 }
                 else {
-                    delayXShift += (stave.x + stave.width - startX) * 0.5;
+                    delayXShift += (stave.getX() + stave.getWidth() - startX) * 0.5;
                 }
                 this.delayXShift = delayXShift;
             }
@@ -23255,7 +22996,7 @@ var Ornament = /** @class */ (function (_super) {
             glyphY += this.stemUpYOffset;
         }
         if (note.getLineNumber() < 5 && Ornament.ornamentNoteTransition.indexOf(this.type) >= 0) {
-            glyphY = note.getStave().getBoundingBox().y + 40;
+            glyphY = note.checkStave().getBoundingBox().getY() + 40;
         }
         this.glyph.render(ctx, glyphX + this.x_shift, glyphY);
         if (this.accidentalUpper) {
@@ -23275,17 +23016,14 @@ exports.Ornament = Ornament;
 /*!***********************!*\
   !*** ./src/parser.ts ***!
   \***********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // A generic text parsing class for VexFlow.
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Parser = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 // To enable logging for this class. Set `Vex.Flow.Parser.DEBUG` to `true`.
 // eslint-disable-next-line
@@ -23297,7 +23035,7 @@ function L() {
     if (Parser.DEBUG)
         util_1.log('Vex.Flow.Parser', args);
 }
-var X = vex_1.Vex.MakeException('ParserError');
+var X = util_1.MakeException('ParserError');
 var NO_ERROR_POS = -1;
 // Converts parser results into an easy to reference list that can be
 // used in triggers. This function returns:
@@ -23518,10 +23256,8 @@ exports.Parser = Parser;
 /*!*****************************!*\
   !*** ./src/pedalmarking.ts ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -23547,7 +23283,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.PedalMarking = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
@@ -23790,380 +23526,12 @@ exports.PedalMarking = PedalMarking;
 
 /***/ }),
 
-/***/ "./src/raphaelcontext.js":
-/*!*******************************!*\
-  !*** ./src/raphaelcontext.js ***!
-  \*******************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-// A rendering context for the Raphael backend.
-//
-// ## Warning: Deprecated for SVGContext
-// Except in instances where SVG support for IE < 9.0 is
-// needed, SVGContext is recommended.
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.RaphaelContext = void 0;
-var RaphaelContext = /** @class */ (function () {
-    function RaphaelContext(element) {
-        this.element = element;
-        this.paper = Raphael(element); // eslint-disable-line
-        this.path = '';
-        this.pen = { x: 0, y: 0 };
-        this.lineWidth = 1.0;
-        this.state = {
-            scale: { x: 1, y: 1 },
-            font_family: 'Arial',
-            font_size: 8,
-            font_weight: 800,
-        };
-        this.attributes = {
-            'stroke-width': 0.3,
-            fill: 'black',
-            stroke: 'black',
-            font: '10pt Arial',
-        };
-        this.background_attributes = {
-            'stroke-width': 0,
-            fill: 'white',
-            stroke: 'white',
-            font: '10pt Arial',
-        };
-        this.shadow_attributes = {
-            width: 0,
-            color: 'black',
-        };
-        this.state_stack = [];
-    }
-    // Containers not implemented
-    RaphaelContext.prototype.openGroup = function () { };
-    RaphaelContext.prototype.closeGroup = function () { };
-    RaphaelContext.prototype.add = function () { };
-    RaphaelContext.prototype.setFont = function (family, size, weight) {
-        this.state.font_family = family;
-        this.state.font_size = size;
-        this.state.font_weight = weight;
-        this.attributes.font =
-            (this.state.font_weight || '') + ' ' + this.state.font_size * this.state.scale.x + 'pt ' + this.state.font_family;
-        return this;
-    };
-    RaphaelContext.prototype.setRawFont = function (font) {
-        this.attributes.font = font;
-        return this;
-    };
-    RaphaelContext.prototype.setFillStyle = function (style) {
-        this.attributes.fill = style;
-        return this;
-    };
-    RaphaelContext.prototype.setBackgroundFillStyle = function (style) {
-        this.background_attributes.fill = style;
-        this.background_attributes.stroke = style;
-        return this;
-    };
-    RaphaelContext.prototype.setStrokeStyle = function (style) {
-        this.attributes.stroke = style;
-        return this;
-    };
-    RaphaelContext.prototype.setShadowColor = function (style) {
-        this.shadow_attributes.color = style;
-        return this;
-    };
-    RaphaelContext.prototype.setShadowBlur = function (blur) {
-        this.shadow_attributes.width = blur;
-        return this;
-    };
-    RaphaelContext.prototype.setLineWidth = function (width) {
-        this.attributes['stroke-width'] = width;
-        this.lineWidth = width;
-    };
-    // Empty because there is no equivalent in SVG
-    RaphaelContext.prototype.setLineDash = function () {
-        return this;
-    };
-    RaphaelContext.prototype.setLineCap = function () {
-        return this;
-    };
-    RaphaelContext.prototype.scale = function (x, y) {
-        this.state.scale = { x: x, y: y };
-        // The scale() method is deprecated as of Raphael.JS 2.0, and
-        // can no longer be used as an option in an Element.attr() call.
-        // It is preserved here for users running earlier versions of
-        // Raphael.JS, though it has no effect on the SVG output in
-        // Raphael 2 and higher.
-        this.attributes.transform = 'S' + x + ',' + y + ',0,0';
-        this.attributes.scale = x + ',' + y + ',0,0';
-        this.attributes.font = this.state.font_size * this.state.scale.x + 'pt ' + this.state.font_family;
-        this.background_attributes.transform = 'S' + x + ',' + y + ',0,0';
-        this.background_attributes.font = this.state.font_size * this.state.scale.x + 'pt ' + this.state.font_family;
-        return this;
-    };
-    RaphaelContext.prototype.clear = function () {
-        this.paper.clear();
-    };
-    RaphaelContext.prototype.resize = function (width, height) {
-        this.element.style.width = width;
-        this.paper.setSize(width, height);
-        return this;
-    };
-    // Sets the SVG `viewBox` property, which results in auto scaling images when its container
-    // is resized.
-    //
-    // Usage: `ctx.setViewBox("0 0 600 400")`
-    RaphaelContext.prototype.setViewBox = function (viewBox) {
-        this.paper.canvas.setAttribute('viewBox', viewBox);
-    };
-    RaphaelContext.prototype.rect = function (x, y, width, height) {
-        if (height < 0) {
-            y += height;
-            height = -height;
-        }
-        this.paper
-            .rect(x, y, width - 0.5, height - 0.5)
-            .attr(this.attributes)
-            .attr('fill', 'none')
-            .attr('stroke-width', this.lineWidth);
-        return this;
-    };
-    RaphaelContext.prototype.fillRect = function (x, y, width, height) {
-        if (height < 0) {
-            y += height;
-            height = -height;
-        }
-        this.paper.rect(x, y, width - 0.5, height - 0.5).attr(this.attributes);
-        return this;
-    };
-    RaphaelContext.prototype.clearRect = function (x, y, width, height) {
-        if (height < 0) {
-            y += height;
-            height = -height;
-        }
-        this.paper.rect(x, y, width - 0.5, height - 0.5).attr(this.background_attributes);
-        return this;
-    };
-    RaphaelContext.prototype.beginPath = function () {
-        this.path = '';
-        this.pen.x = 0;
-        this.pen.y = 0;
-        return this;
-    };
-    RaphaelContext.prototype.moveTo = function (x, y) {
-        this.path += 'M' + x + ',' + y;
-        this.pen.x = x;
-        this.pen.y = y;
-        return this;
-    };
-    RaphaelContext.prototype.lineTo = function (x, y) {
-        this.path += 'L' + x + ',' + y;
-        this.pen.x = x;
-        this.pen.y = y;
-        return this;
-    };
-    RaphaelContext.prototype.bezierCurveTo = function (x1, y1, x2, y2, x, y) {
-        this.path += 'C' + x1 + ',' + y1 + ',' + x2 + ',' + y2 + ',' + x + ',' + y;
-        this.pen.x = x;
-        this.pen.y = y;
-        return this;
-    };
-    RaphaelContext.prototype.quadraticCurveTo = function (x1, y1, x, y) {
-        this.path += 'Q' + x1 + ',' + y1 + ',' + x + ',' + y;
-        this.pen.x = x;
-        this.pen.y = y;
-        return this;
-    };
-    // This is an attempt (hack) to simulate the HTML5 canvas
-    // arc method.
-    RaphaelContext.prototype.arc = function (x, y, radius, startAngle, endAngle, antiClockwise) {
-        function normalizeAngle(angle) {
-            while (angle < 0) {
-                angle += Math.PI * 2;
-            }
-            while (angle > Math.PI * 2) {
-                angle -= Math.PI * 2;
-            }
-            return angle;
-        }
-        startAngle = normalizeAngle(startAngle);
-        endAngle = normalizeAngle(endAngle);
-        if (startAngle > endAngle) {
-            var tmp = startAngle;
-            startAngle = endAngle;
-            endAngle = tmp;
-            antiClockwise = !antiClockwise;
-        }
-        var delta = endAngle - startAngle;
-        if (delta > Math.PI) {
-            this.arcHelper(x, y, radius, startAngle, startAngle + delta / 2, antiClockwise);
-            this.arcHelper(x, y, radius, startAngle + delta / 2, endAngle, antiClockwise);
-        }
-        else {
-            this.arcHelper(x, y, radius, startAngle, endAngle, antiClockwise);
-        }
-        return this;
-    };
-    RaphaelContext.prototype.arcHelper = function (x, y, radius, startAngle, endAngle, antiClockwise) {
-        var x1 = x + radius * Math.cos(startAngle);
-        var y1 = y + radius * Math.sin(startAngle);
-        var x2 = x + radius * Math.cos(endAngle);
-        var y2 = y + radius * Math.sin(endAngle);
-        var largeArcFlag = 0;
-        var sweepFlag = 0;
-        if (antiClockwise) {
-            sweepFlag = 1;
-            if (endAngle - startAngle < Math.PI) {
-                largeArcFlag = 1;
-            }
-        }
-        else if (endAngle - startAngle > Math.PI) {
-            largeArcFlag = 1;
-        }
-        this.path +=
-            'M' +
-                x1 +
-                ',' +
-                y1 +
-                ',A' +
-                radius +
-                ',' +
-                radius +
-                ',0,' +
-                largeArcFlag +
-                ',' +
-                sweepFlag +
-                ',' +
-                x2 +
-                ',' +
-                y2 +
-                'M' +
-                this.pen.x +
-                ',' +
-                this.pen.y;
-    };
-    // Adapted from the source for Raphael's Element.glow
-    RaphaelContext.prototype.glow = function () {
-        var out = this.paper.set();
-        if (this.shadow_attributes.width > 0) {
-            var sa = this.shadow_attributes;
-            var num_paths = sa.width / 2;
-            for (var i = 1; i <= num_paths; i++) {
-                out.push(this.paper.path(this.path).attr({
-                    stroke: sa.color,
-                    'stroke-linejoin': 'round',
-                    'stroke-linecap': 'round',
-                    'stroke-width': +((sa.width / num_paths) * i).toFixed(3),
-                    opacity: +((sa.opacity || 0.3) / num_paths).toFixed(3),
-                    // See note in this.scale(): In Raphael the scale() method
-                    // is deprecated and removed as of Raphael 2.0 and replaced
-                    // by the transform() method.  It is preserved here for
-                    // users with earlier versions of Raphael, but has no effect
-                    // on the output SVG in Raphael 2.0+.
-                    transform: this.attributes.transform,
-                    scale: this.attributes.scale,
-                }));
-            }
-        }
-        return out;
-    };
-    RaphaelContext.prototype.fill = function () {
-        var elem = this.paper.path(this.path).attr(this.attributes).attr('stroke-width', 0);
-        this.glow(elem);
-        return this;
-    };
-    RaphaelContext.prototype.stroke = function () {
-        // The first line of code below is, unfortunately, a bit of a hack:
-        // Raphael's transform() scaling does not scale the stroke-width, so
-        // in order to scale a stroke, we have to manually scale the
-        // stroke-width.
-        //
-        // This works well so long as the X & Y states for this.scale() are
-        // relatively similar.  However, if they are very different, we
-        // would expect horizontal and vertical lines to have different
-        // stroke-widths.
-        //
-        // In the future, if we want to support very divergent values for
-        // horizontal and vertical scaling, we may want to consider
-        // implementing SVG scaling with properties of the SVG viewBox &
-        // viewPort and removing it entirely from the Element.attr() calls.
-        // This would more closely parallel the approach taken in
-        // canvascontext.js as well.
-        var strokeWidth = (this.lineWidth * (this.state.scale.x + this.state.scale.y)) / 2;
-        var elem = this.paper
-            .path(this.path)
-            .attr(this.attributes)
-            .attr('fill', 'none')
-            .attr('stroke-width', strokeWidth);
-        this.glow(elem);
-        return this;
-    };
-    RaphaelContext.prototype.closePath = function () {
-        this.path += 'Z';
-        return this;
-    };
-    RaphaelContext.prototype.measureText = function (text) {
-        var txt = this.paper.text(0, 0, text).attr(this.attributes).attr('fill', 'none').attr('stroke', 'none');
-        var bounds = txt.getBBox();
-        txt.remove();
-        return {
-            width: bounds.width,
-            height: bounds.height,
-        };
-    };
-    RaphaelContext.prototype.fillText = function (text, x, y) {
-        this.paper
-            .text(x + this.measureText(text).width / 2, y - this.state.font_size / (2.25 * this.state.scale.y), text)
-            .attr(this.attributes);
-        return this;
-    };
-    RaphaelContext.prototype.save = function () {
-        // TODO(mmuthanna): State needs to be deep-copied.
-        this.state_stack.push({
-            state: {
-                font_family: this.state.font_family,
-            },
-            attributes: {
-                font: this.attributes.font,
-                fill: this.attributes.fill,
-                stroke: this.attributes.stroke,
-                'stroke-width': this.attributes['stroke-width'],
-            },
-            shadow_attributes: {
-                width: this.shadow_attributes.width,
-                color: this.shadow_attributes.color,
-            },
-        });
-        return this;
-    };
-    RaphaelContext.prototype.restore = function () {
-        // TODO(0xfe): State needs to be deep-restored.
-        var state = this.state_stack.pop();
-        this.state.font_family = state.state.font_family;
-        this.attributes.font = state.attributes.font;
-        this.attributes.fill = state.attributes.fill;
-        this.attributes.stroke = state.attributes.stroke;
-        this.attributes['stroke-width'] = state.attributes['stroke-width'];
-        this.shadow_attributes.width = state.shadow_attributes.width;
-        this.shadow_attributes.color = state.shadow_attributes.color;
-        return this;
-    };
-    return RaphaelContext;
-}());
-exports.RaphaelContext = RaphaelContext;
-
-
-/***/ }),
-
 /***/ "./src/registry.ts":
 /*!*************************!*\
   !*** ./src/registry.ts ***!
   \*************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // @author Mohit Cheppudira
@@ -24183,10 +23551,10 @@ exports.RaphaelContext = RaphaelContext;
 // Once an element is registered, selected attributes are tracked and indexed by
 // the registry. This allows fast look up of elements by attributes like id, type,
 // and class.
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Registry = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
-var X = vex_1.Vex.MakeException('RegistryError');
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
+var X = util_1.MakeException('RegistryError');
 // Indexes are represented as maps of maps of maps. This allows
 // for both multi-labeling (e.g., an element can have multiple classes)
 // and efficient lookup.
@@ -24287,48 +23655,38 @@ exports.Registry = Registry;
 
 /***/ }),
 
-/***/ "./src/renderer.js":
+/***/ "./src/renderer.ts":
 /*!*************************!*\
-  !*** ./src/renderer.js ***!
+  !*** ./src/renderer.ts ***!
   \*************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
-// Support for different rendering contexts: Canvas, Raphael
-Object.defineProperty(exports, "__esModule", { value: true });
+// Support for different rendering contexts: Canvas & SVG
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Renderer = void 0;
-var canvascontext_1 = __webpack_require__(/*! ./canvascontext */ "./src/canvascontext.js");
-var raphaelcontext_1 = __webpack_require__(/*! ./raphaelcontext */ "./src/raphaelcontext.js");
+var canvascontext_1 = __webpack_require__(/*! ./canvascontext */ "./src/canvascontext.ts");
 var svgcontext_1 = __webpack_require__(/*! ./svgcontext */ "./src/svgcontext.ts");
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var lastContext = null;
 var Renderer = /** @class */ (function () {
     function Renderer(elementId, backend) {
         this.elementId = elementId;
-        if (!this.elementId) {
+        if (this.elementId === undefined) {
             throw new util_1.RuntimeError('BadArgument', 'Invalid id for renderer.');
         }
         this.element = document.getElementById(elementId);
         if (!this.element)
             this.element = elementId;
         // Verify backend and create context
-        this.ctx = null;
-        this.paper = null;
         this.backend = backend;
         if (this.backend === Renderer.Backends.CANVAS) {
-            // Create context.
             if (!this.element.getContext) {
                 throw new util_1.RuntimeError('BadElement', "Can't get canvas context from element: " + elementId);
             }
             this.ctx = Renderer.bolsterCanvasContext(this.element.getContext('2d'));
-        }
-        else if (this.backend === Renderer.Backends.RAPHAEL) {
-            this.ctx = new raphaelcontext_1.RaphaelContext(this.element);
         }
         else if (this.backend === Renderer.Backends.SVG) {
             this.ctx = new svgcontext_1.SVGContext(this.element);
@@ -24337,50 +23695,6 @@ var Renderer = /** @class */ (function () {
             throw new util_1.RuntimeError('InvalidBackend', "No support for backend: " + this.backend);
         }
     }
-    Object.defineProperty(Renderer, "Backends", {
-        get: function () {
-            return {
-                CANVAS: 1,
-                RAPHAEL: 2,
-                SVG: 3,
-                VML: 4,
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Renderer, "LineEndType", {
-        // End of line types
-        get: function () {
-            return {
-                NONE: 1,
-                UP: 2,
-                DOWN: 3, // Downward leg
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Renderer, "USE_CANVAS_PROXY", {
-        // Set this to true if you're using VexFlow inside a runtime
-        // that does not allow modifiying canvas objects. There is a small
-        // performance degradation due to the extra indirection.
-        get: function () {
-            return false;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(Renderer, "lastContext", {
-        get: function () {
-            return lastContext;
-        },
-        set: function (ctx) {
-            lastContext = ctx;
-        },
-        enumerable: false,
-        configurable: true
-    });
     Renderer.buildContext = function (elementId, backend, width, height, background) {
         var renderer = new Renderer(elementId, backend);
         if (width && height) {
@@ -24396,16 +23710,16 @@ var Renderer = /** @class */ (function () {
     Renderer.getCanvasContext = function (elementId, width, height, background) {
         return Renderer.buildContext(elementId, Renderer.Backends.CANVAS, width, height, background);
     };
-    Renderer.getRaphaelContext = function (elementId, width, height, background) {
-        return Renderer.buildContext(elementId, Renderer.Backends.RAPHAEL, width, height, background);
-    };
     Renderer.getSVGContext = function (elementId, width, height, background) {
         return Renderer.buildContext(elementId, Renderer.Backends.SVG, width, height, background);
     };
+    // eslint-disable-next-line
     Renderer.bolsterCanvasContext = function (ctx) {
         if (Renderer.USE_CANVAS_PROXY) {
             return new canvascontext_1.CanvasContext(ctx);
         }
+        // Modify the CanvasRenderingContext2D to include the following methods, if they do not already exist.
+        // setLineDash exists natively: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash
         var methodNames = [
             'clear',
             'setFont',
@@ -24424,6 +23738,7 @@ var Renderer = /** @class */ (function () {
         ];
         ctx.vexFlowCanvasContext = ctx;
         methodNames.forEach(function (methodName) {
+            // eslint-disable-next-line
             ctx[methodName] = ctx[methodName] || canvascontext_1.CanvasContext.prototype[methodName];
         });
         return ctx;
@@ -24481,6 +23796,21 @@ var Renderer = /** @class */ (function () {
     Renderer.prototype.getContext = function () {
         return this.ctx;
     };
+    Renderer.Backends = {
+        CANVAS: 1,
+        SVG: 2,
+    };
+    // End of line types
+    Renderer.LineEndType = {
+        NONE: 1,
+        UP: 2,
+        DOWN: 3, // Downward leg
+    };
+    // Set this to true if you're using VexFlow inside a runtime
+    // that does not allow modifiying canvas objects. There is a small
+    // performance degradation due to the extra indirection.
+    Renderer.USE_CANVAS_PROXY = false;
+    Renderer.lastContext = undefined;
     return Renderer;
 }());
 exports.Renderer = Renderer;
@@ -24492,10 +23822,8 @@ exports.Renderer = Renderer;
 /*!***************************!*\
   !*** ./src/repeatnote.ts ***!
   \***************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 var __extends = (this && this.__extends) || (function () {
@@ -24524,7 +23852,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.RepeatNote = void 0;
 var glyphnote_1 = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -24557,10 +23885,8 @@ exports.RepeatNote = RepeatNote;
 /*!**********************!*\
   !*** ./src/stave.ts ***!
   \**********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 var __extends = (this && this.__extends) || (function () {
@@ -24589,11 +23915,11 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Stave = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var stavebarline_1 = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 var staverepetition_1 = __webpack_require__(/*! ./staverepetition */ "./src/staverepetition.ts");
@@ -24602,7 +23928,7 @@ var stavetempo_1 = __webpack_require__(/*! ./stavetempo */ "./src/stavetempo.ts"
 var stavetext_1 = __webpack_require__(/*! ./stavetext */ "./src/stavetext.ts");
 var boundingbox_1 = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 var clef_1 = __webpack_require__(/*! ./clef */ "./src/clef.ts");
-var keysignature_1 = __webpack_require__(/*! ./keysignature */ "./src/keysignature.js");
+var keysignature_1 = __webpack_require__(/*! ./keysignature */ "./src/keysignature.ts");
 var timesignature_1 = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
 var stavevolta_1 = __webpack_require__(/*! ./stavevolta */ "./src/stavevolta.ts");
 var Stave = /** @class */ (function (_super) {
@@ -24638,7 +23964,7 @@ var Stave = /** @class */ (function (_super) {
             fill_style: '#999999',
             left_bar: true,
             right_bar: true,
-            spacing_between_lines_px: tables_1.Flow.STAVE_LINE_DISTANCE,
+            spacing_between_lines_px: flow_1.Flow.STAVE_LINE_DISTANCE,
             space_above_staff_ln: 4,
             space_below_staff_ln: 4,
             top_text_position: 1,
@@ -24658,7 +23984,7 @@ var Stave = /** @class */ (function (_super) {
         // This is the sum of the padding that normally goes on left + right of a stave during
         // drawing.  Used to size staves correctly with content width
         get: function () {
-            var musicFont = tables_1.Flow.DEFAULT_FONT_STACK[0];
+            var musicFont = flow_1.Flow.DEFAULT_FONT_STACK[0];
             return musicFont.lookupMetric('stave.padding') + musicFont.lookupMetric('stave.endPaddingMax');
         },
         enumerable: false,
@@ -24721,10 +24047,10 @@ var Stave = /** @class */ (function (_super) {
         return this.y;
     };
     Stave.prototype.getTopLineTopY = function () {
-        return this.getYForLine(0) - tables_1.Flow.STAVE_LINE_THICKNESS / 2;
+        return this.getYForLine(0) - flow_1.Flow.STAVE_LINE_THICKNESS / 2;
     };
     Stave.prototype.getBottomLineBottomY = function () {
-        return this.getYForLine(this.getNumLines() - 1) + tables_1.Flow.STAVE_LINE_THICKNESS / 2;
+        return this.getYForLine(this.getNumLines() - 1) + flow_1.Flow.STAVE_LINE_THICKNESS / 2;
     };
     Stave.prototype.setX = function (x) {
         var shift = x - this.x;
@@ -24750,7 +24076,7 @@ var Stave = /** @class */ (function (_super) {
         return this.width;
     };
     Stave.prototype.getStyle = function () {
-        return __assign({ fillStyle: this.options.fill_style, strokeStyle: this.options.fill_style, lineWidth: tables_1.Flow.STAVE_LINE_THICKNESS }, (this.style || {}));
+        return __assign({ fillStyle: this.options.fill_style, strokeStyle: this.options.fill_style, lineWidth: flow_1.Flow.STAVE_LINE_THICKNESS }, (this.style || {}));
     };
     Stave.prototype.setMeasure = function (measure) {
         this.measure = measure;
@@ -24916,9 +24242,15 @@ var Stave = /** @class */ (function (_super) {
         }
         return this;
     };
+    Stave.prototype.getClef = function () {
+        return this.clef;
+    };
     Stave.prototype.setEndClef = function (clefSpec, size, annotation) {
         this.setClef(clefSpec, size, annotation, stavemodifier_1.StaveModifier.Position.END);
         return this;
+    };
+    Stave.prototype.getEndClef = function () {
+        return this.endClef;
     };
     Stave.prototype.setKeySignature = function (keySpec, cancelKeySpec, position) {
         if (position === undefined) {
@@ -25223,10 +24555,8 @@ exports.Stave = Stave;
 /*!*****************************!*\
   !*** ./src/stavebarline.ts ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -25246,9 +24576,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Barline = exports.BarlineType = void 0;
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 var BarlineType;
 (function (BarlineType) {
@@ -25268,7 +24598,7 @@ var Barline = /** @class */ (function (_super) {
     function Barline(type) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Barline');
-        _this.thickness = tables_1.Flow.STAVE_LINE_THICKNESS;
+        _this.thickness = flow_1.Flow.STAVE_LINE_THICKNESS;
         var TYPE = BarlineType;
         _this.widths = {};
         _this.widths[TYPE.SINGLE] = 5;
@@ -25469,10 +24799,8 @@ exports.Barline = Barline;
 /*!*******************************!*\
   !*** ./src/staveconnector.ts ***!
   \*******************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 var __extends = (this && this.__extends) || (function () {
@@ -25501,11 +24829,11 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.StaveConnector = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 function drawBoldDoubleLine(ctx, type, topX, topY, botY) {
     if (type !== StaveConnector.type.BOLD_DOUBLE_LEFT && type !== StaveConnector.type.BOLD_DOUBLE_RIGHT) {
@@ -25528,7 +24856,7 @@ var StaveConnector = /** @class */ (function (_super) {
     function StaveConnector(top_stave, bottom_stave) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'StaveConnector');
-        _this.thickness = tables_1.Flow.STAVE_LINE_THICKNESS;
+        _this.thickness = flow_1.Flow.STAVE_LINE_THICKNESS;
         _this.width = 3;
         _this.top_stave = top_stave;
         _this.bottom_stave = bottom_stave;
@@ -25716,10 +25044,8 @@ exports.StaveConnector = StaveConnector;
 /*!*****************************!*\
   !*** ./src/stavehairpin.ts ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -25743,7 +25069,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.StaveHairpin = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
@@ -25912,10 +25238,8 @@ exports.StaveHairpin = StaveHairpin;
 /*!**************************!*\
   !*** ./src/staveline.ts ***!
   \**************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -25932,7 +25256,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.StaveLine = void 0;
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -25945,7 +25269,7 @@ exports.StaveLine = void 0;
 // purposes, such as diagrams.
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 // Attribution: Arrow rendering implementations based off of
 // Patrick Horgan's article, "Drawing lines and arcs with
 // arrow heads on  HTML5 Canvas"
@@ -26061,9 +25385,9 @@ var StaveLine = /** @class */ (function (_super) {
             padding_right: 3,
             // The width of the line in pixels
             line_width: 1,
-            // An array of line/space lengths. Unsupported with Raphael (SVG).
+            // An array of line/space lengths. (TODO/QUESTION: Is this supported in SVG?).
             line_dash: undefined,
-            // Can draw rounded line end, instead of a square. Unsupported with Raphael (SVG).
+            // Can draw rounded line end, instead of a square. (TODO/QUESTION: Is this supported in SVG?).
             rounded_end: true,
             // The color of the line and arrowheads
             color: undefined,
@@ -26201,7 +25525,7 @@ var StaveLine = /** @class */ (function (_super) {
             y = first_note.checkStave().getYForTopText();
         }
         else if (vertical_position === StaveLine.TextVerticalPosition.BOTTOM) {
-            y = first_note.checkStave().getYForBottomText(tables_1.Flow.TEXT_HEIGHT_OFFSET_HACK);
+            y = first_note.checkStave().getYForBottomText(flow_1.Flow.TEXT_HEIGHT_OFFSET_HACK);
         }
         // Draw the text
         ctx.save();
@@ -26231,10 +25555,8 @@ exports.StaveLine = StaveLine;
 /*!******************************!*\
   !*** ./src/stavemodifier.ts ***!
   \******************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -26255,8 +25577,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.StaveModifier = exports.StaveModifierPosition = void 0;
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var StaveModifierPosition;
 (function (StaveModifierPosition) {
@@ -26294,6 +25617,12 @@ var StaveModifier = /** @class */ (function (_super) {
         return this;
     };
     StaveModifier.prototype.getStave = function () {
+        return this.stave;
+    };
+    StaveModifier.prototype.checkStave = function () {
+        if (!this.stave) {
+            throw new util_1.RuntimeError('NoStave', 'No stave attached to instance');
+        }
         return this.stave;
     };
     StaveModifier.prototype.setStave = function (stave) {
@@ -26351,10 +25680,8 @@ exports.StaveModifier = StaveModifier;
 /*!**************************!*\
   !*** ./src/stavenote.ts ***!
   \**************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -26392,11 +25719,10 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.StaveNote = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var boundingbox_1 = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
 var notehead_1 = __webpack_require__(/*! ./notehead */ "./src/notehead.ts");
@@ -26425,7 +25751,7 @@ function shiftRestVertical(rest, note, dir) {
 }
 // Called from formatNotes :: center a rest between two notes
 function centerRest(rest, noteU, noteL) {
-    var delta = rest.line - vex_1.Vex.MidLine(noteU.minLine, noteL.maxLine);
+    var delta = rest.line - util_1.midLine(noteU.minLine, noteL.maxLine);
     rest.note.setKeyLine(0, rest.note.getKeyLine(0) - delta);
     rest.line -= delta;
     rest.maxLine -= delta;
@@ -26438,10 +25764,12 @@ var StaveNote = /** @class */ (function (_super) {
         _this.minLine = 0;
         _this.maxLine = 0;
         _this.setAttribute('type', 'StaveNote');
+        // Ledger Lines default width 2.0
+        _this.ledgerLineStyle = { lineWidth: 2.0 };
         _this.clef = noteStruct.clef;
         _this.octave_shift = noteStruct.octave_shift;
         // Pull note rendering properties
-        _this.glyph = tables_1.Flow.getGlyphProps(_this.duration, _this.noteType);
+        _this.glyph = flow_1.Flow.getGlyphProps(_this.duration, _this.noteType);
         if (!_this.glyph) {
             throw new util_1.RuntimeError('BadArguments', "Invalid note initialization data (No glyph found): " + JSON.stringify(noteStruct));
         }
@@ -26456,7 +25784,7 @@ var StaveNote = /** @class */ (function (_super) {
         _this.ledgerLineStyle = {};
         _this.render_options = __assign(__assign({}, _this.render_options), {
             // font size for note heads and rests
-            glyph_font_scale: noteStruct.glyph_font_scale || tables_1.Flow.DEFAULT_NOTATION_FONT_SCALE,
+            glyph_font_scale: noteStruct.glyph_font_scale || flow_1.Flow.DEFAULT_NOTATION_FONT_SCALE,
             // number of stroke px to the left and right of head
             stroke_px: noteStruct.stroke_px || StaveNote.DEFAULT_LEDGER_LINE_OFFSET,
         });
@@ -26822,7 +26150,7 @@ var StaveNote = /** @class */ (function (_super) {
             if (this.glyph.rest)
                 this.glyph.position = key;
             var options = { octave_shift: this.octave_shift || 0 };
-            var props = tables_1.Flow.keyProperties(key, this.clef, options);
+            var props = flow_1.Flow.keyProperties(key, this.clef, options);
             if (!props) {
                 throw new util_1.RuntimeError('BadArguments', "Invalid key for note properties: " + key);
             }
@@ -26878,7 +26206,7 @@ var StaveNote = /** @class */ (function (_super) {
         var lineSpacing = halfLineSpacing * 2;
         if (this.isRest()) {
             var y = this.ys[0];
-            var frac = tables_1.Flow.durationToFraction(this.duration);
+            var frac = flow_1.Flow.durationToFraction(this.duration);
             if (frac.equals(1) || frac.equals(2)) {
                 minY = y - halfLineSpacing;
                 maxY = y + halfLineSpacing;
@@ -27022,7 +26350,7 @@ var StaveNote = /** @class */ (function (_super) {
             var lastLine = this.keyProps[this.keyProps.length - 1].line;
             var top_1 = Math.max(restLine, lastLine);
             var bot = Math.min(restLine, lastLine);
-            restLine = vex_1.Vex.MidLine(top_1, bot);
+            restLine = util_1.midLine(top_1, bot);
         }
         return restLine;
     };
@@ -27207,10 +26535,10 @@ var StaveNote = /** @class */ (function (_super) {
         var noteWidth;
         var flagWidth = (_c = (_b = (_a = this.flag) === null || _a === void 0 ? void 0 : _a.getMetrics()) === null || _b === void 0 ? void 0 : _b.width) !== null && _c !== void 0 ? _c : 0;
         if (this.shouldDrawFlag() && this.stem_direction === stem_1.Stem.DOWN) {
-            noteWidth = Math.max(flagWidth + tables_1.Flow.STEM_WIDTH, glyphWidth);
+            noteWidth = Math.max(flagWidth + flow_1.Flow.STEM_WIDTH, glyphWidth);
         }
         else if (this.shouldDrawFlag() && this.stem_direction === stem_1.Stem.UP) {
-            noteWidth = flagWidth + glyphWidth + tables_1.Flow.STEM_WIDTH;
+            noteWidth = flagWidth + glyphWidth + flow_1.Flow.STEM_WIDTH;
         }
         else {
             noteWidth = glyphWidth;
@@ -27324,7 +26652,7 @@ var StaveNote = /** @class */ (function (_super) {
         };
         var style = __assign(__assign({}, (stave.getStyle() || {})), (this.getLedgerLineStyle() || {}));
         if (typeof style.lineWidth === 'undefined') {
-            style.lineWidth = tables_1.Flow.STAVE_LINE_THICKNESS * 2;
+            style.lineWidth = flow_1.Flow.STAVE_LINE_THICKNESS * 2;
         }
         else {
             style.lineWidth *= 2;
@@ -27502,10 +26830,8 @@ exports.StaveNote = StaveNote;
 /*!********************************!*\
   !*** ./src/staverepetition.ts ***!
   \********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Larry Kuhns 2011
@@ -27524,7 +26850,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Repetition = void 0;
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -27669,10 +26995,8 @@ exports.Repetition = Repetition;
 /*!*****************************!*\
   !*** ./src/stavesection.ts ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Larry Kuhns 2011
@@ -27691,7 +27015,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.StaveSection = void 0;
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 var StaveSection = /** @class */ (function (_super) {
@@ -27767,10 +27091,8 @@ exports.StaveSection = StaveSection;
 /*!***************************!*\
   !*** ./src/stavetempo.ts ***!
   \***************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Radosaw Eichler 2012
@@ -27789,9 +27111,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.StaveTempo = void 0;
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var StaveTempo = /** @class */ (function (_super) {
@@ -27863,7 +27185,7 @@ var StaveTempo = /** @class */ (function (_super) {
                 ctx.fillText('(', x, y);
                 x += ctx.measureText('(').width;
             }
-            var code = tables_1.Flow.getGlyphProps(duration);
+            var code = flow_1.Flow.getGlyphProps(duration);
             x += 3 * scale;
             glyph_1.Glyph.renderGlyph(ctx, x, y, options.glyph_font_scale, code.code_head);
             x += code.getWidth() * scale;
@@ -27906,10 +27228,8 @@ exports.StaveTempo = StaveTempo;
 /*!**************************!*\
   !*** ./src/stavetext.ts ***!
   \**************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Taehoon Moon 2014
@@ -27939,7 +27259,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.StaveText = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
@@ -28051,10 +27371,8 @@ exports.StaveText = StaveText;
 /*!*************************!*\
   !*** ./src/stavetie.ts ***!
   \*************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -28076,7 +27394,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.StaveTie = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
@@ -28247,10 +27565,8 @@ exports.StaveTie = StaveTie;
 /*!***************************!*\
   !*** ./src/stavevolta.ts ***!
   \***************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Larry Kuhns 2011
@@ -28269,7 +27585,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Volta = exports.VoltaType = void 0;
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 var VoltaType;
@@ -28360,10 +27676,8 @@ exports.Volta = Volta;
 /*!*********************!*\
   !*** ./src/stem.ts ***!
   \*********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -28385,11 +27699,11 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Stem = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 // To enable logging for this class. Set `Vex.Flow.Stem.DEBUG` to `true`.
 // eslint-disable-next-line
 function L() {
@@ -28454,14 +27768,14 @@ var Stem = /** @class */ (function (_super) {
     Object.defineProperty(Stem, "WIDTH", {
         // Theme
         get: function () {
-            return tables_1.Flow.STEM_WIDTH;
+            return flow_1.Flow.STEM_WIDTH;
         },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(Stem, "HEIGHT", {
         get: function () {
-            return tables_1.Flow.STEM_HEIGHT;
+            return flow_1.Flow.STEM_HEIGHT;
         },
         enumerable: false,
         configurable: true
@@ -28582,10 +27896,8 @@ exports.Stem = Stem;
 /*!******************************!*\
   !*** ./src/stemmablenote.ts ***!
   \******************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -28607,10 +27919,10 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.StemmableNote = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
@@ -28674,7 +27986,7 @@ var StemmableNote = /** @class */ (function (_super) {
     };
     // Get the minimum length of stem
     StemmableNote.prototype.getStemMinimumLength = function () {
-        var frac = tables_1.Flow.durationToFraction(this.duration);
+        var frac = flow_1.Flow.durationToFraction(this.duration);
         var length = frac.value() <= 1 ? 0 : 20;
         // if note is flagged, cannot shorten beam
         switch (this.duration) {
@@ -28805,7 +28117,7 @@ var StemmableNote = /** @class */ (function (_super) {
         }
     };
     StemmableNote.prototype.hasFlag = function () {
-        return tables_1.Flow.getGlyphProps(this.duration).flag && !this.beam;
+        return flow_1.Flow.getGlyphProps(this.duration).flag && !this.beam;
     };
     /** Post formats the note. */
     StemmableNote.prototype.postFormat = function () {
@@ -28833,10 +28145,8 @@ exports.StemmableNote = StemmableNote;
 /*!*****************************!*\
   !*** ./src/stringnumber.ts ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Larry Kuhns
@@ -28859,11 +28169,11 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.StringNumber = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-var renderer_1 = __webpack_require__(/*! ./renderer */ "./src/renderer.js");
+var renderer_1 = __webpack_require__(/*! ./renderer */ "./src/renderer.ts");
 var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 var stemmablenote_1 = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
 var StringNumber = /** @class */ (function (_super) {
@@ -29090,10 +28400,8 @@ exports.StringNumber = StringNumber;
 /*!************************!*\
   !*** ./src/strokes.ts ***!
   \************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Larry Kuhns
@@ -29127,7 +28435,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Stroke = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -29358,10 +28666,8 @@ exports.Stroke = Stroke;
 /*!***************************!*\
   !*** ./src/svgcontext.ts ***!
   \***************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // @author Gregory Ristow (2015)
@@ -29376,9 +28682,8 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.SVGContext = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var attrNamesToIgnoreMap = {
     path: {
@@ -29453,9 +28758,9 @@ var SVGContext = /** @class */ (function () {
         this.parent.appendChild(group);
         this.parent = group;
         if (cls)
-            group.setAttribute('class', vex_1.Vex.Prefix(cls));
+            group.setAttribute('class', util_1.prefix(cls));
         if (id)
-            group.setAttribute('id', vex_1.Vex.Prefix(id));
+            group.setAttribute('id', util_1.prefix(id));
         if (attrs && attrs.pointerBBox) {
             group.setAttribute('pointer-events', 'bounding-box');
         }
@@ -29553,6 +28858,11 @@ var SVGContext = /** @class */ (function () {
         this.shadow_attributes.color = color;
         return this;
     };
+    /**
+     * @param blur A non-negative float specifying the level of shadow blur, where 0
+     *             represents no blur and larger numbers represent increasingly more blur.
+     * @returns this
+     */
     SVGContext.prototype.setShadowBlur = function (blur) {
         this.shadow_attributes.width = blur;
         return this;
@@ -29577,12 +28887,12 @@ var SVGContext = /** @class */ (function () {
             throw new util_1.RuntimeError('ArgumentError', 'lineDash must be an array of integers.');
         }
     };
-    SVGContext.prototype.setLineCap = function (lineCap) {
-        this.attributes['stroke-linecap'] = lineCap;
+    SVGContext.prototype.setLineCap = function (capType) {
+        this.attributes['stroke-linecap'] = capType;
         return this;
     };
     // ### Sizing & Scaling Methods:
-    // TODO (GCR): See note at scale() -- seperate our internal
+    // TODO (GCR): See note at scale() -- separate our internal
     // conception of pixel-based width/height from the style.width
     // and style.height properties eventually to allow users to
     // apply responsive sizing attributes to the SVG.
@@ -29608,7 +28918,7 @@ var SVGContext = /** @class */ (function () {
         // width/height.  This would allow us to create automatically
         // scaling SVG's that filled their containers, for instance.
         //
-        // As this isn't implemented in Canvas or Raphael contexts,
+        // As this isn't implemented in Canvas contexts,
         // I've left as is for now, but in using the viewBox to
         // handle internal scaling, am trying to make it possible
         // for us to eventually move in that direction.
@@ -29700,7 +29010,7 @@ var SVGContext = /** @class */ (function () {
         // Adding a large number of transform paths (as we would
         // have to do) could be a real performance hit.  Since
         // tabNote seems to be the only module that makes use of this
-        // it may be worth creating a seperate tabStave that would
+        // it may be worth creating a separate tabStave that would
         // draw lines around locations of tablature fingering.
         //
         this.rect(x, y, width, height, this.background_attributes);
@@ -29879,8 +29189,7 @@ var SVGContext = /** @class */ (function () {
         if (!text || text.length <= 0) {
             return this;
         }
-        var attributes = __assign(__assign({}, this.attributes), { stroke: 'none', x: x,
-            y: y });
+        var attributes = __assign(__assign({}, this.attributes), { stroke: 'none', x: x, y: y });
         var txt = this.create('text');
         txt.textContent = text;
         this.applyAttributes(txt, attributes);
@@ -29946,14 +29255,12 @@ exports.SVGContext = SVGContext;
 
 /***/ }),
 
-/***/ "./src/system.js":
+/***/ "./src/system.ts":
 /*!***********************!*\
-  !*** ./src/system.js ***!
+  !*** ./src/system.ts ***!
   \***********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -29986,13 +29293,14 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.System = void 0;
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var factory_1 = __webpack_require__(/*! ./factory */ "./src/factory.js");
-var stave_1 = __webpack_require__(/*! ./stave */ "./src/stave.ts");
+var factory_1 = __webpack_require__(/*! ./factory */ "./src/factory.ts");
 var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
+var stave_1 = __webpack_require__(/*! ./stave */ "./src/stave.ts");
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var System = /** @class */ (function (_super) {
     __extends(System, _super);
     function System(params) {
@@ -30005,8 +29313,8 @@ var System = /** @class */ (function (_super) {
     }
     System.prototype.setOptions = function (options) {
         if (options === void 0) { options = {}; }
-        this.options = __assign(__assign({ x: 10, y: 10, width: 500, connector: null, spaceBetweenStaves: 12, factory: null, noJustification: false, debugFormatter: false, formatIterations: 0, noPadding: false }, options), { details: __assign({ alpha: 0.5 }, options.details) });
-        this.factory = this.options.factory || new factory_1.Factory({ renderer: { el: null } });
+        this.options = __assign(__assign({ x: 10, y: 10, width: 500, spaceBetweenStaves: 12, noJustification: false, debugFormatter: false, formatIterations: 0, noPadding: false }, options), { details: __assign({ alpha: 0.5 }, options.details) });
+        this.factory = this.options.factory || new factory_1.Factory({ renderer: { elementId: null, width: 0, height: 0 } });
     };
     System.prototype.setContext = function (context) {
         _super.prototype.setContext.call(this, context);
@@ -30022,20 +29330,21 @@ var System = /** @class */ (function (_super) {
         });
         return this.connector;
     };
-    System.prototype.addStave = function (params) {
+    System.prototype.addStave = function (paramsItems) {
         var _this = this;
-        params = __assign(__assign({ stave: null, voices: [], spaceAbove: 0, spaceBelow: 0, debugNoteMetrics: false }, params), { options: __assign({ left_bar: false }, params.options) });
-        if (!params.stave) {
-            params.stave = this.factory.Stave({
+        var stave = paramsItems.stave;
+        if (!stave) {
+            stave = this.factory.Stave({
                 x: this.options.x,
                 y: this.options.y,
                 width: this.options.width,
-                options: params.options,
+                options: __assign({ left_bar: false }, paramsItems.options),
             });
         }
+        var params = __assign(__assign({ stave: stave, voices: [], spaceAbove: 0, spaceBelow: 0, debugNoteMetrics: false }, paramsItems), { options: __assign({ left_bar: false }, paramsItems.options) });
         params.voices.forEach(function (voice) {
             return voice
-                .setContext(_this.context)
+                .setContext(_this.getContext())
                 .setStave(params.stave)
                 .getTickables()
                 .forEach(function (tickable) { return tickable.setStave(params.stave); });
@@ -30081,6 +29390,9 @@ var System = /** @class */ (function (_super) {
     System.prototype.draw = function () {
         // Render debugging information, if requested.
         var ctx = this.checkContext();
+        if (!this.formatter || !this.startX || !this.lastY || !this.debugNoteMetricsYs) {
+            throw new util_1.RuntimeError('NoFormated', 'Format must be instatiated before draw');
+        }
         this.setRendered();
         if (this.options.debugFormatter) {
             formatter_1.Formatter.plotDebugging(ctx, this.formatter, this.startX, this.options.y, this.lastY);
@@ -30096,14 +29408,12 @@ exports.System = System;
 
 /***/ }),
 
-/***/ "./src/tables.js":
+/***/ "./src/tables.ts":
 /*!***********************!*\
-  !*** ./src/tables.js ***!
+  !*** ./src/tables.ts ***!
   \***********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 var __assign = (this && this.__assign) || function () {
@@ -30117,266 +29427,51 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Flow = void 0;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Tables = void 0;
 /* eslint-disable key-spacing */
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var font_1 = __webpack_require__(/*! ./font */ "./src/font.ts");
-var Flow = {
-    STEM_WIDTH: 1.5,
-    STEM_HEIGHT: 35,
-    STAVE_LINE_THICKNESS: 1,
-    RESOLUTION: 16384,
-    /**
-     * Customize this to choose a different music font.
-     * For example: Vex.Flow.DEFAULT_FONT_STACK = [Fonts.Petaluma, Fonts.Custom];
-     */
-    DEFAULT_FONT_STACK: [font_1.Fonts.Bravura, font_1.Fonts.Gonville, font_1.Fonts.Custom],
-    DEFAULT_NOTATION_FONT_SCALE: 39,
-    DEFAULT_TABLATURE_FONT_SCALE: 39,
-    SLASH_NOTEHEAD_WIDTH: 15,
-    STAVE_LINE_DISTANCE: 10,
-    // HACK:
-    // Since text origins are positioned at the baseline, we must
-    // compensate for the ascender of the text. Of course, 1 staff space is
-    // a very poor approximation.
-    //
-    // This will be deprecated in the future. This is a temporary solution until
-    // we have more robust text metrics.
-    TEXT_HEIGHT_OFFSET_HACK: 1,
-    /* Kerning (DEPRECATED) */
-    IsKerned: true,
-    keyProperties: keyProperties,
-    integerToNote: integerToNote,
-    durationToTicks: durationToTicks,
-    durationToFraction: durationToFraction,
-    durationToNumber: durationToNumber,
-    getGlyphProps: getGlyphProps,
-    textWidth: textWidth,
-    tabToGlyph: tabToGlyph,
-    articulationCodes: articulationCodes,
-    TIME4_4: TIME4_4,
+// Custom note heads
+var customNoteHeads = {
+    /* Diamond */
+    D0: { code: 'noteheadDiamondWhole' },
+    D1: { code: 'noteheadDiamondHalf' },
+    D2: { code: 'noteheadDiamondBlack' },
+    D3: { code: 'noteheadDiamondBlack' },
+    /* Triangle */
+    T0: { code: 'noteheadTriangleUpWhole' },
+    T1: { code: 'noteheadTriangleUpHalf' },
+    T2: { code: 'noteheadTriangleUpBlack' },
+    T3: { code: 'noteheadTriangleUpBlack' },
+    /* Cross */
+    X0: { code: 'noteheadXWhole' },
+    X1: { code: 'noteheadXHalf' },
+    X2: { code: 'noteheadXBlack' },
+    X3: { code: 'noteheadCircleX' },
+    /* Square */
+    S1: { code: 'noteheadSquareWhite' },
+    S2: { code: 'noteheadSquareBlack' },
+    /* Rectangle */
+    R1: { code: 'vexNoteHeadRectWhite' },
+    R2: { code: 'vexNoteHeadRectBlack' }, // no smufl code
 };
-exports.Flow = Flow;
-Flow.clefProperties = function (clef) {
-    if (!clef)
-        throw new util_1.RuntimeError('BadArgument', 'Invalid clef: ' + clef);
-    var props = Flow.clefProperties.values[clef];
-    if (!props)
-        throw new util_1.RuntimeError('BadArgument', 'Invalid clef: ' + clef);
-    return props;
+var RESOLUTION = 16384;
+var durations = {
+    '1/2': RESOLUTION * 2,
+    1: RESOLUTION / 1,
+    2: RESOLUTION / 2,
+    4: RESOLUTION / 4,
+    8: RESOLUTION / 8,
+    16: RESOLUTION / 16,
+    32: RESOLUTION / 32,
+    64: RESOLUTION / 64,
+    128: RESOLUTION / 128,
+    256: RESOLUTION / 256,
 };
-Flow.clefProperties.values = {
-    treble: { line_shift: 0 },
-    bass: { line_shift: 6 },
-    tenor: { line_shift: 4 },
-    alto: { line_shift: 3 },
-    soprano: { line_shift: 1 },
-    percussion: { line_shift: 0 },
-    'mezzo-soprano': { line_shift: 2 },
-    'baritone-c': { line_shift: 5 },
-    'baritone-f': { line_shift: 5 },
-    subbass: { line_shift: 7 },
-    french: { line_shift: -1 },
-};
-/*
-  Take a note in the format "Key/Octave" (e.g., "C/5") and return properties.
-
-  The last argument, params, is a struct the currently can contain one option,
-  octave_shift for clef ottavation (0 = default; 1 = 8va; -1 = 8vb, etc.).
-*/
-function keyProperties(key, clef, params) {
-    if (clef === undefined) {
-        clef = 'treble';
-    }
-    var options = { octave_shift: 0 };
-    if (typeof params === 'object') {
-        vex_1.Vex.Merge(options, params);
-    }
-    var pieces = key.split('/');
-    if (pieces.length < 2) {
-        throw new util_1.RuntimeError('BadArguments', "Key must have note + octave and an optional glyph: " + key);
-    }
-    var k = pieces[0].toUpperCase();
-    var value = Flow.keyProperties.note_values[k];
-    if (!value)
-        throw new util_1.RuntimeError('BadArguments', 'Invalid key name: ' + k);
-    if (value.octave)
-        pieces[1] = value.octave;
-    var octave = parseInt(pieces[1], 10);
-    // Octave_shift is the shift to compensate for clef 8va/8vb.
-    octave += -1 * options.octave_shift;
-    var base_index = octave * 7 - 4 * 7;
-    var line = (base_index + value.index) / 2;
-    line += Flow.clefProperties(clef).line_shift;
-    var stroke = 0;
-    if (line <= 0 && (line * 2) % 2 === 0)
-        stroke = 1; // stroke up
-    if (line >= 6 && (line * 2) % 2 === 0)
-        stroke = -1; // stroke down
-    // Integer value for note arithmetic.
-    var int_value = typeof value.int_val !== 'undefined' ? octave * 12 + value.int_val : null;
-    /* Check if the user specified a glyph. */
-    var code = value.code;
-    var shift_right = value.shift_right;
-    var extraProps = {};
-    if (pieces.length > 2 && pieces[2]) {
-        var glyph_name = pieces[2].toUpperCase();
-        extraProps = Flow.keyProperties.customNoteHeads[glyph_name] || {};
-    }
-    return __assign({ key: k, octave: octave,
-        line: line,
-        int_value: int_value, accidental: value.accidental, code: code,
-        stroke: stroke,
-        shift_right: shift_right, displaced: false }, extraProps);
-}
-Flow.keyProperties.note_values = {
-    C: { index: 0, int_val: 0, accidental: null },
-    CN: { index: 0, int_val: 0, accidental: 'n' },
-    'C#': { index: 0, int_val: 1, accidental: '#' },
-    'C##': { index: 0, int_val: 2, accidental: '##' },
-    CB: { index: 0, int_val: -1, accidental: 'b' },
-    CBB: { index: 0, int_val: -2, accidental: 'bb' },
-    D: { index: 1, int_val: 2, accidental: null },
-    DN: { index: 1, int_val: 2, accidental: 'n' },
-    'D#': { index: 1, int_val: 3, accidental: '#' },
-    'D##': { index: 1, int_val: 4, accidental: '##' },
-    DB: { index: 1, int_val: 1, accidental: 'b' },
-    DBB: { index: 1, int_val: 0, accidental: 'bb' },
-    E: { index: 2, int_val: 4, accidental: null },
-    EN: { index: 2, int_val: 4, accidental: 'n' },
-    'E#': { index: 2, int_val: 5, accidental: '#' },
-    'E##': { index: 2, int_val: 6, accidental: '##' },
-    EB: { index: 2, int_val: 3, accidental: 'b' },
-    EBB: { index: 2, int_val: 2, accidental: 'bb' },
-    F: { index: 3, int_val: 5, accidental: null },
-    FN: { index: 3, int_val: 5, accidental: 'n' },
-    'F#': { index: 3, int_val: 6, accidental: '#' },
-    'F##': { index: 3, int_val: 7, accidental: '##' },
-    FB: { index: 3, int_val: 4, accidental: 'b' },
-    FBB: { index: 3, int_val: 3, accidental: 'bb' },
-    G: { index: 4, int_val: 7, accidental: null },
-    GN: { index: 4, int_val: 7, accidental: 'n' },
-    'G#': { index: 4, int_val: 8, accidental: '#' },
-    'G##': { index: 4, int_val: 9, accidental: '##' },
-    GB: { index: 4, int_val: 6, accidental: 'b' },
-    GBB: { index: 4, int_val: 5, accidental: 'bb' },
-    A: { index: 5, int_val: 9, accidental: null },
-    AN: { index: 5, int_val: 9, accidental: 'n' },
-    'A#': { index: 5, int_val: 10, accidental: '#' },
-    'A##': { index: 5, int_val: 11, accidental: '##' },
-    AB: { index: 5, int_val: 8, accidental: 'b' },
-    ABB: { index: 5, int_val: 7, accidental: 'bb' },
-    B: { index: 6, int_val: 11, accidental: null },
-    BN: { index: 6, int_val: 11, accidental: 'n' },
-    'B#': { index: 6, int_val: 12, accidental: '#' },
-    'B##': { index: 6, int_val: 13, accidental: '##' },
-    BB: { index: 6, int_val: 10, accidental: 'b' },
-    BBB: { index: 6, int_val: 9, accidental: 'bb' },
-    R: { index: 6, int_val: 9, rest: true },
-    X: {
-        index: 6,
-        accidental: '',
-        octave: 4,
-        code: 'noteheadXBlack',
-        shift_right: 5.5,
-    },
-};
-function integerToNote(integer) {
-    if (typeof integer === 'undefined') {
-        throw new util_1.RuntimeError('BadArguments', 'Undefined integer for integerToNote');
-    }
-    if (integer < -2) {
-        throw new util_1.RuntimeError('BadArguments', "integerToNote requires integer > -2: " + integer);
-    }
-    var noteValue = Flow.integerToNote.table[integer];
-    if (!noteValue) {
-        throw new util_1.RuntimeError('BadArguments', "Unknown note value for integer: " + integer);
-    }
-    return noteValue;
-}
-Flow.integerToNote.table = {
-    0: 'C',
-    1: 'C#',
-    2: 'D',
-    3: 'D#',
-    4: 'E',
-    5: 'F',
-    6: 'F#',
-    7: 'G',
-    8: 'G#',
-    9: 'A',
-    10: 'A#',
-    11: 'B',
-};
-function tabToGlyph(fret, scale) {
-    if (scale === void 0) { scale = 1.0; }
-    var glyph = null;
-    var width = 0;
-    var shift_y = 0;
-    if (fret.toString().toUpperCase() === 'X') {
-        var glyphMetrics = new glyph_1.Glyph('accidentalDoubleSharp', Flow.DEFAULT_TABLATURE_FONT_SCALE).getMetrics();
-        glyph = 'accidentalDoubleSharp';
-        width = glyphMetrics.width;
-        shift_y = -glyphMetrics.height / 2;
-    }
-    else {
-        width = Flow.textWidth(fret.toString());
-    }
-    return {
-        text: fret,
-        code: glyph,
-        getWidth: function () { return width * scale; },
-        shift_y: shift_y,
-    };
-}
-function textWidth(text) {
-    return 7 * text.toString().length;
-}
-function articulationCodes(artic) {
-    return Flow.articulationCodes.articulations[artic];
-}
-Flow.articulationCodes.articulations = {
-    'a.': { code: 'augmentationDot', between_lines: true },
-    av: {
-        aboveCode: 'articStaccatissimoAbove',
-        belowCode: 'articStaccatissimoBelow',
-        between_lines: true,
-    },
-    'a>': {
-        aboveCode: 'articAccentAbove',
-        belowCode: 'articAccentBelow',
-        between_lines: true,
-    },
-    'a-': {
-        aboveCode: 'articTenutoAbove',
-        belowCode: 'articTenutoBelow',
-        between_lines: true,
-    },
-    'a^': {
-        aboveCode: 'articMarcatoAbove',
-        belowCode: 'articMarcatoBelow',
-        between_lines: false,
-    },
-    'a+': { code: 'pluckedLeftHandPizzicato', between_lines: false },
-    ao: {
-        aboveCode: 'pluckedSnapPizzicatoAbove',
-        belowCode: 'pluckedSnapPizzicatoBelow',
-        between_lines: false,
-    },
-    ah: { code: 'stringsHarmonic', between_lines: false },
-    'a@': { aboveCode: 'fermataAbove', belowCode: 'fermataBelow', between_lines: false },
-    'a@a': { code: 'fermataAbove', between_lines: false },
-    'a@u': { code: 'fermataBelow', between_lines: false },
-    'a|': { code: 'stringsUpBow', between_lines: false },
-    am: { code: 'stringsDownBow', between_lines: false },
-    'a,': { code: 'pictChokeCymbal', between_lines: false }, // Choked
-};
-Flow.accidentalCodes = function (acc) { return Flow.accidentalCodes.accidentals[acc]; };
-Flow.accidentalCodes.accidentals = {
+var accidentals = {
     '#': { code: 'accidentalSharp', parenRightPaddingAdjustment: -1 },
     '##': { code: 'accidentalDoubleSharp', parenRightPaddingAdjustment: -1 },
     b: { code: 'accidentalFlat', parenRightPaddingAdjustment: -2 },
@@ -30634,699 +29729,1017 @@ Flow.accidentalCodes.accidentals = {
     accSagittalFractionalTinaUp: { code: 'accSagittalFractionalTinaUp', parenRightPaddingAdjustment: -1 },
     accSagittalFractionalTinaDown: { code: 'accSagittalFractionalTinaDown', parenRightPaddingAdjustment: -1 },
     accidentalNarrowReversedFlat: { code: 'accidentalNarrowReversedFlat', parenRightPaddingAdjustment: -1 },
-    accidentalNarrowReversedFlatAndFlat: { code: 'accidentalNarrowReversedFlatAndFlat', parenRightPaddingAdjustment: -1 },
+    accidentalNarrowReversedFlatAndFlat: {
+        code: 'accidentalNarrowReversedFlatAndFlat',
+        parenRightPaddingAdjustment: -1,
+    },
     accidentalWilsonPlus: { code: 'accidentalWilsonPlus', parenRightPaddingAdjustment: -1 },
     accidentalWilsonMinus: { code: 'accidentalWilsonMinus', parenRightPaddingAdjustment: -1 },
 };
-Flow.accidentalColumnsTable = {
-    1: {
-        a: [1],
-        b: [1],
-    },
-    2: {
-        a: [1, 2],
-    },
-    3: {
-        a: [1, 3, 2],
-        b: [1, 2, 1],
-        second_on_bottom: [1, 2, 3],
-    },
-    4: {
-        a: [1, 3, 4, 2],
-        b: [1, 2, 3, 1],
-        spaced_out_tetrachord: [1, 2, 1, 2],
-    },
-    5: {
-        a: [1, 3, 5, 4, 2],
-        b: [1, 2, 4, 3, 1],
-        spaced_out_pentachord: [1, 2, 3, 2, 1],
-        very_spaced_out_pentachord: [1, 2, 1, 2, 1],
-    },
-    6: {
-        a: [1, 3, 5, 6, 4, 2],
-        b: [1, 2, 4, 5, 3, 1],
-        spaced_out_hexachord: [1, 3, 2, 1, 3, 2],
-        very_spaced_out_hexachord: [1, 2, 1, 2, 1, 2],
-    },
-};
-Flow.ornamentCodes = function (acc) { return Flow.ornamentCodes.ornaments[acc]; };
-Flow.ornamentCodes.ornaments = {
-    mordent: { code: 'ornamentShortTrill' },
-    mordent_inverted: { code: 'ornamentMordent' },
-    turn: { code: 'ornamentTurn' },
-    turn_inverted: { code: 'ornamentTurnSlash' },
-    tr: { code: 'ornamentTrill' },
-    upprall: { code: 'ornamentPrecompSlideTrillDAnglebert' },
-    downprall: { code: 'ornamentPrecompDoubleCadenceUpperPrefix' },
-    prallup: { code: 'ornamentPrecompTrillSuffixDandrieu' },
-    pralldown: { code: 'ornamentPrecompTrillLowerSuffix' },
-    upmordent: { code: 'ornamentPrecompSlideTrillBach' },
-    downmordent: { code: 'ornamentPrecompDoubleCadenceUpperPrefixTurn' },
-    lineprall: { code: 'ornamentPrecompAppoggTrill' },
-    prallprall: { code: 'ornamentTremblement' },
-    scoop: { code: 'brassScoop' },
-    doit: { code: 'brassDoitMedium' },
-    fall: { code: 'brassFallLipShort' },
-    doitLong: { code: 'brassLiftMedium' },
-    fallLong: { code: 'brassFallRoughMedium' },
-    bend: { code: 'brassBend' },
-    plungerClosed: { code: 'brassMuteClosed' },
-    plungerOpen: { code: 'brassMuteOpen' },
-    flip: { code: 'brassFlip' },
-    jazzTurn: { code: 'brassJazzTurn' },
-    smear: { code: 'brassSmear' },
-};
-Flow.keySignature = function (spec) {
-    var keySpec = Flow.keySignature.keySpecs[spec];
-    if (!keySpec) {
-        throw new util_1.RuntimeError('BadKeySignature', "Bad key signature spec: '" + spec + "'");
-    }
-    if (!keySpec.acc) {
-        return [];
-    }
-    var notes = Flow.keySignature.accidentalList(keySpec.acc);
-    var acc_list = [];
-    for (var i = 0; i < keySpec.num; ++i) {
-        var line = notes[i];
-        acc_list.push({ type: keySpec.acc, line: line });
-    }
-    return acc_list;
-};
-Flow.keySignature.keySpecs = {
-    C: { acc: null, num: 0 },
-    Am: { acc: null, num: 0 },
-    F: { acc: 'b', num: 1 },
-    Dm: { acc: 'b', num: 1 },
-    Bb: { acc: 'b', num: 2 },
-    Gm: { acc: 'b', num: 2 },
-    Eb: { acc: 'b', num: 3 },
-    Cm: { acc: 'b', num: 3 },
-    Ab: { acc: 'b', num: 4 },
-    Fm: { acc: 'b', num: 4 },
-    Db: { acc: 'b', num: 5 },
-    Bbm: { acc: 'b', num: 5 },
-    Gb: { acc: 'b', num: 6 },
-    Ebm: { acc: 'b', num: 6 },
-    Cb: { acc: 'b', num: 7 },
-    Abm: { acc: 'b', num: 7 },
-    G: { acc: '#', num: 1 },
-    Em: { acc: '#', num: 1 },
-    D: { acc: '#', num: 2 },
-    Bm: { acc: '#', num: 2 },
-    A: { acc: '#', num: 3 },
-    'F#m': { acc: '#', num: 3 },
-    E: { acc: '#', num: 4 },
-    'C#m': { acc: '#', num: 4 },
-    B: { acc: '#', num: 5 },
-    'G#m': { acc: '#', num: 5 },
-    'F#': { acc: '#', num: 6 },
-    'D#m': { acc: '#', num: 6 },
-    'C#': { acc: '#', num: 7 },
-    'A#m': { acc: '#', num: 7 },
-};
-Flow.unicode = {
-    // Unicode accidentals
-    sharp: String.fromCharCode(parseInt('266F', 16)),
-    flat: String.fromCharCode(parseInt('266D', 16)),
-    natural: String.fromCharCode(parseInt('266E', 16)),
-    // Major Chord
-    triangle: String.fromCharCode(parseInt('25B3', 16)),
-    // half-diminished
-    'o-with-slash': String.fromCharCode(parseInt('00F8', 16)),
-    // Diminished
-    degrees: String.fromCharCode(parseInt('00B0', 16)),
-    circle: String.fromCharCode(parseInt('25CB', 16)),
-};
-Flow.keySignature.accidentalList = function (acc) {
-    var patterns = {
-        b: [2, 0.5, 2.5, 1, 3, 1.5, 3.5],
-        '#': [0, 1.5, -0.5, 1, 2.5, 0.5, 2],
-    };
-    return patterns[acc];
-};
-// Used to convert duration aliases to the number based duration.
-// If the input isn't an alias, simply return the input.
-//
-// example: 'q' -> '4', '8' -> '8'
-Flow.sanitizeDuration = function (duration) {
-    var alias = Flow.durationAliases[duration];
-    if (alias !== undefined) {
-        duration = alias;
-    }
-    if (Flow.durationToTicks.durations[duration] === undefined) {
-        throw new util_1.RuntimeError('BadArguments', "The provided duration is not valid: " + duration);
-    }
-    return duration;
-};
-// Convert the `duration` to an fraction
-function durationToFraction(duration) {
-    return new fraction_1.Fraction().parse(Flow.sanitizeDuration(duration));
-}
-// Convert the `duration` to an number
-function durationToNumber(duration) {
-    return durationToFraction(duration).value();
-}
-// Convert the `duration` to total ticks
-function durationToTicks(duration) {
-    duration = Flow.sanitizeDuration(duration);
-    var ticks = Flow.durationToTicks.durations[duration];
-    if (ticks === undefined) {
-        return null;
-    }
-    return ticks;
-}
-Flow.durationToTicks.durations = {
-    '1/2': Flow.RESOLUTION * 2,
-    1: Flow.RESOLUTION / 1,
-    2: Flow.RESOLUTION / 2,
-    4: Flow.RESOLUTION / 4,
-    8: Flow.RESOLUTION / 8,
-    16: Flow.RESOLUTION / 16,
-    32: Flow.RESOLUTION / 32,
-    64: Flow.RESOLUTION / 64,
-    128: Flow.RESOLUTION / 128,
-    256: Flow.RESOLUTION / 256,
-};
-Flow.durationAliases = {
-    w: '1',
-    h: '2',
-    q: '4',
-    // This is the default duration used to render bars (BarNote). Bars no longer
-    // consume ticks, so this should be a no-op.
+exports.Tables = {
+    STEM_WIDTH: 1.5,
+    STEM_HEIGHT: 35,
+    STAVE_LINE_THICKNESS: 1,
+    RESOLUTION: RESOLUTION,
+    /**
+     * Customize this to choose a different music font.
+     * For example: Vex.Flow.DEFAULT_FONT_STACK = [Fonts.Petaluma, Fonts.Custom];
+     */
+    DEFAULT_FONT_STACK: [font_1.Fonts.Bravura, font_1.Fonts.Gonville, font_1.Fonts.Custom],
+    DEFAULT_NOTATION_FONT_SCALE: 39,
+    DEFAULT_TABLATURE_FONT_SCALE: 39,
+    SLASH_NOTEHEAD_WIDTH: 15,
+    STAVE_LINE_DISTANCE: 10,
+    // HACK:
+    // Since text origins are positioned at the baseline, we must
+    // compensate for the ascender of the text. Of course, 1 staff space is
+    // a very poor approximation.
     //
-    // TODO(0xfe): This needs to be cleaned up.
-    b: '256',
-};
-// Return a glyph given duration and type. The type can be a custom glyph code from customNoteHeads.
-function getGlyphProps(duration, type) {
-    duration = Flow.sanitizeDuration(duration);
-    type = type || 'n'; // default type is a regular note
-    // Lookup duration for default glyph head code
-    var code = Flow.getGlyphProps.duration_codes[duration];
-    if (code === undefined) {
-        return null;
-    }
-    // Get glyph properties for 'type' from duration string (note, rest, harmonic, muted, slash)
-    var glyphTypeProperties = code.type[type];
-    // If this isn't a standard type, then lookup the custom note head map.
-    if (glyphTypeProperties === undefined) {
-        // Try and get it from the custom list of note heads
-        var customGlyphTypeProperties = Flow.keyProperties.customNoteHeads[type.toUpperCase()];
-        // If not, then return with nothing
-        if (customGlyphTypeProperties === undefined) {
-            return null;
+    // This will be deprecated in the future. This is a temporary solution until
+    // we have more robust text metrics.
+    TEXT_HEIGHT_OFFSET_HACK: 1,
+    /* Kerning (DEPRECATED) */
+    IsKerned: true,
+    clefProperties: function (clef) {
+        var values = {
+            treble: { line_shift: 0 },
+            bass: { line_shift: 6 },
+            tenor: { line_shift: 4 },
+            alto: { line_shift: 3 },
+            soprano: { line_shift: 1 },
+            percussion: { line_shift: 0 },
+            'mezzo-soprano': { line_shift: 2 },
+            'baritone-c': { line_shift: 5 },
+            'baritone-f': { line_shift: 5 },
+            subbass: { line_shift: 7 },
+            french: { line_shift: -1 },
+        };
+        if (!clef)
+            throw new util_1.RuntimeError('BadArgument', 'Invalid clef: ' + clef);
+        var props = values[clef];
+        if (!props)
+            throw new util_1.RuntimeError('BadArgument', 'Invalid clef: ' + clef);
+        return props;
+    },
+    /*
+    Take a note in the format "Key/Octave" (e.g., "C/5") and return properties.
+  
+    The last argument, params, is a struct the currently can contain one option,
+    octave_shift for clef ottavation (0 = default; 1 = 8va; -1 = 8vb, etc.).
+  */
+    keyProperties: function (key, clef, 
+    // eslint-disable-next-line
+    params) {
+        var noteValues = {
+            C: { index: 0, int_val: 0 },
+            CN: { index: 0, int_val: 0, accidental: 'n' },
+            'C#': { index: 0, int_val: 1, accidental: '#' },
+            'C##': { index: 0, int_val: 2, accidental: '##' },
+            CB: { index: 0, int_val: -1, accidental: 'b' },
+            CBB: { index: 0, int_val: -2, accidental: 'bb' },
+            D: { index: 1, int_val: 2 },
+            DN: { index: 1, int_val: 2, accidental: 'n' },
+            'D#': { index: 1, int_val: 3, accidental: '#' },
+            'D##': { index: 1, int_val: 4, accidental: '##' },
+            DB: { index: 1, int_val: 1, accidental: 'b' },
+            DBB: { index: 1, int_val: 0, accidental: 'bb' },
+            E: { index: 2, int_val: 4 },
+            EN: { index: 2, int_val: 4, accidental: 'n' },
+            'E#': { index: 2, int_val: 5, accidental: '#' },
+            'E##': { index: 2, int_val: 6, accidental: '##' },
+            EB: { index: 2, int_val: 3, accidental: 'b' },
+            EBB: { index: 2, int_val: 2, accidental: 'bb' },
+            F: { index: 3, int_val: 5 },
+            FN: { index: 3, int_val: 5, accidental: 'n' },
+            'F#': { index: 3, int_val: 6, accidental: '#' },
+            'F##': { index: 3, int_val: 7, accidental: '##' },
+            FB: { index: 3, int_val: 4, accidental: 'b' },
+            FBB: { index: 3, int_val: 3, accidental: 'bb' },
+            G: { index: 4, int_val: 7 },
+            GN: { index: 4, int_val: 7, accidental: 'n' },
+            'G#': { index: 4, int_val: 8, accidental: '#' },
+            'G##': { index: 4, int_val: 9, accidental: '##' },
+            GB: { index: 4, int_val: 6, accidental: 'b' },
+            GBB: { index: 4, int_val: 5, accidental: 'bb' },
+            A: { index: 5, int_val: 9 },
+            AN: { index: 5, int_val: 9, accidental: 'n' },
+            'A#': { index: 5, int_val: 10, accidental: '#' },
+            'A##': { index: 5, int_val: 11, accidental: '##' },
+            AB: { index: 5, int_val: 8, accidental: 'b' },
+            ABB: { index: 5, int_val: 7, accidental: 'bb' },
+            B: { index: 6, int_val: 11 },
+            BN: { index: 6, int_val: 11, accidental: 'n' },
+            'B#': { index: 6, int_val: 12, accidental: '#' },
+            'B##': { index: 6, int_val: 13, accidental: '##' },
+            BB: { index: 6, int_val: 10, accidental: 'b' },
+            BBB: { index: 6, int_val: 9, accidental: 'bb' },
+            R: { index: 6, int_val: 9, rest: true },
+            X: {
+                index: 6,
+                accidental: '',
+                octave: 4,
+                code: 'noteheadXBlack',
+                shift_right: 5.5,
+            },
+        };
+        if (clef === undefined) {
+            clef = 'treble';
         }
-        // Otherwise set it as the code_head value
-        glyphTypeProperties = __assign({ code_head: customGlyphTypeProperties.code }, customGlyphTypeProperties);
-    }
-    // Merge duration props for 'duration' with the note head properties.
-    return __assign(__assign({}, code.common), glyphTypeProperties);
-}
-Flow.getGlyphProps.validTypes = {
-    n: { name: 'note' },
-    r: { name: 'rest' },
-    h: { name: 'harmonic' },
-    m: { name: 'muted' },
-    s: { name: 'slash' },
-};
-// Custom note heads
-Flow.keyProperties.customNoteHeads = {
-    /* Diamond */
-    D0: { code: 'noteheadDiamondWhole' },
-    D1: { code: 'noteheadDiamondHalf' },
-    D2: { code: 'noteheadDiamondBlack' },
-    D3: { code: 'noteheadDiamondBlack' },
-    /* Triangle */
-    T0: { code: 'noteheadTriangleUpWhole' },
-    T1: { code: 'noteheadTriangleUpHalf' },
-    T2: { code: 'noteheadTriangleUpBlack' },
-    T3: { code: 'noteheadTriangleUpBlack' },
-    /* Cross */
-    X0: { code: 'noteheadXWhole' },
-    X1: { code: 'noteheadXHalf' },
-    X2: { code: 'noteheadXBlack' },
-    X3: { code: 'noteheadCircleX' },
-    /* Square */
-    S1: { code: 'noteheadSquareWhite' },
-    S2: { code: 'noteheadSquareBlack' },
-    /* Rectangle */
-    R1: { code: 'vexNoteHeadRectWhite' },
-    R2: { code: 'vexNoteHeadRectBlack' }, // no smufl code
-};
-Flow.getGlyphProps.duration_codes = {
-    '1/2': {
-        common: {
-            getWidth: function (scale) {
-                if (scale === void 0) { scale = Flow.DEFAULT_NOTATION_FONT_SCALE; }
-                return new glyph_1.Glyph(this.code_head || 'v53', scale).getMetrics().width;
+        var options = { octave_shift: 0 };
+        if (typeof params === 'object') {
+            options = __assign(__assign({}, options), params);
+        }
+        var pieces = key.split('/');
+        if (pieces.length < 2) {
+            throw new util_1.RuntimeError('BadArguments', "Key must have note + octave and an optional glyph: " + key);
+        }
+        var k = pieces[0].toUpperCase();
+        var value = noteValues[k];
+        if (!value)
+            throw new util_1.RuntimeError('BadArguments', 'Invalid key name: ' + k);
+        if (value.octave)
+            pieces[1] = value.octave.toString();
+        var octave = parseInt(pieces[1], 10);
+        // Octave_shift is the shift to compensate for clef 8va/8vb.
+        octave += -1 * options.octave_shift;
+        var base_index = octave * 7 - 4 * 7;
+        var line = (base_index + value.index) / 2;
+        line += exports.Tables.clefProperties(clef).line_shift;
+        var stroke = 0;
+        if (line <= 0 && (line * 2) % 2 === 0)
+            stroke = 1; // stroke up
+        if (line >= 6 && (line * 2) % 2 === 0)
+            stroke = -1; // stroke down
+        // Integer value for note arithmetic.
+        var int_value = typeof value.int_val !== 'undefined' ? octave * 12 + value.int_val : null;
+        /* Check if the user specified a glyph. */
+        var code = value.code;
+        var shift_right = value.shift_right;
+        var extraProps = {};
+        if (pieces.length > 2 && pieces[2]) {
+            var glyph_name = pieces[2].toUpperCase();
+            extraProps = customNoteHeads[glyph_name] || {};
+        }
+        return __assign({ key: k, octave: octave, line: line, int_value: int_value, accidental: value.accidental, code: code, stroke: stroke, shift_right: shift_right, displaced: false }, extraProps);
+    },
+    integerToNote: function (integer) {
+        var table = {
+            0: 'C',
+            1: 'C#',
+            2: 'D',
+            3: 'D#',
+            4: 'E',
+            5: 'F',
+            6: 'F#',
+            7: 'G',
+            8: 'G#',
+            9: 'A',
+            10: 'A#',
+            11: 'B',
+        };
+        if (typeof integer === 'undefined') {
+            throw new util_1.RuntimeError('BadArguments', 'Undefined integer for integerToNote');
+        }
+        if (integer < -2) {
+            throw new util_1.RuntimeError('BadArguments', "integerToNote requires integer > -2: " + integer);
+        }
+        var noteValue = table[integer];
+        if (!noteValue) {
+            throw new util_1.RuntimeError('BadArguments', "Unknown note value for integer: " + integer);
+        }
+        return noteValue;
+    },
+    tabToGlyph: function (fret, scale) {
+        if (scale === void 0) { scale = 1.0; }
+        var glyph = undefined;
+        var width = 0;
+        var shift_y = 0;
+        if (fret.toString().toUpperCase() === 'X') {
+            var glyphMetrics = new glyph_1.Glyph('accidentalDoubleSharp', exports.Tables.DEFAULT_TABLATURE_FONT_SCALE).getMetrics();
+            glyph = 'accidentalDoubleSharp';
+            if (glyphMetrics.width == undefined || glyphMetrics.height == undefined)
+                throw new util_1.RuntimeError('InvalidMetrics', 'Width and height required');
+            width = glyphMetrics.width;
+            shift_y = -glyphMetrics.height / 2;
+        }
+        else {
+            width = exports.Tables.textWidth(fret.toString());
+        }
+        return {
+            text: fret,
+            code: glyph,
+            getWidth: function () { return width * scale; },
+            shift_y: shift_y,
+        };
+    },
+    textWidth: function (text) {
+        return 7 * text.toString().length;
+    },
+    articulationCodes: function (artic) {
+        var articulations = {
+            'a.': { code: 'augmentationDot', between_lines: true },
+            av: {
+                aboveCode: 'articStaccatissimoAbove',
+                belowCode: 'articStaccatissimoBelow',
+                between_lines: true,
             },
-            stem: false,
-            stem_offset: 0,
-            flag: false,
-            stem_up_extension: -Flow.STEM_HEIGHT,
-            stem_down_extension: -Flow.STEM_HEIGHT,
-            tabnote_stem_up_extension: -Flow.STEM_HEIGHT,
-            tabnote_stem_down_extension: -Flow.STEM_HEIGHT,
-            dot_shiftY: 0,
-            line_above: 0,
-            line_below: 0,
+            'a>': {
+                aboveCode: 'articAccentAbove',
+                belowCode: 'articAccentBelow',
+                between_lines: true,
+            },
+            'a-': {
+                aboveCode: 'articTenutoAbove',
+                belowCode: 'articTenutoBelow',
+                between_lines: true,
+            },
+            'a^': {
+                aboveCode: 'articMarcatoAbove',
+                belowCode: 'articMarcatoBelow',
+                between_lines: false,
+            },
+            'a+': { code: 'pluckedLeftHandPizzicato', between_lines: false },
+            ao: {
+                aboveCode: 'pluckedSnapPizzicatoAbove',
+                belowCode: 'pluckedSnapPizzicatoBelow',
+                between_lines: false,
+            },
+            ah: { code: 'stringsHarmonic', between_lines: false },
+            'a@': { aboveCode: 'fermataAbove', belowCode: 'fermataBelow', between_lines: false },
+            'a@a': { code: 'fermataAbove', between_lines: false },
+            'a@u': { code: 'fermataBelow', between_lines: false },
+            'a|': { code: 'stringsUpBow', between_lines: false },
+            am: { code: 'stringsDownBow', between_lines: false },
+            'a,': { code: 'pictChokeCymbal', between_lines: false }, // Choked
+        };
+        return articulations[artic];
+    },
+    accidentalMap: accidentals,
+    accidentalCodes: function (acc) {
+        return accidentals[acc];
+    },
+    accidentalColumnsTable: {
+        1: {
+            a: [1],
+            b: [1],
         },
-        type: {
-            n: {
-                // Breve note
-                code_head: 'noteheadDoubleWhole',
-            },
-            h: {
-                // Breve note harmonic
-                code_head: 'unpitchedPercussionClef1',
-            },
-            m: {
-                // Breve note muted -
-                code_head: 'vexNoteHeadMutedBreve',
-                stem_offset: 0,
-            },
-            r: {
-                // Breve rest
-                code_head: 'restDoubleWhole',
-                rest: true,
-                position: 'B/5',
-                dot_shiftY: 0.5,
-            },
-            s: {
-                // Breve note slash -
-                // Drawn with canvas primitives
-                getWidth: function () { return Flow.SLASH_NOTEHEAD_WIDTH; },
-                position: 'B/4',
-            },
+        2: {
+            a: [1, 2],
+        },
+        3: {
+            a: [1, 3, 2],
+            b: [1, 2, 1],
+            second_on_bottom: [1, 2, 3],
+        },
+        4: {
+            a: [1, 3, 4, 2],
+            b: [1, 2, 3, 1],
+            spaced_out_tetrachord: [1, 2, 1, 2],
+        },
+        5: {
+            a: [1, 3, 5, 4, 2],
+            b: [1, 2, 4, 3, 1],
+            spaced_out_pentachord: [1, 2, 3, 2, 1],
+            very_spaced_out_pentachord: [1, 2, 1, 2, 1],
+        },
+        6: {
+            a: [1, 3, 5, 6, 4, 2],
+            b: [1, 2, 4, 5, 3, 1],
+            spaced_out_hexachord: [1, 3, 2, 1, 3, 2],
+            very_spaced_out_hexachord: [1, 2, 1, 2, 1, 2],
         },
     },
-    1: {
-        common: {
-            getWidth: function (scale) {
-                if (scale === void 0) { scale = Flow.DEFAULT_NOTATION_FONT_SCALE; }
-                return new glyph_1.Glyph(this.code_head || 'v1d', scale).getMetrics().width;
-            },
-            stem: false,
-            stem_offset: 0,
-            flag: false,
-            stem_up_extension: -Flow.STEM_HEIGHT,
-            stem_down_extension: -Flow.STEM_HEIGHT,
-            tabnote_stem_up_extension: -Flow.STEM_HEIGHT,
-            tabnote_stem_down_extension: -Flow.STEM_HEIGHT,
-            dot_shiftY: 0,
-            line_above: 0,
-            line_below: 0,
-        },
-        type: {
-            n: {
-                // Whole note
-                code_head: 'noteheadWhole',
-            },
-            h: {
-                // Whole note harmonic
-                code_head: 'noteheadDiamondWhole',
-            },
-            m: {
-                // Whole note muted
-                code_head: 'noteheadXWhole',
-                stem_offset: -3,
-            },
-            r: {
-                // Whole rest
-                code_head: 'restWhole',
-                rest: true,
-                position: 'D/5',
-                dot_shiftY: 0.5,
-            },
-            s: {
-                // Whole note slash
-                // Drawn with canvas primitives
-                getWidth: function () { return Flow.SLASH_NOTEHEAD_WIDTH; },
-                position: 'B/4',
-            },
-        },
+    ornamentCodes: function (acc) {
+        var ornaments = {
+            mordent: { code: 'ornamentShortTrill' },
+            mordent_inverted: { code: 'ornamentMordent' },
+            turn: { code: 'ornamentTurn' },
+            turn_inverted: { code: 'ornamentTurnSlash' },
+            tr: { code: 'ornamentTrill' },
+            upprall: { code: 'ornamentPrecompSlideTrillDAnglebert' },
+            downprall: { code: 'ornamentPrecompDoubleCadenceUpperPrefix' },
+            prallup: { code: 'ornamentPrecompTrillSuffixDandrieu' },
+            pralldown: { code: 'ornamentPrecompTrillLowerSuffix' },
+            upmordent: { code: 'ornamentPrecompSlideTrillBach' },
+            downmordent: { code: 'ornamentPrecompDoubleCadenceUpperPrefixTurn' },
+            lineprall: { code: 'ornamentPrecompAppoggTrill' },
+            prallprall: { code: 'ornamentTremblement' },
+            scoop: { code: 'brassScoop' },
+            doit: { code: 'brassDoitMedium' },
+            fall: { code: 'brassFallLipShort' },
+            doitLong: { code: 'brassLiftMedium' },
+            fallLong: { code: 'brassFallRoughMedium' },
+            bend: { code: 'brassBend' },
+            plungerClosed: { code: 'brassMuteClosed' },
+            plungerOpen: { code: 'brassMuteOpen' },
+            flip: { code: 'brassFlip' },
+            jazzTurn: { code: 'brassJazzTurn' },
+            smear: { code: 'brassSmear' },
+        };
+        return ornaments[acc];
     },
-    2: {
-        common: {
-            getWidth: function (scale) {
-                if (scale === void 0) { scale = Flow.DEFAULT_NOTATION_FONT_SCALE; }
-                return new glyph_1.Glyph(this.code_head || 'noteheadHalf', scale).getMetrics().width;
-            },
-            stem: true,
-            stem_offset: 0,
-            flag: false,
-            stem_up_extension: 0,
-            stem_down_extension: 0,
-            tabnote_stem_up_extension: 0,
-            tabnote_stem_down_extension: 0,
-            dot_shiftY: 0,
-            line_above: 0,
-            line_below: 0,
-        },
-        type: {
-            n: {
-                // Half note
-                code_head: 'noteheadHalf',
-            },
-            h: {
-                // Half note harmonic
-                code_head: 'noteheadDiamondHalf',
-            },
-            m: {
-                // Half note muted
-                code_head: 'noteheadXHalf',
-                stem_offset: -3,
-            },
-            r: {
-                // Half rest
-                code_head: 'restHalf',
-                stem: false,
-                rest: true,
-                position: 'B/4',
-                dot_shiftY: -0.5,
-            },
-            s: {
-                // Half note slash
-                // Drawn with canvas primitives
-                getWidth: function () { return Flow.SLASH_NOTEHEAD_WIDTH; },
-                position: 'B/4',
-            },
-        },
+    keySignature: function (spec) {
+        var keySpecs = {
+            C: { num: 0 },
+            Am: { num: 0 },
+            F: { acc: 'b', num: 1 },
+            Dm: { acc: 'b', num: 1 },
+            Bb: { acc: 'b', num: 2 },
+            Gm: { acc: 'b', num: 2 },
+            Eb: { acc: 'b', num: 3 },
+            Cm: { acc: 'b', num: 3 },
+            Ab: { acc: 'b', num: 4 },
+            Fm: { acc: 'b', num: 4 },
+            Db: { acc: 'b', num: 5 },
+            Bbm: { acc: 'b', num: 5 },
+            Gb: { acc: 'b', num: 6 },
+            Ebm: { acc: 'b', num: 6 },
+            Cb: { acc: 'b', num: 7 },
+            Abm: { acc: 'b', num: 7 },
+            G: { acc: '#', num: 1 },
+            Em: { acc: '#', num: 1 },
+            D: { acc: '#', num: 2 },
+            Bm: { acc: '#', num: 2 },
+            A: { acc: '#', num: 3 },
+            'F#m': { acc: '#', num: 3 },
+            E: { acc: '#', num: 4 },
+            'C#m': { acc: '#', num: 4 },
+            B: { acc: '#', num: 5 },
+            'G#m': { acc: '#', num: 5 },
+            'F#': { acc: '#', num: 6 },
+            'D#m': { acc: '#', num: 6 },
+            'C#': { acc: '#', num: 7 },
+            'A#m': { acc: '#', num: 7 },
+        };
+        var keySpec = keySpecs[spec];
+        if (!keySpec) {
+            throw new util_1.RuntimeError('BadKeySignature', "Bad key signature spec: '" + spec + "'");
+        }
+        if (!keySpec.acc) {
+            return [];
+        }
+        var accidentalList = {
+            b: [2, 0.5, 2.5, 1, 3, 1.5, 3.5],
+            '#': [0, 1.5, -0.5, 1, 2.5, 0.5, 2],
+        };
+        var notes = accidentalList[keySpec.acc];
+        var acc_list = [];
+        for (var i = 0; i < keySpec.num; ++i) {
+            var line = notes[i];
+            acc_list.push({ type: keySpec.acc, line: line });
+        }
+        return acc_list;
     },
-    4: {
-        common: {
-            getWidth: function (scale) {
-                if (scale === void 0) { scale = Flow.DEFAULT_NOTATION_FONT_SCALE; }
-                return new glyph_1.Glyph(this.code_head || 'noteheadBlack', scale).getMetrics().width;
-            },
-            stem: true,
-            stem_offset: 0,
-            flag: false,
-            stem_up_extension: 0,
-            stem_down_extension: 0,
-            tabnote_stem_up_extension: 0,
-            tabnote_stem_down_extension: 0,
-            dot_shiftY: 0,
-            line_above: 0,
-            line_below: 0,
-        },
-        type: {
-            n: {
-                // Quarter note
-                code_head: 'noteheadBlack',
-            },
-            h: {
-                // Quarter harmonic
-                code_head: 'noteheadDiamondBlack',
-            },
-            m: {
-                // Quarter muted
-                code_head: 'noteheadXBlack',
-            },
-            r: {
-                // Quarter rest
-                code_head: 'restQuarter',
-                stem: false,
-                rest: true,
-                position: 'B/4',
-                dot_shiftY: -0.5,
-                line_above: 1.5,
-                line_below: 1.5,
-            },
-            s: {
-                // Quarter slash
-                // Drawn with canvas primitives
-                getWidth: function () { return Flow.SLASH_NOTEHEAD_WIDTH; },
-                position: 'B/4',
-            },
-        },
+    unicode: {
+        // Unicode accidentals
+        sharp: String.fromCharCode(parseInt('266F', 16)),
+        flat: String.fromCharCode(parseInt('266D', 16)),
+        natural: String.fromCharCode(parseInt('266E', 16)),
+        // Major Chord
+        triangle: String.fromCharCode(parseInt('25B3', 16)),
+        // half-diminished
+        'o-with-slash': String.fromCharCode(parseInt('00F8', 16)),
+        // Diminished
+        degrees: String.fromCharCode(parseInt('00B0', 16)),
+        circle: String.fromCharCode(parseInt('25CB', 16)),
     },
-    8: {
-        common: {
-            getWidth: function (scale) {
-                if (scale === void 0) { scale = Flow.DEFAULT_NOTATION_FONT_SCALE; }
-                return new glyph_1.Glyph(this.code_head || 'noteheadBlack', scale).getMetrics().width;
-            },
-            stem: true,
-            stem_offset: 0,
-            flag: true,
-            beam_count: 1,
-            code_flag_upstem: 'flag8thUp',
-            code_flag_downstem: 'flag8thDown',
-            stem_up_extension: 0,
-            stem_down_extension: 0,
-            tabnote_stem_up_extension: 0,
-            tabnote_stem_down_extension: 0,
-            dot_shiftY: 0,
-            line_above: 0,
-            line_below: 0,
-        },
-        type: {
-            n: {
-                // Eighth note
-                code_head: 'noteheadBlack',
-            },
-            h: {
-                // Eighth note harmonic
-                code_head: 'noteheadDiamondBlack',
-            },
-            m: {
-                // Eighth note muted
-                code_head: 'noteheadXBlack',
-            },
-            r: {
-                // Eighth rest
-                code_head: 'rest8th',
-                stem: false,
-                flag: false,
-                rest: true,
-                position: 'B/4',
-                dot_shiftY: -0.5,
-                line_above: 1.0,
-                line_below: 1.0,
-            },
-            s: {
-                // Eight slash
-                // Drawn with canvas primitives
-                getWidth: function () { return Flow.SLASH_NOTEHEAD_WIDTH; },
-                position: 'B/4',
-            },
-        },
+    // Used to convert duration aliases to the number based duration.
+    // If the input isn't an alias, simply return the input.
+    //
+    // example: 'q' -> '4', '8' -> '8'
+    sanitizeDuration: function (duration) {
+        var durationAliases = {
+            w: '1',
+            h: '2',
+            q: '4',
+            // This is the default duration used to render bars (BarNote). Bars no longer
+            // consume ticks, so this should be a no-op.
+            //
+            // TODO(0xfe): This needs to be cleaned up.
+            b: '256',
+        };
+        var alias = durationAliases[duration];
+        if (alias !== undefined) {
+            duration = alias;
+        }
+        if (durations[duration] === undefined) {
+            throw new util_1.RuntimeError('BadArguments', "The provided duration is not valid: " + duration);
+        }
+        return duration;
     },
-    16: {
-        common: {
-            beam_count: 2,
-            getWidth: function (scale) {
-                if (scale === void 0) { scale = Flow.DEFAULT_NOTATION_FONT_SCALE; }
-                return new glyph_1.Glyph(this.code_head || 'noteheadBlack', scale).getMetrics().width;
-            },
-            stem: true,
-            stem_offset: 0,
-            flag: true,
-            code_flag_upstem: 'flag16thUp',
-            code_flag_downstem: 'flag16thDown',
-            stem_up_extension: 0,
-            stem_down_extension: 0,
-            tabnote_stem_up_extension: 0,
-            tabnote_stem_down_extension: 0,
-            dot_shiftY: 0,
-            line_above: 0,
-            line_below: 0,
-        },
-        type: {
-            n: {
-                // Sixteenth note
-                code_head: 'noteheadBlack',
-            },
-            h: {
-                // Sixteenth note harmonic
-                code_head: 'noteheadDiamondBlack',
-            },
-            m: {
-                // Sixteenth note muted
-                code_head: 'noteheadXBlack',
-            },
-            r: {
-                // Sixteenth rest
-                code_head: 'rest16th',
-                stem: false,
-                flag: false,
-                rest: true,
-                position: 'B/4',
-                dot_shiftY: -0.5,
-                line_above: 1.0,
-                line_below: 2.0,
-            },
-            s: {
-                // Sixteenth slash
-                // Drawn with canvas primitives
-                getWidth: function () { return Flow.SLASH_NOTEHEAD_WIDTH; },
-                position: 'B/4',
-            },
-        },
+    // Convert the `duration` to an fraction
+    durationToFraction: function (duration) {
+        return new fraction_1.Fraction().parse(exports.Tables.sanitizeDuration(duration));
     },
-    32: {
-        common: {
-            beam_count: 3,
-            getWidth: function (scale) {
-                if (scale === void 0) { scale = Flow.DEFAULT_NOTATION_FONT_SCALE; }
-                return new glyph_1.Glyph(this.code_head || 'noteheadBlack', scale).getMetrics().width;
-            },
-            stem: true,
-            stem_offset: 0,
-            flag: true,
-            code_flag_upstem: 'flag32ndUp',
-            code_flag_downstem: 'flag32ndDown',
-            stem_up_extension: 9,
-            stem_down_extension: 9,
-            tabnote_stem_up_extension: 8,
-            tabnote_stem_down_extension: 5,
-            dot_shiftY: 0,
-            line_above: 0,
-            line_below: 0,
-        },
-        type: {
-            n: {
-                // Thirty-second note
-                code_head: 'noteheadBlack',
-            },
-            h: {
-                // Thirty-second harmonic
-                code_head: 'noteheadDiamondBlack',
-            },
-            m: {
-                // Thirty-second muted
-                code_head: 'noteheadXBlack',
-            },
-            r: {
-                // Thirty-second rest
-                code_head: 'rest32nd',
-                stem: false,
-                flag: false,
-                rest: true,
-                position: 'B/4',
-                dot_shiftY: -1.5,
-                line_above: 2.0,
-                line_below: 2.0,
-            },
-            s: {
-                // Thirty-second slash
-                // Drawn with canvas primitives
-                getWidth: function () { return Flow.SLASH_NOTEHEAD_WIDTH; },
-                position: 'B/4',
-            },
-        },
+    // Convert the `duration` to an number
+    durationToNumber: function (duration) {
+        return exports.Tables.durationToFraction(duration).value();
     },
-    64: {
-        common: {
-            beam_count: 4,
-            getWidth: function (scale) {
-                if (scale === void 0) { scale = Flow.DEFAULT_NOTATION_FONT_SCALE; }
-                return new glyph_1.Glyph(this.code_head || 'noteheadBlack', scale).getMetrics().width;
-            },
-            stem: true,
-            stem_offset: 0,
-            flag: true,
-            code_flag_upstem: 'flag64thUp',
-            code_flag_downstem: 'flag64thDown',
-            stem_up_extension: 13,
-            stem_down_extension: 13,
-            tabnote_stem_up_extension: 12,
-            tabnote_stem_down_extension: 9,
-            dot_shiftY: 0,
-            line_above: 0,
-            line_below: 0,
-        },
-        type: {
-            n: {
-                // Sixty-fourth note
-                code_head: 'noteheadBlack',
-            },
-            h: {
-                // Sixty-fourth harmonic
-                code_head: 'noteheadDiamondBlack',
-            },
-            m: {
-                // Sixty-fourth muted
-                code_head: 'noteheadXBlack',
-            },
-            r: {
-                // Sixty-fourth rest
-                code_head: 'rest64th',
-                stem: false,
-                flag: false,
-                rest: true,
-                position: 'B/4',
-                dot_shiftY: -1.5,
-                line_above: 2.0,
-                line_below: 3.0,
-            },
-            s: {
-                // Sixty-fourth slash
-                // Drawn with canvas primitives
-                getWidth: function () { return Flow.SLASH_NOTEHEAD_WIDTH; },
-                position: 'B/4',
-            },
-        },
+    // Convert the `duration` to total ticks
+    durationToTicks: function (duration) {
+        duration = exports.Tables.sanitizeDuration(duration);
+        var ticks = durations[duration];
+        if (ticks === undefined) {
+            throw new util_1.RuntimeError('InvalidDuration');
+        }
+        return ticks;
     },
-    128: {
-        common: {
-            beam_count: 5,
-            getWidth: function (scale) {
-                if (scale === void 0) { scale = Flow.DEFAULT_NOTATION_FONT_SCALE; }
-                return new glyph_1.Glyph(this.code_head || 'noteheadBlack', scale).getMetrics().width;
+    // Return a glyph given duration and type. The type can be a custom glyph code from customNoteHeads.
+    getGlyphProps: function (duration, type) {
+        // eslint-disable-next-line
+        var duration_codes = {
+            '1/2': {
+                common: {
+                    stem: false,
+                    stem_offset: 0,
+                    flag: false,
+                    stem_up_extension: -exports.Tables.STEM_HEIGHT,
+                    stem_down_extension: -exports.Tables.STEM_HEIGHT,
+                    tabnote_stem_up_extension: -exports.Tables.STEM_HEIGHT,
+                    tabnote_stem_down_extension: -exports.Tables.STEM_HEIGHT,
+                    dot_shiftY: 0,
+                    line_above: 0,
+                    line_below: 0,
+                },
+                type: {
+                    n: {
+                        // Breve note
+                        code_head: 'noteheadDoubleWhole',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadDoubleWhole', scale).getMetrics().width;
+                        },
+                    },
+                    h: {
+                        // Breve note harmonic
+                        code_head: 'unpitchedPercussionClef1',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('unpitchedPercussionClef1', scale).getMetrics().width;
+                        },
+                    },
+                    m: {
+                        // Breve note muted -
+                        code_head: 'vexNoteHeadMutedBreve',
+                        stem_offset: 0,
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('vexNoteHeadMutedBreve', scale).getMetrics().width;
+                        },
+                    },
+                    r: {
+                        // Breve rest
+                        code_head: 'restDoubleWhole',
+                        rest: true,
+                        position: 'B/5',
+                        dot_shiftY: 0.5,
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('restDoubleWhole', scale).getMetrics().width;
+                        },
+                    },
+                    s: {
+                        // Breve note slash -
+                        // Drawn with canvas primitives
+                        getWidth: function () { return exports.Tables.SLASH_NOTEHEAD_WIDTH; },
+                        position: 'B/4',
+                    },
+                },
             },
-            stem: true,
-            stem_offset: 0,
-            flag: true,
-            code_flag_upstem: 'flag128thUp',
-            code_flag_downstem: 'flag128thDown',
-            stem_up_extension: 22,
-            stem_down_extension: 22,
-            tabnote_stem_up_extension: 21,
-            tabnote_stem_down_extension: 18,
-            dot_shiftY: 0,
-            line_above: 0,
-            line_below: 0,
-        },
-        type: {
-            n: {
-                // Hundred-twenty-eight note
-                code_head: 'noteheadBlack',
+            1: {
+                common: {
+                    stem: false,
+                    stem_offset: 0,
+                    flag: false,
+                    stem_up_extension: -exports.Tables.STEM_HEIGHT,
+                    stem_down_extension: -exports.Tables.STEM_HEIGHT,
+                    tabnote_stem_up_extension: -exports.Tables.STEM_HEIGHT,
+                    tabnote_stem_down_extension: -exports.Tables.STEM_HEIGHT,
+                    dot_shiftY: 0,
+                    line_above: 0,
+                    line_below: 0,
+                },
+                type: {
+                    n: {
+                        // Whole note
+                        code_head: 'noteheadWhole',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadWhole', scale).getMetrics().width;
+                        },
+                    },
+                    h: {
+                        // Whole note harmonic
+                        code_head: 'noteheadDiamondWhole',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadDiamondWhole', scale).getMetrics().width;
+                        },
+                    },
+                    m: {
+                        // Whole note muted
+                        code_head: 'noteheadXWhole',
+                        stem_offset: -3,
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadXWhole', scale).getMetrics().width;
+                        },
+                    },
+                    r: {
+                        // Whole rest
+                        code_head: 'restWhole',
+                        rest: true,
+                        position: 'D/5',
+                        dot_shiftY: 0.5,
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('restWhole', scale).getMetrics().width;
+                        },
+                    },
+                    s: {
+                        // Whole note slash
+                        // Drawn with canvas primitives
+                        getWidth: function () { return exports.Tables.SLASH_NOTEHEAD_WIDTH; },
+                        position: 'B/4',
+                    },
+                },
             },
-            h: {
-                // Hundred-twenty-eight harmonic
-                code_head: 'noteheadDiamondBlack',
+            2: {
+                common: {
+                    stem: true,
+                    stem_offset: 0,
+                    flag: false,
+                    stem_up_extension: 0,
+                    stem_down_extension: 0,
+                    tabnote_stem_up_extension: 0,
+                    tabnote_stem_down_extension: 0,
+                    dot_shiftY: 0,
+                    line_above: 0,
+                    line_below: 0,
+                },
+                type: {
+                    n: {
+                        // Half note
+                        code_head: 'noteheadHalf',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadHalf', scale).getMetrics().width;
+                        },
+                    },
+                    h: {
+                        // Half note harmonic
+                        code_head: 'noteheadDiamondHalf',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadDiamondHalf', scale).getMetrics().width;
+                        },
+                    },
+                    m: {
+                        // Half note muted
+                        code_head: 'noteheadXHalf',
+                        stem_offset: -3,
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadXHalf', scale).getMetrics().width;
+                        },
+                    },
+                    r: {
+                        // Half rest
+                        code_head: 'restHalf',
+                        stem: false,
+                        rest: true,
+                        position: 'B/4',
+                        dot_shiftY: -0.5,
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('restHalf', scale).getMetrics().width;
+                        },
+                    },
+                    s: {
+                        // Half note slash
+                        // Drawn with canvas primitives
+                        getWidth: function () { return exports.Tables.SLASH_NOTEHEAD_WIDTH; },
+                        position: 'B/4',
+                    },
+                },
             },
-            m: {
-                // Hundred-twenty-eight muted
-                code_head: 'noteheadXBlack',
+            4: {
+                common: {
+                    stem: true,
+                    stem_offset: 0,
+                    flag: false,
+                    stem_up_extension: 0,
+                    stem_down_extension: 0,
+                    tabnote_stem_up_extension: 0,
+                    tabnote_stem_down_extension: 0,
+                    dot_shiftY: 0,
+                    line_above: 0,
+                    line_below: 0,
+                },
+                type: {
+                    n: {
+                        // Quarter note
+                        code_head: 'noteheadBlack',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadBlack', scale).getMetrics().width;
+                        },
+                    },
+                    h: {
+                        // Quarter harmonic
+                        code_head: 'noteheadDiamondBlack',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadDiamondBlack', scale).getMetrics().width;
+                        },
+                    },
+                    m: {
+                        // Quarter muted
+                        code_head: 'noteheadXBlack',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadXBlack', scale).getMetrics().width;
+                        },
+                    },
+                    r: {
+                        // Quarter rest
+                        code_head: 'restQuarter',
+                        stem: false,
+                        rest: true,
+                        position: 'B/4',
+                        dot_shiftY: -0.5,
+                        line_above: 1.5,
+                        line_below: 1.5,
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('restQuarter', scale).getMetrics().width;
+                        },
+                    },
+                    s: {
+                        // Quarter slash
+                        // Drawn with canvas primitives
+                        getWidth: function () { return exports.Tables.SLASH_NOTEHEAD_WIDTH; },
+                        position: 'B/4',
+                    },
+                },
             },
-            r: {
-                // Hundred-twenty-eight rest
-                code_head: 'rest128th',
-                stem: false,
-                flag: false,
-                rest: true,
-                position: 'B/4',
-                dot_shiftY: 1.5,
-                line_above: 3.0,
-                line_below: 3.0,
+            8: {
+                common: {
+                    stem: true,
+                    stem_offset: 0,
+                    flag: true,
+                    beam_count: 1,
+                    code_flag_upstem: 'flag8thUp',
+                    code_flag_downstem: 'flag8thDown',
+                    stem_up_extension: 0,
+                    stem_down_extension: 0,
+                    tabnote_stem_up_extension: 0,
+                    tabnote_stem_down_extension: 0,
+                    dot_shiftY: 0,
+                    line_above: 0,
+                    line_below: 0,
+                },
+                type: {
+                    n: {
+                        // Eighth note
+                        code_head: 'noteheadBlack',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadBlack', scale).getMetrics().width;
+                        },
+                    },
+                    h: {
+                        // Eighth note harmonic
+                        code_head: 'noteheadDiamondBlack',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadDiamondBlack', scale).getMetrics().width;
+                        },
+                    },
+                    m: {
+                        // Eighth note muted
+                        code_head: 'noteheadXBlack',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadXBlack', scale).getMetrics().width;
+                        },
+                    },
+                    r: {
+                        // Eighth rest
+                        code_head: 'rest8th',
+                        stem: false,
+                        flag: false,
+                        rest: true,
+                        position: 'B/4',
+                        dot_shiftY: -0.5,
+                        line_above: 1.0,
+                        line_below: 1.0,
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('rest8th', scale).getMetrics().width;
+                        },
+                    },
+                    s: {
+                        // Eight slash
+                        // Drawn with canvas primitives
+                        getWidth: function () { return exports.Tables.SLASH_NOTEHEAD_WIDTH; },
+                        position: 'B/4',
+                    },
+                },
             },
-            s: {
-                // Hundred-twenty-eight rest
-                // Drawn with canvas primitives
-                getWidth: function () { return Flow.SLASH_NOTEHEAD_WIDTH; },
-                position: 'B/4',
+            16: {
+                common: {
+                    beam_count: 2,
+                    stem: true,
+                    stem_offset: 0,
+                    flag: true,
+                    code_flag_upstem: 'flag16thUp',
+                    code_flag_downstem: 'flag16thDown',
+                    stem_up_extension: 0,
+                    stem_down_extension: 0,
+                    tabnote_stem_up_extension: 0,
+                    tabnote_stem_down_extension: 0,
+                    dot_shiftY: 0,
+                    line_above: 0,
+                    line_below: 0,
+                },
+                type: {
+                    n: {
+                        // Sixteenth note
+                        code_head: 'noteheadBlack',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadBlack', scale).getMetrics().width;
+                        },
+                    },
+                    h: {
+                        // Sixteenth note harmonic
+                        code_head: 'noteheadDiamondBlack',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadDiamondBlack', scale).getMetrics().width;
+                        },
+                    },
+                    m: {
+                        // Sixteenth note muted
+                        code_head: 'noteheadXBlack',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadXBlack', scale).getMetrics().width;
+                        },
+                    },
+                    r: {
+                        // Sixteenth rest
+                        code_head: 'rest16th',
+                        stem: false,
+                        flag: false,
+                        rest: true,
+                        position: 'B/4',
+                        dot_shiftY: -0.5,
+                        line_above: 1.0,
+                        line_below: 2.0,
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('rest16th', scale).getMetrics().width;
+                        },
+                    },
+                    s: {
+                        // Sixteenth slash
+                        // Drawn with canvas primitives
+                        getWidth: function () { return exports.Tables.SLASH_NOTEHEAD_WIDTH; },
+                        position: 'B/4',
+                    },
+                },
             },
-        },
+            32: {
+                common: {
+                    beam_count: 3,
+                    stem: true,
+                    stem_offset: 0,
+                    flag: true,
+                    code_flag_upstem: 'flag32ndUp',
+                    code_flag_downstem: 'flag32ndDown',
+                    stem_up_extension: 9,
+                    stem_down_extension: 9,
+                    tabnote_stem_up_extension: 8,
+                    tabnote_stem_down_extension: 5,
+                    dot_shiftY: 0,
+                    line_above: 0,
+                    line_below: 0,
+                },
+                type: {
+                    n: {
+                        // Thirty-second note
+                        code_head: 'noteheadBlack',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadBlack', scale).getMetrics().width;
+                        },
+                    },
+                    h: {
+                        // Thirty-second harmonic
+                        code_head: 'noteheadDiamondBlack',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadDiamondBlack', scale).getMetrics().width;
+                        },
+                    },
+                    m: {
+                        // Thirty-second muted
+                        code_head: 'noteheadXBlack',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadXBlack', scale).getMetrics().width;
+                        },
+                    },
+                    r: {
+                        // Thirty-second rest
+                        code_head: 'rest32nd',
+                        stem: false,
+                        flag: false,
+                        rest: true,
+                        position: 'B/4',
+                        dot_shiftY: -1.5,
+                        line_above: 2.0,
+                        line_below: 2.0,
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('rest32nd', scale).getMetrics().width;
+                        },
+                    },
+                    s: {
+                        // Thirty-second slash
+                        // Drawn with canvas primitives
+                        getWidth: function () { return exports.Tables.SLASH_NOTEHEAD_WIDTH; },
+                        position: 'B/4',
+                    },
+                },
+            },
+            64: {
+                common: {
+                    beam_count: 4,
+                    stem: true,
+                    stem_offset: 0,
+                    flag: true,
+                    code_flag_upstem: 'flag64thUp',
+                    code_flag_downstem: 'flag64thDown',
+                    stem_up_extension: 13,
+                    stem_down_extension: 13,
+                    tabnote_stem_up_extension: 12,
+                    tabnote_stem_down_extension: 9,
+                    dot_shiftY: 0,
+                    line_above: 0,
+                    line_below: 0,
+                },
+                type: {
+                    n: {
+                        // Sixty-fourth note
+                        code_head: 'noteheadBlack',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadBlack', scale).getMetrics().width;
+                        },
+                    },
+                    h: {
+                        // Sixty-fourth harmonic
+                        code_head: 'noteheadDiamondBlack',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadDiamondBlack', scale).getMetrics().width;
+                        },
+                    },
+                    m: {
+                        // Sixty-fourth muted
+                        code_head: 'noteheadXBlack',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadXBlack', scale).getMetrics().width;
+                        },
+                    },
+                    r: {
+                        // Sixty-fourth rest
+                        code_head: 'rest64th',
+                        stem: false,
+                        flag: false,
+                        rest: true,
+                        position: 'B/4',
+                        dot_shiftY: -1.5,
+                        line_above: 2.0,
+                        line_below: 3.0,
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('rest64th', scale).getMetrics().width;
+                        },
+                    },
+                    s: {
+                        // Sixty-fourth slash
+                        // Drawn with canvas primitives
+                        getWidth: function () { return exports.Tables.SLASH_NOTEHEAD_WIDTH; },
+                        position: 'B/4',
+                    },
+                },
+            },
+            128: {
+                common: {
+                    beam_count: 5,
+                    stem: true,
+                    stem_offset: 0,
+                    flag: true,
+                    code_flag_upstem: 'flag128thUp',
+                    code_flag_downstem: 'flag128thDown',
+                    stem_up_extension: 22,
+                    stem_down_extension: 22,
+                    tabnote_stem_up_extension: 21,
+                    tabnote_stem_down_extension: 18,
+                    dot_shiftY: 0,
+                    line_above: 0,
+                    line_below: 0,
+                },
+                type: {
+                    n: {
+                        // Hundred-twenty-eight note
+                        code_head: 'noteheadBlack',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadBlack', scale).getMetrics().width;
+                        },
+                    },
+                    h: {
+                        // Hundred-twenty-eight harmonic
+                        code_head: 'noteheadDiamondBlack',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadDiamondBlack', scale).getMetrics().width;
+                        },
+                    },
+                    m: {
+                        // Hundred-twenty-eight muted
+                        code_head: 'noteheadXBlack',
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('noteheadXBlack', scale).getMetrics().width;
+                        },
+                    },
+                    r: {
+                        // Hundred-twenty-eight rest
+                        code_head: 'rest128th',
+                        stem: false,
+                        flag: false,
+                        rest: true,
+                        position: 'B/4',
+                        dot_shiftY: 1.5,
+                        line_above: 3.0,
+                        line_below: 3.0,
+                        getWidth: function (scale) {
+                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new glyph_1.Glyph('rest128th', scale).getMetrics().width;
+                        },
+                    },
+                    s: {
+                        // Hundred-twenty-eight rest
+                        // Drawn with canvas primitives
+                        getWidth: function () { return exports.Tables.SLASH_NOTEHEAD_WIDTH; },
+                        position: 'B/4',
+                    },
+                },
+            },
+        };
+        duration = exports.Tables.sanitizeDuration(duration);
+        type = type || 'n'; // default type is a regular note
+        // Lookup duration for default glyph head code
+        var code = duration_codes[duration];
+        if (code === undefined) {
+            return;
+        }
+        // Get glyph properties for 'type' from duration string (note, rest, harmonic, muted, slash)
+        var glyphTypeProperties = code.type[type];
+        // If this isn't a standard type, then lookup the custom note head map.
+        if (glyphTypeProperties === undefined) {
+            // Try and get it from the custom list of note heads
+            var customGlyphTypeProperties = customNoteHeads[type.toUpperCase()];
+            // If not, then return with nothing
+            if (customGlyphTypeProperties === undefined) {
+                return;
+            }
+            // Otherwise set it as the code_head value
+            glyphTypeProperties = __assign({ code_head: customGlyphTypeProperties.code }, customGlyphTypeProperties);
+        }
+        // Merge duration props for 'duration' with the note head properties.
+        return __assign(__assign({}, code.common), glyphTypeProperties);
     },
-};
-// Some defaults
-var TIME4_4 = {
-    num_beats: 4,
-    beat_value: 4,
-    resolution: Flow.RESOLUTION,
+    validTypes: {
+        n: { name: 'note' },
+        r: { name: 'rest' },
+        h: { name: 'harmonic' },
+        m: { name: 'muted' },
+        s: { name: 'slash' },
+    },
+    // Some defaults
+    TIME4_4: {
+        num_beats: 4,
+        beat_value: 4,
+        resolution: RESOLUTION,
+    },
 };
 
 
@@ -31336,10 +30749,8 @@ var TIME4_4 = {
 /*!************************!*\
   !*** ./src/tabnote.ts ***!
   \************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -31375,10 +30786,10 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.TabNote = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
 var stemmablenote_1 = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
@@ -31480,7 +30891,7 @@ var TabNote = /** @class */ (function (_super) {
         // Render Options
         _this.render_options = __assign(__assign({}, _this.render_options), {
             // font size for note heads and rests
-            glyph_font_scale: tables_1.Flow.DEFAULT_TABLATURE_FONT_SCALE,
+            glyph_font_scale: flow_1.Flow.DEFAULT_TABLATURE_FONT_SCALE,
             // Flag to draw a stem
             draw_stem: draw_stem,
             // Flag to draw dot modifiers
@@ -31494,7 +30905,7 @@ var TabNote = /** @class */ (function (_super) {
             // default tablature font
             font: '10pt Arial',
         });
-        _this.glyph = tables_1.Flow.getGlyphProps(_this.duration, _this.noteType);
+        _this.glyph = flow_1.Flow.getGlyphProps(_this.duration, _this.noteType);
         if (!_this.glyph) {
             throw new util_1.RuntimeError('BadArguments', "Invalid note initialization data (No glyph found): " + JSON.stringify(tab_struct));
         }
@@ -31565,7 +30976,7 @@ var TabNote = /** @class */ (function (_super) {
             var fret = this.positions[i].fret;
             if (this.ghost)
                 fret = '(' + fret + ')';
-            var glyph = tables_1.Flow.tabToGlyph(fret, this.render_options.scale);
+            var glyph = flow_1.Flow.tabToGlyph(fret, this.render_options.scale);
             this.glyphs.push(glyph);
             this.width = Math.max(glyph.getWidth(), this.width);
         }
@@ -31797,10 +31208,8 @@ exports.TabNote = TabNote;
 /*!*************************!*\
   !*** ./src/tabslide.ts ***!
   \*************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -31822,7 +31231,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.TabSlide = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var tabtie_1 = __webpack_require__(/*! ./tabtie */ "./src/tabtie.ts");
@@ -31912,10 +31321,8 @@ exports.TabSlide = TabSlide;
 /*!*************************!*\
   !*** ./src/tabstave.ts ***!
   \*************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 var __extends = (this && this.__extends) || (function () {
@@ -31944,7 +31351,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.TabStave = void 0;
 var stave_1 = __webpack_require__(/*! ./stave */ "./src/stave.ts");
 var TabStave = /** @class */ (function (_super) {
@@ -31979,10 +31386,8 @@ exports.TabStave = TabStave;
 /*!***********************!*\
   !*** ./src/tabtie.ts ***!
   \***********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // / [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -32004,7 +31409,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.TabTie = void 0;
 var stavetie_1 = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
 var TabTie = /** @class */ (function (_super) {
@@ -32048,10 +31453,8 @@ exports.TabTie = TabTie;
 /*!****************************!*\
   !*** ./src/textbracket.ts ***!
   \****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Cyril Silverman
@@ -32087,12 +31490,12 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.TextBracket = exports.TextBracketPosition = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var renderer_1 = __webpack_require__(/*! ./renderer */ "./src/renderer.js");
+var renderer_1 = __webpack_require__(/*! ./renderer */ "./src/renderer.ts");
 // To enable logging for this class. Set `Vex.Flow.TextBracket.DEBUG` to `true`.
 function L() {
     // eslint-disable-next-line
@@ -32216,7 +31619,7 @@ var TextBracket = /** @class */ (function (_super) {
                 y = this.start.checkStave().getYForTopText(this.line);
                 break;
             case TextBracket.Position.BOTTOM:
-                y = this.start.checkStave().getYForBottomText(this.line + tables_1.Flow.TEXT_HEIGHT_OFFSET_HACK);
+                y = this.start.checkStave().getYForBottomText(this.line + flow_1.Flow.TEXT_HEIGHT_OFFSET_HACK);
                 break;
             default:
                 throw new util_1.RuntimeError('InvalidPosition', "The position " + this.position + " is invalid.");
@@ -32290,10 +31693,8 @@ exports.TextBracket = TextBracket;
 /*!*****************************!*\
   !*** ./src/textdynamics.ts ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -32329,12 +31730,11 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.TextDynamics = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-var common_1 = __webpack_require__(/*! ./common */ "./src/common.ts");
 // To enable logging for this class. Set `Vex.Flow.TextDynamics.DEBUG` to `true`.
 function L() {
     // eslint-disable-next-line
@@ -32419,7 +31819,7 @@ var TextDynamics = /** @class */ (function (_super) {
             var glyph_data = TextDynamics.GLYPHS[letter];
             if (!glyph_data)
                 throw new util_1.RuntimeError('Invalid dynamics character: ' + letter);
-            var size = common_1.check(_this.render_options.glyph_font_size);
+            var size = util_1.check(_this.render_options.glyph_font_size);
             var glyph = new glyph_1.Glyph(glyph_data.code, size, { category: 'textNote' });
             // Add the glyph
             _this.glyphs.push(glyph);
@@ -32455,10 +31855,8 @@ exports.TextDynamics = TextDynamics;
 /*!*************************!*\
   !*** ./src/textfont.ts ***!
   \*************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -32467,7 +31865,7 @@ exports.TextDynamics = TextDynamics;
 // This file handles a registry of text font metric information, so all
 // VEX modules can take advantage of font metrics in a uniform way.
 //
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.TextFont = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var petalumascript_textmetrics_1 = __webpack_require__(/*! ./fonts/petalumascript_textmetrics */ "./src/fonts/petalumascript_textmetrics.ts");
@@ -32800,10 +32198,8 @@ exports.TextFont = TextFont;
 /*!*************************!*\
   !*** ./src/textnote.ts ***!
   \*************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -32837,7 +32233,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.TextNote = exports.Justification = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
@@ -33015,6 +32411,11 @@ var TextNote = /** @class */ (function (_super) {
             ctx.setFont(this.font.family, this.font.size, this.font.weight);
             ctx.fillText(this.text, x, y);
             var height = ctx.measureText(this.text).height;
+            // CanvasRenderingContext2D.measureText() does not have a height field.
+            if (typeof height === 'undefined') {
+                // TODO: Consolidate calls to ctx.measureText('M').
+                height = ctx.measureText('M').width;
+            }
             // Write superscript
             if (this.superscript) {
                 ctx.setFont(this.font.family, this.font.size / 1.3, this.font.weight);
@@ -33039,10 +32440,8 @@ exports.TextNote = TextNote;
 /*!*************************!*\
   !*** ./src/tickable.ts ***!
   \*************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -33064,11 +32463,11 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Tickable = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
 /**
  * Tickable represents a element that sit on a score and
@@ -33300,7 +32699,7 @@ var Tickable = /** @class */ (function (_super) {
     };
     /** Sets the duration. */
     Tickable.prototype.setDuration = function (duration) {
-        var ticks = duration.numerator * (tables_1.Flow.RESOLUTION / duration.denominator);
+        var ticks = duration.numerator * (flow_1.Flow.RESOLUTION / duration.denominator);
         this.ticks = this.tickMultiplier.clone().multiply(ticks);
         this.intrinsicTicks = this.ticks.value();
     };
@@ -33315,10 +32714,8 @@ exports.Tickable = Tickable;
 /*!****************************!*\
   !*** ./src/tickcontext.ts ***!
   \****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -33340,7 +32737,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.TickContext = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var tickable_1 = __webpack_require__(/*! ./tickable */ "./src/tickable.ts");
@@ -33533,10 +32930,8 @@ exports.TickContext = TickContext;
 /*!*****************************!*\
   !*** ./src/timesigglyph.ts ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -33553,10 +32948,10 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.TimeSignatureGlyph = void 0;
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-var common_1 = __webpack_require__(/*! ./common */ "./src/common.ts");
 var TimeSignatureGlyph = /** @class */ (function (_super) {
     __extends(TimeSignatureGlyph, _super);
     function TimeSignatureGlyph(timeSignature, topDigits, botDigits, code, point, options) {
@@ -33577,7 +32972,7 @@ var TimeSignatureGlyph = /** @class */ (function (_super) {
             var num = botDigits[i];
             var botGlyph = new glyph_1.Glyph('timeSig' + num, _this.timeSignature.point);
             _this.botGlyphs.push(botGlyph);
-            botWidth += common_1.check(botGlyph.getMetrics().width);
+            botWidth += util_1.check(botGlyph.getMetrics().width);
         }
         _this.width = Math.max(topWidth, botWidth);
         _this.xMin = _this.getMetrics().x_min;
@@ -33594,19 +32989,19 @@ var TimeSignatureGlyph = /** @class */ (function (_super) {
         };
     };
     TimeSignatureGlyph.prototype.renderToStave = function (x) {
-        var stave = common_1.check(this.stave);
+        var stave = util_1.check(this.stave);
         var start_x = x + this.topStartX;
         for (var i = 0; i < this.topGlyphs.length; ++i) {
             var glyph = this.topGlyphs[i];
             glyph_1.Glyph.renderOutline(this.checkContext(), glyph.getMetrics().outline, this.scale, start_x + this.x_shift, stave.getYForLine(this.timeSignature.topLine));
-            start_x += common_1.check(glyph.getMetrics().width);
+            start_x += util_1.check(glyph.getMetrics().width);
         }
         start_x = x + this.botStartX;
         for (var i = 0; i < this.botGlyphs.length; ++i) {
             var glyph = this.botGlyphs[i];
             this.timeSignature.placeGlyphOnLine(glyph, stave, 0);
             glyph_1.Glyph.renderOutline(this.checkContext(), glyph.getMetrics().outline, this.scale, start_x + glyph.getMetrics().x_shift, stave.getYForLine(this.timeSignature.bottomLine));
-            start_x += common_1.check(glyph.getMetrics().width);
+            start_x += util_1.check(glyph.getMetrics().width);
         }
     };
     return TimeSignatureGlyph;
@@ -33620,10 +33015,8 @@ exports.TimeSignatureGlyph = TimeSignatureGlyph;
 /*!******************************!*\
   !*** ./src/timesignature.ts ***!
   \******************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
@@ -33646,13 +33039,12 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.TimeSignature = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 var timesigglyph_1 = __webpack_require__(/*! ./timesigglyph */ "./src/timesigglyph.ts");
-var common_1 = __webpack_require__(/*! ./common */ "./src/common.ts");
 var assertIsValidFraction = function (timeSpec) {
     var numbers = timeSpec.split('/').filter(function (number) { return number !== ''; });
     if (numbers.length !== 2) {
@@ -33679,8 +33071,8 @@ var TimeSignature = /** @class */ (function (_super) {
         _this.topLine = 2 + fontLineShift;
         _this.bottomLine = 4 + fontLineShift;
         _this.setPosition(stavemodifier_1.StaveModifier.Position.BEGIN);
-        _this.timeSig = _this.parseTimeSpec(timeSpec);
-        _this.setWidth(common_1.check(_this.timeSig.glyph.getMetrics().width));
+        _this.info = _this.parseTimeSpec(timeSpec);
+        _this.setWidth(util_1.check(_this.info.glyph.getMetrics().width));
         _this.setPadding(padding);
         return _this;
     }
@@ -33734,11 +33126,11 @@ var TimeSignature = /** @class */ (function (_super) {
         var glyph = new timesigglyph_1.TimeSignatureGlyph(this, topDigits, botDigits, 'timeSig0', this.point);
         return glyph;
     };
-    TimeSignature.prototype.getTimeSig = function () {
-        return this.timeSig;
+    TimeSignature.prototype.getInfo = function () {
+        return this.info;
     };
     TimeSignature.prototype.setTimeSig = function (timeSpec) {
-        this.timeSig = this.parseTimeSpec(timeSpec);
+        this.info = this.parseTimeSpec(timeSpec);
         return this;
     };
     TimeSignature.prototype.draw = function () {
@@ -33749,10 +33141,10 @@ var TimeSignature = /** @class */ (function (_super) {
             throw new util_1.RuntimeError('TimeSignatureError', "Can't draw time signature without stave.");
         }
         this.setRendered();
-        this.timeSig.glyph.setStave(this.stave);
-        this.timeSig.glyph.setContext(this.stave.getContext());
-        this.placeGlyphOnLine(this.timeSig.glyph, this.stave, this.timeSig.line);
-        this.timeSig.glyph.renderToStave(this.x);
+        this.info.glyph.setStave(this.stave);
+        this.info.glyph.setContext(this.stave.getContext());
+        this.placeGlyphOnLine(this.info.glyph, this.stave, this.info.line);
+        this.info.glyph.renderToStave(this.x);
     };
     return TimeSignature;
 }(stavemodifier_1.StaveModifier));
@@ -33765,10 +33157,8 @@ exports.TimeSignature = TimeSignature;
 /*!****************************!*\
   !*** ./src/timesignote.ts ***!
   \****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Taehoon Moon 2014
@@ -33787,20 +33177,18 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.TimeSigNote = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
 var timesignature_1 = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
 var TimeSigNote = /** @class */ (function (_super) {
     __extends(TimeSigNote, _super);
     function TimeSigNote(timeSpec, customPadding) {
-        var _a, _b;
         var _this = _super.call(this, { duration: 'b' }) || this;
         _this.setAttribute('type', 'TimeSigNote');
         var timeSignature = new timesignature_1.TimeSignature(timeSpec, customPadding);
-        _this.timeSig = timeSignature.getTimeSig();
-        _this.setWidth((_b = (_a = _this.timeSig) === null || _a === void 0 ? void 0 : _a.glyph.getMetrics().width) !== null && _b !== void 0 ? _b : 0);
+        _this.timeSigInfo = timeSignature.getInfo();
+        _this.setWidth(_this.timeSigInfo.glyph.getMetrics().width);
         // Note properties
         _this.ignore_ticks = true;
         return _this;
@@ -33815,16 +33203,14 @@ var TimeSigNote = /** @class */ (function (_super) {
     };
     TimeSigNote.prototype.draw = function () {
         var stave = this.checkStave();
-        if (!this.timeSig)
-            throw new util_1.RuntimeError('NoTimeSignatureInfo', 'No TimeSignatureInfo attached to this note.');
         var ctx = this.checkContext();
         this.setRendered();
-        if (!this.timeSig.glyph.getContext()) {
-            this.timeSig.glyph.setContext(ctx);
+        if (!this.timeSigInfo.glyph.getContext()) {
+            this.timeSigInfo.glyph.setContext(ctx);
         }
-        this.timeSig.glyph.setStave(stave);
-        this.timeSig.glyph.setYShift(stave.getYForLine(2) - stave.getYForGlyphs());
-        this.timeSig.glyph.renderToStave(this.getAbsoluteX());
+        this.timeSigInfo.glyph.setStave(stave);
+        this.timeSigInfo.glyph.setYShift(stave.getYForLine(2) - stave.getYForGlyphs());
+        this.timeSigInfo.glyph.renderToStave(this.getAbsoluteX());
     };
     return TimeSigNote;
 }(note_1.Note));
@@ -33837,10 +33223,8 @@ exports.TimeSigNote = TimeSigNote;
 /*!************************!*\
   !*** ./src/tremolo.ts ***!
   \************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Mike Corrigan <corrigan@gmail.com>
@@ -33861,7 +33245,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Tremolo = void 0;
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -33933,29 +33317,23 @@ exports.Tremolo = Tremolo;
 /*!***********************!*\
   !*** ./src/tuning.ts ***!
   \***********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-// This class implements varies types of tunings for tablature.
-Object.defineProperty(exports, "__esModule", { value: true });
+// MIT License
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Tuning = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
-/** Tuning implements varies types of tunings for tablature. */
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/** `Tuning` implements varies types of tunings for tablature. */
 var Tuning = /** @class */ (function () {
     /**
-     * Constructs providing tuning by name (eg. 'dagdad')
-     * or by comma separated note strings.
+     * Constructor.
+     * @param tuningString tuning name (eg. 'dagdad') or comma separated note strings
      */
     function Tuning(tuningString) {
         if (tuningString === void 0) { tuningString = 'E/5,B/4,G/4,D/4,A/3,E/3,B/2,E/2'; }
-        this.numStrings = 0;
-        this.tuningString = '';
         this.tuningValues = [];
         // Default to standard tuning.
         this.setTuning(tuningString);
@@ -33973,39 +33351,36 @@ var Tuning = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
-    /** Returns the note number associated to the note string. */
+    /** Return the note number associated to the note string. */
     Tuning.prototype.noteToInteger = function (noteString) {
-        return tables_1.Flow.keyProperties(noteString).int_value;
+        return flow_1.Flow.keyProperties(noteString).int_value;
     };
     /**
      * Set tuning identified by tuning name (eg. 'dagdad')
-     * or comma separated note strings (eg. 'D/5,A/4,G/4,D/4,A/3,D/3').
+     * @param tuningString tuning name (eg. 'dagdad') or comma separated note strings
      */
-    Tuning.prototype.setTuning = function (noteString) {
-        if (Tuning.names[noteString]) {
-            noteString = Tuning.names[noteString];
+    Tuning.prototype.setTuning = function (tuningString) {
+        if (Tuning.names[tuningString]) {
+            tuningString = Tuning.names[tuningString];
         }
-        this.tuningString = noteString;
         this.tuningValues = [];
-        this.numStrings = 0;
-        var keys = noteString.split(/\s*,\s*/);
+        var keys = tuningString.split(/\s*,\s*/);
         if (keys.length === 0) {
-            throw new util_1.RuntimeError('BadArguments', "Invalid tuning string: " + noteString);
+            throw new util_1.RuntimeError('BadArguments', "Invalid tuning string: " + tuningString);
         }
-        this.numStrings = keys.length;
-        for (var i = 0; i < this.numStrings; ++i) {
+        for (var i = 0; i < keys.length; ++i) {
             this.tuningValues[i] = this.noteToInteger(keys[i]);
         }
     };
-    /** Returns the note number associated with a tablature string. */
+    /** Return the note number associated with a tablature string. */
     Tuning.prototype.getValueForString = function (stringNum) {
         var s = Number(stringNum);
-        if (s < 1 || s > this.numStrings) {
-            throw new util_1.RuntimeError('BadArguments', "String number must be between 1 and " + this.numStrings + ":" + stringNum);
+        if (s < 1 || s > this.tuningValues.length) {
+            throw new util_1.RuntimeError('BadArguments', "String number must be between 1 and " + this.tuningValues.length + ":" + stringNum);
         }
         return this.tuningValues[s - 1];
     };
-    /** Returns the note number associated with a tablature string and fret. */
+    /** Return the note number associated with a tablature string and fret. */
     Tuning.prototype.getValueForFret = function (fretNum, stringNum) {
         var stringValue = this.getValueForString(stringNum);
         var f = Number(fretNum);
@@ -34014,12 +33389,12 @@ var Tuning = /** @class */ (function () {
         }
         return stringValue + f;
     };
-    /** Returns the note string associated with tablature string and fret. */
+    /** Return the note string associated with tablature string and fret. */
     Tuning.prototype.getNoteForFret = function (fretNum, stringNum) {
         var noteValue = this.getValueForFret(fretNum, stringNum);
         var octave = Math.floor(noteValue / 12);
         var value = noteValue % 12;
-        return tables_1.Flow.integerToNote(value) + "/" + octave;
+        return flow_1.Flow.integerToNote(value) + "/" + octave;
     };
     return Tuning;
 }());
@@ -34032,10 +33407,8 @@ exports.Tuning = Tuning;
 /*!***********************!*\
   !*** ./src/tuplet.ts ***!
   \***********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 var __extends = (this && this.__extends) || (function () {
@@ -34064,7 +33437,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Tuplet = void 0;
 /**
  * ## Description
@@ -34114,7 +33487,6 @@ var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
 var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
-var common_1 = __webpack_require__(/*! ./common */ "./src/common.ts");
 var Tuplet = /** @class */ (function (_super) {
     __extends(Tuplet, _super);
     function Tuplet(notes, options) {
@@ -34340,7 +33712,7 @@ var Tuplet = /** @class */ (function (_super) {
         }
         // determine y value for tuplet
         this.y_pos = this.getYPosition();
-        var addGlyphWidth = function (width, glyph) { return width + common_1.check(glyph.getMetrics().width); };
+        var addGlyphWidth = function (width, glyph) { return width + util_1.check(glyph.getMetrics().width); };
         // calculate total width of tuplet notation
         var width = this.numerator_glyphs.reduce(addGlyphWidth, 0);
         if (this.ratioed) {
@@ -34365,7 +33737,7 @@ var Tuplet = /** @class */ (function (_super) {
         var x_offset = 0;
         this.numerator_glyphs.forEach(function (glyph) {
             glyph.render(ctx, notation_start_x + x_offset, _this.y_pos + _this.point / 3 - 2 + shiftY);
-            x_offset += common_1.check(glyph.getMetrics().width);
+            x_offset += util_1.check(glyph.getMetrics().width);
         });
         // display colon and denominator if the ratio is to be shown
         if (this.ratioed) {
@@ -34382,7 +33754,7 @@ var Tuplet = /** @class */ (function (_super) {
             x_offset += this.point * 0.32;
             this.denom_glyphs.forEach(function (glyph) {
                 glyph.render(ctx, notation_start_x + x_offset, _this.y_pos + _this.point / 3 - 2 + shiftY);
-                x_offset += common_1.check(glyph.getMetrics().width);
+                x_offset += util_1.check(glyph.getMetrics().width);
             });
         }
     };
@@ -34397,10 +33769,8 @@ exports.Tuplet = Tuplet;
 /*!*********************!*\
   !*** ./src/util.ts ***!
   \*********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports) {
 
-"use strict";
 
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -34417,8 +33787,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.warn = exports.log = exports.RuntimeError = void 0;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.prefix = exports.drawDot = exports.midLine = exports.warn = exports.log = exports.MakeException = exports.check = exports.RuntimeError = void 0;
 var RuntimeError = /** @class */ (function (_super) {
     __extends(RuntimeError, _super);
     function RuntimeError(code, message) {
@@ -34429,6 +33799,29 @@ var RuntimeError = /** @class */ (function (_super) {
     return RuntimeError;
 }(Error));
 exports.RuntimeError = RuntimeError;
+function check(x) {
+    if (x === undefined) {
+        throw new RuntimeError('undefined');
+    }
+    return x;
+}
+exports.check = check;
+function MakeException(name) {
+    var exception = /** @class */ (function (_super) {
+        __extends(class_1, _super);
+        // eslint-disable-next-line
+        function class_1(message, data) {
+            var _this = _super.call(this, message) || this;
+            _this.name = name;
+            _this.message = message;
+            _this.data = data;
+            return _this;
+        }
+        return class_1;
+    }(Error));
+    return exception;
+}
+exports.MakeException = MakeException;
 // Default log function sends all arguments to console.
 function log(block) {
     // eslint-disable-next-line
@@ -34468,129 +33861,24 @@ function warn() {
     window.console.log('Warning: ', line, err.stack);
 }
 exports.warn = warn;
-
-
-/***/ }),
-
-/***/ "./src/vex.js":
-/*!********************!*\
-  !*** ./src/vex.js ***!
-  \********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-// This file implements utility methods used by the rest of the VexFlow
-// codebase.
-//
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Vex = void 0;
-/* eslint max-classes-per-file: "off" */
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var Vex = function () { };
-exports.Vex = Vex;
-Vex.MakeException = function (name) {
-    var exception = /** @class */ (function (_super) {
-        __extends(exception, _super);
-        function exception(message, data) {
-            var _this = _super.call(this, message) || this;
-            _this.name = name;
-            _this.message = message;
-            _this.data = data;
-            return _this;
-        }
-        return exception;
-    }(Error));
-    return exception;
-};
-// Merge `destination` hash with `source` hash, overwriting like keys
-// in `source` if necessary.
-Vex.Merge = function (destination, source) {
-    for (var property in source) {
-        // eslint-disable-line guard-for-in
-        destination[property] = source[property];
-    }
-    return destination;
-};
-Vex.forEach = function (a, fn) {
-    for (var i = 0; i < a.length; i++) {
-        fn(a[i], i);
-    }
-};
 // Round number to nearest fractional value (`.5`, `.25`, etc.)
-Vex.RoundN = function (x, n) { return (x % n >= n / 2 ? parseInt(x / n, 10) * n + n : parseInt(x / n, 10) * n); };
+function roundN(x, n) {
+    return x % n >= n / 2 ? parseInt("" + x / n, 10) * n + n : parseInt("" + x / n, 10) * n;
+}
 // Locate the mid point between stave lines. Returns a fractional line if a space.
-Vex.MidLine = function (a, b) {
+function midLine(a, b) {
     var mid_line = b + (a - b) / 2;
     if (mid_line % 2 > 0) {
-        mid_line = Vex.RoundN(mid_line * 10, 5) / 10;
+        mid_line = roundN(mid_line * 10, 5) / 10;
     }
     return mid_line;
-};
-// Take `arr` and return a new list consisting of the sorted, unique,
-// contents of arr. Does not modify `arr`.
-Vex.SortAndUnique = function (arr, cmp, eq) {
-    if (arr.length > 1) {
-        var newArr = [];
-        var last = void 0;
-        arr.sort(cmp);
-        for (var i = 0; i < arr.length; ++i) {
-            if (i === 0 || !eq(arr[i], last)) {
-                newArr.push(arr[i]);
-            }
-            last = arr[i];
-        }
-        return newArr;
-    }
-    else {
-        return arr;
-    }
-};
-// Check if array `a` contains `obj`.
-Vex.Contains = function (a, obj) {
-    var i = a.length;
-    while (i--) {
-        if (a[i] === obj) {
-            return true;
-        }
-    }
-    return false;
-};
-// Get the 2D Canvas context from DOM element `canvas_sel`.
-Vex.getCanvasContext = function (canvas_sel) {
-    if (!canvas_sel) {
-        throw new util_1.RuntimeError('BadArgument', 'Invalid canvas selector: ' + canvas_sel);
-    }
-    var canvas = document.getElementById(canvas_sel);
-    if (!(canvas && canvas.getContext)) {
-        throw new util_1.RuntimeError('UnsupportedBrowserError', 'This browser does not support HTML5 Canvas');
-    }
-    return canvas.getContext('2d');
-};
+}
+exports.midLine = midLine;
 // Draw a tiny dot marker on the specified canvas. A great debugging aid.
 //
 // `ctx`: Canvas context.
 // `x`, `y`: Dot coordinates.
-Vex.drawDot = function (ctx, x, y, color) {
+function drawDot(ctx, x, y, color) {
     if (color === void 0) { color = '#55'; }
     ctx.save();
     ctx.setFillStyle(color);
@@ -34600,18 +33888,103 @@ Vex.drawDot = function (ctx, x, y, color) {
     ctx.closePath();
     ctx.fill();
     ctx.restore();
-};
-// Benchmark. Run function `f` once and report time elapsed shifted by `s` milliseconds.
-Vex.BM = function (s, f) {
-    var start_time = new Date().getTime();
-    f();
-    var elapsed = new Date().getTime() - start_time;
-    util_1.log(s + elapsed + 'ms');
-};
+}
+exports.drawDot = drawDot;
 // Used by various classes (e.g., SVGContext) to provide a
 // unique prefix to element names (or other keys in shared namespaces).
-Vex.Prefix = function (text) { return Vex.Prefix.prefix + text; };
-Vex.Prefix.prefix = 'vf-';
+function prefix(text) {
+    return "vf-" + text;
+}
+exports.prefix = prefix;
+
+
+/***/ }),
+
+/***/ "./src/vex.ts":
+/*!********************!*\
+  !*** ./src/vex.ts ***!
+  \********************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+//
+// ## Description
+// This file implements utility methods used by the rest of the VexFlow
+// codebase.
+//
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Vex = void 0;
+var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+exports.Vex = {
+    Flow: flow_1.Flow,
+    forEach: 
+    // eslint-disable-next-line
+    function (a, fn) {
+        for (var i = 0; i < a.length; i++) {
+            fn(a[i], i);
+        }
+    },
+    // Take `arr` and return a new list consisting of the sorted, unique,
+    // contents of arr. Does not modify `arr`.
+    SortAndUnique: 
+    // eslint-disable-next-line
+    function (arr, cmp, eq) {
+        if (arr.length > 1) {
+            var newArr = [];
+            var last = void 0;
+            arr.sort(cmp);
+            for (var i = 0; i < arr.length; ++i) {
+                if (i === 0 || !eq(arr[i], last)) {
+                    newArr.push(arr[i]);
+                }
+                last = arr[i];
+            }
+            return newArr;
+        }
+        else {
+            return arr;
+        }
+    },
+    // Check if array `a` contains `obj`.
+    Contains: 
+    // eslint-disable-next-line
+    function (a, obj) {
+        var i = a.length;
+        while (i--) {
+            if (a[i] === obj) {
+                return true;
+            }
+        }
+        return false;
+    },
+    // Get the 2D Canvas context from DOM element `canvas_sel`.
+    getCanvasContext: function (canvas_sel) {
+        if (!canvas_sel) {
+            throw new util_1.RuntimeError('BadArgument', 'Invalid canvas selector: ' + canvas_sel);
+        }
+        var canvas = document.getElementById(canvas_sel);
+        if (!(canvas && canvas.getContext)) {
+            throw new util_1.RuntimeError('UnsupportedBrowserError', 'This browser does not support HTML5 Canvas');
+        }
+        return canvas.getContext('2d');
+    },
+    // Benchmark. Run function `f` once and report time elapsed shifted by `s` milliseconds.
+    BM: 
+    // eslint-disable-next-line
+    function (s, f) {
+        var start_time = new Date().getTime();
+        f();
+        var elapsed = new Date().getTime() - start_time;
+        util_1.log(s, elapsed + 'ms');
+    },
+    // Get stack trace.
+    StackTrace: function () {
+        var err = new Error();
+        return err.stack;
+    },
+};
 
 
 /***/ }),
@@ -34620,15 +33993,11 @@ Vex.Prefix.prefix = 'vf-';
 /*!************************!*\
   !*** ./src/vibrato.ts ***!
   \************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-// This class implements vibratos.
+// MIT Licnse
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -34644,13 +34013,13 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Vibrato = void 0;
 var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 var bend_1 = __webpack_require__(/*! ./bend */ "./src/bend.ts");
+/** `Vibrato` implements diverse vibratos. */
 var Vibrato = /** @class */ (function (_super) {
     __extends(Vibrato, _super);
-    // ## Prototype Methods
     function Vibrato() {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Vibrato');
@@ -34666,14 +34035,14 @@ var Vibrato = /** @class */ (function (_super) {
         return _this;
     }
     Object.defineProperty(Vibrato, "CATEGORY", {
+        /** Get element CATEGORY string. */
         get: function () {
             return 'vibratos';
         },
         enumerable: false,
         configurable: true
     });
-    // ## Static Methods
-    // Arrange vibratos inside a `ModifierContext`.
+    /** Arrange vibratos inside a `ModifierContext`. */
     Vibrato.format = function (vibratos, state, context) {
         if (!vibratos || vibratos.length === 0)
             return false;
@@ -34698,18 +34067,22 @@ var Vibrato = /** @class */ (function (_super) {
         state.top_text_line += 1;
         return true;
     };
+    /** Get element category string. */
     Vibrato.prototype.getCategory = function () {
         return Vibrato.CATEGORY;
     };
+    /** Set harsh vibrato. */
     Vibrato.prototype.setHarsh = function (harsh) {
         this.render_options.harsh = harsh;
         return this;
     };
+    /** Set vibrato width in pixels. */
     Vibrato.prototype.setVibratoWidth = function (width) {
         this.render_options.vibrato_width = width;
         this.setWidth(width);
         return this;
     };
+    /** Draw the vibrato on the rendering context. */
     Vibrato.prototype.draw = function () {
         var ctx = this.checkContext();
         var note = this.checkAttachedNote();
@@ -34719,8 +34092,10 @@ var Vibrato = /** @class */ (function (_super) {
         var vy = note.getYForTopText(this.text_line) + 2;
         Vibrato.renderVibrato(ctx, vx, vy, this.render_options);
     };
-    // Static rendering method that can be called from
-    // other classes (e.g. VibratoBracket)
+    /**
+     * Static rendering method that can be called from
+     * other classes (e.g. VibratoBracket).
+     */
     Vibrato.renderVibrato = function (ctx, x, y, opts) {
         var harsh = opts.harsh, vibrato_width = opts.vibrato_width, wave_width = opts.wave_width, wave_girth = opts.wave_girth, wave_height = opts.wave_height;
         var num_waves = vibrato_width / wave_width;
@@ -34770,18 +34145,12 @@ exports.Vibrato = Vibrato;
 /*!*******************************!*\
   !*** ./src/vibratobracket.ts ***!
   \*******************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Balazs Forian-Szabo
-//
-// ## Description
-//
-// This file implements `VibratoBrackets`
-// that renders vibrato effect between two notes.
+// MIT License
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -34797,12 +34166,11 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.VibratoBracket = void 0;
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
 var vibrato_1 = __webpack_require__(/*! ./vibrato */ "./src/vibrato.ts");
-// To enable logging for this class. Set `Vex.Flow.VibratoBracket.DEBUG` to `true`.
 function L() {
     // eslint-disable-next-line
     var args = [];
@@ -34819,15 +34187,14 @@ function L() {
     if (VibratoBracket.DEBUG)
         util_1.log('Vex.Flow.VibratoBracket', args);
 }
+/** `VibratoBracket` renders vibrato effect between two notes. */
 var VibratoBracket = /** @class */ (function (_super) {
     __extends(VibratoBracket, _super);
-    // bracket_data = {
-    //   start: Vex.Flow.Note (optional)
-    //   stop: Vex.Flow.Note (optional)
-    // };
-    // Either the stop or start note must be set, or both of them.
-    // A null value for the start or stop note indicates that the vibrato
-    // is drawn from the beginning or until the end of the stave accordingly.
+    /**
+     * Either the stop or start note must be set, or both of them.
+     * An undefined value for the start or stop note indicates that the vibrato
+     * is drawn from the beginning or until the end of the stave accordingly.
+     */
     function VibratoBracket(bracket_data) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'VibratoBracket');
@@ -34843,16 +34210,17 @@ var VibratoBracket = /** @class */ (function (_super) {
         };
         return _this;
     }
-    // Set line position of the vibrato bracket
+    /** Set line position of the vibrato bracket. */
     VibratoBracket.prototype.setLine = function (line) {
         this.line = line;
         return this;
     };
+    /** Set harsh vibrato bracket. */
     VibratoBracket.prototype.setHarsh = function (harsh) {
         this.render_options.harsh = harsh;
         return this;
     };
-    // Draw the vibrato bracket on the rendering context
+    /** Draw the vibrato bracket on the rendering context. */
     VibratoBracket.prototype.draw = function () {
         var ctx = this.checkContext();
         this.setRendered();
@@ -34882,17 +34250,9 @@ exports.VibratoBracket = VibratoBracket;
 /*!**********************!*\
   !*** ./src/voice.ts ***!
   \**********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-"use strict";
 
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-//
-// This file implements the main Voice class. It's mainly a container
-// object to group `Tickables` for formatting.
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -34919,19 +34279,23 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Voice = exports.VoiceMode = void 0;
+// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// MIT License
 var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
 var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.js");
+var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
-var common_1 = __webpack_require__(/*! ./common */ "./src/common.ts");
 var VoiceMode;
 (function (VoiceMode) {
     VoiceMode[VoiceMode["STRICT"] = 1] = "STRICT";
     VoiceMode[VoiceMode["SOFT"] = 2] = "SOFT";
     VoiceMode[VoiceMode["FULL"] = 3] = "FULL";
 })(VoiceMode = exports.VoiceMode || (exports.VoiceMode = {}));
+/**
+ * `Voice` is mainly a container object to group `Tickables` for formatting.
+ */
 var Voice = /** @class */ (function (_super) {
     __extends(Voice, _super);
     function Voice(time, options) {
@@ -34945,7 +34309,7 @@ var Voice = /** @class */ (function (_super) {
                 time = {
                     num_beats: parseInt(match[1]),
                     beat_value: parseInt(match[2]),
-                    resolution: tables_1.Flow.RESOLUTION,
+                    resolution: flow_1.Flow.RESOLUTION,
                 };
             }
         }
@@ -34953,7 +34317,7 @@ var Voice = /** @class */ (function (_super) {
         _this.time = __assign({
             num_beats: 4,
             beat_value: 4,
-            resolution: tables_1.Flow.RESOLUTION,
+            resolution: flow_1.Flow.RESOLUTION,
         }, time);
         // Recalculate total ticks.
         _this.totalTicks = new fraction_1.Fraction(_this.time.num_beats * (_this.time.resolution / _this.time.beat_value), 1);
@@ -34968,61 +34332,65 @@ var Voice = /** @class */ (function (_super) {
         return _this;
     }
     Object.defineProperty(Voice, "Mode", {
-        // Modes allow the addition of ticks in three different ways:
-        //
-        // STRICT: This is the default. Ticks must fill the voice.
-        // SOFT:   Ticks can be added without restrictions.
-        // FULL:   Ticks do not need to fill the voice, but can't exceed the maximum
-        //         tick length.
+        /**
+         * Modes allow the addition of ticks in three different ways:
+         * - STRICT: This is the default. Ticks must fill the voice.
+         * - SOFT: Ticks can be added without restrictions.
+         * - FULL: Ticks do not need to fill the voice, but can't exceed the maximum tick length.
+         */
         get: function () {
             return VoiceMode;
         },
         enumerable: false,
         configurable: true
     });
-    // Get the total ticks in the voice
+    /** Get the total ticks in the voice. */
     Voice.prototype.getTotalTicks = function () {
         return this.totalTicks;
     };
-    // Get the total ticks used in the voice by all the tickables
+    /** Get the total ticks used in the voice by all the tickables. */
     Voice.prototype.getTicksUsed = function () {
         return this.ticksUsed;
     };
-    // Get the largest width of all the tickables
+    /** Get the largest width of all the tickables. */
     Voice.prototype.getLargestTickWidth = function () {
         return this.largestTickWidth;
     };
-    // Get the tick count for the shortest tickable
+    /** Get the tick count for the shortest tickable */
     Voice.prototype.getSmallestTickCount = function () {
         return this.smallestTickCount;
     };
-    // Get the tickables in the voice
+    /** Get the tickables in the voice. */
     Voice.prototype.getTickables = function () {
         return this.tickables;
     };
-    // Get/set the voice mode, use a value from `Voice.Mode`
+    /** Get the voice mode. */
     Voice.prototype.getMode = function () {
         return this.mode;
     };
+    /**
+     * Set the voice mode.
+     * @param mode value from `Voice.Mode`
+     */
     Voice.prototype.setMode = function (mode) {
         this.mode = mode;
         return this;
     };
-    // Get the resolution multiplier for the voice
+    /** Get the resolution multiplier for the voice. */
     Voice.prototype.getResolutionMultiplier = function () {
         return this.resolutionMultiplier;
     };
-    // Get the actual tick resolution for the voice
+    /** Get the actual tick resolution for the voice. */
     Voice.prototype.getActualResolution = function () {
         return this.resolutionMultiplier * this.time.resolution;
     };
-    // Set the voice's stave
+    /** Set the voice's stave. */
     Voice.prototype.setStave = function (stave) {
         this.stave = stave;
         this.boundingBox = undefined; // Reset bounding box so we can reformat
         return this;
     };
-    // Get the bounding box for the voice
+    /** Get the bounding box for the voice. */
     Voice.prototype.getBoundingBox = function () {
         var boundingBox;
         var bb;
@@ -35030,7 +34398,7 @@ var Voice = /** @class */ (function (_super) {
         if (!this.boundingBox) {
             boundingBox = undefined;
             for (i = 0; i < this.tickables.length; ++i) {
-                this.tickables[i].setStave(common_1.check(this.stave));
+                this.tickables[i].setStave(util_1.check(this.stave));
                 bb = this.tickables[i].getBoundingBox();
                 if (!bb)
                     continue;
@@ -35040,25 +34408,12 @@ var Voice = /** @class */ (function (_super) {
         }
         return this.boundingBox;
     };
-    // Every tickable must be associated with a voiceGroup. This allows formatters
-    // and preformatters to associate them with the right modifierContexts.
-    Voice.prototype.getVoiceGroup = function () {
-        if (!this.voiceGroup) {
-            throw new util_1.RuntimeError('NoVoiceGroup', 'No voice group for voice.');
-        }
-        return this.voiceGroup;
-    };
-    // Set the voice group
-    Voice.prototype.setVoiceGroup = function (g) {
-        this.voiceGroup = g;
-        return this;
-    };
-    // Set the voice mode to strict or soft
+    /** Set the voice mode to strict or soft. */
     Voice.prototype.setStrict = function (strict) {
         this.mode = strict ? Voice.Mode.STRICT : Voice.Mode.SOFT;
         return this;
     };
-    // Determine if the voice is complete according to the voice mode
+    /** Determine if the voice is complete according to the voice mode. */
     Voice.prototype.isComplete = function () {
         if (this.mode === Voice.Mode.STRICT || this.mode === Voice.Mode.FULL) {
             return this.ticksUsed.equals(this.totalTicks);
@@ -35067,17 +34422,21 @@ var Voice = /** @class */ (function (_super) {
             return true;
         }
     };
-    // We use softmax to layout the tickables proportional to the exponent of
-    // their duration. The softmax factor is used to determine the 'linearness' of
-    // the layout.
-    //
-    // The softmax of all the tickables in this voice should sum to 1.
+    /**
+     * We use softmax to layout the tickables proportional to the exponent of
+     * their duration. The softmax factor is used to determine the 'linearness' of
+     * the layout.
+     *
+     * The softmax of all the tickables in this voice should sum to 1.
+     */
     Voice.prototype.setSoftmaxFactor = function (factor) {
         this.options.softmaxFactor = factor;
         return this;
     };
-    // Calculate the sum of the exponents of all the ticks in this voice to use as the denominator
-    // of softmax.
+    /**
+     * Calculate the sum of the exponents of all the ticks in this voice to use
+     * as the denominator of softmax.
+     */
     Voice.prototype.reCalculateExpTicksUsed = function () {
         var _this = this;
         var totalTicks = this.ticksUsed.value();
@@ -35085,7 +34444,7 @@ var Voice = /** @class */ (function (_super) {
         this.expTicksUsed = this.tickables.map(exp).reduce(function (a, b) { return a + b; });
         return this.expTicksUsed;
     };
-    // Get the softmax-scaled value of a tick duration. 'tickValue' is a number.
+    /** Get the softmax-scaled value of a tick duration. 'tickValue' is a number. */
     Voice.prototype.softmax = function (tickValue) {
         var _this = this;
         if (!this.expTicksUsed) {
@@ -35096,7 +34455,7 @@ var Voice = /** @class */ (function (_super) {
         var sm = exp(tickValue) / this.expTicksUsed;
         return sm;
     };
-    // Add a tickable to the voice
+    /** Add a tickable to the voice. */
     Voice.prototype.addTickable = function (tickable) {
         if (!tickable.shouldIgnoreTicks()) {
             var ticks = tickable.getTicks();
@@ -35121,18 +34480,18 @@ var Voice = /** @class */ (function (_super) {
         tickable.setVoice(this);
         return this;
     };
-    // Add an array of tickables to the voice.
+    /** Add an array of tickables to the voice. */
     Voice.prototype.addTickables = function (tickables) {
         for (var i = 0; i < tickables.length; ++i) {
             this.addTickable(tickables[i]);
         }
         return this;
     };
-    // Preformats the voice by applying the voice's stave to each note.
+    /** Preformat the voice by applying the voice's stave to each note. */
     Voice.prototype.preFormat = function () {
         if (this.preFormatted)
             return this;
-        var stave = common_1.check(this.stave);
+        var stave = util_1.check(this.stave);
         this.tickables.forEach(function (tickable) {
             if (!tickable.getStave()) {
                 tickable.setStave(stave);
@@ -35141,9 +34500,11 @@ var Voice = /** @class */ (function (_super) {
         this.preFormatted = true;
         return this;
     };
-    // Render the voice onto the canvas `context` and an optional `stave`.
-    // If `stave` is omitted, it is expected that the notes have staves
-    // already set.
+    /**
+     * Render the voice onto the canvas `context` and an optional `stave`.
+     * If `stave` is omitted, it is expected that the notes have staves
+     * already set.
+     */
     Voice.prototype.draw = function (context, stave) {
         if (context === void 0) { context = this.checkContext(); }
         if (stave === void 0) { stave = this.stave; }
@@ -35174,464 +34535,78 @@ var Voice = /** @class */ (function (_super) {
 exports.Voice = Voice;
 
 
-/***/ }),
-
-/***/ "./src/widthformatter.js":
-/*!*******************************!*\
-  !*** ./src/widthformatter.js ***!
-  \*******************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.WidthFormatter = void 0;
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.js");
-var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
-// To enable logging for this class. Set `Vex.Flow.Formatter.DEBUG` to `true`.
-function L() {
-    var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
-    }
-    if (WidthFormatter.DEBUG)
-        vex_1.Vex.L('Vex.Flow.WidthFormatter', args);
-}
-var WidthFormatter = /** @class */ (function (_super) {
-    __extends(WidthFormatter, _super);
-    function WidthFormatter(options) {
-        var _this = _super.call(this, options) || this;
-        _this.options.maxIterations = 5;
-        return _this;
-    }
-    // Calculate the minimum width required to align and format `voices`.
-    WidthFormatter.prototype.preCalculateMinTotalWidth = function (voices) {
-        // Cache results.
-        if (this.hasMinTotalWidth)
-            return this.minTotalWidth;
-        // Create tick contexts if not already created.
-        if (!this.tickContexts) {
-            if (!voices) {
-                throw new vex_1.Vex.RERR('BadArgument', "'voices' required to run preCalculateMinTotalWidth");
-            }
-            this.createTickContexts(voices);
-        }
-        var _a = this.tickContexts, contextList = _a.list, contextMap = _a.map;
-        // const maxTicks = contextList.map(tick => tick.maxTicks.value()).reduce((a, b) => a + b, 0);
-        // Go through each tick context and calculate total width.
-        this.minTotalWidth = contextList
-            .map(function (tick) {
-            var context = contextMap[tick];
-            context.preFormat();
-            var width = context.getWidth();
-            var metrics = context.getMetrics();
-            return width + metrics.totalLeftPx;
-        })
-            .reduce(function (a, b) { return a + b; }, 0);
-        this.hasMinTotalWidth = true;
-        return this.minTotalWidth;
-    };
-    WidthFormatter.prototype.computeVoiceFormatting = function () {
-        this.voices.forEach(function (voice) {
-            voice.widthTicksUsed = voice.tickables.map(function (tickable) { return tickable.widthTicks; }).reduce(function (a, b) { return a + b; });
-            var exp = function (tickable) { return Math.pow(voice.options.softmaxFactor, tickable.widthTicks / voice.widthTicksUsed); };
-            voice.expTicksUsed = voice.tickables.map(exp).reduce(function (a, b) { return a + b; });
-        });
-    };
-    WidthFormatter.prototype.computeMaxWidthEstimate = function (ideals) {
-        var voiceWidths = [];
-        this.voices.forEach(function (voice, index) {
-            voiceWidths.push(0);
-            ideals.forEach(function (ideal, idIx) {
-                if (idIx > 0) {
-                    var tickByVoice = ideal.fromTickable.tickContext.getTickablesByVoice();
-                    if (tickByVoice[index]) {
-                        voiceWidths[index] += ideal.expectedDistance;
-                        if (ideal.overlap > 0) {
-                            voiceWidths[index] += ideal.overlap;
-                        }
-                    }
-                }
-            });
-            var lastContext = voice.tickables[voice.tickables.length - 1].getTickContext();
-            var metrics = lastContext.getMetrics();
-            voiceWidths[index] += metrics.notePx + metrics.totalLeftPx + metrics.totalRightPx;
-        });
-        return voiceWidths.reduce(function (a, b) { return (a > b ? a : b); });
-    };
-    WidthFormatter.prototype.softmax = function (voice, tickValue) {
-        var exp = function (v) { return Math.pow(voice.options.softmaxFactor, v / voice.widthTicksUsed); };
-        return exp(tickValue) / voice.expTicksUsed;
-    };
-    WidthFormatter.prototype.calculateWidthMap = function (adjustedJustifyWidth) {
-        var _this = this;
-        var widthMap = {};
-        var previousWidthByVoice = {};
-        var contexts = this.tickContexts;
-        var i = 0;
-        var voiceMap = {};
-        var foundOverlappingLine = false;
-        // Calculate softmax basis based on current widthTick levels
-        this.computeVoiceFormatting();
-        var contextList = contexts.list, contextMap = contexts.map;
-        contextList.forEach(function (tick) {
-            var context = contextMap[tick];
-            widthMap[tick] = {
-                context: context,
-                tick: tick,
-                widthData: {},
-            };
-            var voicesInContext = context.getTickablesByVoice();
-            Object.keys(voicesInContext).forEach(function (voiceKey) {
-                if (typeof previousWidthByVoice[voiceKey] === 'undefined') {
-                    previousWidthByVoice[voiceKey] = null;
-                }
-                var widthEntry = {
-                    expectedDistance: 0,
-                    previousWidth: previousWidthByVoice[voiceKey],
-                    nextWidth: null,
-                    overlap: 0,
-                    voiceKey: voiceKey,
-                    tick: tick,
-                    x: 0,
-                    tickable: voicesInContext[voiceKey],
-                };
-                // Keep track of existing voices for backtrack
-                if (!voiceMap[voiceKey]) {
-                    voiceMap[voiceKey] = true;
-                }
-                var tickableMetrics = widthEntry.tickable.getMetrics();
-                widthEntry.width = tickableMetrics.notePx + tickableMetrics.modRightPx + tickableMetrics.rightDisplacedHeadPx;
-                if (widthEntry.previousWidth) {
-                    widthEntry.previousWidth.nextWidth = widthEntry;
-                    var previousMetrics = widthEntry.previousWidth.tickable.getMetrics();
-                    widthEntry.expectedDistance =
-                        _this.softmax(widthEntry.previousWidth.tickable.getVoice(), widthEntry.previousWidth.tickable.widthTicks) *
-                            adjustedJustifyWidth;
-                    widthEntry.overlap =
-                        previousMetrics.notePx +
-                            previousMetrics.rightDisplacedHeadPx +
-                            previousMetrics.modRightPx -
-                            (widthEntry.expectedDistance - widthEntry.tickable.tickContext.totalLeftPx);
-                    widthEntry.x = widthEntry.previousWidth.x + widthEntry.expectedDistance;
-                    if (widthEntry.overlap > 0) {
-                        foundOverlappingLine = true;
-                    }
-                }
-                else {
-                    widthEntry.x = context.getX();
-                }
-                L('expectedDistance/overlap/x/tick/ticks/voice', widthEntry.expectedDistance, widthEntry.overlap, widthEntry.x, tick, widthEntry.tickable.ticks.value(), widthEntry.voiceKey);
-                previousWidthByVoice[voiceKey] = widthEntry;
-                widthMap[tick].widthData[voiceKey] = widthEntry;
-            });
-        });
-        // If we haven't found any collisions per voice, look for overlaps between voices (unaligned/misaligned voices)
-        if (!foundOverlappingLine) {
-            // We start by a 'dress rehearsal' where each tickable is put at what it's X would be - max X of tickables at a context
-            var j = 0;
-            for (i = 0; i < contextList.length; ++i) {
-                var widthData = widthMap[contextList[i]].widthData;
-                var voiceKeys = Object.keys(widthData);
-                var maxX = 0;
-                for (j = 0; j < voiceKeys.length; ++j) {
-                    var widthEntry = widthData[voiceKeys[j]];
-                    var x = widthEntry.previousWidth ? widthEntry.previousWidth.x + widthEntry.expectedDistance : widthEntry.x;
-                    maxX = x > maxX ? x : maxX;
-                }
-                for (j = 0; j < voiceKeys.length; ++j) {
-                    widthData[voiceKeys[j]].x = maxX;
-                }
-            }
-            var voiceCount = Object.keys(voiceMap).length;
-            var ticksSoFar = [0];
-            // Now see if any tickable is to the left of a tickable earlier in the measure, in a different voice
-            for (i = 1; i < contextList.length; ++i) {
-                var tick = contextList[i];
-                var widthData = widthMap[tick].widthData;
-                var voicesInContext = Object.keys(widthData);
-                var checkedVoices = {};
-                var p = 0;
-                for (p = 0; p < voicesInContext.length; ++p) {
-                    var widthEntry = widthData[voicesInContext[p]];
-                    // Go backwards from this tick context to find previous notes per voice
-                    // and compare x with our x
-                    for (j = ticksSoFar.length - 1; j >= 0; --j) {
-                        var previousWidths = widthMap[contextList[j]];
-                        var k = 0;
-                        var prevKeys = Object.keys(previousWidths.widthData);
-                        for (k = 0; k < prevKeys.length; ++k) {
-                            var prevKey = prevKeys[k];
-                            var prevEntry = previousWidths.widthData[prevKey];
-                            checkedVoices[prevKey] = true;
-                            if (prevEntry.x >= widthEntry.x && prevEntry.x - widthEntry.x > widthEntry.overlap) {
-                                widthEntry.overlap = prevEntry.x - widthEntry.x + 1;
-                                // foundOverlappingVoice = true;
-                                L('alternate overlap from tick/voice/newVal', prevEntry.tick, prevEntry.voiceKey, widthEntry.overlap);
-                            }
-                        }
-                        if (Object.keys(checkedVoices).length === voiceCount) {
-                            break; // we've searched all voices at this tick
-                        }
-                    }
-                }
-                ticksSoFar.push(tick);
-            }
-        }
-        return widthMap;
-    };
-    WidthFormatter.prototype.adjustOverlaps = function (contextList, widthMap, istats) {
-        var overlaps = false;
-        var maxUnderlap = null;
-        contextList.forEach(function (tick) {
-            var widthContext = widthMap[tick];
-            Object.keys(widthContext.widthData).forEach(function (voiceKey) {
-                var widthEntry = widthContext.widthData[voiceKey];
-                if (widthEntry.overlap > 0 && istats.stdDev > 1) {
-                    overlaps = true;
-                    widthEntry.previousWidth.tickable.widthTicks =
-                        widthEntry.previousWidth.tickable.widthTicks * (1 + widthEntry.overlap / istats.stdDev);
-                }
-                else if ((widthEntry.overlap < istats.mean - istats.stdDev || widthEntry.overlap < 2 * istats.mean) &&
-                    (maxUnderlap === null || widthEntry.overlap < maxUnderlap.overlap) &&
-                    widthEntry.overlap < 0 &&
-                    istats.stdDev > 1 &&
-                    overlaps) {
-                    maxUnderlap = widthEntry;
-                }
-            });
-        });
-        // If there were overlaps, reduce the greatest overlap to make room for the additional ticks
-        if (overlaps && maxUnderlap && maxUnderlap.previousWidth) {
-            maxUnderlap.previousWidth.tickable.widthTicks = maxUnderlap.previousWidth.tickable.widthTicks * 0.85;
-        }
-        return overlaps;
-    };
-    // This is the core formatter logic. Format voices and justify them
-    // to `justifyWidth` pixels. `renderingContext` is required to justify elements
-    // that can't retreive widths without a canvas. This method sets the `x` positions
-    // of all the tickables/notes in the formatter.
-    WidthFormatter.prototype.preFormat = function (justifyWidth, renderingContext, voices, stave) {
-        var _this = this;
-        if (justifyWidth === void 0) { justifyWidth = 0; }
-        // Initialize context maps.
-        var contexts = this.tickContexts;
-        var contextList = contexts.list, contextMap = contexts.map;
-        var widthMap = null;
-        // Reset loss history for evaluator.
-        this.lossHistory = [];
-        // If voices and a stave were provided, set the Stave for each voice
-        // and preFormat to apply Y values to the notes;
-        if (voices && stave) {
-            voices.forEach(function (voice) { return voice.setStave(stave).preFormat(); });
-        }
-        // Now distribute the ticks to each tick context, and assign them their
-        // own X positions.
-        var x = 0;
-        var shift = 0;
-        this.minTotalWidth = 0;
-        // Step 1: Calculate starting X based on the widths and time-order alone
-        // The music will be aligned vertically and fully left-justified
-        contextList.forEach(function (tick) {
-            var context = contextMap[tick];
-            if (renderingContext)
-                context.setContext(renderingContext);
-            // Make sure that all tickables in this context have calculated their
-            // space requirements.
-            context.preFormat();
-            var width = context.getWidth();
-            _this.minTotalWidth += width;
-            var metrics = context.getMetrics();
-            x = x + shift + metrics.totalLeftPx;
-            context.setX(x);
-            // Calculate shift for the next tick.
-            shift = width - metrics.totalLeftPx;
-        });
-        this.minTotalWidth = x + shift;
-        this.hasMinTotalWidth = true;
-        // If we are not justifying, we are done.  Leave music left-justified.
-        if (justifyWidth <= 0)
-            return this.evaluate();
-        // Start justification. Subtract the right extra pixels of the final context because the formatter
-        // justifies based on the context's X position, which is the left-most part of the note head.
-        var lastContext = contextMap[contextList[contextList.length - 1]];
-        var lastMetrics = lastContext.getMetrics();
-        var adjustedJustifyWidth = justifyWidth - lastMetrics.notePx - lastMetrics.totalRightPx - lastMetrics.totalLeftPx;
-        // step 1: Format the music proportionally
-        widthMap = this.calculateWidthMap(adjustedJustifyWidth);
-        function shiftToIdealDistances(widthMap) {
-            // Distribute ticks to the contexts based on the calculated distance error.
-            var centerX = adjustedJustifyWidth / 2;
-            contextList.forEach(function (tick) {
-                var widthData = widthMap[tick].widthData;
-                var contextX = 0;
-                Object.keys(widthData).forEach(function (widthKey) {
-                    var widthEntry = widthData[widthKey];
-                    var startX = widthEntry.previousWidth
-                        ? widthEntry.previousWidth.tickable.getX()
-                        : widthMap[tick].context.getX();
-                    var total = startX + widthEntry.expectedDistance;
-                    if (total > contextX) {
-                        contextX = total;
-                    }
-                });
-                widthMap[tick].context.setX(contextX);
-                // Move center aligned tickables to middle
-                widthMap[tick].context.getCenterAlignedTickables().forEach(function (tickable) {
-                    tickable.center_x_shift = centerX - widthMap[tick].context.getX();
-                });
-            });
-        }
-        var targetWidth = adjustedJustifyWidth;
-        var overlapIterations = this.options.maxIterations;
-        var maxOverlap = function (wd) {
-            return Object.keys(wd.widthData)
-                .map(function (key) { return wd.widthData[key].overlap; })
-                .reduce(function (a, b) { return (a > b ? a : b); });
-        };
-        var maxOverlaps = contextList.map(function (tick) { return maxOverlap(widthMap[tick]); });
-        maxOverlaps.splice(0, 1);
-        var std = function (numArray) {
-            if (numArray.length < 1) {
-                return { mean: 1, stdDev: 1 };
-            }
-            var sum = numArray.reduce(function (a, b) { return a + b; });
-            var mean = sum / numArray.length;
-            var variance = numArray.map(function (a) { return Math.pow(a - mean, 2); }).reduce(function (a, b) { return a + b; }) / numArray.length;
-            return { mean: mean, stdDev: Math.sqrt(variance) };
-        };
-        var istats = std(maxOverlaps);
-        L('ideal means/stdDev', istats.mean, istats.stdDev);
-        // Step 2: alignment
-        // If any notes collide with their left neighbor (overlap is > 0), do 2 things:
-        // 1. add ticks to those notes to make the distance between them and left neighbor greater
-        // 2. remove ticks from notes that have an extra large space between them and their neihbor, to give the crowded notes more room
-        var overlaps = this.adjustOverlaps(contextList, widthMap, istats);
-        while (overlaps && overlapIterations) {
-            overlapIterations -= 1;
-            // recalculate softMax based on new ticks
-            widthMap = this.calculateWidthMap(targetWidth);
-            overlaps = this.adjustOverlaps(contextList, widthMap, istats);
-        }
-        // Assign X positions based on the formatting.
-        shiftToIdealDistances(widthMap);
-        // Just one context. Done formatting.
-        if (contextList.length === 1)
-            return null;
-        var actualWidth = lastContext.getX() + lastContext.totalRightPx + lastContext.notePx + lastContext.rightDisplacedHeadPx + 10;
-        var ratio = justifyWidth - actualWidth - 10;
-        var ccount = contextList.length;
-        contextList.forEach(function (tick, i) {
-            var context = contextMap[tick];
-            var oldX = context.getX();
-            context.setX(oldX + (ratio / ccount) * i);
-        });
-        this.justifyWidth = justifyWidth;
-        return this.evaluate();
-    };
-    // Calculate the total cost of this formatting decision.
-    WidthFormatter.prototype.evaluate = function () {
-        var _this = this;
-        var justifyWidth = this.justifyWidth;
-        // Calculate available slack per tick context. This works out how much freedom
-        // to move a context has in either direction, without affecting other notes.
-        this.contextGaps = { total: 0, gaps: [] };
-        this.tickContexts.list.forEach(function (tick, index) {
-            if (index === 0)
-                return;
-            var prevTick = _this.tickContexts.list[index - 1];
-            var prevContext = _this.tickContexts.map[prevTick];
-            var context = _this.tickContexts.map[tick];
-            var prevMetrics = prevContext.getMetrics();
-            var currMetrics = context.getMetrics();
-            // Calculate X position of right edge of previous note
-            var insideRightEdge = prevContext.getX() + prevMetrics.notePx + prevMetrics.totalRightPx;
-            // Calculate X position of left edge of current note
-            var insideLeftEdge = context.getX() - currMetrics.totalLeftPx;
-            var gap = insideLeftEdge - insideRightEdge;
-            _this.contextGaps.total += gap;
-            _this.contextGaps.gaps.push({ x1: insideRightEdge, x2: insideLeftEdge });
-            // Tell the tick contexts how much they can reposition themselves.
-            context.getFormatterMetrics().freedom.left = gap;
-            prevContext.getFormatterMetrics().freedom.right = gap;
-        });
-        // Calculate mean distance in each voice for each duration type, then calculate
-        // how far each note is from the mean.
-        var durationStats = (this.durationStats = {});
-        function updateStats(duration, space) {
-            var stats = durationStats[duration];
-            if (stats === undefined) {
-                durationStats[duration] = { mean: space, count: 1 };
-            }
-            else {
-                stats.count += 1;
-                stats.mean = (stats.mean + space) / 2;
-            }
-        }
-        this.voices.forEach(function (voice) {
-            voice.getTickables().forEach(function (note, i, notes) {
-                var duration = note.getTicks().clone().simplify().toString();
-                var metrics = note.getMetrics();
-                var formatterMetrics = note.getFormatterMetrics();
-                var leftNoteEdge = note.getX() + metrics.notePx + metrics.totalRightPx;
-                var space = 0;
-                if (i < notes.length - 1) {
-                    var rightNote = notes[i + 1];
-                    var rightMetrics = rightNote.getMetrics();
-                    var rightNoteEdge = rightNote.getX() - rightMetrics.totalLeftPx;
-                    space = rightNoteEdge - leftNoteEdge;
-                    formatterMetrics.space.used = rightNote.getX() - note.getX();
-                    rightNote.getFormatterMetrics().freedom.left = space;
-                }
-                else {
-                    space = justifyWidth - leftNoteEdge;
-                    formatterMetrics.space.used = justifyWidth - note.getX();
-                }
-                formatterMetrics.freedom.right = space;
-                updateStats(duration, formatterMetrics.space.used);
-            });
-        });
-        // Calculate how much each note deviates from the mean. Loss function is square
-        // root of the sum of squared deviations.
-        var totalDeviation = 0;
-        this.voices.forEach(function (voice) {
-            voice.getTickables().forEach(function (note) {
-                var duration = note.getTicks().clone().simplify().toString();
-                var metrics = note.getFormatterMetrics();
-                metrics.space.mean = durationStats[duration].mean;
-                metrics.duration = duration;
-                metrics.iterations += 1;
-                metrics.space.deviation = metrics.space.used - metrics.space.mean;
-                totalDeviation += Math.pow(metrics.space.deviation, 2);
-            });
-        });
-        this.totalCost = Math.sqrt(totalDeviation);
-        this.lossHistory.push(this.totalCost);
-        return this.totalCost;
-    };
-    return WidthFormatter;
-}(formatter_1.Formatter));
-exports.WidthFormatter = WidthFormatter;
-
-
 /***/ })
 
-/******/ })["default"];
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.
+(() => {
+var __webpack_exports__ = {};
+/*!*************************************************************************************************************!*\
+  !*** ./node_modules/webpack-inject-plugin/dist/webpack-inject-plugin.loader.js?id=webpack-inject-module-2! ***!
+  \*************************************************************************************************************/
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _src_vex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/vex */ "./src/vex.ts");
+
+            _src_vex__WEBPACK_IMPORTED_MODULE_0__.Vex.Flow.VERSION = "3.0.9";
+            _src_vex__WEBPACK_IMPORTED_MODULE_0__.Vex.Flow.BUILD = "ad9a957bed4f2593e63d0ac9b072baa14494114a";
+})();
+
+// This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.
+(() => {
+var exports = __webpack_exports__;
+/*!**********************!*\
+  !*** ./src/index.ts ***!
+  \**********************/
+
+// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.ts");
+exports.default = vex_1.Vex;
+
+})();
+
+__webpack_exports__ = __webpack_exports__.default;
+/******/ 	return __webpack_exports__;
+/******/ })()
+;
 });
 //# sourceMappingURL=vexflow-debug.js.map
