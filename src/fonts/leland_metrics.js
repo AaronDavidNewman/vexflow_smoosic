@@ -263,6 +263,7 @@ export const LelandMetrics = {
       }
     },
     noteHead: {
+      minPadding: 2,
       standard: {
         restQuarterStemUp: {
           point: 35,
