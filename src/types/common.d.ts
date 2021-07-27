@@ -1,3 +1,5 @@
+import { Note } from '../note';
+
 export interface FontInfo {
   size: number;
   weight: string;
@@ -82,9 +84,7 @@ export interface RenderContext {
   closeGroup(): void;
   add(child: any): void;
 
-  /**
-   * canvas returns TextMetrics and SVG returns SVGRect.
-   */
+  /** canvas returns TextMetrics and SVG returns SVGRect. */
   measureText(text: string): { width: number; height?: number };
 }
 

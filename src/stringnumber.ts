@@ -15,8 +15,6 @@ import { ModifierContextState } from './modifiercontext';
 import { StemmableNote } from './stemmablenote';
 
 export class StringNumber extends Modifier {
-  protected note?: Note;
-
   protected radius: number;
 
   protected last_note?: Note;
@@ -82,8 +80,6 @@ export class StringNumber extends Modifier {
     // Sort string numbers by line number.
     nums_list.sort((a, b) => b.line - a.line);
 
-    // TODO: This variable never gets assigned to anything. Is that a bug or can this be removed?
-    let num_shiftL = 0; // eslint-disable-line
     let num_shiftR = 0;
     let x_widthL = 0;
     let x_widthR = 0;
@@ -95,12 +91,10 @@ export class StringNumber extends Modifier {
       const pos = nums_list[i].pos;
       const num = nums_list[i].num;
       const line = nums_list[i].line;
-      const shiftL = nums_list[i].shiftL;
       const shiftR = nums_list[i].shiftR;
 
       // Reset the position of the string number every line.
       if (line !== last_line || note !== last_note) {
-        num_shiftL = left_shift + shiftL; // eslint-disable-line
         num_shiftR = right_shift + shiftR;
       }
 

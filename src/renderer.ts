@@ -1,13 +1,17 @@
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-// Support for different rendering contexts: Canvas & SVG
+// MIT License
 
 import { CanvasContext } from './canvascontext';
 import { SVGContext } from './svgcontext';
 import { RenderContext } from './types/common';
 import { RuntimeError } from './util';
 
+// A ContextBuilder is either Renderer.getSVGContext or Renderer.getCanvasContext.
+export type ContextBuilder = typeof Renderer.getSVGContext | typeof Renderer.getCanvasContext;
+
+/**
+ * Support Canvas & SVG rendering contexts.
+ */
 export class Renderer {
   protected elementId?: string | HTMLElement;
   protected element: HTMLCanvasElement;
@@ -29,9 +33,11 @@ export class Renderer {
     DOWN: 3, // Downward leg
   };
 
-  // Set this to true if you're using VexFlow inside a runtime
-  // that does not allow modifiying canvas objects. There is a small
-  // performance degradation due to the extra indirection.
+  /**
+   * Set this to true if you're using VexFlow inside a runtime
+   * that does not allow modifying canvas objects. There is a small
+   * performance degradation due to the extra indirection.
+   */
   static readonly USE_CANVAS_PROXY = false;
 
   static lastContext: RenderContext | undefined = undefined;
@@ -70,7 +76,8 @@ export class Renderer {
     }
 
     // Modify the CanvasRenderingContext2D to include the following methods, if they do not already exist.
-    // setLineDash exists natively: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash
+    // TODO: Is a Proxy object appropriate here?
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
     const methodNames = [
       'clear',
       'setFont',
@@ -82,7 +89,6 @@ export class Renderer {
       'setShadowBlur',
       'setLineWidth',
       'setLineCap',
-      'setLineDash',
       'openGroup',
       'closeGroup',
       'getGroup',
@@ -91,8 +97,10 @@ export class Renderer {
     ctx.vexFlowCanvasContext = ctx;
 
     methodNames.forEach((methodName) => {
-      // eslint-disable-next-line
-      ctx[methodName] = ctx[methodName] || (CanvasContext.prototype as any)[methodName];
+      if (!(methodName in ctx)) {
+        // eslint-disable-next-line
+        ctx[methodName] = (CanvasContext.prototype as any)[methodName];
+      }
     });
 
     return ctx;
