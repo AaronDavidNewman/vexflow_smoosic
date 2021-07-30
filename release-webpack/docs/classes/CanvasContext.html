@@ -1,0 +1,1428 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>CanvasContext | vexflow</title>
+	<meta name="description" content="Documentation for vexflow">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">vexflow</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../modules.html">vexflow</a>
+				</li>
+				<li>
+					<a href="CanvasContext.html">CanvasContext</a>
+				</li>
+			</ul>
+			<h1>Class CanvasContext</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>A rendering context for the Canvas backend (CanvasRenderingContext2D).</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">CanvasContext</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implements</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../interfaces/RenderContext.html" class="tsd-signature-type" data-tsd-kind="Interface">RenderContext</a></li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="CanvasContext.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="CanvasContext.html#background_fillStyle" class="tsd-kind-icon">background_<wbr>fill<wbr>Style</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="CanvasContext.html#canvas" class="tsd-kind-icon">canvas</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="CanvasContext.html#vexFlowCanvasContext" class="tsd-kind-icon">vex<wbr>Flow<wbr>Canvas<wbr>Context</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Accessors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-set-signature tsd-parent-kind-class"><a href="CanvasContext.html#fillStyle" class="tsd-kind-icon">fill<wbr>Style</a></li>
+								<li class="tsd-kind-set-signature tsd-parent-kind-class"><a href="CanvasContext.html#font" class="tsd-kind-icon">font</a></li>
+								<li class="tsd-kind-set-signature tsd-parent-kind-class"><a href="CanvasContext.html#strokeStyle" class="tsd-kind-icon">stroke<wbr>Style</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-static"><a href="CanvasContext.html#CANVAS_BROWSER_SIZE_LIMIT" class="tsd-kind-icon">CANVAS_<wbr>BROWSER_<wbr>SIZE_<wbr>LIMIT</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-static"><a href="CanvasContext.html#HEIGHT" class="tsd-kind-icon">HEIGHT</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-static"><a href="CanvasContext.html#WIDTH" class="tsd-kind-icon">WIDTH</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#add" class="tsd-kind-icon">add</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#arc" class="tsd-kind-icon">arc</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#beginPath" class="tsd-kind-icon">begin<wbr>Path</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#bezierCurveTo" class="tsd-kind-icon">bezier<wbr>Curve<wbr>To</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#clear" class="tsd-kind-icon">clear</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#clearRect" class="tsd-kind-icon">clear<wbr>Rect</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#closeGroup" class="tsd-kind-icon">close<wbr>Group</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#closePath" class="tsd-kind-icon">close<wbr>Path</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#fill" class="tsd-kind-icon">fill</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#fillRect" class="tsd-kind-icon">fill<wbr>Rect</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#fillText" class="tsd-kind-icon">fill<wbr>Text</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#glow" class="tsd-kind-icon">glow</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#lineTo" class="tsd-kind-icon">line<wbr>To</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#measureText" class="tsd-kind-icon">measure<wbr>Text</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#moveTo" class="tsd-kind-icon">move<wbr>To</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#openGroup" class="tsd-kind-icon">open<wbr>Group</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#quadraticCurveTo" class="tsd-kind-icon">quadratic<wbr>Curve<wbr>To</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#rect" class="tsd-kind-icon">rect</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#resize" class="tsd-kind-icon">resize</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#restore" class="tsd-kind-icon">restore</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#save" class="tsd-kind-icon">save</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#scale" class="tsd-kind-icon">scale</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#setBackgroundFillStyle" class="tsd-kind-icon">set<wbr>Background<wbr>Fill<wbr>Style</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#setFillStyle" class="tsd-kind-icon">set<wbr>Fill<wbr>Style</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#setFont" class="tsd-kind-icon">set<wbr>Font</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#setLineCap" class="tsd-kind-icon">set<wbr>Line<wbr>Cap</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#setLineDash" class="tsd-kind-icon">set<wbr>Line<wbr>Dash</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#setLineWidth" class="tsd-kind-icon">set<wbr>Line<wbr>Width</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#setRawFont" class="tsd-kind-icon">set<wbr>Raw<wbr>Font</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#setShadowBlur" class="tsd-kind-icon">set<wbr>Shadow<wbr>Blur</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#setShadowColor" class="tsd-kind-icon">set<wbr>Shadow<wbr>Color</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#setStrokeStyle" class="tsd-kind-icon">set<wbr>Stroke<wbr>Style</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="CanvasContext.html#stroke" class="tsd-kind-icon">stroke</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="CanvasContext.html#SanitizeCanvasDims" class="tsd-kind-icon">Sanitize<wbr>Canvas<wbr>Dims</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Canvas<wbr>Context<span class="tsd-signature-symbol">(</span>context<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CanvasRenderingContext2D</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L44">src/canvascontext.ts:44</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>This constructor is only called if Renderer.USE_CANVAS_PROXY is true.
+										In most instances, we do not need to create a CanvasContext object.
+									See Renderer.bolsterCanvasContext().</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>context: <span class="tsd-signature-type">CanvasRenderingContext2D</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="background_fillStyle" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> background_<wbr>fill<wbr>Style</h3>
+					<div class="tsd-signature tsd-kind-icon">background_<wbr>fill<wbr>Style<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L12">src/canvascontext.ts:12</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="canvas" class="tsd-anchor"></a>
+					<h3>canvas</h3>
+					<div class="tsd-signature tsd-kind-icon">canvas<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLCanvasElement</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>height<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L11">src/canvascontext.ts:11</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="vexFlowCanvasContext" class="tsd-anchor"></a>
+					<h3>vex<wbr>Flow<wbr>Canvas<wbr>Context</h3>
+					<div class="tsd-signature tsd-kind-icon">vex<wbr>Flow<wbr>Canvas<wbr>Context<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">CanvasRenderingContext2D</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L10">src/canvascontext.ts:10</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-set-signature tsd-parent-kind-class">
+					<a name="fillStyle" class="tsd-anchor"></a>
+					<h3>fill<wbr>Style</h3>
+					<ul class="tsd-signatures tsd-kind-set-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> fillStyle<span class="tsd-signature-symbol">(</span>style<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L248">src/canvascontext.ts:248</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Maintain compatibility with the CanvasRenderingContext2D API.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>style: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-set-signature tsd-parent-kind-class">
+					<a name="font" class="tsd-anchor"></a>
+					<h3>font</h3>
+					<ul class="tsd-signatures tsd-kind-set-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> font<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L243">src/canvascontext.ts:243</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Maintain compatibility with the CanvasRenderingContext2D API.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>value: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-set-signature tsd-parent-kind-class">
+					<a name="strokeStyle" class="tsd-anchor"></a>
+					<h3>stroke<wbr>Style</h3>
+					<ul class="tsd-signatures tsd-kind-set-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> strokeStyle<span class="tsd-signature-symbol">(</span>style<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L253">src/canvascontext.ts:253</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Maintain compatibility with the CanvasRenderingContext2D API.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>style: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-static">
+					<a name="CANVAS_BROWSER_SIZE_LIMIT" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> CANVAS_<wbr>BROWSER_<wbr>SIZE_<wbr>LIMIT</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> CANVAS_BROWSER_SIZE_LIMIT<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L20">src/canvascontext.ts:20</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-static">
+					<a name="HEIGHT" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> HEIGHT</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> HEIGHT<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L17">src/canvascontext.ts:17</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-static">
+					<a name="WIDTH" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> WIDTH</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> WIDTH<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L14">src/canvascontext.ts:14</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="add" class="tsd-anchor"></a>
+					<h3>add</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">add<span class="tsd-signature-symbol">(</span>child<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#add">add</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L71">src/canvascontext.ts:71</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>child: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="arc" class="tsd-anchor"></a>
+					<h3>arc</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">arc<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, radius<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, startAngle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, endAngle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, antiClockwise<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#arc">arc</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L197">src/canvascontext.ts:197</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>x: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>y: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>radius: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>startAngle: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>endAngle: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>antiClockwise: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="beginPath" class="tsd-anchor"></a>
+					<h3>begin<wbr>Path</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">begin<wbr>Path<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#beginPath">beginPath</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L171">src/canvascontext.ts:171</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="bezierCurveTo" class="tsd-anchor"></a>
+					<h3>bezier<wbr>Curve<wbr>To</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">bezier<wbr>Curve<wbr>To<span class="tsd-signature-symbol">(</span>cp1x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, cp1y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, cp2x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, cp2y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#bezierCurveTo">bezierCurveTo</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L186">src/canvascontext.ts:186</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>cp1x: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>cp1y: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>cp2x: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>cp2y: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>x: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>y: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="clear" class="tsd-anchor"></a>
+					<h3>clear</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">clear<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#clear">clear</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L57">src/canvascontext.ts:57</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="clearRect" class="tsd-anchor"></a>
+					<h3>clear<wbr>Rect</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">clear<wbr>Rect<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, height<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#clearRect">clearRect</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L166">src/canvascontext.ts:166</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>x: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>y: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>width: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>height: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="closeGroup" class="tsd-anchor"></a>
+					<h3>close<wbr>Group</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">close<wbr>Group<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#closeGroup">closeGroup</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L66">src/canvascontext.ts:66</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="closePath" class="tsd-anchor"></a>
+					<h3>close<wbr>Path</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">close<wbr>Path<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#closePath">closePath</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L218">src/canvascontext.ts:218</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="fill" class="tsd-anchor"></a>
+					<h3>fill</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">fill<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#fill">fill</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L208">src/canvascontext.ts:208</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="fillRect" class="tsd-anchor"></a>
+					<h3>fill<wbr>Rect</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">fill<wbr>Rect<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, height<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#fillRect">fillRect</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L161">src/canvascontext.ts:161</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>x: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>y: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>width: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>height: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="fillText" class="tsd-anchor"></a>
+					<h3>fill<wbr>Text</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">fill<wbr>Text<span class="tsd-signature-symbol">(</span>text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#fillText">fillText</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L227">src/canvascontext.ts:227</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>text: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>x: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>y: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="glow" class="tsd-anchor"></a>
+					<h3>glow</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">glow<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#glow">glow</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L202">src/canvascontext.ts:202</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="lineTo" class="tsd-anchor"></a>
+					<h3>line<wbr>To</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">line<wbr>To<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#lineTo">lineTo</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L181">src/canvascontext.ts:181</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>x: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>y: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="measureText" class="tsd-anchor"></a>
+					<h3>measure<wbr>Text</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">measure<wbr>Text<span class="tsd-signature-symbol">(</span>text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TextMetrics</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#measureText">measureText</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L223">src/canvascontext.ts:223</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>canvas returns TextMetrics and SVG returns SVGRect.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>text: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">TextMetrics</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="moveTo" class="tsd-anchor"></a>
+					<h3>move<wbr>To</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">move<wbr>To<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#moveTo">moveTo</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L176">src/canvascontext.ts:176</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>x: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>y: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="openGroup" class="tsd-anchor"></a>
+					<h3>open<wbr>Group</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">open<wbr>Group<span class="tsd-signature-symbol">(</span>cls<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, id<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, attrs<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">{ </span>pointerBBox<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#openGroup">openGroup</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L62">src/canvascontext.ts:62</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>cls: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> id: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> attrs: <span class="tsd-signature-symbol">{ </span>pointerBBox<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> }</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter">
+											<h5>pointerBBox<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h5>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="quadraticCurveTo" class="tsd-anchor"></a>
+					<h3>quadratic<wbr>Curve<wbr>To</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">quadratic<wbr>Curve<wbr>To<span class="tsd-signature-symbol">(</span>cpx<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, cpy<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#quadraticCurveTo">quadraticCurveTo</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L191">src/canvascontext.ts:191</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>cpx: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>cpy: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>x: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>y: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="rect" class="tsd-anchor"></a>
+					<h3>rect</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">rect<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, height<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#rect">rect</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L156">src/canvascontext.ts:156</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>x: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>y: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>width: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>height: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="resize" class="tsd-anchor"></a>
+					<h3>resize</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">resize<span class="tsd-signature-symbol">(</span>width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, height<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#resize">resize</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L150">src/canvascontext.ts:150</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>width: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>height: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="restore" class="tsd-anchor"></a>
+					<h3>restore</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">restore<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#restore">restore</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L237">src/canvascontext.ts:237</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="save" class="tsd-anchor"></a>
+					<h3>save</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">save<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#save">save</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L232">src/canvascontext.ts:232</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="scale" class="tsd-anchor"></a>
+					<h3>scale</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">scale<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#scale">scale</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L143">src/canvascontext.ts:143</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>x: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>y: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setBackgroundFillStyle" class="tsd-anchor"></a>
+					<h3>set<wbr>Background<wbr>Fill<wbr>Style</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Background<wbr>Fill<wbr>Style<span class="tsd-signature-symbol">(</span>style<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#setBackgroundFillStyle">setBackgroundFillStyle</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L93">src/canvascontext.ts:93</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>style: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setFillStyle" class="tsd-anchor"></a>
+					<h3>set<wbr>Fill<wbr>Style</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Fill<wbr>Style<span class="tsd-signature-symbol">(</span>style<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#setFillStyle">setFillStyle</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L85">src/canvascontext.ts:85</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>style: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setFont" class="tsd-anchor"></a>
+					<h3>set<wbr>Font</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Font<span class="tsd-signature-symbol">(</span>family<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, size<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, weight<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#setFont">setFont</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L75">src/canvascontext.ts:75</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>family: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>size: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>weight: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setLineCap" class="tsd-anchor"></a>
+					<h3>set<wbr>Line<wbr>Cap</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Line<wbr>Cap<span class="tsd-signature-symbol">(</span>capType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CanvasLineCap</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#setLineCap">setLineCap</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L125">src/canvascontext.ts:125</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>capType: <span class="tsd-signature-type">CanvasLineCap</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setLineDash" class="tsd-anchor"></a>
+					<h3>set<wbr>Line<wbr>Dash</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Line<wbr>Dash<span class="tsd-signature-symbol">(</span>dash<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#setLineDash">setLineDash</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L136">src/canvascontext.ts:136</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>dash: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setLineWidth" class="tsd-anchor"></a>
+					<h3>set<wbr>Line<wbr>Width</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Line<wbr>Width<span class="tsd-signature-symbol">(</span>width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#setLineWidth">setLineWidth</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L120">src/canvascontext.ts:120</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>width: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setRawFont" class="tsd-anchor"></a>
+					<h3>set<wbr>Raw<wbr>Font</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Raw<wbr>Font<span class="tsd-signature-symbol">(</span>font<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#setRawFont">setRawFont</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L80">src/canvascontext.ts:80</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>font: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setShadowBlur" class="tsd-anchor"></a>
+					<h3>set<wbr>Shadow<wbr>Blur</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Shadow<wbr>Blur<span class="tsd-signature-symbol">(</span>blur<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#setShadowBlur">setShadowBlur</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L115">src/canvascontext.ts:115</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>blur: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setShadowColor" class="tsd-anchor"></a>
+					<h3>set<wbr>Shadow<wbr>Color</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Shadow<wbr>Color<span class="tsd-signature-symbol">(</span>color<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#setShadowColor">setShadowColor</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L110">src/canvascontext.ts:110</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>color: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setStrokeStyle" class="tsd-anchor"></a>
+					<h3>set<wbr>Stroke<wbr>Style</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Stroke<wbr>Style<span class="tsd-signature-symbol">(</span>style<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#setStrokeStyle">setStrokeStyle</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L105">src/canvascontext.ts:105</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>style: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="stroke" class="tsd-anchor"></a>
+					<h3>stroke</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">stroke<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/RenderContext.html">RenderContext</a>.<a href="../interfaces/RenderContext.html#stroke">stroke</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L213">src/canvascontext.ts:213</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="CanvasContext.html" class="tsd-signature-type" data-tsd-kind="Class">CanvasContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="SanitizeCanvasDims" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> Sanitize<wbr>Canvas<wbr>Dims</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">Sanitize<wbr>Canvas<wbr>Dims<span class="tsd-signature-symbol">(</span>width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, height<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/AaronDavidNewman/vexflow_smoosic/blob/cef23962/src/canvascontext.ts#L24">src/canvascontext.ts:24</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>width: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>height: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class">
+						<a href="CanvasContext.html" class="tsd-kind-icon">Canvas<wbr>Context</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="CanvasContext.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="CanvasContext.html#background_fillStyle" class="tsd-kind-icon">background_<wbr>fill<wbr>Style</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="CanvasContext.html#canvas" class="tsd-kind-icon">canvas</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="CanvasContext.html#vexFlowCanvasContext" class="tsd-kind-icon">vex<wbr>Flow<wbr>Canvas<wbr>Context</a>
+							</li>
+							<li class=" tsd-kind-set-signature tsd-parent-kind-class">
+								<a href="CanvasContext.html#fillStyle" class="tsd-kind-icon">fill<wbr>Style</a>
+							</li>
+							<li class=" tsd-kind-set-signature tsd-parent-kind-class">
+								<a href="CanvasContext.html#font" class="tsd-kind-icon">font</a>
+							</li>
+							<li class=" tsd-kind-set-signature tsd-parent-kind-class">
+								<a href="CanvasContext.html#strokeStyle" class="tsd-kind-icon">stroke<wbr>Style</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-static">
+								<a href="CanvasContext.html#CANVAS_BROWSER_SIZE_LIMIT" class="tsd-kind-icon">CANVAS_<wbr>BROWSER_<wbr>SIZE_<wbr>LIMIT</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-static">
+								<a href="CanvasContext.html#HEIGHT" class="tsd-kind-icon">HEIGHT</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-static">
+								<a href="CanvasContext.html#WIDTH" class="tsd-kind-icon">WIDTH</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#add" class="tsd-kind-icon">add</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#arc" class="tsd-kind-icon">arc</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#beginPath" class="tsd-kind-icon">begin<wbr>Path</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#bezierCurveTo" class="tsd-kind-icon">bezier<wbr>Curve<wbr>To</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#clear" class="tsd-kind-icon">clear</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#clearRect" class="tsd-kind-icon">clear<wbr>Rect</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#closeGroup" class="tsd-kind-icon">close<wbr>Group</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#closePath" class="tsd-kind-icon">close<wbr>Path</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#fill" class="tsd-kind-icon">fill</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#fillRect" class="tsd-kind-icon">fill<wbr>Rect</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#fillText" class="tsd-kind-icon">fill<wbr>Text</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#glow" class="tsd-kind-icon">glow</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#lineTo" class="tsd-kind-icon">line<wbr>To</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#measureText" class="tsd-kind-icon">measure<wbr>Text</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#moveTo" class="tsd-kind-icon">move<wbr>To</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#openGroup" class="tsd-kind-icon">open<wbr>Group</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#quadraticCurveTo" class="tsd-kind-icon">quadratic<wbr>Curve<wbr>To</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#rect" class="tsd-kind-icon">rect</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#resize" class="tsd-kind-icon">resize</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#restore" class="tsd-kind-icon">restore</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#save" class="tsd-kind-icon">save</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#scale" class="tsd-kind-icon">scale</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#setBackgroundFillStyle" class="tsd-kind-icon">set<wbr>Background<wbr>Fill<wbr>Style</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#setFillStyle" class="tsd-kind-icon">set<wbr>Fill<wbr>Style</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#setFont" class="tsd-kind-icon">set<wbr>Font</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#setLineCap" class="tsd-kind-icon">set<wbr>Line<wbr>Cap</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#setLineDash" class="tsd-kind-icon">set<wbr>Line<wbr>Dash</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#setLineWidth" class="tsd-kind-icon">set<wbr>Line<wbr>Width</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#setRawFont" class="tsd-kind-icon">set<wbr>Raw<wbr>Font</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#setShadowBlur" class="tsd-kind-icon">set<wbr>Shadow<wbr>Blur</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#setShadowColor" class="tsd-kind-icon">set<wbr>Shadow<wbr>Color</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#setStrokeStyle" class="tsd-kind-icon">set<wbr>Stroke<wbr>Style</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="CanvasContext.html#stroke" class="tsd-kind-icon">stroke</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="CanvasContext.html#SanitizeCanvasDims" class="tsd-kind-icon">Sanitize<wbr>Canvas<wbr>Dims</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>
