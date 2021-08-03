@@ -1,8 +1,8 @@
-
 import { RuntimeError } from './util';
 import { loadBravura } from '@bravura';
 import { loadGonville } from '@gonville';
 import { loadPetaluma } from '@petaluma';
+import { loadLeland } from '@leland';
 import { loadCustom } from '@custom';
 
 export interface FontData {
@@ -51,6 +51,9 @@ class Font {
       case 'Petaluma':
         loadPetaluma(this.fontDataMetrics);
         break;
+      case 'Leland':
+        loadLeland(this.fontDataMetrics);
+        break;
       default:
         this.fontDataMetrics.metrics = metrics;
         this.fontDataMetrics.fontData = fontData;
@@ -84,7 +87,6 @@ class Font {
       }
       val = val[parts[i]];
     }
-
     // console.log('found:', key, val);
     return val;
   }
@@ -107,14 +109,14 @@ const Fonts = {
   Gonville: (): Font => {
     return new Font('Gonville');
   },
-  Leland: (): Font => {
-    return new Font('Leland');
-  },
   Petaluma: (): Font => {
     return new Font('Petaluma');
   },
   Custom: (): Font => {
     return new Font('Custom');
+  },
+  Leland: (): Font => {
+    return new Font('Leland');
   },
 };
 
