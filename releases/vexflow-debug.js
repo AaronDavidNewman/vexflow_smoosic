@@ -1,5 +1,5 @@
 /*!
- * VexFlow 3.0.9   2021-07-09T20:39:10.740Z   ad9a957bed4f2593e63d0ac9b072baa14494114a
+ * VexFlow 3.0.9   2021-08-03T01:20:01.126Z   6c373fc6e0e699bb6ac90e05e11c9dce6364c1b7
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * http://www.vexflow.com   http://github.com/0xfe/vexflow
  */
@@ -21,20 +21,25 @@ return /******/ (() => { // webpackBootstrap
 /*!***************************!*\
   !*** ./src/accidental.ts ***!
   \***************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Accidental": () => (/* binding */ Accidental)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _music__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./music */ "./src/music.ts");
+/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+/* harmony import */ var _gracenotegroup__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
+/* harmony import */ var _gracenote__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // @author Mohit Cheppudira
 // @author Greg Ristow (modifications)
-//
-// ## Description
-//
-// This file implements accidentals as modifiers that can be attached to
-// notes. Support is included for both western and microtonal accidentals.
-//
-// See `tests/accidental_tests.js` for usage examples.
-var __extends = (this && this.__extends) || (function () {
+// MIT License
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -49,17 +54,14 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Accidental = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var music_1 = __webpack_require__(/*! ./music */ "./src/music.ts");
-var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-var gracenotegroup_1 = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
-var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
-// To enable logging for this class. Set `Vex.Flow.Accidental.DEBUG` to `true`.
+
+
+
+
+
+
+
+
 // eslint-disable-next-line
 function L() {
     var args = [];
@@ -67,21 +69,28 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (Accidental.DEBUG)
-        util_1.log('Vex.Flow.Accidental', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.Accidental', args);
 }
-// An `Accidental` inherits from `Modifier`, and is formatted within a
-// `ModifierContext`.
+/**
+ * An `Accidental` inherits from `Modifier`, and is formatted within a
+ * `ModifierContext`. Accidentals are modifiers that can be attached to
+ * notes. Support is included for both western and microtonal accidentals.
+ *
+ * See `tests/accidental_tests.js` for usage examples.
+ */
 var Accidental = /** @class */ (function (_super) {
     __extends(Accidental, _super);
-    // Create accidental. `type` can be a value from the
-    // `Vex.Flow.accidentalCodes.accidentals` table in `tables.js`. For
-    // example: `#`, `##`, `b`, `n`, etc.
+    /**
+     * Create accidental.
+     * @param type value from `Vex.Flow.accidentalCodes.accidentals` table in `tables.ts`.
+     * For example: `#`, `##`, `b`, `n`, etc.
+     */
     function Accidental(type) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Accidental');
         L('New accidental: ', type);
         _this.type = type;
-        _this.position = modifier_1.Modifier.Position.LEFT;
+        _this.position = _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.LEFT;
         _this.render_options = {
             // Font size for glyphs
             font_scale: 38,
@@ -91,9 +100,9 @@ var Accidental = /** @class */ (function (_super) {
             parenLeftPadding: 2,
             parenRightPadding: 2,
         };
-        _this.accidental = flow_1.Flow.accidentalCodes(_this.type);
+        _this.accidental = _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.accidentalCodes(_this.type);
         if (!_this.accidental) {
-            throw new util_1.RuntimeError('ArgumentError', "Unknown accidental type: " + type);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('ArgumentError', "Unknown accidental type: " + type);
         }
         // Cautionary accidentals have parentheses around them
         _this.cautionary = false;
@@ -101,16 +110,17 @@ var Accidental = /** @class */ (function (_super) {
         return _this;
     }
     Object.defineProperty(Accidental, "CATEGORY", {
+        /** Accidentals category string. */
         get: function () {
             return 'accidentals';
         },
         enumerable: false,
         configurable: true
     });
-    // Arrange accidentals inside a ModifierContext.
+    /** Arrange accidentals inside a ModifierContext. */
     Accidental.format = function (accidentals, state) {
         var _this = this;
-        var musicFont = flow_1.Flow.DEFAULT_FONT_STACK[0];
+        var musicFont = _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.DEFAULT_FONT_STACK[0];
         var noteheadAccidentalPadding = musicFont.lookupMetric('accidental.noteheadAccidentalPadding');
         var leftShift = state.left_shift + noteheadAccidentalPadding;
         var accidentalSpacing = musicFont.lookupMetric('accidental.accidentalSpacing');
@@ -119,7 +129,7 @@ var Accidental = /** @class */ (function (_super) {
         if (!accidentals || accidentals.length === 0)
             return;
         var accList = [];
-        var prevNote = null;
+        var prevNote = undefined;
         var shiftL = 0;
         // First determine the accidentals' Y positions from the note.keys
         for (var i = 0; i < accidentals.length; ++i) {
@@ -153,12 +163,12 @@ var Accidental = /** @class */ (function (_super) {
         // amount by which all accidentals must be shifted right or left for
         // stem flipping, notehead shifting concerns.
         var accShift = 0;
-        var previousLine = null;
+        var previousLine = undefined;
         // Create an array of unique line numbers (lineList) from accList
         for (var i = 0; i < accList.length; i++) {
             var acc = accList[i];
             // if this is the first line, or a new line, add a lineList
-            if (previousLine === null || previousLine !== acc.line) {
+            if (previousLine === undefined || previousLine !== acc.line) {
                 lineList.push({
                     line: acc.line,
                     flatLine: true,
@@ -300,7 +310,7 @@ var Accidental = /** @class */ (function (_super) {
             }
             else {
                 for (groupMember = i; groupMember <= groupEnd; groupMember++) {
-                    column = flow_1.Flow.accidentalColumnsTable[groupLength][endCase][groupMember - i];
+                    column = _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.accidentalColumnsTable[groupLength][endCase][groupMember - i];
                     lineList[groupMember].column = column;
                     totalColumns = totalColumns > column ? totalColumns : column;
                 }
@@ -365,7 +375,7 @@ var Accidental = /** @class */ (function (_super) {
         // update the overall layout with the full width of the accidental shapes:
         state.left_shift += totalShift + additionalPadding;
     };
-    // Helper function to determine whether two lines of accidentals collide vertically
+    /** Helper function to determine whether two lines of accidentals collide vertically */
     Accidental.checkCollision = function (line1, line2) {
         var clearance = line2.line - line1.line;
         var clearanceRequired = 3;
@@ -386,15 +396,17 @@ var Accidental = /** @class */ (function (_super) {
         L('Line_1, Line_2, Collision: ', line1.line, line2.line, collision);
         return collision;
     };
-    // Use this method to automatically apply accidentals to a set of `voices`.
-    // The accidentals will be remembered between all the voices provided.
-    // Optionally, you can also provide an initial `keySignature`.
+    /**
+     * Use this method to automatically apply accidentals to a set of `voices`.
+     * The accidentals will be remembered between all the voices provided.
+     * Optionally, you can also provide an initial `keySignature`.
+     */
     Accidental.applyAccidentals = function (voices, keySignature) {
         var tickPositions = [];
         var tickNoteMap = {};
         // Sort the tickables in each voice by their tick position in the voice
         voices.forEach(function (voice) {
-            var tickPosition = new fraction_1.Fraction(0, 1);
+            var tickPosition = new _fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction(0, 1);
             var notes = voice.getTickables();
             notes.forEach(function (note) {
                 if (note.shouldIgnoreTicks())
@@ -410,7 +422,7 @@ var Accidental = /** @class */ (function (_super) {
                 tickPosition.add(note.getTicks());
             });
         });
-        var music = new music_1.Music();
+        var music = new _music__WEBPACK_IMPORTED_MODULE_3__.Music();
         // Default key signature is C major
         if (!keySignature)
             keySignature = 'C';
@@ -452,7 +464,7 @@ var Accidental = /** @class */ (function (_super) {
                 });
                 // process grace notes
                 note.getModifiers().forEach(function (modifier) {
-                    if (modifier.getCategory() === gracenotegroup_1.GraceNoteGroup.CATEGORY) {
+                    if (modifier.getCategory() === _gracenotegroup__WEBPACK_IMPORTED_MODULE_6__.GraceNoteGroup.CATEGORY) {
                         modifier.getGraceNotes().forEach(processNote);
                     }
                 });
@@ -462,48 +474,50 @@ var Accidental = /** @class */ (function (_super) {
     };
     Accidental.prototype.reset = function () {
         var fontScale = this.render_options.font_scale;
-        this.glyph = new glyph_1.Glyph(this.accidental.code, fontScale);
+        this.glyph = new _glyph__WEBPACK_IMPORTED_MODULE_5__.Glyph(this.accidental.code, fontScale);
         this.glyph.setOriginX(1.0);
         if (this.cautionary) {
-            this.parenLeft = new glyph_1.Glyph(flow_1.Flow.accidentalCodes('{').code, fontScale);
-            this.parenRight = new glyph_1.Glyph(flow_1.Flow.accidentalCodes('}').code, fontScale);
+            this.parenLeft = new _glyph__WEBPACK_IMPORTED_MODULE_5__.Glyph(_flow__WEBPACK_IMPORTED_MODULE_2__.Flow.accidentalCodes('{').code, fontScale);
+            this.parenRight = new _glyph__WEBPACK_IMPORTED_MODULE_5__.Glyph(_flow__WEBPACK_IMPORTED_MODULE_2__.Flow.accidentalCodes('}').code, fontScale);
             this.parenLeft.setOriginX(1.0);
             this.parenRight.setOriginX(1.0);
         }
     };
+    /** Get element category string. */
     Accidental.prototype.getCategory = function () {
         return Accidental.CATEGORY;
     };
+    /** Get width in pixels. */
     Accidental.prototype.getWidth = function () {
         var parenWidth = this.cautionary
-            ? util_1.check(this.parenLeft).getMetrics().width +
-                util_1.check(this.parenRight).getMetrics().width +
+            ? (0,_util__WEBPACK_IMPORTED_MODULE_0__.check)(this.parenLeft).getMetrics().width +
+                (0,_util__WEBPACK_IMPORTED_MODULE_0__.check)(this.parenRight).getMetrics().width +
                 this.render_options.parenLeftPadding +
                 this.render_options.parenRightPadding
             : 0;
         return this.glyph.getMetrics().width + parenWidth;
     };
-    // Attach this accidental to `note`, which must be a `StaveNote`.
+    /** Attach this accidental to `note`, which must be a `StaveNote`. */
     Accidental.prototype.setNote = function (note) {
         if (!note) {
-            throw new util_1.RuntimeError('ArgumentError', "Bad note value: " + note);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('ArgumentError', "Bad note value: " + note);
         }
         this.note = note;
         // Accidentals attached to grace notes are rendered smaller.
-        if (note.getCategory() === gracenote_1.GraceNote.CATEGORY) {
+        if (note.getCategory() === _gracenote__WEBPACK_IMPORTED_MODULE_7__.GraceNote.CATEGORY) {
             this.render_options.font_scale = 25;
             this.reset();
         }
         return this;
     };
-    // If called, draws parenthesis around accidental.
+    /** If called, draws parenthesis around accidental. */
     Accidental.prototype.setAsCautionary = function () {
         this.cautionary = true;
         this.render_options.font_scale = 28;
         this.reset();
         return this;
     };
-    // Render accidental onto canvas.
+    /** Render accidental onto canvas. */
     Accidental.prototype.draw = function () {
         var _a = this, type = _a.type, position = _a.position, index = _a.index, cautionary = _a.cautionary, x_shift = _a.x_shift, y_shift = _a.y_shift, glyph = _a.glyph, parenLeft = _a.parenLeft, parenRight = _a.parenRight, _b = _a.render_options, parenLeftPadding = _b.parenLeftPadding, parenRightPadding = _b.parenRightPadding;
         var ctx = this.checkContext();
@@ -519,19 +533,19 @@ var Accidental = /** @class */ (function (_super) {
         }
         else {
             // Render the accidental in parentheses.
-            util_1.check(parenRight).render(ctx, accX, accY);
-            accX -= util_1.check(parenRight).getMetrics().width;
+            (0,_util__WEBPACK_IMPORTED_MODULE_0__.check)(parenRight).render(ctx, accX, accY);
+            accX -= (0,_util__WEBPACK_IMPORTED_MODULE_0__.check)(parenRight).getMetrics().width;
             accX -= parenRightPadding;
             accX -= this.accidental.parenRightPaddingAdjustment;
             glyph.render(ctx, accX, accY);
             accX -= glyph.getMetrics().width;
             accX -= parenLeftPadding;
-            util_1.check(parenLeft).render(ctx, accX, accY);
+            (0,_util__WEBPACK_IMPORTED_MODULE_0__.check)(parenLeft).render(ctx, accX, accY);
         }
     };
     return Accidental;
-}(modifier_1.Modifier));
-exports.Accidental = Accidental;
+}(_modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier));
+
 
 
 /***/ }),
@@ -540,18 +554,19 @@ exports.Accidental = Accidental;
 /*!***************************!*\
   !*** ./src/annotation.ts ***!
   \***************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Annotation": () => (/* binding */ Annotation)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
+/* harmony import */ var _textfont__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./textfont */ "./src/textfont.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-//
-// This file implements text annotations as modifiers that can be attached to
-// notes.
-//
-// See `tests/annotation_tests.js` for usage examples.
-var __extends = (this && this.__extends) || (function () {
+// MIT License
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -566,13 +581,10 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Annotation = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-var textfont_1 = __webpack_require__(/*! ./textfont */ "./src/textfont.ts");
-// To enable logging for this class. Set `Vex.Flow.Annotation.DEBUG` to `true`.
+
+
+
+
 // eslint-disable-next-line
 function L() {
     var args = [];
@@ -580,7 +592,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (Annotation.DEBUG)
-        util_1.log('Vex.Flow.Annotation', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.Annotation', args);
 }
 var Justify;
 (function (Justify) {
@@ -596,13 +608,19 @@ var VerticalJustify;
     VerticalJustify[VerticalJustify["BOTTOM"] = 3] = "BOTTOM";
     VerticalJustify[VerticalJustify["CENTER_STEM"] = 4] = "CENTER_STEM";
 })(VerticalJustify || (VerticalJustify = {}));
+/**
+ * Annotations are modifiers that can be attached to
+ * notes.
+ *
+ * See `tests/annotation_tests.ts` for usage examples.
+ */
 var Annotation = /** @class */ (function (_super) {
     __extends(Annotation, _super);
-    // ## Prototype Methods
-    //
-    // Annotations inherit from `Modifier` and is positioned correctly when
-    // in a `ModifierContext`.
-    // Create a new `Annotation` with the string `text`.
+    /**
+     * Annotations inherit from `Modifier` and is positioned correctly when
+     * in a `ModifierContext`.
+     * Create a new `Annotation` with the string `text`.
+     */
     function Annotation(text) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Annotation');
@@ -615,17 +633,18 @@ var Annotation = /** @class */ (function (_super) {
             weight: '',
         };
         // The default width is calculated from the text.
-        _this.setWidth(flow_1.Flow.textWidth(text));
+        _this.setWidth(_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.textWidth(text));
         return _this;
     }
     Object.defineProperty(Annotation, "CATEGORY", {
+        /** Articulations category string. */
         get: function () {
             return 'annotations';
         },
         enumerable: false,
         configurable: true
     });
-    // Arrange annotations within a `ModifierContext`
+    /** Arrange annotations within a `ModifierContext` */
     Annotation.format = function (annotations, state) {
         if (!annotations || annotations.length === 0)
             return false;
@@ -633,17 +652,17 @@ var Annotation = /** @class */ (function (_super) {
         for (var i = 0; i < annotations.length; ++i) {
             var testWidth = 0;
             var annotation = annotations[i];
-            var textFont = textfont_1.TextFont.getTextFontFromVexFontData({
+            var textFont = _textfont__WEBPACK_IMPORTED_MODULE_3__.TextFont.getTextFontFromVexFontData({
                 family: annotation.font.family,
                 size: annotation.font.size,
                 weight: 'normal',
             });
             // Calculate if the vertical extent will exceed a single line and adjust accordingly.
-            var numLines = Math.floor(textFont.maxHeight / flow_1.Flow.STAVE_LINE_DISTANCE) + 1;
+            var numLines = Math.floor(textFont.maxHeight / _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.STAVE_LINE_DISTANCE) + 1;
             // Get the string width from the font metrics
             testWidth = textFont.getWidthForString(annotation.text);
             width = Math.max(width, testWidth);
-            if (annotation.getPosition() === modifier_1.Modifier.Position.ABOVE) {
+            if (annotation.getPosition() === _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier.Position.ABOVE) {
                 annotation.setTextLine(state.top_text_line);
                 state.top_text_line += numLines;
             }
@@ -656,35 +675,43 @@ var Annotation = /** @class */ (function (_super) {
         state.right_shift += width / 2;
         return true;
     };
+    /** Get element category string. */
     Annotation.prototype.getCategory = function () {
         return Annotation.CATEGORY;
     };
-    // Set font family, size, and weight. E.g., `Arial`, `10pt`, `Bold`.
+    /** Set font family, size, and weight. E.g., `Arial`, `10pt`, `Bold`. */
     Annotation.prototype.setFont = function (family, size, weight) {
         this.font = { family: family, size: size, weight: weight };
         return this;
     };
-    // Set vertical position of text (above or below stave). `just` must be
-    // a value in `Annotation.VerticalJustify`.
+    /**
+     * Set vertical position of text (above or below stave).
+     * @param just value in `Annotation.VerticalJustify`.
+     */
     Annotation.prototype.setVerticalJustification = function (just) {
         this.vert_justification = typeof just === 'string' ? Annotation.VerticalJustifyString[just] : just;
         return this;
     };
-    // Get and set horizontal justification. `justification` is a value in
-    // `Annotation.Justify`.
+    /**
+     * Get horizontal justification.
+     */
     Annotation.prototype.getJustification = function () {
         return this.justification;
     };
+    /**
+     * Set horizontal justification.
+     * @param justification value in `Annotation.Justify`.
+     */
     Annotation.prototype.setJustification = function (just) {
         this.justification = typeof just === 'string' ? Annotation.JustifyString[just] : just;
         return this;
     };
-    // Render text beside the note.
+    /** Render text beside the note. */
     Annotation.prototype.draw = function () {
         var ctx = this.checkContext();
         var note = this.checkAttachedNote();
         this.setRendered();
-        var start = note.getModifierStartXY(modifier_1.Modifier.Position.ABOVE, this.index);
+        var start = note.getModifierStartXY(_modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier.Position.ABOVE, this.index);
         // We're changing context parameters. Save current state.
         ctx.save();
         var classString = Object.keys(this.getAttribute('classes')).join(' ');
@@ -723,7 +750,7 @@ var Annotation = /** @class */ (function (_super) {
         if (this.vert_justification === Annotation.VerticalJustify.BOTTOM) {
             // HACK: We need to compensate for the text's height since its origin
             // is bottom-right.
-            y = stave.getYForBottomText(this.text_line + flow_1.Flow.TEXT_HEIGHT_OFFSET_HACK);
+            y = stave.getYForBottomText(this.text_line + _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.TEXT_HEIGHT_OFFSET_HACK);
             if (has_stem) {
                 var stem_base = note.getStemDirection() === 1 ? stem_ext.baseY : stem_ext.topY;
                 y = Math.max(y, stem_base + spacing * (this.text_line + 2));
@@ -749,7 +776,7 @@ var Annotation = /** @class */ (function (_super) {
         ctx.closeGroup();
         ctx.restore();
     };
-    // Text annotations can be positioned and justified relative to the note.
+    /** Text annotations can be positioned and justified relative to the note. */
     Annotation.Justify = Justify;
     Annotation.JustifyString = {
         left: Annotation.Justify.LEFT,
@@ -767,8 +794,8 @@ var Annotation = /** @class */ (function (_super) {
         centerStem: Annotation.VerticalJustify.CENTER_STEM,
     };
     return Annotation;
-}(modifier_1.Modifier));
-exports.Annotation = Annotation;
+}(_modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier));
+
 
 
 /***/ }),
@@ -777,20 +804,24 @@ exports.Annotation = Annotation;
 /*!*****************************!*\
   !*** ./src/articulation.ts ***!
   \*****************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Articulation": () => (/* binding */ Articulation)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+/* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stem */ "./src/stem.ts");
+/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+/* harmony import */ var _tabnote__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
+/* harmony import */ var _gracenote__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Larry Kuhns.
-//
-// ## Description
-//
-// This file implements articulations and accents as modifiers that can be
-// attached to notes. The complete list of articulations is available in
-// `tables.js` under `Vex.Flow.articulationCodes`.
-//
-// See `tests/articulation_tests.js` for usage examples.
-var __extends = (this && this.__extends) || (function () {
+// MIT License
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -805,17 +836,14 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Articulation = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
-var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
-var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
-// To enable logging for this class. Set `Vex.Flow.Articulation.DEBUG` to `true`.
+
+
+
+
+
+
+
+
 function L() {
     // eslint-disable-next-line
     var args = [];
@@ -830,9 +858,9 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (Articulation.DEBUG)
-        util_1.log('Vex.Flow.Articulation', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.Articulation', args);
 }
-var _a = modifier_1.Modifier.Position, ABOVE = _a.ABOVE, BELOW = _a.BELOW;
+var _a = _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier.Position, ABOVE = _a.ABOVE, BELOW = _a.BELOW;
 function roundToNearestHalf(mathFn, value) {
     return mathFn(value / 0.5) * 0.5;
 }
@@ -868,14 +896,14 @@ function snapLineToStaff(canSitBetweenLines, line, position, offsetDirection) {
 }
 function isStaveNote(note) {
     var noteCategory = note.getCategory();
-    return noteCategory === stavenote_1.StaveNote.CATEGORY || noteCategory === gracenote_1.GraceNote.CATEGORY;
+    return noteCategory === _stavenote__WEBPACK_IMPORTED_MODULE_5__.StaveNote.CATEGORY || noteCategory === _gracenote__WEBPACK_IMPORTED_MODULE_7__.GraceNote.CATEGORY;
 }
 function getTopY(note, textLine) {
     var stemDirection = note.getStemDirection();
     var _a = note.getStemExtents(), stemTipY = _a.topY, stemBaseY = _a.baseY;
     if (isStaveNote(note)) {
         if (note.hasStem()) {
-            if (stemDirection === stem_1.Stem.UP) {
+            if (stemDirection === _stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP) {
                 return stemTipY;
             }
             else {
@@ -886,9 +914,9 @@ function getTopY(note, textLine) {
             return Math.min.apply(Math, note.getYs());
         }
     }
-    else if (note.getCategory() === tabnote_1.TabNote.CATEGORY) {
+    else if (note.getCategory() === _tabnote__WEBPACK_IMPORTED_MODULE_6__.TabNote.CATEGORY) {
         if (note.hasStem()) {
-            if (stemDirection === stem_1.Stem.UP) {
+            if (stemDirection === _stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP) {
                 return stemTipY;
             }
             else {
@@ -900,7 +928,7 @@ function getTopY(note, textLine) {
         }
     }
     else {
-        throw new util_1.RuntimeError('UnknownCategory', 'Only can get the top and bottom ys of stavenotes and tabnotes');
+        throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('UnknownCategory', 'Only can get the top and bottom ys of stavenotes and tabnotes');
     }
 }
 function getBottomY(note, textLine) {
@@ -908,7 +936,7 @@ function getBottomY(note, textLine) {
     var _a = note.getStemExtents(), stemTipY = _a.topY, stemBaseY = _a.baseY;
     if (isStaveNote(note)) {
         if (note.hasStem()) {
-            if (stemDirection === stem_1.Stem.UP) {
+            if (stemDirection === _stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP) {
                 return stemBaseY;
             }
             else {
@@ -919,9 +947,9 @@ function getBottomY(note, textLine) {
             return Math.max.apply(Math, note.getYs());
         }
     }
-    else if (note.getCategory() === tabnote_1.TabNote.CATEGORY) {
+    else if (note.getCategory() === _tabnote__WEBPACK_IMPORTED_MODULE_6__.TabNote.CATEGORY) {
         if (note.hasStem()) {
-            if (stemDirection === stem_1.Stem.UP) {
+            if (stemDirection === _stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP) {
                 return note.checkStave().getYForBottomText(textLine);
             }
             else {
@@ -933,7 +961,7 @@ function getBottomY(note, textLine) {
         }
     }
     else {
-        throw new util_1.RuntimeError('UnknownCategory', 'Only can get the top and bottom ys of stavenotes and tabnotes');
+        throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('UnknownCategory', 'Only can get the top and bottom ys of stavenotes and tabnotes');
     }
 }
 // Gets the initial offset of the articulation from the y value of the starting position.
@@ -942,8 +970,8 @@ function getBottomY(note, textLine) {
 // the stavenote's top/bottom do *not* have any pre-applied spacing. This function
 // normalizes this asymmetry.
 function getInitialOffset(note, position) {
-    var isOnStemTip = (position === ABOVE && note.getStemDirection() === stem_1.Stem.UP) ||
-        (position === BELOW && note.getStemDirection() === stem_1.Stem.DOWN);
+    var isOnStemTip = (position === ABOVE && note.getStemDirection() === _stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP) ||
+        (position === BELOW && note.getStemDirection() === _stem__WEBPACK_IMPORTED_MODULE_4__.Stem.DOWN);
     if (isStaveNote(note)) {
         if (note.hasStem() && isOnStemTip) {
             return 0.5;
@@ -963,10 +991,19 @@ function getInitialOffset(note, position) {
         }
     }
 }
+/**
+ * Articulations and Accents are modifiers that can be
+ * attached to notes. The complete list of articulations is available in
+ * `tables.ts` under `Vex.Flow.articulationCodes`.
+ *
+ * See `tests/articulation_tests.js` for usage examples.
+ */
 var Articulation = /** @class */ (function (_super) {
     __extends(Articulation, _super);
-    // Create a new articulation of type `type`, which is an entry in
-    // `Vex.Flow.articulationCodes` in `tables.js`.
+    /**
+     * Create a new articulation.
+     * @param type entry in `Vex.Flow.articulationCodes` in `tables.ts`
+     */
     function Articulation(type) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Articulation');
@@ -979,28 +1016,31 @@ var Articulation = /** @class */ (function (_super) {
         return _this;
     }
     Object.defineProperty(Articulation, "CATEGORY", {
+        /** Articulations category string. */
         get: function () {
             return 'articulations';
         },
         enumerable: false,
         configurable: true
     });
-    // FIXME:
-    // Most of the complex formatting logic (ie: snapping to space) is
-    // actually done in .render(). But that logic belongs in this method.
-    //
-    // Unfortunately, this isn't possible because, by this point, stem lengths
-    // have not yet been finalized. Finalized stem lengths are required to determine the
-    // initial position of any stem-side articulation.
-    //
-    // This indicates that all objects should have their stave set before being
-    // formatted. It can't be an optional if you want accurate vertical positioning.
-    // Consistently positioned articulations that play nice with other modifiers
-    // won't be possible until we stop relying on render-time formatting.
-    //
-    // Ideally, when this function has completed, the vertical articulation positions
-    // should be ready to render without further adjustment. But the current state
-    // is far from this ideal.
+    /**
+     * FIXME:
+     * Most of the complex formatting logic (ie: snapping to space) is
+     * actually done in .render(). But that logic belongs in this method.
+     *
+     * Unfortunately, this isn't possible because, by this point, stem lengths
+     * have not yet been finalized. Finalized stem lengths are required to determine the
+     * initial position of any stem-side articulation.
+     *
+     * This indicates that all objects should have their stave set before being
+     * formatted. It can't be an optional if you want accurate vertical positioning.
+     * Consistently positioned articulations that play nice with other modifiers
+     * won't be possible until we stop relying on render-time formatting.
+     *
+     * Ideally, when this function has completed, the vertical articulation positions
+     * should be ready to render without further adjustment. But the current state
+     * is far from this ideal.
+     */
     Articulation.format = function (articulations, state) {
         if (!articulations || articulations.length === 0)
             return false;
@@ -1008,7 +1048,7 @@ var Articulation = /** @class */ (function (_super) {
         var isBelow = function (artic) { return artic.getPosition() === BELOW; };
         var margin = 0.5;
         var getIncrement = function (articulation, line, position) {
-            return roundToNearestHalf(getRoundingFunction(line, position), util_1.check(articulation.glyph.getMetrics().height) / 10 + margin);
+            return roundToNearestHalf(getRoundingFunction(line, position), (0,_util__WEBPACK_IMPORTED_MODULE_0__.check)(articulation.glyph.getMetrics().height) / 10 + margin);
         };
         articulations.filter(isAbove).forEach(function (articulation) {
             articulation.setTextLine(state.top_text_line);
@@ -1041,36 +1081,36 @@ var Articulation = /** @class */ (function (_super) {
             var name = _a[0], position = _a[1];
             var artic = { type: articNameToCode[name] };
             if (position)
-                artic.position = modifier_1.Modifier.PositionString[position];
+                artic.position = _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier.PositionString[position];
             return builder.getFactory().Articulation(artic);
         })
             .map(function (artic) { return note.addModifier(artic, 0); });
     };
     Articulation.prototype.reset = function () {
-        this.articulation = flow_1.Flow.articulationCodes(this.type);
+        this.articulation = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.articulationCodes(this.type);
         if (!this.articulation) {
-            throw new util_1.RuntimeError('ArgumentError', "Articulation not found: " + this.type);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('ArgumentError', "Articulation not found: " + this.type);
         }
         var code = (this.position === ABOVE ? this.articulation.aboveCode : this.articulation.belowCode) || this.articulation.code;
-        this.glyph = new glyph_1.Glyph(code !== null && code !== void 0 ? code : '', this.render_options.font_scale);
-        this.setWidth(util_1.check(this.glyph.getMetrics().width));
+        this.glyph = new _glyph__WEBPACK_IMPORTED_MODULE_3__.Glyph(code !== null && code !== void 0 ? code : '', this.render_options.font_scale);
+        this.setWidth((0,_util__WEBPACK_IMPORTED_MODULE_0__.check)(this.glyph.getMetrics().width));
     };
+    /** Get element category string. */
     Articulation.prototype.getCategory = function () {
         return Articulation.CATEGORY;
     };
-    // Render articulation in position next to note.
+    /** Render articulation in position next to note. */
     Articulation.prototype.draw = function () {
         var _a;
-        var _b, _c;
         var ctx = this.checkContext();
         var note = this.checkAttachedNote();
         this.setRendered();
         var index = this.checkIndex();
-        var _d = this, position = _d.position, glyph = _d.glyph, textLine = _d.text_line;
-        var canSitBetweenLines = (_c = (_b = this.articulation) === null || _b === void 0 ? void 0 : _b.between_lines) !== null && _c !== void 0 ? _c : false;
+        var _b = this, position = _b.position, glyph = _b.glyph, textLine = _b.text_line;
+        var canSitBetweenLines = this.articulation.between_lines;
         var stave = note.checkStave();
         var staffSpace = stave.getSpacingBetweenLines();
-        var isTab = note.getCategory() === tabnote_1.TabNote.CATEGORY;
+        var isTab = note.getCategory() === _tabnote__WEBPACK_IMPORTED_MODULE_6__.TabNote.CATEGORY;
         // Articulations are centered over/under the note head.
         var x = note.getModifierStartXY(position, index).x;
         var shouldSitOutsideStaff = !canSitBetweenLines || isTab;
@@ -1105,8 +1145,8 @@ var Articulation = /** @class */ (function (_super) {
     };
     Articulation.INITIAL_OFFSET = -0.5;
     return Articulation;
-}(modifier_1.Modifier));
-exports.Articulation = Articulation;
+}(_modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier));
+
 
 
 /***/ }),
@@ -1115,19 +1155,18 @@ exports.Articulation = Articulation;
 /*!************************!*\
   !*** ./src/barnote.ts ***!
   \************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "BarNote": () => (/* binding */ BarNote)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./note */ "./src/note.ts");
+/* harmony import */ var _stavebarline__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-//
-// A `BarNote` is used to render bar lines (from `barline.js`). `BarNote`s can
-// be added to a voice and rendered in the middle of a stave. Since it has no
-// duration, it consumes no `tick`s, and is dealt with appropriately by the formatter.
-//
-// See `tests/barnote_tests.js` for usage examples.
-var __extends = (this && this.__extends) || (function () {
+// MIT License
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -1142,12 +1181,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.BarNote = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
-var stavebarline_1 = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
-// To enable logging for this class. Set `Vex.Flow.BarNote.DEBUG` to `true`.
+
+
+
 function L() {
     // eslint-disable-next-line
     var args = [];
@@ -1162,19 +1198,26 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (BarNote.DEBUG)
-        util_1.log('Vex.Flow.BarNote', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.BarNote', args);
 }
+/**
+ * A `BarNote` is used to render bar lines (from `barline.ts`). `BarNote`s can
+ * be added to a voice and rendered in the middle of a stave. Since it has no
+ * duration, it consumes no `tick`s, and is dealt with appropriately by the formatter.
+ *
+ * See `tests/barnote_tests.js` for usage examples.
+ */
 var BarNote = /** @class */ (function (_super) {
     __extends(BarNote, _super);
     function BarNote(type) {
         var _a;
-        if (type === void 0) { type = stavebarline_1.BarlineType.SINGLE; }
+        if (type === void 0) { type = _stavebarline__WEBPACK_IMPORTED_MODULE_2__.BarlineType.SINGLE; }
         var _this = _super.call(this, { duration: 'b' }) || this;
         _this.setAttribute('type', 'BarNote');
         _this.metrics = {
             widths: {},
         };
-        var TYPE = stavebarline_1.BarlineType;
+        var TYPE = _stavebarline__WEBPACK_IMPORTED_MODULE_2__.BarlineType;
         _this.metrics.widths = (_a = {},
             _a[TYPE.SINGLE] = 8,
             _a[TYPE.DOUBLE] = 12,
@@ -1189,32 +1232,33 @@ var BarNote = /** @class */ (function (_super) {
         _this.setType(type);
         return _this;
     }
-    // Get and set the type of bar note. `type` must be one of `BarlineType`.
+    /** Get the type of bar note.*/
     BarNote.prototype.getType = function () {
         return this.type;
     };
+    /** Set the type of bar note. */
     BarNote.prototype.setType = function (type) {
-        this.type = typeof type === 'string' ? stavebarline_1.Barline.typeString[type] : type;
+        this.type = typeof type === 'string' ? _stavebarline__WEBPACK_IMPORTED_MODULE_2__.Barline.typeString[type] : type;
         // Set width to width of relevant `Barline`.
         this.setWidth(this.metrics.widths[this.type]);
         return this;
     };
+    /** overridden to ignore. */
     BarNote.prototype.addToModifierContext = function () {
-        /* overridden to ignore */
         return this;
     };
+    /** overridden to ignore. */
     BarNote.prototype.preFormat = function () {
-        /* overridden to ignore */
         this.setPreFormatted(true);
         return this;
     };
-    // Render note to stave.
+    /** Render note to stave. */
     BarNote.prototype.draw = function () {
         var ctx = this.checkContext();
         L('Rendering bar line at: ', this.getAbsoluteX());
         if (this.style)
             this.applyStyle(ctx);
-        var barline = new stavebarline_1.Barline(this.type);
+        var barline = new _stavebarline__WEBPACK_IMPORTED_MODULE_2__.Barline(this.type);
         barline.setX(this.getAbsoluteX());
         barline.draw(this.checkStave());
         if (this.style)
@@ -1222,8 +1266,8 @@ var BarNote = /** @class */ (function (_super) {
         this.setRendered();
     };
     return BarNote;
-}(note_1.Note));
-exports.BarNote = BarNote;
+}(_note__WEBPACK_IMPORTED_MODULE_1__.Note));
+
 
 
 /***/ }),
@@ -1232,15 +1276,23 @@ exports.BarNote = BarNote;
 /*!*********************!*\
   !*** ./src/beam.ts ***!
   \*********************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Beam": () => (/* binding */ Beam)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./element */ "./src/element.ts");
+/* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
+/* harmony import */ var _tuplet__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./tuplet */ "./src/tuplet.ts");
+/* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./stem */ "./src/stem.ts");
+/* harmony import */ var _tabnote__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
+/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-//
-// This file implements `Beams` that span over a set of `StemmableNotes`.
-var __extends = (this && this.__extends) || (function () {
+// MIT License
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -1255,16 +1307,14 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Beam = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
-var tuplet_1 = __webpack_require__(/*! ./tuplet */ "./src/tuplet.ts");
-var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
-var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
-var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+
+
+
+
+
+
+
+
 function calculateStemDirection(notes) {
     var lineSum = 0;
     notes.forEach(function (note) {
@@ -1275,9 +1325,9 @@ function calculateStemDirection(notes) {
         }
     });
     if (lineSum >= 0) {
-        return stem_1.Stem.DOWN;
+        return _stem__WEBPACK_IMPORTED_MODULE_5__.Stem.DOWN;
     }
-    return stem_1.Stem.UP;
+    return _stem__WEBPACK_IMPORTED_MODULE_5__.Stem.UP;
 }
 var getStemSlope = function (firstNote, lastNote) {
     var firstStemTipY = firstNote.getStemExtents().topY;
@@ -1289,6 +1339,7 @@ var getStemSlope = function (firstNote, lastNote) {
 var BEAM_LEFT = 'L';
 var BEAM_RIGHT = 'R';
 var BEAM_BOTH = 'B';
+/** `Beams` span over a set of `StemmableNotes`. */
 var Beam = /** @class */ (function (_super) {
     __extends(Beam, _super);
     function Beam(notes, auto_stem) {
@@ -1298,19 +1349,19 @@ var Beam = /** @class */ (function (_super) {
         _this.y_shift = 0;
         _this.setAttribute('type', 'Beam');
         if (!notes || notes.length === 0) {
-            throw new util_1.RuntimeError('BadArguments', 'No notes provided for beam.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'No notes provided for beam.');
         }
         if (notes.length === 1) {
-            throw new util_1.RuntimeError('BadArguments', 'Too few notes for beam.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'Too few notes for beam.');
         }
         // Validate beam line, direction and ticks.
         _this.ticks = notes[0].getIntrinsicTicks();
-        if (_this.ticks >= flow_1.Flow.durationToTicks('4')) {
-            throw new util_1.RuntimeError('BadArguments', 'Beams can only be applied to notes shorter than a quarter note.');
+        if (_this.ticks >= _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.durationToTicks('4')) {
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'Beams can only be applied to notes shorter than a quarter note.');
         }
         var i; // shared iterator
         var note;
-        _this.stem_direction = stem_1.Stem.UP;
+        _this.stem_direction = _stem__WEBPACK_IMPORTED_MODULE_5__.Stem.UP;
         for (i = 0; i < notes.length; ++i) {
             note = notes[i];
             if (note.hasStem()) {
@@ -1320,13 +1371,13 @@ var Beam = /** @class */ (function (_super) {
         }
         var stem_direction = _this.stem_direction;
         // Figure out optimal stem direction based on given notes
-        if (auto_stem && notes[0].getCategory() === stavenote_1.StaveNote.CATEGORY) {
+        if (auto_stem && notes[0].getCategory() === _stavenote__WEBPACK_IMPORTED_MODULE_7__.StaveNote.CATEGORY) {
             stem_direction = calculateStemDirection(notes);
         }
-        else if (auto_stem && notes[0].getCategory() === tabnote_1.TabNote.CATEGORY) {
+        else if (auto_stem && notes[0].getCategory() === _tabnote__WEBPACK_IMPORTED_MODULE_6__.TabNote.CATEGORY) {
             // Auto Stem TabNotes
             var stem_weight = notes.reduce(function (memo, note) { return memo + note.getStemDirection(); }, 0);
-            stem_direction = stem_weight > -1 ? stem_1.Stem.UP : stem_1.Stem.DOWN;
+            stem_direction = stem_weight > -1 ? _stem__WEBPACK_IMPORTED_MODULE_5__.Stem.UP : _stem__WEBPACK_IMPORTED_MODULE_5__.Stem.DOWN;
         }
         // Apply stem directions and attach beam to notes
         for (i = 0; i < notes.length; ++i) {
@@ -1355,9 +1406,11 @@ var Beam = /** @class */ (function (_super) {
         };
         return _this;
     }
-    // Gets the default beam groups for a provided time signature.
-    // Attempts to guess if the time signature is not found in table.
-    // Currently this is fairly naive.
+    /**
+     * Get the default beam groups for a provided time signature.
+     * Attempt to guess if the time signature is not found in table.
+     * Currently this is fairly naive.
+     */
     Beam.getDefaultBeamGroups = function (time_sig) {
         if (!time_sig || time_sig === 'c') {
             time_sig = '4/4';
@@ -1388,77 +1441,77 @@ var Beam = /** @class */ (function (_super) {
             var beatValue = parseInt(time_sig.split('/')[1], 10);
             var tripleMeter = beatTotal % 3 === 0;
             if (tripleMeter) {
-                return [new fraction_1.Fraction(3, beatValue)];
+                return [new _fraction__WEBPACK_IMPORTED_MODULE_3__.Fraction(3, beatValue)];
             }
             else if (beatValue > 4) {
-                return [new fraction_1.Fraction(2, beatValue)];
+                return [new _fraction__WEBPACK_IMPORTED_MODULE_3__.Fraction(2, beatValue)];
             }
             else if (beatValue <= 4) {
-                return [new fraction_1.Fraction(1, beatValue)];
+                return [new _fraction__WEBPACK_IMPORTED_MODULE_3__.Fraction(1, beatValue)];
             }
         }
         else {
-            return groups.map(function (group) { return new fraction_1.Fraction().parse(group); });
+            return groups.map(function (group) { return new _fraction__WEBPACK_IMPORTED_MODULE_3__.Fraction().parse(group); });
         }
-        return [new fraction_1.Fraction(1, 4)];
+        return [new _fraction__WEBPACK_IMPORTED_MODULE_3__.Fraction(1, 4)];
     };
-    // A helper function to automatically build basic beams for a voice. For more
-    // complex auto-beaming use `Beam.generateBeams()`.
-    //
-    // Parameters:
-    // * `voice` - The voice to generate the beams for
-    // * `stem_direction` - A stem direction to apply to the entire voice
-    // * `groups` - An array of `Fraction` representing beat groupings for the beam
+    /**
+     * A helper function to automatically build basic beams for a voice. For more
+     * complex auto-beaming use `Beam.generateBeams()`.
+     * @param voice the voice to generate the beams for
+     * @param stem_direction a stem direction to apply to the entire voice
+     * @param groups an array of `Fraction` representing beat groupings for the beam
+     */
     Beam.applyAndGetBeams = function (voice, stem_direction, groups) {
         return Beam.generateBeams(voice.getTickables(), {
             groups: groups,
             stem_direction: stem_direction,
         });
     };
-    // A helper function to autimatically build beams for a voice with
-    // configuration options.
-    //
-    // Example configuration object:
-    //
-    // ```
-    // config = {
-    //   groups: [new Vex.Flow.Fraction(2, 8)],
-    //   stem_direction: -1,
-    //   beam_rests: true,
-    //   beam_middle_only: true,
-    //   show_stemlets: false
-    // };
-    // ```
-    //
-    // Parameters:
-    // * `notes` - An array of notes to create the beams for
-    // * `config` - The configuration object
-    //    * `groups` - Array of `Fractions` that represent the beat structure to beam the notes
-    //    * `stem_direction` - Set to apply the same direction to all notes
-    //    * `beam_rests` - Set to `true` to include rests in the beams
-    //    * `beam_middle_only` - Set to `true` to only beam rests in the middle of the beat
-    //    * `show_stemlets` - Set to `true` to draw stemlets for rests
-    //    * `maintain_stem_directions` - Set to `true` to not apply new stem directions
-    //
+    /**
+     * A helper function to autimatically build beams for a voice with
+     * configuration options.
+     *
+     * Example configuration object:
+     *
+     * ```
+     * config = {
+     *   groups: [new Vex.Flow.Fraction(2, 8)],
+     *   stem_direction: -1,
+     *   beam_rests: true,
+     *   beam_middle_only: true,
+     *   show_stemlets: false
+     * };
+     * ```
+     * @param notes an array of notes to create the beams for
+     * @param config the configuration object
+     * @param config.stem_direction set to apply the same direction to all notes
+     * @param config.beam_rests set to `true` to include rests in the beams
+     * @param config.beam_middle_only set to `true` to only beam rests in the middle of the beat
+     * @param config.show_stemlets set to `true` to draw stemlets for rests
+     * @param config.maintain_stem_directions set to `true` to not apply new stem directions
+     * @param config.groups array of `Fractions` that represent the beat structure to beam the notes
+     *
+     */
     Beam.generateBeams = function (notes, config) {
         if (!config)
             config = {};
         if (!config.groups || !config.groups.length) {
-            config.groups = [new fraction_1.Fraction(2, 8)];
+            config.groups = [new _fraction__WEBPACK_IMPORTED_MODULE_3__.Fraction(2, 8)];
         }
         // Convert beam groups to tick amounts
         var tickGroups = config.groups.map(function (group) {
             if (!group.multiply) {
-                throw new util_1.RuntimeError('InvalidBeamGroups', 'The beam groups must be an array of Vex.Flow.Fractions');
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('InvalidBeamGroups', 'The beam groups must be an array of Vex.Flow.Fractions');
             }
-            return group.clone().multiply(flow_1.Flow.RESOLUTION, 1);
+            return group.clone().multiply(_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.RESOLUTION, 1);
         });
         var unprocessedNotes = notes;
         var currentTickGroup = 0;
         var noteGroups = [];
         var currentGroup = [];
         function getTotalTicks(vf_notes) {
-            return vf_notes.reduce(function (memo, note) { return note.getTicks().clone().add(memo); }, new fraction_1.Fraction(0, 1));
+            return vf_notes.reduce(function (memo, note) { return note.getTicks().clone().add(memo); }, new _fraction__WEBPACK_IMPORTED_MODULE_3__.Fraction(0, 1));
         }
         function nextTickGroup() {
             if (tickGroups.length - 1 > currentTickGroup) {
@@ -1471,7 +1524,7 @@ var Beam = /** @class */ (function (_super) {
         function createGroups() {
             var nextGroup = [];
             // number of ticks in current group
-            var currentGroupTotalTicks = new fraction_1.Fraction(0, 1);
+            var currentGroupTotalTicks = new _fraction__WEBPACK_IMPORTED_MODULE_3__.Fraction(0, 1);
             unprocessedNotes.forEach(function (unprocessedNote) {
                 nextGroup = [];
                 if (unprocessedNote.shouldIgnoreTicks()) {
@@ -1483,7 +1536,7 @@ var Beam = /** @class */ (function (_super) {
                 var ticksPerGroup = tickGroups[currentTickGroup].clone();
                 var totalTicks = getTotalTicks(currentGroup).add(currentGroupTotalTicks);
                 // Double the amount of ticks in a group, if it's an unbeamable tuplet
-                var unbeamable = flow_1.Flow.durationToNumber(unprocessedNote.getDuration()) < 8;
+                var unbeamable = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.durationToNumber(unprocessedNote.getDuration()) < 8;
                 if (unbeamable && unprocessedNote.getTuplet()) {
                     ticksPerGroup.numerator *= 2;
                 }
@@ -1509,7 +1562,7 @@ var Beam = /** @class */ (function (_super) {
                 }
                 else if (totalTicks.equals(ticksPerGroup)) {
                     noteGroups.push(currentGroup);
-                    currentGroupTotalTicks = new fraction_1.Fraction(0, 1);
+                    currentGroupTotalTicks = new _fraction__WEBPACK_IMPORTED_MODULE_3__.Fraction(0, 1);
                     currentGroup = nextGroup;
                     nextTickGroup();
                 }
@@ -1524,7 +1577,7 @@ var Beam = /** @class */ (function (_super) {
                 if (group.length > 1) {
                     var beamable_1 = true;
                     group.forEach(function (note) {
-                        if (note.getIntrinsicTicks() >= flow_1.Flow.durationToTicks('4')) {
+                        if (note.getIntrinsicTicks() >= _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.durationToTicks('4')) {
                             beamable_1 = false;
                         }
                     });
@@ -1579,7 +1632,7 @@ var Beam = /** @class */ (function (_super) {
                 var stemDirection;
                 if (config.maintain_stem_directions) {
                     var note = findFirstNote(group);
-                    stemDirection = note ? note.getStemDirection() : stem_1.Stem.UP;
+                    stemDirection = note ? note.getStemDirection() : _stem__WEBPACK_IMPORTED_MODULE_5__.Stem.UP;
                 }
                 else {
                     if (config.stem_direction) {
@@ -1640,7 +1693,7 @@ var Beam = /** @class */ (function (_super) {
                 beam.render_options.show_stemlets = true;
             }
             if (config.secondary_breaks) {
-                beam.render_options.secondary_break_ticks = flow_1.Flow.durationToTicks(config.secondary_breaks);
+                beam.render_options.secondary_break_ticks = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.durationToTicks(config.secondary_breaks);
             }
             if (config.flat_beams === true) {
                 beam.render_options.flat_beams = true;
@@ -1651,7 +1704,7 @@ var Beam = /** @class */ (function (_super) {
         // Reformat tuplets
         allTuplets.forEach(function (tuplet) {
             // Set the tuplet location based on the stem direction
-            var direction = tuplet.notes[0].stem_direction === stem_1.Stem.DOWN ? tuplet_1.Tuplet.LOCATION_BOTTOM : tuplet_1.Tuplet.LOCATION_TOP;
+            var direction = tuplet.notes[0].stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__.Stem.DOWN ? _tuplet__WEBPACK_IMPORTED_MODULE_4__.Tuplet.LOCATION_BOTTOM : _tuplet__WEBPACK_IMPORTED_MODULE_4__.Tuplet.LOCATION_TOP;
             tuplet.setTupletLocation(direction);
             // If any of the notes in the tuplet are not beamed, draw a bracket.
             var bracketed = false;
@@ -1666,26 +1719,26 @@ var Beam = /** @class */ (function (_super) {
         });
         return beams;
     };
-    // Get the notes in this beam
+    /** Get the notes in this beam. */
     Beam.prototype.getNotes = function () {
         return this.notes;
     };
-    // Get the max number of beams in the set of notes
+    /** Get the max number of beams in the set of notes. */
     Beam.prototype.getBeamCount = function () {
         var beamCounts = this.notes.map(function (note) { return note.getGlyph().beam_count; });
         var maxBeamCount = beamCounts.reduce(function (max, beamCount) { return (beamCount > max ? beamCount : max); });
         return maxBeamCount;
     };
-    // Set which note `indices` to break the secondary beam at
+    /** Set which note `indices` to break the secondary beam at. */
     Beam.prototype.breakSecondaryAt = function (indices) {
         this.break_on_indices = indices;
         return this;
     };
-    // Return the y coordinate for linear function
+    /** Return the y coordinate for linear function. */
     Beam.prototype.getSlopeY = function (x, first_x_px, first_y_px, slope) {
         return first_y_px + (x - first_x_px) * slope;
     };
-    // Calculate the best possible slope for the provided notes
+    /** Calculate the best possible slope for the provided notes. */
     Beam.prototype.calculateSlope = function () {
         var _a = this, notes = _a.notes, stemDirection = _a.stem_direction, _b = _a.render_options, max_slope = _b.max_slope, min_slope = _b.min_slope, slope_iterations = _b.slope_iterations, slope_cost = _b.slope_cost;
         var firstNote = notes[0];
@@ -1731,7 +1784,7 @@ var Beam = /** @class */ (function (_super) {
         this.slope = bestSlope;
         this.y_shift = yShift;
     };
-    // Calculate a slope and y-shift for flat beams
+    /** Calculate a slope and y-shift for flat beams. */
     Beam.prototype.calculateFlatSlope = function () {
         var _a = this, notes = _a.notes, stem_direction = _a.stem_direction, _b = _a.render_options, beam_width = _b.beam_width, min_flat_beam_offset = _b.min_flat_beam_offset, flat_beam_offset = _b.flat_beam_offset;
         // If a flat beam offset has not yet been supplied or calculated,
@@ -1747,12 +1800,12 @@ var Beam = /** @class */ (function (_super) {
             total += stemTipY;
             // Store the highest (stems-up) or lowest (stems-down) note so the
             //  offset can be adjusted in case the average isn't enough
-            if (stem_direction === stem_1.Stem.DOWN && currentExtreme < stemTipY) {
+            if (stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__.Stem.DOWN && currentExtreme < stemTipY) {
                 currentExtreme = stemTipY;
                 extremeY = Math.max.apply(Math, note.getYs());
                 extremeBeamCount = note.getBeamCount();
             }
-            else if (stem_direction === stem_1.Stem.UP && (currentExtreme === 0 || currentExtreme > stemTipY)) {
+            else if (stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__.Stem.UP && (currentExtreme === 0 || currentExtreme > stemTipY)) {
                 currentExtreme = stemTipY;
                 extremeY = Math.min.apply(Math, note.getYs());
                 extremeBeamCount = note.getBeamCount();
@@ -1768,26 +1821,27 @@ var Beam = /** @class */ (function (_super) {
         var beamWidth = beam_width * 1.5;
         var extremeTest = min_flat_beam_offset + extremeBeamCount * beamWidth;
         var newOffset = extremeY + extremeTest * -stem_direction;
-        if (stem_direction === stem_1.Stem.DOWN && offset < newOffset) {
+        if (stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__.Stem.DOWN && offset < newOffset) {
             offset = extremeY + extremeTest;
         }
-        else if (stem_direction === stem_1.Stem.UP && offset > newOffset) {
+        else if (stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__.Stem.UP && offset > newOffset) {
             offset = extremeY - extremeTest;
         }
         if (!flat_beam_offset) {
             // Set the offset for the group based on the calculations above.
             this.render_options.flat_beam_offset = offset;
         }
-        else if (stem_direction === stem_1.Stem.DOWN && offset > flat_beam_offset) {
+        else if (stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__.Stem.DOWN && offset > flat_beam_offset) {
             this.render_options.flat_beam_offset = offset;
         }
-        else if (stem_direction === stem_1.Stem.UP && offset < flat_beam_offset) {
+        else if (stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__.Stem.UP && offset < flat_beam_offset) {
             this.render_options.flat_beam_offset = offset;
         }
         // for flat beams, the slope and y_shift are simply 0
         this.slope = 0;
         this.y_shift = 0;
     };
+    /** Return the Beam y offset. */
     Beam.prototype.getBeamYToDraw = function () {
         var firstNote = this.notes[0];
         var firstStemTipY = firstNote.getStemExtents().topY;
@@ -1799,8 +1853,10 @@ var Beam = /** @class */ (function (_super) {
         }
         return beamY;
     };
-    // Create new stems for the notes in the beam, so that each stem
-    // extends into the beams.
+    /**
+     * Create new stems for the notes in the beam, so that each stem
+     * extends into the beams.
+     */
     Beam.prototype.applyStemExtensions = function () {
         var _a = this, notes = _a.notes, slope = _a.slope, y_shift = _a.y_shift, stem_direction = _a.stem_direction, beam_count = _a.beam_count, _b = _a.render_options, show_stemlets = _b.show_stemlets, stemlet_extension = _b.stemlet_extension, beam_width = _b.beam_width;
         var firstNote = notes[0];
@@ -1814,7 +1870,7 @@ var Beam = /** @class */ (function (_super) {
                 var stemTipY = note.getStemExtents().topY;
                 var beamedStemTipY = this.getSlopeY(stemX, firstStemX, firstStemTipY, slope) + y_shift;
                 var preBeamExtension = stem.getExtension();
-                var beamExtension = stem_direction === stem_1.Stem.UP ? stemTipY - beamedStemTipY : beamedStemTipY - stemTipY;
+                var beamExtension = stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__.Stem.UP ? stemTipY - beamedStemTipY : beamedStemTipY - stemTipY;
                 stem.setExtension(preBeamExtension + beamExtension);
                 stem.adjustHeightForBeam();
                 if (note.isRest() && show_stemlets) {
@@ -1824,19 +1880,19 @@ var Beam = /** @class */ (function (_super) {
                 }
             }
             else {
-                throw new util_1.RuntimeError('NoStem', 'stem undefined.');
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoStem', 'stem undefined.');
             }
         }
     };
-    // return upper level beam direction.
+    /** Return upper level beam direction. */
     Beam.prototype.lookupBeamDirection = function (duration, prev_tick, tick, next_tick) {
         if (duration === '4') {
             return BEAM_LEFT;
         }
-        var lookup_duration = "" + flow_1.Flow.durationToNumber(duration) / 2;
-        var prev_note_gets_beam = prev_tick < flow_1.Flow.durationToTicks(lookup_duration);
-        var next_note_gets_beam = next_tick < flow_1.Flow.durationToTicks(lookup_duration);
-        var note_gets_beam = tick < flow_1.Flow.durationToTicks(lookup_duration);
+        var lookup_duration = "" + _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.durationToNumber(duration) / 2;
+        var prev_note_gets_beam = prev_tick < _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.durationToTicks(lookup_duration);
+        var next_note_gets_beam = next_tick < _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.durationToTicks(lookup_duration);
+        var note_gets_beam = tick < _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.durationToTicks(lookup_duration);
         if (prev_note_gets_beam && next_note_gets_beam && note_gets_beam) {
             return BEAM_BOTH;
         }
@@ -1848,9 +1904,9 @@ var Beam = /** @class */ (function (_super) {
         }
         return this.lookupBeamDirection(lookup_duration, prev_tick, tick, next_tick);
     };
-    // Get the x coordinates for the beam lines of specific `duration`
+    /** Get the x coordinates for the beam lines of specific `duration`. */
     Beam.prototype.getBeamLines = function (duration) {
-        var tick_of_duration = flow_1.Flow.durationToTicks(duration);
+        var tick_of_duration = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.durationToTicks(duration);
         var beam_started = false;
         var beam_lines = [];
         var current_beam = undefined;
@@ -1875,7 +1931,7 @@ var Beam = /** @class */ (function (_super) {
                 }
             }
             var note_gets_beam = note.getIntrinsicTicks() < tick_of_duration;
-            var stem_x = note.getStemX() - stem_1.Stem.WIDTH / 2;
+            var stem_x = note.getStemX() - _stem__WEBPACK_IMPORTED_MODULE_5__.Stem.WIDTH / 2;
             // Check to see if the next note in the group will get a beam at this
             //  level. This will help to inform the partial beam logic below.
             var prev_note = this.notes[i - 1];
@@ -1894,7 +1950,7 @@ var Beam = /** @class */ (function (_super) {
                     // If a secondary beam break is set up, end the beam right now.
                     if (should_break) {
                         beam_started = false;
-                        if (next_note && !next_note_gets_beam && current_beam.end === null) {
+                        if (next_note && !next_note_gets_beam && current_beam.end === undefined) {
                             // This note gets a beam,.but the next one does not. This means
                             //  we need a partial pointing right.
                             current_beam.end = current_beam.start - partial_beam_length;
@@ -1949,12 +2005,12 @@ var Beam = /** @class */ (function (_super) {
         }
         // Add a partial beam pointing left if this is the last note in the group
         var last_beam = beam_lines[beam_lines.length - 1];
-        if (last_beam && last_beam.end === null) {
+        if (last_beam && last_beam.end === undefined) {
             last_beam.end = last_beam.start - partial_beam_length;
         }
         return beam_lines;
     };
-    // Render the stems for each notes
+    /** Render the stems for each note. */
     Beam.prototype.drawStems = function (ctx) {
         this.notes.forEach(function (note) {
             var stem = note.getStem();
@@ -1990,24 +2046,26 @@ var Beam = /** @class */ (function (_super) {
                     ctx.fill();
                 }
                 else {
-                    throw new util_1.RuntimeError('NoLastBeamX', 'lastBeamX undefined.');
+                    throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoLastBeamX', 'lastBeamX undefined.');
                 }
             }
             beamY += beamThickness * 1.5;
         }
     };
-    // Pre-format the beam
+    /** Pre-format the beam. */
     Beam.prototype.preFormat = function () {
         return this;
     };
-    // Post-format the beam. This can only be called after
-    // the notes in the beam have both `x` and `y` values. ie: they've
-    // been formatted and have staves
+    /**
+     * Post-format the beam. This can only be called after
+     * the notes in the beam have both `x` and `y` values. ie: they've
+     * been formatted and have staves.
+     */
     Beam.prototype.postFormat = function () {
         if (this.postFormatted)
             return;
         // Calculate a smart slope if we're not forcing the beams to be flat.
-        if (this.notes[0].getCategory() === tabnote_1.TabNote.CATEGORY || this.render_options.flat_beams) {
+        if (this.notes[0].getCategory() === _tabnote__WEBPACK_IMPORTED_MODULE_6__.TabNote.CATEGORY || this.render_options.flat_beams) {
             this.calculateFlatSlope();
         }
         else {
@@ -2016,7 +2074,7 @@ var Beam = /** @class */ (function (_super) {
         this.applyStemExtensions();
         this.postFormatted = true;
     };
-    // Render the beam to the canvas context
+    /** Render the beam to the canvas context */
     Beam.prototype.draw = function () {
         var ctx = this.checkContext();
         this.setRendered();
@@ -2031,8 +2089,8 @@ var Beam = /** @class */ (function (_super) {
         this.restoreStyle();
     };
     return Beam;
-}(element_1.Element));
-exports.Beam = Beam;
+}(_element__WEBPACK_IMPORTED_MODULE_2__.Element));
+
 
 
 /***/ }),
@@ -2041,15 +2099,18 @@ exports.Beam = Beam;
 /*!*********************!*\
   !*** ./src/bend.ts ***!
   \*********************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Bend": () => (/* binding */ Bend)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-//
-// This file implements tablature bends.
-var __extends = (this && this.__extends) || (function () {
+// MIT License
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -2064,48 +2125,44 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Bend = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-/**
-   @param text Text for bend ("Full", "Half", etc.) (DEPRECATED)
-   @param release If true, render a release. (DEPRECATED)
-   @param phrase If set, ignore "text" and "release", and use the more
-                 sophisticated phrase specified.
 
-   Example of a phrase:
 
-     [{
-       type: UP,
-       text: "whole"
-       width: 8;
-     },
-     {
-       type: DOWN,
-       text: "whole"
-       width: 8;
-     },
-     {
-       type: UP,
-       text: "half"
-       width: 8;
-     },
-     {
-       type: UP,
-       text: "whole"
-       width: 8;
-     },
-     {
-       type: DOWN,
-       text: "1 1/2"
-       width: 8;
-     }]
- */
+
+/** Bend implements tablature bends. */
 var Bend = /** @class */ (function (_super) {
     __extends(Bend, _super);
-    // ## Prototype Methods
+    /**
+     * Constructor.
+     * Example of a phrase:
+     *    [{
+     *     type: UP,
+     *     text: "whole"
+     *     width: 8;
+     *   },
+     *   {
+     *     type: DOWN,
+     *     text: "whole"
+     *     width: 8;
+     *   },
+     *   {
+     *     type: UP,
+     *     text: "half"
+     *     width: 8;
+     *   },
+     *   {
+     *     type: UP,
+     *     text: "whole"
+     *     width: 8;
+     *   },
+     *   {
+     *     type: DOWN,
+     *     text: "1 1/2"
+     *     width: 8;
+     *   }]
+     * @param text text for bend ("Full", "Half", etc.) (DEPRECATED)
+     * @param release if true, render a release. (DEPRECATED)
+     * @param phrase if set, ignore "text" and "release", and use the more sophisticated phrase specified
+     */
     function Bend(text, release, phrase) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Bend');
@@ -2171,21 +2228,26 @@ var Bend = /** @class */ (function (_super) {
         state.top_text_line += 1;
         return true;
     };
+    /** Get element category string. */
     Bend.prototype.getCategory = function () {
         return Bend.CATEGORY;
     };
+    /** Set horizontal shift in pixels. */
     Bend.prototype.setXShift = function (value) {
         this.x_shift = value;
         this.updateWidth();
         return this;
     };
+    /** Set text's font. */
     Bend.prototype.setFont = function (font) {
         this.font = font;
         return this;
     };
+    /** Get text provided in the constructor. */
     Bend.prototype.getText = function () {
         return this.text;
     };
+    /** Recalculate width. */
     Bend.prototype.updateWidth = function () {
         // eslint-disable-next-line
         var that = this;
@@ -2196,7 +2258,7 @@ var Bend = /** @class */ (function (_super) {
                 text_width = ctxThat.measureText(text).width;
             }
             else {
-                text_width = flow_1.Flow.textWidth(text);
+                text_width = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.textWidth(text);
             }
             return text_width;
         }
@@ -2216,11 +2278,12 @@ var Bend = /** @class */ (function (_super) {
         this.setWidth(total_width + this.x_shift);
         return this;
     };
+    /** Draw the bend on the rendering context. */
     Bend.prototype.draw = function () {
         var ctx = this.checkContext();
         var note = this.checkAttachedNote();
         this.setRendered();
-        var start = note.getModifierStartXY(modifier_1.Modifier.Position.RIGHT, this.index);
+        var start = note.getModifierStartXY(_modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier.Position.RIGHT, this.index);
         start.x += 3;
         start.y += 0.5;
         var x_shift = this.x_shift;
@@ -2294,7 +2357,7 @@ var Bend = /** @class */ (function (_super) {
                     renderArrowHead(start.x, start.y, -1);
                     renderRelease(start.x, start.y, last_drawn_width, bend_height);
                 }
-                if (last_bend === null) {
+                if (!last_bend) {
                     last_drawn_width = bend.draw_width;
                     renderRelease(start.x, start.y, last_drawn_width, bend_height);
                 }
@@ -2306,7 +2369,7 @@ var Bend = /** @class */ (function (_super) {
             start.x += last_drawn_width;
         }
         if (!last_bend || last_bend.x == undefined) {
-            throw new util_1.RuntimeError('NoLastBendForBend', 'Internal error.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoLastBendForBend', 'Internal error.');
         }
         // Final arrowhead and text
         if (last_bend.type === Bend.UP) {
@@ -2317,8 +2380,8 @@ var Bend = /** @class */ (function (_super) {
         }
     };
     return Bend;
-}(modifier_1.Modifier));
-exports.Bend = Bend;
+}(_modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier));
+
 
 
 /***/ }),
@@ -2327,16 +2390,15 @@ exports.Bend = Bend;
 /*!****************************!*\
   !*** ./src/boundingbox.ts ***!
   \****************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
-// Vex Music Notation
-// Mohit Muthanna <mohit@muthanna.com>
-//
-// Copyright Mohit Muthanna 2010
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.BoundingBox = void 0;
-// Bounding boxes for interactive notation
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "BoundingBox": () => (/* binding */ BoundingBox)
+/* harmony export */ });
+// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// MIT License
+/** Bounding boxes for interactive notation */
 var BoundingBox = /** @class */ (function () {
     function BoundingBox(x, y, w, h) {
         this.x = x;
@@ -2344,47 +2406,62 @@ var BoundingBox = /** @class */ (function () {
         this.w = w;
         this.h = h;
     }
+    /**
+     * Create a new copy.
+     */
     BoundingBox.copy = function (that) {
         return new BoundingBox(that.x, that.y, that.w, that.h);
     };
+    /** Get x position. */
     BoundingBox.prototype.getX = function () {
         return this.x;
     };
+    /** Get y position. */
     BoundingBox.prototype.getY = function () {
         return this.y;
     };
+    /** Get width. */
     BoundingBox.prototype.getW = function () {
         return this.w;
     };
+    /** Get height. */
     BoundingBox.prototype.getH = function () {
         return this.h;
     };
+    /** Set x position. */
     BoundingBox.prototype.setX = function (x) {
         this.x = x;
         return this;
     };
+    /** Set y position. */
     BoundingBox.prototype.setY = function (y) {
         this.y = y;
         return this;
     };
+    /** Set width. */
     BoundingBox.prototype.setW = function (w) {
         this.w = w;
         return this;
     };
+    /** Set height. */
     BoundingBox.prototype.setH = function (h) {
         this.h = h;
         return this;
     };
+    /** Move to position. */
     BoundingBox.prototype.move = function (x, y) {
         this.x += x;
         this.y += y;
         return this;
     };
+    /** Clone. */
     BoundingBox.prototype.clone = function () {
         return BoundingBox.copy(this);
     };
-    // Merge my box with given box. Creates a bigger bounding box unless
-    // the given box is contained in this one.
+    /**
+     * Merge my box with given box. Creates a bigger bounding box unless
+     * the given box is contained in this one.
+     */
     BoundingBox.prototype.mergeWith = function (boundingBox, ctx) {
         var that = boundingBox;
         var new_x = this.x < that.x ? this.x : that.x;
@@ -2399,6 +2476,12 @@ var BoundingBox = /** @class */ (function () {
             this.draw(ctx);
         return this;
     };
+    /**
+     * Render the BoundingBox.
+     * @param ctx rendering context
+     * @param x horizontal shift
+     * @param y vertical shift
+     */
     BoundingBox.prototype.draw = function (ctx, x, y) {
         if (!x)
             x = 0;
@@ -2409,7 +2492,7 @@ var BoundingBox = /** @class */ (function () {
     };
     return BoundingBox;
 }());
-exports.BoundingBox = BoundingBox;
+
 
 
 /***/ }),
@@ -2418,20 +2501,23 @@ exports.BoundingBox = BoundingBox;
 /*!***************************************!*\
   !*** ./src/boundingboxcomputation.ts ***!
   \***************************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
-// ## Description
-//
-// Object which computes metrics for a bounding box by continuously
-// taking canvas path commands
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.BoundingBoxComputation = void 0;
-// Warning: This file is merely a crutch to get bounding box information without
-// explicit metadata. This is likely to get deprecated following SMuFL support.
-//
-// taken from: https://github.com/gabelerner/canvg/blob/860e418aca67b9a41e858a223d74d375793ec364/ca
-// nvg.js#L449
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "BoundingBoxComputation": () => (/* binding */ BoundingBoxComputation)
+/* harmony export */ });
+// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// MIT License
+/**
+ * BoundingBoxComputation computes metrics for a bounding box by continuously
+ * taking canvas path commands.
+ *
+ * Warning: This class is merely a crutch to get bounding box information without
+ * explicit metadata. This is likely to get deprecated following SMuFL support.
+ *
+ * based on: https://github.com/canvg/canvg/blob/master/src/BoundingBox.ts (MIT License)
+ */
 var BoundingBoxComputation = /** @class */ (function () {
     function BoundingBoxComputation(x1, y1, x2, y2) {
         // pass in initial points if you want
@@ -2442,21 +2528,27 @@ var BoundingBoxComputation = /** @class */ (function () {
         this.addPoint(x1, y1);
         this.addPoint(x2, y2);
     }
+    /** Get calculated X1. */
     BoundingBoxComputation.prototype.getX1 = function () {
         return this.x1;
     };
+    /** Get calculated Y1. */
     BoundingBoxComputation.prototype.getY1 = function () {
         return this.y1;
     };
+    /** Get calculated width. */
     BoundingBoxComputation.prototype.width = function () {
         return this.x2 - this.x1;
     };
+    /** Get calculated height. */
     BoundingBoxComputation.prototype.height = function () {
         return this.y2 - this.y1;
     };
+    /** Do nothing. */
     BoundingBoxComputation.prototype.noOp = function () {
         // do nothing
     };
+    /** Add point to BoundingBox. */
     BoundingBoxComputation.prototype.addPoint = function (x, y) {
         if (x != undefined) {
             if (isNaN(this.x1) || isNaN(this.x2)) {
@@ -2479,12 +2571,15 @@ var BoundingBoxComputation = /** @class */ (function () {
                 this.y2 = y;
         }
     };
+    /** Add X to BoundingBox. */
     BoundingBoxComputation.prototype.addX = function (x) {
         this.addPoint(x, undefined);
     };
+    /** Add Y to BoundingBox. */
     BoundingBoxComputation.prototype.addY = function (y) {
         this.addPoint(undefined, y);
     };
+    /** Add quadratic curve to BoundingBox. */
     BoundingBoxComputation.prototype.addQuadraticCurve = function (p0x, p0y, p1x, p1y, p2x, p2y) {
         var cp1x = p0x + (2 / 3) * (p1x - p0x); // CP1 = QP0 + 2/3 *(QP1-QP0)
         var cp1y = p0y + (2 / 3) * (p1y - p0y); // CP1 = QP0 + 2/3 *(QP1-QP0)
@@ -2492,6 +2587,7 @@ var BoundingBoxComputation = /** @class */ (function () {
         var cp2y = cp1y + (1 / 3) * (p2y - p0y); // CP2 = CP1 + 1/3 *(QP2-QP0)
         this.addBezierCurve(p0x, p0y, cp1x, cp1y, cp2x, cp2y, p2x, p2y);
     };
+    /** Add bezier curve to BoundingBox. */
     BoundingBoxComputation.prototype.addBezierCurve = function (p0x, p0y, p1x, p1y, p2x, p2y, p3x, p3y) {
         // from http://blog.hackers-cafe.net/2009/06/how-to-calculate-bezier-curves-bounding.html
         var p0 = [p0x, p0y];
@@ -2544,7 +2640,7 @@ var BoundingBoxComputation = /** @class */ (function () {
     };
     return BoundingBoxComputation;
 }());
-exports.BoundingBoxComputation = BoundingBoxComputation;
+
 
 
 /***/ }),
@@ -2553,22 +2649,21 @@ exports.BoundingBoxComputation = BoundingBoxComputation;
 /*!******************************!*\
   !*** ./src/canvascontext.ts ***!
   \******************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "CanvasContext": () => (/* binding */ CanvasContext)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-// Mohit Muthanna <mohit@muthanna.com>
-//
-// A rendering context for the Canvas backend (CanvasRenderingContext2D).
-//
-// Copyright Mohit Cheppudira 2010
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.CanvasContext = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
+/**
+ * A rendering context for the Canvas backend (CanvasRenderingContext2D).
+ */
 var CanvasContext = /** @class */ (function () {
     /**
      * This constructor is only called if Renderer.USE_CANVAS_PROXY is true.
-     * In most instances, we do not need to
+     * In most instances, we do not need to create a CanvasContext object.
      * See Renderer.bolsterCanvasContext().
      * @param context
      */
@@ -2608,7 +2703,7 @@ var CanvasContext = /** @class */ (function () {
     });
     CanvasContext.SanitizeCanvasDims = function (width, height) {
         if (Math.max(width, height) > this.CANVAS_BROWSER_SIZE_LIMIT) {
-            util_1.warn('Canvas dimensions exceed browser limit. Cropping to ' + this.CANVAS_BROWSER_SIZE_LIMIT);
+            (0,_util__WEBPACK_IMPORTED_MODULE_0__.warn)('Canvas dimensions exceed browser limit. Cropping to ' + this.CANVAS_BROWSER_SIZE_LIMIT);
             if (width > this.CANVAS_BROWSER_SIZE_LIMIT) {
                 width = this.CANVAS_BROWSER_SIZE_LIMIT;
                 // note: Math.min return 0 for undefined, NaN for null. Would change inputs.
@@ -2650,14 +2745,13 @@ var CanvasContext = /** @class */ (function () {
     // It only fills the area behind some tab number annotations.
     CanvasContext.prototype.setBackgroundFillStyle = function (style) {
         /*
-        // The CanvasContext version only sets a field which is never referenced anywhere else.
         // Should it fill the entire canvas rect? For example:
         const oldFillStyle = this.vexFlowCanvasContext.fillStyle;
         this.vexFlowCanvasContext.fillStyle = style;
         this.vexFlowCanvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.vexFlowCanvasContext.fillStyle = oldFillStyle;
         */
-        this.background_fillStyle = style; // BUG? It is never referenced anywhere else.
+        this.background_fillStyle = style;
         return this;
     };
     CanvasContext.prototype.setStrokeStyle = function (style) {
@@ -2772,9 +2866,33 @@ var CanvasContext = /** @class */ (function () {
         this.vexFlowCanvasContext.restore();
         return this;
     };
+    Object.defineProperty(CanvasContext.prototype, "font", {
+        /** Maintain compatibility with the CanvasRenderingContext2D API. */
+        set: function (value) {
+            this.vexFlowCanvasContext.font = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CanvasContext.prototype, "fillStyle", {
+        /** Maintain compatibility with the CanvasRenderingContext2D API. */
+        set: function (style) {
+            this.vexFlowCanvasContext.fillStyle = style;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CanvasContext.prototype, "strokeStyle", {
+        /** Maintain compatibility with the CanvasRenderingContext2D API. */
+        set: function (style) {
+            this.vexFlowCanvasContext.strokeStyle = style;
+        },
+        enumerable: false,
+        configurable: true
+    });
     return CanvasContext;
 }());
-exports.CanvasContext = CanvasContext;
+
 
 
 /***/ }),
@@ -2783,9 +2901,17 @@ exports.CanvasContext = CanvasContext;
 /*!****************************!*\
   !*** ./src/chordsymbol.ts ***!
   \****************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ChordSymbol": () => (/* binding */ ChordSymbol)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+/* harmony import */ var _textfont__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./textfont */ "./src/textfont.ts");
+/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
@@ -2795,7 +2921,7 @@ exports.CanvasContext = CanvasContext;
 // text or glyphs with various positioning options.
 //
 // See `tests/chordsymbol_tests.js` for usage examples.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -2810,13 +2936,11 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.ChordSymbol = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-var textfont_1 = __webpack_require__(/*! ./textfont */ "./src/textfont.ts");
-var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
+
+
+
+
+
 // To enable logging for this class. Set `Vex.Flow.ChordSymbol.DEBUG` to `true`.
 // eslint-disable-next-line
 function L() {
@@ -2825,7 +2949,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (ChordSymbol.DEBUG)
-        util_1.log('Vex.Flow.ChordSymbol', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.ChordSymbol', args);
 }
 var ChordSymbol = /** @class */ (function (_super) {
     __extends(ChordSymbol, _super);
@@ -2853,7 +2977,7 @@ var ChordSymbol = /** @class */ (function (_super) {
             size: 12,
             weight: '',
         };
-        _this.textFont = textfont_1.TextFont.getTextFontFromVexFontData(_this.font);
+        _this.textFont = _textfont__WEBPACK_IMPORTED_MODULE_3__.TextFont.getTextFontFromVexFontData(_this.font);
         return _this;
     }
     Object.defineProperty(ChordSymbol, "CATEGORY", {
@@ -2904,7 +3028,7 @@ var ChordSymbol = /** @class */ (function (_super) {
     };
     Object.defineProperty(ChordSymbol, "engravingFontResolution", {
         get: function () {
-            return flow_1.Flow.DEFAULT_FONT_STACK[0].getResolution();
+            return _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.DEFAULT_FONT_STACK[0].getResolution();
         },
         enumerable: false,
         configurable: true
@@ -2964,21 +3088,21 @@ var ChordSymbol = /** @class */ (function (_super) {
     Object.defineProperty(ChordSymbol, "chordSymbolMetrics", {
         // eslint-disable-next-line
         get: function () {
-            return flow_1.Flow.DEFAULT_FONT_STACK[0].getMetrics().glyphs.chordSymbol;
+            return _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.DEFAULT_FONT_STACK[0].getMetrics().glyphs.chordSymbol;
         },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(ChordSymbol, "lowerKerningText", {
         get: function () {
-            return flow_1.Flow.DEFAULT_FONT_STACK[0].getMetrics().glyphs.chordSymbol.global.lowerKerningText;
+            return _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.DEFAULT_FONT_STACK[0].getMetrics().glyphs.chordSymbol.global.lowerKerningText;
         },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(ChordSymbol, "upperKerningText", {
         get: function () {
-            return flow_1.Flow.DEFAULT_FONT_STACK[0].getMetrics().glyphs.chordSymbol.global.upperKerningText;
+            return _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.DEFAULT_FONT_STACK[0].getMetrics().glyphs.chordSymbol.global.upperKerningText;
         },
         enumerable: false,
         configurable: true
@@ -3204,7 +3328,7 @@ var ChordSymbol = /** @class */ (function (_super) {
         if (symbolType === ChordSymbol.symbolTypes.GLYPH && typeof parameters.glyph === 'string') {
             var glyphArgs = ChordSymbol.glyphs[parameters.glyph];
             var glyphPoints = 20;
-            rv.glyph = new glyph_1.Glyph(glyphArgs.code, glyphPoints, { category: 'chordSymbol' });
+            rv.glyph = new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph(glyphArgs.code, glyphPoints, { category: 'chordSymbol' });
             // Beware: glyph.metrics is not the same as glyph.getMetrics() !
             // rv.glyph.point = rv.glyph.point * rv.glyph.metrics.scale;
             // rv.width = rv.glyph.getMetrics().width;
@@ -3309,7 +3433,7 @@ var ChordSymbol = /** @class */ (function (_super) {
     // Set font family, size, and weight. E.g., `Arial`, `10pt`, `Bold`.
     ChordSymbol.prototype.setFont = function (family, size, weight) {
         this.font = { family: family, size: size, weight: weight };
-        this.textFont = textfont_1.TextFont.getTextFontFromVexFontData(this.font);
+        this.textFont = _textfont__WEBPACK_IMPORTED_MODULE_3__.TextFont.getTextFontFromVexFontData(this.font);
         return this;
     };
     ChordSymbol.prototype.setFontSize = function (size) {
@@ -3359,7 +3483,7 @@ var ChordSymbol = /** @class */ (function (_super) {
         ctx.save();
         var classString = Object.keys(this.getAttribute('classes')).join(' ');
         ctx.openGroup(classString, this.getAttribute('id'));
-        var start = note.getModifierStartXY(modifier_1.Modifier.Position.ABOVE, this.index);
+        var start = note.getModifierStartXY(_modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.ABOVE, this.index);
         ctx.setFont(this.font.family, this.font.size, this.font.weight);
         var y;
         // The position of the text varies based on whether or not the note
@@ -3369,7 +3493,7 @@ var ChordSymbol = /** @class */ (function (_super) {
         if (this.vertical === ChordSymbol.verticalJustify.BOTTOM) {
             // HACK: We need to compensate for the text's height since its origin
             // is bottom-right.
-            y = stave.getYForBottomText(this.text_line + flow_1.Flow.TEXT_HEIGHT_OFFSET_HACK);
+            y = stave.getYForBottomText(this.text_line + _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.TEXT_HEIGHT_OFFSET_HACK);
             if (has_stem) {
                 var stem_ext = note.checkStem().getExtents();
                 var spacing = stave.getSpacingBetweenLines();
@@ -3547,8 +3671,8 @@ var ChordSymbol = /** @class */ (function (_super) {
         SUPERSCRIPT: 3,
     };
     return ChordSymbol;
-}(modifier_1.Modifier));
-exports.ChordSymbol = ChordSymbol;
+}(_modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier));
+
 
 
 /***/ }),
@@ -3557,18 +3681,19 @@ exports.ChordSymbol = ChordSymbol;
 /*!*********************!*\
   !*** ./src/clef.ts ***!
   \*********************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Clef": () => (/* binding */ Clef)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna Cheppudira 2013.
 // Co-author: Benjamin W. Bohl
-//
-// ## Description
-//
-// This file implements various types of clefs that can be rendered on a stave.
-//
-// See `tests/clef_tests.js` for usage examples.
-var __extends = (this && this.__extends) || (function () {
+// MIT License
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -3583,43 +3708,42 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Clef = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-// To enable logging for this class, set `Vex.Flow.Clef.DEBUG` to `true`.
+
+
+
+// eslint-disable-next-line
 function L() {
-    // eslint-disable-next-line
     var args = [];
-    for (
-    // eslint-disable-next-line
-    var _i = 0; 
-    // eslint-disable-next-line
-    _i < arguments.length; 
-    // eslint-disable-next-line
-    _i++) {
-        // eslint-disable-next-line
+    for (var _i = 0; _i < arguments.length; _i++) {
         args[_i] = arguments[_i];
     }
     if (Clef.DEBUG)
-        util_1.log('Vex.Flow.Clef', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.Clef', args);
 }
+/**
+ * Clef implements various types of clefs that can be rendered on a stave.
+ *
+ * See `tests/clef_tests.ts` for usage examples.
+ */
 var Clef = /** @class */ (function (_super) {
     __extends(Clef, _super);
-    // Create a new clef. The parameter `clef` must be a key from
-    // `Clef.types`.
+    /** Create a new clef. */
     function Clef(type, size, annotation) {
         var _this = _super.call(this) || this;
+        /**
+         * The attribute `clef` must be a key from
+         * `Clef.types`
+         */
         _this.clef = Clef.types['treble'];
         _this.setAttribute('type', 'Clef');
-        _this.setPosition(stavemodifier_1.StaveModifier.Position.BEGIN);
+        _this.setPosition(_stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier.Position.BEGIN);
         _this.setType(type, size, annotation);
         _this.setWidth(_this.musicFont.lookupMetric("clef." + _this.size + ".width"));
         L('Creating clef:', type);
         return _this;
     }
     Object.defineProperty(Clef, "CATEGORY", {
+        /** Clefs category string. */
         get: function () {
             return 'clefs';
         },
@@ -3627,8 +3751,10 @@ var Clef = /** @class */ (function (_super) {
         configurable: true
     });
     Object.defineProperty(Clef, "types", {
-        // Every clef name is associated with a glyph code from the font file
-        // and a default stave line number.
+        /**
+         * Every clef name is associated with a glyph code from the font file
+         * and a default stave line number.
+         */
         get: function () {
             return {
                 treble: {
@@ -3695,9 +3821,11 @@ var Clef = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
+    /** Get element category string. */
     Clef.prototype.getCategory = function () {
         return Clef.CATEGORY;
     };
+    /** Set clef type, size and annotation. */
     Clef.prototype.setType = function (type, size, annotation) {
         this.type = type;
         this.clef = Clef.types[type];
@@ -3708,7 +3836,7 @@ var Clef = /** @class */ (function (_super) {
             this.size = size;
         }
         this.clef.point = this.musicFont.lookupMetric("clef." + this.size + ".point", 0);
-        this.glyph = new glyph_1.Glyph(this.clef.code, this.clef.point, {
+        this.glyph = new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph(this.clef.code, this.clef.point, {
             category: "clef." + this.clef.code + "." + this.size,
         });
         // If an annotation, such as 8va, is specified, add it to the Clef object.
@@ -3718,7 +3846,7 @@ var Clef = /** @class */ (function (_super) {
             var line = this.musicFont.lookupMetric("clef.annotations." + annotation + "." + this.size + "." + this.type + ".line");
             var x_shift = this.musicFont.lookupMetric("clef.annotations." + annotation + "." + this.size + "." + this.type + ".shiftX");
             this.annotation = { code: code, point: point, line: line, x_shift: x_shift };
-            this.attachment = new glyph_1.Glyph(this.annotation.code, this.annotation.point);
+            this.attachment = new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph(this.annotation.code, this.annotation.point);
             this.attachment.metrics.x_max = 0;
             this.attachment.setXShift(this.annotation.x_shift);
         }
@@ -3727,18 +3855,20 @@ var Clef = /** @class */ (function (_super) {
         }
         return this;
     };
+    /** Get clef width. */
     Clef.prototype.getWidth = function () {
         if (this.type === 'tab' && !this.stave) {
-            throw new util_1.RuntimeError('ClefError', "Can't get width without stave.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('ClefError', "Can't get width without stave.");
         }
         return this.width;
     };
+    /** Set associated stave. */
     Clef.prototype.setStave = function (stave) {
         this.stave = stave;
         if (this.type !== 'tab')
             return this;
         if (!this.glyph)
-            throw new util_1.RuntimeError('ClefError', "Can't set stave without glyph.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('ClefError', "Can't set stave without glyph.");
         var numLines = this.stave.getOptions().num_lines;
         var point = this.musicFont.lookupMetric("clef.lineCount." + numLines + ".point");
         var shiftY = this.musicFont.lookupMetric("clef.lineCount." + numLines + ".shiftY");
@@ -3746,13 +3876,14 @@ var Clef = /** @class */ (function (_super) {
         this.glyph.setYShift(shiftY);
         return this;
     };
+    /** Render clef. */
     Clef.prototype.draw = function () {
         if (!this.x)
-            throw new util_1.RuntimeError('ClefError', "Can't draw clef without x.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('ClefError', "Can't draw clef without x.");
         if (!this.stave)
-            throw new util_1.RuntimeError('ClefError', "Can't draw clef without stave.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('ClefError', "Can't draw clef without stave.");
         if (!this.glyph)
-            throw new util_1.RuntimeError('ClefError', "Can't draw clef without glyph.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('ClefError', "Can't draw clef without glyph.");
         this.setRendered();
         this.glyph.setStave(this.stave);
         this.glyph.setContext(this.stave.getContext());
@@ -3768,8 +3899,8 @@ var Clef = /** @class */ (function (_super) {
         }
     };
     return Clef;
-}(stavemodifier_1.StaveModifier));
-exports.Clef = Clef;
+}(_stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier));
+
 
 
 /***/ }),
@@ -3778,14 +3909,19 @@ exports.Clef = Clef;
 /*!*************************!*\
   !*** ./src/clefnote.ts ***!
   \*************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ClefNote": () => (/* binding */ ClefNote)
+/* harmony export */ });
+/* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./note */ "./src/note.ts");
+/* harmony import */ var _clef__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./clef */ "./src/clef.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-// Copyright Mohit Muthanna 2010
-//
 // Author Taehoon Moon 2014
-var __extends = (this && this.__extends) || (function () {
+// MIT License
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -3800,21 +3936,19 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.ClefNote = void 0;
-var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
-var clef_1 = __webpack_require__(/*! ./clef */ "./src/clef.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-/** @constructor */
+
+
+
+/** ClefNote implements clef annotations in measures. */
 var ClefNote = /** @class */ (function (_super) {
     __extends(ClefNote, _super);
     function ClefNote(type, size, annotation) {
         var _this = _super.call(this, { duration: 'b' }) || this;
         _this.setAttribute('type', 'ClefNote');
         _this.type = type;
-        _this.clef_obj = new clef_1.Clef(type, size, annotation);
+        _this.clef_obj = new _clef__WEBPACK_IMPORTED_MODULE_1__.Clef(type, size, annotation);
         _this.clef = _this.clef_obj.clef;
-        _this.glyph = new glyph_1.Glyph(_this.clef.code, _this.clef.point);
+        _this.glyph = new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph(_this.clef.code, _this.clef.point);
         _this.setWidth(_this.glyph.getMetrics().width);
         // Note properties
         _this.ignore_ticks = true;
@@ -3827,36 +3961,44 @@ var ClefNote = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
+    /** Set clef type, size and annotation. */
     ClefNote.prototype.setType = function (type, size, annotation) {
         this.type = type;
-        this.clef_obj = new clef_1.Clef(type, size, annotation);
+        this.clef_obj = new _clef__WEBPACK_IMPORTED_MODULE_1__.Clef(type, size, annotation);
         this.clef = this.clef_obj.clef;
-        this.glyph = new glyph_1.Glyph(this.clef.code, this.clef.point);
+        this.glyph = new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph(this.clef.code, this.clef.point);
         this.setWidth(this.glyph.getMetrics().width);
         return this;
     };
+    /** Get associated clef. */
     ClefNote.prototype.getClef = function () {
         return this.clef;
     };
+    /** Set associated context. */
     ClefNote.prototype.setContext = function (context) {
         _super.prototype.setContext.call(this, context);
         this.glyph.setContext(this.getContext());
         return this;
     };
+    /** Get bounding box. */
     ClefNote.prototype.getBoundingBox = function () {
         return _super.prototype.getBoundingBox.call(this);
     };
+    /** Overridden to ignore. */
     ClefNote.prototype.addToModifierContext = function () {
         /* overridden to ignore */
         return this;
     };
+    /** Get element category string. */
     ClefNote.prototype.getCategory = function () {
         return ClefNote.CATEGORY;
     };
+    /** Set preformatted. */
     ClefNote.prototype.preFormat = function () {
         this.setPreFormatted(true);
         return this;
     };
+    /** Render clef note. */
     ClefNote.prototype.draw = function () {
         var _a;
         var stave = this.checkStave();
@@ -3870,7 +4012,7 @@ var ClefNote = /** @class */ (function (_super) {
         this.glyph.renderToStave(abs_x);
         // If the Vex.Flow.Clef has an annotation, such as 8va, draw it.
         if (this.clef_obj.annotation !== undefined) {
-            var attachment = new glyph_1.Glyph(this.clef_obj.annotation.code, this.clef_obj.annotation.point);
+            var attachment = new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph(this.clef_obj.annotation.code, this.clef_obj.annotation.point);
             if (!attachment.getContext()) {
                 attachment.setContext(this.getContext());
             }
@@ -3881,8 +4023,8 @@ var ClefNote = /** @class */ (function (_super) {
         }
     };
     return ClefNote;
-}(note_1.Note));
-exports.ClefNote = ClefNote;
+}(_note__WEBPACK_IMPORTED_MODULE_0__.Note));
+
 
 
 /***/ }),
@@ -3891,9 +4033,15 @@ exports.ClefNote = ClefNote;
 /*!**************************!*\
   !*** ./src/crescendo.ts ***!
   \**************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Crescendo": () => (/* binding */ Crescendo)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./note */ "./src/note.ts");
+/* harmony import */ var _tickcontext__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
@@ -3903,7 +4051,7 @@ exports.ClefNote = ClefNote;
 // duration and formatted as part of a `Voice` like any other `Note`
 // type in VexFlow. This object would most likely be formatted in a Voice
 // with `TextNotes` - which are used to represent other dynamics markings.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -3918,11 +4066,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Crescendo = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
-var tickcontext_1 = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
+
+
+
 // To enable logging for this class. Set `Vex.Flow.Crescendo.DEBUG` to `true`.
 function L() {
     // eslint-disable-next-line
@@ -3938,7 +4084,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (Crescendo.DEBUG)
-        util_1.log('Vex.Flow.Crescendo', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.Crescendo', args);
 }
 // Private helper to draw the hairpin
 function renderHairpin(ctx, params) {
@@ -4008,7 +4154,7 @@ var Crescendo = /** @class */ (function (_super) {
         var stave = this.checkStave();
         this.setRendered();
         var tick_context = this.getTickContext();
-        var next_context = tickcontext_1.TickContext.getNextContext(tick_context);
+        var next_context = _tickcontext__WEBPACK_IMPORTED_MODULE_2__.TickContext.getNextContext(tick_context);
         var begin_x = this.getAbsoluteX();
         var end_x = next_context ? next_context.getX() : stave.getX() + stave.getWidth();
         var y = stave.getYForLine(this.line + -3) + 1;
@@ -4022,8 +4168,8 @@ var Crescendo = /** @class */ (function (_super) {
         });
     };
     return Crescendo;
-}(note_1.Note));
-exports.Crescendo = Crescendo;
+}(_note__WEBPACK_IMPORTED_MODULE_1__.Note));
+
 
 
 /***/ }),
@@ -4032,14 +4178,20 @@ exports.Crescendo = Crescendo;
 /*!**********************!*\
   !*** ./src/curve.ts ***!
   \**********************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "CurvePosition": () => (/* binding */ CurvePosition),
+/* harmony export */   "Curve": () => (/* binding */ Curve)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 // VexFlow - Music Engraving for HTML5
 // Copyright Mohit Muthanna 2010
 //
 // This class implements curves (for slurs)
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -4054,7 +4206,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -4065,15 +4217,13 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Curve = exports.CurvePosition = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
+
+
 var CurvePosition;
 (function (CurvePosition) {
     CurvePosition[CurvePosition["NEAR_HEAD"] = 1] = "NEAR_HEAD";
     CurvePosition[CurvePosition["NEAR_TOP"] = 2] = "NEAR_TOP";
-})(CurvePosition = exports.CurvePosition || (exports.CurvePosition = {}));
+})(CurvePosition || (CurvePosition = {}));
 var Curve = /** @class */ (function (_super) {
     __extends(Curve, _super);
     // from: Start note
@@ -4112,7 +4262,7 @@ var Curve = /** @class */ (function (_super) {
     });
     Curve.prototype.setNotes = function (from, to) {
         if (!from && !to) {
-            throw new util_1.RuntimeError('BadArguments', 'Curve needs to have either first_note or last_note set.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'Curve needs to have either first_note or last_note set.');
         }
         this.from = from;
         this.to = to;
@@ -4200,8 +4350,8 @@ var Curve = /** @class */ (function (_super) {
         return true;
     };
     return Curve;
-}(element_1.Element));
-exports.Curve = Curve;
+}(_element__WEBPACK_IMPORTED_MODULE_1__.Element));
+
 
 
 /***/ }),
@@ -4210,14 +4360,22 @@ exports.Curve = Curve;
 /*!********************!*\
   !*** ./src/dot.ts ***!
   \********************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Dot": () => (/* binding */ Dot)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
+/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+/* harmony import */ var _tabnote__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
+/* harmony import */ var _gracenote__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
 // VexFlow - Music Engraving for HTML5
 // Copyright Mohit Muthanna 2010
 //
 // This class implements dot modifiers for notes.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -4232,13 +4390,11 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Dot = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
-var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
+
+
+
+
+
 var Dot = /** @class */ (function (_super) {
     __extends(Dot, _super);
     /**
@@ -4247,7 +4403,7 @@ var Dot = /** @class */ (function (_super) {
     function Dot() {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Dot');
-        _this.position = modifier_1.Modifier.Position.RIGHT;
+        _this.position = _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.RIGHT;
         _this.radius = 2;
         _this.setWidth(5);
         _this.dot_shiftY = 0;
@@ -4274,18 +4430,18 @@ var Dot = /** @class */ (function (_super) {
             var props = void 0;
             var shift = void 0;
             // If it's a StaveNote
-            if (note instanceof stavenote_1.StaveNote) {
+            if (note instanceof _stavenote__WEBPACK_IMPORTED_MODULE_2__.StaveNote) {
                 var index = dot.checkIndex();
                 props = note.getKeyProps()[index];
                 shift = note.getRightDisplacedHeadPx();
             }
-            else if (note instanceof tabnote_1.TabNote) {
+            else if (note instanceof _tabnote__WEBPACK_IMPORTED_MODULE_3__.TabNote) {
                 // Else it's a TabNote
                 props = { line: 0.5 }; // Shim key props for dot placement
                 shift = 0;
             }
             else {
-                throw new util_1.RuntimeError('Internal', 'Unexpected instance.');
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('Internal', 'Unexpected instance.');
             }
             var note_id = note.getAttribute('id');
             dot_list.push({ line: props.line, note: note, note_id: note_id, dot: dot });
@@ -4346,7 +4502,7 @@ var Dot = /** @class */ (function (_super) {
     };
     Dot.prototype.setNote = function (note) {
         this.note = note;
-        if (note.getCategory() === gracenote_1.GraceNote.CATEGORY) {
+        if (note.getCategory() === _gracenote__WEBPACK_IMPORTED_MODULE_4__.GraceNote.CATEGORY) {
             this.radius *= 0.5;
             this.setWidth(3);
         }
@@ -4364,7 +4520,7 @@ var Dot = /** @class */ (function (_super) {
         var lineSpace = stave.getOptions().spacing_between_lines_px;
         var start = note.getModifierStartXY(this.position, this.index, { forceFlagRight: true });
         // Set the starting y coordinate to the base of the stem for TabNotes
-        if (note.getCategory() === tabnote_1.TabNote.CATEGORY) {
+        if (note.getCategory() === _tabnote__WEBPACK_IMPORTED_MODULE_3__.TabNote.CATEGORY) {
             start.y = note.getStemExtents().baseY;
         }
         var x = start.x + this.x_shift + this.width - this.radius;
@@ -4374,8 +4530,8 @@ var Dot = /** @class */ (function (_super) {
         ctx.fill();
     };
     return Dot;
-}(modifier_1.Modifier));
-exports.Dot = Dot;
+}(_modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier));
+
 
 
 /***/ }),
@@ -4384,14 +4540,24 @@ exports.Dot = Dot;
 /*!**************************!*\
   !*** ./src/easyscore.ts ***!
   \**************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Grammar": () => (/* binding */ Grammar),
+/* harmony export */   "Builder": () => (/* binding */ Builder),
+/* harmony export */   "EasyScore": () => (/* binding */ EasyScore)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+/* harmony import */ var _parser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./parser */ "./src/parser.ts");
+/* harmony import */ var _articulation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./articulation */ "./src/articulation.ts");
+/* harmony import */ var _frethandfinger__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // This class implements a parser for a simple language to generate
 // VexFlow objects.
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -4402,14 +4568,12 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.EasyScore = exports.Builder = exports.Grammar = void 0;
 /* eslint max-classes-per-file: "off" */
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-var parser_1 = __webpack_require__(/*! ./parser */ "./src/parser.ts");
-var articulation_1 = __webpack_require__(/*! ./articulation */ "./src/articulation.ts");
-var frethandfinger_1 = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.ts");
+
+
+
+
+
 // To enable logging for this class. Set `Vex.Flow.EasyScore.DEBUG` to `true`.
 // eslint-disable-next-line
 function L() {
@@ -4418,9 +4582,8 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (EasyScore.DEBUG)
-        util_1.log('Vex.Flow.EasyScore', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.EasyScore', args);
 }
-var X = util_1.MakeException('EasyScoreError');
 var Grammar = /** @class */ (function () {
     function Grammar(builder) {
         this.builder = builder;
@@ -4603,7 +4766,7 @@ var Grammar = /** @class */ (function () {
     };
     return Grammar;
 }());
-exports.Grammar = Grammar;
+
 var Piece = /** @class */ (function () {
     function Piece(duration) {
         this.chord = [];
@@ -4700,15 +4863,15 @@ var Builder = /** @class */ (function () {
         var options = __assign(__assign({}, this.options), this.piece.options);
         // reset() sets this.options.stem & this.options.clef but we check to make sure nothing has changed.
         if (options.stem === undefined) {
-            throw new util_1.RuntimeError('options.stem is not defined');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('options.stem is not defined');
         }
         if (options.clef === undefined) {
-            throw new util_1.RuntimeError('options.clef is not defined');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('options.clef is not defined');
         }
         var stem = options.stem.toLowerCase(); // e.g., auto | up | down
         var clef = options.clef; // e.g., treble | bass
         var autoStem = stem === 'auto';
-        var stemDirection = !autoStem && stem === 'up' ? stavenote_1.StaveNote.STEM_UP : stavenote_1.StaveNote.STEM_DOWN;
+        var stemDirection = !autoStem && stem === 'up' ? _stavenote__WEBPACK_IMPORTED_MODULE_1__.StaveNote.STEM_UP : _stavenote__WEBPACK_IMPORTED_MODULE_1__.StaveNote.STEM_DOWN;
         // Build StaveNotes.
         var _a = this.piece, chord = _a.chord, duration = _a.duration, dots = _a.dots, type = _a.type;
         var keys = chord.map(function (notePiece) { return notePiece.key + '/' + notePiece.octave; });
@@ -4747,7 +4910,7 @@ var Builder = /** @class */ (function () {
     };
     return Builder;
 }());
-exports.Builder = Builder;
+
 function setId(options, note) {
     if (options.id === undefined)
         return;
@@ -4775,12 +4938,12 @@ var EasyScore = /** @class */ (function () {
     };
     EasyScore.prototype.setOptions = function (options) {
         var _this = this;
-        this.options = __assign({ commitHooks: [setId, setClass, articulation_1.Articulation.easyScoreHook, frethandfinger_1.FretHandFinger.easyScoreHook], throwOnError: false }, options);
+        this.options = __assign({ commitHooks: [setId, setClass, _articulation__WEBPACK_IMPORTED_MODULE_3__.Articulation.easyScoreHook, _frethandfinger__WEBPACK_IMPORTED_MODULE_4__.FretHandFinger.easyScoreHook], throwOnError: false }, options);
         // eslint-disable-next-line
         this.factory = this.options.factory; // ! operator, because we know it is set in Factory.EasyScore()
         this.builder = this.options.builder || new Builder(this.factory);
         this.grammar = new Grammar(this.builder);
-        this.parser = new parser_1.Parser(this.grammar);
+        this.parser = new _parser__WEBPACK_IMPORTED_MODULE_2__.Parser(this.grammar);
         // eslint-disable-next-line
         this.options.commitHooks.forEach(function (commitHook) { return _this.addCommitHook(commitHook); }); // ! operator, because this.options.commitHooks is set in the first line of this method.
         return this;
@@ -4795,7 +4958,8 @@ var EasyScore = /** @class */ (function () {
         this.builder.reset(options);
         var result = this.parser.parse(line);
         if (!result.success && this.options.throwOnError) {
-            throw new X('Error parsing line: ' + line, result);
+            L(result);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('Error parsing line: ' + line);
         }
         return result;
     };
@@ -4831,7 +4995,7 @@ var EasyScore = /** @class */ (function () {
     EasyScore.DEBUG = false;
     return EasyScore;
 }());
-exports.EasyScore = EasyScore;
+
 
 
 /***/ }),
@@ -4840,21 +5004,21 @@ exports.EasyScore = EasyScore;
 /*!************************!*\
   !*** ./src/element.ts ***!
   \************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Element": () => (/* binding */ Element)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _registry__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./registry */ "./src/registry.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // @author Mohit Cheppudira
-//
-// ## Description
-//
-// This file implements a generic base class for VexFlow, with implementations
-// of general functions and properties that can be inherited by all VexFlow elements.
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Element = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var registry_1 = __webpack_require__(/*! ./registry */ "./src/registry.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+// MIT License
+
+
+
 /**
  * Element implements a generic base class for VexFlow, with implementations
  * of general functions and properties that can be inherited by all VexFlow elements.
@@ -4871,34 +5035,34 @@ var Element = /** @class */ (function () {
             classes: {},
         };
         this.rendered = false;
-        this.fontStack = flow_1.Flow.DEFAULT_FONT_STACK;
-        this.musicFont = flow_1.Flow.DEFAULT_FONT_STACK[0];
+        this.fontStack = _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.DEFAULT_FONT_STACK;
+        this.musicFont = _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.DEFAULT_FONT_STACK[0];
         // If a default registry exist, then register with it right away.
-        (_c = registry_1.Registry.getDefaultRegistry()) === null || _c === void 0 ? void 0 : _c.register(this);
+        (_c = _registry__WEBPACK_IMPORTED_MODULE_1__.Registry.getDefaultRegistry()) === null || _c === void 0 ? void 0 : _c.register(this);
     }
     Element.newID = function () {
         return "auto" + Element.ID++;
     };
-    /** Sets music fonts stack. */
+    /** Set music fonts stack. */
     Element.prototype.setFontStack = function (fontStack) {
         this.fontStack = fontStack;
         this.musicFont = fontStack[0];
         return this;
     };
-    /** gets music fonts stack. */
+    /** Get music fonts stack. */
     Element.prototype.getFontStack = function () {
         return this.fontStack;
     };
-    /** Sets the draw style of a stemmable note. */
+    /** Set the draw style of a stemmable note. */
     Element.prototype.setStyle = function (style) {
         this.style = style;
         return this;
     };
-    /** Gets the draw style of a stemmable note. */
+    /** Get the draw style of a stemmable note. */
     Element.prototype.getStyle = function () {
         return this.style;
     };
-    /** Applies current style to Canvas `context`. */
+    /** Apply current style to Canvas `context`. */
     Element.prototype.applyStyle = function (context, style) {
         if (context === void 0) { context = this.context; }
         if (style === void 0) { style = this.getStyle(); }
@@ -4919,7 +5083,7 @@ var Element = /** @class */ (function () {
             context.setLineWidth(style.lineWidth);
         return this;
     };
-    /** Restores style of Canvas `context`. */
+    /** Restore style of `context`. */
     Element.prototype.restoreStyle = function (context, style) {
         if (context === void 0) { context = this.context; }
         if (style === void 0) { style = this.getStyle(); }
@@ -4930,18 +5094,18 @@ var Element = /** @class */ (function () {
         context.restore();
         return this;
     };
-    /** Draws with style of an element. */
+    /** Draw with style of an element. */
     Element.prototype.drawWithStyle = function () {
         this.checkContext();
         this.applyStyle();
         this.draw();
         this.restoreStyle();
     };
-    /** Checkes if it has a class label (An element can have multiple class labels).  */
+    /** Check if it has a class label (An element can have multiple class labels).  */
     Element.prototype.hasClass = function (className) {
         return this.attrs.classes[className] === true;
     };
-    /** Adds a class label (An element can have multiple class labels).  */
+    /** Add a class label (An element can have multiple class labels).  */
     Element.prototype.addClass = function (className) {
         this.attrs.classes[className] = true;
         if (this.registry) {
@@ -4954,7 +5118,7 @@ var Element = /** @class */ (function () {
         }
         return this;
     };
-    /** Removes a class label (An element can have multiple class labels).  */
+    /** Remove a class label (An element can have multiple class labels).  */
     Element.prototype.removeClass = function (className) {
         delete this.attrs.classes[className];
         if (this.registry) {
@@ -4972,26 +5136,26 @@ var Element = /** @class */ (function () {
         this.registry = registry;
         return this;
     };
-    /** Returns the rendered status. */
+    /** Return the rendered status. */
     Element.prototype.isRendered = function () {
         return this.rendered;
     };
-    /** Sets the rendered status. */
+    /** Set the rendered status. */
     Element.prototype.setRendered = function (rendered) {
         if (rendered === void 0) { rendered = true; }
         this.rendered = rendered;
         return this;
     };
-    /** Returns the element attributes. */
+    /** Return the element attributes. */
     Element.prototype.getAttributes = function () {
         return this.attrs;
     };
-    /** Returns an attribute. */
+    /** Return an attribute. */
     // eslint-disable-next-line
     Element.prototype.getAttribute = function (name) {
         return this.attrs[name];
     };
-    /** Sets an attribute. */
+    /** Set an attribute. */
     // eslint-disable-next-line
     Element.prototype.setAttribute = function (name, value) {
         var oldID = this.attrs.id;
@@ -5003,30 +5167,30 @@ var Element = /** @class */ (function () {
         }
         return this;
     };
-    /** Returns the context. */
+    /** Return the context. */
     Element.prototype.getContext = function () {
         return this.context;
     };
-    /** Sets the context. */
+    /** Set the context. */
     Element.prototype.setContext = function (context) {
         this.context = context;
         return this;
     };
-    /** Gets the boundingBox. */
+    /** Get the boundingBox. */
     Element.prototype.getBoundingBox = function () {
         return this.boundingBox;
     };
-    /** Validates and returns the context. */
+    /** Validate and return the context. */
     Element.prototype.checkContext = function () {
         if (!this.context) {
-            throw new util_1.RuntimeError('NoContext', 'No rendering context attached to instance.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoContext', 'No rendering context attached to instance.');
         }
         return this.context;
     };
     Element.ID = 1000;
     return Element;
 }());
-exports.Element = Element;
+
 
 
 /***/ }),
@@ -5035,9 +5199,53 @@ exports.Element = Element;
 /*!************************!*\
   !*** ./src/factory.ts ***!
   \************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Factory": () => (/* binding */ Factory)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _accidental__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./accidental */ "./src/accidental.ts");
+/* harmony import */ var _articulation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./articulation */ "./src/articulation.ts");
+/* harmony import */ var _annotation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
+/* harmony import */ var _chordsymbol__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.ts");
+/* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
+/* harmony import */ var _frethandfinger__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.ts");
+/* harmony import */ var _stringnumber__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.ts");
+/* harmony import */ var _textdynamics__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./textdynamics */ "./src/textdynamics.ts");
+/* harmony import */ var _modifiercontext__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modifiercontext */ "./src/modifiercontext.ts");
+/* harmony import */ var _multimeasurerest__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./multimeasurerest */ "./src/multimeasurerest.ts");
+/* harmony import */ var _renderer__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./renderer */ "./src/renderer.ts");
+/* harmony import */ var _stave__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./stave */ "./src/stave.ts");
+/* harmony import */ var _stavetie__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
+/* harmony import */ var _staveline__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./staveline */ "./src/staveline.ts");
+/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+/* harmony import */ var _glyphnote__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.ts");
+/* harmony import */ var _repeatnote__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./repeatnote */ "./src/repeatnote.ts");
+/* harmony import */ var _staveconnector__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./staveconnector */ "./src/staveconnector.ts");
+/* harmony import */ var _system__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./system */ "./src/system.ts");
+/* harmony import */ var _tickcontext__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
+/* harmony import */ var _tuplet__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./tuplet */ "./src/tuplet.ts");
+/* harmony import */ var _voice__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./voice */ "./src/voice.ts");
+/* harmony import */ var _beam__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./beam */ "./src/beam.ts");
+/* harmony import */ var _curve__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./curve */ "./src/curve.ts");
+/* harmony import */ var _gracenote__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
+/* harmony import */ var _gracenotegroup__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
+/* harmony import */ var _notesubgroup__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.ts");
+/* harmony import */ var _easyscore__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./easyscore */ "./src/easyscore.ts");
+/* harmony import */ var _timesignote__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./timesignote */ "./src/timesignote.ts");
+/* harmony import */ var _keysignote__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./keysignote */ "./src/keysignote.ts");
+/* harmony import */ var _clefnote__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./clefnote */ "./src/clefnote.ts");
+/* harmony import */ var _pedalmarking__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./pedalmarking */ "./src/pedalmarking.ts");
+/* harmony import */ var _textbracket__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./textbracket */ "./src/textbracket.ts");
+/* harmony import */ var _vibratobracket__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./vibratobracket */ "./src/vibratobracket.ts");
+/* harmony import */ var _ghostnote__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./ghostnote */ "./src/ghostnote.ts");
+/* harmony import */ var _barnote__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./barnote */ "./src/barnote.ts");
+/* harmony import */ var _tabnote__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
+/* harmony import */ var _tabstave__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./tabstave */ "./src/tabstave.ts");
+/* harmony import */ var _textnote__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./textnote */ "./src/textnote.ts");
+/* harmony import */ var _textfont__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./textfont */ "./src/textfont.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // @author Mohit Cheppudira
 //
@@ -5047,7 +5255,7 @@ exports.Element = Element;
 // become the canonical way to use VexFlow.
 //
 // *This API is currently DRAFT*
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -5058,50 +5266,48 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Factory = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var accidental_1 = __webpack_require__(/*! ./accidental */ "./src/accidental.ts");
-var articulation_1 = __webpack_require__(/*! ./articulation */ "./src/articulation.ts");
-var annotation_1 = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
-var chordsymbol_1 = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.ts");
+
+
+
+
+
 // import { WidthFormatter } from './widthformatter';
-var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
-var frethandfinger_1 = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.ts");
-var stringnumber_1 = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.ts");
-var textdynamics_1 = __webpack_require__(/*! ./textdynamics */ "./src/textdynamics.ts");
-var modifiercontext_1 = __webpack_require__(/*! ./modifiercontext */ "./src/modifiercontext.ts");
-var multimeasurerest_1 = __webpack_require__(/*! ./multimeasurerest */ "./src/multimeasurerest.ts");
-var renderer_1 = __webpack_require__(/*! ./renderer */ "./src/renderer.ts");
-var stave_1 = __webpack_require__(/*! ./stave */ "./src/stave.ts");
-var stavetie_1 = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
-var staveline_1 = __webpack_require__(/*! ./staveline */ "./src/staveline.ts");
-var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-var glyphnote_1 = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.ts");
-var repeatnote_1 = __webpack_require__(/*! ./repeatnote */ "./src/repeatnote.ts");
-var staveconnector_1 = __webpack_require__(/*! ./staveconnector */ "./src/staveconnector.ts");
-var system_1 = __webpack_require__(/*! ./system */ "./src/system.ts");
-var tickcontext_1 = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
-var tuplet_1 = __webpack_require__(/*! ./tuplet */ "./src/tuplet.ts");
-var voice_1 = __webpack_require__(/*! ./voice */ "./src/voice.ts");
-var beam_1 = __webpack_require__(/*! ./beam */ "./src/beam.ts");
-var curve_1 = __webpack_require__(/*! ./curve */ "./src/curve.ts");
-var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
-var gracenotegroup_1 = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
-var notesubgroup_1 = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.ts");
-var easyscore_1 = __webpack_require__(/*! ./easyscore */ "./src/easyscore.ts");
-var timesignote_1 = __webpack_require__(/*! ./timesignote */ "./src/timesignote.ts");
-var keysignote_1 = __webpack_require__(/*! ./keysignote */ "./src/keysignote.ts");
-var clefnote_1 = __webpack_require__(/*! ./clefnote */ "./src/clefnote.ts");
-var pedalmarking_1 = __webpack_require__(/*! ./pedalmarking */ "./src/pedalmarking.ts");
-var textbracket_1 = __webpack_require__(/*! ./textbracket */ "./src/textbracket.ts");
-var vibratobracket_1 = __webpack_require__(/*! ./vibratobracket */ "./src/vibratobracket.ts");
-var ghostnote_1 = __webpack_require__(/*! ./ghostnote */ "./src/ghostnote.ts");
-var barnote_1 = __webpack_require__(/*! ./barnote */ "./src/barnote.ts");
-var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
-var tabstave_1 = __webpack_require__(/*! ./tabstave */ "./src/tabstave.ts");
-var textnote_1 = __webpack_require__(/*! ./textnote */ "./src/textnote.ts");
-var textfont_1 = __webpack_require__(/*! ./textfont */ "./src/textfont.ts");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // To enable logging for this class. Set `Vex.Flow.Factory.DEBUG` to `true`.
 // eslint-disable-next-line
 function L() {
@@ -5110,9 +5316,8 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (Factory.DEBUG)
-        util_1.log('Vex.Flow.Factory', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.Factory', args);
 }
-var X = util_1.MakeException('FactoryError');
 var Factory = /** @class */ (function () {
     function Factory(options) {
         if (options === void 0) { options = {}; }
@@ -5123,7 +5328,7 @@ var Factory = /** @class */ (function () {
             },
             renderer: {
                 elementId: '',
-                backend: renderer_1.Renderer.Backends.SVG,
+                backend: _renderer__WEBPACK_IMPORTED_MODULE_11__.Renderer.Backends.SVG,
                 width: 500,
                 height: 200,
                 background: '#FFF',
@@ -5140,7 +5345,7 @@ var Factory = /** @class */ (function () {
     Factory.newFromElementId = function (elementId, width, height) {
         if (width === void 0) { width = 500; }
         if (height === void 0) { height = 200; }
-        return new Factory({ renderer: { elementId: elementId, width: width, height: height, backend: renderer_1.Renderer.Backends.SVG } });
+        return new Factory({ renderer: { elementId: elementId, width: width, height: height, backend: _renderer__WEBPACK_IMPORTED_MODULE_11__.Renderer.Backends.SVG } });
     };
     Factory.prototype.reset = function () {
         this.renderQ = [];
@@ -5167,12 +5372,13 @@ var Factory = /** @class */ (function () {
     };
     Factory.prototype.initRenderer = function () {
         if (!this.options.renderer)
-            throw new util_1.RuntimeError('NoRenderer');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoRenderer');
         var _a = this.options.renderer, elementId = _a.elementId, backend = _a.backend, width = _a.width, height = _a.height, background = _a.background;
         if (elementId === '') {
-            throw new X('HTML DOM element not set in Factory', this);
+            L(this);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('HTML DOM element not set in Factory');
         }
-        this.context = renderer_1.Renderer.buildContext(elementId, backend !== null && backend !== void 0 ? backend : renderer_1.Renderer.Backends.SVG, width, height, background);
+        this.context = _renderer__WEBPACK_IMPORTED_MODULE_11__.Renderer.buildContext(elementId, backend !== null && backend !== void 0 ? backend : _renderer__WEBPACK_IMPORTED_MODULE_11__.Renderer.Backends.SVG, width, height, background);
     };
     Factory.prototype.getContext = function () {
         return this.context;
@@ -5190,15 +5396,15 @@ var Factory = /** @class */ (function () {
     // Returns pixels from current stave spacing.
     Factory.prototype.space = function (spacing) {
         if (!this.options.stave)
-            throw new util_1.RuntimeError('NoStave');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoStave');
         return this.options.stave.space * spacing;
     };
     Factory.prototype.Stave = function (paramsP) {
         if (paramsP === void 0) { paramsP = {}; }
         if (!this.options.renderer)
-            throw new util_1.RuntimeError('NoRenderer');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoRenderer');
         if (!this.options.stave)
-            throw new util_1.RuntimeError('NoStave');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoStave');
         var params = __assign({
             x: 0,
             y: 0,
@@ -5207,7 +5413,7 @@ var Factory = /** @class */ (function () {
                 spacing_between_lines_px: this.options.stave.space,
             },
         }, paramsP);
-        var stave = new stave_1.Stave(params.x, params.y, params.width, params.options);
+        var stave = new _stave__WEBPACK_IMPORTED_MODULE_12__.Stave(params.x, params.y, params.width, params.options);
         this.staves.push(stave);
         stave.setContext(this.context);
         this.stave = stave;
@@ -5216,9 +5422,9 @@ var Factory = /** @class */ (function () {
     Factory.prototype.TabStave = function (paramsP) {
         if (paramsP === void 0) { paramsP = {}; }
         if (!this.options.renderer)
-            throw new util_1.RuntimeError('NoRenderer');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoRenderer');
         if (!this.options.stave)
-            throw new util_1.RuntimeError('NoStave');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoStave');
         var params = __assign({
             x: 0,
             y: 0,
@@ -5227,14 +5433,14 @@ var Factory = /** @class */ (function () {
                 spacing_between_lines_px: this.options.stave.space * 1.3,
             },
         }, paramsP);
-        var stave = new tabstave_1.TabStave(params.x, params.y, params.width, params.options);
+        var stave = new _tabstave__WEBPACK_IMPORTED_MODULE_38__.TabStave(params.x, params.y, params.width, params.options);
         this.staves.push(stave);
         stave.setContext(this.context);
         this.stave = stave;
         return stave;
     };
     Factory.prototype.StaveNote = function (noteStruct) {
-        var note = new stavenote_1.StaveNote(noteStruct);
+        var note = new _stavenote__WEBPACK_IMPORTED_MODULE_15__.StaveNote(noteStruct);
         if (this.stave)
             note.setStave(this.stave);
         note.setContext(this.context);
@@ -5242,7 +5448,7 @@ var Factory = /** @class */ (function () {
         return note;
     };
     Factory.prototype.GlyphNote = function (glyph, noteStruct, options) {
-        var note = new glyphnote_1.GlyphNote(glyph, noteStruct, options);
+        var note = new _glyphnote__WEBPACK_IMPORTED_MODULE_16__.GlyphNote(glyph, noteStruct, options);
         if (this.stave)
             note.setStave(this.stave);
         note.setContext(this.context);
@@ -5250,7 +5456,7 @@ var Factory = /** @class */ (function () {
         return note;
     };
     Factory.prototype.RepeatNote = function (type, noteStruct, options) {
-        var note = new repeatnote_1.RepeatNote(type, noteStruct, options);
+        var note = new _repeatnote__WEBPACK_IMPORTED_MODULE_17__.RepeatNote(type, noteStruct, options);
         if (this.stave)
             note.setStave(this.stave);
         note.setContext(this.context);
@@ -5258,7 +5464,7 @@ var Factory = /** @class */ (function () {
         return note;
     };
     Factory.prototype.GhostNote = function (noteStruct) {
-        var ghostNote = new ghostnote_1.GhostNote(noteStruct);
+        var ghostNote = new _ghostnote__WEBPACK_IMPORTED_MODULE_35__.GhostNote(noteStruct);
         if (this.stave)
             ghostNote.setStave(this.stave);
         ghostNote.setContext(this.context);
@@ -5266,7 +5472,7 @@ var Factory = /** @class */ (function () {
         return ghostNote;
     };
     Factory.prototype.TextNote = function (textNoteStruct) {
-        var textNote = new textnote_1.TextNote(textNoteStruct);
+        var textNote = new _textnote__WEBPACK_IMPORTED_MODULE_39__.TextNote(textNoteStruct);
         if (this.stave)
             textNote.setStave(this.stave);
         textNote.setContext(this.context);
@@ -5275,7 +5481,7 @@ var Factory = /** @class */ (function () {
     };
     Factory.prototype.BarNote = function (params) {
         if (params === void 0) { params = {}; }
-        var barNote = new barnote_1.BarNote(params.type);
+        var barNote = new _barnote__WEBPACK_IMPORTED_MODULE_36__.BarNote(params.type);
         if (this.stave)
             barNote.setStave(this.stave);
         barNote.setContext(this.context);
@@ -5291,7 +5497,7 @@ var Factory = /** @class */ (function () {
                 annotation: undefined,
             },
         }, paramsP);
-        var clefNote = new clefnote_1.ClefNote(params.type, params.options.size, params.options.annotation);
+        var clefNote = new _clefnote__WEBPACK_IMPORTED_MODULE_31__.ClefNote(params.type, params.options.size, params.options.annotation);
         if (this.stave)
             clefNote.setStave(this.stave);
         clefNote.setContext(this.context);
@@ -5303,7 +5509,7 @@ var Factory = /** @class */ (function () {
         var params = __assign({
             time: '4/4',
         }, paramsP);
-        var timeSigNote = new timesignote_1.TimeSigNote(params.time);
+        var timeSigNote = new _timesignote__WEBPACK_IMPORTED_MODULE_29__.TimeSigNote(params.time);
         if (this.stave)
             timeSigNote.setStave(this.stave);
         timeSigNote.setContext(this.context);
@@ -5311,7 +5517,7 @@ var Factory = /** @class */ (function () {
         return timeSigNote;
     };
     Factory.prototype.KeySigNote = function (params) {
-        var keySigNote = new keysignote_1.KeySigNote(params.key, params.cancelKey, params.alterKey);
+        var keySigNote = new _keysignote__WEBPACK_IMPORTED_MODULE_30__.KeySigNote(params.key, params.cancelKey, params.alterKey);
         if (this.stave)
             keySigNote.setStave(this.stave);
         keySigNote.setContext(this.context);
@@ -5319,7 +5525,7 @@ var Factory = /** @class */ (function () {
         return keySigNote;
     };
     Factory.prototype.TabNote = function (noteStruct) {
-        var note = new tabnote_1.TabNote(noteStruct);
+        var note = new _tabnote__WEBPACK_IMPORTED_MODULE_37__.TabNote(noteStruct);
         if (this.stave)
             note.setStave(this.stave);
         note.setContext(this.context);
@@ -5327,19 +5533,19 @@ var Factory = /** @class */ (function () {
         return note;
     };
     Factory.prototype.GraceNote = function (noteStruct) {
-        var note = new gracenote_1.GraceNote(noteStruct);
+        var note = new _gracenote__WEBPACK_IMPORTED_MODULE_25__.GraceNote(noteStruct);
         if (this.stave)
             note.setStave(this.stave);
         note.setContext(this.context);
         return note;
     };
     Factory.prototype.GraceNoteGroup = function (params) {
-        var group = new gracenotegroup_1.GraceNoteGroup(params.notes, params.slur);
+        var group = new _gracenotegroup__WEBPACK_IMPORTED_MODULE_26__.GraceNoteGroup(params.notes, params.slur);
         group.setContext(this.context);
         return group;
     };
     Factory.prototype.Accidental = function (params) {
-        var accid = new accidental_1.Accidental(params.type);
+        var accid = new _accidental__WEBPACK_IMPORTED_MODULE_1__.Accidental(params.type);
         accid.setContext(this.context);
         return accid;
     };
@@ -5354,7 +5560,7 @@ var Factory = /** @class */ (function () {
             fontWeight: 'bold italic',
             options: {},
         }, paramsP);
-        var annotation = new annotation_1.Annotation(params.text);
+        var annotation = new _annotation__WEBPACK_IMPORTED_MODULE_3__.Annotation(params.text);
         annotation.setJustification(params.hJustify);
         annotation.setVerticalJustification(params.vJustify);
         annotation.setFont(params.fontFamily, params.fontSize, params.fontWeight);
@@ -5369,7 +5575,7 @@ var Factory = /** @class */ (function () {
             kerning: true,
             reportWidth: true,
         }, paramsP);
-        var chordSymbol = new chordsymbol_1.ChordSymbol();
+        var chordSymbol = new _chordsymbol__WEBPACK_IMPORTED_MODULE_4__.ChordSymbol();
         chordSymbol.setHorizontal(params.hJustify);
         chordSymbol.setVertical(params.vJustify);
         chordSymbol.setEnableKerning(params.kerning);
@@ -5394,7 +5600,7 @@ var Factory = /** @class */ (function () {
             type: 'a.',
             position: 'above',
         }, paramsP);
-        var articulation = new articulation_1.Articulation(params.type);
+        var articulation = new _articulation__WEBPACK_IMPORTED_MODULE_2__.Articulation(params.type);
         articulation.setPosition(params.position);
         articulation.setContext(this.context);
         return articulation;
@@ -5407,7 +5613,7 @@ var Factory = /** @class */ (function () {
             dots: 0,
             line: 0,
         }, paramsP);
-        var text = new textdynamics_1.TextDynamics({
+        var text = new _textdynamics__WEBPACK_IMPORTED_MODULE_8__.TextDynamics({
             text: params.text,
             line: params.line,
             duration: params.duration,
@@ -5424,27 +5630,27 @@ var Factory = /** @class */ (function () {
             number: '0',
             position: 'left',
         }, paramsP);
-        var fingering = new frethandfinger_1.FretHandFinger(params.number);
+        var fingering = new _frethandfinger__WEBPACK_IMPORTED_MODULE_6__.FretHandFinger(params.number);
         fingering.setPosition(params.position);
         fingering.setContext(this.context);
         return fingering;
     };
     Factory.prototype.StringNumber = function (params) {
-        var stringNumber = new stringnumber_1.StringNumber(params.number);
+        var stringNumber = new _stringnumber__WEBPACK_IMPORTED_MODULE_7__.StringNumber(params.number);
         stringNumber.setPosition(params.position);
         stringNumber.setContext(this.context);
         return stringNumber;
     };
     Factory.prototype.TickContext = function () {
-        return new tickcontext_1.TickContext().setContext(this.context);
+        return new _tickcontext__WEBPACK_IMPORTED_MODULE_20__.TickContext().setContext(this.context);
     };
     Factory.prototype.ModifierContext = function () {
-        return new modifiercontext_1.ModifierContext();
+        return new _modifiercontext__WEBPACK_IMPORTED_MODULE_9__.ModifierContext();
     };
     Factory.prototype.MultiMeasureRest = function (params) {
         if (params.number_of_measures === undefined)
-            throw new util_1.RuntimeError('NoNumberOfMeasures');
-        var multimeasurerest = new multimeasurerest_1.MultiMeasureRest(params.number_of_measures, params);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoNumberOfMeasures');
+        var multimeasurerest = new _multimeasurerest__WEBPACK_IMPORTED_MODULE_10__.MultiMeasureRest(params.number_of_measures, params);
         multimeasurerest.setContext(this.context);
         this.renderQ.push(multimeasurerest);
         return multimeasurerest;
@@ -5454,19 +5660,19 @@ var Factory = /** @class */ (function () {
         var params = __assign({
             time: '4/4',
         }, paramsP);
-        var voice = new voice_1.Voice(params.time, params.options);
+        var voice = new _voice__WEBPACK_IMPORTED_MODULE_22__.Voice(params.time, params.options);
         this.voices.push(voice);
         return voice;
     };
     Factory.prototype.StaveConnector = function (params) {
-        var connector = new staveconnector_1.StaveConnector(params.top_stave, params.bottom_stave);
+        var connector = new _staveconnector__WEBPACK_IMPORTED_MODULE_18__.StaveConnector(params.top_stave, params.bottom_stave);
         connector.setType(params.type).setContext(this.context);
         this.renderQ.push(connector);
         return connector;
     };
     Factory.prototype.Formatter = function (options) {
         if (options === void 0) { options = {}; }
-        return new formatter_1.Formatter(options);
+        return new _formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter(options);
     };
     Factory.prototype.Tuplet = function (paramsP) {
         if (paramsP === void 0) { paramsP = {}; }
@@ -5474,25 +5680,25 @@ var Factory = /** @class */ (function () {
             notes: [],
             options: {},
         }, paramsP);
-        var tuplet = new tuplet_1.Tuplet(params.notes, params.options).setContext(this.context);
+        var tuplet = new _tuplet__WEBPACK_IMPORTED_MODULE_21__.Tuplet(params.notes, params.options).setContext(this.context);
         this.renderQ.push(tuplet);
         return tuplet;
     };
     Factory.prototype.Beam = function (params) {
         var _a, _b, _c;
-        var beam = new beam_1.Beam(params.notes, (_a = params.options) === null || _a === void 0 ? void 0 : _a.autoStem).setContext(this.context);
+        var beam = new _beam__WEBPACK_IMPORTED_MODULE_23__.Beam(params.notes, (_a = params.options) === null || _a === void 0 ? void 0 : _a.autoStem).setContext(this.context);
         beam.breakSecondaryAt((_c = (_b = params.options) === null || _b === void 0 ? void 0 : _b.secondaryBeamBreaks) !== null && _c !== void 0 ? _c : []);
         this.renderQ.push(beam);
         return beam;
     };
     Factory.prototype.Curve = function (params) {
-        var curve = new curve_1.Curve(params.from, params.to, params.options).setContext(this.context);
+        var curve = new _curve__WEBPACK_IMPORTED_MODULE_24__.Curve(params.from, params.to, params.options).setContext(this.context);
         this.renderQ.push(curve);
         return curve;
     };
     Factory.prototype.StaveTie = function (params) {
         var _a;
-        var tie = new stavetie_1.StaveTie({
+        var tie = new _stavetie__WEBPACK_IMPORTED_MODULE_13__.StaveTie({
             first_note: params.from,
             last_note: params.to,
             first_indices: params.first_indices,
@@ -5506,7 +5712,7 @@ var Factory = /** @class */ (function () {
     };
     Factory.prototype.StaveLine = function (params) {
         var _a, _b;
-        var line = new staveline_1.StaveLine({
+        var line = new _staveline__WEBPACK_IMPORTED_MODULE_14__.StaveLine({
             first_note: params.from,
             last_note: params.to,
             first_indices: params.first_indices,
@@ -5521,7 +5727,7 @@ var Factory = /** @class */ (function () {
         return line;
     };
     Factory.prototype.VibratoBracket = function (params) {
-        var vibratoBracket = new vibratobracket_1.VibratoBracket({
+        var vibratoBracket = new _vibratobracket__WEBPACK_IMPORTED_MODULE_34__.VibratoBracket({
             start: params.from,
             stop: params.to,
         });
@@ -5534,7 +5740,7 @@ var Factory = /** @class */ (function () {
         return vibratoBracket;
     };
     Factory.prototype.TextBracket = function (params) {
-        var textBracket = new textbracket_1.TextBracket({
+        var textBracket = new _textbracket__WEBPACK_IMPORTED_MODULE_33__.TextBracket({
             start: params.from,
             stop: params.to,
             text: params.text,
@@ -5552,14 +5758,14 @@ var Factory = /** @class */ (function () {
     Factory.prototype.System = function (params) {
         if (params === void 0) { params = {}; }
         params.factory = this;
-        var system = new system_1.System(params).setContext(this.context);
+        var system = new _system__WEBPACK_IMPORTED_MODULE_19__.System(params).setContext(this.context);
         this.systems.push(system);
         return system;
     };
     Factory.prototype.EasyScore = function (params) {
         if (params === void 0) { params = {}; }
         params.factory = this;
-        return new easyscore_1.EasyScore(params);
+        return new _easyscore__WEBPACK_IMPORTED_MODULE_28__.EasyScore(params);
     };
     Factory.prototype.PedalMarking = function (paramsP) {
         if (paramsP === void 0) { paramsP = {}; }
@@ -5569,8 +5775,8 @@ var Factory = /** @class */ (function () {
                 style: 'mixed',
             },
         }, paramsP);
-        var pedal = new pedalmarking_1.PedalMarking(params.notes);
-        pedal.setType(pedalmarking_1.PedalMarking.typeString[params.options.style]);
+        var pedal = new _pedalmarking__WEBPACK_IMPORTED_MODULE_32__.PedalMarking(params.notes);
+        pedal.setType(_pedalmarking__WEBPACK_IMPORTED_MODULE_32__.PedalMarking.typeString[params.options.style]);
         pedal.setContext(this.context);
         this.renderQ.push(pedal);
         return pedal;
@@ -5580,13 +5786,13 @@ var Factory = /** @class */ (function () {
         var params = __assign({
             notes: [],
         }, paramsP);
-        var group = new notesubgroup_1.NoteSubGroup(params.notes);
+        var group = new _notesubgroup__WEBPACK_IMPORTED_MODULE_27__.NoteSubGroup(params.notes);
         group.setContext(this.context);
         return group;
     };
     Factory.prototype.TextFont = function (params) {
         params.factory = this;
-        var textFont = new textfont_1.TextFont(params);
+        var textFont = new _textfont__WEBPACK_IMPORTED_MODULE_40__.TextFont(params);
         return textFont;
     };
     Factory.prototype.draw = function () {
@@ -5603,7 +5809,7 @@ var Factory = /** @class */ (function () {
     };
     return Factory;
 }());
-exports.Factory = Factory;
+
 
 
 /***/ }),
@@ -5612,10 +5818,89 @@ exports.Factory = Factory;
 /*!*********************!*\
   !*** ./src/flow.ts ***!
   \*********************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
-var __assign = (this && this.__assign) || function () {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Flow": () => (/* binding */ Flow)
+/* harmony export */ });
+/* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./tables */ "./src/tables.ts");
+/* harmony import */ var _accidental__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./accidental */ "./src/accidental.ts");
+/* harmony import */ var _annotation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
+/* harmony import */ var _articulation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./articulation */ "./src/articulation.ts");
+/* harmony import */ var _stavebarline__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
+/* harmony import */ var _barnote__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./barnote */ "./src/barnote.ts");
+/* harmony import */ var _beam__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./beam */ "./src/beam.ts");
+/* harmony import */ var _bend__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./bend */ "./src/bend.ts");
+/* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
+/* harmony import */ var _chordsymbol__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.ts");
+/* harmony import */ var _clef__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./clef */ "./src/clef.ts");
+/* harmony import */ var _clefnote__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./clefnote */ "./src/clefnote.ts");
+/* harmony import */ var _crescendo__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./crescendo */ "./src/crescendo.ts");
+/* harmony import */ var _curve__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./curve */ "./src/curve.ts");
+/* harmony import */ var _dot__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./dot */ "./src/dot.ts");
+/* harmony import */ var _easyscore__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./easyscore */ "./src/easyscore.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./element */ "./src/element.ts");
+/* harmony import */ var _factory__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./factory */ "./src/factory.ts");
+/* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./font */ "./src/font.ts");
+/* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
+/* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
+/* harmony import */ var _frethandfinger__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.ts");
+/* harmony import */ var _ghostnote__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./ghostnote */ "./src/ghostnote.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+/* harmony import */ var _glyphnote__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.ts");
+/* harmony import */ var _gracenote__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
+/* harmony import */ var _gracenotegroup__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
+/* harmony import */ var _gracetabnote__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./gracetabnote */ "./src/gracetabnote.ts");
+/* harmony import */ var _keymanager__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./keymanager */ "./src/keymanager.ts");
+/* harmony import */ var _keysignature__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./keysignature */ "./src/keysignature.ts");
+/* harmony import */ var _keysignote__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./keysignote */ "./src/keysignote.ts");
+/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
+/* harmony import */ var _modifiercontext__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./modifiercontext */ "./src/modifiercontext.ts");
+/* harmony import */ var _multimeasurerest__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./multimeasurerest */ "./src/multimeasurerest.ts");
+/* harmony import */ var _music__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./music */ "./src/music.ts");
+/* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./note */ "./src/note.ts");
+/* harmony import */ var _notehead__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./notehead */ "./src/notehead.ts");
+/* harmony import */ var _notesubgroup__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.ts");
+/* harmony import */ var _ornament__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./ornament */ "./src/ornament.ts");
+/* harmony import */ var _parser__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./parser */ "./src/parser.ts");
+/* harmony import */ var _pedalmarking__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./pedalmarking */ "./src/pedalmarking.ts");
+/* harmony import */ var _registry__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./registry */ "./src/registry.ts");
+/* harmony import */ var _renderer__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./renderer */ "./src/renderer.ts");
+/* harmony import */ var _repeatnote__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./repeatnote */ "./src/repeatnote.ts");
+/* harmony import */ var _staverepetition__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./staverepetition */ "./src/staverepetition.ts");
+/* harmony import */ var _stave__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./stave */ "./src/stave.ts");
+/* harmony import */ var _staveconnector__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./staveconnector */ "./src/staveconnector.ts");
+/* harmony import */ var _stavehairpin__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./stavehairpin */ "./src/stavehairpin.ts");
+/* harmony import */ var _staveline__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./staveline */ "./src/staveline.ts");
+/* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
+/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+/* harmony import */ var _stavetempo__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./stavetempo */ "./src/stavetempo.ts");
+/* harmony import */ var _stavetext__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./stavetext */ "./src/stavetext.ts");
+/* harmony import */ var _stavetie__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
+/* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./stem */ "./src/stem.ts");
+/* harmony import */ var _stringnumber__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.ts");
+/* harmony import */ var _strokes__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./strokes */ "./src/strokes.ts");
+/* harmony import */ var _system__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./system */ "./src/system.ts");
+/* harmony import */ var _tabnote__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
+/* harmony import */ var _tabslide__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./tabslide */ "./src/tabslide.ts");
+/* harmony import */ var _tabstave__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./tabstave */ "./src/tabstave.ts");
+/* harmony import */ var _tabtie__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./tabtie */ "./src/tabtie.ts");
+/* harmony import */ var _textbracket__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./textbracket */ "./src/textbracket.ts");
+/* harmony import */ var _textdynamics__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./textdynamics */ "./src/textdynamics.ts");
+/* harmony import */ var _textfont__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./textfont */ "./src/textfont.ts");
+/* harmony import */ var _textnote__WEBPACK_IMPORTED_MODULE_65__ = __webpack_require__(/*! ./textnote */ "./src/textnote.ts");
+/* harmony import */ var _tickcontext__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
+/* harmony import */ var _timesignature__WEBPACK_IMPORTED_MODULE_67__ = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
+/* harmony import */ var _timesignote__WEBPACK_IMPORTED_MODULE_68__ = __webpack_require__(/*! ./timesignote */ "./src/timesignote.ts");
+/* harmony import */ var _tremolo__WEBPACK_IMPORTED_MODULE_69__ = __webpack_require__(/*! ./tremolo */ "./src/tremolo.ts");
+/* harmony import */ var _tuning__WEBPACK_IMPORTED_MODULE_70__ = __webpack_require__(/*! ./tuning */ "./src/tuning.ts");
+/* harmony import */ var _tuplet__WEBPACK_IMPORTED_MODULE_71__ = __webpack_require__(/*! ./tuplet */ "./src/tuplet.ts");
+/* harmony import */ var _vibrato__WEBPACK_IMPORTED_MODULE_72__ = __webpack_require__(/*! ./vibrato */ "./src/vibrato.ts");
+/* harmony import */ var _vibratobracket__WEBPACK_IMPORTED_MODULE_73__ = __webpack_require__(/*! ./vibratobracket */ "./src/vibratobracket.ts");
+/* harmony import */ var _voice__WEBPACK_IMPORTED_MODULE_74__ = __webpack_require__(/*! ./voice */ "./src/voice.ts");
+/* harmony import */ var _stavevolta__WEBPACK_IMPORTED_MODULE_75__ = __webpack_require__(/*! ./stavevolta */ "./src/stavevolta.ts");
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -5626,85 +5911,83 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Flow = void 0;
-var tables_1 = __webpack_require__(/*! ./tables */ "./src/tables.ts");
-var accidental_1 = __webpack_require__(/*! ./accidental */ "./src/accidental.ts");
-var annotation_1 = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
-var articulation_1 = __webpack_require__(/*! ./articulation */ "./src/articulation.ts");
-var stavebarline_1 = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
-var barnote_1 = __webpack_require__(/*! ./barnote */ "./src/barnote.ts");
-var beam_1 = __webpack_require__(/*! ./beam */ "./src/beam.ts");
-var bend_1 = __webpack_require__(/*! ./bend */ "./src/bend.ts");
-var boundingbox_1 = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
-var chordsymbol_1 = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.ts");
-var clef_1 = __webpack_require__(/*! ./clef */ "./src/clef.ts");
-var clefnote_1 = __webpack_require__(/*! ./clefnote */ "./src/clefnote.ts");
-var crescendo_1 = __webpack_require__(/*! ./crescendo */ "./src/crescendo.ts");
-var curve_1 = __webpack_require__(/*! ./curve */ "./src/curve.ts");
-var dot_1 = __webpack_require__(/*! ./dot */ "./src/dot.ts");
-var easyscore_1 = __webpack_require__(/*! ./easyscore */ "./src/easyscore.ts");
-var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var factory_1 = __webpack_require__(/*! ./factory */ "./src/factory.ts");
-var font_1 = __webpack_require__(/*! ./font */ "./src/font.ts");
-var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
-var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
-var frethandfinger_1 = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.ts");
-var ghostnote_1 = __webpack_require__(/*! ./ghostnote */ "./src/ghostnote.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-var glyphnote_1 = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.ts");
-var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
-var gracenotegroup_1 = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
-var gracetabnote_1 = __webpack_require__(/*! ./gracetabnote */ "./src/gracetabnote.ts");
-var keymanager_1 = __webpack_require__(/*! ./keymanager */ "./src/keymanager.ts");
-var keysignature_1 = __webpack_require__(/*! ./keysignature */ "./src/keysignature.ts");
-var keysignote_1 = __webpack_require__(/*! ./keysignote */ "./src/keysignote.ts");
-var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-var modifiercontext_1 = __webpack_require__(/*! ./modifiercontext */ "./src/modifiercontext.ts");
-var multimeasurerest_1 = __webpack_require__(/*! ./multimeasurerest */ "./src/multimeasurerest.ts");
-var music_1 = __webpack_require__(/*! ./music */ "./src/music.ts");
-var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
-var notehead_1 = __webpack_require__(/*! ./notehead */ "./src/notehead.ts");
-var notesubgroup_1 = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.ts");
-var ornament_1 = __webpack_require__(/*! ./ornament */ "./src/ornament.ts");
-var parser_1 = __webpack_require__(/*! ./parser */ "./src/parser.ts");
-var pedalmarking_1 = __webpack_require__(/*! ./pedalmarking */ "./src/pedalmarking.ts");
-var registry_1 = __webpack_require__(/*! ./registry */ "./src/registry.ts");
-var renderer_1 = __webpack_require__(/*! ./renderer */ "./src/renderer.ts");
-var repeatnote_1 = __webpack_require__(/*! ./repeatnote */ "./src/repeatnote.ts");
-var staverepetition_1 = __webpack_require__(/*! ./staverepetition */ "./src/staverepetition.ts");
-var stave_1 = __webpack_require__(/*! ./stave */ "./src/stave.ts");
-var staveconnector_1 = __webpack_require__(/*! ./staveconnector */ "./src/staveconnector.ts");
-var stavehairpin_1 = __webpack_require__(/*! ./stavehairpin */ "./src/stavehairpin.ts");
-var staveline_1 = __webpack_require__(/*! ./staveline */ "./src/staveline.ts");
-var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
-var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-var stavetempo_1 = __webpack_require__(/*! ./stavetempo */ "./src/stavetempo.ts");
-var stavetext_1 = __webpack_require__(/*! ./stavetext */ "./src/stavetext.ts");
-var stavetie_1 = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
-var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
-var stringnumber_1 = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.ts");
-var strokes_1 = __webpack_require__(/*! ./strokes */ "./src/strokes.ts");
-var system_1 = __webpack_require__(/*! ./system */ "./src/system.ts");
-var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
-var tabslide_1 = __webpack_require__(/*! ./tabslide */ "./src/tabslide.ts");
-var tabstave_1 = __webpack_require__(/*! ./tabstave */ "./src/tabstave.ts");
-var tabtie_1 = __webpack_require__(/*! ./tabtie */ "./src/tabtie.ts");
-var textbracket_1 = __webpack_require__(/*! ./textbracket */ "./src/textbracket.ts");
-var textdynamics_1 = __webpack_require__(/*! ./textdynamics */ "./src/textdynamics.ts");
-var textfont_1 = __webpack_require__(/*! ./textfont */ "./src/textfont.ts");
-var textnote_1 = __webpack_require__(/*! ./textnote */ "./src/textnote.ts");
-var tickcontext_1 = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
-var timesignature_1 = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
-var timesignote_1 = __webpack_require__(/*! ./timesignote */ "./src/timesignote.ts");
-var tremolo_1 = __webpack_require__(/*! ./tremolo */ "./src/tremolo.ts");
-var tuning_1 = __webpack_require__(/*! ./tuning */ "./src/tuning.ts");
-var tuplet_1 = __webpack_require__(/*! ./tuplet */ "./src/tuplet.ts");
-var vibrato_1 = __webpack_require__(/*! ./vibrato */ "./src/vibrato.ts");
-var vibratobracket_1 = __webpack_require__(/*! ./vibratobracket */ "./src/vibratobracket.ts");
-var voice_1 = __webpack_require__(/*! ./voice */ "./src/voice.ts");
-var stavevolta_1 = __webpack_require__(/*! ./stavevolta */ "./src/stavevolta.ts");
-exports.Flow = __assign(__assign({}, tables_1.Tables), { Accidental: accidental_1.Accidental, Annotation: annotation_1.Annotation, Articulation: articulation_1.Articulation, Barline: stavebarline_1.Barline, BarNote: barnote_1.BarNote, Beam: beam_1.Beam, Bend: bend_1.Bend, BoundingBox: boundingbox_1.BoundingBox, ChordSymbol: chordsymbol_1.ChordSymbol, Clef: clef_1.Clef, ClefNote: clefnote_1.ClefNote, Crescendo: crescendo_1.Crescendo, Curve: curve_1.Curve, Dot: dot_1.Dot, EasyScore: easyscore_1.EasyScore, Element: element_1.Element, Factory: factory_1.Factory, Font: font_1.Font, Fonts: font_1.Fonts, Formatter: formatter_1.Formatter, Fraction: fraction_1.Fraction, FretHandFinger: frethandfinger_1.FretHandFinger, GhostNote: ghostnote_1.GhostNote, Glyph: glyph_1.Glyph, GlyphNote: glyphnote_1.GlyphNote, GraceNote: gracenote_1.GraceNote, GraceNoteGroup: gracenotegroup_1.GraceNoteGroup, GraceTabNote: gracetabnote_1.GraceTabNote, KeyManager: keymanager_1.KeyManager, KeySignature: keysignature_1.KeySignature, KeySigNote: keysignote_1.KeySigNote, Modifier: modifier_1.Modifier, ModifierContext: modifiercontext_1.ModifierContext, MultiMeasureRest: multimeasurerest_1.MultiMeasureRest, Music: music_1.Music, Note: note_1.Note, NoteHead: notehead_1.NoteHead, NoteSubGroup: notesubgroup_1.NoteSubGroup, Ornament: ornament_1.Ornament, Parser: parser_1.Parser, PedalMarking: pedalmarking_1.PedalMarking, Registry: registry_1.Registry, Renderer: renderer_1.Renderer, RepeatNote: repeatnote_1.RepeatNote, Repetition: staverepetition_1.Repetition, Stave: stave_1.Stave, StaveConnector: staveconnector_1.StaveConnector, StaveHairpin: stavehairpin_1.StaveHairpin, StaveLine: staveline_1.StaveLine, StaveModifier: stavemodifier_1.StaveModifier, StaveNote: stavenote_1.StaveNote, StaveTempo: stavetempo_1.StaveTempo, StaveText: stavetext_1.StaveText, StaveTie: stavetie_1.StaveTie, Stem: stem_1.Stem, StringNumber: stringnumber_1.StringNumber, Stroke: strokes_1.Stroke, System: system_1.System, TabNote: tabnote_1.TabNote, TabSlide: tabslide_1.TabSlide, TabStave: tabstave_1.TabStave, TabTie: tabtie_1.TabTie, TextBracket: textbracket_1.TextBracket, TextDynamics: textdynamics_1.TextDynamics, TextFont: textfont_1.TextFont, TextNote: textnote_1.TextNote, TickContext: tickcontext_1.TickContext, TimeSignature: timesignature_1.TimeSignature, TimeSigNote: timesignote_1.TimeSigNote, Tremolo: tremolo_1.Tremolo, Tuning: tuning_1.Tuning, Tuplet: tuplet_1.Tuplet, Vibrato: vibrato_1.Vibrato, VibratoBracket: vibratobracket_1.VibratoBracket, Voice: voice_1.Voice, Volta: stavevolta_1.Volta });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var Flow = __assign(__assign({}, _tables__WEBPACK_IMPORTED_MODULE_0__.Tables), { Accidental: _accidental__WEBPACK_IMPORTED_MODULE_1__.Accidental, Annotation: _annotation__WEBPACK_IMPORTED_MODULE_2__.Annotation, Articulation: _articulation__WEBPACK_IMPORTED_MODULE_3__.Articulation, Barline: _stavebarline__WEBPACK_IMPORTED_MODULE_4__.Barline, BarNote: _barnote__WEBPACK_IMPORTED_MODULE_5__.BarNote, Beam: _beam__WEBPACK_IMPORTED_MODULE_6__.Beam, Bend: _bend__WEBPACK_IMPORTED_MODULE_7__.Bend, BoundingBox: _boundingbox__WEBPACK_IMPORTED_MODULE_8__.BoundingBox, ChordSymbol: _chordsymbol__WEBPACK_IMPORTED_MODULE_9__.ChordSymbol, Clef: _clef__WEBPACK_IMPORTED_MODULE_10__.Clef, ClefNote: _clefnote__WEBPACK_IMPORTED_MODULE_11__.ClefNote, Crescendo: _crescendo__WEBPACK_IMPORTED_MODULE_12__.Crescendo, Curve: _curve__WEBPACK_IMPORTED_MODULE_13__.Curve, Dot: _dot__WEBPACK_IMPORTED_MODULE_14__.Dot, EasyScore: _easyscore__WEBPACK_IMPORTED_MODULE_15__.EasyScore, Element: _element__WEBPACK_IMPORTED_MODULE_16__.Element, Factory: _factory__WEBPACK_IMPORTED_MODULE_17__.Factory, Font: _font__WEBPACK_IMPORTED_MODULE_18__.Font, Fonts: _font__WEBPACK_IMPORTED_MODULE_18__.Fonts, Formatter: _formatter__WEBPACK_IMPORTED_MODULE_19__.Formatter, Fraction: _fraction__WEBPACK_IMPORTED_MODULE_20__.Fraction, FretHandFinger: _frethandfinger__WEBPACK_IMPORTED_MODULE_21__.FretHandFinger, GhostNote: _ghostnote__WEBPACK_IMPORTED_MODULE_22__.GhostNote, Glyph: _glyph__WEBPACK_IMPORTED_MODULE_23__.Glyph, GlyphNote: _glyphnote__WEBPACK_IMPORTED_MODULE_24__.GlyphNote, GraceNote: _gracenote__WEBPACK_IMPORTED_MODULE_25__.GraceNote, GraceNoteGroup: _gracenotegroup__WEBPACK_IMPORTED_MODULE_26__.GraceNoteGroup, GraceTabNote: _gracetabnote__WEBPACK_IMPORTED_MODULE_27__.GraceTabNote, KeyManager: _keymanager__WEBPACK_IMPORTED_MODULE_28__.KeyManager, KeySignature: _keysignature__WEBPACK_IMPORTED_MODULE_29__.KeySignature, KeySigNote: _keysignote__WEBPACK_IMPORTED_MODULE_30__.KeySigNote, Modifier: _modifier__WEBPACK_IMPORTED_MODULE_31__.Modifier, ModifierContext: _modifiercontext__WEBPACK_IMPORTED_MODULE_32__.ModifierContext, MultiMeasureRest: _multimeasurerest__WEBPACK_IMPORTED_MODULE_33__.MultiMeasureRest, Music: _music__WEBPACK_IMPORTED_MODULE_34__.Music, Note: _note__WEBPACK_IMPORTED_MODULE_35__.Note, NoteHead: _notehead__WEBPACK_IMPORTED_MODULE_36__.NoteHead, NoteSubGroup: _notesubgroup__WEBPACK_IMPORTED_MODULE_37__.NoteSubGroup, Ornament: _ornament__WEBPACK_IMPORTED_MODULE_38__.Ornament, Parser: _parser__WEBPACK_IMPORTED_MODULE_39__.Parser, PedalMarking: _pedalmarking__WEBPACK_IMPORTED_MODULE_40__.PedalMarking, Registry: _registry__WEBPACK_IMPORTED_MODULE_41__.Registry, Renderer: _renderer__WEBPACK_IMPORTED_MODULE_42__.Renderer, RepeatNote: _repeatnote__WEBPACK_IMPORTED_MODULE_43__.RepeatNote, Repetition: _staverepetition__WEBPACK_IMPORTED_MODULE_44__.Repetition, Stave: _stave__WEBPACK_IMPORTED_MODULE_45__.Stave, StaveConnector: _staveconnector__WEBPACK_IMPORTED_MODULE_46__.StaveConnector, StaveHairpin: _stavehairpin__WEBPACK_IMPORTED_MODULE_47__.StaveHairpin, StaveLine: _staveline__WEBPACK_IMPORTED_MODULE_48__.StaveLine, StaveModifier: _stavemodifier__WEBPACK_IMPORTED_MODULE_49__.StaveModifier, StaveNote: _stavenote__WEBPACK_IMPORTED_MODULE_50__.StaveNote, StaveTempo: _stavetempo__WEBPACK_IMPORTED_MODULE_51__.StaveTempo, StaveText: _stavetext__WEBPACK_IMPORTED_MODULE_52__.StaveText, StaveTie: _stavetie__WEBPACK_IMPORTED_MODULE_53__.StaveTie, Stem: _stem__WEBPACK_IMPORTED_MODULE_54__.Stem, StringNumber: _stringnumber__WEBPACK_IMPORTED_MODULE_55__.StringNumber, Stroke: _strokes__WEBPACK_IMPORTED_MODULE_56__.Stroke, System: _system__WEBPACK_IMPORTED_MODULE_57__.System, TabNote: _tabnote__WEBPACK_IMPORTED_MODULE_58__.TabNote, TabSlide: _tabslide__WEBPACK_IMPORTED_MODULE_59__.TabSlide, TabStave: _tabstave__WEBPACK_IMPORTED_MODULE_60__.TabStave, TabTie: _tabtie__WEBPACK_IMPORTED_MODULE_61__.TabTie, TextBracket: _textbracket__WEBPACK_IMPORTED_MODULE_62__.TextBracket, TextDynamics: _textdynamics__WEBPACK_IMPORTED_MODULE_63__.TextDynamics, TextFont: _textfont__WEBPACK_IMPORTED_MODULE_64__.TextFont, TextNote: _textnote__WEBPACK_IMPORTED_MODULE_65__.TextNote, TickContext: _tickcontext__WEBPACK_IMPORTED_MODULE_66__.TickContext, TimeSignature: _timesignature__WEBPACK_IMPORTED_MODULE_67__.TimeSignature, TimeSigNote: _timesignote__WEBPACK_IMPORTED_MODULE_68__.TimeSigNote, Tremolo: _tremolo__WEBPACK_IMPORTED_MODULE_69__.Tremolo, Tuning: _tuning__WEBPACK_IMPORTED_MODULE_70__.Tuning, Tuplet: _tuplet__WEBPACK_IMPORTED_MODULE_71__.Tuplet, Vibrato: _vibrato__WEBPACK_IMPORTED_MODULE_72__.Vibrato, VibratoBracket: _vibratobracket__WEBPACK_IMPORTED_MODULE_73__.VibratoBracket, Voice: _voice__WEBPACK_IMPORTED_MODULE_74__.Voice, Volta: _stavevolta__WEBPACK_IMPORTED_MODULE_75__.Volta });
 
 
 /***/ }),
@@ -5713,42 +5996,67 @@ exports.Flow = __assign(__assign({}, tables_1.Tables), { Accidental: accidental_
 /*!*********************!*\
   !*** ./src/font.ts ***!
   \*********************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Fonts": () => (/* binding */ Fonts),
+/* harmony export */   "Font": () => (/* binding */ Font)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _bravura__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom */ "./src/fonts/loadStatic.ts");
 
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Font = exports.Fonts = void 0;
-var bravura_glyphs_1 = __webpack_require__(/*! ./fonts/bravura_glyphs */ "./src/fonts/bravura_glyphs.ts");
-var bravura_metrics_1 = __webpack_require__(/*! ./fonts/bravura_metrics */ "./src/fonts/bravura_metrics.ts");
-var gonville_glyphs_1 = __webpack_require__(/*! ./fonts/gonville_glyphs */ "./src/fonts/gonville_glyphs.ts");
-var gonville_metrics_1 = __webpack_require__(/*! ./fonts/gonville_metrics */ "./src/fonts/gonville_metrics.ts");
-var petaluma_glyphs_1 = __webpack_require__(/*! ./fonts/petaluma_glyphs */ "./src/fonts/petaluma_glyphs.ts");
-var petaluma_metrics_1 = __webpack_require__(/*! ./fonts/petaluma_metrics */ "./src/fonts/petaluma_metrics.ts");
-var leland_glyphs_1 = __webpack_require__(/*! ./fonts/leland_glyphs */ "./src/fonts/leland_glyphs.js");
-var leland_metrics_1 = __webpack_require__(/*! ./fonts/leland_metrics */ "./src/fonts/leland_metrics.js");
-var custom_glyphs_1 = __webpack_require__(/*! ./fonts/custom_glyphs */ "./src/fonts/custom_glyphs.ts");
-var custom_metrics_1 = __webpack_require__(/*! ./fonts/custom_metrics */ "./src/fonts/custom_metrics.ts");
+
+
+
+
 var Font = /** @class */ (function () {
     // eslint-disable-next-line
     function Font(name, metrics, fontData) {
         this.name = name;
-        this.metrics = metrics;
-        this.fontData = fontData;
+        this.fontDataMetrics = { fontData: undefined, metrics: undefined };
+        switch (name) {
+            case 'Bravura':
+                (0,_bravura__WEBPACK_IMPORTED_MODULE_1__.loadBravura)(this.fontDataMetrics);
+                break;
+            case 'Custom':
+                (0,_bravura__WEBPACK_IMPORTED_MODULE_1__.loadCustom)(this.fontDataMetrics);
+                break;
+            case 'Gonville':
+                (0,_bravura__WEBPACK_IMPORTED_MODULE_1__.loadGonville)(this.fontDataMetrics);
+                break;
+            case 'Petaluma':
+                (0,_bravura__WEBPACK_IMPORTED_MODULE_1__.loadPetaluma)(this.fontDataMetrics);
+                break;
+            case 'Leland':
+                (0,_bravura__WEBPACK_IMPORTED_MODULE_1__.loadLeland)(this.fontDataMetrics);
+                break;
+            default:
+                this.fontDataMetrics.metrics = metrics;
+                this.fontDataMetrics.fontData = fontData;
+        }
     }
     Font.prototype.getName = function () {
         return this.name;
     };
     Font.prototype.getResolution = function () {
-        return this.fontData.resolution;
+        if (!this.fontDataMetrics.fontData)
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('Missing metrics or font data');
+        return this.fontDataMetrics.fontData.resolution;
     };
     // eslint-disable-next-line
     Font.prototype.getMetrics = function () {
-        return this.metrics;
+        if (!this.fontDataMetrics.metrics)
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('Missing metrics or font data');
+        return this.fontDataMetrics.metrics;
     };
     // eslint-disable-next-line
     Font.prototype.lookupMetric = function (key, defaultValue) {
+        if (!this.fontDataMetrics.metrics)
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('Missing metrics or font data');
         var parts = key.split('.');
-        var val = this.metrics;
+        var val = this.fontDataMetrics.metrics;
         // console.log('lookupMetric:', key);
         for (var i = 0; i < parts.length; i++) {
             if (val[parts[i]] === undefined) {
@@ -5760,22 +6068,58 @@ var Font = /** @class */ (function () {
         return val;
     };
     Font.prototype.getFontData = function () {
-        return this.fontData;
+        if (!this.fontDataMetrics.fontData)
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('Missing metrics or font data');
+        return this.fontDataMetrics.fontData;
     };
     Font.prototype.getGlyphs = function () {
-        return this.fontData.glyphs;
+        if (!this.fontDataMetrics.fontData)
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('Missing metrics or font data');
+        return this.fontDataMetrics.fontData.glyphs;
     };
     return Font;
 }());
-exports.Font = Font;
 var Fonts = {
-    Bravura: new Font('Bravura', bravura_metrics_1.BravuraMetrics, bravura_glyphs_1.BravuraFont),
-    Gonville: new Font('Gonville', gonville_metrics_1.GonvilleMetrics, gonville_glyphs_1.GonvilleFont),
-    Petaluma: new Font('Petaluma', petaluma_metrics_1.PetalumaMetrics, petaluma_glyphs_1.PetalumaFont),
-    Leland: new Font('Leland', leland_metrics_1.LelandMetrics, leland_glyphs_1.LelandFont),
-    Custom: new Font('Custom', custom_metrics_1.CustomMetrics, custom_glyphs_1.CustomFont),
+    Bravura: function () {
+        return new Font('Bravura');
+    },
+    Gonville: function () {
+        return new Font('Gonville');
+    },
+    Petaluma: function () {
+        return new Font('Petaluma');
+    },
+    Custom: function () {
+        return new Font('Custom');
+    },
+    Leland: function () {
+        return new Font('Leland');
+    },
 };
-exports.Fonts = Fonts;
+
+
+
+/***/ }),
+
+/***/ "./src/fonts/bravura.ts":
+/*!******************************!*\
+  !*** ./src/fonts/bravura.ts ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _bravura_glyphs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bravura_glyphs */ "./src/fonts/bravura_glyphs.ts");
+/* harmony import */ var _bravura_metrics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./bravura_metrics */ "./src/fonts/bravura_metrics.ts");
+
+
+var Bravura = {
+    fontData: _bravura_glyphs__WEBPACK_IMPORTED_MODULE_0__.BravuraFont,
+    metrics: _bravura_metrics__WEBPACK_IMPORTED_MODULE_1__.BravuraMetrics,
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Bravura);
 
 
 /***/ }),
@@ -5784,12 +6128,13 @@ exports.Fonts = Fonts;
 /*!*************************************!*\
   !*** ./src/fonts/bravura_glyphs.ts ***!
   \*************************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.BravuraFont = void 0;
-exports.BravuraFont = {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "BravuraFont": () => (/* binding */ BravuraFont)
+/* harmony export */ });
+var BravuraFont = {
     "glyphs": {
         "bracketTop": {
             "x_min": 0,
@@ -8978,16 +9323,17 @@ exports.BravuraFont = {
 /*!**************************************!*\
   !*** ./src/fonts/bravura_metrics.ts ***!
   \**************************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.BravuraMetrics = void 0;
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "BravuraMetrics": () => (/* binding */ BravuraMetrics)
+/* harmony export */ });
 /**
  * The Bravura font was created by Daniel Spreadbury @ Steinberg.
  * https://github.com/steinbergmedia/bravura/
  */
-exports.BravuraMetrics = {
+var BravuraMetrics = {
     name: 'Bravura',
     smufl: true,
     stave: {
@@ -9250,6 +9596,7 @@ exports.BravuraMetrics = {
             },
         },
         noteHead: {
+            minPadding: 2,
             standard: {
                 restQuarterStemUp: {
                     point: 35,
@@ -9480,16 +9827,40 @@ exports.BravuraMetrics = {
 
 /***/ }),
 
+/***/ "./src/fonts/custom.ts":
+/*!*****************************!*\
+  !*** ./src/fonts/custom.ts ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _custom_glyphs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./custom_glyphs */ "./src/fonts/custom_glyphs.ts");
+/* harmony import */ var _custom_metrics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./custom_metrics */ "./src/fonts/custom_metrics.ts");
+
+
+var Custom = {
+    fontData: _custom_glyphs__WEBPACK_IMPORTED_MODULE_0__.CustomFont,
+    metrics: _custom_metrics__WEBPACK_IMPORTED_MODULE_1__.CustomMetrics,
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Custom);
+
+
+/***/ }),
+
 /***/ "./src/fonts/custom_glyphs.ts":
 /*!************************************!*\
   !*** ./src/fonts/custom_glyphs.ts ***!
   \************************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.CustomFont = void 0;
-exports.CustomFont = {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "CustomFont": () => (/* binding */ CustomFont)
+/* harmony export */ });
+var CustomFont = {
     'resolution': 1000,
     'familyName': 'VexflowCustom',
     'glyphs': {
@@ -9575,12 +9946,13 @@ exports.CustomFont = {
 /*!*************************************!*\
   !*** ./src/fonts/custom_metrics.ts ***!
   \*************************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.CustomMetrics = void 0;
-exports.CustomMetrics = {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "CustomMetrics": () => (/* binding */ CustomMetrics)
+/* harmony export */ });
+var CustomMetrics = {
     name: 'Vexflow-Custom',
     smufl: false,
     glyphs: {}
@@ -9589,16 +9961,40 @@ exports.CustomMetrics = {
 
 /***/ }),
 
+/***/ "./src/fonts/gonville.ts":
+/*!*******************************!*\
+  !*** ./src/fonts/gonville.ts ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _gonville_glyphs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./gonville_glyphs */ "./src/fonts/gonville_glyphs.ts");
+/* harmony import */ var _gonville_metrics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./gonville_metrics */ "./src/fonts/gonville_metrics.ts");
+
+
+var Gonville = {
+    fontData: _gonville_glyphs__WEBPACK_IMPORTED_MODULE_0__.GonvilleFont,
+    metrics: _gonville_metrics__WEBPACK_IMPORTED_MODULE_1__.GonvilleMetrics,
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Gonville);
+
+
+/***/ }),
+
 /***/ "./src/fonts/gonville_glyphs.ts":
 /*!**************************************!*\
   !*** ./src/fonts/gonville_glyphs.ts ***!
   \**************************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.GonvilleFont = void 0;
-exports.GonvilleFont = {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "GonvilleFont": () => (/* binding */ GonvilleFont)
+/* harmony export */ });
+var GonvilleFont = {
     'glyphs': {
         'bracketTop': {
             'x_min': 0,
@@ -10502,16 +10898,17 @@ exports.GonvilleFont = {
 /*!***************************************!*\
   !*** ./src/fonts/gonville_metrics.ts ***!
   \***************************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.GonvilleMetrics = void 0;
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "GonvilleMetrics": () => (/* binding */ GonvilleMetrics)
+/* harmony export */ });
 /**
  * The Gonville font was created by Simon Tatham.
  * https://www.chiark.greenend.org.uk/~sgtatham/gonville/
  */
-exports.GonvilleMetrics = {
+var GonvilleMetrics = {
     name: 'Gonville',
     smufl: false,
     stave: {
@@ -10689,6 +11086,7 @@ exports.GonvilleMetrics = {
             },
         },
         noteHead: {
+            minPadding: 2,
             custom: {
                 noteheadDiamondWholeStemUp: {
                     shiftX: -6,
@@ -10884,16 +11282,40 @@ exports.GonvilleMetrics = {
 
 /***/ }),
 
-/***/ "./src/fonts/leland_glyphs.js":
+/***/ "./src/fonts/leland.ts":
+/*!*****************************!*\
+  !*** ./src/fonts/leland.ts ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _leland_glyphs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./leland_glyphs */ "./src/fonts/leland_glyphs.ts");
+/* harmony import */ var _leland_metrics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./leland_metrics */ "./src/fonts/leland_metrics.ts");
+
+
+var Leland = {
+    fontData: _leland_glyphs__WEBPACK_IMPORTED_MODULE_0__.LelandFont,
+    metrics: _leland_metrics__WEBPACK_IMPORTED_MODULE_1__.LelandMetrics,
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Leland);
+
+
+/***/ }),
+
+/***/ "./src/fonts/leland_glyphs.ts":
 /*!************************************!*\
-  !*** ./src/fonts/leland_glyphs.js ***!
+  !*** ./src/fonts/leland_glyphs.ts ***!
   \************************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.LelandFont = void 0;
-exports.LelandFont = {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "LelandFont": () => (/* binding */ LelandFont)
+/* harmony export */ });
+var LelandFont = {
     "glyphs": {
         "bracketTop": {
             "x_min": 0,
@@ -11954,16 +12376,17 @@ exports.LelandFont = {
 
 /***/ }),
 
-/***/ "./src/fonts/leland_metrics.js":
+/***/ "./src/fonts/leland_metrics.ts":
 /*!*************************************!*\
-  !*** ./src/fonts/leland_metrics.js ***!
+  !*** ./src/fonts/leland_metrics.ts ***!
   \*************************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.LelandMetrics = void 0;
-exports.LelandMetrics = {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "LelandMetrics": () => (/* binding */ LelandMetrics)
+/* harmony export */ });
+var LelandMetrics = {
     name: 'Leland',
     smufl: true,
     stave: {
@@ -12220,6 +12643,7 @@ exports.LelandMetrics = {
             }
         },
         noteHead: {
+            minPadding: 2,
             standard: {
                 restQuarterStemUp: {
                     point: 35,
@@ -12450,16 +12874,88 @@ exports.LelandMetrics = {
 
 /***/ }),
 
+/***/ "./src/fonts/loadStatic.ts":
+/*!*********************************!*\
+  !*** ./src/fonts/loadStatic.ts ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "loadBravura": () => (/* binding */ loadBravura),
+/* harmony export */   "loadGonville": () => (/* binding */ loadGonville),
+/* harmony export */   "loadPetaluma": () => (/* binding */ loadPetaluma),
+/* harmony export */   "loadCustom": () => (/* binding */ loadCustom),
+/* harmony export */   "loadLeland": () => (/* binding */ loadLeland)
+/* harmony export */ });
+/* harmony import */ var _fonts_bravura__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../fonts/bravura */ "./src/fonts/bravura.ts");
+/* harmony import */ var _fonts_gonville__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../fonts/gonville */ "./src/fonts/gonville.ts");
+/* harmony import */ var _fonts_petaluma__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../fonts/petaluma */ "./src/fonts/petaluma.ts");
+/* harmony import */ var _fonts_custom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../fonts/custom */ "./src/fonts/custom.ts");
+/* harmony import */ var _fonts_leland__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../fonts/leland */ "./src/fonts/leland.ts");
+
+
+
+
+
+function loadBravura(fontDataMetrics) {
+    fontDataMetrics.fontData = _fonts_bravura__WEBPACK_IMPORTED_MODULE_0__.default.fontData;
+    fontDataMetrics.metrics = _fonts_bravura__WEBPACK_IMPORTED_MODULE_0__.default.metrics;
+}
+function loadGonville(fontDataMetrics) {
+    fontDataMetrics.fontData = _fonts_gonville__WEBPACK_IMPORTED_MODULE_1__.default.fontData;
+    fontDataMetrics.metrics = _fonts_gonville__WEBPACK_IMPORTED_MODULE_1__.default.metrics;
+}
+function loadPetaluma(fontDataMetrics) {
+    fontDataMetrics.fontData = _fonts_petaluma__WEBPACK_IMPORTED_MODULE_2__.default.fontData;
+    fontDataMetrics.metrics = _fonts_petaluma__WEBPACK_IMPORTED_MODULE_2__.default.metrics;
+}
+function loadCustom(fontDataMetrics) {
+    fontDataMetrics.fontData = _fonts_custom__WEBPACK_IMPORTED_MODULE_3__.default.fontData;
+    fontDataMetrics.metrics = _fonts_custom__WEBPACK_IMPORTED_MODULE_3__.default.metrics;
+}
+function loadLeland(fontDataMetrics) {
+    fontDataMetrics.fontData = _fonts_leland__WEBPACK_IMPORTED_MODULE_4__.default.fontData;
+    fontDataMetrics.metrics = _fonts_leland__WEBPACK_IMPORTED_MODULE_4__.default.metrics;
+}
+
+
+/***/ }),
+
+/***/ "./src/fonts/petaluma.ts":
+/*!*******************************!*\
+  !*** ./src/fonts/petaluma.ts ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _petaluma_glyphs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./petaluma_glyphs */ "./src/fonts/petaluma_glyphs.ts");
+/* harmony import */ var _petaluma_metrics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./petaluma_metrics */ "./src/fonts/petaluma_metrics.ts");
+
+
+var Petaluma = {
+    fontData: _petaluma_glyphs__WEBPACK_IMPORTED_MODULE_0__.PetalumaFont,
+    metrics: _petaluma_metrics__WEBPACK_IMPORTED_MODULE_1__.PetalumaMetrics,
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Petaluma);
+
+
+/***/ }),
+
 /***/ "./src/fonts/petaluma_glyphs.ts":
 /*!**************************************!*\
   !*** ./src/fonts/petaluma_glyphs.ts ***!
   \**************************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.PetalumaFont = void 0;
-exports.PetalumaFont = {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "PetalumaFont": () => (/* binding */ PetalumaFont)
+/* harmony export */ });
+var PetalumaFont = {
     "glyphs": {
         "bracketTop": {
             "x_min": 0,
@@ -15648,16 +16144,17 @@ exports.PetalumaFont = {
 /*!***************************************!*\
   !*** ./src/fonts/petaluma_metrics.ts ***!
   \***************************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.PetalumaMetrics = void 0;
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "PetalumaMetrics": () => (/* binding */ PetalumaMetrics)
+/* harmony export */ });
 /**
  * The Petaluma font was created by Steinberg Media.
  * https://github.com/steinbergmedia/petaluma
  */
-exports.PetalumaMetrics = {
+var PetalumaMetrics = {
     name: 'Petaluma',
     smufl: true,
     stave: {
@@ -15943,6 +16440,7 @@ exports.PetalumaMetrics = {
             },
         },
         noteHead: {
+            minPadding: 2,
             standard: {
                 noteheadBlackStemUp: {
                     shiftX: 1.625,
@@ -16201,12 +16699,13 @@ exports.PetalumaMetrics = {
 /*!*************************************************!*\
   !*** ./src/fonts/petalumascript_textmetrics.ts ***!
   \*************************************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.PetalumaScriptTextMetrics = void 0;
-exports.PetalumaScriptTextMetrics = {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "PetalumaScriptTextMetrics": () => (/* binding */ PetalumaScriptTextMetrics)
+/* harmony export */ });
+var PetalumaScriptTextMetrics = {
     name: 'petalumaScript',
     smufl: false,
     spacing: 50,
@@ -17078,12 +17577,13 @@ exports.PetalumaScriptTextMetrics = {
 /*!*********************************************!*\
   !*** ./src/fonts/robotoslab_textmetrics.ts ***!
   \*********************************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.RobotoSlabTextMetrics = void 0;
-exports.RobotoSlabTextMetrics = {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "RobotoSlabTextMetrics": () => (/* binding */ RobotoSlabTextMetrics)
+/* harmony export */ });
+var RobotoSlabTextMetrics = {
     name: 'Roboto Slab',
     smufl: false,
     spacing: 50,
@@ -17956,28 +18456,25 @@ exports.RobotoSlabTextMetrics = {
 /*!**************************!*\
   !*** ./src/formatter.ts ***!
   \**************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Formatter": () => (/* binding */ Formatter)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _beam__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./beam */ "./src/beam.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
+/* harmony import */ var _voice__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./voice */ "./src/voice.ts");
+/* harmony import */ var _staveconnector__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./staveconnector */ "./src/staveconnector.ts");
+/* harmony import */ var _modifiercontext__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modifiercontext */ "./src/modifiercontext.ts");
+/* harmony import */ var _tickcontext__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
+/* harmony import */ var _stave__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./stave */ "./src/stave.ts");
+/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-//
-// This file implements the formatting and layout algorithms that are used
-// to position notes in a voice. The algorithm can align multiple voices both
-// within a stave, and across multiple staves.
-//
-// To do this, the formatter breaks up voices into a grid of rational-valued
-// `ticks`, to which each note is assigned. Then, minimum widths are assigned
-// to each tick based on the widths of the notes and modifiers in that tick. This
-// establishes the smallest amount of space required for each tick.
-//
-// Finally, the formatter distributes the left over space proportionally to
-// all the ticks, setting the `x` values of the notes in each tick.
-//
-// See `tests/formatter_tests.js` for usage examples. The helper functions included
-// here (`FormatAndDraw`, `FormatAndDrawTab`) also serve as useful usage examples.
-var __assign = (this && this.__assign) || function () {
+// MIT License
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -17988,20 +18485,20 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Formatter = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var beam_1 = __webpack_require__(/*! ./beam */ "./src/beam.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
-var voice_1 = __webpack_require__(/*! ./voice */ "./src/voice.ts");
-var staveconnector_1 = __webpack_require__(/*! ./staveconnector */ "./src/staveconnector.ts");
-var modifiercontext_1 = __webpack_require__(/*! ./modifiercontext */ "./src/modifiercontext.ts");
-var tickcontext_1 = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
-var stave_1 = __webpack_require__(/*! ./stave */ "./src/stave.ts");
-var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-// Create `Alignment`s for each tick in `voices`. Also calculate the
-// total number of ticks in voices.
+
+
+
+
+
+
+
+
+
+
+/**
+ * Create `Alignment`s for each tick in `voices`. Also calculate the
+ * total number of ticks in voices.
+ */
 function createContexts(voices, makeContext, addToContext) {
     var resolutionMultiplier = Formatter.getResolutionMultiplier(voices);
     // Initialize tick maps.
@@ -18013,7 +18510,7 @@ function createContexts(voices, makeContext, addToContext) {
     voices.forEach(function (voice, voiceIndex) {
         // Use resolution multiplier as denominator so that no additional expansion
         // of fractional tick values is needed.
-        var ticksUsed = new fraction_1.Fraction(0, resolutionMultiplier);
+        var ticksUsed = new _fraction__WEBPACK_IMPORTED_MODULE_3__.Fraction(0, resolutionMultiplier);
         voice.getTickables().forEach(function (tickable) {
             var integerTicks = ticksUsed.numerator;
             // If we have no tick context for this tick, create one.
@@ -18036,7 +18533,6 @@ function createContexts(voices, makeContext, addToContext) {
         resolutionMultiplier: resolutionMultiplier,
     };
 }
-// To enable logging for this class. Set `Vex.Flow.Formatter.DEBUG` to `true`.
 // eslint-disable-next-line
 function L() {
     var args = [];
@@ -18044,9 +18540,9 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (Formatter.DEBUG)
-        util_1.log('Vex.Flow.Formatter', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.Formatter', args);
 }
-// Helper function to locate the next non-rest note(s).
+/** Helper function to locate the next non-rest note(s). */
 function lookAhead(notes, restLine, i, compare) {
     // If no valid next note group, nextRestLine is same as current.
     var nextRestLine = restLine;
@@ -18062,10 +18558,26 @@ function lookAhead(notes, restLine, i, compare) {
     if (compare && restLine !== nextRestLine) {
         var top_1 = Math.max(restLine, nextRestLine);
         var bot = Math.min(restLine, nextRestLine);
-        nextRestLine = util_1.midLine(top_1, bot);
+        nextRestLine = (0,_util__WEBPACK_IMPORTED_MODULE_0__.midLine)(top_1, bot);
     }
     return nextRestLine;
 }
+/**
+ * Format implements the formatting and layout algorithms that are used
+ * to position notes in a voice. The algorithm can align multiple voices both
+ * within a stave, and across multiple staves.
+ *
+ * To do this, the formatter breaks up voices into a grid of rational-valued
+ * `ticks`, to which each note is assigned. Then, minimum widths are assigned
+ * to each tick based on the widths of the notes and modifiers in that tick. This
+ * establishes the smallest amount of space required for each tick.
+ *
+ * Finally, the formatter distributes the left over space proportionally to
+ * all the ticks, setting the `x` values of the notes in each tick.
+ *
+ * See `tests/formatter_tests.ts` for usage examples. The helper functions included
+ * here (`FormatAndDraw`, `FormatAndDrawTab`) also serve as useful usage examples.
+ */
 var Formatter = /** @class */ (function () {
     function Formatter(formatterOptions) {
         if (formatterOptions === void 0) { formatterOptions = {}; }
@@ -18090,22 +18602,24 @@ var Formatter = /** @class */ (function () {
         this.voices = [];
         this.lossHistory = [];
     }
-    // Helper function to layout "notes" one after the other without
-    // regard for proportions. Useful for tests and debugging.
+    /**
+     * Helper function to layout "notes" one after the other without
+     * regard for proportions. Useful for tests and debugging.
+     */
     Formatter.SimpleFormat = function (notes, x, _a) {
         if (x === void 0) { x = 0; }
         var _b = _a === void 0 ? {} : _a, _c = _b.paddingBetween, paddingBetween = _c === void 0 ? 10 : _c;
         notes.reduce(function (accumulator, note) {
-            note.addToModifierContext(new modifiercontext_1.ModifierContext());
-            var tick = new tickcontext_1.TickContext().addTickable(note).preFormat();
+            note.addToModifierContext(new _modifiercontext__WEBPACK_IMPORTED_MODULE_6__.ModifierContext());
+            var tick = new _tickcontext__WEBPACK_IMPORTED_MODULE_7__.TickContext().addTickable(note).preFormat();
             var metrics = tick.getMetrics();
             tick.setX(accumulator + metrics.totalLeftPx);
             return accumulator + tick.getWidth() + metrics.totalRightPx + paddingBetween;
         }, x);
     };
-    // Helper function to plot formatter debug info.
+    /** Helper function to plot formatter debug info. */
     Formatter.plotDebugging = function (ctx, formatter, xPos, y1, y2, options) {
-        options = __assign({ stavePadding: flow_1.Flow.DEFAULT_FONT_STACK[0].lookupMetric('stave.padding') }, options);
+        options = __assign({ stavePadding: _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.DEFAULT_FONT_STACK[0].lookupMetric('stave.padding') }, options);
         var x = xPos + options.stavePadding;
         var contextGaps = formatter.contextGaps;
         function stroke(x1, x2, color) {
@@ -18126,22 +18640,21 @@ var Formatter = /** @class */ (function () {
         ctx.fillText("Loss: " + (formatter.totalCost || 0).toFixed(2) + " Shift: " + (formatter.totalShift || 0).toFixed(2) + " Gap: " + contextGaps.total.toFixed(2), x - 20, y2 + 27);
         ctx.restore();
     };
-    // Helper function to format and draw a single voice. Returns a bounding
-    // box for the notation.
-    //
-    // Parameters:
-    // * `ctx` - The rendering context
-    // * `stave` - The stave to which to draw (`Stave` or `TabStave`)
-    // * `notes` - Array of `Note` instances (`Note`, `TextNote`, `TabNote`, etc.)
-    // * `params` - One of below:
-    //    * Setting `autobeam` only `(context, stave, notes, true)` or
-    //      `(ctx, stave, notes, {autobeam: true})`
-    //    * Setting `align_rests` a struct is needed `(context, stave, notes, {align_rests: true})`
-    //    * Setting both a struct is needed `(context, stave, notes, {
-    //      autobeam: true, align_rests: true})`
-    //
-    // `autobeam` automatically generates beams for the notes.
-    // `align_rests` aligns rests with nearby notes.
+    /**
+     * Helper function to format and draw a single voice. Returns a bounding
+     * box for the notation.
+     * @param ctx  the rendering context
+     * @param stave the stave to which to draw (`Stave` or `TabStave`)
+     * @param notes array of `Note` instances (`Note`, `TextNote`, `TabNote`, etc.)
+     * @param params one of below:
+     *    * Setting `autobeam` only `(context, stave, notes, true)` or
+     *      `(ctx, stave, notes, {autobeam: true})`
+     *    * Setting `align_rests` a struct is needed `(context, stave, notes, {align_rests: true})`
+     *    * Setting both a struct is needed `(context, stave, notes, {
+     *      autobeam: true, align_rests: true})`
+     *    * `autobeam` automatically generates beams for the notes.
+     *    * `align_rests` aligns rests with nearby notes.
+     */
     Formatter.FormatAndDraw = function (ctx, stave, notes, params) {
         var options = {
             auto_beam: false,
@@ -18154,9 +18667,9 @@ var Formatter = /** @class */ (function () {
             options.auto_beam = params;
         }
         // Start by creating a voice and adding all the notes to it.
-        var voice = new voice_1.Voice(flow_1.Flow.TIME4_4).setMode(voice_1.Voice.Mode.SOFT).addTickables(notes);
+        var voice = new _voice__WEBPACK_IMPORTED_MODULE_4__.Voice(_flow__WEBPACK_IMPORTED_MODULE_2__.Flow.TIME4_4).setMode(_voice__WEBPACK_IMPORTED_MODULE_4__.Voice.Mode.SOFT).addTickables(notes);
         // Then create beams, if requested.
-        var beams = options.auto_beam ? beam_1.Beam.applyAndGetBeams(voice) : [];
+        var beams = options.auto_beam ? _beam__WEBPACK_IMPORTED_MODULE_1__.Beam.applyAndGetBeams(voice) : [];
         // Instantiate a `Formatter` and format the notes.
         new Formatter()
             .joinVoices([voice]) // , { align_rests: options.align_rests })
@@ -18167,19 +18680,19 @@ var Formatter = /** @class */ (function () {
         // Return the bounding box of the voice.
         return voice.getBoundingBox();
     };
-    // Helper function to format and draw aligned tab and stave notes in two
-    // separate staves.
-    //
-    // Parameters:
-    // * `ctx` - The rendering context
-    // * `tabstave` - A `TabStave` instance on which to render `TabNote`s.
-    // * `stave` - A `Stave` instance on which to render `Note`s.
-    // * `notes` - Array of `Note` instances for the stave (`Note`, `BarNote`, etc.)
-    // * `tabnotes` - Array of `Note` instances for the tab stave (`TabNote`, `BarNote`, etc.)
-    // * `autobeam` - Automatically generate beams.
-    // * `params` - A configuration object:
-    //    * `autobeam` automatically generates beams for the notes.
-    //    * `align_rests` aligns rests with nearby notes.
+    /**
+     * Helper function to format and draw aligned tab and stave notes in two
+     * separate staves.
+     * @param ctx the rendering context
+     * @param tabstave a `TabStave` instance on which to render `TabNote`s.
+     * @param stave a `Stave` instance on which to render `Note`s.
+     * @param notes array of `Note` instances for the stave (`Note`, `BarNote`, etc.)
+     * @param tabnotes array of `Note` instances for the tab stave (`TabNote`, `BarNote`, etc.)
+     * @param autobeam automatically generate beams.
+     * @param params a configuration object:
+     *    * `autobeam` automatically generates beams for the notes.
+     *    * `align_rests` aligns rests with nearby notes.
+     */
     Formatter.FormatAndDrawTab = function (ctx, tabstave, stave, tabnotes, notes, autobeam, params) {
         var opts = {
             auto_beam: autobeam,
@@ -18192,11 +18705,11 @@ var Formatter = /** @class */ (function () {
             opts.auto_beam = params;
         }
         // Create a `4/4` voice for `notes`.
-        var notevoice = new voice_1.Voice(flow_1.Flow.TIME4_4).setMode(voice_1.Voice.Mode.SOFT).addTickables(notes);
+        var notevoice = new _voice__WEBPACK_IMPORTED_MODULE_4__.Voice(_flow__WEBPACK_IMPORTED_MODULE_2__.Flow.TIME4_4).setMode(_voice__WEBPACK_IMPORTED_MODULE_4__.Voice.Mode.SOFT).addTickables(notes);
         // Create a `4/4` voice for `tabnotes`.
-        var tabvoice = new voice_1.Voice(flow_1.Flow.TIME4_4).setMode(voice_1.Voice.Mode.SOFT).addTickables(tabnotes);
+        var tabvoice = new _voice__WEBPACK_IMPORTED_MODULE_4__.Voice(_flow__WEBPACK_IMPORTED_MODULE_2__.Flow.TIME4_4).setMode(_voice__WEBPACK_IMPORTED_MODULE_4__.Voice.Mode.SOFT).addTickables(tabnotes);
         // Then create beams, if requested.
-        var beams = opts.auto_beam ? beam_1.Beam.applyAndGetBeams(notevoice) : [];
+        var beams = opts.auto_beam ? _beam__WEBPACK_IMPORTED_MODULE_1__.Beam.applyAndGetBeams(notevoice) : [];
         // Instantiate a `Formatter` and align tab and stave notes.
         new Formatter()
             .joinVoices([notevoice]) // , { align_rests: opts.align_rests })
@@ -18207,17 +18720,17 @@ var Formatter = /** @class */ (function () {
         tabvoice.draw(ctx, tabstave);
         beams.forEach(function (beam) { return beam.setContext(ctx).draw(); });
         // Draw a connector between tab and note staves.
-        new staveconnector_1.StaveConnector(stave, tabstave).setContext(ctx).draw();
+        new _staveconnector__WEBPACK_IMPORTED_MODULE_5__.StaveConnector(stave, tabstave).setContext(ctx).draw();
     };
-    // Auto position rests based on previous/next note positions.
-    //
-    // Params:
-    // * `notes`: An array of notes.
-    // * `alignAllNotes`: If set to false, only aligns non-beamed notes.
-    // * `alignTuplets`: If set to false, ignores tuplets.
+    /**
+     * Auto position rests based on previous/next note positions.
+     * @param notes an array of notes.
+     * @param alignAllNotes if set to false, only aligns non-beamed notes.
+     * @param alignTuplets if set to false, ignores tuplets.
+     */
     Formatter.AlignRestsToNotes = function (notes, alignAllNotes, alignTuplets) {
         notes.forEach(function (note, index) {
-            if (note instanceof stavenote_1.StaveNote && note.isRest()) {
+            if (note instanceof _stavenote__WEBPACK_IMPORTED_MODULE_9__.StaveNote && note.isRest()) {
                 if (note.getTuplet() && !alignTuplets)
                     return;
                 // If activated rests not on default can be rendered as specified.
@@ -18257,12 +18770,14 @@ var Formatter = /** @class */ (function () {
         });
         return formatter.preCalculateMinTotalWidth(voices);
     };
-    // Find all the rests in each of the `voices` and align them
-    // to neighboring notes. If `alignAllNotes` is `false`, then only
-    // align non-beamed notes.
+    /**
+     * Find all the rests in each of the `voices` and align them
+     * to neighboring notes. If `alignAllNotes` is `false`, then only
+     * align non-beamed notes.
+     */
     Formatter.prototype.alignRests = function (voices, alignAllNotes) {
         if (!voices || !voices.length) {
-            throw new util_1.RuntimeError('BadArgument', 'No voices to format rests');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArgument', 'No voices to format rests');
         }
         voices.forEach(function (voice) { return Formatter.AlignRestsToNotes(voice.getTickables(), alignAllNotes); });
     };
@@ -18281,12 +18796,12 @@ var Formatter = /** @class */ (function () {
      * and width will need no extra padding, and all these quantities will be
      * zero in that case.
      *
-     * @param {Voice []} voices - the voices that contain the notes
-     * @returns {number} - the estimated width in pixels
+     * @param voices the voices that contain the notes
+     * @returns the estimated width in pixels
      */
     Formatter.prototype.preCalculateMinTotalWidth = function (voices) {
         var _this = this;
-        var unalignedPadding = flow_1.Flow.DEFAULT_FONT_STACK[0].lookupMetric('stave.unalignedNotePadding');
+        var unalignedPadding = _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.DEFAULT_FONT_STACK[0].lookupMetric('stave.unalignedNotePadding');
         // Calculate additional padding based on 3 methods:
         // 1) unaligned beats in voices, 2) variance of width, 3) variance of durations
         var unalignedCtxCount = 0;
@@ -18300,7 +18815,7 @@ var Formatter = /** @class */ (function () {
         // Create tick contexts if not already created.
         if (!this.tickContexts) {
             if (!voices) {
-                throw new util_1.RuntimeError('BadArgument', "'voices' required to run preCalculateMinTotalWidth");
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArgument', "'voices' required to run preCalculateMinTotalWidth");
             }
             this.createTickContexts(voices);
         }
@@ -18340,47 +18855,51 @@ var Formatter = /** @class */ (function () {
         var unalignedPad = unalignedPadding * unalignedCtxCount;
         return this.minTotalWidth + Math.max(unalignedPad, padmax);
     };
-    // Get minimum width required to render all voices. Either `format` or
-    // `preCalculateMinTotalWidth` must be called before this method.
+    /**
+     * Get minimum width required to render all voices. Either `format` or
+     * `preCalculateMinTotalWidth` must be called before this method.
+     */
     Formatter.prototype.getMinTotalWidth = function () {
         if (!this.hasMinTotalWidth) {
-            throw new util_1.RuntimeError('NoMinTotalWidth', "Call 'preCalculateMinTotalWidth' or 'preFormat' before calling 'getMinTotalWidth'");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoMinTotalWidth', "Call 'preCalculateMinTotalWidth' or 'preFormat' before calling 'getMinTotalWidth'");
         }
         return this.minTotalWidth;
     };
-    // calculates the resolution multiplier for `voices`.
+    /** Calculate the resolution multiplier for `voices`. */
     Formatter.getResolutionMultiplier = function (voices) {
         if (!voices || !voices.length) {
-            throw new util_1.RuntimeError('BadArgument', 'No voices to format');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArgument', 'No voices to format');
         }
         var totalTicks = voices[0].getTotalTicks();
         var resolutionMultiplier = voices.reduce(function (accumulator, voice) {
             if (!voice.getTotalTicks().equals(totalTicks)) {
-                throw new util_1.RuntimeError('TickMismatch', 'Voices should have same total note duration in ticks.');
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('TickMismatch', 'Voices should have same total note duration in ticks.');
             }
-            if (voice.getMode() === voice_1.Voice.Mode.STRICT && !voice.isComplete()) {
-                throw new util_1.RuntimeError('IncompleteVoice', 'Voice does not have enough notes.');
+            if (voice.getMode() === _voice__WEBPACK_IMPORTED_MODULE_4__.Voice.Mode.STRICT && !voice.isComplete()) {
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('IncompleteVoice', 'Voice does not have enough notes.');
             }
-            return Math.max(accumulator, fraction_1.Fraction.LCM(accumulator, voice.getResolutionMultiplier()));
+            return Math.max(accumulator, _fraction__WEBPACK_IMPORTED_MODULE_3__.Fraction.LCM(accumulator, voice.getResolutionMultiplier()));
         }, 1);
         return resolutionMultiplier;
     };
-    // Create `ModifierContext`s for each tick in `voices`.
+    /** Create `ModifierContext`s for each tick in `voices`. */
     Formatter.prototype.createModifierContexts = function (voices) {
         var fn = function (tickable, context) {
             return tickable.addToModifierContext(context);
         };
-        var contexts = createContexts(voices, function () { return new modifiercontext_1.ModifierContext(); }, fn);
+        var contexts = createContexts(voices, function () { return new _modifiercontext__WEBPACK_IMPORTED_MODULE_6__.ModifierContext(); }, fn);
         this.modifierContexts = contexts;
         return contexts;
     };
-    // Create `TickContext`s for each tick in `voices`. Also calculate the
-    // total number of ticks in voices.
+    /**
+     * Create `TickContext`s for each tick in `voices`. Also calculate the
+     * total number of ticks in voices.
+     */
     Formatter.prototype.createTickContexts = function (voices) {
         var fn = function (tickable, context, voiceIndex) {
             return context.addTickable(tickable, voiceIndex);
         };
-        var contexts = createContexts(voices, function (tick) { return new tickcontext_1.TickContext(tick); }, fn);
+        var contexts = createContexts(voices, function (tick) { return new _tickcontext__WEBPACK_IMPORTED_MODULE_7__.TickContext(tick); }, fn);
         this.tickContexts = contexts;
         var contextArray = this.tickContexts.array;
         contextArray.forEach(function (context) {
@@ -18388,17 +18907,19 @@ var Formatter = /** @class */ (function () {
         });
         return contexts;
     };
-    // This is the core formatter logic. Format voices and justify them
-    // to `justifyWidth` pixels. `renderingContext` is required to justify elements
-    // that can't retreive widths without a canvas. This method sets the `x` positions
-    // of all the tickables/notes in the formatter.
+    /**
+     * This is the core formatter logic. Format voices and justify them
+     * to `justifyWidth` pixels. `renderingContext` is required to justify elements
+     * that can't retreive widths without a canvas. This method sets the `x` positions
+     * of all the tickables/notes in the formatter.
+     */
     Formatter.prototype.preFormat = function (justifyWidth, renderingContext, voicesParam, stave) {
         var _this = this;
         if (justifyWidth === void 0) { justifyWidth = 0; }
         // Initialize context maps.
         var contexts = this.tickContexts;
         if (!contexts) {
-            throw new util_1.RuntimeError('NoTickContexts', 'preFormat requires TickContexs');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoTickContexts', 'preFormat requires TickContexs');
         }
         var contextList = contexts.list, contextMap = contexts.map;
         // Reset loss history for evaluator.
@@ -18526,7 +19047,7 @@ var Formatter = /** @class */ (function () {
                 if (index > 0) {
                     var contextX = context.getX();
                     var ideal = idealDistances[index];
-                    var errorPx = util_1.check(ideal.fromTickable).getX() + ideal.expectedDistance - (contextX + spaceAccum);
+                    var errorPx = (0,_util__WEBPACK_IMPORTED_MODULE_0__.check)(ideal.fromTickable).getX() + ideal.expectedDistance - (contextX + spaceAccum);
                     var negativeShiftPx = 0;
                     if (errorPx > 0) {
                         spaceAccum += errorPx;
@@ -18550,7 +19071,7 @@ var Formatter = /** @class */ (function () {
             firstContext.getMetrics().totalLeftPx;
         var targetWidth = adjustedJustifyWidth;
         var actualWidth = shiftToIdealDistances(calculateIdealDistances(targetWidth));
-        var musicFont = flow_1.Flow.DEFAULT_FONT_STACK[0];
+        var musicFont = _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.DEFAULT_FONT_STACK[0];
         var paddingMax = musicFont.lookupMetric('stave.endPaddingMax');
         var paddingMin = musicFont.lookupMetric('stave.endPaddingMin');
         var maxX = adjustedJustifyWidth - paddingMin;
@@ -18569,7 +19090,7 @@ var Formatter = /** @class */ (function () {
         this.justifyWidth = justifyWidth;
         return this.evaluate();
     };
-    // Calculate the total cost of this formatting decision.
+    /** Calculate the total cost of this formatting decision. */
     Formatter.prototype.evaluate = function () {
         var _this = this;
         if (!this.tickContexts)
@@ -18653,13 +19174,14 @@ var Formatter = /** @class */ (function () {
         this.lossHistory.push(this.totalCost);
         return this.totalCost;
     };
-    // Run a single iteration of rejustification. At a high level, this method calculates
-    // the overall "loss" (or cost) of this layout, and repositions tickcontexts in an
-    // attempt to reduce the cost. You can call this method multiple times until it finds
-    // and oscillates around a global minimum.
-    //
-    // Alpha is the "learning rate" for the formatter. It determines how much of a shift
-    // the formatter should make based on its cost function.
+    /**
+     * Run a single iteration of rejustification. At a high level, this method calculates
+     * the overall "loss" (or cost) of this layout, and repositions tickcontexts in an
+     * attempt to reduce the cost. You can call this method multiple times until it finds
+     * and oscillates around a global minimum.
+     * @param alpha the "learning rate" for the formatter. It determines how much of a shift
+     * the formatter should make based on its cost function.
+     */
     Formatter.prototype.tune = function (options) {
         var _this = this;
         if (!this.tickContexts)
@@ -18697,14 +19219,16 @@ var Formatter = /** @class */ (function () {
                     shift = 0;
                 }
             }
-            shift *= util_1.check(options).alpha;
+            shift *= (0,_util__WEBPACK_IMPORTED_MODULE_0__.check)(options).alpha;
             _this.totalShift += shift;
         });
         return this.evaluate();
     };
-    // This is the top-level call for all formatting logic completed
-    // after `x` *and* `y` values have been computed for the notes
-    // in the voices.
+    /**
+     * This is the top-level call for all formatting logic completed
+     * after `x` *and* `y` values have been computed for the notes
+     * in the voices.
+     */
     Formatter.prototype.postFormat = function () {
         var postFormatContexts = function (contexts) {
             return contexts.list.forEach(function (tick) { return contexts.map[tick].postFormat(); });
@@ -18715,21 +19239,25 @@ var Formatter = /** @class */ (function () {
             postFormatContexts(this.tickContexts);
         return this;
     };
-    // Take all `voices` and create `ModifierContext`s out of them. This tells
-    // the formatters that the voices belong on a single stave.
+    /**
+     * Take all `voices` and create `ModifierContext`s out of them. This tells
+     * the formatters that the voices belong on a single stave.
+     */
     Formatter.prototype.joinVoices = function (voices) {
         this.createModifierContexts(voices);
         this.hasMinTotalWidth = false;
         return this;
     };
-    // Align rests in voices, justify the contexts, and position the notes
-    // so voices are aligned and ready to render onto the stave. This method
-    // mutates the `x` positions of all tickables in `voices`.
-    //
-    // Voices are full justified to fit in `justifyWidth` pixels.
-    //
-    // Set `options.context` to the rendering context. Set `options.align_rests`
-    // to true to enable rest alignment.
+    /**
+     * Align rests in voices, justify the contexts, and position the notes
+     * so voices are aligned and ready to render onto the stave. This method
+     * mutates the `x` positions of all tickables in `voices`.
+     *
+     * Voices are full justified to fit in `justifyWidth` pixels.
+     *
+     * Set `options.context` to the rendering context. Set `options.align_rests`
+     * to true to enable rest alignment.
+     */
     Formatter.prototype.format = function (voices, justifyWidth, options) {
         var opts = __assign({ align_rests: false }, options);
         this.voices = voices;
@@ -18750,13 +19278,13 @@ var Formatter = /** @class */ (function () {
     Formatter.prototype.formatToStave = function (voices, stave, optionsParam) {
         var options = __assign({ padding: 10, context: stave.getContext() }, optionsParam);
         // eslint-disable-next-line
-        var justifyWidth = stave.getNoteEndX() - stave.getNoteStartX() - stave_1.Stave.defaultPadding;
+        var justifyWidth = stave.getNoteEndX() - stave.getNoteStartX() - _stave__WEBPACK_IMPORTED_MODULE_8__.Stave.defaultPadding;
         L('Formatting voices to width: ', justifyWidth);
         return this.format(voices, justifyWidth, options);
     };
     return Formatter;
 }());
-exports.Formatter = Formatter;
+
 
 
 /***/ }),
@@ -18765,22 +19293,21 @@ exports.Formatter = Formatter;
 /*!*************************!*\
   !*** ./src/fraction.ts ***!
   \*************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Fraction": () => (/* binding */ Fraction)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-// Fraction class that represents a rational number
-//
 // @author zz85
 // @author incompleteopus (modifications)
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Fraction = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
+// MIT License
+
 /** Fraction represents a rational number. */
 var Fraction = /** @class */ (function () {
-    /** Constructs providing numerator and denominator. */
+    /** Construct providing numerator and denominator. */
     function Fraction(numerator, denominator) {
         this.numerator = 1;
         this.denominator = 1;
@@ -18790,8 +19317,8 @@ var Fraction = /** @class */ (function () {
      * GCD: Greatest common divisor using Euclidean algorithm.
      */
     Fraction.GCD = function (a, b) {
-        if (typeof a !== 'number' || typeof b !== 'number') {
-            throw new util_1.RuntimeError('BadArgument', "Invalid numbers: " + a + ", " + b);
+        if (typeof a !== 'number' || Number.isNaN(a) || a === 0 || typeof b !== 'number' || Number.isNaN(b) || b === 0) {
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArgument', "Invalid numbers: " + a + ", " + b);
         }
         var t;
         while (b !== 0) {
@@ -18826,7 +19353,7 @@ var Fraction = /** @class */ (function () {
         args.shift();
         return Fraction.LCM(arg0, Fraction.LCMM(args));
     };
-    /** Sets numerator and denominator. */
+    /** Set numerator and denominator. */
     Fraction.prototype.set = function (numerator, denominator) {
         if (numerator === void 0) { numerator = 1; }
         if (denominator === void 0) { denominator = 1; }
@@ -18834,11 +19361,11 @@ var Fraction = /** @class */ (function () {
         this.denominator = denominator;
         return this;
     };
-    /** Returns the value of the fraction. */
+    /** Return the value of the fraction. */
     Fraction.prototype.value = function () {
         return this.numerator / this.denominator;
     };
-    /** Simplifies numerator and denominator using GCD. */
+    /** Simplify numerator and denominator using GCD. */
     Fraction.prototype.simplify = function () {
         var u = this.numerator;
         var d = this.denominator;
@@ -18851,7 +19378,7 @@ var Fraction = /** @class */ (function () {
         }
         return this.set(u, d);
     };
-    /** Adds value of another fraction. */
+    /** Add value of another fraction. */
     Fraction.prototype.add = function (param1, param2) {
         if (param1 === void 0) { param1 = 0; }
         if (param2 === void 0) { param2 = 1; }
@@ -18871,7 +19398,7 @@ var Fraction = /** @class */ (function () {
         var u = this.numerator * a + otherNumerator * b;
         return this.set(u, lcm);
     };
-    /** Substracts value of another fraction. */
+    /** Substract value of another fraction. */
     Fraction.prototype.subtract = function (param1, param2) {
         if (param1 === void 0) { param1 = 0; }
         if (param2 === void 0) { param2 = 1; }
@@ -18891,7 +19418,7 @@ var Fraction = /** @class */ (function () {
         var u = this.numerator * a - otherNumerator * b;
         return this.set(u, lcm);
     };
-    /** Multiplies by value of another fraction. */
+    /** Multiply by value of another fraction. */
     Fraction.prototype.multiply = function (param1, param2) {
         if (param1 === void 0) { param1 = 1; }
         if (param2 === void 0) { param2 = 1; }
@@ -18907,7 +19434,7 @@ var Fraction = /** @class */ (function () {
         }
         return this.set(this.numerator * otherNumerator, this.denominator * otherDenominator);
     };
-    /** Divides by value of another Fraction. */
+    /** Divide by value of another Fraction. */
     Fraction.prototype.divide = function (param1, param2) {
         if (param1 === void 0) { param1 = 1; }
         if (param2 === void 0) { param2 = 1; }
@@ -18923,7 +19450,7 @@ var Fraction = /** @class */ (function () {
         }
         return this.set(this.numerator * otherDenominator, this.denominator * otherNumerator);
     };
-    /** Simplifies both sides and checks if they are equal. */
+    /** Simplify both sides and check if they are equal. */
     Fraction.prototype.equals = function (compare) {
         var a = Fraction.__staticFractionA.copy(compare).simplify();
         var b = Fraction.__staticFractionB.copy(this).simplify();
@@ -18949,40 +19476,40 @@ var Fraction = /** @class */ (function () {
     Fraction.prototype.lessThanEquals = function (compare) {
         return !this.greaterThan(compare);
     };
-    /** Returns a new copy with current values. */
+    /** Return a new copy with current values. */
     Fraction.prototype.clone = function () {
         return new Fraction(this.numerator, this.denominator);
     };
-    /** Copies value of another fraction. */
+    /** Copy value of another fraction. */
     Fraction.prototype.copy = function (copy) {
         if (typeof copy === 'number') {
             return this.set(copy || 0, 1);
         }
         return this.set(copy.numerator, copy.denominator);
     };
-    /** Returns the integer component (eg. 5/2 => 2). */
+    /** Return the integer component (eg. 5/2 => 2). */
     Fraction.prototype.quotient = function () {
         return Math.floor(this.numerator / this.denominator);
     };
-    /** Returns the remainder component (eg. 5/2 => 1). */
+    /** Return the remainder component (eg. 5/2 => 1). */
     Fraction.prototype.remainder = function () {
         return this.numerator % this.denominator;
     };
-    /** Calculates absolute value. */
+    /** Calculate absolute value. */
     Fraction.prototype.makeAbs = function () {
         this.denominator = Math.abs(this.denominator);
         this.numerator = Math.abs(this.numerator);
         return this;
     };
-    /** Returns a raw string representation (eg. "5/2"). */
+    /** Return a raw string representation (eg. "5/2"). */
     Fraction.prototype.toString = function () {
         return this.numerator + "/" + this.denominator;
     };
-    /** Returns a simplified string respresentation. */
+    /** Return a simplified string respresentation. */
     Fraction.prototype.toSimplifiedString = function () {
         return Fraction.__staticFractionTmp.copy(this).simplify().toString();
     };
-    /** Returns string representation in mixed form. */
+    /** Return string representation in mixed form. */
     Fraction.prototype.toMixedString = function () {
         var s = '';
         var q = this.quotient();
@@ -19004,7 +19531,7 @@ var Fraction = /** @class */ (function () {
         }
         return s;
     };
-    /** Parses a fraction string. */
+    /** Parse a fraction string. */
     Fraction.prototype.parse = function (str) {
         var i = str.split('/');
         var n = parseInt(i[0], 10);
@@ -19017,7 +19544,7 @@ var Fraction = /** @class */ (function () {
     Fraction.__staticFractionTmp = new Fraction();
     return Fraction;
 }());
-exports.Fraction = Fraction;
+
 
 
 /***/ }),
@@ -19026,14 +19553,19 @@ exports.Fraction = Fraction;
 /*!*******************************!*\
   !*** ./src/frethandfinger.ts ***!
   \*******************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "FretHandFinger": () => (/* binding */ FretHandFinger)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 // VexFlow - Music Engraving for HTML5
 // Copyright Mohit Muthanna 2010
 // Author Larry Kuhns 2013
 // Class to draws string numbers into the notation.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -19048,10 +19580,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.FretHandFinger = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
+
+
 /**
  * @constructor
  */
@@ -19062,7 +19592,7 @@ var FretHandFinger = /** @class */ (function (_super) {
         _this.setAttribute('type', 'FretHandFinger');
         _this.finger = finger;
         _this.width = 7;
-        _this.position = modifier_1.Modifier.Position.LEFT; // Default position above stem or note head
+        _this.position = _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.LEFT; // Default position above stem or note head
         _this.x_shift = 0;
         _this.y_shift = 0;
         _this.x_offset = 0; // Horizontal offset from default
@@ -19134,12 +19664,12 @@ var FretHandFinger = /** @class */ (function (_super) {
                 numShiftR = right_shift + shiftR;
             }
             var numWidth = num.getWidth() + num_spacing;
-            if (pos === modifier_1.Modifier.Position.LEFT) {
+            if (pos === _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.LEFT) {
                 num.setXShift(left_shift + numShiftL);
                 num_shift = left_shift + numWidth; // spacing
                 xWidthL = num_shift > xWidthL ? num_shift : xWidthL;
             }
-            else if (pos === modifier_1.Modifier.Position.RIGHT) {
+            else if (pos === _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.RIGHT) {
                 num.setXShift(numShiftR);
                 num_shift = shiftRight + numWidth; // spacing
                 xWidthR = num_shift > xWidthR ? num_shift : xWidthR;
@@ -19192,22 +19722,22 @@ var FretHandFinger = /** @class */ (function (_super) {
         var dot_x = start.x + this.x_shift + this.x_offset;
         var dot_y = start.y + this.y_shift + this.y_offset + 5;
         switch (this.position) {
-            case modifier_1.Modifier.Position.ABOVE:
+            case _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.ABOVE:
                 dot_x -= 4;
                 dot_y -= 12;
                 break;
-            case modifier_1.Modifier.Position.BELOW:
+            case _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.BELOW:
                 dot_x -= 2;
                 dot_y += 10;
                 break;
-            case modifier_1.Modifier.Position.LEFT:
+            case _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.LEFT:
                 dot_x -= this.width;
                 break;
-            case modifier_1.Modifier.Position.RIGHT:
+            case _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.RIGHT:
                 dot_x += 1;
                 break;
             default:
-                throw new util_1.RuntimeError('InvalidPosition', "The position " + this.position + " does not exist");
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('InvalidPosition', "The position " + this.position + " does not exist");
         }
         ctx.save();
         ctx.setFont(this.font.family, this.font.size, this.font.weight);
@@ -19215,8 +19745,8 @@ var FretHandFinger = /** @class */ (function (_super) {
         ctx.restore();
     };
     return FretHandFinger;
-}(modifier_1.Modifier));
-exports.FretHandFinger = FretHandFinger;
+}(_modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier));
+
 
 
 /***/ }),
@@ -19225,13 +19755,18 @@ exports.FretHandFinger = FretHandFinger;
 /*!**************************!*\
   !*** ./src/ghostnote.ts ***!
   \**************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "GhostNote": () => (/* binding */ GhostNote)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _stemmablenote__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -19246,10 +19781,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.GhostNote = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var stemmablenote_1 = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
+
+
 var GhostNote = /** @class */ (function (_super) {
     __extends(GhostNote, _super);
     /** @constructor */
@@ -19257,7 +19790,7 @@ var GhostNote = /** @class */ (function (_super) {
         var _this = this;
         // Sanity check
         if (!parameter) {
-            throw new util_1.RuntimeError('BadArguments', 'Ghost note must have valid initialization data to identify duration.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'Ghost note must have valid initialization data to identify duration.');
         }
         var note_struct;
         // Preserve backwards-compatibility
@@ -19268,7 +19801,7 @@ var GhostNote = /** @class */ (function (_super) {
             note_struct = parameter;
         }
         else {
-            throw new util_1.RuntimeError('BadArguments', 'Ghost note must have valid initialization data to identify ' + 'duration.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'Ghost note must have valid initialization data to identify ' + 'duration.');
         }
         _this = _super.call(this, note_struct) || this;
         _this.setAttribute('type', 'GhostNote');
@@ -19300,8 +19833,8 @@ var GhostNote = /** @class */ (function (_super) {
         }
     };
     return GhostNote;
-}(stemmablenote_1.StemmableNote));
-exports.GhostNote = GhostNote;
+}(_stemmablenote__WEBPACK_IMPORTED_MODULE_1__.StemmableNote));
+
 
 
 /***/ }),
@@ -19310,11 +19843,19 @@ exports.GhostNote = GhostNote;
 /*!**********************!*\
   !*** ./src/glyph.ts ***!
   \**********************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Glyph": () => (/* binding */ Glyph)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./element */ "./src/element.ts");
+/* harmony import */ var _boundingboxcomputation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./boundingboxcomputation */ "./src/boundingboxcomputation.ts");
+/* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -19329,7 +19870,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -19340,13 +19881,11 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Glyph = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var boundingboxcomputation_1 = __webpack_require__(/*! ./boundingboxcomputation */ "./src/boundingboxcomputation.ts");
-var boundingbox_1 = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+
+
+
+
+
 function processOutline(outline, originX, originY, scaleX, scaleY, 
 // eslint-disable-next-line
 outlineFns) {
@@ -19399,7 +19938,7 @@ var Glyph = /** @class */ (function (_super) {
      */
     function Glyph(code, point, options) {
         var _this = _super.call(this) || this;
-        _this.bbox = new boundingbox_1.BoundingBox(0, 0, 0, 0);
+        _this.bbox = new _boundingbox__WEBPACK_IMPORTED_MODULE_3__.BoundingBox(0, 0, 0, 0);
         _this.topGlyphs = [];
         _this.botGlyphs = [];
         _this.scale = 1;
@@ -19441,7 +19980,7 @@ var Glyph = /** @class */ (function (_super) {
     };
     Glyph.lookupGlyph = function (fontStack, code) {
         if (!fontStack) {
-            throw new util_1.RuntimeError('BAD_FONTSTACK', 'Font stack is misconfigured');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BAD_FONTSTACK', 'Font stack is misconfigured');
         }
         var glyph;
         var font;
@@ -19451,7 +19990,7 @@ var Glyph = /** @class */ (function (_super) {
             if (glyph)
                 return { glyph: glyph, font: font };
         }
-        throw new util_1.RuntimeError('BadGlyph', "Glyph " + code + " does not exist in font.");
+        throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadGlyph', "Glyph " + code + " does not exist in font.");
     };
     Glyph.loadMetrics = function (fontStack, code, category) {
         var _a = Glyph.lookupGlyph(fontStack, code), glyph = _a.glyph, font = _a.font;
@@ -19497,7 +20036,7 @@ var Glyph = /** @class */ (function (_super) {
             };
         }
         else {
-            throw new util_1.RuntimeError('BadGlyph', "Glyph " + code + " has no outline defined.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadGlyph', "Glyph " + code + " has no outline defined.");
         }
     };
     /**
@@ -19515,7 +20054,7 @@ var Glyph = /** @class */ (function (_super) {
     point, 
     /** The glyph code in font.getGlyphs() */
     val, options) {
-        var params = __assign({ fontStack: flow_1.Flow.DEFAULT_FONT_STACK }, options);
+        var params = __assign({ fontStack: _flow__WEBPACK_IMPORTED_MODULE_4__.Flow.DEFAULT_FONT_STACK }, options);
         var metrics = Glyph.loadMetrics(params.fontStack, val, params.category);
         if (params.category && metrics.font) {
             point = Glyph.lookupFontMetric({
@@ -19543,7 +20082,7 @@ var Glyph = /** @class */ (function (_super) {
         ctx.fill();
     };
     Glyph.getOutlineBoundingBox = function (outline, scale, x_pos, y_pos) {
-        var bboxComp = new boundingboxcomputation_1.BoundingBoxComputation();
+        var bboxComp = new _boundingboxcomputation__WEBPACK_IMPORTED_MODULE_2__.BoundingBoxComputation();
         processOutline(outline, x_pos, y_pos, scale, -scale, {
             m: bboxComp.addPoint.bind(bboxComp),
             l: bboxComp.addPoint.bind(bboxComp),
@@ -19551,7 +20090,7 @@ var Glyph = /** @class */ (function (_super) {
             b: bboxComp.addBezierCurve.bind(bboxComp),
             z: bboxComp.noOp.bind(bboxComp),
         });
-        return new boundingbox_1.BoundingBox(bboxComp.getX1(), bboxComp.getY1(), bboxComp.width(), bboxComp.height());
+        return new _boundingbox__WEBPACK_IMPORTED_MODULE_3__.BoundingBox(bboxComp.getX1(), bboxComp.getY1(), bboxComp.width(), bboxComp.height());
     };
     Glyph.prototype.getCode = function () {
         return this.code;
@@ -19594,7 +20133,7 @@ var Glyph = /** @class */ (function (_super) {
     };
     Glyph.prototype.getMetrics = function () {
         if (!this.metrics) {
-            throw new util_1.RuntimeError('BadGlyph', "Glyph " + this.code + " is not initialized.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadGlyph', "Glyph " + this.code + " is not initialized.");
         }
         return {
             x_min: this.metrics.x_min * this.scale * this.metrics.scale,
@@ -19627,7 +20166,7 @@ var Glyph = /** @class */ (function (_super) {
     };
     Glyph.prototype.render = function (ctx, x, y) {
         if (!this.metrics) {
-            throw new util_1.RuntimeError('BadGlyph', "Glyph " + this.code + " is not initialized.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadGlyph', "Glyph " + this.code + " is not initialized.");
         }
         var outline = this.metrics.outline;
         var scale = this.scale * this.metrics.scale;
@@ -19639,10 +20178,10 @@ var Glyph = /** @class */ (function (_super) {
     Glyph.prototype.renderToStave = function (x) {
         var context = this.checkContext();
         if (!this.metrics) {
-            throw new util_1.RuntimeError('BadGlyph', "Glyph " + this.code + " is not initialized.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadGlyph', "Glyph " + this.code + " is not initialized.");
         }
         if (!this.stave) {
-            throw new util_1.RuntimeError('GlyphError', 'No valid stave');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('GlyphError', 'No valid stave');
         }
         var outline = this.metrics.outline;
         var scale = this.scale * this.metrics.scale;
@@ -19652,8 +20191,8 @@ var Glyph = /** @class */ (function (_super) {
         this.restoreStyle();
     };
     return Glyph;
-}(element_1.Element));
-exports.Glyph = Glyph;
+}(_element__WEBPACK_IMPORTED_MODULE_1__.Element));
+
 
 
 /***/ }),
@@ -19662,11 +20201,15 @@ exports.Glyph = Glyph;
 /*!**************************!*\
   !*** ./src/glyphnote.ts ***!
   \**************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "GlyphNote": () => (/* binding */ GlyphNote)
+/* harmony export */ });
+/* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./note */ "./src/note.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -19681,7 +20224,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -19692,9 +20235,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.GlyphNote = void 0;
-var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
+
 var GlyphNote = /** @class */ (function (_super) {
     __extends(GlyphNote, _super);
     function GlyphNote(glyph, noteStruct, options) {
@@ -19760,8 +20301,8 @@ var GlyphNote = /** @class */ (function (_super) {
         ctx.closeGroup();
     };
     return GlyphNote;
-}(note_1.Note));
-exports.GlyphNote = GlyphNote;
+}(_note__WEBPACK_IMPORTED_MODULE_0__.Note));
+
 
 
 /***/ }),
@@ -19770,11 +20311,18 @@ exports.GlyphNote = GlyphNote;
 /*!**************************!*\
   !*** ./src/gracenote.ts ***!
   \**************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "GraceNote": () => (/* binding */ GraceNote)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+/* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./stem */ "./src/stem.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -19789,7 +20337,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -19800,17 +20348,15 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.GraceNote = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+
+
+
+
 var GraceNote = /** @class */ (function (_super) {
     __extends(GraceNote, _super);
     function GraceNote(note_struct) {
         var _this = _super.call(this, __assign({
-            glyph_font_scale: flow_1.Flow.DEFAULT_NOTATION_FONT_SCALE * GraceNote.SCALE,
+            glyph_font_scale: _flow__WEBPACK_IMPORTED_MODULE_3__.Flow.DEFAULT_NOTATION_FONT_SCALE * GraceNote.SCALE,
             stroke_px: GraceNote.LEDGER_LINE_OFFSET,
         }, note_struct)) || this;
         _this.setAttribute('type', 'GraceNote');
@@ -19850,7 +20396,7 @@ var GraceNote = /** @class */ (function (_super) {
             var ret = _super.prototype.getStemExtension.call(this);
             if (glyph.stem) {
                 var staveNoteScale = this.getStaveNoteScale();
-                ret = (stem_1.Stem.HEIGHT + ret) * staveNoteScale - stem_1.Stem.HEIGHT;
+                ret = (_stem__WEBPACK_IMPORTED_MODULE_2__.Stem.HEIGHT + ret) * staveNoteScale - _stem__WEBPACK_IMPORTED_MODULE_2__.Stem.HEIGHT;
             }
             return ret;
         }
@@ -19861,7 +20407,7 @@ var GraceNote = /** @class */ (function (_super) {
     };
     // FIXME: move this to more basic class.
     GraceNote.prototype.getStaveNoteScale = function () {
-        return this.render_options.glyph_font_scale / flow_1.Flow.DEFAULT_NOTATION_FONT_SCALE;
+        return this.render_options.glyph_font_scale / _flow__WEBPACK_IMPORTED_MODULE_3__.Flow.DEFAULT_NOTATION_FONT_SCALE;
     };
     GraceNote.prototype.draw = function () {
         _super.prototype.draw.call(this);
@@ -19888,15 +20434,15 @@ var GraceNote = /** @class */ (function (_super) {
                 var noteHeadBounds = this.getNoteHeadBounds();
                 var noteStemHeight = stem.getHeight();
                 var x = this.getAbsoluteX();
-                var y = stem_direction === stem_1.Stem.DOWN
+                var y = stem_direction === _stem__WEBPACK_IMPORTED_MODULE_2__.Stem.DOWN
                     ? noteHeadBounds.y_top - noteStemHeight
                     : noteHeadBounds.y_bottom - noteStemHeight;
-                var defaultStemExtention = stem_direction === stem_1.Stem.DOWN ? this.glyph.stem_down_extension : this.glyph.stem_up_extension;
-                var defaultOffsetY = flow_1.Flow.STEM_HEIGHT;
+                var defaultStemExtention = stem_direction === _stem__WEBPACK_IMPORTED_MODULE_2__.Stem.DOWN ? this.glyph.stem_down_extension : this.glyph.stem_up_extension;
+                var defaultOffsetY = _flow__WEBPACK_IMPORTED_MODULE_3__.Flow.STEM_HEIGHT;
                 defaultOffsetY -= defaultOffsetY / 2.8;
                 defaultOffsetY += defaultStemExtention;
                 y += defaultOffsetY * staveNoteScale * stem_direction;
-                var offsets = stem_direction === stem_1.Stem.UP
+                var offsets = stem_direction === _stem__WEBPACK_IMPORTED_MODULE_2__.Stem.UP
                     ? {
                         x1: 1,
                         y1: 0,
@@ -19933,7 +20479,7 @@ var GraceNote = /** @class */ (function (_super) {
     GraceNote.prototype.calcBeamedNotesSlashBBox = function (slashStemOffset, slashBeamOffset, protrusions) {
         var beam = this.beam;
         if (!beam)
-            throw new util_1.RuntimeError('NoBeam', "Can't calculate without a beam.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoBeam', "Can't calculate without a beam.");
         var beam_slope = beam.slope;
         var isBeamEndNote = beam.notes[beam.notes.length - 1] === this;
         var scaleX = isBeamEndNote ? -1 : 1;
@@ -19961,8 +20507,8 @@ var GraceNote = /** @class */ (function (_super) {
         return ret;
     };
     return GraceNote;
-}(stavenote_1.StaveNote));
-exports.GraceNote = GraceNote;
+}(_stavenote__WEBPACK_IMPORTED_MODULE_1__.StaveNote));
+
 
 
 /***/ }),
@@ -19971,16 +20517,28 @@ exports.GraceNote = GraceNote;
 /*!*******************************!*\
   !*** ./src/gracenotegroup.ts ***!
   \*******************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "GraceNoteGroup": () => (/* binding */ GraceNoteGroup)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
+/* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
+/* harmony import */ var _voice__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./voice */ "./src/voice.ts");
+/* harmony import */ var _beam__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./beam */ "./src/beam.ts");
+/* harmony import */ var _stavetie__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
+/* harmony import */ var _tabtie__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./tabtie */ "./src/tabtie.ts");
+/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 //
 // This file implements `GraceNoteGroup` which is used to format and
 // render grace notes.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -19995,17 +20553,15 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.GraceNoteGroup = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
-var voice_1 = __webpack_require__(/*! ./voice */ "./src/voice.ts");
-var beam_1 = __webpack_require__(/*! ./beam */ "./src/beam.ts");
-var stavetie_1 = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
-var tabtie_1 = __webpack_require__(/*! ./tabtie */ "./src/tabtie.ts");
-var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+
+
+
+
+
+
+
+
+
 // To enable logging for this class. Set `GraceNoteGroup.DEBUG` to `true`.
 // eslint-disable-next-line
 function L() {
@@ -20014,7 +20570,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (GraceNoteGroup.DEBUG)
-        util_1.log('Vex.Flow.GraceNoteGroup', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.GraceNoteGroup', args);
 }
 /** GraceNoteGroup is used to format and render grace notes. */
 var GraceNoteGroup = /** @class */ (function (_super) {
@@ -20023,17 +20579,17 @@ var GraceNoteGroup = /** @class */ (function (_super) {
     function GraceNoteGroup(grace_notes, show_slur) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'GraceNoteGroup');
-        _this.position = modifier_1.Modifier.Position.LEFT;
+        _this.position = _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier.Position.LEFT;
         _this.grace_notes = grace_notes;
         _this.width = 0;
         _this.preFormatted = false;
         _this.show_slur = show_slur;
         _this.slur = undefined;
-        _this.formatter = new formatter_1.Formatter();
-        _this.voice = new voice_1.Voice({
+        _this.formatter = new _formatter__WEBPACK_IMPORTED_MODULE_3__.Formatter();
+        _this.voice = new _voice__WEBPACK_IMPORTED_MODULE_4__.Voice({
             num_beats: 4,
             beat_value: 4,
-            resolution: flow_1.Flow.RESOLUTION,
+            resolution: _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.RESOLUTION,
         }).setStrict(false);
         _this.render_options = {
             slur_y_shift: 0,
@@ -20061,7 +20617,7 @@ var GraceNoteGroup = /** @class */ (function (_super) {
         for (var i = 0; i < gracenote_groups.length; ++i) {
             var gracenote_group = gracenote_groups[i];
             var note = gracenote_group.getNote();
-            var is_stavenote = note.getCategory() === stavenote_1.StaveNote.CATEGORY;
+            var is_stavenote = note.getCategory() === _stavenote__WEBPACK_IMPORTED_MODULE_8__.StaveNote.CATEGORY;
             var spacing = is_stavenote ? group_spacing_stave : group_spacing_tab;
             if (is_stavenote && note !== prev_note) {
                 // Iterate through all notes to get the displaced pixels
@@ -20102,7 +20658,7 @@ var GraceNoteGroup = /** @class */ (function (_super) {
     GraceNoteGroup.prototype.beamNotes = function (grace_notes) {
         grace_notes = grace_notes || this.grace_notes;
         if (grace_notes.length > 1) {
-            var beam = new beam_1.Beam(grace_notes);
+            var beam = new _beam__WEBPACK_IMPORTED_MODULE_5__.Beam(grace_notes);
             beam.render_options.beam_width = 3;
             beam.render_options.partial_beam_length = 4;
             this.beams.push(beam);
@@ -20135,8 +20691,8 @@ var GraceNoteGroup = /** @class */ (function (_super) {
         });
         if (this.show_slur) {
             // Create and draw slur
-            var is_stavenote = note.getCategory() === stavenote_1.StaveNote.CATEGORY;
-            var TieClass = is_stavenote ? stavetie_1.StaveTie : tabtie_1.TabTie;
+            var is_stavenote = note.getCategory() === _stavenote__WEBPACK_IMPORTED_MODULE_8__.StaveNote.CATEGORY;
+            var TieClass = is_stavenote ? _stavetie__WEBPACK_IMPORTED_MODULE_6__.StaveTie : _tabtie__WEBPACK_IMPORTED_MODULE_7__.TabTie;
             this.slur = new TieClass({
                 last_note: this.grace_notes[0],
                 first_note: note,
@@ -20149,8 +20705,8 @@ var GraceNoteGroup = /** @class */ (function (_super) {
         }
     };
     return GraceNoteGroup;
-}(modifier_1.Modifier));
-exports.GraceNoteGroup = GraceNoteGroup;
+}(_modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier));
+
 
 
 /***/ }),
@@ -20159,9 +20715,13 @@ exports.GraceNoteGroup = GraceNoteGroup;
 /*!*****************************!*\
   !*** ./src/gracetabnote.ts ***!
   \*****************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "GraceTabNote": () => (/* binding */ GraceTabNote)
+/* harmony export */ });
+/* harmony import */ var _tabnote__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // @author Balazs Forian-Szabo
 //
@@ -20171,7 +20731,7 @@ exports.GraceNoteGroup = GraceNoteGroup;
 // to be rendered on a tab stave.
 //
 // See `tests/gracetabnote_tests.js` for usage examples.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -20186,7 +20746,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -20197,9 +20757,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.GraceTabNote = void 0;
-var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
+
 var GraceTabNote = /** @class */ (function (_super) {
     __extends(GraceTabNote, _super);
     function GraceTabNote(note_struct) {
@@ -20231,8 +20789,8 @@ var GraceTabNote = /** @class */ (function (_super) {
         this.setRendered();
     };
     return GraceTabNote;
-}(tabnote_1.TabNote));
-exports.GraceTabNote = GraceTabNote;
+}(_tabnote__WEBPACK_IMPORTED_MODULE_0__.TabNote));
+
 
 
 /***/ }),
@@ -20241,21 +20799,24 @@ exports.GraceTabNote = GraceTabNote;
 /*!***************************!*\
   !*** ./src/keymanager.ts ***!
   \***************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "KeyManager": () => (/* binding */ KeyManager)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _music__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./music */ "./src/music.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 //
 // This class implements diatonic key management.
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.KeyManager = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var music_1 = __webpack_require__(/*! ./music */ "./src/music.ts");
+
+
 var KeyManager = /** @class */ (function () {
     function KeyManager(key) {
-        this.music = new music_1.Music();
+        this.music = new _music__WEBPACK_IMPORTED_MODULE_1__.Music();
         this.setKey(key);
     }
     KeyManager.prototype.setKey = function (key) {
@@ -20271,18 +20832,18 @@ var KeyManager = /** @class */ (function () {
         this.keyString = this.keyParts.root;
         if (this.keyParts.accidental)
             this.keyString += this.keyParts.accidental;
-        var is_supported_type = music_1.Music.scaleTypes[this.keyParts.type];
+        var is_supported_type = _music__WEBPACK_IMPORTED_MODULE_1__.Music.scaleTypes[this.keyParts.type];
         if (!is_supported_type) {
-            throw new util_1.RuntimeError('BadArguments', "Unsupported key type: " + this.key);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', "Unsupported key type: " + this.key);
         }
-        this.scale = this.music.getScaleTones(this.music.getNoteValue(this.keyString), music_1.Music.scaleTypes[this.keyParts.type]);
+        this.scale = this.music.getScaleTones(this.music.getNoteValue(this.keyString), _music__WEBPACK_IMPORTED_MODULE_1__.Music.scaleTypes[this.keyParts.type]);
         this.scaleMap = {};
         this.scaleMapByValue = {};
         this.originalScaleMapByValue = {};
-        var noteLocation = music_1.Music.root_indices[this.keyParts.root];
-        for (var i = 0; i < music_1.Music.roots.length; ++i) {
-            var index = (noteLocation + i) % music_1.Music.roots.length;
-            var rootName = music_1.Music.roots[index];
+        var noteLocation = _music__WEBPACK_IMPORTED_MODULE_1__.Music.root_indices[this.keyParts.root];
+        for (var i = 0; i < _music__WEBPACK_IMPORTED_MODULE_1__.Music.roots.length; ++i) {
+            var index = (noteLocation + i) % _music__WEBPACK_IMPORTED_MODULE_1__.Music.roots.length;
+            var rootName = _music__WEBPACK_IMPORTED_MODULE_1__.Music.roots[index];
             var noteName = this.music.getRelativeNoteName(rootName, this.scale[i]);
             this.scaleMap[rootName] = noteName;
             this.scaleMapByValue[this.scale[i]] = noteName;
@@ -20356,7 +20917,7 @@ var KeyManager = /** @class */ (function () {
     };
     return KeyManager;
 }());
-exports.KeyManager = KeyManager;
+
 
 
 /***/ }),
@@ -20365,9 +20926,16 @@ exports.KeyManager = KeyManager;
 /*!*****************************!*\
   !*** ./src/keysignature.ts ***!
   \*****************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "KeySignature": () => (/* binding */ KeySignature)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Cyril Silverman
 //
@@ -20375,7 +20943,7 @@ exports.KeyManager = KeyManager;
 //
 // This file implements key signatures. A key signature sits on a stave
 // and indicates the notes with implicit accidentals.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -20390,12 +20958,10 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.KeySignature = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+
+
+
+
 var KeySignature = /** @class */ (function (_super) {
     __extends(KeySignature, _super);
     // Create a new Key Signature based on a `key_spec`
@@ -20404,7 +20970,7 @@ var KeySignature = /** @class */ (function (_super) {
         _this.accList = [];
         _this.setAttribute('type', 'KeySignature');
         _this.setKeySig(keySpec, cancelKeySpec, alterKeySpec);
-        _this.setPosition(stavemodifier_1.StaveModifier.Position.BEGIN);
+        _this.setPosition(_stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveModifier.Position.BEGIN);
         _this.glyphFontScale = 38; // TODO(0xFE): Should this match StaveNote?
         _this.glyphs = [];
         _this.xPositions = []; // relative to this.x
@@ -20425,8 +20991,8 @@ var KeySignature = /** @class */ (function (_super) {
     // the provided `acc`. If `nextAcc` is also provided, the appropriate
     // spacing will be included in the glyph's position
     KeySignature.prototype.convertToGlyph = function (acc, nextAcc) {
-        var accGlyphData = flow_1.Flow.accidentalCodes(acc.type);
-        var glyph = new glyph_1.Glyph(accGlyphData.code, this.glyphFontScale);
+        var accGlyphData = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.accidentalCodes(acc.type);
+        var glyph = new _glyph__WEBPACK_IMPORTED_MODULE_3__.Glyph(accGlyphData.code, this.glyphFontScale);
         // Determine spacing between current accidental and the next accidental
         var extraWidth = 1;
         if (acc.type === 'n' && nextAcc) {
@@ -20455,7 +21021,7 @@ var KeySignature = /** @class */ (function (_super) {
     };
     KeySignature.prototype.convertToCancelAccList = function (spec) {
         // Get the accidental list for the cancelled key signature
-        var cancel_accList = flow_1.Flow.keySignature(spec);
+        var cancel_accList = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.keySignature(spec);
         // If the cancelled key has a different accidental type, ie: # vs b
         var different_types = this.accList.length > 0 && cancel_accList.length > 0 && cancel_accList[0].type !== this.accList[0].type;
         // Determine how many naturals needed to add
@@ -20580,7 +21146,7 @@ var KeySignature = /** @class */ (function (_super) {
         this.width = 0;
         this.glyphs = [];
         this.xPositions = [0]; // initialize with initial x position
-        this.accList = flow_1.Flow.keySignature(util_1.check(this.keySpec));
+        this.accList = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.keySignature((0,_util__WEBPACK_IMPORTED_MODULE_0__.check)(this.keySpec));
         var accList = this.accList;
         var firstAccidentalType = accList.length > 0 ? accList[0].type : undefined;
         var cancelAccList;
@@ -20591,7 +21157,7 @@ var KeySignature = /** @class */ (function (_super) {
             this.convertToAlterAccList(this.alterKeySpec);
         }
         if (this.accList.length > 0) {
-            var clef = (this.position === stavemodifier_1.StaveModifier.Position.END ? stave.getEndClef() : stave.getClef()) || stave.getClef();
+            var clef = (this.position === _stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveModifier.Position.END ? stave.getEndClef() : stave.getClef()) || stave.getClef();
             if (cancelAccList) {
                 this.convertAccLines(clef, cancelAccList.type, cancelAccList.accList);
             }
@@ -20604,10 +21170,10 @@ var KeySignature = /** @class */ (function (_super) {
     };
     KeySignature.prototype.draw = function () {
         if (!this.x) {
-            throw new util_1.RuntimeError('KeySignatureError', "Can't draw key signature without x.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('KeySignatureError', "Can't draw key signature without x.");
         }
         if (!this.stave) {
-            throw new util_1.RuntimeError('KeySignatureError', "Can't draw key signature without stave.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('KeySignatureError', "Can't draw key signature without stave.");
         }
         if (!this.formatted)
             this.format();
@@ -20681,8 +21247,8 @@ var KeySignature = /** @class */ (function (_super) {
         },
     };
     return KeySignature;
-}(stavemodifier_1.StaveModifier));
-exports.KeySignature = KeySignature;
+}(_stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveModifier));
+
 
 
 /***/ }),
@@ -20691,12 +21257,17 @@ exports.KeySignature = KeySignature;
 /*!***************************!*\
   !*** ./src/keysignote.ts ***!
   \***************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "KeySigNote": () => (/* binding */ KeySigNote)
+/* harmony export */ });
+/* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./note */ "./src/note.ts");
+/* harmony import */ var _keysignature__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./keysignature */ "./src/keysignature.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Mark Meeus 2019
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -20711,16 +21282,14 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.KeySigNote = void 0;
-var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
-var keysignature_1 = __webpack_require__(/*! ./keysignature */ "./src/keysignature.ts");
+
+
 var KeySigNote = /** @class */ (function (_super) {
     __extends(KeySigNote, _super);
     function KeySigNote(keySpec, cancelKeySpec, alterKeySpec) {
         var _this = _super.call(this, { duration: 'b' }) || this;
         _this.setAttribute('type', 'KeySigNote');
-        _this.keySignature = new keysignature_1.KeySignature(keySpec, cancelKeySpec, alterKeySpec);
+        _this.keySignature = new _keysignature__WEBPACK_IMPORTED_MODULE_1__.KeySignature(keySpec, cancelKeySpec, alterKeySpec);
         // Note properties
         _this.ignore_ticks = true;
         return _this;
@@ -20743,8 +21312,8 @@ var KeySigNote = /** @class */ (function (_super) {
         this.keySignature.draw();
     };
     return KeySigNote;
-}(note_1.Note));
-exports.KeySigNote = KeySigNote;
+}(_note__WEBPACK_IMPORTED_MODULE_0__.Note));
+
 
 
 /***/ }),
@@ -20753,24 +21322,18 @@ exports.KeySigNote = KeySigNote;
 /*!*************************!*\
   !*** ./src/modifier.ts ***!
   \*************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ModifierPosition": () => (/* binding */ ModifierPosition),
+/* harmony export */   "Modifier": () => (/* binding */ Modifier)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-//
-// `Modifier` is an abstract interface for notational elements that modify
-// a `Note`. Examples of modifiers are `Accidental`, `Annotation`, `Stroke`, etc.
-//
-// For a `Modifier` instance to be positioned correctly, it must be part of
-// a `ModifierContext`. All modifiers in the same context are rendered relative to
-// one another.
-//
-// Typically, all modifiers to a note are part of the same `ModifierContext` instance. Also,
-// in multi-voice staves, all modifiers to notes on the same `tick` are part of the same
-// `ModifierContext`. This ensures that multiple voices don't trample all over each other.
-var __extends = (this && this.__extends) || (function () {
+// MIT License
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -20785,10 +21348,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Modifier = exports.ModifierPosition = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
+
+
 var ModifierPosition;
 (function (ModifierPosition) {
     ModifierPosition[ModifierPosition["CENTER"] = 0] = "CENTER";
@@ -20796,9 +21357,21 @@ var ModifierPosition;
     ModifierPosition[ModifierPosition["RIGHT"] = 2] = "RIGHT";
     ModifierPosition[ModifierPosition["ABOVE"] = 3] = "ABOVE";
     ModifierPosition[ModifierPosition["BELOW"] = 4] = "BELOW";
-})(ModifierPosition = exports.ModifierPosition || (exports.ModifierPosition = {}));
+})(ModifierPosition || (ModifierPosition = {}));
 // To enable logging for this class. Set `Vex.Flow.Modifier.DEBUG` to `true`.
 // function L(...args) { if (Modifier.DEBUG) log('Vex.Flow.Modifier', args); }
+/**
+ * `Modifier` is an abstract interface for notational elements that modify
+ * a `Note`. Examples of modifiers are `Accidental`, `Annotation`, `Stroke`, etc.
+ *
+ * For a `Modifier` instance to be positioned correctly, it must be part of
+ * a `ModifierContext`. All modifiers in the same context are rendered relative to
+ * one another.
+ *
+ * Typically, all modifiers to a note are part of the same `ModifierContext` instance. Also,
+ * in multi-voice staves, all modifiers to notes on the same `tick` are part of the same
+ * `ModifierContext`. This ensures that multiple voices don't trample all over each other.
+ */
 var Modifier = /** @class */ (function (_super) {
     __extends(Modifier, _super);
     function Modifier() {
@@ -20814,6 +21387,7 @@ var Modifier = /** @class */ (function (_super) {
         return _this;
     }
     Object.defineProperty(Modifier, "CATEGORY", {
+        /** Modifiers category string. */
         get: function () {
             return 'none';
         },
@@ -20821,7 +21395,7 @@ var Modifier = /** @class */ (function (_super) {
         configurable: true
     });
     Object.defineProperty(Modifier, "Position", {
-        // Modifiers can be positioned almost anywhere, relative to a note.
+        /** Modifiers can be positioned almost anywhere, relative to a note. */
         get: function () {
             return ModifierPosition;
         },
@@ -20841,92 +21415,113 @@ var Modifier = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    // Called when position changes
+    /** Called when position changes. */
     Modifier.prototype.reset = function () {
         // do nothing
     };
-    // Every modifier has a category. The `ModifierContext` uses this to determine
-    // the type and order of the modifiers.
+    /**
+     * Every modifier has a category. The `ModifierContext` uses this to determine
+     * the type and order of the modifiers.
+     */
     Modifier.prototype.getCategory = function () {
         return Modifier.CATEGORY;
     };
-    // Get and set modifier widths.
+    /** Get modifier widths. */
     Modifier.prototype.getWidth = function () {
         return this.width;
     };
+    /** Set modifier widths. */
     Modifier.prototype.setWidth = function (width) {
         this.width = width;
         return this;
     };
-    // Get and set attached note (`StaveNote`, `TabNote`, etc.)
+    /** Get attached note (`StaveNote`, `TabNote`, etc.) */
     Modifier.prototype.getNote = function () {
         if (!this.note)
-            throw new util_1.RuntimeError('NoNote', 'Modifier has no note.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoNote', 'Modifier has no note.');
         return this.note;
     };
+    /** Check and get attached note (`StaveNote`, `TabNote`, etc.) */
     Modifier.prototype.checkAttachedNote = function () {
         if (!this.note || this.index === undefined) {
-            throw new util_1.RuntimeError('NoAttachedNote', "Can't draw " + this.getCategory() + " without a note and index.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoAttachedNote', "Can't draw " + this.getCategory() + " without a note and index.");
         }
         return this.note;
     };
+    /**
+     * Set attached note.
+     * @param note (`StaveNote`, `TabNote`, etc.)
+     */
     Modifier.prototype.setNote = function (note) {
         this.note = note;
         return this;
     };
-    // Get and set note index, which is a specific note in a chord.
+    /** Get note index, which is a specific note in a chord. */
     Modifier.prototype.getIndex = function () {
         return this.index;
     };
+    /** Check and get note index, which is a specific note in a chord. */
     Modifier.prototype.checkIndex = function () {
         if (this.index === undefined) {
-            throw new util_1.RuntimeError('NoIndex', 'Modifier has an invalid index.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoIndex', 'Modifier has an invalid index.');
         }
         return this.index;
     };
+    /** Set note index, which is a specific note in a chord. */
     Modifier.prototype.setIndex = function (index) {
         this.index = index;
         return this;
     };
-    // Every modifier must be part of a `ModifierContext`.
+    /** Get `ModifierContext`. */
     Modifier.prototype.getModifierContext = function () {
         return this.modifier_context;
     };
+    /** Check and get `ModifierContext`. */
     Modifier.prototype.checkModifierContext = function () {
         if (!this.modifier_context)
-            throw new util_1.RuntimeError('NoModifierContext', 'Modifier Context Required');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoModifierContext', 'Modifier Context Required');
         return this.modifier_context;
     };
+    /** Every modifier must be part of a `ModifierContext`. */
     Modifier.prototype.setModifierContext = function (c) {
         this.modifier_context = c;
         return this;
     };
+    /** Get position. */
     Modifier.prototype.getPosition = function () {
         return this.position;
     };
+    /**
+     * Set position.
+     * @param position CENTER | LEFT | RIGHT | ABOVE | BELOW
+     */
     Modifier.prototype.setPosition = function (position) {
         this.position = typeof position === 'string' ? Modifier.PositionString[position] : position;
         this.reset();
         return this;
     };
-    // Set the `text_line` for the modifier.
+    /** Set the `text_line` for the modifier. */
     Modifier.prototype.setTextLine = function (line) {
         this.text_line = line;
         return this;
     };
-    // Shift modifier down `y` pixels. Negative values shift up.
+    /** Shift modifier down `y` pixels. Negative values shift up. */
     Modifier.prototype.setYShift = function (y) {
         this.y_shift = y;
         return this;
     };
+    /** Set spacing from next modifier. */
     Modifier.prototype.setSpacingFromNextModifier = function (x) {
         this.spacingFromNextModifier = x;
     };
+    /** Get spacing from next modifier. */
     Modifier.prototype.getSpacingFromNextModifier = function () {
         return this.spacingFromNextModifier;
     };
-    // Shift modifier `x` pixels in the direction of the modifier. Negative values
-    // shift reverse.
+    /**
+     * Shift modifier `x` pixels in the direction of the modifier. Negative values
+     * shift reverse.
+     */
     Modifier.prototype.setXShift = function (x) {
         this.x_shift = 0;
         if (this.position === Modifier.Position.LEFT) {
@@ -20937,13 +21532,14 @@ var Modifier = /** @class */ (function (_super) {
         }
         return this;
     };
+    /** Get shitf modifier `x` */
     Modifier.prototype.getXShift = function () {
         return this.x_shift;
     };
-    // Render the modifier onto the canvas.
+    /** Render the modifier onto the canvas. */
     Modifier.prototype.draw = function () {
         this.checkContext();
-        throw new util_1.RuntimeError('MethodNotImplemented', 'draw() not implemented for this modifier.');
+        throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('MethodNotImplemented', 'draw() not implemented for this modifier.');
     };
     // aligns sub notes of NoteSubGroup (or GraceNoteGroup) to the main note with correct x-offset
     Modifier.prototype.alignSubNotesWithNote = function (subNotes, note) {
@@ -20960,8 +21556,8 @@ var Modifier = /** @class */ (function (_super) {
         });
     };
     return Modifier;
-}(element_1.Element));
-exports.Modifier = Modifier;
+}(_element__WEBPACK_IMPORTED_MODULE_1__.Element));
+
 
 
 /***/ }),
@@ -20970,32 +21566,48 @@ exports.Modifier = Modifier;
 /*!********************************!*\
   !*** ./src/modifiercontext.ts ***!
   \********************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ModifierContext": () => (/* binding */ ModifierContext)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+/* harmony import */ var _dot__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dot */ "./src/dot.ts");
+/* harmony import */ var _frethandfinger__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.ts");
+/* harmony import */ var _accidental__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./accidental */ "./src/accidental.ts");
+/* harmony import */ var _notesubgroup__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.ts");
+/* harmony import */ var _gracenotegroup__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
+/* harmony import */ var _strokes__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./strokes */ "./src/strokes.ts");
+/* harmony import */ var _stringnumber__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.ts");
+/* harmony import */ var _articulation__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./articulation */ "./src/articulation.ts");
+/* harmony import */ var _ornament__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./ornament */ "./src/ornament.ts");
+/* harmony import */ var _annotation__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
+/* harmony import */ var _chordsymbol__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.ts");
+/* harmony import */ var _bend__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./bend */ "./src/bend.ts");
+/* harmony import */ var _vibrato__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./vibrato */ "./src/vibrato.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 //
 // This class implements various types of members to notes (e.g. bends,
 // fingering positions etc.)
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.ModifierContext = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-var dot_1 = __webpack_require__(/*! ./dot */ "./src/dot.ts");
-var frethandfinger_1 = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.ts");
-var accidental_1 = __webpack_require__(/*! ./accidental */ "./src/accidental.ts");
-var notesubgroup_1 = __webpack_require__(/*! ./notesubgroup */ "./src/notesubgroup.ts");
-var gracenotegroup_1 = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
-var strokes_1 = __webpack_require__(/*! ./strokes */ "./src/strokes.ts");
-var stringnumber_1 = __webpack_require__(/*! ./stringnumber */ "./src/stringnumber.ts");
-var articulation_1 = __webpack_require__(/*! ./articulation */ "./src/articulation.ts");
-var ornament_1 = __webpack_require__(/*! ./ornament */ "./src/ornament.ts");
-var annotation_1 = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
-var chordsymbol_1 = __webpack_require__(/*! ./chordsymbol */ "./src/chordsymbol.ts");
-var bend_1 = __webpack_require__(/*! ./bend */ "./src/bend.ts");
-var vibrato_1 = __webpack_require__(/*! ./vibrato */ "./src/vibrato.ts");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // To enable logging for this class. Set `Vex.Flow.ModifierContext.DEBUG` to `true`.
 function L() {
     // eslint-disable-next-line
@@ -21011,7 +21623,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (ModifierContext.DEBUG)
-        util_1.log('Vex.Flow.ModifierContext', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.ModifierContext', args);
 }
 var ModifierContext = /** @class */ (function () {
     function ModifierContext() {
@@ -21031,23 +21643,23 @@ var ModifierContext = /** @class */ (function () {
         // Add new members to this array. The ordering is significant -- lower
         // members are formatted and rendered before higher ones.
         this.PREFORMAT = [
-            stavenote_1.StaveNote,
-            dot_1.Dot,
-            frethandfinger_1.FretHandFinger,
-            accidental_1.Accidental,
-            strokes_1.Stroke,
-            gracenotegroup_1.GraceNoteGroup,
-            notesubgroup_1.NoteSubGroup,
-            stringnumber_1.StringNumber,
-            articulation_1.Articulation,
-            ornament_1.Ornament,
-            annotation_1.Annotation,
-            chordsymbol_1.ChordSymbol,
-            bend_1.Bend,
-            vibrato_1.Vibrato,
+            _stavenote__WEBPACK_IMPORTED_MODULE_1__.StaveNote,
+            _dot__WEBPACK_IMPORTED_MODULE_2__.Dot,
+            _frethandfinger__WEBPACK_IMPORTED_MODULE_3__.FretHandFinger,
+            _accidental__WEBPACK_IMPORTED_MODULE_4__.Accidental,
+            _strokes__WEBPACK_IMPORTED_MODULE_7__.Stroke,
+            _gracenotegroup__WEBPACK_IMPORTED_MODULE_6__.GraceNoteGroup,
+            _notesubgroup__WEBPACK_IMPORTED_MODULE_5__.NoteSubGroup,
+            _stringnumber__WEBPACK_IMPORTED_MODULE_8__.StringNumber,
+            _articulation__WEBPACK_IMPORTED_MODULE_9__.Articulation,
+            _ornament__WEBPACK_IMPORTED_MODULE_10__.Ornament,
+            _annotation__WEBPACK_IMPORTED_MODULE_11__.Annotation,
+            _chordsymbol__WEBPACK_IMPORTED_MODULE_12__.ChordSymbol,
+            _bend__WEBPACK_IMPORTED_MODULE_13__.Bend,
+            _vibrato__WEBPACK_IMPORTED_MODULE_14__.Vibrato,
         ];
         // If post-formatting is required for an element, add it to this array.
-        this.POSTFORMAT = [stavenote_1.StaveNote];
+        this.POSTFORMAT = [_stavenote__WEBPACK_IMPORTED_MODULE_1__.StaveNote];
     }
     ModifierContext.prototype.addModifier = function (member) {
         L('addModifier is deprecated, use addMember instead.');
@@ -21083,7 +21695,7 @@ var ModifierContext = /** @class */ (function () {
     };
     ModifierContext.prototype.getMetrics = function () {
         if (!this.formatted) {
-            throw new util_1.RuntimeError('UnformattedMember', 'Unformatted member has no metrics.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('UnformattedMember', 'Unformatted member has no metrics.');
         }
         return {
             width: this.state.left_shift + this.state.right_shift + this.spacing,
@@ -21113,7 +21725,7 @@ var ModifierContext = /** @class */ (function () {
     };
     return ModifierContext;
 }());
-exports.ModifierContext = ModifierContext;
+
 
 
 /***/ }),
@@ -21122,14 +21734,25 @@ exports.ModifierContext = ModifierContext;
 /*!*********************************!*\
   !*** ./src/multimeasurerest.ts ***!
   \*********************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "MultiMeasureRest": () => (/* binding */ MultiMeasureRest)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./element */ "./src/element.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+/* harmony import */ var _notehead__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./notehead */ "./src/notehead.ts");
+/* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
+/* harmony import */ var _timesignature__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
+/* harmony import */ var _stavebarline__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
 // VexFlow - Music Engraving for HTML5
 // Copyright Mohit Muthanna 2010
 //
 // This class implements multiple measure rests
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -21144,7 +21767,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -21155,20 +21778,18 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.MultiMeasureRest = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-var notehead_1 = __webpack_require__(/*! ./notehead */ "./src/notehead.ts");
-var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
-var timesignature_1 = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
-var stavebarline_1 = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
+
+
+
+
+
+
+
+
 var semibrave_rest;
 function get_semibrave_rest() {
     if (!semibrave_rest) {
-        var notehead = new notehead_1.NoteHead({ duration: 'w', note_type: 'r' });
+        var notehead = new _notehead__WEBPACK_IMPORTED_MODULE_4__.NoteHead({ duration: 'w', note_type: 'r' });
         semibrave_rest = {
             glyph_font_scale: notehead.render_options.glyph_font_scale,
             glyph_code: notehead.glyph_code,
@@ -21209,7 +21830,7 @@ var MultiMeasureRest = /** @class */ (function (_super) {
             serif_thickness: 2,
             use_symbols: false,
             /* same as NoteHead. */
-            semibrave_rest_glyph_scale: flow_1.Flow.DEFAULT_NOTATION_FONT_SCALE,
+            semibrave_rest_glyph_scale: _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.DEFAULT_NOTATION_FONT_SCALE,
         };
         _this.render_options = __assign(__assign({}, _this.render_options), options);
         _this.render_options.number_line += fontLineShift;
@@ -21232,7 +21853,7 @@ var MultiMeasureRest = /** @class */ (function (_super) {
     };
     MultiMeasureRest.prototype.checkStave = function () {
         if (!this.stave) {
-            throw new util_1.RuntimeError('NoStave', 'No stave attached to instance');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoStave', 'No stave attached to instance');
         }
         return this.stave;
     };
@@ -21305,7 +21926,7 @@ var MultiMeasureRest = /** @class */ (function (_super) {
             x += glyphs[2].width + spacing;
         }
         for (var i = 0; i < n1; ++i) {
-            glyph_1.Glyph.renderGlyph(ctx, x, yTop, this.render_options.semibrave_rest_glyph_scale, semibrave_rest.glyph_code);
+            _glyph__WEBPACK_IMPORTED_MODULE_3__.Glyph.renderGlyph(ctx, x, yTop, this.render_options.semibrave_rest_glyph_scale, semibrave_rest.glyph_code);
             x += glyphs[1].width + spacing;
         }
         ctx.restore();
@@ -21319,8 +21940,8 @@ var MultiMeasureRest = /** @class */ (function (_super) {
         var right = stave.getNoteEndX();
         // FIXME: getNoteStartX() returns x+5(barline width) and
         // getNoteEndX() returns x + width(no barline width) by default. how to fix?
-        var begModifiers = stave.getModifiers(stavemodifier_1.StaveModifier.Position.BEGIN);
-        if (begModifiers.length === 1 && begModifiers[0].getCategory() === stavebarline_1.Barline.CATEGORY) {
+        var begModifiers = stave.getModifiers(_stavemodifier__WEBPACK_IMPORTED_MODULE_5__.StaveModifier.Position.BEGIN);
+        if (begModifiers.length === 1 && begModifiers[0].getCategory() === _stavebarline__WEBPACK_IMPORTED_MODULE_7__.Barline.CATEGORY) {
             left -= begModifiers[0].getWidth();
         }
         if (this.render_options.padding_left != undefined) {
@@ -21339,7 +21960,7 @@ var MultiMeasureRest = /** @class */ (function (_super) {
         }
         if (this.render_options.show_number) {
             var timeSpec = '/' + this.number_of_measures;
-            var timeSig = new timesignature_1.TimeSignature(timeSpec, 0, false);
+            var timeSig = new _timesignature__WEBPACK_IMPORTED_MODULE_6__.TimeSignature(timeSpec, 0, false);
             timeSig.point = this.render_options.number_glyph_point;
             timeSig.setTimeSig(timeSpec);
             timeSig.setStave(stave);
@@ -21349,8 +21970,8 @@ var MultiMeasureRest = /** @class */ (function (_super) {
         }
     };
     return MultiMeasureRest;
-}(element_1.Element));
-exports.MultiMeasureRest = MultiMeasureRest;
+}(_element__WEBPACK_IMPORTED_MODULE_2__.Element));
+
 
 
 /***/ }),
@@ -21359,27 +21980,32 @@ exports.MultiMeasureRest = MultiMeasureRest;
 /*!**********************!*\
   !*** ./src/music.ts ***!
   \**********************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Music": () => (/* binding */ Music)
+/* harmony export */ });
+/* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./tables */ "./src/tables.ts");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-// This class implements some standard music theory routines.
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Music = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
+// MIT Licnse
+
+
+/** Music implements some standard music theory routines. */
 var Music = /** @class */ (function () {
     function Music() {
     }
     Object.defineProperty(Music, "NUM_TONES", {
+        /** Number of an canonical notes (12). */
         get: function () {
-            return 12;
+            return this.canonical_notes.length;
         },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(Music, "roots", {
+        /** Names of root notes ('c', 'd',...) */
         get: function () {
             return ['c', 'd', 'e', 'f', 'g', 'a', 'b'];
         },
@@ -21387,6 +22013,7 @@ var Music = /** @class */ (function () {
         configurable: true
     });
     Object.defineProperty(Music, "root_values", {
+        /** Values of the root notes.*/
         get: function () {
             return [0, 2, 4, 5, 7, 9, 11];
         },
@@ -21394,6 +22021,7 @@ var Music = /** @class */ (function () {
         configurable: true
     });
     Object.defineProperty(Music, "root_indices", {
+        /** Indices of the root notes.*/
         get: function () {
             return {
                 c: 0,
@@ -21409,6 +22037,7 @@ var Music = /** @class */ (function () {
         configurable: true
     });
     Object.defineProperty(Music, "canonical_notes", {
+        /** Names of canonical notes ('c', 'c#', 'd',...). */
         get: function () {
             return ['c', 'c#', 'd', 'd#', 'e', 'f', 'f#', 'g', 'g#', 'a', 'a#', 'b'];
         },
@@ -21416,6 +22045,7 @@ var Music = /** @class */ (function () {
         configurable: true
     });
     Object.defineProperty(Music, "diatonic_intervals", {
+        /** Names of diatonic intervals ('unison', 'm2', 'M2',...). */
         get: function () {
             return ['unison', 'm2', 'M2', 'm3', 'M3', 'p4', 'dim5', 'p5', 'm6', 'M6', 'b7', 'M7', 'octave'];
         },
@@ -21423,6 +22053,7 @@ var Music = /** @class */ (function () {
         configurable: true
     });
     Object.defineProperty(Music, "diatonic_accidentals", {
+        /** NoteAccidental associated to diatonic intervals. */
         get: function () {
             return {
                 unison: { note: 0, accidental: 0 },
@@ -21444,6 +22075,7 @@ var Music = /** @class */ (function () {
         configurable: true
     });
     Object.defineProperty(Music, "intervals", {
+        /** Semitones shift associated to intervals .*/
         get: function () {
             return {
                 u: 0,
@@ -21492,18 +22124,25 @@ var Music = /** @class */ (function () {
         configurable: true
     });
     Object.defineProperty(Music, "scales", {
+        /** Semitones shifts associated with scales. */
         get: function () {
             return {
                 major: [2, 2, 1, 2, 2, 2, 1],
-                dorian: [2, 1, 2, 2, 2, 1, 2],
-                mixolydian: [2, 2, 1, 2, 2, 1, 2],
                 minor: [2, 1, 2, 2, 1, 2, 2],
+                ionian: [2, 2, 1, 2, 2, 2, 1],
+                dorian: [2, 1, 2, 2, 2, 1, 2],
+                phyrgian: [1, 2, 2, 2, 1, 2, 2],
+                lydian: [2, 2, 2, 1, 2, 2, 1],
+                mixolydian: [2, 2, 1, 2, 2, 1, 2],
+                aeolian: [2, 1, 2, 2, 1, 2, 2],
+                locrian: [1, 2, 2, 1, 2, 2, 2],
             };
         },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(Music, "scaleTypes", {
+        /** Scales associated with m (minor) and M (major). */
         get: function () {
             return {
                 M: Music.scales.major,
@@ -21514,74 +22153,26 @@ var Music = /** @class */ (function () {
         configurable: true
     });
     Object.defineProperty(Music, "accidentals", {
+        /** Accidentals abreviations. */
         get: function () {
             return ['bb', 'b', 'n', '#', '##'];
         },
         enumerable: false,
         configurable: true
     });
-    Object.defineProperty(Music, "noteValues", {
-        get: function () {
-            return {
-                c: { root_index: 0, int_val: 0 },
-                cn: { root_index: 0, int_val: 0 },
-                'c#': { root_index: 0, int_val: 1 },
-                'c##': { root_index: 0, int_val: 2 },
-                cb: { root_index: 0, int_val: 11 },
-                cbb: { root_index: 0, int_val: 10 },
-                d: { root_index: 1, int_val: 2 },
-                dn: { root_index: 1, int_val: 2 },
-                'd#': { root_index: 1, int_val: 3 },
-                'd##': { root_index: 1, int_val: 4 },
-                db: { root_index: 1, int_val: 1 },
-                dbb: { root_index: 1, int_val: 0 },
-                e: { root_index: 2, int_val: 4 },
-                en: { root_index: 2, int_val: 4 },
-                'e#': { root_index: 2, int_val: 5 },
-                'e##': { root_index: 2, int_val: 6 },
-                eb: { root_index: 2, int_val: 3 },
-                ebb: { root_index: 2, int_val: 2 },
-                f: { root_index: 3, int_val: 5 },
-                fn: { root_index: 3, int_val: 5 },
-                'f#': { root_index: 3, int_val: 6 },
-                'f##': { root_index: 3, int_val: 7 },
-                fb: { root_index: 3, int_val: 4 },
-                fbb: { root_index: 3, int_val: 3 },
-                g: { root_index: 4, int_val: 7 },
-                gn: { root_index: 4, int_val: 7 },
-                'g#': { root_index: 4, int_val: 8 },
-                'g##': { root_index: 4, int_val: 9 },
-                gb: { root_index: 4, int_val: 6 },
-                gbb: { root_index: 4, int_val: 5 },
-                a: { root_index: 5, int_val: 9 },
-                an: { root_index: 5, int_val: 9 },
-                'a#': { root_index: 5, int_val: 10 },
-                'a##': { root_index: 5, int_val: 11 },
-                ab: { root_index: 5, int_val: 8 },
-                abb: { root_index: 5, int_val: 7 },
-                b: { root_index: 6, int_val: 11 },
-                bn: { root_index: 6, int_val: 11 },
-                'b#': { root_index: 6, int_val: 0 },
-                'b##': { root_index: 6, int_val: 1 },
-                bb: { root_index: 6, int_val: 10 },
-                bbb: { root_index: 6, int_val: 9 },
-            };
-        },
-        enumerable: false,
-        configurable: true
-    });
     Music.prototype.isValidNoteValue = function (note) {
-        return note >= 0 && note < Music.NUM_TONES;
+        return note >= 0 && note < Music.canonical_notes.length;
     };
     Music.prototype.isValidIntervalValue = function (interval) {
-        return this.isValidNoteValue(interval);
+        return interval >= 0 && interval < Music.diatonic_intervals.length;
     };
+    /** Return root and accidental associated to a note. */
     Music.prototype.getNoteParts = function (noteString) {
         if (!noteString || noteString.length < 1) {
-            throw new util_1.RuntimeError('BadArguments', 'Invalid note name: ' + noteString);
+            throw new _util__WEBPACK_IMPORTED_MODULE_1__.RuntimeError('BadArguments', 'Invalid note name: ' + noteString);
         }
         if (noteString.length > 3) {
-            throw new util_1.RuntimeError('BadArguments', 'Invalid note name: ' + noteString);
+            throw new _util__WEBPACK_IMPORTED_MODULE_1__.RuntimeError('BadArguments', 'Invalid note name: ' + noteString);
         }
         var note = noteString.toLowerCase();
         var regex = /^([cdefgab])(b|bb|n|#|##)?$/;
@@ -21595,12 +22186,13 @@ var Music = /** @class */ (function () {
             };
         }
         else {
-            throw new util_1.RuntimeError('BadArguments', 'Invalid note name: ' + noteString);
+            throw new _util__WEBPACK_IMPORTED_MODULE_1__.RuntimeError('BadArguments', 'Invalid note name: ' + noteString);
         }
     };
+    /** Return root, accidental and type associated to a key. */
     Music.prototype.getKeyParts = function (keyString) {
         if (!keyString || keyString.length < 1) {
-            throw new util_1.RuntimeError('BadArguments', 'Invalid key: ' + keyString);
+            throw new _util__WEBPACK_IMPORTED_MODULE_1__.RuntimeError('BadArguments', 'Invalid key: ' + keyString);
         }
         var key = keyString.toLowerCase();
         // Support Major, Minor, Melodic Minor, and Harmonic Minor key types.
@@ -21620,32 +22212,36 @@ var Music = /** @class */ (function () {
             };
         }
         else {
-            throw new util_1.RuntimeError('BadArguments', "Invalid key: " + keyString);
+            throw new _util__WEBPACK_IMPORTED_MODULE_1__.RuntimeError('BadArguments', "Invalid key: " + keyString);
         }
     };
+    /** Note value associated to a note name. */
     Music.prototype.getNoteValue = function (noteString) {
-        var value = Music.noteValues[noteString];
-        if (value === undefined) {
-            throw new util_1.RuntimeError('BadArguments', "Invalid note name: " + noteString);
+        var value = _tables__WEBPACK_IMPORTED_MODULE_0__.Tables.keyProperties(noteString.toUpperCase() + "/0");
+        if (value === undefined || value.int_value === undefined) {
+            throw new _util__WEBPACK_IMPORTED_MODULE_1__.RuntimeError('BadArguments', "Invalid note name: " + noteString);
         }
-        return value.int_val;
+        return value.int_value;
     };
+    /** Interval value associated to an interval name. */
     Music.prototype.getIntervalValue = function (intervalString) {
         var value = Music.intervals[intervalString];
         if (value === undefined) {
-            throw new util_1.RuntimeError('BadArguments', "Invalid interval name: " + intervalString);
+            throw new _util__WEBPACK_IMPORTED_MODULE_1__.RuntimeError('BadArguments', "Invalid interval name: " + intervalString);
         }
         return value;
     };
+    /** Canonical note name associated to a value. */
     Music.prototype.getCanonicalNoteName = function (noteValue) {
         if (!this.isValidNoteValue(noteValue)) {
-            throw new util_1.RuntimeError('BadArguments', "Invalid note value: " + noteValue);
+            throw new _util__WEBPACK_IMPORTED_MODULE_1__.RuntimeError('BadArguments', "Invalid note value: " + noteValue);
         }
         return Music.canonical_notes[noteValue];
     };
+    /** Interval name associated to a value. */
     Music.prototype.getCanonicalIntervalName = function (intervalValue) {
         if (!this.isValidIntervalValue(intervalValue)) {
-            throw new util_1.RuntimeError('BadArguments', "Invalid interval value: " + intervalValue);
+            throw new _util__WEBPACK_IMPORTED_MODULE_1__.RuntimeError('BadArguments', "Invalid interval value: " + intervalValue);
         }
         return Music.diatonic_intervals[intervalValue];
     };
@@ -21655,13 +22251,16 @@ var Music = /** @class */ (function () {
     Music.prototype.getRelativeNoteValue = function (noteValue, intervalValue, direction) {
         if (direction === void 0) { direction = 1; }
         if (direction !== 1 && direction !== -1) {
-            throw new util_1.RuntimeError('BadArguments', "Invalid direction: " + direction);
+            throw new _util__WEBPACK_IMPORTED_MODULE_1__.RuntimeError('BadArguments', "Invalid direction: " + direction);
         }
         var sum = (noteValue + direction * intervalValue) % Music.NUM_TONES;
         if (sum < 0)
             sum += Music.NUM_TONES;
         return sum;
     };
+    /**
+     * Given a root and note value, produce the relative note name.
+     */
     Music.prototype.getRelativeNoteName = function (root, noteValue) {
         var parts = this.getNoteParts(root);
         var rootValue = this.getNoteValue(parts.root);
@@ -21673,14 +22272,14 @@ var Music = /** @class */ (function () {
             // Possibly wrap around. (Add +1 for modulo operator)
             var reverse_interval = ((noteValue + 1 + (rootValue + 1)) % Music.NUM_TONES) * multiplier;
             if (Math.abs(reverse_interval) > 2) {
-                throw new util_1.RuntimeError('BadArguments', "Notes not related: " + root + ", " + noteValue + ")");
+                throw new _util__WEBPACK_IMPORTED_MODULE_1__.RuntimeError('BadArguments', "Notes not related: " + root + ", " + noteValue + ")");
             }
             else {
                 interval = reverse_interval;
             }
         }
         if (Math.abs(interval) > 2) {
-            throw new util_1.RuntimeError('BadArguments', "Notes not related: " + root + ", " + noteValue + ")");
+            throw new _util__WEBPACK_IMPORTED_MODULE_1__.RuntimeError('BadArguments', "Notes not related: " + root + ", " + noteValue + ")");
         }
         var relativeNoteName = parts.root;
         if (interval > 0) {
@@ -21721,10 +22320,10 @@ var Music = /** @class */ (function () {
     Music.prototype.getIntervalBetween = function (note1, note2, direction) {
         if (direction === void 0) { direction = 1; }
         if (direction !== 1 && direction !== -1) {
-            throw new util_1.RuntimeError('BadArguments', "Invalid direction: " + direction);
+            throw new _util__WEBPACK_IMPORTED_MODULE_1__.RuntimeError('BadArguments', "Invalid direction: " + direction);
         }
         if (!this.isValidNoteValue(note1) || !this.isValidNoteValue(note2)) {
-            throw new util_1.RuntimeError('BadArguments', "Invalid notes: " + note1 + ", " + note2);
+            throw new _util__WEBPACK_IMPORTED_MODULE_1__.RuntimeError('BadArguments', "Invalid notes: " + note1 + ", " + note2);
         }
         var difference = direction === 1 ? note2 - note1 : note1 - note2;
         if (difference < 0)
@@ -21740,13 +22339,13 @@ var Music = /** @class */ (function () {
     Music.prototype.createScaleMap = function (keySignature) {
         var keySigParts = this.getKeyParts(keySignature);
         if (!keySigParts.type)
-            throw new util_1.RuntimeError('BadArguments', 'Unsupported key type: undefined');
+            throw new _util__WEBPACK_IMPORTED_MODULE_1__.RuntimeError('BadArguments', 'Unsupported key type: undefined');
         var scaleName = Music.scaleTypes[keySigParts.type];
         var keySigString = keySigParts.root;
         if (keySigParts.accidental)
             keySigString += keySigParts.accidental;
         if (!scaleName)
-            throw new util_1.RuntimeError('BadArguments', 'Unsupported key type: ' + keySignature);
+            throw new _util__WEBPACK_IMPORTED_MODULE_1__.RuntimeError('BadArguments', 'Unsupported key type: ' + keySignature);
         var scale = this.getScaleTones(this.getNoteValue(keySigString), scaleName);
         var noteLocation = Music.root_indices[keySigParts.root];
         var scaleMap = {};
@@ -21763,7 +22362,7 @@ var Music = /** @class */ (function () {
     };
     return Music;
 }());
-exports.Music = Music;
+
 
 
 /***/ }),
@@ -21772,21 +22371,18 @@ exports.Music = Music;
 /*!*********************!*\
   !*** ./src/note.ts ***!
   \*********************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Note": () => (/* binding */ Note)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _tickable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tickable */ "./src/tickable.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-//
-// This file implements an abstract interface for notes and chords that
-// are rendered on a stave. Notes have some common properties: All of them
-// have a value (e.g., pitch, fret, etc.) and a duration (quarter, half, etc.)
-//
-// Some notes have stems, heads, dots, etc. Most notational elements that
-// surround a note are called *modifiers*, and every note has an associated
-// array of them. All notes also have a rendering context and belong to a stave.
-var __extends = (this && this.__extends) || (function () {
+// MIT License
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -21801,11 +22397,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Note = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var tickable_1 = __webpack_require__(/*! ./tickable */ "./src/tickable.ts");
+
+
+
 /**
  * Note implements an abstract interface for notes and chords that
  * are rendered on a stave. Notes have some common properties: All of them
@@ -21826,12 +22420,12 @@ var Note = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Note');
         if (!noteStruct) {
-            throw new util_1.RuntimeError('BadArguments', 'Note must have valid initialization data to identify duration and type.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'Note must have valid initialization data to identify duration and type.');
         }
         /** Parses `noteStruct` and get note properties. */
         var initStruct = Note.parseNoteStruct(noteStruct);
         if (!initStruct) {
-            throw new util_1.RuntimeError('BadArguments', "Invalid note initialization object: " + JSON.stringify(noteStruct));
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', "Invalid note initialization object: " + JSON.stringify(noteStruct));
         }
         // Set note properties from parameters.
         _this.keys = noteStruct.keys || [];
@@ -21851,8 +22445,8 @@ var Note = /** @class */ (function (_super) {
         }
         _this.modifiers = [];
         // Get the glyph code for this note from the font.
-        _this.glyph = flow_1.Flow.getGlyphProps(_this.duration, _this.noteType);
-        _this.customGlyphs = _this.customTypes.map(function (t) { return flow_1.Flow.getGlyphProps(_this.duration, t); });
+        _this.glyph = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.getGlyphProps(_this.duration, _this.noteType);
+        _this.customGlyphs = _this.customTypes.map(function (t) { return _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.getGlyphProps(_this.duration, t); });
         // Note to play for audio players.
         _this.playNote = undefined;
         // Positioning contexts used by the Formatter.
@@ -21886,9 +22480,7 @@ var Note = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    /** Debug helper. Displays various note metrics for the given
-     * note.
-     */
+    /** Debug helper. Displays various note metrics for the given note. */
     Note.plotMetrics = function (ctx, note, yPos) {
         var metrics = note.getMetrics();
         var xStart = note.getAbsoluteX() - metrics.modLeftPx - metrics.leftDisplacedHeadPx;
@@ -21920,7 +22512,7 @@ var Note = /** @class */ (function (_super) {
         stroke(xPost2, xEnd, 'red');
         stroke(xEnd, xFreedomRight, '#DD0');
         stroke(xStart - note.getXShift(), xStart, '#BBB'); // Shift
-        util_1.drawDot(ctx, xAbs + note.getXShift(), y, 'blue');
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.drawDot)(ctx, xAbs + note.getXShift(), y, 'blue');
         var formatterMetrics = note.getFormatterMetrics();
         if (formatterMetrics.iterations > 0) {
             var spaceDeviation = formatterMetrics.space.deviation;
@@ -21951,7 +22543,7 @@ var Note = /** @class */ (function (_super) {
         }
         // If specified type is invalid, return undefined
         var type = noteStruct.type;
-        if (type && !flow_1.Flow.validTypes[type]) {
+        if (type && !_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.validTypes[type]) {
             return undefined;
         }
         // If no type specified, check duration or custom types
@@ -21967,7 +22559,7 @@ var Note = /** @class */ (function (_super) {
             }
         }
         // Calculate the tick duration of the note
-        var ticks = flow_1.Flow.durationToTicks(durationProps.duration);
+        var ticks = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.durationToTicks(durationProps.duration);
         if (!ticks) {
             return undefined;
         }
@@ -21992,21 +22584,29 @@ var Note = /** @class */ (function (_super) {
             ticks: ticks,
         };
     };
-    // Get and set the play note, which is arbitrary data that can be used by an
-    // audio player.
+    /**
+     * Get the play note, which is arbitrary data that can be used by an
+     * audio player.
+     */
     Note.prototype.getPlayNote = function () {
         return this.playNote;
     };
+    /**
+     * Set the play note, which is arbitrary data that can be used by an
+     * audio player.
+     */
     Note.prototype.setPlayNote = function (note) {
         this.playNote = note;
         return this;
     };
-    // Don't play notes by default, call them rests. This is also used by things like
-    // beams and dots for positioning.
+    /**
+     * Don't play notes by default, call them rests. This is also used by things like
+     * beams and dots for positioning.
+     */
     Note.prototype.isRest = function () {
         return false;
     };
-    // TODO(0xfe): Why is this method here?
+    /** Add stroke. */
     Note.prototype.addStroke = function (index, stroke) {
         stroke.setNote(this);
         stroke.setIndex(index);
@@ -22021,7 +22621,7 @@ var Note = /** @class */ (function (_super) {
     /** Check and get the target stave. */
     Note.prototype.checkStave = function () {
         if (!this.stave) {
-            throw new util_1.RuntimeError('NoStave', 'No stave attached to instance');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoStave', 'No stave attached to instance');
         }
         return this.stave;
     };
@@ -22039,36 +22639,39 @@ var Note = /** @class */ (function (_super) {
     Note.prototype.getCategory = function () {
         return Note.CATEGORY;
     };
-    // Get and set spacing to the left and right of the notes.
+    /** Get spacing to the left of the notes. */
     Note.prototype.getLeftDisplacedHeadPx = function () {
         return this.leftDisplacedHeadPx;
     };
+    /** Get spacing to the right of the notes. */
     Note.prototype.getRightDisplacedHeadPx = function () {
         return this.rightDisplacedHeadPx;
     };
+    /** Set spacing to the left of the notes. */
     Note.prototype.setLeftDisplacedHeadPx = function (x) {
         this.leftDisplacedHeadPx = x;
         return this;
     };
+    /** Set spacing to the right of the notes. */
     Note.prototype.setRightDisplacedHeadPx = function (x) {
         this.rightDisplacedHeadPx = x;
         return this;
     };
-    /** Returns true if this note has no duration (e.g., bar notes, spacers, etc.) */
+    /** True if this note has no duration (e.g., bar notes, spacers, etc.). */
     Note.prototype.shouldIgnoreTicks = function () {
         return this.ignore_ticks;
     };
-    /** Gets the stave line number for the note. */
-    Note.prototype.getLineNumber = function (
+    /** Get the stave line number for the note. */
     // eslint-disable-next-line
-    isTopNote) {
+    Note.prototype.getLineNumber = function (isTopNote) {
         return 0;
     };
-    /** Gets the stave line number for rest. */
+    /** Get the stave line number for rest. */
     Note.prototype.getLineForRest = function () {
         return 0;
     };
     /** Get the glyph associated with this note. */
+    // eslint-disable-next-line
     Note.prototype.getGlyph = function () {
         return this.glyph;
     };
@@ -22086,7 +22689,7 @@ var Note = /** @class */ (function (_super) {
         return 0;
     };
     /**
-     * Sets Y positions for this note. Each Y value is associated with
+     * Set Y positions for this note. Each Y value is associated with
      * an individual pitch/key within the note/chord.
      */
     Note.prototype.setYs = function (ys) {
@@ -22094,12 +22697,12 @@ var Note = /** @class */ (function (_super) {
         return this;
     };
     /**
-     * Gets Y positions for this note. Each Y value is associated with
+     * Get Y positions for this note. Each Y value is associated with
      * an individual pitch/key within the note/chord.
      */
     Note.prototype.getYs = function () {
         if (this.ys.length === 0) {
-            throw new util_1.RuntimeError('NoYValues', 'No Y-values calculated for this note.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoYValues', 'No Y-values calculated for this note.');
         }
         return this.ys;
     };
@@ -22110,62 +22713,62 @@ var Note = /** @class */ (function (_super) {
     Note.prototype.getYForTopText = function (text_line) {
         return this.checkStave().getYForTopText(text_line);
     };
-    /** Returns the voice that this note belongs in. */
+    /** Return the voice that this note belongs in. */
     Note.prototype.getVoice = function () {
         if (!this.voice)
-            throw new util_1.RuntimeError('NoVoice', 'Note has no voice.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoVoice', 'Note has no voice.');
         return this.voice;
     };
-    /** Attaches this note to `voice`. */
+    /** Attache this note to `voice`. */
     Note.prototype.setVoice = function (voice) {
         this.voice = voice;
         this.preFormatted = false;
         return this;
     };
-    /** Gets the `TickContext` for this note. */
+    /** Get the `TickContext` for this note. */
     Note.prototype.getTickContext = function () {
         if (!this.tickContext)
-            throw new util_1.RuntimeError('NoTickContext', 'Note has no tick context.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoTickContext', 'Note has no tick context.');
         return this.tickContext;
     };
-    /** Sets the `TickContext` for this note. */
+    /** Set the `TickContext` for this note. */
     Note.prototype.setTickContext = function (tc) {
         this.tickContext = tc;
         this.preFormatted = false;
         return this;
     };
-    /** Accessors to duration. */
+    /** Accessor to duration. */
     Note.prototype.getDuration = function () {
         return this.duration;
     };
-    /** Accessors to isDotted. */
+    /** Accessor to isDotted. */
     Note.prototype.isDotted = function () {
         return this.dots > 0;
     };
-    /** Accessors to hasStem. */
+    /** Accessor to hasStem. */
     Note.prototype.hasStem = function () {
         return false;
     };
-    /** Accessors to note type. */
+    /** Accessor to note type. */
     Note.prototype.getNoteType = function () {
         return this.noteType;
     };
-    /** Gets the beam. */
+    /** Get the beam. */
     Note.prototype.getBeam = function () {
         return this.beam;
     };
-    /** Checks and gets the beam. */
+    /** Check and get the beam. */
     Note.prototype.checkBeam = function () {
         if (!this.beam) {
-            throw new util_1.RuntimeError('NoBeam', 'No beam attached to instance');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoBeam', 'No beam attached to instance');
         }
         return this.beam;
     };
-    /** Checks it has a beam. */
+    /** Check it has a beam. */
     Note.prototype.hasBeam = function () {
         return this.beam != undefined;
     };
-    /** Sets the beam. */
+    /** Set the beam. */
     Note.prototype.setBeam = function (beam) {
         this.beam = beam;
         return this;
@@ -22185,7 +22788,7 @@ var Note = /** @class */ (function (_super) {
             modifier = a;
         }
         else {
-            throw new util_1.RuntimeError('WrongParams', 'Call signature to addModifier not supported, use addModifier(modifier, index) instead.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('WrongParams', 'Call signature to addModifier not supported, use addModifier(modifier, index) instead.');
         }
         modifier.setNote(this);
         modifier.setIndex(index);
@@ -22194,11 +22797,10 @@ var Note = /** @class */ (function (_super) {
         return this;
     };
     /** Get the coordinates for where modifiers begin. */
-    Note.prototype.getModifierStartXY = function (
     // eslint-disable-next-line
-    position, index, options) {
+    Note.prototype.getModifierStartXY = function (position, index, options) {
         if (!this.preFormatted) {
-            throw new util_1.RuntimeError('UnformattedNote', "Can't call GetModifierStartXY on an unformatted note");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('UnformattedNote', "Can't call GetModifierStartXY on an unformatted note");
         }
         return {
             x: this.getAbsoluteX(),
@@ -22208,7 +22810,7 @@ var Note = /** @class */ (function (_super) {
     /** Get the metrics for this note. */
     Note.prototype.getMetrics = function () {
         if (!this.preFormatted) {
-            throw new util_1.RuntimeError('UnformattedNote', "Can't call getMetrics on an unformatted note.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('UnformattedNote', "Can't call getMetrics on an unformatted note.");
         }
         var modLeftPx = this.modifierContext ? this.modifierContext.state.left_shift : 0;
         var modRightPx = this.modifierContext ? this.modifierContext.state.right_shift : 0;
@@ -22236,13 +22838,13 @@ var Note = /** @class */ (function (_super) {
         };
     };
     /**
-     * Gets the absolute `X` position of this note's tick context. This
+     * Get the absolute `X` position of this note's tick context. This
      * excludes x_shift, so you'll need to factor it in if you're
      * looking for the post-formatted x-position.
      */
     Note.prototype.getAbsoluteX = function () {
         if (!this.tickContext) {
-            throw new util_1.RuntimeError('NoTickContext', 'Note needs a TickContext assigned for an X-Value');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoTickContext', 'Note needs a TickContext assigned for an X-Value');
         }
         // Position note to left edge of tick context.
         var x = this.tickContext.getX();
@@ -22254,19 +22856,19 @@ var Note = /** @class */ (function (_super) {
         }
         return x;
     };
-    /** Sets preformatted status. */
+    /** Set preformatted status. */
     Note.prototype.setPreFormatted = function (value) {
         this.preFormatted = value;
     };
-    // Get the direction of the stem
+    /** Get the direction of the stem. */
     Note.prototype.getStemDirection = function () {
-        throw new util_1.RuntimeError('NoStem', 'No stem attached to this note.');
+        throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoStem', 'No stem attached to this note.');
     };
-    // Get the top and bottom `y` values of the stem.
+    /** Get the top and bottom `y` values of the stem. */
     Note.prototype.getStemExtents = function () {
-        throw new util_1.RuntimeError('NoStem', 'No stem attached to this note.');
+        throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoStem', 'No stem attached to this note.');
     };
-    // Get the `x` coordinate to the right of the note
+    /** Get the `x` coordinate to the right of the note. */
     Note.prototype.getTieRightX = function () {
         var tieStartX = this.getAbsoluteX();
         var note_glyph_width = this.glyph.getWidth();
@@ -22274,7 +22876,7 @@ var Note = /** @class */ (function (_super) {
         tieStartX += -this.width / 2 + this.width + 2;
         return tieStartX;
     };
-    // Get the `x` coordinate to the left of the note
+    /** Get the `x` coordinate to the left of the note. */
     Note.prototype.getTieLeftX = function () {
         var tieEndX = this.getAbsoluteX();
         var note_glyph_width = this.glyph.getWidth();
@@ -22283,8 +22885,8 @@ var Note = /** @class */ (function (_super) {
         return tieEndX;
     };
     return Note;
-}(tickable_1.Tickable));
-exports.Note = Note;
+}(_tickable__WEBPACK_IMPORTED_MODULE_2__.Tickable));
+
 
 
 /***/ }),
@@ -22293,18 +22895,22 @@ exports.Note = Note;
 /*!*************************!*\
   !*** ./src/notehead.ts ***!
   \*************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "NoteHead": () => (/* binding */ NoteHead)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./note */ "./src/note.ts");
+/* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./stem */ "./src/stem.ts");
+/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+/* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-//
-// This file implements `NoteHeads`. `NoteHeads` are typically not manipulated
-// directly, but used internally in `StaveNote`.
-//
-// See `tests/notehead_tests.js` for usage examples.
-var __extends = (this && this.__extends) || (function () {
+// MIT License
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -22319,7 +22925,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -22330,50 +22936,40 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.NoteHead = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
-var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
-var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-var boundingbox_1 = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
-// To enable logging for this class. Set `Vex.Flow.NoteHead.DEBUG` to `true`.
+
+
+
+
+
+
+
+// eslint-disable-next-line
 function L() {
-    // eslint-disable-next-line
     var args = [];
-    for (
-    // eslint-disable-next-line
-    var _i = 0; 
-    // eslint-disable-next-line
-    _i < arguments.length; 
-    // eslint-disable-next-line
-    _i++) {
-        // eslint-disable-next-line
+    for (var _i = 0; _i < arguments.length; _i++) {
         args[_i] = arguments[_i];
     }
     if (NoteHead.DEBUG)
-        util_1.log('Vex.Flow.NoteHead', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.NoteHead', args);
 }
-// Draw slashnote head manually. No glyph exists for this.
-//
-// Parameters:
-// * `ctx`: the Canvas context
-// * `duration`: the duration of the note. ex: "4"
-// * `x`: the x coordinate to draw at
-// * `y`: the y coordinate to draw at
-// * `stem_direction`: the direction of the stem
+/**
+ * Draw slashnote head manually. No glyph exists for this.
+ * @param ctx the Canvas context
+ * @param duration the duration of the note. ex: "4"
+ * @param x the x coordinate to draw at
+ * @param y the y coordinate to draw at
+ * @param stem_direction the direction of the stem
+ */
 function drawSlashNoteHead(ctx, duration, x, y, stem_direction, staveSpace) {
-    var width = flow_1.Flow.SLASH_NOTEHEAD_WIDTH;
+    var width = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.SLASH_NOTEHEAD_WIDTH;
     ctx.save();
-    ctx.setLineWidth(flow_1.Flow.STEM_WIDTH);
+    ctx.setLineWidth(_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.STEM_WIDTH);
     var fill = false;
-    if (flow_1.Flow.durationToNumber(duration) > 2) {
+    if (_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.durationToNumber(duration) > 2) {
         fill = true;
     }
     if (!fill)
-        x -= (flow_1.Flow.STEM_WIDTH / 2) * stem_direction;
+        x -= (_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.STEM_WIDTH / 2) * stem_direction;
     ctx.beginPath();
     ctx.moveTo(x, y + staveSpace);
     ctx.lineTo(x, y + 1);
@@ -22387,7 +22983,7 @@ function drawSlashNoteHead(ctx, duration, x, y, stem_direction, staveSpace) {
     else {
         ctx.stroke();
     }
-    if (flow_1.Flow.durationToFraction(duration).equals(0.5)) {
+    if (_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.durationToFraction(duration).equals(0.5)) {
         var breve_lines = [-3, -1, width + 1, width + 3];
         for (var i = 0; i < breve_lines.length; i++) {
             ctx.beginPath();
@@ -22398,6 +22994,12 @@ function drawSlashNoteHead(ctx, duration, x, y, stem_direction, staveSpace) {
     }
     ctx.restore();
 }
+/**
+ * `NoteHeads` are typically not manipulated
+ * directly, but used internally in `StaveNote`.
+ *
+ * See `tests/notehead_tests.ts` for usage examples.
+ */
 var NoteHead = /** @class */ (function (_super) {
     __extends(NoteHead, _super);
     function NoteHead(head_options) {
@@ -22412,13 +23014,13 @@ var NoteHead = /** @class */ (function (_super) {
         _this.note_type = head_options.note_type;
         _this.duration = head_options.duration;
         _this.displaced = head_options.displaced || false;
-        _this.stem_direction = head_options.stem_direction || stavenote_1.StaveNote.STEM_UP;
+        _this.stem_direction = head_options.stem_direction || _stavenote__WEBPACK_IMPORTED_MODULE_4__.StaveNote.STEM_UP;
         _this.line = head_options.line || 0;
         // Get glyph code based on duration and note type. This could be
         // regular notes, rests, or other custom codes.
-        _this.glyph = flow_1.Flow.getGlyphProps(_this.duration, _this.note_type);
+        _this.glyph = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.getGlyphProps(_this.duration, _this.note_type);
         if (!_this.glyph) {
-            throw new util_1.RuntimeError('BadArguments', "No glyph found for duration '" + _this.duration + "' and type '" + _this.note_type + "'");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', "No glyph found for duration '" + _this.duration + "' and type '" + _this.note_type + "'");
         }
         _this.glyph_code = _this.glyph.code_head;
         _this.x_shift = head_options.x_shift || 0;
@@ -22432,7 +23034,7 @@ var NoteHead = /** @class */ (function (_super) {
         _this.slashed = head_options.slashed || false;
         _this.render_options = __assign(__assign({}, _this.render_options), {
             // font size for note heads
-            glyph_font_scale: head_options.glyph_font_scale || flow_1.Flow.DEFAULT_NOTATION_FONT_SCALE,
+            glyph_font_scale: head_options.glyph_font_scale || _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.DEFAULT_NOTATION_FONT_SCALE,
             // number of stroke px to the left and right of head
             stroke_px: 3,
         });
@@ -22449,40 +23051,42 @@ var NoteHead = /** @class */ (function (_super) {
     NoteHead.prototype.getCategory = function () {
         return NoteHead.CATEGORY;
     };
-    // Get the width of the notehead
+    /** Get the width of the notehead. */
     NoteHead.prototype.getWidth = function () {
         return this.width;
     };
-    // Determine if the notehead is displaced
+    /** Determine if the notehead is displaced. */
     NoteHead.prototype.isDisplaced = function () {
         return this.displaced === true;
     };
-    // Get the glyph data
+    /** Get the glyph data. */
     NoteHead.prototype.getGlyph = function () {
         return this.glyph;
     };
-    // Set the X coordinate
+    /** Set the X coordinate. */
     NoteHead.prototype.setX = function (x) {
         this.x = x;
         return this;
     };
-    // get/set the Y coordinate
+    /** Get the Y coordinate. */
     NoteHead.prototype.getY = function () {
         return this.y;
     };
+    /** Set the Y coordinate. */
     NoteHead.prototype.setY = function (y) {
         this.y = y;
         return this;
     };
-    // Get/set the stave line the notehead is placed on
+    /** Get the stave line the notehead is placed on. */
     NoteHead.prototype.getLine = function () {
         return this.line;
     };
+    /** Set the stave line the notehead is placed on. */
     NoteHead.prototype.setLine = function (line) {
         this.line = line;
         return this;
     };
-    // Get the canvas `x` coordinate position of the notehead.
+    /** Get the canvas `x` coordinate position of the notehead. */
     NoteHead.prototype.getAbsoluteX = function () {
         // If the note has not been preformatted, then get the static x value
         // Otherwise, it's been formatted and we should use it's x value relative
@@ -22490,24 +23094,24 @@ var NoteHead = /** @class */ (function (_super) {
         var x = !this.preFormatted ? this.x : _super.prototype.getAbsoluteX.call(this);
         // For a more natural displaced notehead, we adjust the displacement amount
         // by half the stem width in order to maintain a slight overlap with the stem
-        var displacementStemAdjustment = stem_1.Stem.WIDTH / 2;
+        var displacementStemAdjustment = _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.WIDTH / 2;
         var fontShift = this.musicFont.lookupMetric('notehead.shiftX', 0) * this.stem_direction;
         var displacedFontShift = this.musicFont.lookupMetric('noteHead.displaced.shiftX', 0) * this.stem_direction;
         return (x +
             fontShift +
             (this.displaced ? (this.width - displacementStemAdjustment) * this.stem_direction + displacedFontShift : 0));
     };
-    // Get the `BoundingBox` for the `NoteHead`
+    /** Get the `BoundingBox` for the `NoteHead`. */
     NoteHead.prototype.getBoundingBox = function () {
         if (!this.preFormatted) {
-            throw new util_1.RuntimeError('UnformattedNote', "Can't call getBoundingBox on an unformatted note.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('UnformattedNote', "Can't call getBoundingBox on an unformatted note.");
         }
         var spacing = this.checkStave().getSpacingBetweenLines();
         var half_spacing = spacing / 2;
         var min_y = this.y - half_spacing;
-        return new boundingbox_1.BoundingBox(this.getAbsoluteX(), min_y, this.width, spacing);
+        return new _boundingbox__WEBPACK_IMPORTED_MODULE_6__.BoundingBox(this.getAbsoluteX(), min_y, this.width, spacing);
     };
-    // Set notehead to a provided `stave`
+    /** Set notehead to a provided `stave`. */
     NoteHead.prototype.setStave = function (stave) {
         var line = this.getLine();
         this.stave = stave;
@@ -22517,7 +23121,7 @@ var NoteHead = /** @class */ (function (_super) {
         }
         return this;
     };
-    // Pre-render formatting
+    /** Pre-render formatting. */
     NoteHead.prototype.preFormat = function () {
         if (this.preFormatted)
             return this;
@@ -22526,14 +23130,14 @@ var NoteHead = /** @class */ (function (_super) {
         this.setPreFormatted(true);
         return this;
     };
-    // Draw the notehead
+    /** Draw the notehead. */
     NoteHead.prototype.draw = function () {
         var ctx = this.checkContext();
         this.setRendered();
         var head_x = this.getAbsoluteX();
         if (this.custom_glyph) {
             // head_x += this.x_shift;
-            head_x += this.stem_direction === stem_1.Stem.UP ? this.stem_up_x_offset : this.stem_down_x_offset;
+            head_x += this.stem_direction === _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.UP ? this.stem_up_x_offset : this.stem_down_x_offset;
         }
         var y = this.y;
         L("Drawing note head '", this.note_type, this.duration, "' at", head_x, y);
@@ -22543,13 +23147,13 @@ var NoteHead = /** @class */ (function (_super) {
         if (this.style) {
             this.applyStyle(ctx);
         }
-        var categorySuffix = this.glyph_code + "Stem" + (stem_direction === stem_1.Stem.UP ? 'Up' : 'Down');
+        var categorySuffix = this.glyph_code + "Stem" + (stem_direction === _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.UP ? 'Up' : 'Down');
         if (this.note_type === 's') {
             var staveSpace = this.checkStave().getSpacingBetweenLines();
             drawSlashNoteHead(ctx, this.duration, head_x, y, stem_direction, staveSpace);
         }
         else {
-            glyph_1.Glyph.renderGlyph(ctx, head_x, y, glyph_font_scale, this.glyph_code, {
+            _glyph__WEBPACK_IMPORTED_MODULE_5__.Glyph.renderGlyph(ctx, head_x, y, glyph_font_scale, this.glyph_code, {
                 font: this.musicFont,
                 category: this.custom_glyph ? "noteHead.custom." + categorySuffix : "noteHead.standard." + categorySuffix,
             });
@@ -22559,8 +23163,8 @@ var NoteHead = /** @class */ (function (_super) {
         }
     };
     return NoteHead;
-}(note_1.Note));
-exports.NoteHead = NoteHead;
+}(_note__WEBPACK_IMPORTED_MODULE_2__.Note));
+
 
 
 /***/ }),
@@ -22569,9 +23173,16 @@ exports.NoteHead = NoteHead;
 /*!*****************************!*\
   !*** ./src/notesubgroup.ts ***!
   \*****************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "NoteSubGroup": () => (/* binding */ NoteSubGroup)
+/* harmony export */ });
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
+/* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
+/* harmony import */ var _voice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./voice */ "./src/voice.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Taehoon Moon 2016
 //
@@ -22580,7 +23191,7 @@ exports.NoteHead = NoteHead;
 // This file implements `NoteSubGroup` which is used to format and
 // render notes as a `Modifier`
 // ex) ClefNote, TimeSigNote and BarNote.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -22595,29 +23206,27 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.NoteSubGroup = void 0;
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
-var voice_1 = __webpack_require__(/*! ./voice */ "./src/voice.ts");
+
+
+
+
 var NoteSubGroup = /** @class */ (function (_super) {
     __extends(NoteSubGroup, _super);
     function NoteSubGroup(subNotes) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'NoteSubGroup');
-        _this.position = modifier_1.Modifier.Position.LEFT;
+        _this.position = _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.LEFT;
         _this.subNotes = subNotes;
         _this.subNotes.forEach(function (subNote) {
             subNote.setIgnoreTicks(false);
         });
         _this.width = 0;
         _this.preFormatted = false;
-        _this.formatter = new formatter_1.Formatter();
-        _this.voice = new voice_1.Voice({
+        _this.formatter = new _formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter();
+        _this.voice = new _voice__WEBPACK_IMPORTED_MODULE_3__.Voice({
             num_beats: 4,
             beat_value: 4,
-            resolution: flow_1.Flow.RESOLUTION,
+            resolution: _flow__WEBPACK_IMPORTED_MODULE_0__.Flow.RESOLUTION,
         }).setStrict(false);
         _this.voice.addTickables(_this.subNotes);
         return _this;
@@ -22667,8 +23276,8 @@ var NoteSubGroup = /** @class */ (function (_super) {
         this.subNotes.forEach(function (subNote) { return subNote.setContext(ctx).drawWithStyle(); });
     };
     return NoteSubGroup;
-}(modifier_1.Modifier));
-exports.NoteSubGroup = NoteSubGroup;
+}(_modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier));
+
 
 
 /***/ }),
@@ -22677,20 +23286,23 @@ exports.NoteSubGroup = NoteSubGroup;
 /*!*************************!*\
   !*** ./src/ornament.ts ***!
   \*************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Ornament": () => (/* binding */ Ornament)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
+/* harmony import */ var _tickcontext__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
+/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+/* harmony import */ var _tabnote__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Cyril Silverman
-//
-// ## Description
-//
-// This file implements ornaments as modifiers that can be
-// attached to notes. The complete list of ornaments is available in
-// `tables.js` under `Vex.Flow.ornamentCodes`.
-//
-// See `tests/ornament_tests.js` for usage examples.
-var __extends = (this && this.__extends) || (function () {
+// MIT License
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -22705,36 +23317,35 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Ornament = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-var tickcontext_1 = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
-var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
-// To enable logging for this class. Set `Vex.Flow.Ornament.DEBUG` to `true`.
+
+
+
+
+
+
+
+// eslint-disable-next-line
 function L() {
-    // eslint-disable-next-line
     var args = [];
-    for (
-    // eslint-disable-next-line
-    var _i = 0; 
-    // eslint-disable-next-line
-    _i < arguments.length; 
-    // eslint-disable-next-line
-    _i++) {
-        // eslint-disable-next-line
+    for (var _i = 0; _i < arguments.length; _i++) {
         args[_i] = arguments[_i];
     }
     if (Ornament.DEBUG)
-        util_1.log('Vex.Flow.Ornament', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.Ornament', args);
 }
+/**
+ * Ornament implements ornaments as modifiers that can be
+ * attached to notes. The complete list of ornaments is available in
+ * `tables.ts` under `Vex.Flow.ornamentCodes`.
+ *
+ * See `tests/ornament_tests.ts` for usage examples.
+ */
 var Ornament = /** @class */ (function (_super) {
     __extends(Ornament, _super);
-    // Create a new ornament of type `type`, which is an entry in
-    // `Vex.Flow.ornamentCodes` in `tables.js`.
+    /**
+     * Create a new ornament of type `type`, which is an entry in
+     * `Vex.Flow.ornamentCodes` in `tables.ts`.
+     */
     function Ornament(type) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Ornament');
@@ -22745,7 +23356,7 @@ var Ornament = /** @class */ (function (_super) {
             accidentalLowerPadding: 3,
             accidentalUpperPadding: 3,
         };
-        _this.ornament = flow_1.Flow.ornamentCodes(_this.type);
+        _this.ornament = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.ornamentCodes(_this.type);
         // new ornaments have their origin at the origin, and have more specific
         // metrics.  Legacy ornaments do some
         // x scaling, and have hard-coded metrics
@@ -22758,11 +23369,11 @@ var Ornament = /** @class */ (function (_super) {
         _this.stemUpYOffset = metrics && metrics.stemUpYOffset ? metrics.stemUpYOffset : 0;
         _this.ornamentAlignWithNoteHead = Ornament.ornamentAlignWithNoteHead.indexOf(_this.type) >= 0;
         if (!_this.ornament) {
-            throw new util_1.RuntimeError('ArgumentError', "Ornament not found: '" + _this.type + "'");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('ArgumentError', "Ornament not found: '" + _this.type + "'");
         }
         _this.x_shift = metrics ? metrics.xOffset : 0;
         _this.y_shift = metrics ? metrics.yOffset : 0;
-        _this.glyph = new glyph_1.Glyph(_this.ornament.code, _this.render_options.font_scale, {
+        _this.glyph = new _glyph__WEBPACK_IMPORTED_MODULE_5__.Glyph(_this.ornament.code, _this.render_options.font_scale, {
             category: "ornament." + _this.ornament.code,
         });
         // Is this a jazz ornament that goes between this note and the next note.
@@ -22777,14 +23388,14 @@ var Ornament = /** @class */ (function (_super) {
         return _this;
     }
     Object.defineProperty(Ornament, "CATEGORY", {
+        /** Ornaments category string. */
         get: function () {
             return 'ornaments';
         },
         enumerable: false,
         configurable: true
     });
-    // ## Static Methods
-    // Arrange ornaments inside `ModifierContext`
+    /** Arrange ornaments inside `ModifierContext` */
     Ornament.format = function (ornaments, state) {
         if (!ornaments || ornaments.length === 0)
             return false;
@@ -22815,9 +23426,9 @@ var Ornament = /** @class */ (function (_super) {
                 // Unfortunately we don't know the stem direction.  So we base it
                 // on the line number, but also allow it to be overridden.
                 if (!ornament.note) {
-                    throw new util_1.RuntimeError('NoAttachedNote');
+                    throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoAttachedNote');
                 }
-                if (ornament.note.getLineNumber() >= 3 || ornament.getPosition() === modifier_1.Modifier.Position.ABOVE) {
+                if (ornament.note.getLineNumber() >= 3 || ornament.getPosition() === _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier.Position.ABOVE) {
                     state.top_text_line += increment;
                     ornament.y_shift += yOffset;
                     yOffset -= ornament.glyph.bbox.getH();
@@ -22829,7 +23440,7 @@ var Ornament = /** @class */ (function (_super) {
                 }
             }
             else {
-                if (ornament.getPosition() === modifier_1.Modifier.Position.ABOVE) {
+                if (ornament.getPosition() === _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier.Position.ABOVE) {
                     ornament.setTextLine(state.top_text_line);
                     state.top_text_line += increment;
                 }
@@ -22846,9 +23457,10 @@ var Ornament = /** @class */ (function (_super) {
         return true;
     };
     Object.defineProperty(Ornament, "ornamentNoteTransition", {
-        // ### ornamentNoteTransition
-        // means the jazz ornament represents an effect from one note to another,
-        // these are generally on the top of the staff.
+        /**
+         * ornamentNoteTransition means the jazz ornament represents an effect from one note to another,
+         * these are generally on the top of the staff.
+         */
         get: function () {
             return ['flip', 'jazzTurn', 'smear'];
         },
@@ -22856,9 +23468,10 @@ var Ornament = /** @class */ (function (_super) {
         configurable: true
     });
     Object.defineProperty(Ornament, "ornamentAttack", {
-        // ### ornamentAttack
-        // Indicates something that happens in the attach, placed before the note and
-        // any accidentals
+        /**
+         * ornamentAttack indicates something that happens in the attach, placed before the note and
+         * any accidentals
+         */
         get: function () {
             return ['scoop'];
         },
@@ -22866,9 +23479,10 @@ var Ornament = /** @class */ (function (_super) {
         configurable: true
     });
     Object.defineProperty(Ornament, "ornamentAlignWithNoteHead", {
-        // ### ornamentAlignWithNoteHead
-        // The ornament is aligned based on the note head, but without regard to whether the
-        // stem goes up or down.
+        /**
+         * The ornament is aligned based on the note head, but without regard to whether the
+         * stem goes up or down.
+         */
         get: function () {
             return ['doit', 'fall', 'fallLong', 'doitLong', 'bend', 'plungerClosed', 'plungerOpen', 'scoop'];
         },
@@ -22876,9 +23490,10 @@ var Ornament = /** @class */ (function (_super) {
         configurable: true
     });
     Object.defineProperty(Ornament, "ornamentRelease", {
-        // ### ornamentRelease
-        // An ornament that happens on the release of the note, generally placed after the
-        // note and overlapping the next beat/measure..
+        /**
+         * An ornament that happens on the release of the note, generally placed after the
+         * note and overlapping the next beat/measure..
+         */
         get: function () {
             return ['doit', 'fall', 'fallLong', 'doitLong', 'jazzTurn', 'smear', 'flip'];
         },
@@ -22886,44 +23501,45 @@ var Ornament = /** @class */ (function (_super) {
         configurable: true
     });
     Object.defineProperty(Ornament, "ornamentArticulation", {
-        // ### ornamentArticulation
-        // goes above/below the note based on space availablity
+        /** ornamentArticulation goes above/below the note based on space availablity */
         get: function () {
             return ['bend', 'plungerClosed', 'plungerOpen'];
         },
         enumerable: false,
         configurable: true
     });
-    // ### getMetrics
-    // legacy ornaments have hard-coded metrics.  If additional ornament types are
-    // added, get their metrics here.
+    /**
+     * Legacy ornaments have hard-coded metrics.  If additional ornament types are
+     * added, get their metrics here.
+     */
     // eslint-disable-next-line
     Ornament.prototype.getMetrics = function () {
         return this.getFontStack()[0].getMetrics().glyphs.jazzOrnaments[this.ornament.code];
     };
+    /** Get element category string. */
     Ornament.prototype.getCategory = function () {
         return Ornament.CATEGORY;
     };
-    // Set whether the ornament is to be delayed
+    /** Set whether the ornament is to be delayed. */
     Ornament.prototype.setDelayed = function (delayed) {
         this.delayed = delayed;
         return this;
     };
-    // Set the upper accidental for the ornament
+    /** Set the upper accidental for the ornament. */
     Ornament.prototype.setUpperAccidental = function (accid) {
         var scale = this.render_options.font_scale / 1.3;
-        this.accidentalUpper = new glyph_1.Glyph(flow_1.Flow.accidentalCodes(accid).code, scale);
+        this.accidentalUpper = new _glyph__WEBPACK_IMPORTED_MODULE_5__.Glyph(_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.accidentalCodes(accid).code, scale);
         this.accidentalUpper.setOrigin(0.5, 1.0);
         return this;
     };
-    // Set the lower accidental for the ornament
+    /** Set the lower accidental for the ornament. */
     Ornament.prototype.setLowerAccidental = function (accid) {
         var scale = this.render_options.font_scale / 1.3;
-        this.accidentalLower = new glyph_1.Glyph(flow_1.Flow.accidentalCodes(accid).code, scale);
+        this.accidentalLower = new _glyph__WEBPACK_IMPORTED_MODULE_5__.Glyph(_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.accidentalCodes(accid).code, scale);
         this.accidentalLower.setOrigin(0.5, 1.0);
         return this;
     };
-    // Render ornament in position next to note.
+    /** Render ornament in position next to note. */
     Ornament.prototype.draw = function () {
         var ctx = this.checkContext();
         var note = this.checkAttachedNote();
@@ -22934,12 +23550,12 @@ var Ornament = /** @class */ (function (_super) {
         ctx.openGroup(classString, this.getAttribute('id'));
         // Get stem extents
         var stemExtents = note.checkStem().getExtents();
-        var y = stemDir === stavenote_1.StaveNote.STEM_DOWN ? stemExtents.baseY : stemExtents.topY;
+        var y = stemDir === _stavenote__WEBPACK_IMPORTED_MODULE_4__.StaveNote.STEM_DOWN ? stemExtents.baseY : stemExtents.topY;
         // TabNotes don't have stems attached to them. Tab stems are rendered
         // outside the stave.
-        if (note.getCategory() === tabnote_1.TabNote.CATEGORY) {
+        if (note.getCategory() === _tabnote__WEBPACK_IMPORTED_MODULE_6__.TabNote.CATEGORY) {
             if (note.hasStem()) {
-                if (stemDir === stavenote_1.StaveNote.STEM_DOWN) {
+                if (stemDir === _stavenote__WEBPACK_IMPORTED_MODULE_4__.StaveNote.STEM_DOWN) {
                     y = stave.getYForTopText(this.text_line);
                 }
             }
@@ -22948,7 +23564,7 @@ var Ornament = /** @class */ (function (_super) {
                 y = stave.getYForTopText(this.text_line);
             }
         }
-        var isPlacedOnNoteheadSide = stemDir === stavenote_1.StaveNote.STEM_DOWN;
+        var isPlacedOnNoteheadSide = stemDir === _stavenote__WEBPACK_IMPORTED_MODULE_4__.StaveNote.STEM_DOWN;
         var spacing = stave.getSpacingBetweenLines();
         var lineSpacing = 1;
         // Beamed stems are longer than quarter note stems, adjust accordingly
@@ -22975,7 +23591,7 @@ var Ornament = /** @class */ (function (_super) {
             }
             else {
                 delayXShift += this.glyph.getMetrics().width / 2;
-                var nextContext = tickcontext_1.TickContext.getNextContext(note.getTickContext());
+                var nextContext = _tickcontext__WEBPACK_IMPORTED_MODULE_3__.TickContext.getNextContext(note.getTickContext());
                 if (nextContext) {
                     delayXShift += (nextContext.getX() - startX) * 0.5;
                 }
@@ -23006,8 +23622,8 @@ var Ornament = /** @class */ (function (_super) {
         ctx.closeGroup();
     };
     return Ornament;
-}(modifier_1.Modifier));
-exports.Ornament = Ornament;
+}(_modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier));
+
 
 
 /***/ }),
@@ -23016,15 +23632,17 @@ exports.Ornament = Ornament;
 /*!***********************!*\
   !*** ./src/parser.ts ***!
   \***********************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Parser": () => (/* binding */ Parser)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // A generic text parsing class for VexFlow.
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Parser = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
+
 // To enable logging for this class. Set `Vex.Flow.Parser.DEBUG` to `true`.
 // eslint-disable-next-line
 function L() {
@@ -23033,9 +23651,8 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (Parser.DEBUG)
-        util_1.log('Vex.Flow.Parser', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.Parser', args);
 }
-var X = util_1.MakeException('ParserError');
 var NO_ERROR_POS = -1;
 // Converts parser results into an easy to reference list that can be
 // used in triggers. This function returns:
@@ -23193,7 +23810,7 @@ var Parser = /** @class */ (function () {
     Parser.prototype.expect = function (ruleFunc) {
         L('Evaluating rule function:', ruleFunc);
         if (!ruleFunc) {
-            throw new X('Invalid rule function: ' + ruleFunc, ruleFunc);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('Invalid rule function');
         }
         var result;
         // Get rule from Grammar class.
@@ -23227,7 +23844,8 @@ var Parser = /** @class */ (function () {
             }
         }
         else {
-            throw new X('Bad grammar! No `token` or `expect` property', rule);
+            L(rule);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('Bad grammar! No `token` or `expect` property ' + rule);
         }
         // If there's a trigger attached to this rule, then run it.
         // Make the matches accessible through `state.matches` in the
@@ -23247,7 +23865,7 @@ var Parser = /** @class */ (function () {
     Parser.DEBUG = false;
     return Parser;
 }());
-exports.Parser = Parser;
+
 
 
 /***/ }),
@@ -23256,19 +23874,18 @@ exports.Parser = Parser;
 /*!*****************************!*\
   !*** ./src/pedalmarking.ts ***!
   \*****************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "PedalMarking": () => (/* binding */ PedalMarking)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./element */ "./src/element.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-//
-// This file implements different types of pedal markings. These notation
-// elements indicate to the performer when to depress and release the a pedal.
-//
-// In order to create "Sostenuto", and "una corda" markings, you must set
-// custom text for the release/depress pedal markings.
-var __extends = (this && this.__extends) || (function () {
+// MIT License
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -23283,39 +23900,37 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.PedalMarking = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-// To enable logging for this class. Set `Vex.Flow.PedalMarking.DEBUG` to `true`.
+
+
+
+// eslint-disable-next-line
 function L() {
-    // eslint-disable-next-line
     var args = [];
-    for (
-    // eslint-disable-next-line
-    var _i = 0; 
-    // eslint-disable-next-line
-    _i < arguments.length; 
-    // eslint-disable-next-line
-    _i++) {
-        // eslint-disable-next-line
+    for (var _i = 0; _i < arguments.length; _i++) {
         args[_i] = arguments[_i];
     }
     if (PedalMarking.DEBUG)
-        util_1.log('Vex.Flow.PedalMarking', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.PedalMarking', args);
 }
-// Draws a pedal glyph with the provided `name` on a rendering `context`
-// at the coordinates `x` and `y. Takes into account the glyph data
-// coordinate shifts.
+/**
+ * Draws a pedal glyph with the provided `name` on a rendering `context`
+ * at the coordinates `x` and `y. Takes into account the glyph data
+ * coordinate shifts.
+ */
 function drawPedalGlyph(name, context, x, y, point) {
     var glyph_data = PedalMarking.GLYPHS[name];
-    var glyph = new glyph_1.Glyph(glyph_data.code, point, { category: 'pedalMarking' });
+    var glyph = new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph(glyph_data.code, point, { category: 'pedalMarking' });
     glyph.render(context, x + glyph_data.x_shift, y + glyph_data.y_shift);
 }
+/**
+ * PedalMarking implements different types of pedal markings. These notation
+ * elements indicate to the performer when to depress and release the a pedal.
+ *
+ * In order to create "Sostenuto", and "una corda" markings, you must set
+ * custom text for the release/depress pedal markings.
+ */
 var PedalMarking = /** @class */ (function (_super) {
     __extends(PedalMarking, _super);
-    // ## Prototype Methods
     function PedalMarking(notes) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'PedalMarking');
@@ -23338,6 +23953,7 @@ var PedalMarking = /** @class */ (function (_super) {
         };
         return _this;
     }
+    /** Set pedal type. */
     PedalMarking.prototype.setType = function (type) {
         type = typeof type === 'string' ? PedalMarking.typeString[type] : type;
         if (type >= PedalMarking.type.TEXT && type <= PedalMarking.type.MIXED) {
@@ -23345,39 +23961,43 @@ var PedalMarking = /** @class */ (function (_super) {
         }
         return this;
     };
-    // Create a sustain pedal marking. Returns the defaults PedalMarking.
-    // Which uses the traditional "Ped" and "*"" markings.
+    /**
+     * Create a sustain pedal marking. Returns the defaults PedalMarking.
+     * Which uses the traditional "Ped" and "*"" markings.
+     */
     PedalMarking.createSustain = function (notes) {
         var pedal = new PedalMarking(notes);
         return pedal;
     };
-    // Create a sostenuto pedal marking
+    /** Create a sostenuto pedal marking */
     PedalMarking.createSostenuto = function (notes) {
         var pedal = new PedalMarking(notes);
         pedal.setType(PedalMarking.type.MIXED);
         pedal.setCustomText('Sost. Ped.');
         return pedal;
     };
-    // Create an una corda pedal marking
+    /** Create an una corda pedal marking */
     PedalMarking.createUnaCorda = function (notes) {
         var pedal = new PedalMarking(notes);
         pedal.setType(PedalMarking.type.TEXT);
         pedal.setCustomText('una corda', 'tre corda');
         return pedal;
     };
-    // Set custom text for the `depress`/`release` pedal markings. No text is
-    // set if the parameter is falsy.
+    /**
+     * Set custom text for the `depress`/`release` pedal markings. No text is
+     * set if the parameter is falsy.
+     */
     PedalMarking.prototype.setCustomText = function (depress, release) {
         this.custom_depress_text = depress || '';
         this.custom_release_text = release || '';
         return this;
     };
-    // Set the staff line to render the markings on
+    /** Set the staff line to render the markings on. */
     PedalMarking.prototype.setLine = function (line) {
         this.line = line;
         return this;
     };
-    // Draw the bracket based pedal markings
+    /** Draw the bracket based pedal markings. */
     PedalMarking.prototype.drawBracketed = function () {
         var _this = this;
         var ctx = this.checkContext();
@@ -23393,7 +24013,7 @@ var PedalMarking = /** @class */ (function (_super) {
             var y = note.checkStave().getYForBottomText(_this.line + 3);
             // Throw if current note is positioned before the previous note
             if (x < prev_x) {
-                throw new util_1.RuntimeError('InvalidConfiguration', 'The notes provided must be in order of ascending x positions');
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('InvalidConfiguration', 'The notes provided must be in order of ascending x positions');
             }
             // Determine if the previous or next note are the same
             // as the current note. We need to keep track of this for
@@ -23444,8 +24064,10 @@ var PedalMarking = /** @class */ (function (_super) {
             prev_y = y;
         });
     };
-    // Draw the text based pedal markings. This defaults to the traditional
-    // "Ped" and "*"" symbols if no custom text has been provided.
+    /**
+     * Draw the text based pedal markings. This defaults to the traditional
+     * "Ped" and "*"" symbols if no custom text has been provided.
+     */
     PedalMarking.prototype.drawText = function () {
         var _this = this;
         var ctx = this.checkContext();
@@ -23478,7 +24100,7 @@ var PedalMarking = /** @class */ (function (_super) {
             }
         });
     };
-    // Render the pedal marking in position on the rendering context
+    /** Render the pedal marking in position on the rendering context. */
     PedalMarking.prototype.draw = function () {
         var ctx = this.checkContext();
         this.setRendered();
@@ -23496,7 +24118,7 @@ var PedalMarking = /** @class */ (function (_super) {
         }
         ctx.restore();
     };
-    // Glyph data
+    /** Glyph data */
     PedalMarking.GLYPHS = {
         pedal_depress: {
             code: 'keyboardPedalPed',
@@ -23509,19 +24131,21 @@ var PedalMarking = /** @class */ (function (_super) {
             y_shift: 3,
         },
     };
+    /** Pedal type as number. */
     PedalMarking.type = {
         TEXT: 1,
         BRACKET: 2,
         MIXED: 3,
     };
+    /** Pedal type as string. */
     PedalMarking.typeString = {
         text: PedalMarking.type.TEXT,
         bracket: PedalMarking.type.BRACKET,
         mixed: PedalMarking.type.MIXED,
     };
     return PedalMarking;
-}(element_1.Element));
-exports.PedalMarking = PedalMarking;
+}(_element__WEBPACK_IMPORTED_MODULE_1__.Element));
+
 
 
 /***/ }),
@@ -23530,9 +24154,13 @@ exports.PedalMarking = PedalMarking;
 /*!*************************!*\
   !*** ./src/registry.ts ***!
   \*************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Registry": () => (/* binding */ Registry)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // @author Mohit Cheppudira
 //
@@ -23551,10 +24179,7 @@ exports.PedalMarking = PedalMarking;
 // Once an element is registered, selected attributes are tracked and indexed by
 // the registry. This allows fast look up of elements by attributes like id, type,
 // and class.
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Registry = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var X = util_1.MakeException('RegistryError');
+
 // Indexes are represented as maps of maps of maps. This allows
 // for both multi-labeling (e.g., an element can have multiple classes)
 // and efficient lookup.
@@ -23609,7 +24234,7 @@ var Registry = /** @class */ (function () {
     Registry.prototype.register = function (elem, id) {
         id = id || elem.getAttribute('id');
         if (!id) {
-            throw new X("Can't add element without `id` attribute to registry", elem);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError("Can't add element without `id` attribute to registry");
         }
         // Manually add id to index, then update other indexes.
         elem.setAttribute('id', id);
@@ -23650,7 +24275,7 @@ var Registry = /** @class */ (function () {
     };
     return Registry;
 }());
-exports.Registry = Registry;
+
 
 
 /***/ }),
@@ -23659,23 +24284,28 @@ exports.Registry = Registry;
 /*!*************************!*\
   !*** ./src/renderer.ts ***!
   \*************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Renderer": () => (/* binding */ Renderer)
+/* harmony export */ });
+/* harmony import */ var _canvascontext__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./canvascontext */ "./src/canvascontext.ts");
+/* harmony import */ var _svgcontext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./svgcontext */ "./src/svgcontext.ts");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-// Support for different rendering contexts: Canvas & SVG
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Renderer = void 0;
-var canvascontext_1 = __webpack_require__(/*! ./canvascontext */ "./src/canvascontext.ts");
-var svgcontext_1 = __webpack_require__(/*! ./svgcontext */ "./src/svgcontext.ts");
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
+// MIT License
+
+
+
+/**
+ * Support Canvas & SVG rendering contexts.
+ */
 var Renderer = /** @class */ (function () {
     function Renderer(elementId, backend) {
         this.elementId = elementId;
         if (this.elementId === undefined) {
-            throw new util_1.RuntimeError('BadArgument', 'Invalid id for renderer.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_2__.RuntimeError('BadArgument', 'Invalid id for renderer.');
         }
         this.element = document.getElementById(elementId);
         if (!this.element)
@@ -23684,15 +24314,15 @@ var Renderer = /** @class */ (function () {
         this.backend = backend;
         if (this.backend === Renderer.Backends.CANVAS) {
             if (!this.element.getContext) {
-                throw new util_1.RuntimeError('BadElement', "Can't get canvas context from element: " + elementId);
+                throw new _util__WEBPACK_IMPORTED_MODULE_2__.RuntimeError('BadElement', "Can't get canvas context from element: " + elementId);
             }
             this.ctx = Renderer.bolsterCanvasContext(this.element.getContext('2d'));
         }
         else if (this.backend === Renderer.Backends.SVG) {
-            this.ctx = new svgcontext_1.SVGContext(this.element);
+            this.ctx = new _svgcontext__WEBPACK_IMPORTED_MODULE_1__.SVGContext(this.element);
         }
         else {
-            throw new util_1.RuntimeError('InvalidBackend', "No support for backend: " + this.backend);
+            throw new _util__WEBPACK_IMPORTED_MODULE_2__.RuntimeError('InvalidBackend', "No support for backend: " + this.backend);
         }
     }
     Renderer.buildContext = function (elementId, backend, width, height, background) {
@@ -23716,10 +24346,11 @@ var Renderer = /** @class */ (function () {
     // eslint-disable-next-line
     Renderer.bolsterCanvasContext = function (ctx) {
         if (Renderer.USE_CANVAS_PROXY) {
-            return new canvascontext_1.CanvasContext(ctx);
+            return new _canvascontext__WEBPACK_IMPORTED_MODULE_0__.CanvasContext(ctx);
         }
         // Modify the CanvasRenderingContext2D to include the following methods, if they do not already exist.
-        // setLineDash exists natively: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash
+        // TODO: Is a Proxy object appropriate here?
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
         var methodNames = [
             'clear',
             'setFont',
@@ -23731,15 +24362,16 @@ var Renderer = /** @class */ (function () {
             'setShadowBlur',
             'setLineWidth',
             'setLineCap',
-            'setLineDash',
             'openGroup',
             'closeGroup',
             'getGroup',
         ];
         ctx.vexFlowCanvasContext = ctx;
         methodNames.forEach(function (methodName) {
-            // eslint-disable-next-line
-            ctx[methodName] = ctx[methodName] || canvascontext_1.CanvasContext.prototype[methodName];
+            if (!(methodName in ctx)) {
+                // eslint-disable-next-line
+                ctx[methodName] = _canvascontext__WEBPACK_IMPORTED_MODULE_0__.CanvasContext.prototype[methodName];
+            }
         });
         return ctx;
     };
@@ -23777,9 +24409,9 @@ var Renderer = /** @class */ (function () {
         var _a;
         if (this.backend === Renderer.Backends.CANVAS) {
             if (!this.element.getContext) {
-                throw new util_1.RuntimeError('BadElement', "Can't get canvas context from element: " + this.elementId);
+                throw new _util__WEBPACK_IMPORTED_MODULE_2__.RuntimeError('BadElement', "Can't get canvas context from element: " + this.elementId);
             }
-            _a = canvascontext_1.CanvasContext.SanitizeCanvasDims(width, height), width = _a[0], height = _a[1];
+            _a = _canvascontext__WEBPACK_IMPORTED_MODULE_0__.CanvasContext.SanitizeCanvasDims(width, height), width = _a[0], height = _a[1];
             var devicePixelRatio_1 = window.devicePixelRatio || 1;
             this.element.width = width * devicePixelRatio_1;
             this.element.height = height * devicePixelRatio_1;
@@ -23806,14 +24438,16 @@ var Renderer = /** @class */ (function () {
         UP: 2,
         DOWN: 3, // Downward leg
     };
-    // Set this to true if you're using VexFlow inside a runtime
-    // that does not allow modifiying canvas objects. There is a small
-    // performance degradation due to the extra indirection.
+    /**
+     * Set this to true if you're using VexFlow inside a runtime
+     * that does not allow modifying canvas objects. There is a small
+     * performance degradation due to the extra indirection.
+     */
     Renderer.USE_CANVAS_PROXY = false;
     Renderer.lastContext = undefined;
     return Renderer;
 }());
-exports.Renderer = Renderer;
+
 
 
 /***/ }),
@@ -23822,11 +24456,16 @@ exports.Renderer = Renderer;
 /*!***************************!*\
   !*** ./src/repeatnote.ts ***!
   \***************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "RepeatNote": () => (/* binding */ RepeatNote)
+/* harmony export */ });
+/* harmony import */ var _glyphnote__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -23841,7 +24480,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -23852,10 +24491,8 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.RepeatNote = void 0;
-var glyphnote_1 = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+
+
 var RepeatNote = /** @class */ (function (_super) {
     __extends(RepeatNote, _super);
     function RepeatNote(type, noteStruct, options) {
@@ -23870,13 +24507,13 @@ var RepeatNote = /** @class */ (function (_super) {
         _this = _super.call(this, undefined, __assign({ duration: 'q', align_center: type !== 'slash' }, noteStruct), options) || this;
         _this.setAttribute('type', 'RepeatNote');
         var glyphCode = CODES[type] || 'repeat1Bar';
-        var glyph = new glyph_1.Glyph(glyphCode, _this.musicFont.lookupMetric('repeatNote.point', 40), { category: 'repeatNote' });
+        var glyph = new _glyph__WEBPACK_IMPORTED_MODULE_1__.Glyph(glyphCode, _this.musicFont.lookupMetric('repeatNote.point', 40), { category: 'repeatNote' });
         _this.setGlyph(glyph);
         return _this;
     }
     return RepeatNote;
-}(glyphnote_1.GlyphNote));
-exports.RepeatNote = RepeatNote;
+}(_glyphnote__WEBPACK_IMPORTED_MODULE_0__.GlyphNote));
+
 
 
 /***/ }),
@@ -23885,11 +24522,28 @@ exports.RepeatNote = RepeatNote;
 /*!**********************!*\
   !*** ./src/stave.ts ***!
   \**********************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Stave": () => (/* binding */ Stave)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./element */ "./src/element.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _stavebarline__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
+/* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
+/* harmony import */ var _staverepetition__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./staverepetition */ "./src/staverepetition.ts");
+/* harmony import */ var _stavesection__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./stavesection */ "./src/stavesection.ts");
+/* harmony import */ var _stavetempo__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./stavetempo */ "./src/stavetempo.ts");
+/* harmony import */ var _stavetext__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./stavetext */ "./src/stavetext.ts");
+/* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
+/* harmony import */ var _clef__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./clef */ "./src/clef.ts");
+/* harmony import */ var _keysignature__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./keysignature */ "./src/keysignature.ts");
+/* harmony import */ var _timesignature__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
+/* harmony import */ var _stavevolta__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./stavevolta */ "./src/stavevolta.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -23904,7 +24558,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -23915,22 +24569,20 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Stave = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var stavebarline_1 = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
-var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
-var staverepetition_1 = __webpack_require__(/*! ./staverepetition */ "./src/staverepetition.ts");
-var stavesection_1 = __webpack_require__(/*! ./stavesection */ "./src/stavesection.ts");
-var stavetempo_1 = __webpack_require__(/*! ./stavetempo */ "./src/stavetempo.ts");
-var stavetext_1 = __webpack_require__(/*! ./stavetext */ "./src/stavetext.ts");
-var boundingbox_1 = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
-var clef_1 = __webpack_require__(/*! ./clef */ "./src/clef.ts");
-var keysignature_1 = __webpack_require__(/*! ./keysignature */ "./src/keysignature.ts");
-var timesignature_1 = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
-var stavevolta_1 = __webpack_require__(/*! ./stavevolta */ "./src/stavevolta.ts");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var Stave = /** @class */ (function (_super) {
     __extends(Stave, _super);
     function Stave(x, y, width, options) {
@@ -23964,7 +24616,7 @@ var Stave = /** @class */ (function (_super) {
             fill_style: '#999999',
             left_bar: true,
             right_bar: true,
-            spacing_between_lines_px: flow_1.Flow.STAVE_LINE_DISTANCE,
+            spacing_between_lines_px: _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.STAVE_LINE_DISTANCE,
             space_above_staff_ln: 4,
             space_below_staff_ln: 4,
             top_text_position: 1,
@@ -23973,23 +24625,41 @@ var Stave = /** @class */ (function (_super) {
         };
         _this.bounds = { x: _this.x, y: _this.y, w: _this.width, h: 0 };
         _this.options = __assign(__assign({}, _this.options), options);
+        _this.defaultLedgerLineStyle = {};
         _this.resetLines();
         // beg bar
-        _this.addModifier(new stavebarline_1.Barline(_this.options.left_bar ? stavebarline_1.BarlineType.SINGLE : stavebarline_1.BarlineType.NONE));
+        _this.addModifier(new _stavebarline__WEBPACK_IMPORTED_MODULE_3__.Barline(_this.options.left_bar ? _stavebarline__WEBPACK_IMPORTED_MODULE_3__.BarlineType.SINGLE : _stavebarline__WEBPACK_IMPORTED_MODULE_3__.BarlineType.NONE));
         // end bar
-        _this.addEndModifier(new stavebarline_1.Barline(_this.options.right_bar ? stavebarline_1.BarlineType.SINGLE : stavebarline_1.BarlineType.NONE));
+        _this.addEndModifier(new _stavebarline__WEBPACK_IMPORTED_MODULE_3__.Barline(_this.options.right_bar ? _stavebarline__WEBPACK_IMPORTED_MODULE_3__.BarlineType.SINGLE : _stavebarline__WEBPACK_IMPORTED_MODULE_3__.BarlineType.NONE));
         return _this;
     }
     Object.defineProperty(Stave, "defaultPadding", {
         // This is the sum of the padding that normally goes on left + right of a stave during
         // drawing.  Used to size staves correctly with content width
         get: function () {
-            var musicFont = flow_1.Flow.DEFAULT_FONT_STACK[0];
+            var musicFont = _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.DEFAULT_FONT_STACK[0];
             return musicFont.lookupMetric('stave.padding') + musicFont.lookupMetric('stave.endPaddingMax');
         },
         enumerable: false,
         configurable: true
     });
+    Object.defineProperty(Stave, "rightPadding", {
+        // Right padding, used by system if startX is already determined.
+        get: function () {
+            var musicFont = _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.DEFAULT_FONT_STACK[0];
+            return musicFont.lookupMetric('stave.endPaddingMax');
+        },
+        enumerable: false,
+        configurable: true
+    });
+    /** Set default style for ledger lines. */
+    Stave.prototype.setDefaultLedgerLineStyle = function (style) {
+        this.defaultLedgerLineStyle = style;
+    };
+    /** Get default style for ledger lines. */
+    Stave.prototype.getDefaultLedgerLineStyle = function () {
+        return __assign(__assign({}, this.getStyle()), this.defaultLedgerLineStyle);
+    };
     Stave.prototype.space = function (spacing) {
         return this.options.spacing_between_lines_px * spacing;
     };
@@ -24047,10 +24717,10 @@ var Stave = /** @class */ (function (_super) {
         return this.y;
     };
     Stave.prototype.getTopLineTopY = function () {
-        return this.getYForLine(0) - flow_1.Flow.STAVE_LINE_THICKNESS / 2;
+        return this.getYForLine(0) - _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.STAVE_LINE_THICKNESS / 2;
     };
     Stave.prototype.getBottomLineBottomY = function () {
-        return this.getYForLine(this.getNumLines() - 1) + flow_1.Flow.STAVE_LINE_THICKNESS / 2;
+        return this.getYForLine(this.getNumLines() - 1) + _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.STAVE_LINE_THICKNESS / 2;
     };
     Stave.prototype.setX = function (x) {
         var shift = x - this.x;
@@ -24076,7 +24746,7 @@ var Stave = /** @class */ (function (_super) {
         return this.width;
     };
     Stave.prototype.getStyle = function () {
-        return __assign({ fillStyle: this.options.fill_style, strokeStyle: this.options.fill_style, lineWidth: flow_1.Flow.STAVE_LINE_THICKNESS }, (this.style || {}));
+        return __assign({ fillStyle: this.options.fill_style, strokeStyle: this.options.fill_style, lineWidth: _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.STAVE_LINE_THICKNESS }, (this.style || {}));
     };
     Stave.prototype.setMeasure = function (measure) {
         this.measure = measure;
@@ -24091,51 +24761,51 @@ var Stave = /** @class */ (function (_super) {
     Stave.prototype.getModifierXShift = function (index) {
         if (index === void 0) { index = 0; }
         if (typeof index !== 'number') {
-            throw new util_1.RuntimeError('InvalidIndex', 'Must be of number type');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('InvalidIndex', 'Must be of number type');
         }
         if (!this.formatted)
             this.format();
-        if (this.getModifiers(stavemodifier_1.StaveModifier.Position.BEGIN).length === 1) {
+        if (this.getModifiers(_stavemodifier__WEBPACK_IMPORTED_MODULE_4__.StaveModifier.Position.BEGIN).length === 1) {
             return 0;
         }
         // for right position modifiers zero shift seems correct, see 'Volta + Modifier Measure Test'
-        if (this.modifiers[index].getPosition() === stavemodifier_1.StaveModifier.Position.RIGHT) {
+        if (this.modifiers[index].getPosition() === _stavemodifier__WEBPACK_IMPORTED_MODULE_4__.StaveModifier.Position.RIGHT) {
             return 0;
         }
         var start_x = this.start_x - this.x;
         var begBarline = this.modifiers[0];
-        if (begBarline.getType() === stavebarline_1.BarlineType.REPEAT_BEGIN && start_x > begBarline.getWidth()) {
+        if (begBarline.getType() === _stavebarline__WEBPACK_IMPORTED_MODULE_3__.BarlineType.REPEAT_BEGIN && start_x > begBarline.getWidth()) {
             start_x -= begBarline.getWidth();
         }
         return start_x;
     };
     // Coda & Segno Symbol functions
     Stave.prototype.setRepetitionTypeLeft = function (type, y) {
-        this.modifiers.push(new staverepetition_1.Repetition(type, this.x, y));
+        this.modifiers.push(new _staverepetition__WEBPACK_IMPORTED_MODULE_5__.Repetition(type, this.x, y));
         return this;
     };
     Stave.prototype.setRepetitionTypeRight = function (type, y) {
-        this.modifiers.push(new staverepetition_1.Repetition(type, this.x, y));
+        this.modifiers.push(new _staverepetition__WEBPACK_IMPORTED_MODULE_5__.Repetition(type, this.x, y));
         return this;
     };
     // Volta functions
     Stave.prototype.setVoltaType = function (type, number_t, y) {
-        this.modifiers.push(new stavevolta_1.Volta(type, number_t, this.x, y));
+        this.modifiers.push(new _stavevolta__WEBPACK_IMPORTED_MODULE_13__.Volta(type, number_t, this.x, y));
         return this;
     };
     // Section functions
     Stave.prototype.setSection = function (section, y) {
-        this.modifiers.push(new stavesection_1.StaveSection(section, this.x, y));
+        this.modifiers.push(new _stavesection__WEBPACK_IMPORTED_MODULE_6__.StaveSection(section, this.x, y));
         return this;
     };
     // Tempo functions
     Stave.prototype.setTempo = function (tempo, y) {
-        this.modifiers.push(new stavetempo_1.StaveTempo(tempo, this.x, y));
+        this.modifiers.push(new _stavetempo__WEBPACK_IMPORTED_MODULE_7__.StaveTempo(tempo, this.x, y));
         return this;
     };
     // Text functions
     Stave.prototype.setText = function (text, position, options) {
-        this.modifiers.push(new stavetext_1.StaveText(text, position, options));
+        this.modifiers.push(new _stavetext__WEBPACK_IMPORTED_MODULE_8__.StaveText(text, position, options));
         return this;
     };
     Stave.prototype.getHeight = function () {
@@ -24145,7 +24815,7 @@ var Stave = /** @class */ (function (_super) {
         return this.options.spacing_between_lines_px;
     };
     Stave.prototype.getBoundingBox = function () {
-        return new boundingbox_1.BoundingBox(this.x, this.y, this.width, this.getBottomY() - this.y);
+        return new _boundingbox__WEBPACK_IMPORTED_MODULE_9__.BoundingBox(this.x, this.y, this.width, this.getBottomY() - this.y);
     };
     Stave.prototype.getBottomY = function () {
         var options = this.options;
@@ -24202,13 +24872,13 @@ var Stave = /** @class */ (function (_super) {
         return this;
     };
     Stave.prototype.addEndModifier = function (modifier) {
-        this.addModifier(modifier, stavemodifier_1.StaveModifier.Position.END);
+        this.addModifier(modifier, _stavemodifier__WEBPACK_IMPORTED_MODULE_4__.StaveModifier.Position.END);
         return this;
     };
     // Bar Line functions
     Stave.prototype.setBegBarType = function (type) {
         // Only valid bar types at beginning of stave is none, single or begin repeat
-        var SINGLE = stavebarline_1.BarlineType.SINGLE, REPEAT_BEGIN = stavebarline_1.BarlineType.REPEAT_BEGIN, NONE = stavebarline_1.BarlineType.NONE;
+        var SINGLE = _stavebarline__WEBPACK_IMPORTED_MODULE_3__.BarlineType.SINGLE, REPEAT_BEGIN = _stavebarline__WEBPACK_IMPORTED_MODULE_3__.BarlineType.REPEAT_BEGIN, NONE = _stavebarline__WEBPACK_IMPORTED_MODULE_3__.BarlineType.NONE;
         if (type === SINGLE || type === REPEAT_BEGIN || type === NONE) {
             this.modifiers[0].setType(type);
             this.formatted = false;
@@ -24217,7 +24887,7 @@ var Stave = /** @class */ (function (_super) {
     };
     Stave.prototype.setEndBarType = function (type) {
         // Repeat end not valid at end of stave
-        if (type !== stavebarline_1.BarlineType.REPEAT_BEGIN) {
+        if (type !== _stavebarline__WEBPACK_IMPORTED_MODULE_3__.BarlineType.REPEAT_BEGIN) {
             this.modifiers[1].setType(type);
             this.formatted = false;
         }
@@ -24225,15 +24895,15 @@ var Stave = /** @class */ (function (_super) {
     };
     Stave.prototype.setClef = function (clefSpec, size, annotation, position) {
         if (position === undefined) {
-            position = stavemodifier_1.StaveModifier.Position.BEGIN;
+            position = _stavemodifier__WEBPACK_IMPORTED_MODULE_4__.StaveModifier.Position.BEGIN;
         }
-        if (position === stavemodifier_1.StaveModifier.Position.END) {
+        if (position === _stavemodifier__WEBPACK_IMPORTED_MODULE_4__.StaveModifier.Position.END) {
             this.endClef = clefSpec;
         }
         else {
             this.clef = clefSpec;
         }
-        var clefs = this.getModifiers(position, clef_1.Clef.CATEGORY);
+        var clefs = this.getModifiers(position, _clef__WEBPACK_IMPORTED_MODULE_10__.Clef.CATEGORY);
         if (clefs.length === 0) {
             this.addClef(clefSpec, size, annotation, position);
         }
@@ -24246,7 +24916,7 @@ var Stave = /** @class */ (function (_super) {
         return this.clef;
     };
     Stave.prototype.setEndClef = function (clefSpec, size, annotation) {
-        this.setClef(clefSpec, size, annotation, stavemodifier_1.StaveModifier.Position.END);
+        this.setClef(clefSpec, size, annotation, _stavemodifier__WEBPACK_IMPORTED_MODULE_4__.StaveModifier.Position.END);
         return this;
     };
     Stave.prototype.getEndClef = function () {
@@ -24254,9 +24924,9 @@ var Stave = /** @class */ (function (_super) {
     };
     Stave.prototype.setKeySignature = function (keySpec, cancelKeySpec, position) {
         if (position === undefined) {
-            position = stavemodifier_1.StaveModifier.Position.BEGIN;
+            position = _stavemodifier__WEBPACK_IMPORTED_MODULE_4__.StaveModifier.Position.BEGIN;
         }
-        var keySignatures = this.getModifiers(position, keysignature_1.KeySignature.CATEGORY);
+        var keySignatures = this.getModifiers(position, _keysignature__WEBPACK_IMPORTED_MODULE_11__.KeySignature.CATEGORY);
         if (keySignatures.length === 0) {
             this.addKeySignature(keySpec, cancelKeySpec, position);
         }
@@ -24266,14 +24936,14 @@ var Stave = /** @class */ (function (_super) {
         return this;
     };
     Stave.prototype.setEndKeySignature = function (keySpec, cancelKeySpec) {
-        this.setKeySignature(keySpec, cancelKeySpec, stavemodifier_1.StaveModifier.Position.END);
+        this.setKeySignature(keySpec, cancelKeySpec, _stavemodifier__WEBPACK_IMPORTED_MODULE_4__.StaveModifier.Position.END);
         return this;
     };
     Stave.prototype.setTimeSignature = function (timeSpec, customPadding, position) {
         if (position === undefined) {
-            position = stavemodifier_1.StaveModifier.Position.BEGIN;
+            position = _stavemodifier__WEBPACK_IMPORTED_MODULE_4__.StaveModifier.Position.BEGIN;
         }
-        var timeSignatures = this.getModifiers(position, timesignature_1.TimeSignature.CATEGORY);
+        var timeSignatures = this.getModifiers(position, _timesignature__WEBPACK_IMPORTED_MODULE_12__.TimeSignature.CATEGORY);
         if (timeSignatures.length === 0) {
             this.addTimeSignature(timeSpec, customPadding, position);
         }
@@ -24283,36 +24953,36 @@ var Stave = /** @class */ (function (_super) {
         return this;
     };
     Stave.prototype.setEndTimeSignature = function (timeSpec, customPadding) {
-        this.setTimeSignature(timeSpec, customPadding, stavemodifier_1.StaveModifier.Position.END);
+        this.setTimeSignature(timeSpec, customPadding, _stavemodifier__WEBPACK_IMPORTED_MODULE_4__.StaveModifier.Position.END);
         return this;
     };
     Stave.prototype.addKeySignature = function (keySpec, cancelKeySpec, position) {
         if (position === undefined) {
-            position = stavemodifier_1.StaveModifier.Position.BEGIN;
+            position = _stavemodifier__WEBPACK_IMPORTED_MODULE_4__.StaveModifier.Position.BEGIN;
         }
-        this.addModifier(new keysignature_1.KeySignature(keySpec, cancelKeySpec).setPosition(position), position);
+        this.addModifier(new _keysignature__WEBPACK_IMPORTED_MODULE_11__.KeySignature(keySpec, cancelKeySpec).setPosition(position), position);
         return this;
     };
     Stave.prototype.addClef = function (clef, size, annotation, position) {
-        if (position === undefined || position === stavemodifier_1.StaveModifier.Position.BEGIN) {
+        if (position === undefined || position === _stavemodifier__WEBPACK_IMPORTED_MODULE_4__.StaveModifier.Position.BEGIN) {
             this.clef = clef;
         }
-        else if (position === stavemodifier_1.StaveModifier.Position.END) {
+        else if (position === _stavemodifier__WEBPACK_IMPORTED_MODULE_4__.StaveModifier.Position.END) {
             this.endClef = clef;
         }
-        this.addModifier(new clef_1.Clef(clef, size, annotation), position);
+        this.addModifier(new _clef__WEBPACK_IMPORTED_MODULE_10__.Clef(clef, size, annotation), position);
         return this;
     };
     Stave.prototype.addEndClef = function (clef, size, annotation) {
-        this.addClef(clef, size, annotation, stavemodifier_1.StaveModifier.Position.END);
+        this.addClef(clef, size, annotation, _stavemodifier__WEBPACK_IMPORTED_MODULE_4__.StaveModifier.Position.END);
         return this;
     };
     Stave.prototype.addTimeSignature = function (timeSpec, customPadding, position) {
-        this.addModifier(new timesignature_1.TimeSignature(timeSpec, customPadding), position);
+        this.addModifier(new _timesignature__WEBPACK_IMPORTED_MODULE_12__.TimeSignature(timeSpec, customPadding), position);
         return this;
     };
     Stave.prototype.addEndTimeSignature = function (timeSpec, customPadding) {
-        this.addTimeSignature(timeSpec, customPadding, stavemodifier_1.StaveModifier.Position.END);
+        this.addTimeSignature(timeSpec, customPadding, _stavemodifier__WEBPACK_IMPORTED_MODULE_4__.StaveModifier.Position.END);
         return this;
     };
     // Deprecated
@@ -24342,8 +25012,8 @@ var Stave = /** @class */ (function (_super) {
     Stave.prototype.format = function () {
         var begBarline = this.modifiers[0];
         var endBarline = this.modifiers[1];
-        var begModifiers = this.getModifiers(stavemodifier_1.StaveModifier.Position.BEGIN);
-        var endModifiers = this.getModifiers(stavemodifier_1.StaveModifier.Position.END);
+        var begModifiers = this.getModifiers(_stavemodifier__WEBPACK_IMPORTED_MODULE_4__.StaveModifier.Position.BEGIN);
+        var endModifiers = this.getModifiers(_stavemodifier__WEBPACK_IMPORTED_MODULE_4__.StaveModifier.Position.END);
         this.sortByCategory(begModifiers, {
             barlines: 0,
             clefs: 1,
@@ -24356,12 +25026,12 @@ var Stave = /** @class */ (function (_super) {
             barlines: 2,
             clefs: 3,
         });
-        if (begModifiers.length > 1 && begBarline.getType() === stavebarline_1.BarlineType.REPEAT_BEGIN) {
+        if (begModifiers.length > 1 && begBarline.getType() === _stavebarline__WEBPACK_IMPORTED_MODULE_3__.BarlineType.REPEAT_BEGIN) {
             begModifiers.push(begModifiers.splice(0, 1)[0]);
-            begModifiers.splice(0, 0, new stavebarline_1.Barline(stavebarline_1.BarlineType.SINGLE));
+            begModifiers.splice(0, 0, new _stavebarline__WEBPACK_IMPORTED_MODULE_3__.Barline(_stavebarline__WEBPACK_IMPORTED_MODULE_3__.BarlineType.SINGLE));
         }
         if (endModifiers.indexOf(endBarline) > 0) {
-            endModifiers.splice(0, 0, new stavebarline_1.Barline(stavebarline_1.BarlineType.NONE));
+            endModifiers.splice(0, 0, new _stavebarline__WEBPACK_IMPORTED_MODULE_3__.Barline(_stavebarline__WEBPACK_IMPORTED_MODULE_3__.BarlineType.NONE));
         }
         var width;
         var padding;
@@ -24389,7 +25059,7 @@ var Stave = /** @class */ (function (_super) {
         var lastBarlineIdx = 0;
         for (var i = 0; i < endModifiers.length; i++) {
             modifier = endModifiers[i];
-            lastBarlineIdx = modifier.getCategory() === stavebarline_1.Barline.CATEGORY ? i : lastBarlineIdx;
+            lastBarlineIdx = modifier.getCategory() === _stavebarline__WEBPACK_IMPORTED_MODULE_3__.Barline.CATEGORY ? i : lastBarlineIdx;
             widths.right = 0;
             widths.left = 0;
             widths.paddingRight = 0;
@@ -24507,13 +25177,13 @@ var Stave = /** @class */ (function (_super) {
      */
     Stave.prototype.setConfigForLine = function (line_number, line_config) {
         if (line_number >= this.options.num_lines || line_number < 0) {
-            throw new util_1.RuntimeError('StaveConfigError', 'The line number must be within the range of the number of lines in the Stave.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('StaveConfigError', 'The line number must be within the range of the number of lines in the Stave.');
         }
         if (line_config.visible === undefined) {
-            throw new util_1.RuntimeError('StaveConfigError', "The line configuration object is missing the 'visible' property.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('StaveConfigError', "The line configuration object is missing the 'visible' property.");
         }
         if (typeof line_config.visible !== 'boolean') {
-            throw new util_1.RuntimeError('StaveConfigError', "The line configuration objects 'visible' property must be true or false.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('StaveConfigError', "The line configuration objects 'visible' property must be true or false.");
         }
         this.options.line_config[line_number] = line_config;
         return this;
@@ -24529,7 +25199,7 @@ var Stave = /** @class */ (function (_super) {
      */
     Stave.prototype.setConfigForLines = function (lines_configuration) {
         if (lines_configuration.length !== this.options.num_lines) {
-            throw new util_1.RuntimeError('StaveConfigError', 'The length of the lines configuration array must match the number of lines in the Stave');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('StaveConfigError', 'The length of the lines configuration array must match the number of lines in the Stave');
         }
         // Make sure the defaults are present in case an incomplete set of
         //  configuration options were supplied.
@@ -24545,8 +25215,8 @@ var Stave = /** @class */ (function (_super) {
         return this;
     };
     return Stave;
-}(element_1.Element));
-exports.Stave = Stave;
+}(_element__WEBPACK_IMPORTED_MODULE_1__.Element));
+
 
 
 /***/ }),
@@ -24555,13 +25225,19 @@ exports.Stave = Stave;
 /*!*****************************!*\
   !*** ./src/stavebarline.ts ***!
   \*****************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "BarlineType": () => (/* binding */ BarlineType),
+/* harmony export */   "Barline": () => (/* binding */ Barline)
+/* harmony export */ });
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // Author Larry Kuhns 2011
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -24576,10 +25252,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Barline = exports.BarlineType = void 0;
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
+
+
 var BarlineType;
 (function (BarlineType) {
     BarlineType[BarlineType["SINGLE"] = 1] = "SINGLE";
@@ -24589,7 +25263,7 @@ var BarlineType;
     BarlineType[BarlineType["REPEAT_END"] = 5] = "REPEAT_END";
     BarlineType[BarlineType["REPEAT_BOTH"] = 6] = "REPEAT_BOTH";
     BarlineType[BarlineType["NONE"] = 7] = "NONE";
-})(BarlineType = exports.BarlineType || (exports.BarlineType = {}));
+})(BarlineType || (BarlineType = {}));
 var Barline = /** @class */ (function (_super) {
     __extends(Barline, _super);
     /**
@@ -24598,7 +25272,7 @@ var Barline = /** @class */ (function (_super) {
     function Barline(type) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Barline');
-        _this.thickness = flow_1.Flow.STAVE_LINE_THICKNESS;
+        _this.thickness = _flow__WEBPACK_IMPORTED_MODULE_0__.Flow.STAVE_LINE_THICKNESS;
         var TYPE = BarlineType;
         _this.widths = {};
         _this.widths[TYPE.SINGLE] = 5;
@@ -24659,7 +25333,7 @@ var Barline = /** @class */ (function (_super) {
             paddingLeft: 5,
             paddingRight: 5,
         };
-        _this.setPosition(stavemodifier_1.StaveModifier.Position.BEGIN);
+        _this.setPosition(_stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier.Position.BEGIN);
         _this.setType(type);
         return _this;
     }
@@ -24789,8 +25463,8 @@ var Barline = /** @class */ (function (_super) {
         staveCtx.fill();
     };
     return Barline;
-}(stavemodifier_1.StaveModifier));
-exports.Barline = Barline;
+}(_stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier));
+
 
 
 /***/ }),
@@ -24799,11 +25473,19 @@ exports.Barline = Barline;
 /*!*******************************!*\
   !*** ./src/staveconnector.ts ***!
   \*******************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "StaveConnector": () => (/* binding */ StaveConnector)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./element */ "./src/element.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-var __extends = (this && this.__extends) || (function () {
+// MIT License
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -24818,7 +25500,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -24829,15 +25511,13 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.StaveConnector = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+
+
+
+
 function drawBoldDoubleLine(ctx, type, topX, topY, botY) {
     if (type !== StaveConnector.type.BOLD_DOUBLE_LEFT && type !== StaveConnector.type.BOLD_DOUBLE_RIGHT) {
-        throw new util_1.RuntimeError('InvalidConnector', 'A REPEAT_BEGIN or REPEAT_END type must be provided.');
+        throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('InvalidConnector', 'A REPEAT_BEGIN or REPEAT_END type must be provided.');
     }
     var x_shift = 3;
     var variableWidth = 3.5; // Width for avoiding anti-aliasing width issues
@@ -24851,12 +25531,13 @@ function drawBoldDoubleLine(ctx, type, topX, topY, botY) {
     // Thick line
     ctx.fillRect(topX - thickLineOffset, topY, variableWidth, botY - topY);
 }
+/** StaveConnector implements the connector lines between staves of a system. */
 var StaveConnector = /** @class */ (function (_super) {
     __extends(StaveConnector, _super);
     function StaveConnector(top_stave, bottom_stave) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'StaveConnector');
-        _this.thickness = flow_1.Flow.STAVE_LINE_THICKNESS;
+        _this.thickness = _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.STAVE_LINE_THICKNESS;
         _this.width = 3;
         _this.top_stave = top_stave;
         _this.bottom_stave = bottom_stave;
@@ -24872,6 +25553,10 @@ var StaveConnector = /** @class */ (function (_super) {
         _this.texts = [];
         return _this;
     }
+    /**
+     * Set type.
+     * @param type see {@link StaveConnector.type} & {@link StaveConnector.typeString}
+     */
     StaveConnector.prototype.setType = function (type) {
         type = typeof type === 'string' ? StaveConnector.typeString[type] : type;
         if (type >= StaveConnector.type.SINGLE_RIGHT && type <= StaveConnector.type.NONE) {
@@ -24879,6 +25564,7 @@ var StaveConnector = /** @class */ (function (_super) {
         }
         return this;
     };
+    /** Set optional associated Text. */
     StaveConnector.prototype.setText = function (text, options) {
         this.texts.push({
             content: text,
@@ -24886,16 +25572,19 @@ var StaveConnector = /** @class */ (function (_super) {
         });
         return this;
     };
+    /** Set text font. */
     StaveConnector.prototype.setFont = function (font) {
         this.font = __assign(__assign({}, this.font), font);
     };
+    /** Set connector x shift. */
     StaveConnector.prototype.setXShift = function (x_shift) {
         if (typeof x_shift !== 'number') {
-            throw new util_1.RuntimeError('InvalidType', 'x_shift must be a Number');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('InvalidType', 'x_shift must be a Number');
         }
         this.x_shift = x_shift;
         return this;
     };
+    /** Render connector and associated text. */
     StaveConnector.prototype.draw = function () {
         var ctx = this.checkContext();
         this.setRendered();
@@ -24964,8 +25653,8 @@ var StaveConnector = /** @class */ (function (_super) {
                 topY -= 6;
                 botY += 6;
                 attachment_height = botY - topY;
-                glyph_1.Glyph.renderGlyph(ctx, topX - 5, topY, 40, 'bracketTop');
-                glyph_1.Glyph.renderGlyph(ctx, topX - 5, botY, 40, 'bracketBottom');
+                _glyph__WEBPACK_IMPORTED_MODULE_3__.Glyph.renderGlyph(ctx, topX - 5, topY, 40, 'bracketTop');
+                _glyph__WEBPACK_IMPORTED_MODULE_3__.Glyph.renderGlyph(ctx, topX - 5, botY, 40, 'bracketBottom');
                 topX -= this.width + 2;
                 break;
             case StaveConnector.type.BOLD_DOUBLE_LEFT:
@@ -24981,7 +25670,7 @@ var StaveConnector = /** @class */ (function (_super) {
             case StaveConnector.type.NONE:
                 break;
             default:
-                throw new util_1.RuntimeError('InvalidType', "The provided StaveConnector.type (" + this.type + ") is invalid.");
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('InvalidType', "The provided StaveConnector.type (" + this.type + ") is invalid.");
         }
         if (this.type !== StaveConnector.type.BRACE &&
             this.type !== StaveConnector.type.BOLD_DOUBLE_LEFT &&
@@ -25006,9 +25695,11 @@ var StaveConnector = /** @class */ (function (_super) {
         }
         ctx.restore();
     };
-    // SINGLE_LEFT and SINGLE are the same value for compatibility
-    // with older versions of vexflow which didn't have right sided
-    // stave connectors
+    /**
+     * SINGLE_LEFT and SINGLE are the same value for compatibility
+     * with older versions of vexflow which didn't have right sided
+     * stave connectors.
+     */
     StaveConnector.type = {
         SINGLE_RIGHT: 0,
         SINGLE_LEFT: 1,
@@ -25021,6 +25712,19 @@ var StaveConnector = /** @class */ (function (_super) {
         THIN_DOUBLE: 7,
         NONE: 8,
     };
+    /**
+     * Connector type:
+     * * "singleRight"
+     * * "singleLeft"
+     * * "single"
+     * * "double"
+     * * "brace"
+     * * "bracket"
+     * * "boldDoubleLeft"
+     * * "boldDoubleRight"
+     * * "thinDouble"
+     * * "none"
+     */
     StaveConnector.typeString = {
         singleRight: StaveConnector.type.SINGLE_RIGHT,
         singleLeft: StaveConnector.type.SINGLE_LEFT,
@@ -25034,8 +25738,8 @@ var StaveConnector = /** @class */ (function (_super) {
         none: StaveConnector.type.NONE,
     };
     return StaveConnector;
-}(element_1.Element));
-exports.StaveConnector = StaveConnector;
+}(_element__WEBPACK_IMPORTED_MODULE_1__.Element));
+
 
 
 /***/ }),
@@ -25044,9 +25748,15 @@ exports.StaveConnector = StaveConnector;
 /*!*****************************!*\
   !*** ./src/stavehairpin.ts ***!
   \*****************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "StaveHairpin": () => (/* binding */ StaveHairpin)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./element */ "./src/element.ts");
+/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
@@ -25054,7 +25764,7 @@ exports.StaveConnector = StaveConnector;
 //
 // This class implements hairpins between notes.
 // Hairpins can be either Crescendo or Descrescendo.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -25069,11 +25779,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.StaveHairpin = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
+
+
+
 var StaveHairpin = /** @class */ (function (_super) {
     __extends(StaveHairpin, _super);
     /**
@@ -25098,7 +25806,7 @@ var StaveHairpin = /** @class */ (function (_super) {
         _this.setAttribute('type', 'StaveHairpin');
         _this.notes = notes;
         _this.hairpin = type;
-        _this.position = modifier_1.Modifier.Position.BELOW;
+        _this.position = _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier.Position.BELOW;
         _this.render_options = {
             height: 10,
             y_shift: 0,
@@ -25127,7 +25835,7 @@ var StaveHairpin = /** @class */ (function (_super) {
     StaveHairpin.FormatByTicksAndDraw = function (ctx, formatter, notes, type, position, options) {
         var ppt = formatter.pixelsPerTick;
         if (ppt == null) {
-            throw new util_1.RuntimeError('BadArguments', 'A valid Formatter must be provide to draw offsets by ticks.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'A valid Formatter must be provide to draw offsets by ticks.');
         }
         var l_shift_px = ppt * options.left_shift_ticks;
         var r_shift_px = ppt * options.right_shift_ticks;
@@ -25149,7 +25857,7 @@ var StaveHairpin = /** @class */ (function (_super) {
             .draw();
     };
     StaveHairpin.prototype.setPosition = function (position) {
-        if (position === modifier_1.Modifier.Position.ABOVE || position === modifier_1.Modifier.Position.BELOW) {
+        if (position === _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier.Position.ABOVE || position === _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier.Position.BELOW) {
             this.position = position;
         }
         return this;
@@ -25170,7 +25878,7 @@ var StaveHairpin = /** @class */ (function (_super) {
      */
     StaveHairpin.prototype.setNotes = function (notes) {
         if (!notes.first_note && !notes.last_note) {
-            throw new util_1.RuntimeError('BadArguments', 'Hairpin needs to have either first_note or last_note set.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'Hairpin needs to have either first_note or last_note set.');
         }
         // Success. Lets grab 'em notes.
         this.first_note = notes.first_note;
@@ -25181,7 +25889,7 @@ var StaveHairpin = /** @class */ (function (_super) {
         var ctx = this.checkContext();
         var dis = this.render_options.y_shift + 20;
         var y_shift = params.first_y;
-        if (this.position === modifier_1.Modifier.Position.ABOVE) {
+        if (this.position === _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier.Position.ABOVE) {
             dis = -dis + 30;
             y_shift = params.first_y - params.staff_height;
         }
@@ -25212,7 +25920,7 @@ var StaveHairpin = /** @class */ (function (_super) {
         var firstNote = this.first_note;
         var lastNote = this.last_note;
         if (!firstNote || !lastNote)
-            throw new util_1.RuntimeError('NoNote', 'Notes required to draw');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoNote', 'Notes required to draw');
         var start = firstNote.getModifierStartXY(this.position, 0);
         var end = lastNote.getModifierStartXY(this.position, 0);
         this.renderHairpin({
@@ -25228,8 +25936,8 @@ var StaveHairpin = /** @class */ (function (_super) {
         DECRESC: 2,
     };
     return StaveHairpin;
-}(element_1.Element));
-exports.StaveHairpin = StaveHairpin;
+}(_element__WEBPACK_IMPORTED_MODULE_1__.Element));
+
 
 
 /***/ }),
@@ -25238,10 +25946,16 @@ exports.StaveHairpin = StaveHairpin;
 /*!**************************!*\
   !*** ./src/staveline.ts ***!
   \**************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
-var __extends = (this && this.__extends) || (function () {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "StaveLine": () => (/* binding */ StaveLine)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./element */ "./src/element.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -25256,8 +25970,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.StaveLine = void 0;
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
@@ -25267,9 +25979,9 @@ exports.StaveLine = void 0;
 // A simple line is often used for notating glissando articulations, but you
 // can format a `StaveLine` with arrows or colors for more pedagogical
 // purposes, such as diagrams.
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+
+
+
 // Attribution: Arrow rendering implementations based off of
 // Patrick Horgan's article, "Drawing lines and arcs with
 // arrow heads on  HTML5 Canvas"
@@ -25418,14 +26130,14 @@ var StaveLine = /** @class */ (function (_super) {
     // Set the notes for the `StaveLine`
     StaveLine.prototype.setNotes = function (notes) {
         if (!notes.first_note && !notes.last_note) {
-            throw new util_1.RuntimeError('BadArguments', 'Notes needs to have either first_note or last_note set.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'Notes needs to have either first_note or last_note set.');
         }
         if (!notes.first_indices)
             notes.first_indices = [0];
         if (!notes.last_indices)
             notes.last_indices = [0];
         if (notes.first_indices.length !== notes.last_indices.length) {
-            throw new util_1.RuntimeError('BadArguments', 'Connected notes must have similar index sizes');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'Connected notes must have similar index sizes');
         }
         // Success. Lets grab 'em notes.
         this.first_note = notes.first_note;
@@ -25525,7 +26237,7 @@ var StaveLine = /** @class */ (function (_super) {
             y = first_note.checkStave().getYForTopText();
         }
         else if (vertical_position === StaveLine.TextVerticalPosition.BOTTOM) {
-            y = first_note.checkStave().getYForBottomText(flow_1.Flow.TEXT_HEIGHT_OFFSET_HACK);
+            y = first_note.checkStave().getYForBottomText(_flow__WEBPACK_IMPORTED_MODULE_2__.Flow.TEXT_HEIGHT_OFFSET_HACK);
         }
         // Draw the text
         ctx.save();
@@ -25545,8 +26257,8 @@ var StaveLine = /** @class */ (function (_super) {
         RIGHT: 3,
     };
     return StaveLine;
-}(element_1.Element));
-exports.StaveLine = StaveLine;
+}(_element__WEBPACK_IMPORTED_MODULE_1__.Element));
+
 
 
 /***/ }),
@@ -25555,14 +26267,20 @@ exports.StaveLine = StaveLine;
 /*!******************************!*\
   !*** ./src/stavemodifier.ts ***!
   \******************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "StaveModifierPosition": () => (/* binding */ StaveModifierPosition),
+/* harmony export */   "StaveModifier": () => (/* binding */ StaveModifier)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 // A base class for stave modifiers (e.g. clefs, key signatures)
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -25577,10 +26295,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.StaveModifier = exports.StaveModifierPosition = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
+
+
 var StaveModifierPosition;
 (function (StaveModifierPosition) {
     StaveModifierPosition[StaveModifierPosition["CENTER"] = 0] = "CENTER";
@@ -25590,7 +26306,7 @@ var StaveModifierPosition;
     StaveModifierPosition[StaveModifierPosition["BELOW"] = 4] = "BELOW";
     StaveModifierPosition[StaveModifierPosition["BEGIN"] = 5] = "BEGIN";
     StaveModifierPosition[StaveModifierPosition["END"] = 6] = "END";
-})(StaveModifierPosition = exports.StaveModifierPosition || (exports.StaveModifierPosition = {}));
+})(StaveModifierPosition || (StaveModifierPosition = {}));
 var StaveModifier = /** @class */ (function (_super) {
     __extends(StaveModifier, _super);
     function StaveModifier() {
@@ -25621,7 +26337,7 @@ var StaveModifier = /** @class */ (function (_super) {
     };
     StaveModifier.prototype.checkStave = function () {
         if (!this.stave) {
-            throw new util_1.RuntimeError('NoStave', 'No stave attached to instance');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoStave', 'No stave attached to instance');
         }
         return this.stave;
     };
@@ -25670,8 +26386,8 @@ var StaveModifier = /** @class */ (function (_super) {
         // do nothing
     };
     return StaveModifier;
-}(element_1.Element));
-exports.StaveModifier = StaveModifier;
+}(_element__WEBPACK_IMPORTED_MODULE_1__.Element));
+
 
 
 /***/ }),
@@ -25680,9 +26396,20 @@ exports.StaveModifier = StaveModifier;
 /*!**************************!*\
   !*** ./src/stavenote.ts ***!
   \**************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "StaveNote": () => (/* binding */ StaveNote)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
+/* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./stem */ "./src/stem.ts");
+/* harmony import */ var _notehead__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./notehead */ "./src/notehead.ts");
+/* harmony import */ var _stemmablenote__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
+/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
+/* harmony import */ var _dot__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./dot */ "./src/dot.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
@@ -25693,7 +26420,7 @@ exports.StaveModifier = StaveModifier;
 // and a "key" refers to a specific pitch/notehead within a note.*
 //
 // See `tests/stavenote_tests.js` for usage examples.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -25708,7 +26435,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -25719,16 +26446,14 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.StaveNote = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var boundingbox_1 = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
-var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
-var notehead_1 = __webpack_require__(/*! ./notehead */ "./src/notehead.ts");
-var stemmablenote_1 = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
-var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-var dot_1 = __webpack_require__(/*! ./dot */ "./src/dot.ts");
+
+
+
+
+
+
+
+
 // To enable logging for this class. Set `Vex.Flow.StaveNote.DEBUG` to `true`.
 function L() {
     var args = [];
@@ -25736,10 +26461,10 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (StaveNote.DEBUG)
-        util_1.log('Vex.Flow.StaveNote', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.StaveNote', args);
 }
 var isInnerNoteIndex = function (note, index) {
-    return index === (note.getStemDirection() === stem_1.Stem.UP ? note.keyProps.length - 1 : 0);
+    return index === (note.getStemDirection() === _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.UP ? note.keyProps.length - 1 : 0);
 };
 // Helper methods for rest positioning in ModifierContext.
 function shiftRestVertical(rest, note, dir) {
@@ -25751,7 +26476,7 @@ function shiftRestVertical(rest, note, dir) {
 }
 // Called from formatNotes :: center a rest between two notes
 function centerRest(rest, noteU, noteL) {
-    var delta = rest.line - util_1.midLine(noteU.minLine, noteL.maxLine);
+    var delta = rest.line - (0,_util__WEBPACK_IMPORTED_MODULE_0__.midLine)(noteU.minLine, noteL.maxLine);
     rest.note.setKeyLine(0, rest.note.getKeyLine(0) - delta);
     rest.line -= delta;
     rest.maxLine -= delta;
@@ -25769,9 +26494,9 @@ var StaveNote = /** @class */ (function (_super) {
         _this.clef = noteStruct.clef;
         _this.octave_shift = noteStruct.octave_shift;
         // Pull note rendering properties
-        _this.glyph = flow_1.Flow.getGlyphProps(_this.duration, _this.noteType);
+        _this.glyph = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.getGlyphProps(_this.duration, _this.noteType);
         if (!_this.glyph) {
-            throw new util_1.RuntimeError('BadArguments', "Invalid note initialization data (No glyph found): " + JSON.stringify(noteStruct));
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', "Invalid note initialization data (No glyph found): " + JSON.stringify(noteStruct));
         }
         // if true, displace note to right
         _this.displaced = false;
@@ -25784,7 +26509,7 @@ var StaveNote = /** @class */ (function (_super) {
         _this.ledgerLineStyle = {};
         _this.render_options = __assign(__assign({}, _this.render_options), {
             // font size for note heads and rests
-            glyph_font_scale: noteStruct.glyph_font_scale || flow_1.Flow.DEFAULT_NOTATION_FONT_SCALE,
+            glyph_font_scale: noteStruct.glyph_font_scale || _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.DEFAULT_NOTATION_FONT_SCALE,
             // number of stroke px to the left and right of head
             stroke_px: noteStruct.stroke_px || StaveNote.DEFAULT_LEDGER_LINE_OFFSET,
         });
@@ -25810,14 +26535,14 @@ var StaveNote = /** @class */ (function (_super) {
     });
     Object.defineProperty(StaveNote, "STEM_UP", {
         get: function () {
-            return stem_1.Stem.UP;
+            return _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.UP;
         },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(StaveNote, "STEM_DOWN", {
         get: function () {
-            return stem_1.Stem.DOWN;
+            return _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.DOWN;
         },
         enumerable: false,
         configurable: true
@@ -25825,6 +26550,14 @@ var StaveNote = /** @class */ (function (_super) {
     Object.defineProperty(StaveNote, "DEFAULT_LEDGER_LINE_OFFSET", {
         get: function () {
             return 3;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(StaveNote, "minNoteheadPadding", {
+        get: function () {
+            var musicFont = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.DEFAULT_FONT_STACK[0];
+            return musicFont.lookupMetric('glyphs.noteHead.minPadding');
         },
         enumerable: false,
         configurable: true
@@ -25931,7 +26664,7 @@ var StaveNote = /** @class */ (function (_super) {
             return true;
         }
         if (!noteM)
-            throw new util_1.RuntimeError('InvalidState', 'noteM not defined.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('InvalidState', 'noteM not defined.');
         // Check middle voice stem intersection with lower voice
         if (noteM.minLine < noteL.maxLine + 0.5) {
             if (!noteM.isrest) {
@@ -26003,13 +26736,13 @@ var StaveNote = /** @class */ (function (_super) {
             hasStave = hasStave && notes[i].getStave() != undefined;
         }
         if (!hasStave) {
-            throw new util_1.RuntimeError('Stave Missing', 'All notes must have a stave - Vex.Flow.ModifierContext.formatMultiVoice!');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('Stave Missing', 'All notes must have a stave - Vex.Flow.ModifierContext.formatMultiVoice!');
         }
         var xShift = 0;
         for (var i = 0; i < notes.length - 1; i++) {
             var topNote = notes[i];
             var bottomNote = notes[i + 1];
-            if (topNote.getStemDirection() === stem_1.Stem.DOWN) {
+            if (topNote.getStemDirection() === _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.DOWN) {
                 topNote = notes[i + 1];
                 bottomNote = notes[i];
             }
@@ -26067,7 +26800,7 @@ var StaveNote = /** @class */ (function (_super) {
     };
     // Builds a `Stem` for the note
     StaveNote.prototype.buildStem = function () {
-        this.setStem(new stem_1.Stem({ hide: !!this.isRest() }));
+        this.setStem(new _stem__WEBPACK_IMPORTED_MODULE_3__.Stem({ hide: !!this.isRest() }));
         return this;
     };
     // Builds a `NoteHead` for each key in the note
@@ -26083,7 +26816,7 @@ var StaveNote = /** @class */ (function (_super) {
         var start;
         var end;
         var step;
-        if (stemDirection === stem_1.Stem.UP) {
+        if (stemDirection === _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.UP) {
             start = 0;
             end = keys.length;
             step = 1;
@@ -26112,7 +26845,7 @@ var StaveNote = /** @class */ (function (_super) {
                 }
             }
             lastLine = line;
-            var notehead = new notehead_1.NoteHead({
+            var notehead = new _notehead__WEBPACK_IMPORTED_MODULE_4__.NoteHead({
                 duration: this.duration,
                 note_type: this.noteType,
                 displaced: displaced,
@@ -26137,7 +26870,7 @@ var StaveNote = /** @class */ (function (_super) {
         this.maxLine = this.keyProps[this.keyProps.length - 1].line;
         var MIDDLE_LINE = 3;
         var decider = (this.minLine + this.maxLine) / 2;
-        var stemDirection = decider < MIDDLE_LINE ? stem_1.Stem.UP : stem_1.Stem.DOWN;
+        var stemDirection = decider < MIDDLE_LINE ? _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.UP : _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.DOWN;
         return stemDirection;
     };
     // Calculates and stores the properties for each key in the note
@@ -26150,9 +26883,9 @@ var StaveNote = /** @class */ (function (_super) {
             if (this.glyph.rest)
                 this.glyph.position = key;
             var options = { octave_shift: this.octave_shift || 0 };
-            var props = flow_1.Flow.keyProperties(key, this.clef, options);
+            var props = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.keyProperties(key, this.clef, options);
             if (!props) {
-                throw new util_1.RuntimeError('BadArguments', "Invalid key for note properties: " + key);
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', "Invalid key for note properties: " + key);
             }
             // Override line placement for default rests
             if (props.key === 'R') {
@@ -26186,7 +26919,7 @@ var StaveNote = /** @class */ (function (_super) {
         lastLine = undefined;
         this.keyProps.forEach(function (key) {
             if (lastLine && key.line < lastLine) {
-                util_1.warn('Unsorted keys in note will be sorted. ' + 'See https://github.com/0xfe/vexflow/issues/104 for details.');
+                (0,_util__WEBPACK_IMPORTED_MODULE_0__.warn)('Unsorted keys in note will be sorted. ' + 'See https://github.com/0xfe/vexflow/issues/104 for details.');
             }
             lastLine = key.line;
         });
@@ -26196,7 +26929,7 @@ var StaveNote = /** @class */ (function (_super) {
     StaveNote.prototype.getBoundingBox = function () {
         var _a, _b;
         if (!this.preFormatted) {
-            throw new util_1.RuntimeError('UnformattedNote', "Can't call getBoundingBox on an unformatted note.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('UnformattedNote', "Can't call getBoundingBox on an unformatted note.");
         }
         var _c = this.getMetrics(), w = _c.width, modLeftPx = _c.modLeftPx, leftDisplacedHeadPx = _c.leftDisplacedHeadPx;
         var x = this.getAbsoluteX() - modLeftPx - leftDisplacedHeadPx;
@@ -26206,7 +26939,7 @@ var StaveNote = /** @class */ (function (_super) {
         var lineSpacing = halfLineSpacing * 2;
         if (this.isRest()) {
             var y = this.ys[0];
-            var frac = flow_1.Flow.durationToFraction(this.duration);
+            var frac = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.durationToFraction(this.duration);
             if (frac.equals(1) || frac.equals(2)) {
                 minY = y - halfLineSpacing;
                 maxY = y + halfLineSpacing;
@@ -26239,13 +26972,13 @@ var StaveNote = /** @class */ (function (_super) {
             minY -= halfLineSpacing;
             maxY += halfLineSpacing;
         }
-        return new boundingbox_1.BoundingBox(x, minY, w, maxY - minY);
+        return new _boundingbox__WEBPACK_IMPORTED_MODULE_2__.BoundingBox(x, minY, w, maxY - minY);
     };
     // Gets the line number of the bottom note in the chord.
     // If `isTopNote` is `true` then get the top note's line number instead
     StaveNote.prototype.getLineNumber = function (isTopNote) {
         if (!this.keyProps.length) {
-            throw new util_1.RuntimeError('NoKeyProps', "Can't get bottom note line, because note is not initialized properly.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoKeyProps', "Can't get bottom note line, because note is not initialized properly.");
         }
         var resultLine = this.keyProps[0].line;
         // No precondition assumed for sortedness of keyProps array
@@ -26284,7 +27017,7 @@ var StaveNote = /** @class */ (function (_super) {
         else {
             // We adjust the origin of the stem because we want the stem left-aligned
             // with the notehead if stemmed-down, and right-aligned if stemmed-up
-            return _super.prototype.getStemX.call(this) + (this.stem_direction ? stem_1.Stem.WIDTH / (2 * -this.stem_direction) : 0);
+            return _super.prototype.getStemX.call(this) + (this.stem_direction ? _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.WIDTH / (2 * -this.stem_direction) : 0);
         }
     };
     // Get the `y` coordinate for text placed on the top/bottom of a
@@ -26350,7 +27083,7 @@ var StaveNote = /** @class */ (function (_super) {
             var lastLine = this.keyProps[this.keyProps.length - 1].line;
             var top_1 = Math.max(restLine, lastLine);
             var bot = Math.min(restLine, lastLine);
-            restLine = util_1.midLine(top_1, bot);
+            restLine = (0,_util__WEBPACK_IMPORTED_MODULE_0__.midLine)(top_1, bot);
         }
         return restLine;
     };
@@ -26360,12 +27093,12 @@ var StaveNote = /** @class */ (function (_super) {
         var _a, _b;
         if (options === void 0) { options = {}; }
         if (!this.preFormatted) {
-            throw new util_1.RuntimeError('UnformattedNote', "Can't call GetModifierStartXY on an unformatted note");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('UnformattedNote', "Can't call GetModifierStartXY on an unformatted note");
         }
         if (this.ys.length === 0) {
-            throw new util_1.RuntimeError('NoYValues', 'No Y-Values calculated for this note.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoYValues', 'No Y-Values calculated for this note.');
         }
-        var _c = modifier_1.Modifier.Position, ABOVE = _c.ABOVE, BELOW = _c.BELOW, LEFT = _c.LEFT, RIGHT = _c.RIGHT;
+        var _c = _modifier__WEBPACK_IMPORTED_MODULE_6__.Modifier.Position, ABOVE = _c.ABOVE, BELOW = _c.BELOW, LEFT = _c.LEFT, RIGHT = _c.RIGHT;
         var x = 0;
         if (position === LEFT) {
             // FIXME: Left modifier padding, move to font file
@@ -26374,7 +27107,7 @@ var StaveNote = /** @class */ (function (_super) {
         else if (position === RIGHT) {
             // FIXME: Right modifier padding, move to font file
             x = this.getGlyphWidth() + this.x_shift + 2;
-            if (this.stem_direction === stem_1.Stem.UP &&
+            if (this.stem_direction === _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.UP &&
                 this.hasFlag() &&
                 (options.forceFlagRight || isInnerNoteIndex(this, index))) {
                 x += (_b = (_a = this === null || this === void 0 ? void 0 : this.flag) === null || _a === void 0 ? void 0 : _a.getMetrics().width) !== null && _b !== void 0 ? _b : 0;
@@ -26464,7 +27197,7 @@ var StaveNote = /** @class */ (function (_super) {
             modifier = b;
         }
         else {
-            throw new util_1.RuntimeError('WrongParams', 'Call signature to addModifier not supported, use addModifier(modifier, index) instead.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('WrongParams', 'Call signature to addModifier not supported, use addModifier(modifier, index) instead.');
         }
         modifier.setNote(this);
         modifier.setIndex(index);
@@ -26486,7 +27219,7 @@ var StaveNote = /** @class */ (function (_super) {
     };
     // Helper function to add a dot on a specific key
     StaveNote.prototype.addDot = function (index) {
-        var dot = new dot_1.Dot();
+        var dot = new _dot__WEBPACK_IMPORTED_MODULE_7__.Dot();
         dot.setDotShiftY(this.glyph.dot_shiftY);
         this.dots++;
         return this.addModifier(dot, index);
@@ -26501,13 +27234,13 @@ var StaveNote = /** @class */ (function (_super) {
     // Get all accidentals in the `ModifierContext`
     StaveNote.prototype.getAccidentals = function () {
         if (!this.modifierContext)
-            throw new util_1.RuntimeError('NoModifierContext', 'No modifier context attached to this note.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoModifierContext', 'No modifier context attached to this note.');
         return this.modifierContext.getMembers('accidentals');
     };
     // Get all dots in the `ModifierContext`
     StaveNote.prototype.getDots = function () {
         if (!this.modifierContext)
-            throw new util_1.RuntimeError('NoModifierContext', 'No modifier context attached to this note.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoModifierContext', 'No modifier context attached to this note.');
         return this.modifierContext.getMembers('dots');
     };
     // Get the width of the note if it is displaced. Used for `Voice`
@@ -26519,31 +27252,38 @@ var StaveNote = /** @class */ (function (_super) {
     // Calculates and sets the extra pixels to the left or right
     // if the note is displaced.
     StaveNote.prototype.calcNoteDisplacements = function () {
-        this.setLeftDisplacedHeadPx(this.displaced && this.stem_direction === stem_1.Stem.DOWN ? this.getGlyphWidth() : 0);
+        this.setLeftDisplacedHeadPx(this.displaced && this.stem_direction === _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.DOWN ? this.getGlyphWidth() : 0);
         // For upstems with flags, the extra space is unnecessary, since it's taken
         // up by the flag.
-        this.setRightDisplacedHeadPx(!this.hasFlag() && this.displaced && this.stem_direction === stem_1.Stem.UP ? this.getGlyphWidth() : 0);
+        this.setRightDisplacedHeadPx(!this.hasFlag() && this.displaced && this.stem_direction === _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.UP ? this.getGlyphWidth() : 0);
     };
     // Pre-render formatting
     StaveNote.prototype.preFormat = function () {
         var _a, _b, _c;
+        var noteHeadPadding = 0;
         if (this.preFormatted)
             return;
-        if (this.modifierContext)
+        if (this.modifierContext) {
             this.modifierContext.preFormat();
+            // If there are no modifiers on this note, make sure there is adequate padding
+            // between the notes.
+            if (this.modifierContext.getWidth() === 0) {
+                noteHeadPadding = StaveNote.minNoteheadPadding;
+            }
+        }
         var glyphWidth = this.getGlyphWidth();
         var noteWidth;
         var flagWidth = (_c = (_b = (_a = this.flag) === null || _a === void 0 ? void 0 : _a.getMetrics()) === null || _b === void 0 ? void 0 : _b.width) !== null && _c !== void 0 ? _c : 0;
-        if (this.shouldDrawFlag() && this.stem_direction === stem_1.Stem.DOWN) {
-            noteWidth = Math.max(flagWidth + flow_1.Flow.STEM_WIDTH, glyphWidth);
+        if (this.shouldDrawFlag() && this.stem_direction === _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.DOWN) {
+            noteWidth = Math.max(flagWidth + _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.STEM_WIDTH, glyphWidth);
         }
-        else if (this.shouldDrawFlag() && this.stem_direction === stem_1.Stem.UP) {
-            noteWidth = flagWidth + glyphWidth + flow_1.Flow.STEM_WIDTH;
+        else if (this.shouldDrawFlag() && this.stem_direction === _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.UP) {
+            noteWidth = flagWidth + glyphWidth + _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.STEM_WIDTH;
         }
         else {
             noteWidth = glyphWidth;
         }
-        var width = noteWidth + this.leftDisplacedHeadPx + this.rightDisplacedHeadPx;
+        var width = noteWidth + this.leftDisplacedHeadPx + this.rightDisplacedHeadPx + noteHeadPadding;
         this.setWidth(width);
         this.setPreFormatted(true);
     };
@@ -26628,11 +27368,11 @@ var StaveNote = /** @class */ (function (_super) {
         var _a = this, glyph = _a.glyph, stroke_px = _a.render_options.stroke_px;
         var ctx = this.checkContext();
         var width = glyph.getWidth() + stroke_px * 2;
-        var doubleWidth = 2 * (glyph.getWidth() + stroke_px) - stem_1.Stem.WIDTH / 2;
+        var doubleWidth = 2 * (glyph.getWidth() + stroke_px) - _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.WIDTH / 2;
         if (this.isRest())
             return;
         if (!ctx) {
-            throw new util_1.RuntimeError('NoCanvasContext', "Can't draw without a canvas context.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoCanvasContext', "Can't draw without a canvas context.");
         }
         var _b = this.getNoteHeadBounds(), highest_line = _b.highest_line, lowest_line = _b.lowest_line, highest_displaced_line = _b.highest_displaced_line, highest_non_displaced_line = _b.highest_non_displaced_line, lowest_displaced_line = _b.lowest_displaced_line, lowest_non_displaced_line = _b.lowest_non_displaced_line, displaced_x = _b.displaced_x, non_displaced_x = _b.non_displaced_x;
         var min_x = Math.min(displaced_x !== null && displaced_x !== void 0 ? displaced_x : 0, non_displaced_x !== null && non_displaced_x !== void 0 ? non_displaced_x : 0);
@@ -26652,7 +27392,7 @@ var StaveNote = /** @class */ (function (_super) {
         };
         var style = __assign(__assign({}, (stave.getStyle() || {})), (this.getLedgerLineStyle() || {}));
         if (typeof style.lineWidth === 'undefined') {
-            style.lineWidth = flow_1.Flow.STAVE_LINE_THICKNESS * 2;
+            style.lineWidth = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.STAVE_LINE_THICKNESS * 2;
         }
         else {
             style.lineWidth *= 2;
@@ -26699,7 +27439,7 @@ var StaveNote = /** @class */ (function (_super) {
         var _a;
         var ctx = this.checkContext();
         if (!ctx) {
-            throw new util_1.RuntimeError('NoCanvasContext', "Can't draw without a canvas context.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoCanvasContext', "Can't draw without a canvas context.");
         }
         if (this.shouldDrawFlag()) {
             var _b = this.getNoteHeadBounds(), y_top = _b.y_top, y_bottom = _b.y_bottom;
@@ -26710,7 +27450,7 @@ var StaveNote = /** @class */ (function (_super) {
             // ANSWER: a corner of the note stem pokes out beyond the tip of the flag.
             // The extra +/- 2 pushes the flag glyph outward so it covers the stem entirely.
             // Alternatively, we could shorten the stem.
-            var flagY = this.getStemDirection() === stem_1.Stem.DOWN
+            var flagY = this.getStemDirection() === _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.DOWN
                 ? // Down stems are below the note head and have flags on the right.
                     y_top - noteStemHeight + 2
                 : // Up stems are above the note head and have flags on the right.
@@ -26739,7 +27479,7 @@ var StaveNote = /** @class */ (function (_super) {
         // is called at all. Perhaps these should be removed?
         var ctx = this.checkContext();
         if (stemOptions) {
-            this.setStem(new stem_1.Stem(stemOptions));
+            this.setStem(new _stem__WEBPACK_IMPORTED_MODULE_3__.Stem(stemOptions));
         }
         // If we will render a flag, we shorten the stem so that the tip
         // does not poke through the flag.
@@ -26764,7 +27504,7 @@ var StaveNote = /** @class */ (function (_super) {
         }
         var mid_line_distance;
         var MIDDLE_LINE = 3;
-        if (stem_direction === stem_1.Stem.UP) {
+        if (stem_direction === _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.UP) {
             // Note that the use of maxLine here instead of minLine might
             // seem counterintuitive, but in the case of (say) treble clef
             // chord(F2, E4) stem up, we do not want to extend the stem because
@@ -26793,7 +27533,7 @@ var StaveNote = /** @class */ (function (_super) {
     StaveNote.prototype.draw = function () {
         var _a;
         if (this.ys.length === 0) {
-            throw new util_1.RuntimeError('NoYValues', "Can't draw note without Y values.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoYValues', "Can't draw note without Y values.");
         }
         var ctx = this.checkContext();
         var xBegin = this.getNoteHeadBeginX();
@@ -26820,8 +27560,8 @@ var StaveNote = /** @class */ (function (_super) {
         this.setRendered();
     };
     return StaveNote;
-}(stemmablenote_1.StemmableNote));
-exports.StaveNote = StaveNote;
+}(_stemmablenote__WEBPACK_IMPORTED_MODULE_5__.StemmableNote));
+
 
 
 /***/ }),
@@ -26830,12 +27570,17 @@ exports.StaveNote = StaveNote;
 /*!********************************!*\
   !*** ./src/staverepetition.ts ***!
   \********************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Repetition": () => (/* binding */ Repetition)
+/* harmony export */ });
+/* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Larry Kuhns 2011
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -26850,10 +27595,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Repetition = void 0;
-var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+
+
 var Repetition = /** @class */ (function (_super) {
     __extends(Repetition, _super);
     function Repetition(type, x, y_shift) {
@@ -26932,12 +27675,12 @@ var Repetition = /** @class */ (function (_super) {
     };
     Repetition.prototype.drawCodaFixed = function (stave, x) {
         var y = stave.getYForTopText(stave.getNumLines()) + this.y_shift;
-        glyph_1.Glyph.renderGlyph(stave.checkContext(), this.x + x + this.x_shift, y + 25, 40, 'coda', { category: 'coda' });
+        _glyph__WEBPACK_IMPORTED_MODULE_1__.Glyph.renderGlyph(stave.checkContext(), this.x + x + this.x_shift, y + 25, 40, 'coda', { category: 'coda' });
         return this;
     };
     Repetition.prototype.drawSignoFixed = function (stave, x) {
         var y = stave.getYForTopText(stave.getNumLines()) + this.y_shift;
-        glyph_1.Glyph.renderGlyph(stave.checkContext(), this.x + x + this.x_shift, y + 25, 30, 'segno', { category: 'segno' });
+        _glyph__WEBPACK_IMPORTED_MODULE_1__.Glyph.renderGlyph(stave.checkContext(), this.x + x + this.x_shift, y + 25, 30, 'segno', { category: 'segno' });
         return this;
     };
     Repetition.prototype.drawSymbolText = function (stave, x, text, draw_coda) {
@@ -26964,7 +27707,7 @@ var Repetition = /** @class */ (function (_super) {
         }
         var y = stave.getYForTopText(stave.getNumLines()) + this.y_shift;
         if (draw_coda) {
-            glyph_1.Glyph.renderGlyph(ctx, symbol_x, y, 40, 'coda', { category: 'coda' });
+            _glyph__WEBPACK_IMPORTED_MODULE_1__.Glyph.renderGlyph(ctx, symbol_x, y, 40, 'coda', { category: 'coda' });
         }
         ctx.fillText(text, text_x, y + 5);
         ctx.restore();
@@ -26985,8 +27728,8 @@ var Repetition = /** @class */ (function (_super) {
         FINE: 12, // Fine at end of stave
     };
     return Repetition;
-}(stavemodifier_1.StaveModifier));
-exports.Repetition = Repetition;
+}(_stavemodifier__WEBPACK_IMPORTED_MODULE_0__.StaveModifier));
+
 
 
 /***/ }),
@@ -26995,12 +27738,16 @@ exports.Repetition = Repetition;
 /*!*****************************!*\
   !*** ./src/stavesection.ts ***!
   \*****************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "StaveSection": () => (/* binding */ StaveSection)
+/* harmony export */ });
+/* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Larry Kuhns 2011
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -27015,9 +27762,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.StaveSection = void 0;
-var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
+
 var StaveSection = /** @class */ (function (_super) {
     __extends(StaveSection, _super);
     function StaveSection(section, x, shift_y) {
@@ -27081,8 +27826,8 @@ var StaveSection = /** @class */ (function (_super) {
         return this;
     };
     return StaveSection;
-}(stavemodifier_1.StaveModifier));
-exports.StaveSection = StaveSection;
+}(_stavemodifier__WEBPACK_IMPORTED_MODULE_0__.StaveModifier));
+
 
 
 /***/ }),
@@ -27091,12 +27836,18 @@ exports.StaveSection = StaveSection;
 /*!***************************!*\
   !*** ./src/stavetempo.ts ***!
   \***************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "StaveTempo": () => (/* binding */ StaveTempo)
+/* harmony export */ });
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Radosaw Eichler 2012
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -27111,18 +27862,16 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.StaveTempo = void 0;
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+
+
+
 var StaveTempo = /** @class */ (function (_super) {
     __extends(StaveTempo, _super);
     function StaveTempo(tempo, x, shift_y) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'StaveTempo');
         _this.tempo = tempo;
-        _this.position = stavemodifier_1.StaveModifier.Position.ABOVE;
+        _this.position = _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier.Position.ABOVE;
         _this.x = x;
         _this.shift_x = 10;
         _this.shift_y = shift_y;
@@ -27185,9 +27934,9 @@ var StaveTempo = /** @class */ (function (_super) {
                 ctx.fillText('(', x, y);
                 x += ctx.measureText('(').width;
             }
-            var code = flow_1.Flow.getGlyphProps(duration);
+            var code = _flow__WEBPACK_IMPORTED_MODULE_0__.Flow.getGlyphProps(duration);
             x += 3 * scale;
-            glyph_1.Glyph.renderGlyph(ctx, x, y, options.glyph_font_scale, code.code_head);
+            _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph.renderGlyph(ctx, x, y, options.glyph_font_scale, code.code_head);
             x += code.getWidth() * scale;
             // Draw stem and flags
             if (code.stem) {
@@ -27198,7 +27947,7 @@ var StaveTempo = /** @class */ (function (_super) {
                 var y_top = y - stem_height;
                 ctx.fillRect(x - scale, y_top, scale, stem_height);
                 if (code.flag) {
-                    glyph_1.Glyph.renderGlyph(ctx, x, y_top, options.glyph_font_scale, code.code_flag_upstem, {
+                    _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph.renderGlyph(ctx, x, y_top, options.glyph_font_scale, code.code_flag_upstem, {
                         category: 'flag.staveTempo',
                     });
                     if (!dots)
@@ -27218,8 +27967,8 @@ var StaveTempo = /** @class */ (function (_super) {
         return this;
     };
     return StaveTempo;
-}(stavemodifier_1.StaveModifier));
-exports.StaveTempo = StaveTempo;
+}(_stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier));
+
 
 
 /***/ }),
@@ -27228,12 +27977,18 @@ exports.StaveTempo = StaveTempo;
 /*!**************************!*\
   !*** ./src/stavetext.ts ***!
   \**************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "StaveText": () => (/* binding */ StaveText)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
+/* harmony import */ var _textnote__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./textnote */ "./src/textnote.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Taehoon Moon 2014
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -27248,7 +28003,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -27259,11 +28014,9 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.StaveText = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
-var textnote_1 = __webpack_require__(/*! ./textnote */ "./src/textnote.ts");
+
+
+
 var StaveText = /** @class */ (function (_super) {
     __extends(StaveText, _super);
     function StaveText(text, position, options) {
@@ -27275,7 +28028,7 @@ var StaveText = /** @class */ (function (_super) {
         _this.options = {
             shift_x: 0,
             shift_y: 0,
-            justification: textnote_1.TextNote.Justification.CENTER,
+            justification: _textnote__WEBPACK_IMPORTED_MODULE_2__.TextNote.Justification.CENTER,
         };
         _this.options = __assign(__assign({}, _this.options), options);
         _this.font = {
@@ -27324,8 +28077,8 @@ var StaveText = /** @class */ (function (_super) {
         var text_width = ctx.measureText('' + this.text).width;
         var x;
         var y;
-        var Position = stavemodifier_1.StaveModifier.Position;
-        var Justification = textnote_1.TextNote.Justification;
+        var Position = _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier.Position;
+        var Justification = _textnote__WEBPACK_IMPORTED_MODULE_2__.TextNote.Justification;
         switch (this.position) {
             case Position.LEFT:
             case Position.RIGHT:
@@ -27354,15 +28107,15 @@ var StaveText = /** @class */ (function (_super) {
                 }
                 break;
             default:
-                throw new util_1.RuntimeError('InvalidPosition', 'Value Must be in Modifier.Position.');
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('InvalidPosition', 'Value Must be in Modifier.Position.');
         }
         ctx.fillText('' + this.text, x, y + 4);
         ctx.restore();
         return this;
     };
     return StaveText;
-}(stavemodifier_1.StaveModifier));
-exports.StaveText = StaveText;
+}(_stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier));
+
 
 
 /***/ }),
@@ -27371,15 +28124,20 @@ exports.StaveText = StaveText;
 /*!*************************!*\
   !*** ./src/stavetie.ts ***!
   \*************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "StaveTie": () => (/* binding */ StaveTie)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 // This class implements varies types of ties between contiguous notes. The
 // ties include: regular ties, hammer ons, pull offs, and slides.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -27394,10 +28152,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.StaveTie = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
+
+
 var StaveTie = /** @class */ (function (_super) {
     __extends(StaveTie, _super);
     function StaveTie(notes, text) {
@@ -27446,14 +28202,14 @@ var StaveTie = /** @class */ (function (_super) {
      */
     StaveTie.prototype.setNotes = function (notes) {
         if (!notes.first_note && !notes.last_note) {
-            throw new util_1.RuntimeError('BadArguments', 'Tie needs to have either first_note or last_note set.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'Tie needs to have either first_note or last_note set.');
         }
         if (!notes.first_indices)
             notes.first_indices = [0];
         if (!notes.last_indices)
             notes.last_indices = [0];
         if (notes.first_indices.length !== notes.last_indices.length) {
-            throw new util_1.RuntimeError('BadArguments', 'Tied notes must have similar index sizes');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'Tied notes must have similar index sizes');
         }
         // Success. Lets grab 'em notes.
         this.notes = notes;
@@ -27467,7 +28223,7 @@ var StaveTie = /** @class */ (function (_super) {
     };
     StaveTie.prototype.renderTie = function (params) {
         if (params.first_ys.length === 0 || params.last_ys.length === 0) {
-            throw new util_1.RuntimeError('BadArguments', 'No Y-values to render');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'No Y-values to render');
         }
         var ctx = this.checkContext();
         var cp1 = this.render_options.cp1;
@@ -27484,7 +28240,7 @@ var StaveTie = /** @class */ (function (_super) {
             var first_y_px = params.first_ys[this.notes.first_indices[i]] + y_shift;
             var last_y_px = params.last_ys[this.notes.last_indices[i]] + y_shift;
             if (isNaN(first_y_px) || isNaN(last_y_px)) {
-                throw new util_1.RuntimeError('BadArguments', 'Bad indices for tie rendering.');
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'Bad indices for tie rendering.');
             }
             var top_cp_y = (first_y_px + last_y_px) / 2 + cp1 * params.direction;
             var bottom_cp_y = (first_y_px + last_y_px) / 2 + cp2 * params.direction;
@@ -27555,8 +28311,8 @@ var StaveTie = /** @class */ (function (_super) {
         return true;
     };
     return StaveTie;
-}(element_1.Element));
-exports.StaveTie = StaveTie;
+}(_element__WEBPACK_IMPORTED_MODULE_1__.Element));
+
 
 
 /***/ }),
@@ -27565,12 +28321,17 @@ exports.StaveTie = StaveTie;
 /*!***************************!*\
   !*** ./src/stavevolta.ts ***!
   \***************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "VoltaType": () => (/* binding */ VoltaType),
+/* harmony export */   "Volta": () => (/* binding */ Volta)
+/* harmony export */ });
+/* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Larry Kuhns 2011
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -27585,9 +28346,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Volta = exports.VoltaType = void 0;
-var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
+
 var VoltaType;
 (function (VoltaType) {
     VoltaType[VoltaType["NONE"] = 1] = "NONE";
@@ -27595,7 +28354,7 @@ var VoltaType;
     VoltaType[VoltaType["MID"] = 3] = "MID";
     VoltaType[VoltaType["END"] = 4] = "END";
     VoltaType[VoltaType["BEGIN_END"] = 5] = "BEGIN_END";
-})(VoltaType = exports.VoltaType || (exports.VoltaType = {}));
+})(VoltaType || (VoltaType = {}));
 var Volta = /** @class */ (function (_super) {
     __extends(Volta, _super);
     function Volta(type, number, x, y_shift) {
@@ -27666,8 +28425,8 @@ var Volta = /** @class */ (function (_super) {
         return this;
     };
     return Volta;
-}(stavemodifier_1.StaveModifier));
-exports.Volta = Volta;
+}(_stavemodifier__WEBPACK_IMPORTED_MODULE_0__.StaveModifier));
+
 
 
 /***/ }),
@@ -27676,15 +28435,21 @@ exports.Volta = Volta;
 /*!*********************!*\
   !*** ./src/stem.ts ***!
   \*********************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Stem": () => (/* binding */ Stem)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./element */ "./src/element.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 // This file implements the `Stem` object. Generally this object is handled
 // by its parent `StemmableNote`.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -27699,11 +28464,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Stem = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+
+
+
 // To enable logging for this class. Set `Vex.Flow.Stem.DEBUG` to `true`.
 // eslint-disable-next-line
 function L() {
@@ -27712,7 +28475,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (Stem.DEBUG)
-        util_1.log('Vex.Flow.Stem', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.Stem', args);
 }
 var Stem = /** @class */ (function (_super) {
     __extends(Stem, _super);
@@ -27768,14 +28531,14 @@ var Stem = /** @class */ (function (_super) {
     Object.defineProperty(Stem, "WIDTH", {
         // Theme
         get: function () {
-            return flow_1.Flow.STEM_WIDTH;
+            return _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.STEM_WIDTH;
         },
         enumerable: false,
         configurable: true
     });
     Object.defineProperty(Stem, "HEIGHT", {
         get: function () {
-            return flow_1.Flow.STEM_HEIGHT;
+            return _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.STEM_HEIGHT;
         },
         enumerable: false,
         configurable: true
@@ -27820,7 +28583,7 @@ var Stem = /** @class */ (function (_super) {
         return unsigned_height * this.stem_direction;
     };
     Stem.prototype.getBoundingBox = function () {
-        throw new util_1.RuntimeError('NotImplemented', 'getBoundingBox() not implemented.');
+        throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NotImplemented', 'getBoundingBox() not implemented.');
     };
     // Get the y coordinates for the very base of the stem to the top of
     // the extension
@@ -27886,8 +28649,8 @@ var Stem = /** @class */ (function (_super) {
         ctx.restore();
     };
     return Stem;
-}(element_1.Element));
-exports.Stem = Stem;
+}(_element__WEBPACK_IMPORTED_MODULE_1__.Element));
+
 
 
 /***/ }),
@@ -27896,15 +28659,23 @@ exports.Stem = Stem;
 /*!******************************!*\
   !*** ./src/stemmablenote.ts ***!
   \******************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "StemmableNote": () => (/* binding */ StemmableNote)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./stem */ "./src/stem.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+/* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./note */ "./src/note.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 // `StemmableNote` is an abstract interface for notes with optional stems.
 // Examples of stemmable notes are `StaveNote` and `TabNote`
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -27919,13 +28690,11 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.StemmableNote = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
+
+
+
+
+
 var StemmableNote = /** @class */ (function (_super) {
     __extends(StemmableNote, _super);
     function StemmableNote(note_struct) {
@@ -27939,7 +28708,7 @@ var StemmableNote = /** @class */ (function (_super) {
     };
     StemmableNote.prototype.checkStem = function () {
         if (!this.stem) {
-            throw new util_1.RuntimeError('NoStem', 'No stem attached to instance');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoStem', 'No stem attached to instance');
         }
         return this.stem;
     };
@@ -27949,7 +28718,7 @@ var StemmableNote = /** @class */ (function (_super) {
     };
     // Builds and sets a new stem
     StemmableNote.prototype.buildStem = function () {
-        var stem = new stem_1.Stem();
+        var stem = new _stem__WEBPACK_IMPORTED_MODULE_2__.Stem();
         this.setStem(stem);
         return this;
     };
@@ -27957,13 +28726,13 @@ var StemmableNote = /** @class */ (function (_super) {
         if (category === void 0) { category = 'flag'; }
         var glyph = this.glyph;
         if (this.hasFlag()) {
-            var flagCode = this.getStemDirection() === stem_1.Stem.DOWN ? glyph.code_flag_downstem : glyph.code_flag_upstem;
-            this.flag = new glyph_1.Glyph(flagCode, this.render_options.glyph_font_scale, { category: category });
+            var flagCode = this.getStemDirection() === _stem__WEBPACK_IMPORTED_MODULE_2__.Stem.DOWN ? glyph.code_flag_downstem : glyph.code_flag_upstem;
+            this.flag = new _glyph__WEBPACK_IMPORTED_MODULE_3__.Glyph(flagCode, this.render_options.glyph_font_scale, { category: category });
         }
     };
     // Get the custom glyph associated with the outer note head on the base of the stem.
     StemmableNote.prototype.getBaseCustomNoteHeadGlyph = function () {
-        if (this.getStemDirection() === stem_1.Stem.DOWN) {
+        if (this.getStemDirection() === _stem__WEBPACK_IMPORTED_MODULE_2__.Stem.DOWN) {
             return this.customGlyphs[this.customGlyphs.length - 1];
         }
         else {
@@ -27972,7 +28741,7 @@ var StemmableNote = /** @class */ (function (_super) {
     };
     // Get the full length of stem
     StemmableNote.prototype.getStemLength = function () {
-        return stem_1.Stem.HEIGHT + this.getStemExtension();
+        return _stem__WEBPACK_IMPORTED_MODULE_2__.Stem.HEIGHT + this.getStemExtension();
     };
     // Get the number of beams for this duration
     StemmableNote.prototype.getBeamCount = function () {
@@ -27986,7 +28755,7 @@ var StemmableNote = /** @class */ (function (_super) {
     };
     // Get the minimum length of stem
     StemmableNote.prototype.getStemMinimumLength = function () {
-        var frac = flow_1.Flow.durationToFraction(this.duration);
+        var frac = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.durationToFraction(this.duration);
         var length = frac.value() <= 1 ? 0 : 20;
         // if note is flagged, cannot shorten beam
         switch (this.duration) {
@@ -28014,14 +28783,14 @@ var StemmableNote = /** @class */ (function (_super) {
     // Get/set the direction of the stem
     StemmableNote.prototype.getStemDirection = function () {
         if (!this.stem_direction)
-            throw new util_1.RuntimeError('NoStem', 'No stem attached to this note.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoStem', 'No stem attached to this note.');
         return this.stem_direction;
     };
     StemmableNote.prototype.setStemDirection = function (direction) {
         if (!direction)
-            direction = stem_1.Stem.UP;
-        if (direction !== stem_1.Stem.UP && direction !== stem_1.Stem.DOWN) {
-            throw new util_1.RuntimeError('BadArgument', "Invalid stem direction: " + direction);
+            direction = _stem__WEBPACK_IMPORTED_MODULE_2__.Stem.UP;
+        if (direction !== _stem__WEBPACK_IMPORTED_MODULE_2__.Stem.UP && direction !== _stem__WEBPACK_IMPORTED_MODULE_2__.Stem.DOWN) {
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArgument', "Invalid stem direction: " + direction);
         }
         this.stem_direction = direction;
         if (this.stem) {
@@ -28060,7 +28829,7 @@ var StemmableNote = /** @class */ (function (_super) {
     StemmableNote.prototype.getStemX = function () {
         var x_begin = this.getAbsoluteX() + this.x_shift;
         var x_end = this.getAbsoluteX() + this.x_shift + this.getGlyphWidth();
-        var stem_x = this.stem_direction === stem_1.Stem.DOWN ? x_begin : x_end;
+        var stem_x = this.stem_direction === _stem__WEBPACK_IMPORTED_MODULE_2__.Stem.DOWN ? x_begin : x_end;
         return stem_x;
     };
     // Get the `x` coordinate for the center of the glyph.
@@ -28075,19 +28844,19 @@ var StemmableNote = /** @class */ (function (_super) {
             return this.stem_extension_override;
         }
         if (glyph) {
-            return this.getStemDirection() === stem_1.Stem.UP ? glyph.stem_up_extension : glyph.stem_down_extension;
+            return this.getStemDirection() === _stem__WEBPACK_IMPORTED_MODULE_2__.Stem.UP ? glyph.stem_up_extension : glyph.stem_down_extension;
         }
         return 0;
     };
     // Set the stem length to a specific. Will override the default length.
     StemmableNote.prototype.setStemLength = function (height) {
-        this.stem_extension_override = height - stem_1.Stem.HEIGHT;
+        this.stem_extension_override = height - _stem__WEBPACK_IMPORTED_MODULE_2__.Stem.HEIGHT;
         return this;
     };
     // Get the top and bottom `y` values of the stem.
     StemmableNote.prototype.getStemExtents = function () {
         if (!this.stem)
-            throw new util_1.RuntimeError('NoStem', 'No stem attached to this note.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoStem', 'No stem attached to this note.');
         return this.stem.getExtents();
     };
     /** Gets the `y` value for the top modifiers at a specific `textLine`. */
@@ -28096,7 +28865,7 @@ var StemmableNote = /** @class */ (function (_super) {
         if (this.hasStem()) {
             var extents = this.getStemExtents();
             if (!extents)
-                throw new util_1.RuntimeError('InvalidState', 'Stem does not have extents.');
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('InvalidState', 'Stem does not have extents.');
             return Math.min(stave.getYForTopText(textLine), extents.topY - this.render_options.annotation_spacing * (textLine + 1));
         }
         else {
@@ -28109,7 +28878,7 @@ var StemmableNote = /** @class */ (function (_super) {
         if (this.hasStem()) {
             var extents = this.getStemExtents();
             if (!extents)
-                throw new util_1.RuntimeError('InvalidState', 'Stem does not have extents.');
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('InvalidState', 'Stem does not have extents.');
             return Math.max(stave.getYForTopText(textLine), extents.baseY + this.render_options.annotation_spacing * textLine);
         }
         else {
@@ -28117,7 +28886,7 @@ var StemmableNote = /** @class */ (function (_super) {
         }
     };
     StemmableNote.prototype.hasFlag = function () {
-        return flow_1.Flow.getGlyphProps(this.duration).flag && !this.beam;
+        return _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.getGlyphProps(this.duration).flag && !this.beam;
     };
     /** Post formats the note. */
     StemmableNote.prototype.postFormat = function () {
@@ -28131,12 +28900,12 @@ var StemmableNote = /** @class */ (function (_super) {
         var _a;
         this.checkContext();
         this.setRendered();
-        this.setStem(new stem_1.Stem(stemOptions));
+        this.setStem(new _stem__WEBPACK_IMPORTED_MODULE_2__.Stem(stemOptions));
         (_a = this.stem) === null || _a === void 0 ? void 0 : _a.setContext(this.getContext()).draw();
     };
     return StemmableNote;
-}(note_1.Note));
-exports.StemmableNote = StemmableNote;
+}(_note__WEBPACK_IMPORTED_MODULE_4__.Note));
+
 
 
 /***/ }),
@@ -28145,16 +28914,24 @@ exports.StemmableNote = StemmableNote;
 /*!*****************************!*\
   !*** ./src/stringnumber.ts ***!
   \*****************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "StringNumber": () => (/* binding */ StringNumber)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
+/* harmony import */ var _renderer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./renderer */ "./src/renderer.ts");
+/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+/* harmony import */ var _stemmablenote__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Larry Kuhns
 //
 // ## Description
 // This file implements the `StringNumber` class which renders string
 // number annotations beside notes.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -28169,13 +28946,11 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.StringNumber = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-var renderer_1 = __webpack_require__(/*! ./renderer */ "./src/renderer.ts");
-var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-var stemmablenote_1 = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
+
+
+
+
+
 var StringNumber = /** @class */ (function (_super) {
     __extends(StringNumber, _super);
     function StringNumber(number) {
@@ -28183,13 +28958,13 @@ var StringNumber = /** @class */ (function (_super) {
         _this.setAttribute('type', 'StringNumber');
         _this.string_number = number;
         _this.setWidth(20); // ???
-        _this.position = modifier_1.Modifier.Position.ABOVE; // Default position above stem or note head
+        _this.position = _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.ABOVE; // Default position above stem or note head
         _this.x_shift = 0;
         _this.y_shift = 0;
         _this.x_offset = 0; // Horizontal offset from default
         _this.y_offset = 0; // Vertical offset from default
         _this.dashed = true; // true - draw dashed extension  false - no extension
-        _this.leg = renderer_1.Renderer.LineEndType.NONE; // draw upward/downward leg at the of extension line
+        _this.leg = _renderer__WEBPACK_IMPORTED_MODULE_2__.Renderer.LineEndType.NONE; // draw upward/downward leg at the of extension line
         _this.radius = 8;
         _this.font = {
             family: 'sans-serif',
@@ -28221,8 +28996,8 @@ var StringNumber = /** @class */ (function (_super) {
             var num = nums[i];
             var note = num.getNote();
             var pos = num.getPosition();
-            if (!(note instanceof stavenote_1.StaveNote)) {
-                throw new util_1.RuntimeError('NoStaveNote');
+            if (!(note instanceof _stavenote__WEBPACK_IMPORTED_MODULE_3__.StaveNote)) {
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoStaveNote');
             }
             var index = num.checkIndex();
             var props = note.getKeyProps()[index];
@@ -28248,8 +29023,6 @@ var StringNumber = /** @class */ (function (_super) {
         }
         // Sort string numbers by line number.
         nums_list.sort(function (a, b) { return b.line - a.line; });
-        // TODO: This variable never gets assigned to anything. Is that a bug or can this be removed?
-        var num_shiftL = 0; // eslint-disable-line
         var num_shiftR = 0;
         var x_widthL = 0;
         var x_widthR = 0;
@@ -28261,20 +29034,18 @@ var StringNumber = /** @class */ (function (_super) {
             var pos = nums_list[i].pos;
             var num = nums_list[i].num;
             var line = nums_list[i].line;
-            var shiftL = nums_list[i].shiftL;
             var shiftR = nums_list[i].shiftR;
             // Reset the position of the string number every line.
             if (line !== last_line || note !== last_note) {
-                num_shiftL = left_shift + shiftL; // eslint-disable-line
                 num_shiftR = right_shift + shiftR;
             }
             var num_width = num.getWidth() + num_spacing;
-            if (pos === modifier_1.Modifier.Position.LEFT) {
+            if (pos === _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.LEFT) {
                 num.setXShift(left_shift);
                 num_shift = shift_left + num_width; // spacing
                 x_widthL = num_shift > x_widthL ? num_shift : x_widthL;
             }
-            else if (pos === modifier_1.Modifier.Position.RIGHT) {
+            else if (pos === _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.RIGHT) {
                 num.setXShift(num_shiftR);
                 num_shift += num_width; // spacing
                 x_widthR = num_shift > x_widthR ? num_shift : x_widthR;
@@ -28290,7 +29061,7 @@ var StringNumber = /** @class */ (function (_super) {
         return StringNumber.CATEGORY;
     };
     StringNumber.prototype.setLineEndType = function (leg) {
-        if (leg >= renderer_1.Renderer.LineEndType.NONE && leg <= renderer_1.Renderer.LineEndType.DOWN) {
+        if (leg >= _renderer__WEBPACK_IMPORTED_MODULE_2__.Renderer.LineEndType.NONE && leg <= _renderer__WEBPACK_IMPORTED_MODULE_2__.Renderer.LineEndType.DOWN) {
             this.leg = leg;
         }
         return this;
@@ -28324,16 +29095,16 @@ var StringNumber = /** @class */ (function (_super) {
         var dot_x = start.x + this.x_shift + this.x_offset;
         var dot_y = start.y + this.y_shift + this.y_offset;
         switch (this.position) {
-            case modifier_1.Modifier.Position.ABOVE:
-            case modifier_1.Modifier.Position.BELOW: {
+            case _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.ABOVE:
+            case _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.BELOW: {
                 var stem_ext = note.getStemExtents();
                 var top_1 = stem_ext.topY;
                 var bottom = stem_ext.baseY + 2;
-                if (note.getStemDirection() === stavenote_1.StaveNote.STEM_DOWN) {
+                if (note.getStemDirection() === _stavenote__WEBPACK_IMPORTED_MODULE_3__.StaveNote.STEM_DOWN) {
                     top_1 = stem_ext.baseY;
                     bottom = stem_ext.topY - 2;
                 }
-                if (this.position === modifier_1.Modifier.Position.ABOVE) {
+                if (this.position === _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.ABOVE) {
                     dot_y = note.hasStem() ? top_1 - line_space * 1.75 : start.y - line_space * 1.75;
                 }
                 else {
@@ -28342,14 +29113,14 @@ var StringNumber = /** @class */ (function (_super) {
                 dot_y += this.y_shift + this.y_offset;
                 break;
             }
-            case modifier_1.Modifier.Position.LEFT:
+            case _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.LEFT:
                 dot_x -= this.radius / 2 + 5;
                 break;
-            case modifier_1.Modifier.Position.RIGHT:
+            case _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.RIGHT:
                 dot_x += this.radius / 2 + 6;
                 break;
             default:
-                throw new util_1.RuntimeError('InvalidPosition', "The position " + this.position + " is invalid");
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('InvalidPosition', "The position " + this.position + " is invalid");
         }
         ctx.save();
         ctx.beginPath();
@@ -28359,29 +29130,29 @@ var StringNumber = /** @class */ (function (_super) {
         ctx.setFont(this.font.family, this.font.size, this.font.weight);
         var x = dot_x - ctx.measureText(this.string_number).width / 2;
         ctx.fillText('' + this.string_number, x, dot_y + 4.5);
-        if (this.last_note instanceof stemmablenote_1.StemmableNote) {
+        if (this.last_note instanceof _stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNote) {
             var end = this.last_note.getStemX() - note.getX() + 5;
             ctx.setStrokeStyle('#000000');
             ctx.setLineCap('round');
             ctx.setLineWidth(0.6);
             if (this.dashed) {
-                renderer_1.Renderer.drawDashedLine(ctx, dot_x + 10, dot_y, dot_x + end, dot_y, [3, 3]);
+                _renderer__WEBPACK_IMPORTED_MODULE_2__.Renderer.drawDashedLine(ctx, dot_x + 10, dot_y, dot_x + end, dot_y, [3, 3]);
             }
             else {
-                renderer_1.Renderer.drawDashedLine(ctx, dot_x + 10, dot_y, dot_x + end, dot_y, [3, 0]);
+                _renderer__WEBPACK_IMPORTED_MODULE_2__.Renderer.drawDashedLine(ctx, dot_x + 10, dot_y, dot_x + end, dot_y, [3, 0]);
             }
             var len = void 0;
             var pattern = void 0;
             switch (this.leg) {
-                case renderer_1.Renderer.LineEndType.UP:
+                case _renderer__WEBPACK_IMPORTED_MODULE_2__.Renderer.LineEndType.UP:
                     len = -10;
                     pattern = this.dashed ? [3, 3] : [3, 0];
-                    renderer_1.Renderer.drawDashedLine(ctx, dot_x + end, dot_y, dot_x + end, dot_y + len, pattern);
+                    _renderer__WEBPACK_IMPORTED_MODULE_2__.Renderer.drawDashedLine(ctx, dot_x + end, dot_y, dot_x + end, dot_y + len, pattern);
                     break;
-                case renderer_1.Renderer.LineEndType.DOWN:
+                case _renderer__WEBPACK_IMPORTED_MODULE_2__.Renderer.LineEndType.DOWN:
                     len = 10;
                     pattern = this.dashed ? [3, 3] : [3, 0];
-                    renderer_1.Renderer.drawDashedLine(ctx, dot_x + end, dot_y, dot_x + end, dot_y + len, pattern);
+                    _renderer__WEBPACK_IMPORTED_MODULE_2__.Renderer.drawDashedLine(ctx, dot_x + end, dot_y, dot_x + end, dot_y + len, pattern);
                     break;
                 default:
                     break;
@@ -28390,8 +29161,8 @@ var StringNumber = /** @class */ (function (_super) {
         ctx.restore();
     };
     return StringNumber;
-}(modifier_1.Modifier));
-exports.StringNumber = StringNumber;
+}(_modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier));
+
 
 
 /***/ }),
@@ -28400,16 +29171,25 @@ exports.StringNumber = StringNumber;
 /*!************************!*\
   !*** ./src/strokes.ts ***!
   \************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Stroke": () => (/* binding */ Stroke)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
+/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+/* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./note */ "./src/note.ts");
+/* harmony import */ var _tabnote__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Larry Kuhns
 //
 // ## Description
 // This file implements the `Stroke` class which renders chord strokes
 // that can be arpeggiated, brushed, rasquedo, etc.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -28424,7 +29204,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -28435,14 +29215,12 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Stroke = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-var stavenote_1 = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
-var tabnote_1 = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
+
+
+
+
+
+
 var Stroke = /** @class */ (function (_super) {
     __extends(Stroke, _super);
     function Stroke(type, options) {
@@ -28453,7 +29231,7 @@ var Stroke = /** @class */ (function (_super) {
         _this.all_voices = 'all_voices' in _this.options ? _this.options.all_voices : true;
         // multi voice - end note of stroke, set in draw()
         _this.type = type;
-        _this.position = modifier_1.Modifier.Position.LEFT;
+        _this.position = _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.LEFT;
         _this.render_options = {
             font_scale: 38,
             stroke_px: 3,
@@ -28484,17 +29262,17 @@ var Stroke = /** @class */ (function (_super) {
         var strokeList = strokes.map(function (stroke) {
             var note = stroke.getNote();
             var index = stroke.checkIndex();
-            if (note instanceof stavenote_1.StaveNote) {
+            if (note instanceof _stavenote__WEBPACK_IMPORTED_MODULE_2__.StaveNote) {
                 var line = note.getKeyProps()[index].line;
                 var shift = note.getLeftDisplacedHeadPx();
                 return { line: line, shift: shift, stroke: stroke };
             }
-            else if (note instanceof tabnote_1.TabNote) {
+            else if (note instanceof _tabnote__WEBPACK_IMPORTED_MODULE_5__.TabNote) {
                 var string = note.getPositions()[index].str;
                 return { line: string, shift: 0, stroke: stroke };
             }
             else {
-                throw new util_1.RuntimeError('Internal', 'Unexpexted');
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('Internal', 'Unexpexted');
             }
         });
         var strokeShift = left_shift;
@@ -28529,9 +29307,9 @@ var Stroke = /** @class */ (function (_super) {
         var line_space = note.checkStave().getOptions().spacing_between_lines_px;
         var notes = this.checkModifierContext().getMembers(note.getCategory());
         for (var i = 0; i < notes.length; i++) {
-            var note_2 = notes[i];
-            if (note_2 instanceof note_1.Note) {
-                ys = note_2.getYs();
+            var note_1 = notes[i];
+            if (note_1 instanceof _note__WEBPACK_IMPORTED_MODULE_4__.Note) {
+                ys = note_1.getYs();
                 for (var n = 0; n < ys.length; n++) {
                     if (this.note === notes[i] || this.all_voices) {
                         topY = Math.min(topY, ys[n]);
@@ -28563,7 +29341,7 @@ var Stroke = /** @class */ (function (_super) {
                 arrow = 'arrowheadBlackUp';
                 arrow_shift_x = -3;
                 text_shift_x = this.x_shift + arrow_shift_x - 2;
-                if (note instanceof stavenote_1.StaveNote) {
+                if (note instanceof _stavenote__WEBPACK_IMPORTED_MODULE_2__.StaveNote) {
                     topY += 1.5 * line_space;
                     if ((botY - topY) % 2 !== 0) {
                         botY += 0.5 * line_space;
@@ -28586,7 +29364,7 @@ var Stroke = /** @class */ (function (_super) {
                 arrow = 'arrowheadBlackDown';
                 arrow_shift_x = -4;
                 text_shift_x = this.x_shift + arrow_shift_x - 1;
-                if (note instanceof stavenote_1.StaveNote) {
+                if (note instanceof _stavenote__WEBPACK_IMPORTED_MODULE_2__.StaveNote) {
                     arrow_y = line_space / 2;
                     topY += 0.5 * line_space;
                     if ((botY - topY) % 2 === 0) {
@@ -28607,7 +29385,7 @@ var Stroke = /** @class */ (function (_super) {
                 botY += line_space; // * 0.5 can lead to slight underlap instead of overlap sometimes
                 break;
             default:
-                throw new util_1.RuntimeError('InvalidType', "The stroke type " + this.type + " does not exist");
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('InvalidType', "The stroke type " + this.type + " does not exist");
         }
         var strokeLine = 'straight';
         // Draw the stroke
@@ -28616,15 +29394,15 @@ var Stroke = /** @class */ (function (_super) {
         }
         else {
             strokeLine = 'wiggly';
-            if (note instanceof stavenote_1.StaveNote) {
+            if (note instanceof _stavenote__WEBPACK_IMPORTED_MODULE_2__.StaveNote) {
                 for (var i = topY; i <= botY; i += line_space) {
-                    glyph_1.Glyph.renderGlyph(ctx, x + this.x_shift - 4, i, this.render_options.font_scale, 'vexWiggleArpeggioUp');
+                    _glyph__WEBPACK_IMPORTED_MODULE_3__.Glyph.renderGlyph(ctx, x + this.x_shift - 4, i, this.render_options.font_scale, 'vexWiggleArpeggioUp');
                 }
             }
             else {
                 var i = void 0;
                 for (i = topY; i <= botY; i += 10) {
-                    glyph_1.Glyph.renderGlyph(ctx, x + this.x_shift - 4, i, this.render_options.font_scale, 'vexWiggleArpeggioUp');
+                    _glyph__WEBPACK_IMPORTED_MODULE_3__.Glyph.renderGlyph(ctx, x + this.x_shift - 4, i, this.render_options.font_scale, 'vexWiggleArpeggioUp');
                 }
                 if (this.type === Stroke.Type.RASQUEDO_DOWN) {
                     text_y = i + 0.25 * line_space;
@@ -28635,7 +29413,7 @@ var Stroke = /** @class */ (function (_super) {
             return; // skip drawing arrow heads or text
         }
         // Draw the arrow head
-        glyph_1.Glyph.renderGlyph(ctx, x + this.x_shift + arrow_shift_x, arrow_y, this.render_options.font_scale, arrow, {
+        _glyph__WEBPACK_IMPORTED_MODULE_3__.Glyph.renderGlyph(ctx, x + this.x_shift + arrow_shift_x, arrow_y, this.render_options.font_scale, arrow, {
             category: "stroke." + arrow + "." + strokeLine,
         });
         // Draw the rasquedo "R"
@@ -28656,8 +29434,8 @@ var Stroke = /** @class */ (function (_super) {
         ARPEGGIO_DIRECTIONLESS: 7, // Arpeggiated chord without upwards or downwards arrow
     };
     return Stroke;
-}(modifier_1.Modifier));
-exports.Stroke = Stroke;
+}(_modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier));
+
 
 
 /***/ }),
@@ -28666,12 +29444,17 @@ exports.Stroke = Stroke;
 /*!***************************!*\
   !*** ./src/svgcontext.ts ***!
   \***************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "SVGContext": () => (/* binding */ SVGContext)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// MIT License
 // @author Gregory Ristow (2015)
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -28682,9 +29465,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.SVGContext = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
+
 var attrNamesToIgnoreMap = {
     path: {
         x: true,
@@ -28707,8 +29488,11 @@ var attrNamesToIgnoreMap = {
         height: true,
     },
 };
-// Create the SVG in the SVG namespace:
+/** Create the SVG in the SVG namespace. */
 var SVG_NS = 'http://www.w3.org/2000/svg';
+/**
+ * SVG rendering context with an API similar to CanvasRenderingContext2D.
+ */
 var SVGContext = /** @class */ (function () {
     function SVGContext(element) {
         this.width = 0;
@@ -28758,9 +29542,9 @@ var SVGContext = /** @class */ (function () {
         this.parent.appendChild(group);
         this.parent = group;
         if (cls)
-            group.setAttribute('class', util_1.prefix(cls));
+            group.setAttribute('class', (0,_util__WEBPACK_IMPORTED_MODULE_0__.prefix)(cls));
         if (id)
-            group.setAttribute('id', util_1.prefix(id));
+            group.setAttribute('id', (0,_util__WEBPACK_IMPORTED_MODULE_0__.prefix)(id));
         if (attrs && attrs.pointerBBox) {
             group.setAttribute('pointer-events', 'bounding-box');
         }
@@ -28867,6 +29651,10 @@ var SVGContext = /** @class */ (function () {
         this.shadow_attributes.width = blur;
         return this;
     };
+    /**
+     * @param width
+     * @returns this
+     */
     SVGContext.prototype.setLineWidth = function (width) {
         this.attributes['stroke-width'] = width;
         this.lineWidth = width;
@@ -28884,9 +29672,13 @@ var SVGContext = /** @class */ (function () {
             return this;
         }
         else {
-            throw new util_1.RuntimeError('ArgumentError', 'lineDash must be an array of integers.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('ArgumentError', 'lineDash must be an array of integers.');
         }
     };
+    /**
+     * @param capType
+     * @returns this
+     */
     SVGContext.prototype.setLineCap = function (capType) {
         this.attributes['stroke-linecap'] = capType;
         return this;
@@ -29248,9 +30040,33 @@ var SVGContext = /** @class */ (function () {
         }
         return this;
     };
+    Object.defineProperty(SVGContext.prototype, "font", {
+        /** Maintain compatibility with the CanvasRenderingContext2D API. */
+        set: function (value) {
+            this.setRawFont(value);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(SVGContext.prototype, "fillStyle", {
+        /** Maintain compatibility with the CanvasRenderingContext2D API. */
+        set: function (style) {
+            this.setFillStyle(style);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(SVGContext.prototype, "strokeStyle", {
+        /** Maintain compatibility with the CanvasRenderingContext2D API. */
+        set: function (style) {
+            this.setStrokeStyle(style);
+        },
+        enumerable: false,
+        configurable: true
+    });
     return SVGContext;
 }());
-exports.SVGContext = SVGContext;
+
 
 
 /***/ }),
@@ -29259,15 +30075,21 @@ exports.SVGContext = SVGContext;
 /*!***********************!*\
   !*** ./src/system.ts ***!
   \***********************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "System": () => (/* binding */ System)
+/* harmony export */ });
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
+/* harmony import */ var _factory__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./factory */ "./src/factory.ts");
+/* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
+/* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./note */ "./src/note.ts");
+/* harmony import */ var _stave__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stave */ "./src/stave.ts");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// This class implements a musical system, which is a collection of staves,
-// each which can have one or more voices. All voices across all staves in
-// the system are formatted together.
-var __extends = (this && this.__extends) || (function () {
+// MIT License
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -29282,7 +30104,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -29293,14 +30115,17 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.System = void 0;
-var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var factory_1 = __webpack_require__(/*! ./factory */ "./src/factory.ts");
-var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
-var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
-var stave_1 = __webpack_require__(/*! ./stave */ "./src/stave.ts");
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
+
+
+
+
+
+
+/**
+ * System implements a musical system, which is a collection of staves,
+ * each which can have one or more voices. All voices across all staves in
+ * the system are formatted together.
+ */
 var System = /** @class */ (function (_super) {
     __extends(System, _super);
     function System(params) {
@@ -29311,16 +30136,25 @@ var System = /** @class */ (function (_super) {
         _this.parts = [];
         return _this;
     }
+    /** Set formatting options. */
     System.prototype.setOptions = function (options) {
         if (options === void 0) { options = {}; }
-        this.options = __assign(__assign({ x: 10, y: 10, width: 500, spaceBetweenStaves: 12, noJustification: false, debugFormatter: false, formatIterations: 0, noPadding: false }, options), { details: __assign({ alpha: 0.5 }, options.details) });
-        this.factory = this.options.factory || new factory_1.Factory({ renderer: { elementId: null, width: 0, height: 0 } });
+        this.options = __assign(__assign({ x: 10, y: 10, width: 500, spaceBetweenStaves: 12, autoWidth: false, noJustification: false, debugFormatter: false, formatIterations: 0, noPadding: false }, options), { details: __assign({ alpha: 0.5 }, options.details) });
+        if (this.options.noJustification === false && typeof options.width === 'undefined') {
+            this.options.autoWidth = true;
+        }
+        this.factory = this.options.factory || new _factory__WEBPACK_IMPORTED_MODULE_1__.Factory({ renderer: { elementId: null, width: 0, height: 0 } });
     };
+    /** Set associated context. */
     System.prototype.setContext = function (context) {
         _super.prototype.setContext.call(this, context);
         this.factory.setContext(context);
         return this;
     };
+    /**
+     * Add connector between staves.
+     * @param type see {@link StaveConnector.typeString}
+     */
     System.prototype.addConnector = function (type) {
         if (type === void 0) { type = 'double'; }
         this.connector = this.factory.StaveConnector({
@@ -29330,6 +30164,7 @@ var System = /** @class */ (function (_super) {
         });
         return this.connector;
     };
+    /** Add stave to the system. */
     System.prototype.addStave = function (paramsItems) {
         var _this = this;
         var stave = paramsItems.stave;
@@ -29352,9 +30187,11 @@ var System = /** @class */ (function (_super) {
         this.parts.push(params);
         return params.stave;
     };
+    /** Format the system. */
     System.prototype.format = function () {
         var _this = this;
-        var formatter = new formatter_1.Formatter(__assign({}, this.options.details));
+        var justifyWidth = 0;
+        var formatter = new _formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter(__assign({}, this.options.details));
         this.formatter = formatter;
         var y = this.options.y;
         var startX = 0;
@@ -29364,7 +30201,14 @@ var System = /** @class */ (function (_super) {
         this.parts.forEach(function (part) {
             y = y + part.stave.space(part.spaceAbove);
             part.stave.setY(y);
-            formatter.joinVoices(part.voices);
+            if (_this.options.autoWidth) {
+                part.voices.forEach(function (voice) {
+                    formatter.joinVoices([voice]);
+                });
+            }
+            else {
+                formatter.joinVoices(part.voices);
+            }
             y = y + part.stave.space(part.spaceBelow);
             y = y + part.stave.space(_this.options.spaceBetweenStaves);
             if (part.debugNoteMetrics) {
@@ -29376,9 +30220,17 @@ var System = /** @class */ (function (_super) {
         });
         // Update the start position of all staves.
         this.parts.forEach(function (part) { return part.stave.setNoteStartX(startX); });
-        var justifyWidth = this.options.noPadding
-            ? this.options.width - this.options.x
-            : this.options.width - (startX - this.options.x) - stave_1.Stave.defaultPadding;
+        if (this.options.autoWidth) {
+            justifyWidth = formatter.preCalculateMinTotalWidth(allVoices);
+            this.parts.forEach(function (part) {
+                part.stave.setWidth(justifyWidth + _stave__WEBPACK_IMPORTED_MODULE_4__.Stave.rightPadding + (startX - _this.options.x));
+            });
+        }
+        else {
+            justifyWidth = this.options.noPadding
+                ? this.options.width - this.options.x
+                : this.options.width - (startX - this.options.x) - _stave__WEBPACK_IMPORTED_MODULE_4__.Stave.defaultPadding;
+        }
         formatter.format(allVoices, this.options.noJustification ? 0 : justifyWidth);
         for (var i = 0; i < this.options.formatIterations; i++) {
             formatter.tune({ alpha: this.options.details.alpha });
@@ -29387,23 +30239,24 @@ var System = /** @class */ (function (_super) {
         this.debugNoteMetricsYs = debugNoteMetricsYs;
         this.lastY = y;
     };
+    /** Render the system. */
     System.prototype.draw = function () {
         // Render debugging information, if requested.
         var ctx = this.checkContext();
         if (!this.formatter || !this.startX || !this.lastY || !this.debugNoteMetricsYs) {
-            throw new util_1.RuntimeError('NoFormated', 'Format must be instatiated before draw');
+            throw new _util__WEBPACK_IMPORTED_MODULE_5__.RuntimeError('NoFormated', 'Format must be instatiated before draw');
         }
         this.setRendered();
         if (this.options.debugFormatter) {
-            formatter_1.Formatter.plotDebugging(ctx, this.formatter, this.startX, this.options.y, this.lastY);
+            _formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter.plotDebugging(ctx, this.formatter, this.startX, this.options.y, this.lastY);
         }
         this.debugNoteMetricsYs.forEach(function (d) {
-            d.voice.getTickables().forEach(function (note) { return note_1.Note.plotMetrics(ctx, note, d.y); });
+            d.voice.getTickables().forEach(function (note) { return _note__WEBPACK_IMPORTED_MODULE_3__.Note.plotMetrics(ctx, note, d.y); });
         });
     };
     return System;
-}(element_1.Element));
-exports.System = System;
+}(_element__WEBPACK_IMPORTED_MODULE_0__.Element));
+
 
 
 /***/ }),
@@ -29412,11 +30265,18 @@ exports.System = System;
 /*!***********************!*\
   !*** ./src/tables.ts ***!
   \***********************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Tables": () => (/* binding */ Tables)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+/* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -29427,13 +30287,11 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Tables = void 0;
 /* eslint-disable key-spacing */
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-var font_1 = __webpack_require__(/*! ./font */ "./src/font.ts");
+
+
+
+
 // Custom note heads
 var customNoteHeads = {
     /* Diamond */
@@ -29736,16 +30594,16 @@ var accidentals = {
     accidentalWilsonPlus: { code: 'accidentalWilsonPlus', parenRightPaddingAdjustment: -1 },
     accidentalWilsonMinus: { code: 'accidentalWilsonMinus', parenRightPaddingAdjustment: -1 },
 };
-exports.Tables = {
+var Tables = {
     STEM_WIDTH: 1.5,
     STEM_HEIGHT: 35,
     STAVE_LINE_THICKNESS: 1,
     RESOLUTION: RESOLUTION,
     /**
      * Customize this to choose a different music font.
-     * For example: Vex.Flow.DEFAULT_FONT_STACK = [Fonts.Petaluma, Fonts.Custom];
+     * For example: Vex.Flow.DEFAULT_FONT_STACK = [Fonts.Petaluma(), Fonts.Custom()];
      */
-    DEFAULT_FONT_STACK: [font_1.Fonts.Bravura, font_1.Fonts.Gonville, font_1.Fonts.Custom],
+    DEFAULT_FONT_STACK: [_font__WEBPACK_IMPORTED_MODULE_3__.Fonts.Bravura(), _font__WEBPACK_IMPORTED_MODULE_3__.Fonts.Gonville(), _font__WEBPACK_IMPORTED_MODULE_3__.Fonts.Custom()],
     DEFAULT_NOTATION_FONT_SCALE: 39,
     DEFAULT_TABLATURE_FONT_SCALE: 39,
     SLASH_NOTEHEAD_WIDTH: 15,
@@ -29775,10 +30633,10 @@ exports.Tables = {
             french: { line_shift: -1 },
         };
         if (!clef)
-            throw new util_1.RuntimeError('BadArgument', 'Invalid clef: ' + clef);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArgument', 'Invalid clef: ' + clef);
         var props = values[clef];
         if (!props)
-            throw new util_1.RuntimeError('BadArgument', 'Invalid clef: ' + clef);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArgument', 'Invalid clef: ' + clef);
         return props;
     },
     /*
@@ -29795,8 +30653,8 @@ exports.Tables = {
             CN: { index: 0, int_val: 0, accidental: 'n' },
             'C#': { index: 0, int_val: 1, accidental: '#' },
             'C##': { index: 0, int_val: 2, accidental: '##' },
-            CB: { index: 0, int_val: -1, accidental: 'b' },
-            CBB: { index: 0, int_val: -2, accidental: 'bb' },
+            CB: { index: 0, int_val: 11, accidental: 'b' },
+            CBB: { index: 0, int_val: 10, accidental: 'bb' },
             D: { index: 1, int_val: 2 },
             DN: { index: 1, int_val: 2, accidental: 'n' },
             'D#': { index: 1, int_val: 3, accidental: '#' },
@@ -29833,7 +30691,7 @@ exports.Tables = {
             'B##': { index: 6, int_val: 13, accidental: '##' },
             BB: { index: 6, int_val: 10, accidental: 'b' },
             BBB: { index: 6, int_val: 9, accidental: 'bb' },
-            R: { index: 6, int_val: 9, rest: true },
+            R: { index: 6, rest: true },
             X: {
                 index: 6,
                 accidental: '',
@@ -29851,12 +30709,12 @@ exports.Tables = {
         }
         var pieces = key.split('/');
         if (pieces.length < 2) {
-            throw new util_1.RuntimeError('BadArguments', "Key must have note + octave and an optional glyph: " + key);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', "Key must have note + octave and an optional glyph: " + key);
         }
         var k = pieces[0].toUpperCase();
         var value = noteValues[k];
         if (!value)
-            throw new util_1.RuntimeError('BadArguments', 'Invalid key name: ' + k);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'Invalid key name: ' + k);
         if (value.octave)
             pieces[1] = value.octave.toString();
         var octave = parseInt(pieces[1], 10);
@@ -29864,14 +30722,14 @@ exports.Tables = {
         octave += -1 * options.octave_shift;
         var base_index = octave * 7 - 4 * 7;
         var line = (base_index + value.index) / 2;
-        line += exports.Tables.clefProperties(clef).line_shift;
+        line += Tables.clefProperties(clef).line_shift;
         var stroke = 0;
         if (line <= 0 && (line * 2) % 2 === 0)
             stroke = 1; // stroke up
         if (line >= 6 && (line * 2) % 2 === 0)
             stroke = -1; // stroke down
         // Integer value for note arithmetic.
-        var int_value = typeof value.int_val !== 'undefined' ? octave * 12 + value.int_val : null;
+        var int_value = typeof value.int_val !== 'undefined' ? octave * 12 + value.int_val : undefined;
         /* Check if the user specified a glyph. */
         var code = value.code;
         var shift_right = value.shift_right;
@@ -29898,14 +30756,14 @@ exports.Tables = {
             11: 'B',
         };
         if (typeof integer === 'undefined') {
-            throw new util_1.RuntimeError('BadArguments', 'Undefined integer for integerToNote');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'Undefined integer for integerToNote');
         }
         if (integer < -2) {
-            throw new util_1.RuntimeError('BadArguments', "integerToNote requires integer > -2: " + integer);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', "integerToNote requires integer > -2: " + integer);
         }
         var noteValue = table[integer];
         if (!noteValue) {
-            throw new util_1.RuntimeError('BadArguments', "Unknown note value for integer: " + integer);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', "Unknown note value for integer: " + integer);
         }
         return noteValue;
     },
@@ -29915,15 +30773,15 @@ exports.Tables = {
         var width = 0;
         var shift_y = 0;
         if (fret.toString().toUpperCase() === 'X') {
-            var glyphMetrics = new glyph_1.Glyph('accidentalDoubleSharp', exports.Tables.DEFAULT_TABLATURE_FONT_SCALE).getMetrics();
+            var glyphMetrics = new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('accidentalDoubleSharp', Tables.DEFAULT_TABLATURE_FONT_SCALE).getMetrics();
             glyph = 'accidentalDoubleSharp';
             if (glyphMetrics.width == undefined || glyphMetrics.height == undefined)
-                throw new util_1.RuntimeError('InvalidMetrics', 'Width and height required');
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('InvalidMetrics', 'Width and height required');
             width = glyphMetrics.width;
             shift_y = -glyphMetrics.height / 2;
         }
         else {
-            width = exports.Tables.textWidth(fret.toString());
+            width = Tables.textWidth(fret.toString());
         }
         return {
             text: fret,
@@ -30073,7 +30931,7 @@ exports.Tables = {
         };
         var keySpec = keySpecs[spec];
         if (!keySpec) {
-            throw new util_1.RuntimeError('BadKeySignature', "Bad key signature spec: '" + spec + "'");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadKeySignature', "Bad key signature spec: '" + spec + "'");
         }
         if (!keySpec.acc) {
             return [];
@@ -30123,24 +30981,24 @@ exports.Tables = {
             duration = alias;
         }
         if (durations[duration] === undefined) {
-            throw new util_1.RuntimeError('BadArguments', "The provided duration is not valid: " + duration);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', "The provided duration is not valid: " + duration);
         }
         return duration;
     },
     // Convert the `duration` to an fraction
     durationToFraction: function (duration) {
-        return new fraction_1.Fraction().parse(exports.Tables.sanitizeDuration(duration));
+        return new _fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction().parse(Tables.sanitizeDuration(duration));
     },
     // Convert the `duration` to an number
     durationToNumber: function (duration) {
-        return exports.Tables.durationToFraction(duration).value();
+        return Tables.durationToFraction(duration).value();
     },
     // Convert the `duration` to total ticks
     durationToTicks: function (duration) {
-        duration = exports.Tables.sanitizeDuration(duration);
+        duration = Tables.sanitizeDuration(duration);
         var ticks = durations[duration];
         if (ticks === undefined) {
-            throw new util_1.RuntimeError('InvalidDuration');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('InvalidDuration');
         }
         return ticks;
     },
@@ -30153,10 +31011,10 @@ exports.Tables = {
                     stem: false,
                     stem_offset: 0,
                     flag: false,
-                    stem_up_extension: -exports.Tables.STEM_HEIGHT,
-                    stem_down_extension: -exports.Tables.STEM_HEIGHT,
-                    tabnote_stem_up_extension: -exports.Tables.STEM_HEIGHT,
-                    tabnote_stem_down_extension: -exports.Tables.STEM_HEIGHT,
+                    stem_up_extension: -Tables.STEM_HEIGHT,
+                    stem_down_extension: -Tables.STEM_HEIGHT,
+                    tabnote_stem_up_extension: -Tables.STEM_HEIGHT,
+                    tabnote_stem_down_extension: -Tables.STEM_HEIGHT,
                     dot_shiftY: 0,
                     line_above: 0,
                     line_below: 0,
@@ -30166,16 +31024,16 @@ exports.Tables = {
                         // Breve note
                         code_head: 'noteheadDoubleWhole',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadDoubleWhole', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadDoubleWhole', scale).getMetrics().width;
                         },
                     },
                     h: {
                         // Breve note harmonic
                         code_head: 'unpitchedPercussionClef1',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('unpitchedPercussionClef1', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('unpitchedPercussionClef1', scale).getMetrics().width;
                         },
                     },
                     m: {
@@ -30183,8 +31041,8 @@ exports.Tables = {
                         code_head: 'vexNoteHeadMutedBreve',
                         stem_offset: 0,
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('vexNoteHeadMutedBreve', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('vexNoteHeadMutedBreve', scale).getMetrics().width;
                         },
                     },
                     r: {
@@ -30194,14 +31052,14 @@ exports.Tables = {
                         position: 'B/5',
                         dot_shiftY: 0.5,
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('restDoubleWhole', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('restDoubleWhole', scale).getMetrics().width;
                         },
                     },
                     s: {
                         // Breve note slash -
                         // Drawn with canvas primitives
-                        getWidth: function () { return exports.Tables.SLASH_NOTEHEAD_WIDTH; },
+                        getWidth: function () { return Tables.SLASH_NOTEHEAD_WIDTH; },
                         position: 'B/4',
                     },
                 },
@@ -30211,10 +31069,10 @@ exports.Tables = {
                     stem: false,
                     stem_offset: 0,
                     flag: false,
-                    stem_up_extension: -exports.Tables.STEM_HEIGHT,
-                    stem_down_extension: -exports.Tables.STEM_HEIGHT,
-                    tabnote_stem_up_extension: -exports.Tables.STEM_HEIGHT,
-                    tabnote_stem_down_extension: -exports.Tables.STEM_HEIGHT,
+                    stem_up_extension: -Tables.STEM_HEIGHT,
+                    stem_down_extension: -Tables.STEM_HEIGHT,
+                    tabnote_stem_up_extension: -Tables.STEM_HEIGHT,
+                    tabnote_stem_down_extension: -Tables.STEM_HEIGHT,
                     dot_shiftY: 0,
                     line_above: 0,
                     line_below: 0,
@@ -30224,16 +31082,16 @@ exports.Tables = {
                         // Whole note
                         code_head: 'noteheadWhole',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadWhole', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadWhole', scale).getMetrics().width;
                         },
                     },
                     h: {
                         // Whole note harmonic
                         code_head: 'noteheadDiamondWhole',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadDiamondWhole', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadDiamondWhole', scale).getMetrics().width;
                         },
                     },
                     m: {
@@ -30241,8 +31099,8 @@ exports.Tables = {
                         code_head: 'noteheadXWhole',
                         stem_offset: -3,
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadXWhole', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadXWhole', scale).getMetrics().width;
                         },
                     },
                     r: {
@@ -30252,14 +31110,14 @@ exports.Tables = {
                         position: 'D/5',
                         dot_shiftY: 0.5,
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('restWhole', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('restWhole', scale).getMetrics().width;
                         },
                     },
                     s: {
                         // Whole note slash
                         // Drawn with canvas primitives
-                        getWidth: function () { return exports.Tables.SLASH_NOTEHEAD_WIDTH; },
+                        getWidth: function () { return Tables.SLASH_NOTEHEAD_WIDTH; },
                         position: 'B/4',
                     },
                 },
@@ -30282,16 +31140,16 @@ exports.Tables = {
                         // Half note
                         code_head: 'noteheadHalf',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadHalf', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadHalf', scale).getMetrics().width;
                         },
                     },
                     h: {
                         // Half note harmonic
                         code_head: 'noteheadDiamondHalf',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadDiamondHalf', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadDiamondHalf', scale).getMetrics().width;
                         },
                     },
                     m: {
@@ -30299,8 +31157,8 @@ exports.Tables = {
                         code_head: 'noteheadXHalf',
                         stem_offset: -3,
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadXHalf', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadXHalf', scale).getMetrics().width;
                         },
                     },
                     r: {
@@ -30311,14 +31169,14 @@ exports.Tables = {
                         position: 'B/4',
                         dot_shiftY: -0.5,
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('restHalf', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('restHalf', scale).getMetrics().width;
                         },
                     },
                     s: {
                         // Half note slash
                         // Drawn with canvas primitives
-                        getWidth: function () { return exports.Tables.SLASH_NOTEHEAD_WIDTH; },
+                        getWidth: function () { return Tables.SLASH_NOTEHEAD_WIDTH; },
                         position: 'B/4',
                     },
                 },
@@ -30341,24 +31199,24 @@ exports.Tables = {
                         // Quarter note
                         code_head: 'noteheadBlack',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadBlack', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadBlack', scale).getMetrics().width;
                         },
                     },
                     h: {
                         // Quarter harmonic
                         code_head: 'noteheadDiamondBlack',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadDiamondBlack', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadDiamondBlack', scale).getMetrics().width;
                         },
                     },
                     m: {
                         // Quarter muted
                         code_head: 'noteheadXBlack',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadXBlack', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadXBlack', scale).getMetrics().width;
                         },
                     },
                     r: {
@@ -30371,14 +31229,14 @@ exports.Tables = {
                         line_above: 1.5,
                         line_below: 1.5,
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('restQuarter', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('restQuarter', scale).getMetrics().width;
                         },
                     },
                     s: {
                         // Quarter slash
                         // Drawn with canvas primitives
-                        getWidth: function () { return exports.Tables.SLASH_NOTEHEAD_WIDTH; },
+                        getWidth: function () { return Tables.SLASH_NOTEHEAD_WIDTH; },
                         position: 'B/4',
                     },
                 },
@@ -30404,24 +31262,24 @@ exports.Tables = {
                         // Eighth note
                         code_head: 'noteheadBlack',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadBlack', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadBlack', scale).getMetrics().width;
                         },
                     },
                     h: {
                         // Eighth note harmonic
                         code_head: 'noteheadDiamondBlack',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadDiamondBlack', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadDiamondBlack', scale).getMetrics().width;
                         },
                     },
                     m: {
                         // Eighth note muted
                         code_head: 'noteheadXBlack',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadXBlack', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadXBlack', scale).getMetrics().width;
                         },
                     },
                     r: {
@@ -30435,14 +31293,14 @@ exports.Tables = {
                         line_above: 1.0,
                         line_below: 1.0,
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('rest8th', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('rest8th', scale).getMetrics().width;
                         },
                     },
                     s: {
                         // Eight slash
                         // Drawn with canvas primitives
-                        getWidth: function () { return exports.Tables.SLASH_NOTEHEAD_WIDTH; },
+                        getWidth: function () { return Tables.SLASH_NOTEHEAD_WIDTH; },
                         position: 'B/4',
                     },
                 },
@@ -30468,24 +31326,24 @@ exports.Tables = {
                         // Sixteenth note
                         code_head: 'noteheadBlack',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadBlack', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadBlack', scale).getMetrics().width;
                         },
                     },
                     h: {
                         // Sixteenth note harmonic
                         code_head: 'noteheadDiamondBlack',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadDiamondBlack', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadDiamondBlack', scale).getMetrics().width;
                         },
                     },
                     m: {
                         // Sixteenth note muted
                         code_head: 'noteheadXBlack',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadXBlack', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadXBlack', scale).getMetrics().width;
                         },
                     },
                     r: {
@@ -30499,14 +31357,14 @@ exports.Tables = {
                         line_above: 1.0,
                         line_below: 2.0,
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('rest16th', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('rest16th', scale).getMetrics().width;
                         },
                     },
                     s: {
                         // Sixteenth slash
                         // Drawn with canvas primitives
-                        getWidth: function () { return exports.Tables.SLASH_NOTEHEAD_WIDTH; },
+                        getWidth: function () { return Tables.SLASH_NOTEHEAD_WIDTH; },
                         position: 'B/4',
                     },
                 },
@@ -30532,24 +31390,24 @@ exports.Tables = {
                         // Thirty-second note
                         code_head: 'noteheadBlack',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadBlack', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadBlack', scale).getMetrics().width;
                         },
                     },
                     h: {
                         // Thirty-second harmonic
                         code_head: 'noteheadDiamondBlack',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadDiamondBlack', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadDiamondBlack', scale).getMetrics().width;
                         },
                     },
                     m: {
                         // Thirty-second muted
                         code_head: 'noteheadXBlack',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadXBlack', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadXBlack', scale).getMetrics().width;
                         },
                     },
                     r: {
@@ -30563,14 +31421,14 @@ exports.Tables = {
                         line_above: 2.0,
                         line_below: 2.0,
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('rest32nd', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('rest32nd', scale).getMetrics().width;
                         },
                     },
                     s: {
                         // Thirty-second slash
                         // Drawn with canvas primitives
-                        getWidth: function () { return exports.Tables.SLASH_NOTEHEAD_WIDTH; },
+                        getWidth: function () { return Tables.SLASH_NOTEHEAD_WIDTH; },
                         position: 'B/4',
                     },
                 },
@@ -30596,24 +31454,24 @@ exports.Tables = {
                         // Sixty-fourth note
                         code_head: 'noteheadBlack',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadBlack', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadBlack', scale).getMetrics().width;
                         },
                     },
                     h: {
                         // Sixty-fourth harmonic
                         code_head: 'noteheadDiamondBlack',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadDiamondBlack', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadDiamondBlack', scale).getMetrics().width;
                         },
                     },
                     m: {
                         // Sixty-fourth muted
                         code_head: 'noteheadXBlack',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadXBlack', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadXBlack', scale).getMetrics().width;
                         },
                     },
                     r: {
@@ -30627,14 +31485,14 @@ exports.Tables = {
                         line_above: 2.0,
                         line_below: 3.0,
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('rest64th', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('rest64th', scale).getMetrics().width;
                         },
                     },
                     s: {
                         // Sixty-fourth slash
                         // Drawn with canvas primitives
-                        getWidth: function () { return exports.Tables.SLASH_NOTEHEAD_WIDTH; },
+                        getWidth: function () { return Tables.SLASH_NOTEHEAD_WIDTH; },
                         position: 'B/4',
                     },
                 },
@@ -30660,24 +31518,24 @@ exports.Tables = {
                         // Hundred-twenty-eight note
                         code_head: 'noteheadBlack',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadBlack', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadBlack', scale).getMetrics().width;
                         },
                     },
                     h: {
                         // Hundred-twenty-eight harmonic
                         code_head: 'noteheadDiamondBlack',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadDiamondBlack', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadDiamondBlack', scale).getMetrics().width;
                         },
                     },
                     m: {
                         // Hundred-twenty-eight muted
                         code_head: 'noteheadXBlack',
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('noteheadXBlack', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('noteheadXBlack', scale).getMetrics().width;
                         },
                     },
                     r: {
@@ -30691,20 +31549,20 @@ exports.Tables = {
                         line_above: 3.0,
                         line_below: 3.0,
                         getWidth: function (scale) {
-                            if (scale === void 0) { scale = exports.Tables.DEFAULT_NOTATION_FONT_SCALE; }
-                            return new glyph_1.Glyph('rest128th', scale).getMetrics().width;
+                            if (scale === void 0) { scale = Tables.DEFAULT_NOTATION_FONT_SCALE; }
+                            return new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph('rest128th', scale).getMetrics().width;
                         },
                     },
                     s: {
                         // Hundred-twenty-eight rest
                         // Drawn with canvas primitives
-                        getWidth: function () { return exports.Tables.SLASH_NOTEHEAD_WIDTH; },
+                        getWidth: function () { return Tables.SLASH_NOTEHEAD_WIDTH; },
                         position: 'B/4',
                     },
                 },
             },
         };
-        duration = exports.Tables.sanitizeDuration(duration);
+        duration = Tables.sanitizeDuration(duration);
         type = type || 'n'; // default type is a regular note
         // Lookup duration for default glyph head code
         var code = duration_codes[duration];
@@ -30749,9 +31607,19 @@ exports.Tables = {
 /*!************************!*\
   !*** ./src/tabnote.ts ***!
   \************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TabNote": () => (/* binding */ TabNote)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
+/* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./stem */ "./src/stem.ts");
+/* harmony import */ var _stemmablenote__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
+/* harmony import */ var _dot__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./dot */ "./src/dot.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
@@ -30760,7 +31628,7 @@ exports.Tables = {
 // more fret positions, and can either be drawn with or without stems.
 //
 // See `tests/tabnote_tests.js` for usage examples
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -30775,7 +31643,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -30786,15 +31654,13 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.TabNote = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
-var stemmablenote_1 = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
-var dot_1 = __webpack_require__(/*! ./dot */ "./src/dot.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+
+
+
+
+
+
+
 // Gets the unused strings grouped together if consecutive.
 //
 // Parameters:
@@ -30891,7 +31757,7 @@ var TabNote = /** @class */ (function (_super) {
         // Render Options
         _this.render_options = __assign(__assign({}, _this.render_options), {
             // font size for note heads and rests
-            glyph_font_scale: flow_1.Flow.DEFAULT_TABLATURE_FONT_SCALE,
+            glyph_font_scale: _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.DEFAULT_TABLATURE_FONT_SCALE,
             // Flag to draw a stem
             draw_stem: draw_stem,
             // Flag to draw dot modifiers
@@ -30905,16 +31771,16 @@ var TabNote = /** @class */ (function (_super) {
             // default tablature font
             font: '10pt Arial',
         });
-        _this.glyph = flow_1.Flow.getGlyphProps(_this.duration, _this.noteType);
+        _this.glyph = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.getGlyphProps(_this.duration, _this.noteType);
         if (!_this.glyph) {
-            throw new util_1.RuntimeError('BadArguments', "Invalid note initialization data (No glyph found): " + JSON.stringify(tab_struct));
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', "Invalid note initialization data (No glyph found): " + JSON.stringify(tab_struct));
         }
         _this.buildStem();
         if (tab_struct.stem_direction) {
             _this.setStemDirection(tab_struct.stem_direction);
         }
         else {
-            _this.setStemDirection(stem_1.Stem.UP);
+            _this.setStemDirection(_stem__WEBPACK_IMPORTED_MODULE_3__.Stem.UP);
         }
         // Renders parenthesis around notes
         _this.ghost = false;
@@ -30963,7 +31829,7 @@ var TabNote = /** @class */ (function (_super) {
     };
     // Add a dot to the note
     TabNote.prototype.addDot = function () {
-        var dot = new dot_1.Dot();
+        var dot = new _dot__WEBPACK_IMPORTED_MODULE_5__.Dot();
         this.dots += 1;
         return this.addModifier(dot, 0);
     };
@@ -30976,7 +31842,7 @@ var TabNote = /** @class */ (function (_super) {
             var fret = this.positions[i].fret;
             if (this.ghost)
                 fret = '(' + fret + ')';
-            var glyph = flow_1.Flow.tabToGlyph(fret, this.render_options.scale);
+            var glyph = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.tabToGlyph(fret, this.render_options.scale);
             this.glyphs.push(glyph);
             this.width = Math.max(glyph.getWidth(), this.width);
         }
@@ -31044,19 +31910,19 @@ var TabNote = /** @class */ (function (_super) {
     // `position` at a fret position `index`
     TabNote.prototype.getModifierStartXY = function (position, index) {
         if (!this.preFormatted) {
-            throw new util_1.RuntimeError('UnformattedNote', "Can't call GetModifierStartXY on an unformatted note");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('UnformattedNote', "Can't call GetModifierStartXY on an unformatted note");
         }
         if (this.ys.length === 0) {
-            throw new util_1.RuntimeError('NoYValues', 'No Y-Values calculated for this note.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoYValues', 'No Y-Values calculated for this note.');
         }
         var x = 0;
-        if (position === modifier_1.Modifier.Position.LEFT) {
+        if (position === _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier.Position.LEFT) {
             x = -1 * 2; // FIXME: modifier padding, move to font file
         }
-        else if (position === modifier_1.Modifier.Position.RIGHT) {
+        else if (position === _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier.Position.RIGHT) {
             x = this.width + 2; // FIXME: modifier padding, move to font file
         }
-        else if (position === modifier_1.Modifier.Position.BELOW || position === modifier_1.Modifier.Position.ABOVE) {
+        else if (position === _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier.Position.BELOW || position === _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier.Position.ABOVE) {
             var note_glyph_width = this.glyph.getWidth();
             x = note_glyph_width / 2;
         }
@@ -31089,7 +31955,7 @@ var TabNote = /** @class */ (function (_super) {
         // fret number and the stem
         var stemUpLine = -0.5;
         var stemDownLine = num_lines - 0.5;
-        var stemStartLine = stem_1.Stem.UP === this.stem_direction ? stemUpLine : stemDownLine;
+        var stemStartLine = _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.UP === this.stem_direction ? stemUpLine : stemDownLine;
         return this.checkStave().getYForLine(stemStartLine);
     };
     // Get the stem extents for the tabnote
@@ -31105,11 +31971,11 @@ var TabNote = /** @class */ (function (_super) {
         if (glyph.flag && shouldDrawFlag) {
             var flag_x = this.getStemX() + 1;
             var flag_y = this.getStemY() - this.checkStem().getHeight();
-            var flag_code = stem_direction === stem_1.Stem.DOWN
+            var flag_code = stem_direction === _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.DOWN
                 ? glyph.code_flag_downstem // Down stems have flags on the left.
                 : glyph.code_flag_upstem;
             // Draw the Flag
-            glyph_1.Glyph.renderGlyph(context, flag_x, flag_y, glyph_font_scale, flag_code, { category: 'flag.tabStem' });
+            _glyph__WEBPACK_IMPORTED_MODULE_6__.Glyph.renderGlyph(context, flag_x, flag_y, glyph_font_scale, flag_code, { category: 'flag.tabStem' });
         }
     };
     // Render the modifiers onto the context
@@ -31118,7 +31984,7 @@ var TabNote = /** @class */ (function (_super) {
         // Draw the modifiers
         this.modifiers.forEach(function (modifier) {
             // Only draw the dots if enabled
-            if (modifier.getCategory() === dot_1.Dot.CATEGORY && !_this.render_options.draw_dots)
+            if (modifier.getCategory() === _dot__WEBPACK_IMPORTED_MODULE_5__.Dot.CATEGORY && !_this.render_options.draw_dots)
                 return;
             modifier.setContext(_this.getContext());
             modifier.drawWithStyle();
@@ -31137,7 +32003,7 @@ var TabNote = /** @class */ (function (_super) {
             var unused_strings = getUnusedStringGroups(total_lines, strings_used);
             var stem_lines = getPartialStemLines(stem_y, unused_strings, this.checkStave(), this.getStemDirection());
             ctx.save();
-            ctx.setLineWidth(stem_1.Stem.WIDTH);
+            ctx.setLineWidth(_stem__WEBPACK_IMPORTED_MODULE_3__.Stem.WIDTH);
             stem_lines.forEach(function (bounds) {
                 if (bounds.length === 0)
                     return;
@@ -31164,7 +32030,7 @@ var TabNote = /** @class */ (function (_super) {
             // FIXME: Magic numbers.
             ctx.clearRect(tab_x - 2, y - 3, glyph.getWidth() + 4, 6);
             if (glyph.code) {
-                glyph_1.Glyph.renderGlyph(ctx, tab_x, y, this.render_options.glyph_font_scale * this.render_options.scale, glyph.code);
+                _glyph__WEBPACK_IMPORTED_MODULE_6__.Glyph.renderGlyph(ctx, tab_x, y, this.render_options.glyph_font_scale * this.render_options.scale, glyph.code);
             }
             else {
                 ctx.save();
@@ -31179,7 +32045,7 @@ var TabNote = /** @class */ (function (_super) {
     TabNote.prototype.draw = function () {
         var ctx = this.checkContext();
         if (this.ys.length === 0) {
-            throw new util_1.RuntimeError('NoYValues', "Can't draw note without Y values.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoYValues', "Can't draw note without Y values.");
         }
         this.setRendered();
         var render_stem = this.beam == undefined && this.render_options.draw_stem;
@@ -31198,8 +32064,8 @@ var TabNote = /** @class */ (function (_super) {
         ctx.closeGroup();
     };
     return TabNote;
-}(stemmablenote_1.StemmableNote));
-exports.TabNote = TabNote;
+}(_stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNote));
+
 
 
 /***/ }),
@@ -31208,15 +32074,20 @@ exports.TabNote = TabNote;
 /*!*************************!*\
   !*** ./src/tabslide.ts ***!
   \*************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TabSlide": () => (/* binding */ TabSlide)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _tabtie__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tabtie */ "./src/tabtie.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 // This class implements varies types of ties between contiguous notes. The
 // ties include: regular ties, hammer ons, pull offs, and slides.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -31231,10 +32102,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.TabSlide = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var tabtie_1 = __webpack_require__(/*! ./tabtie */ "./src/tabtie.ts");
+
+
 var TabSlide = /** @class */ (function (_super) {
     __extends(TabSlide, _super);
     function TabSlide(notes, direction) {
@@ -31287,7 +32156,7 @@ var TabSlide = /** @class */ (function (_super) {
     };
     TabSlide.prototype.renderTie = function (params) {
         if (params.first_ys.length === 0 || params.last_ys.length === 0) {
-            throw new util_1.RuntimeError('BadArguments', 'No Y-values to render');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'No Y-values to render');
         }
         var ctx = this.checkContext();
         var first_x_px = params.first_x_px;
@@ -31295,12 +32164,12 @@ var TabSlide = /** @class */ (function (_super) {
         var last_x_px = params.last_x_px;
         var direction = params.direction;
         if (direction !== TabSlide.SLIDE_UP && direction !== TabSlide.SLIDE_DOWN) {
-            throw new util_1.RuntimeError('BadSlide', 'Invalid slide direction');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadSlide', 'Invalid slide direction');
         }
         for (var i = 0; i < this.notes.first_indices.length; ++i) {
             var slide_y = first_ys[this.notes.first_indices[i]] + this.render_options.y_shift;
             if (isNaN(slide_y)) {
-                throw new util_1.RuntimeError('BadArguments', 'Bad indices for slide rendering.');
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'Bad indices for slide rendering.');
             }
             ctx.beginPath();
             ctx.moveTo(first_x_px, slide_y + 3 * direction);
@@ -31311,8 +32180,8 @@ var TabSlide = /** @class */ (function (_super) {
         this.setRendered();
     };
     return TabSlide;
-}(tabtie_1.TabTie));
-exports.TabSlide = TabSlide;
+}(_tabtie__WEBPACK_IMPORTED_MODULE_1__.TabTie));
+
 
 
 /***/ }),
@@ -31321,11 +32190,15 @@ exports.TabSlide = TabSlide;
 /*!*************************!*\
   !*** ./src/tabstave.ts ***!
   \*************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TabStave": () => (/* binding */ TabStave)
+/* harmony export */ });
+/* harmony import */ var _stave__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./stave */ "./src/stave.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -31340,7 +32213,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -31351,9 +32224,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.TabStave = void 0;
-var stave_1 = __webpack_require__(/*! ./stave */ "./src/stave.ts");
+
 var TabStave = /** @class */ (function (_super) {
     __extends(TabStave, _super);
     function TabStave(x, y, width, options) {
@@ -31376,8 +32247,8 @@ var TabStave = /** @class */ (function (_super) {
         return this;
     };
     return TabStave;
-}(stave_1.Stave));
-exports.TabStave = TabStave;
+}(_stave__WEBPACK_IMPORTED_MODULE_0__.Stave));
+
 
 
 /***/ }),
@@ -31386,15 +32257,19 @@ exports.TabStave = TabStave;
 /*!***********************!*\
   !*** ./src/tabtie.ts ***!
   \***********************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TabTie": () => (/* binding */ TabTie)
+/* harmony export */ });
+/* harmony import */ var _stavetie__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
 // / [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 // This class implements varies types of ties between contiguous notes. The
 // ties include: regular ties, hammer ons, pull offs, and slides.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -31409,9 +32284,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.TabTie = void 0;
-var stavetie_1 = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
+
 var TabTie = /** @class */ (function (_super) {
     __extends(TabTie, _super);
     function TabTie(notes, text) {
@@ -31443,8 +32316,8 @@ var TabTie = /** @class */ (function (_super) {
         return new TabTie(notes, 'P');
     };
     return TabTie;
-}(stavetie_1.StaveTie));
-exports.TabTie = TabTie;
+}(_stavetie__WEBPACK_IMPORTED_MODULE_0__.StaveTie));
+
 
 
 /***/ }),
@@ -31453,9 +32326,17 @@ exports.TabTie = TabTie;
 /*!****************************!*\
   !*** ./src/textbracket.ts ***!
   \****************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TextBracketPosition": () => (/* binding */ TextBracketPosition),
+/* harmony export */   "TextBracket": () => (/* binding */ TextBracket)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./element */ "./src/element.ts");
+/* harmony import */ var _renderer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./renderer */ "./src/renderer.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Cyril Silverman
 //
@@ -31464,7 +32345,7 @@ exports.TabTie = TabTie;
 // This file implement `TextBrackets` which extend between two notes.
 // The octave transposition markings (8va, 8vb, 15va, 15vb) can be created
 // using this class.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -31479,7 +32360,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -31490,12 +32371,10 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.TextBracket = exports.TextBracketPosition = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var renderer_1 = __webpack_require__(/*! ./renderer */ "./src/renderer.ts");
+
+
+
+
 // To enable logging for this class. Set `Vex.Flow.TextBracket.DEBUG` to `true`.
 function L() {
     // eslint-disable-next-line
@@ -31511,13 +32390,13 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (TextBracket.DEBUG)
-        util_1.log('Vex.Flow.TextBracket', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.TextBracket', args);
 }
 var TextBracketPosition;
 (function (TextBracketPosition) {
     TextBracketPosition[TextBracketPosition["TOP"] = 1] = "TOP";
     TextBracketPosition[TextBracketPosition["BOTTOM"] = -1] = "BOTTOM";
-})(TextBracketPosition = exports.TextBracketPosition || (exports.TextBracketPosition = {}));
+})(TextBracketPosition || (TextBracketPosition = {}));
 var TextBracket = /** @class */ (function (_super) {
     __extends(TextBracket, _super);
     function TextBracket(_a) {
@@ -31619,10 +32498,10 @@ var TextBracket = /** @class */ (function (_super) {
                 y = this.start.checkStave().getYForTopText(this.line);
                 break;
             case TextBracket.Position.BOTTOM:
-                y = this.start.checkStave().getYForBottomText(this.line + flow_1.Flow.TEXT_HEIGHT_OFFSET_HACK);
+                y = this.start.checkStave().getYForBottomText(this.line + _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.TEXT_HEIGHT_OFFSET_HACK);
                 break;
             default:
-                throw new util_1.RuntimeError('InvalidPosition', "The position " + this.position + " is invalid.");
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('InvalidPosition', "The position " + this.position + " is invalid.");
         }
         // Get the preliminary start and stop coordintates for the bracket
         var start = { x: this.start.getAbsoluteX(), y: y };
@@ -31662,10 +32541,10 @@ var TextBracket = /** @class */ (function (_super) {
         }
         if (this.render_options.dashed) {
             // Main line
-            renderer_1.Renderer.drawDashedLine(ctx, start_x, line_y, end_x, line_y, this.render_options.dash);
+            _renderer__WEBPACK_IMPORTED_MODULE_3__.Renderer.drawDashedLine(ctx, start_x, line_y, end_x, line_y, this.render_options.dash);
             // Ending Bracket
             if (this.render_options.show_bracket) {
-                renderer_1.Renderer.drawDashedLine(ctx, end_x, line_y + 1 * this.position, end_x, line_y + bracket_height, this.render_options.dash);
+                _renderer__WEBPACK_IMPORTED_MODULE_3__.Renderer.drawDashedLine(ctx, end_x, line_y + 1 * this.position, end_x, line_y + bracket_height, this.render_options.dash);
             }
         }
         else {
@@ -31683,8 +32562,8 @@ var TextBracket = /** @class */ (function (_super) {
         ctx.restore();
     };
     return TextBracket;
-}(element_1.Element));
-exports.TextBracket = TextBracket;
+}(_element__WEBPACK_IMPORTED_MODULE_2__.Element));
+
 
 
 /***/ }),
@@ -31693,18 +32572,18 @@ exports.TextBracket = TextBracket;
 /*!*****************************!*\
   !*** ./src/textdynamics.ts ***!
   \*****************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TextDynamics": () => (/* binding */ TextDynamics)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./note */ "./src/note.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-// This file implements the `TextDynamics` which renders traditional
-// text dynamics markings, **ie: p, f, sfz, rfz, ppp**
-//
-// You can render any dynamics string that contains a combination of
-// the following letters:  P, M, F, Z, R, S
-var __extends = (this && this.__extends) || (function () {
+// MIT License
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -31719,7 +32598,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -31730,35 +32609,34 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.TextDynamics = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-// To enable logging for this class. Set `Vex.Flow.TextDynamics.DEBUG` to `true`.
+
+
+
+// eslint-disable-next-line
 function L() {
-    // eslint-disable-next-line
     var args = [];
-    for (
-    // eslint-disable-next-line
-    var _i = 0; 
-    // eslint-disable-next-line
-    _i < arguments.length; 
-    // eslint-disable-next-line
-    _i++) {
-        // eslint-disable-next-line
+    for (var _i = 0; _i < arguments.length; _i++) {
         args[_i] = arguments[_i];
     }
     if (TextDynamics.DEBUG)
-        util_1.log('Vex.Flow.TextDynamics', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.TextDynamics', args);
 }
+/**
+ * `TextDynamics` renders traditional
+ * text dynamics markings, **ie: p, f, sfz, rfz, ppp**
+ *
+ * You can render any dynamics string that contains a combination of
+ * the following letters:  P, M, F, Z, R, S
+ */
 var TextDynamics = /** @class */ (function (_super) {
     __extends(TextDynamics, _super);
-    // A `TextDynamics` object inherits from `Note` so that it can be formatted
-    // within a `Voice`.
-    // Create the dynamics marking. `text_struct` is an object
-    // that contains a `duration` property and a `sequence` of
-    // letters that represents the letters to render
+    /**
+     * A `TextDynamics` object inherits from `Note` so that it can be formatted
+     * within a `Voice`.
+     * Create the dynamics marking. `text_struct` is an object
+     * that contains a `duration` property and a `sequence` of
+     * letters that represents the letters to render
+     */
     function TextDynamics(text_struct) {
         var _this = _super.call(this, text_struct) || this;
         _this.setAttribute('type', 'TextDynamics');
@@ -31772,7 +32650,7 @@ var TextDynamics = /** @class */ (function (_super) {
         return _this;
     }
     Object.defineProperty(TextDynamics, "GLYPHS", {
-        // The glyph data for each dynamics letter
+        /** The glyph data for each dynamics letter. */
         get: function () {
             return {
                 f: {
@@ -31804,12 +32682,12 @@ var TextDynamics = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    // Set the Stave line on which the note should be placed
+    /** Set the Stave line on which the note should be placed. */
     TextDynamics.prototype.setLine = function (line) {
         this.line = line;
         return this;
     };
-    // Preformat the dynamics text
+    /** Preformat the dynamics text. */
     TextDynamics.prototype.preFormat = function () {
         var _this = this;
         var total_width = 0;
@@ -31818,9 +32696,9 @@ var TextDynamics = /** @class */ (function (_super) {
             // Get the glyph data for the letter
             var glyph_data = TextDynamics.GLYPHS[letter];
             if (!glyph_data)
-                throw new util_1.RuntimeError('Invalid dynamics character: ' + letter);
-            var size = util_1.check(_this.render_options.glyph_font_size);
-            var glyph = new glyph_1.Glyph(glyph_data.code, size, { category: 'textNote' });
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('Invalid dynamics character: ' + letter);
+            var size = (0,_util__WEBPACK_IMPORTED_MODULE_0__.check)(_this.render_options.glyph_font_size);
+            var glyph = new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph(glyph_data.code, size, { category: 'textNote' });
             // Add the glyph
             _this.glyphs.push(glyph);
             total_width += glyph_data.width;
@@ -31830,7 +32708,7 @@ var TextDynamics = /** @class */ (function (_super) {
         this.preFormatted = true;
         return this;
     };
-    // Draw the dynamics text on the rendering context
+    /** Draw the dynamics text on the rendering context. */
     TextDynamics.prototype.draw = function () {
         var _this = this;
         this.setRendered();
@@ -31845,8 +32723,8 @@ var TextDynamics = /** @class */ (function (_super) {
         });
     };
     return TextDynamics;
-}(note_1.Note));
-exports.TextDynamics = TextDynamics;
+}(_note__WEBPACK_IMPORTED_MODULE_1__.Note));
+
 
 
 /***/ }),
@@ -31855,9 +32733,15 @@ exports.TextDynamics = TextDynamics;
 /*!*************************!*\
   !*** ./src/textfont.ts ***!
   \*************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TextFont": () => (/* binding */ TextFont)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _fonts_petalumascript_textmetrics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fonts/petalumascript_textmetrics */ "./src/fonts/petalumascript_textmetrics.ts");
+/* harmony import */ var _fonts_robotoslab_textmetrics__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./fonts/robotoslab_textmetrics */ "./src/fonts/robotoslab_textmetrics.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
@@ -31865,11 +32749,9 @@ exports.TextDynamics = TextDynamics;
 // This file handles a registry of text font metric information, so all
 // VEX modules can take advantage of font metrics in a uniform way.
 //
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.TextFont = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var petalumascript_textmetrics_1 = __webpack_require__(/*! ./fonts/petalumascript_textmetrics */ "./src/fonts/petalumascript_textmetrics.ts");
-var robotoslab_textmetrics_1 = __webpack_require__(/*! ./fonts/robotoslab_textmetrics */ "./src/fonts/robotoslab_textmetrics.ts");
+
+
+
 // To enable logging for this class. Set `Vex.Flow.TextFont.DEBUG` to `true`.
 function L() {
     // eslint-disable-next-line
@@ -31885,7 +32767,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (TextFont.DEBUG)
-        util_1.log('Vex.Flow.TextFont', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.TextFont', args);
 }
 var TextFont = /** @class */ (function () {
     // ## Prototype Methods
@@ -31904,7 +32786,7 @@ var TextFont = /** @class */ (function () {
         this.style = '';
         this.attrs = { type: 'TextFont' };
         if (!params.name) {
-            throw new util_1.RuntimeError('BadArgument', 'Font constructor must specify a name');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArgument', 'Font constructor must specify a name');
         }
         var fontData = params.glyphs ? params : TextFont.getFontDataByName(params.name);
         if (!fontData) {
@@ -31912,7 +32794,7 @@ var TextFont = /** @class */ (function () {
                 TextFont.registerFont(params);
             }
             else {
-                throw new util_1.RuntimeError('BadArgument', 'Unknown font, must have glyph metrics and resolution');
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArgument', 'Unknown font, must have glyph metrics and resolution');
             }
         }
         else {
@@ -31948,9 +32830,9 @@ var TextFont = /** @class */ (function () {
                 TextFont.registryInstance = [];
                 TextFont.registryInstance.push({
                     name: 'Roboto Slab',
-                    resolution: robotoslab_textmetrics_1.RobotoSlabTextMetrics.resolution,
-                    glyphs: robotoslab_textmetrics_1.RobotoSlabTextMetrics.glyphs,
-                    family: robotoslab_textmetrics_1.RobotoSlabTextMetrics.fontFamily,
+                    resolution: _fonts_robotoslab_textmetrics__WEBPACK_IMPORTED_MODULE_2__.RobotoSlabTextMetrics.resolution,
+                    glyphs: _fonts_robotoslab_textmetrics__WEBPACK_IMPORTED_MODULE_2__.RobotoSlabTextMetrics.glyphs,
+                    family: _fonts_robotoslab_textmetrics__WEBPACK_IMPORTED_MODULE_2__.RobotoSlabTextMetrics.fontFamily,
                     serifs: true,
                     monospaced: false,
                     italic: false,
@@ -31962,9 +32844,9 @@ var TextFont = /** @class */ (function () {
                 });
                 TextFont.registryInstance.push({
                     name: 'petalumaScript',
-                    resolution: petalumascript_textmetrics_1.PetalumaScriptTextMetrics.resolution,
-                    glyphs: petalumascript_textmetrics_1.PetalumaScriptTextMetrics.glyphs,
-                    family: petalumascript_textmetrics_1.PetalumaScriptTextMetrics.fontFamily,
+                    resolution: _fonts_petalumascript_textmetrics__WEBPACK_IMPORTED_MODULE_1__.PetalumaScriptTextMetrics.resolution,
+                    glyphs: _fonts_petalumascript_textmetrics__WEBPACK_IMPORTED_MODULE_1__.PetalumaScriptTextMetrics.glyphs,
+                    family: _fonts_petalumascript_textmetrics__WEBPACK_IMPORTED_MODULE_1__.PetalumaScriptTextMetrics.fontFamily,
                     serifs: false,
                     monospaced: false,
                     italic: false,
@@ -32189,7 +33071,7 @@ var TextFont = /** @class */ (function () {
     };
     return TextFont;
 }());
-exports.TextFont = TextFont;
+
 
 
 /***/ }),
@@ -32198,16 +33080,19 @@ exports.TextFont = TextFont;
 /*!*************************!*\
   !*** ./src/textnote.ts ***!
   \*************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Justification": () => (/* binding */ Justification),
+/* harmony export */   "TextNote": () => (/* binding */ TextNote)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./note */ "./src/note.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-// `TextNote` is a notation element that is positioned in time. Generally
-// meant for objects that sit above/below the staff and inline with each other.
-// Examples of this would be such as dynamics, lyrics, chord changes, etc.
-var __extends = (this && this.__extends) || (function () {
+// MIT License
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -32222,7 +33107,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -32233,17 +33118,20 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.TextNote = exports.Justification = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+
+
+
 var Justification;
 (function (Justification) {
     Justification[Justification["LEFT"] = 1] = "LEFT";
     Justification[Justification["CENTER"] = 2] = "CENTER";
     Justification[Justification["RIGHT"] = 3] = "RIGHT";
-})(Justification = exports.Justification || (exports.Justification = {}));
+})(Justification || (Justification = {}));
+/**
+ * `TextNote` is a notation element that is positioned in time. Generally
+ * meant for objects that sit above/below the staff and inline with each other.
+ * Examples of this would be such as dynamics, lyrics, chord changes, etc.
+ */
 var TextNote = /** @class */ (function (_super) {
     __extends(TextNote, _super);
     function TextNote(options) {
@@ -32253,7 +33141,7 @@ var TextNote = /** @class */ (function (_super) {
         _this.text = options.text;
         _this.superscript = options.superscript;
         _this.subscript = options.subscript;
-        _this.glyph = null;
+        _this.glyph = undefined;
         _this.font = __assign({ family: 'Arial', size: 12, weight: '' }, options.font);
         // Determine and set initial note width. Note that the text width is
         // an approximation and isn't very accurate. The only way to accurately
@@ -32261,8 +33149,8 @@ var TextNote = /** @class */ (function (_super) {
         if (options.glyph) {
             var struct = TextNote.GLYPHS[options.glyph];
             if (!struct)
-                throw new util_1.RuntimeError('Invalid glyph type: ' + options.glyph);
-            _this.glyph = new glyph_1.Glyph(struct.code, 40, { category: 'textNote' });
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('Invalid glyph type: ' + options.glyph);
+            _this.glyph = new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph(struct.code, 40, { category: 'textNote' });
             _this.setWidth(_this.glyph.getMetrics().width);
         }
         _this.line = options.line || 0;
@@ -32279,7 +33167,7 @@ var TextNote = /** @class */ (function (_super) {
         configurable: true
     });
     Object.defineProperty(TextNote, "GLYPHS", {
-        // Glyph data
+        /** Glyph data. */
         get: function () {
             return {
                 segno: {
@@ -32344,21 +33232,21 @@ var TextNote = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    // Set the horizontal justification of the TextNote
+    /** Set the horizontal justification of the TextNote. */
     TextNote.prototype.setJustification = function (just) {
         this.justification = just;
         return this;
     };
-    // Set the Stave line on which the note should be placed
+    /** Set the Stave line on which the note should be placed. */
     TextNote.prototype.setLine = function (line) {
         this.line = line;
         return this;
     };
-    // Pre-render formatting
+    /** Pre-render formatting. */
     TextNote.prototype.preFormat = function () {
         var ctx = this.checkContext();
         if (!this.tickContext)
-            throw new util_1.RuntimeError('NoTickContext', "Can't preformat without a TickContext.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoTickContext', "Can't preformat without a TickContext.");
         if (this.preFormatted)
             return;
         if (this.smooth) {
@@ -32383,12 +33271,12 @@ var TextNote = /** @class */ (function (_super) {
         this.rightDisplacedHeadPx = this.tickContext.getMetrics().glyphPx / 2;
         this.setPreFormatted(true);
     };
-    // Renders the TextNote
+    /** Renders the TextNote. */
     TextNote.prototype.draw = function () {
         var ctx = this.checkContext();
         var stave = this.checkStave();
         if (!this.tickContext)
-            throw new util_1.RuntimeError('NoTickContext', "Can't draw without a TickContext.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoTickContext', "Can't draw without a TickContext.");
         this.setRendered();
         // Reposition to center of note head
         var x = this.getAbsoluteX() + this.tickContext.getMetrics().glyphPx / 2;
@@ -32430,8 +33318,8 @@ var TextNote = /** @class */ (function (_super) {
         }
     };
     return TextNote;
-}(note_1.Note));
-exports.TextNote = TextNote;
+}(_note__WEBPACK_IMPORTED_MODULE_1__.Note));
+
 
 
 /***/ }),
@@ -32440,15 +33328,19 @@ exports.TextNote = TextNote;
 /*!*************************!*\
   !*** ./src/tickable.ts ***!
   \*************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Tickable": () => (/* binding */ Tickable)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./element */ "./src/element.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// ## Description
-// The tickable interface. Tickables are things that sit on a score and
-// have a duration, i.e., they occupy space in the musical rendering dimension.
-var __extends = (this && this.__extends) || (function () {
+// MIT License
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -32463,12 +33355,10 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Tickable = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
+
+
+
+
 /**
  * Tickable represents a element that sit on a score and
  * has a duration, i.e., Tickables occupy space in the musical rendering dimension.
@@ -32481,9 +33371,9 @@ var Tickable = /** @class */ (function (_super) {
         _this.setAttribute('type', 'Tickable');
         // These properties represent the duration of
         // this tickable element.
-        _this.ticks = new fraction_1.Fraction(0, 1); // Fractional value of ticks
+        _this.ticks = new _fraction__WEBPACK_IMPORTED_MODULE_3__.Fraction(0, 1); // Fractional value of ticks
         _this.intrinsicTicks = 0; // Floating point value of ticks
-        _this.tickMultiplier = new fraction_1.Fraction(1, 1);
+        _this.tickMultiplier = new _fraction__WEBPACK_IMPORTED_MODULE_3__.Fraction(1, 1);
         // Formatter metrics
         _this.width = 0;
         _this.x_shift = 0; // Shift from tick context
@@ -32518,94 +33408,95 @@ var Tickable = /** @class */ (function (_super) {
         };
         return _this;
     }
-    /** Resets the Tickable, this function will be overloaded. */
+    /** Reset the Tickable, this function will be overloaded. */
     Tickable.prototype.reset = function () {
         return this;
     };
-    /** Returns the ticks. */
+    /** Return the ticks. */
     Tickable.prototype.getTicks = function () {
         return this.ticks;
     };
-    /** Checks if it ignores the ticks. */
+    /** Check if it ignores the ticks. */
     Tickable.prototype.shouldIgnoreTicks = function () {
         return this.ignore_ticks;
     };
+    /** Ignore the ticks. */
     Tickable.prototype.setIgnoreTicks = function (flag) {
         this.ignore_ticks = flag;
     };
-    /** Sets width of note. Used by the formatter for positioning. */
+    /** Set width of note. Used by the formatter for positioning. */
     Tickable.prototype.setWidth = function (width) {
         this.width = width;
     };
-    /** Gets width of note. Used by the formatter for positioning. */
+    /** Get width of note. Used by the formatter for positioning. */
     Tickable.prototype.getWidth = function () {
         if (!this.preFormatted) {
-            throw new util_1.RuntimeError('UnformattedNote', "Can't call GetWidth on an unformatted note.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('UnformattedNote', "Can't call GetWidth on an unformatted note.");
         }
         return this.width + (this.modifierContext ? this.modifierContext.getWidth() : 0);
     };
-    /** Displaces note by `x` pixels. Used by the formatter. */
+    /** Displace note by `x` pixels. Used by the formatter. */
     Tickable.prototype.setXShift = function (x) {
         this.x_shift = x;
         return this;
     };
-    /** Gets the `x`pixels of the note. */
+    /** Get the `x` displaced pixels of the note. */
     Tickable.prototype.getXShift = function () {
         return this.x_shift;
     };
-    /** Gets `X` position of this tick context. */
+    /** Get `x` position of this tick context. */
     Tickable.prototype.getX = function () {
         if (!this.tickContext) {
-            throw new util_1.RuntimeError('NoTickContext', 'Note needs a TickContext assigned for an X-Value');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoTickContext', 'Note needs a TickContext assigned for an X-Value');
         }
         return this.tickContext.getX() + this.x_shift;
     };
-    /** Returns the formatterMetrics */
+    /** Return the formatterMetrics. */
     Tickable.prototype.getFormatterMetrics = function () {
         return this.formatterMetrics;
     };
-    /** Returns the center x shift. */
+    /** Return the center `x` shift. */
     Tickable.prototype.getCenterXShift = function () {
         if (this.isCenterAligned()) {
             return this.center_x_shift;
         }
         return 0;
     };
-    /** Sets the center x shift. */
+    /** Set the center `x` shift. */
     Tickable.prototype.setCenterXShift = function (centerXShift) {
         this.center_x_shift = centerXShift;
         return this;
     };
-    // Checks if tickable is center aligned. */
+    // Check if tickable is center aligned. */
     Tickable.prototype.isCenterAligned = function () {
         return this.align_center;
     };
-    // Sets/unsets center alignment. */
+    // Set/unset center alignment. */
     Tickable.prototype.setCenterAlignment = function (align_center) {
         this.align_center = align_center;
         return this;
     };
     /**
-     * Returns the associated voice. Every tickable must be associated with a voice.
+     * Return the associated voice. Every tickable must be associated with a voice.
      * This allows formatters and preFormatter to associate them with the right modifierContexts.
      */
     Tickable.prototype.getVoice = function () {
         if (!this.voice)
-            throw new util_1.RuntimeError('NoVoice', 'Tickable has no voice.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoVoice', 'Tickable has no voice.');
         return this.voice;
     };
-    /** Sets the associated voice. */
+    /** Set the associated voice. */
     Tickable.prototype.setVoice = function (voice) {
         this.voice = voice;
     };
-    /** Gets the tuplet */
+    /** Get the tuplet. */
     Tickable.prototype.getTuplet = function () {
         return this.tuplet;
     };
     /*
-     * Resets the specific Tuplet if this is not provided, all tuplets are reset.
-     * Removes any prior tuplets from the tick calculation and
-     * resets the intrinsic tick value to
+     * Reset the specific Tuplet if this is not provided, all tuplets are reset.
+     * Remove any prior tuplets from the tick calculation and
+     * reset the intrinsic tick value.
      */
     Tickable.prototype.resetTuplet = function (tuplet) {
         var noteCount;
@@ -32630,7 +33521,7 @@ var Tickable = /** @class */ (function (_super) {
         }
         return this;
     };
-    /** Attaches to new tuplet. */
+    /** Attach to new tuplet. */
     Tickable.prototype.setTuplet = function (tuplet) {
         if (tuplet) {
             this.tupletStack.push(tuplet);
@@ -32641,28 +33532,28 @@ var Tickable = /** @class */ (function (_super) {
         this.tuplet = tuplet;
         return this;
     };
-    /** Optional, if tickable has modifiers, sets modifierContext. */
+    /** Optional, if tickable has modifiers, set modifierContext. */
     Tickable.prototype.addToModifierContext = function (mc) {
         this.modifierContext = mc;
         // Add modifiers to modifier context (if any)
         this.preFormatted = false;
     };
-    /** Optional, if tickable has modifiers, associates a Modifier. */
+    /** Optional, if tickable has modifiers, associate a Modifier. */
     Tickable.prototype.addModifier = function (mod) {
         this.modifiers.push(mod);
         this.preFormatted = false;
         return this;
     };
-    /** Gets the list of associated modifiers. */
+    /** Get the list of associated modifiers. */
     Tickable.prototype.getModifiers = function () {
         return this.modifiers;
     };
-    /** Sets the Tick Contxt. */
+    /** Set the Tick Contxt. */
     Tickable.prototype.setTickContext = function (tc) {
         this.tickContext = tc;
         this.preFormatted = false;
     };
-    /** Preformats the Tickable. */
+    /** Preformat the Tickable. */
     Tickable.prototype.preFormat = function () {
         if (this.preFormatted)
             return;
@@ -32672,40 +33563,40 @@ var Tickable = /** @class */ (function (_super) {
             this.width += this.modifierContext.getWidth();
         }
     };
-    /** Postformats the Tickable. */
+    /** Postformat the Tickable. */
     Tickable.prototype.postFormat = function () {
         if (this.postFormatted)
             return this;
         this.postFormatted = true;
         return this;
     };
-    /** Returns the intrinsic ticks */
+    /** Return the intrinsic ticks. */
     Tickable.prototype.getIntrinsicTicks = function () {
         return this.intrinsicTicks;
     };
-    /** Sets the intrinsic ticks. */
+    /** Set the intrinsic ticks. */
     Tickable.prototype.setIntrinsicTicks = function (intrinsicTicks) {
         this.intrinsicTicks = intrinsicTicks;
         this.ticks = this.tickMultiplier.clone().multiply(this.intrinsicTicks);
     };
-    /** Gets the tick multiplier. */
+    /** Get the tick multiplier. */
     Tickable.prototype.getTickMultiplier = function () {
         return this.tickMultiplier;
     };
-    /** Applies a tick multiplier. */
+    /** Apply a tick multiplier. */
     Tickable.prototype.applyTickMultiplier = function (numerator, denominator) {
         this.tickMultiplier.multiply(numerator, denominator);
         this.ticks = this.tickMultiplier.clone().multiply(this.intrinsicTicks);
     };
-    /** Sets the duration. */
+    /** Set the duration. */
     Tickable.prototype.setDuration = function (duration) {
-        var ticks = duration.numerator * (flow_1.Flow.RESOLUTION / duration.denominator);
+        var ticks = duration.numerator * (_flow__WEBPACK_IMPORTED_MODULE_2__.Flow.RESOLUTION / duration.denominator);
         this.ticks = this.tickMultiplier.clone().multiply(ticks);
         this.intrinsicTicks = this.ticks.value();
     };
     return Tickable;
-}(element_1.Element));
-exports.Tickable = Tickable;
+}(_element__WEBPACK_IMPORTED_MODULE_1__.Element));
+
 
 
 /***/ }),
@@ -32714,15 +33605,21 @@ exports.Tickable = Tickable;
 /*!****************************!*\
   !*** ./src/tickcontext.ts ***!
   \****************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TickContext": () => (/* binding */ TickContext)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _tickable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tickable */ "./src/tickable.ts");
+/* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 // A formatter for abstract tickable objects, such as notes, chords,
 // tabs, etc.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -32737,11 +33634,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.TickContext = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var tickable_1 = __webpack_require__(/*! ./tickable */ "./src/tickable.ts");
-var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
+
+
+
 /**
  * Tickcontext formats abstract tickable objects, such as notes, chords,
  * tabs, etc.
@@ -32752,8 +33647,8 @@ var TickContext = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         _this.tickID = options && options.tickID ? options.tickID : 0;
         _this.setAttribute('type', 'TickContext');
-        _this.currentTick = new fraction_1.Fraction(0, 1);
-        _this.maxTicks = new fraction_1.Fraction(0, 1);
+        _this.currentTick = new _fraction__WEBPACK_IMPORTED_MODULE_2__.Fraction(0, 1);
+        _this.maxTicks = new _fraction__WEBPACK_IMPORTED_MODULE_2__.Fraction(0, 1);
         _this.maxTickable = undefined; // Biggest tickable
         _this.minTicks = undefined; // this can remian null if all tickables have ignore_ticks
         _this.minTickable = undefined;
@@ -32864,7 +33759,7 @@ var TickContext = /** @class */ (function (_super) {
     };
     TickContext.prototype.addTickable = function (tickable, voiceIndex) {
         if (!tickable) {
-            throw new util_1.RuntimeError('BadArgument', 'Invalid tickable added.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArgument', 'Invalid tickable added.');
         }
         if (!tickable.shouldIgnoreTicks()) {
             this.ignore_ticks = false;
@@ -32920,8 +33815,8 @@ var TickContext = /** @class */ (function (_super) {
         return this;
     };
     return TickContext;
-}(tickable_1.Tickable));
-exports.TickContext = TickContext;
+}(_tickable__WEBPACK_IMPORTED_MODULE_1__.Tickable));
+
 
 
 /***/ }),
@@ -32930,10 +33825,15 @@ exports.TickContext = TickContext;
 /*!*****************************!*\
   !*** ./src/timesigglyph.ts ***!
   \*****************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
-var __extends = (this && this.__extends) || (function () {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TimeSignatureGlyph": () => (/* binding */ TimeSignatureGlyph)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -32948,10 +33848,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.TimeSignatureGlyph = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+
+
 var TimeSignatureGlyph = /** @class */ (function (_super) {
     __extends(TimeSignatureGlyph, _super);
     function TimeSignatureGlyph(timeSignature, topDigits, botDigits, code, point, options) {
@@ -32963,16 +33861,16 @@ var TimeSignatureGlyph = /** @class */ (function (_super) {
         var topWidth = 0;
         for (var i = 0; i < topDigits.length; ++i) {
             var num = topDigits[i];
-            var topGlyph = new glyph_1.Glyph('timeSig' + num, _this.timeSignature.point);
+            var topGlyph = new _glyph__WEBPACK_IMPORTED_MODULE_1__.Glyph('timeSig' + num, _this.timeSignature.point);
             _this.topGlyphs.push(topGlyph);
             topWidth += (_a = topGlyph.getMetrics().width) !== null && _a !== void 0 ? _a : 0;
         }
         var botWidth = 0;
         for (var i = 0; i < botDigits.length; ++i) {
             var num = botDigits[i];
-            var botGlyph = new glyph_1.Glyph('timeSig' + num, _this.timeSignature.point);
+            var botGlyph = new _glyph__WEBPACK_IMPORTED_MODULE_1__.Glyph('timeSig' + num, _this.timeSignature.point);
             _this.botGlyphs.push(botGlyph);
-            botWidth += util_1.check(botGlyph.getMetrics().width);
+            botWidth += (0,_util__WEBPACK_IMPORTED_MODULE_0__.check)(botGlyph.getMetrics().width);
         }
         _this.width = Math.max(topWidth, botWidth);
         _this.xMin = _this.getMetrics().x_min;
@@ -32989,24 +33887,24 @@ var TimeSignatureGlyph = /** @class */ (function (_super) {
         };
     };
     TimeSignatureGlyph.prototype.renderToStave = function (x) {
-        var stave = util_1.check(this.stave);
+        var stave = (0,_util__WEBPACK_IMPORTED_MODULE_0__.check)(this.stave);
         var start_x = x + this.topStartX;
         for (var i = 0; i < this.topGlyphs.length; ++i) {
             var glyph = this.topGlyphs[i];
-            glyph_1.Glyph.renderOutline(this.checkContext(), glyph.getMetrics().outline, this.scale, start_x + this.x_shift, stave.getYForLine(this.timeSignature.topLine));
-            start_x += util_1.check(glyph.getMetrics().width);
+            _glyph__WEBPACK_IMPORTED_MODULE_1__.Glyph.renderOutline(this.checkContext(), glyph.getMetrics().outline, this.scale, start_x + this.x_shift, stave.getYForLine(this.timeSignature.topLine));
+            start_x += (0,_util__WEBPACK_IMPORTED_MODULE_0__.check)(glyph.getMetrics().width);
         }
         start_x = x + this.botStartX;
         for (var i = 0; i < this.botGlyphs.length; ++i) {
             var glyph = this.botGlyphs[i];
             this.timeSignature.placeGlyphOnLine(glyph, stave, 0);
-            glyph_1.Glyph.renderOutline(this.checkContext(), glyph.getMetrics().outline, this.scale, start_x + glyph.getMetrics().x_shift, stave.getYForLine(this.timeSignature.bottomLine));
-            start_x += util_1.check(glyph.getMetrics().width);
+            _glyph__WEBPACK_IMPORTED_MODULE_1__.Glyph.renderOutline(this.checkContext(), glyph.getMetrics().outline, this.scale, start_x + glyph.getMetrics().x_shift, stave.getYForLine(this.timeSignature.bottomLine));
+            start_x += (0,_util__WEBPACK_IMPORTED_MODULE_0__.check)(glyph.getMetrics().width);
         }
     };
     return TimeSignatureGlyph;
-}(glyph_1.Glyph));
-exports.TimeSignatureGlyph = TimeSignatureGlyph;
+}(_glyph__WEBPACK_IMPORTED_MODULE_1__.Glyph));
+
 
 
 /***/ }),
@@ -33015,16 +33913,23 @@ exports.TimeSignatureGlyph = TimeSignatureGlyph;
 /*!******************************!*\
   !*** ./src/timesignature.ts ***!
   \******************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TimeSignature": () => (/* binding */ TimeSignature)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+/* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
+/* harmony import */ var _timesigglyph__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./timesigglyph */ "./src/timesigglyph.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 // Implements time signatures glyphs for staffs
 // See tables.js for the internal time signatures
 // representation
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -33039,20 +33944,18 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.TimeSignature = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-var stavemodifier_1 = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
-var timesigglyph_1 = __webpack_require__(/*! ./timesigglyph */ "./src/timesigglyph.ts");
+
+
+
+
 var assertIsValidFraction = function (timeSpec) {
     var numbers = timeSpec.split('/').filter(function (number) { return number !== ''; });
     if (numbers.length !== 2) {
-        throw new util_1.RuntimeError('BadTimeSignature', "Invalid time spec: " + timeSpec + ". Must be in the form \"<numerator>/<denominator>\"");
+        throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadTimeSignature', "Invalid time spec: " + timeSpec + ". Must be in the form \"<numerator>/<denominator>\"");
     }
     numbers.forEach(function (number) {
         if (isNaN(Number(number))) {
-            throw new util_1.RuntimeError('BadTimeSignature', "Invalid time spec: " + timeSpec + ". Must contain two valid numbers.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadTimeSignature', "Invalid time spec: " + timeSpec + ". Must contain two valid numbers.");
         }
     });
 };
@@ -33070,9 +33973,9 @@ var TimeSignature = /** @class */ (function (_super) {
         var fontLineShift = _this.musicFont.lookupMetric('digits.shiftLine', 0);
         _this.topLine = 2 + fontLineShift;
         _this.bottomLine = 4 + fontLineShift;
-        _this.setPosition(stavemodifier_1.StaveModifier.Position.BEGIN);
+        _this.setPosition(_stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveModifier.Position.BEGIN);
         _this.info = _this.parseTimeSpec(timeSpec);
-        _this.setWidth(util_1.check(_this.info.glyph.getMetrics().width));
+        _this.setWidth((0,_util__WEBPACK_IMPORTED_MODULE_0__.check)(_this.info.glyph.getMetrics().width));
         _this.setPadding(padding);
         return _this;
     }
@@ -33110,7 +34013,7 @@ var TimeSignature = /** @class */ (function (_super) {
             return {
                 line: line,
                 num: false,
-                glyph: new glyph_1.Glyph(code, point),
+                glyph: new _glyph__WEBPACK_IMPORTED_MODULE_1__.Glyph(code, point),
             };
         }
         if (this.validate_args) {
@@ -33123,7 +34026,7 @@ var TimeSignature = /** @class */ (function (_super) {
         };
     };
     TimeSignature.prototype.makeTimeSignatureGlyph = function (topDigits, botDigits) {
-        var glyph = new timesigglyph_1.TimeSignatureGlyph(this, topDigits, botDigits, 'timeSig0', this.point);
+        var glyph = new _timesigglyph__WEBPACK_IMPORTED_MODULE_3__.TimeSignatureGlyph(this, topDigits, botDigits, 'timeSig0', this.point);
         return glyph;
     };
     TimeSignature.prototype.getInfo = function () {
@@ -33135,10 +34038,10 @@ var TimeSignature = /** @class */ (function (_super) {
     };
     TimeSignature.prototype.draw = function () {
         if (!this.x) {
-            throw new util_1.RuntimeError('TimeSignatureError', "Can't draw time signature without x.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('TimeSignatureError', "Can't draw time signature without x.");
         }
         if (!this.stave) {
-            throw new util_1.RuntimeError('TimeSignatureError', "Can't draw time signature without stave.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('TimeSignatureError', "Can't draw time signature without stave.");
         }
         this.setRendered();
         this.info.glyph.setStave(this.stave);
@@ -33147,8 +34050,8 @@ var TimeSignature = /** @class */ (function (_super) {
         this.info.glyph.renderToStave(this.x);
     };
     return TimeSignature;
-}(stavemodifier_1.StaveModifier));
-exports.TimeSignature = TimeSignature;
+}(_stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveModifier));
+
 
 
 /***/ }),
@@ -33157,12 +34060,17 @@ exports.TimeSignature = TimeSignature;
 /*!****************************!*\
   !*** ./src/timesignote.ts ***!
   \****************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TimeSigNote": () => (/* binding */ TimeSigNote)
+/* harmony export */ });
+/* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./note */ "./src/note.ts");
+/* harmony import */ var _timesignature__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Taehoon Moon 2014
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -33177,16 +34085,14 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.TimeSigNote = void 0;
-var note_1 = __webpack_require__(/*! ./note */ "./src/note.ts");
-var timesignature_1 = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
+
+
 var TimeSigNote = /** @class */ (function (_super) {
     __extends(TimeSigNote, _super);
     function TimeSigNote(timeSpec, customPadding) {
         var _this = _super.call(this, { duration: 'b' }) || this;
         _this.setAttribute('type', 'TimeSigNote');
-        var timeSignature = new timesignature_1.TimeSignature(timeSpec, customPadding);
+        var timeSignature = new _timesignature__WEBPACK_IMPORTED_MODULE_1__.TimeSignature(timeSpec, customPadding);
         _this.timeSigInfo = timeSignature.getInfo();
         _this.setWidth(_this.timeSigInfo.glyph.getMetrics().width);
         // Note properties
@@ -33213,8 +34119,8 @@ var TimeSigNote = /** @class */ (function (_super) {
         this.timeSigInfo.glyph.renderToStave(this.getAbsoluteX());
     };
     return TimeSigNote;
-}(note_1.Note));
-exports.TimeSigNote = TimeSigNote;
+}(_note__WEBPACK_IMPORTED_MODULE_0__.Note));
+
 
 
 /***/ }),
@@ -33223,14 +34129,20 @@ exports.TimeSigNote = TimeSigNote;
 /*!************************!*\
   !*** ./src/tremolo.ts ***!
   \************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Tremolo": () => (/* binding */ Tremolo)
+/* harmony export */ });
+/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+/* harmony import */ var _gracenote__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
+/* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./stem */ "./src/stem.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Mike Corrigan <corrigan@gmail.com>
-//
-// This class implements tremolo notation.
-var __extends = (this && this.__extends) || (function () {
+// MIT License
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -33245,32 +34157,38 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Tremolo = void 0;
-var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-var gracenote_1 = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
-var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
+
+
+
+
+/** Tremolo implements tremolo notation. */
 var Tremolo = /** @class */ (function (_super) {
     __extends(Tremolo, _super);
+    /**
+     * Constructor.
+     * @param num number of bars
+     */
     function Tremolo(num) {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Tremolo');
         _this.num = num;
-        _this.position = modifier_1.Modifier.Position.CENTER;
+        _this.position = _modifier__WEBPACK_IMPORTED_MODULE_0__.Modifier.Position.CENTER;
         _this.code = 'tremolo1';
         return _this;
     }
     Object.defineProperty(Tremolo, "CATEGORY", {
+        /** Tremolos category string. */
         get: function () {
             return 'tremolo';
         },
         enumerable: false,
         configurable: true
     });
+    /** Get element CATEGORY string. */
     Tremolo.prototype.getCategory = function () {
         return Tremolo.CATEGORY;
     };
+    /** Draw the tremolo on the rendering context. */
     Tremolo.prototype.draw = function () {
         var ctx = this.checkContext();
         var note = this.checkAttachedNote();
@@ -33278,11 +34196,11 @@ var Tremolo = /** @class */ (function (_super) {
         var stemDirection = note.getStemDirection();
         var start = note.getModifierStartXY(this.position, this.index);
         var x = start.x;
-        var isGraceNote = note.getCategory() === gracenote_1.GraceNote.CATEGORY;
-        var scale = isGraceNote ? gracenote_1.GraceNote.SCALE : 1;
+        var isGraceNote = note.getCategory() === _gracenote__WEBPACK_IMPORTED_MODULE_2__.GraceNote.CATEGORY;
+        var scale = isGraceNote ? _gracenote__WEBPACK_IMPORTED_MODULE_2__.GraceNote.SCALE : 1;
         var category = "tremolo." + (isGraceNote ? 'grace' : 'default');
-        this.y_spacing = this.musicFont.lookupMetric(category + ".spacing") * stemDirection;
-        var height = this.num * this.y_spacing;
+        var y_spacing = this.musicFont.lookupMetric(category + ".spacing") * stemDirection;
+        var height = this.num * y_spacing;
         var y = note.getStemExtents().baseY - height;
         if (stemDirection < 0) {
             y += this.musicFont.lookupMetric(category + ".offsetYStemDown") * scale;
@@ -33290,25 +34208,16 @@ var Tremolo = /** @class */ (function (_super) {
         else {
             y += this.musicFont.lookupMetric(category + ".offsetYStemUp") * scale;
         }
-        this.font = {
-            family: 'Arial',
-            size: 16 * scale,
-            weight: '',
-        };
-        this.render_options = {
-            font_scale: this.musicFont.lookupMetric(category + ".point"),
-            stroke_px: 3,
-            stroke_spacing: 10 * scale,
-        };
-        x += this.musicFont.lookupMetric(category + ".offsetXStem" + (stemDirection === stem_1.Stem.UP ? 'Up' : 'Down'));
+        var fontScale = this.musicFont.lookupMetric(category + ".point");
+        x += this.musicFont.lookupMetric(category + ".offsetXStem" + (stemDirection === _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.UP ? 'Up' : 'Down'));
         for (var i = 0; i < this.num; ++i) {
-            glyph_1.Glyph.renderGlyph(ctx, x, y, this.render_options.font_scale, this.code, { category: category });
-            y += this.y_spacing;
+            _glyph__WEBPACK_IMPORTED_MODULE_1__.Glyph.renderGlyph(ctx, x, y, fontScale, this.code, { category: category });
+            y += y_spacing;
         }
     };
     return Tremolo;
-}(modifier_1.Modifier));
-exports.Tremolo = Tremolo;
+}(_modifier__WEBPACK_IMPORTED_MODULE_0__.Modifier));
+
 
 
 /***/ }),
@@ -33317,15 +34226,18 @@ exports.Tremolo = Tremolo;
 /*!***********************!*\
   !*** ./src/tuning.ts ***!
   \***********************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Tuning": () => (/* binding */ Tuning)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Tuning = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+
+
 /** `Tuning` implements varies types of tunings for tablature. */
 var Tuning = /** @class */ (function () {
     /**
@@ -33353,7 +34265,7 @@ var Tuning = /** @class */ (function () {
     });
     /** Return the note number associated to the note string. */
     Tuning.prototype.noteToInteger = function (noteString) {
-        return flow_1.Flow.keyProperties(noteString).int_value;
+        return _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.keyProperties(noteString).int_value;
     };
     /**
      * Set tuning identified by tuning name (eg. 'dagdad')
@@ -33366,7 +34278,7 @@ var Tuning = /** @class */ (function () {
         this.tuningValues = [];
         var keys = tuningString.split(/\s*,\s*/);
         if (keys.length === 0) {
-            throw new util_1.RuntimeError('BadArguments', "Invalid tuning string: " + tuningString);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', "Invalid tuning string: " + tuningString);
         }
         for (var i = 0; i < keys.length; ++i) {
             this.tuningValues[i] = this.noteToInteger(keys[i]);
@@ -33376,7 +34288,7 @@ var Tuning = /** @class */ (function () {
     Tuning.prototype.getValueForString = function (stringNum) {
         var s = Number(stringNum);
         if (s < 1 || s > this.tuningValues.length) {
-            throw new util_1.RuntimeError('BadArguments', "String number must be between 1 and " + this.tuningValues.length + ":" + stringNum);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', "String number must be between 1 and " + this.tuningValues.length + ":" + stringNum);
         }
         return this.tuningValues[s - 1];
     };
@@ -33385,7 +34297,7 @@ var Tuning = /** @class */ (function () {
         var stringValue = this.getValueForString(stringNum);
         var f = Number(fretNum);
         if (f < 0) {
-            throw new util_1.RuntimeError('BadArguments', "Fret number must be 0 or higher: " + fretNum);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', "Fret number must be 0 or higher: " + fretNum);
         }
         return stringValue + f;
     };
@@ -33394,11 +34306,11 @@ var Tuning = /** @class */ (function () {
         var noteValue = this.getValueForFret(fretNum, stringNum);
         var octave = Math.floor(noteValue / 12);
         var value = noteValue % 12;
-        return flow_1.Flow.integerToNote(value) + "/" + octave;
+        return _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.integerToNote(value) + "/" + octave;
     };
     return Tuning;
 }());
-exports.Tuning = Tuning;
+
 
 
 /***/ }),
@@ -33407,11 +34319,19 @@ exports.Tuning = Tuning;
 /*!***********************!*\
   !*** ./src/tuplet.ts ***!
   \***********************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Tuplet": () => (/* binding */ Tuplet)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./element */ "./src/element.ts");
+/* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+/* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stem */ "./src/stem.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -33426,7 +34346,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -33437,8 +34357,6 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Tuplet = void 0;
 /**
  * ## Description
  *
@@ -33482,11 +34400,11 @@ exports.Tuplet = void 0;
  *     with articulations, etc...
  * }
  */
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var formatter_1 = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
-var glyph_1 = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-var stem_1 = __webpack_require__(/*! ./stem */ "./src/stem.ts");
+
+
+
+
+
 var Tuplet = /** @class */ (function (_super) {
     __extends(Tuplet, _super);
     function Tuplet(notes, options) {
@@ -33495,7 +34413,7 @@ var Tuplet = /** @class */ (function (_super) {
         _this.denom_glyphs = [];
         _this.setAttribute('type', 'Tuplet');
         if (!notes || !notes.length) {
-            throw new util_1.RuntimeError('BadArguments', 'No notes provided for tuplet.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'No notes provided for tuplet.');
         }
         _this.options = __assign({}, options);
         _this.notes = notes;
@@ -33519,7 +34437,7 @@ var Tuplet = /** @class */ (function (_super) {
         _this.x_pos = 100;
         _this.width = 200;
         _this.location = _this.options.location || Tuplet.LOCATION_TOP;
-        formatter_1.Formatter.AlignRestsToNotes(notes, true, true);
+        _formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter.AlignRestsToNotes(notes, true, true);
         _this.resolveGlyphs();
         _this.attach();
         return _this;
@@ -33579,7 +34497,7 @@ var Tuplet = /** @class */ (function (_super) {
             location = Tuplet.LOCATION_TOP;
         }
         else if (location !== Tuplet.LOCATION_TOP && location !== Tuplet.LOCATION_BOTTOM) {
-            throw new util_1.RuntimeError('BadArgument', 'Invalid tuplet location: ' + location);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArgument', 'Invalid tuplet location: ' + location);
         }
         this.location = location;
         return this;
@@ -33629,13 +34547,13 @@ var Tuplet = /** @class */ (function (_super) {
         this.numerator_glyphs = [];
         var n = this.num_notes;
         while (n >= 1) {
-            this.numerator_glyphs.unshift(new glyph_1.Glyph('timeSig' + (n % 10), this.point));
+            this.numerator_glyphs.unshift(new _glyph__WEBPACK_IMPORTED_MODULE_3__.Glyph('timeSig' + (n % 10), this.point));
             n = parseInt((n / 10).toString(), 10);
         }
         this.denom_glyphs = [];
         n = this.notes_occupied;
         while (n >= 1) {
-            this.denom_glyphs.unshift(new glyph_1.Glyph('timeSig' + (n % 10), this.point));
+            this.denom_glyphs.unshift(new _glyph__WEBPACK_IMPORTED_MODULE_3__.Glyph('timeSig' + (n % 10), this.point));
             n = parseInt((n / 10).toString(), 10);
         }
     };
@@ -33674,7 +34592,7 @@ var Tuplet = /** @class */ (function (_super) {
             y_pos = first_note.checkStave().getYForLine(0) - 15;
             // y_pos = first_note.getStemExtents().topY - 10;
             for (var i = 0; i < this.notes.length; ++i) {
-                var top_y = this.notes[i].getStemDirection() === stem_1.Stem.UP
+                var top_y = this.notes[i].getStemDirection() === _stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP
                     ? this.notes[i].getStemExtents().topY - 10
                     : this.notes[i].getStemExtents().baseY - 20;
                 if (top_y < y_pos) {
@@ -33685,7 +34603,7 @@ var Tuplet = /** @class */ (function (_super) {
         else {
             y_pos = first_note.checkStave().getYForLine(4) + 20;
             for (var i = 0; i < this.notes.length; ++i) {
-                var bottom_y = this.notes[i].getStemDirection() === stem_1.Stem.UP
+                var bottom_y = this.notes[i].getStemDirection() === _stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP
                     ? this.notes[i].getStemExtents().baseY + 20
                     : this.notes[i].getStemExtents().topY + 10;
                 if (bottom_y > y_pos) {
@@ -33712,7 +34630,7 @@ var Tuplet = /** @class */ (function (_super) {
         }
         // determine y value for tuplet
         this.y_pos = this.getYPosition();
-        var addGlyphWidth = function (width, glyph) { return width + util_1.check(glyph.getMetrics().width); };
+        var addGlyphWidth = function (width, glyph) { return width + (0,_util__WEBPACK_IMPORTED_MODULE_0__.check)(glyph.getMetrics().width); };
         // calculate total width of tuplet notation
         var width = this.numerator_glyphs.reduce(addGlyphWidth, 0);
         if (this.ratioed) {
@@ -33737,7 +34655,7 @@ var Tuplet = /** @class */ (function (_super) {
         var x_offset = 0;
         this.numerator_glyphs.forEach(function (glyph) {
             glyph.render(ctx, notation_start_x + x_offset, _this.y_pos + _this.point / 3 - 2 + shiftY);
-            x_offset += util_1.check(glyph.getMetrics().width);
+            x_offset += (0,_util__WEBPACK_IMPORTED_MODULE_0__.check)(glyph.getMetrics().width);
         });
         // display colon and denominator if the ratio is to be shown
         if (this.ratioed) {
@@ -33754,13 +34672,13 @@ var Tuplet = /** @class */ (function (_super) {
             x_offset += this.point * 0.32;
             this.denom_glyphs.forEach(function (glyph) {
                 glyph.render(ctx, notation_start_x + x_offset, _this.y_pos + _this.point / 3 - 2 + shiftY);
-                x_offset += util_1.check(glyph.getMetrics().width);
+                x_offset += (0,_util__WEBPACK_IMPORTED_MODULE_0__.check)(glyph.getMetrics().width);
             });
         }
     };
     return Tuplet;
-}(element_1.Element));
-exports.Tuplet = Tuplet;
+}(_element__WEBPACK_IMPORTED_MODULE_1__.Element));
+
 
 
 /***/ }),
@@ -33769,10 +34687,21 @@ exports.Tuplet = Tuplet;
 /*!*********************!*\
   !*** ./src/util.ts ***!
   \*********************/
-/***/ (function(__unused_webpack_module, exports) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
-var __extends = (this && this.__extends) || (function () {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "RuntimeError": () => (/* binding */ RuntimeError),
+/* harmony export */   "check": () => (/* binding */ check),
+/* harmony export */   "log": () => (/* binding */ log),
+/* harmony export */   "warn": () => (/* binding */ warn),
+/* harmony export */   "midLine": () => (/* binding */ midLine),
+/* harmony export */   "drawDot": () => (/* binding */ drawDot),
+/* harmony export */   "prefix": () => (/* binding */ prefix)
+/* harmony export */ });
+// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// MIT License
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -33787,8 +34716,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.prefix = exports.drawDot = exports.midLine = exports.warn = exports.log = exports.MakeException = exports.check = exports.RuntimeError = void 0;
+/** `RuntimError` will be thrown by VexFlow classes in case of error. */
 var RuntimeError = /** @class */ (function (_super) {
     __extends(RuntimeError, _super);
     function RuntimeError(code, message) {
@@ -33798,31 +34726,15 @@ var RuntimeError = /** @class */ (function (_super) {
     }
     return RuntimeError;
 }(Error));
-exports.RuntimeError = RuntimeError;
+
+/** Check that `x` is of type `T` and not `undefined`. */
 function check(x) {
     if (x === undefined) {
         throw new RuntimeError('undefined');
     }
     return x;
 }
-exports.check = check;
-function MakeException(name) {
-    var exception = /** @class */ (function (_super) {
-        __extends(class_1, _super);
-        // eslint-disable-next-line
-        function class_1(message, data) {
-            var _this = _super.call(this, message) || this;
-            _this.name = name;
-            _this.message = message;
-            _this.data = data;
-            return _this;
-        }
-        return class_1;
-    }(Error));
-    return exception;
-}
-exports.MakeException = MakeException;
-// Default log function sends all arguments to console.
+/** Default log function sends all arguments to console. */
 function log(block) {
     // eslint-disable-next-line
     var args = [];
@@ -33841,8 +34753,7 @@ function log(block) {
     var line = Array.prototype.slice.call(args).join(' ');
     window.console.log(block + ': ' + line);
 }
-exports.log = log;
-// Dump warning to console.
+/** Dump warning to console. */
 function warn() {
     // eslint-disable-next-line
     var args = [];
@@ -33860,12 +34771,11 @@ function warn() {
     var err = new Error();
     window.console.log('Warning: ', line, err.stack);
 }
-exports.warn = warn;
-// Round number to nearest fractional value (`.5`, `.25`, etc.)
+/** Round number to nearest fractional value (`.5`, `.25`, etc.) */
 function roundN(x, n) {
     return x % n >= n / 2 ? parseInt("" + x / n, 10) * n + n : parseInt("" + x / n, 10) * n;
 }
-// Locate the mid point between stave lines. Returns a fractional line if a space.
+/** Locate the mid point between stave lines. Returns a fractional line if a space. */
 function midLine(a, b) {
     var mid_line = b + (a - b) / 2;
     if (mid_line % 2 > 0) {
@@ -33873,11 +34783,12 @@ function midLine(a, b) {
     }
     return mid_line;
 }
-exports.midLine = midLine;
-// Draw a tiny dot marker on the specified canvas. A great debugging aid.
-//
-// `ctx`: Canvas context.
-// `x`, `y`: Dot coordinates.
+/**
+ * Draw a tiny dot marker on the specified canvas. A great debugging aid.
+ * @param ctx canvas context
+ * @param x dot x coordinate
+ * @param y dot y coordinate
+ */
 function drawDot(ctx, x, y, color) {
     if (color === void 0) { color = '#55'; }
     ctx.save();
@@ -33889,13 +34800,13 @@ function drawDot(ctx, x, y, color) {
     ctx.fill();
     ctx.restore();
 }
-exports.drawDot = drawDot;
-// Used by various classes (e.g., SVGContext) to provide a
-// unique prefix to element names (or other keys in shared namespaces).
+/**
+ * Used by various classes (e.g., SVGContext) to provide a
+ * unique prefix to element names (or other keys in shared namespaces).
+ */
 function prefix(text) {
     return "vf-" + text;
 }
-exports.prefix = prefix;
 
 
 /***/ }),
@@ -33904,21 +34815,24 @@ exports.prefix = prefix;
 /*!********************!*\
   !*** ./src/vex.ts ***!
   \********************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Vex": () => (/* binding */ Vex)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 // This file implements utility methods used by the rest of the VexFlow
 // codebase.
 //
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Vex = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-exports.Vex = {
-    Flow: flow_1.Flow,
+
+
+var Vex = {
+    Flow: _flow__WEBPACK_IMPORTED_MODULE_1__.Flow,
     forEach: 
     // eslint-disable-next-line
     function (a, fn) {
@@ -33962,11 +34876,11 @@ exports.Vex = {
     // Get the 2D Canvas context from DOM element `canvas_sel`.
     getCanvasContext: function (canvas_sel) {
         if (!canvas_sel) {
-            throw new util_1.RuntimeError('BadArgument', 'Invalid canvas selector: ' + canvas_sel);
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArgument', 'Invalid canvas selector: ' + canvas_sel);
         }
         var canvas = document.getElementById(canvas_sel);
         if (!(canvas && canvas.getContext)) {
-            throw new util_1.RuntimeError('UnsupportedBrowserError', 'This browser does not support HTML5 Canvas');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('UnsupportedBrowserError', 'This browser does not support HTML5 Canvas');
         }
         return canvas.getContext('2d');
     },
@@ -33977,7 +34891,7 @@ exports.Vex = {
         var start_time = new Date().getTime();
         f();
         var elapsed = new Date().getTime() - start_time;
-        util_1.log(s, elapsed + 'ms');
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)(s, elapsed + 'ms');
     },
     // Get stack trace.
     StackTrace: function () {
@@ -33993,12 +34907,17 @@ exports.Vex = {
 /*!************************!*\
   !*** ./src/vibrato.ts ***!
   \************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Vibrato": () => (/* binding */ Vibrato)
+/* harmony export */ });
+/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
+/* harmony import */ var _bend__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./bend */ "./src/bend.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT Licnse
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -34013,17 +34932,15 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Vibrato = void 0;
-var modifier_1 = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-var bend_1 = __webpack_require__(/*! ./bend */ "./src/bend.ts");
+
+
 /** `Vibrato` implements diverse vibratos. */
 var Vibrato = /** @class */ (function (_super) {
     __extends(Vibrato, _super);
     function Vibrato() {
         var _this = _super.call(this) || this;
         _this.setAttribute('type', 'Vibrato');
-        _this.position = modifier_1.Modifier.Position.RIGHT;
+        _this.position = _modifier__WEBPACK_IMPORTED_MODULE_0__.Modifier.Position.RIGHT;
         _this.render_options = {
             harsh: false,
             vibrato_width: 20,
@@ -34051,7 +34968,7 @@ var Vibrato = /** @class */ (function (_super) {
         var width = 0;
         var shift = state.right_shift - 7;
         // If there's a bend, drop the text line
-        var bends = context.getMembers(bend_1.Bend.CATEGORY);
+        var bends = context.getMembers(_bend__WEBPACK_IMPORTED_MODULE_1__.Bend.CATEGORY);
         if (bends && bends.length > 0) {
             text_line--;
         }
@@ -34087,7 +35004,7 @@ var Vibrato = /** @class */ (function (_super) {
         var ctx = this.checkContext();
         var note = this.checkAttachedNote();
         this.setRendered();
-        var start = note.getModifierStartXY(modifier_1.Modifier.Position.RIGHT, this.index);
+        var start = note.getModifierStartXY(_modifier__WEBPACK_IMPORTED_MODULE_0__.Modifier.Position.RIGHT, this.index);
         var vx = start.x + this.x_shift;
         var vy = note.getYForTopText(this.text_line) + 2;
         Vibrato.renderVibrato(ctx, vx, vy, this.render_options);
@@ -34135,8 +35052,8 @@ var Vibrato = /** @class */ (function (_super) {
         }
     };
     return Vibrato;
-}(modifier_1.Modifier));
-exports.Vibrato = Vibrato;
+}(_modifier__WEBPACK_IMPORTED_MODULE_0__.Modifier));
+
 
 
 /***/ }),
@@ -34145,13 +35062,19 @@ exports.Vibrato = Vibrato;
 /*!*******************************!*\
   !*** ./src/vibratobracket.ts ***!
   \*******************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "VibratoBracket": () => (/* binding */ VibratoBracket)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./element */ "./src/element.ts");
+/* harmony import */ var _vibrato__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./vibrato */ "./src/vibrato.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Balazs Forian-Szabo
 // MIT License
-var __extends = (this && this.__extends) || (function () {
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -34166,11 +35089,9 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.VibratoBracket = void 0;
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var vibrato_1 = __webpack_require__(/*! ./vibrato */ "./src/vibrato.ts");
+
+
+
 function L() {
     // eslint-disable-next-line
     var args = [];
@@ -34185,7 +35106,7 @@ function L() {
         args[_i] = arguments[_i];
     }
     if (VibratoBracket.DEBUG)
-        util_1.log('Vex.Flow.VibratoBracket', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.VibratoBracket', args);
 }
 /** `VibratoBracket` renders vibrato effect between two notes. */
 var VibratoBracket = /** @class */ (function (_super) {
@@ -34237,11 +35158,11 @@ var VibratoBracket = /** @class */ (function (_super) {
             0;
         this.render_options.vibrato_width = stop_x - start_x;
         L('Rendering VibratoBracket: start_x:', start_x, 'stop_x:', stop_x, 'y:', y);
-        vibrato_1.Vibrato.renderVibrato(ctx, start_x, y, this.render_options);
+        _vibrato__WEBPACK_IMPORTED_MODULE_2__.Vibrato.renderVibrato(ctx, start_x, y, this.render_options);
     };
     return VibratoBracket;
-}(element_1.Element));
-exports.VibratoBracket = VibratoBracket;
+}(_element__WEBPACK_IMPORTED_MODULE_1__.Element));
+
 
 
 /***/ }),
@@ -34250,10 +35171,18 @@ exports.VibratoBracket = VibratoBracket;
 /*!**********************!*\
   !*** ./src/voice.ts ***!
   \**********************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-
-var __extends = (this && this.__extends) || (function () {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "VoiceMode": () => (/* binding */ VoiceMode),
+/* harmony export */   "Voice": () => (/* binding */ Voice)
+/* harmony export */ });
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./element */ "./src/element.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -34268,7 +35197,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
+var __assign = (undefined && undefined.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
@@ -34279,20 +35208,18 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Voice = exports.VoiceMode = void 0;
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
-var util_1 = __webpack_require__(/*! ./util */ "./src/util.ts");
-var element_1 = __webpack_require__(/*! ./element */ "./src/element.ts");
-var flow_1 = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-var fraction_1 = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
+
+
+
+
 var VoiceMode;
 (function (VoiceMode) {
     VoiceMode[VoiceMode["STRICT"] = 1] = "STRICT";
     VoiceMode[VoiceMode["SOFT"] = 2] = "SOFT";
     VoiceMode[VoiceMode["FULL"] = 3] = "FULL";
-})(VoiceMode = exports.VoiceMode || (exports.VoiceMode = {}));
+})(VoiceMode || (VoiceMode = {}));
 /**
  * `Voice` is mainly a container object to group `Tickables` for formatting.
  */
@@ -34309,7 +35236,7 @@ var Voice = /** @class */ (function (_super) {
                 time = {
                     num_beats: parseInt(match[1]),
                     beat_value: parseInt(match[2]),
-                    resolution: flow_1.Flow.RESOLUTION,
+                    resolution: _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.RESOLUTION,
                 };
             }
         }
@@ -34317,14 +35244,14 @@ var Voice = /** @class */ (function (_super) {
         _this.time = __assign({
             num_beats: 4,
             beat_value: 4,
-            resolution: flow_1.Flow.RESOLUTION,
+            resolution: _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.RESOLUTION,
         }, time);
         // Recalculate total ticks.
-        _this.totalTicks = new fraction_1.Fraction(_this.time.num_beats * (_this.time.resolution / _this.time.beat_value), 1);
+        _this.totalTicks = new _fraction__WEBPACK_IMPORTED_MODULE_3__.Fraction(_this.time.num_beats * (_this.time.resolution / _this.time.beat_value), 1);
         _this.resolutionMultiplier = 1;
         // Set defaults
         _this.tickables = [];
-        _this.ticksUsed = new fraction_1.Fraction(0, 1);
+        _this.ticksUsed = new _fraction__WEBPACK_IMPORTED_MODULE_3__.Fraction(0, 1);
         _this.smallestTickCount = _this.totalTicks.clone();
         _this.largestTickWidth = 0;
         // Do we care about strictly timed notes
@@ -34398,7 +35325,7 @@ var Voice = /** @class */ (function (_super) {
         if (!this.boundingBox) {
             boundingBox = undefined;
             for (i = 0; i < this.tickables.length; ++i) {
-                this.tickables[i].setStave(util_1.check(this.stave));
+                this.tickables[i].setStave((0,_util__WEBPACK_IMPORTED_MODULE_0__.check)(this.stave));
                 bb = this.tickables[i].getBoundingBox();
                 if (!bb)
                     continue;
@@ -34465,7 +35392,7 @@ var Voice = /** @class */ (function (_super) {
             if ((this.mode === Voice.Mode.STRICT || this.mode === Voice.Mode.FULL) &&
                 this.ticksUsed.greaterThan(this.totalTicks)) {
                 this.ticksUsed.subtract(ticks);
-                throw new util_1.RuntimeError('BadArgument', 'Too many ticks.');
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArgument', 'Too many ticks.');
             }
             // Track the smallest tickable for formatting.
             if (ticks.lessThan(this.smallestTickCount)) {
@@ -34491,7 +35418,7 @@ var Voice = /** @class */ (function (_super) {
     Voice.prototype.preFormat = function () {
         if (this.preFormatted)
             return this;
-        var stave = util_1.check(this.stave);
+        var stave = (0,_util__WEBPACK_IMPORTED_MODULE_0__.check)(this.stave);
         this.tickables.forEach(function (tickable) {
             if (!tickable.getStave()) {
                 tickable.setStave(stave);
@@ -34516,7 +35443,7 @@ var Voice = /** @class */ (function (_super) {
             if (stave)
                 tickable.setStave(stave);
             if (!tickable.getStave()) {
-                throw new util_1.RuntimeError('MissingStave', 'The voice cannot draw tickables without staves.');
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('MissingStave', 'The voice cannot draw tickables without staves.');
             }
             if (i === 0)
                 boundingBox = tickable.getBoundingBox();
@@ -34531,8 +35458,8 @@ var Voice = /** @class */ (function (_super) {
         this.boundingBox = boundingBox;
     };
     return Voice;
-}(element_1.Element));
-exports.Voice = Voice;
+}(_element__WEBPACK_IMPORTED_MODULE_1__.Element));
+
 
 
 /***/ })
@@ -34557,13 +35484,30 @@ exports.Voice = Voice;
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -34581,26 +35525,28 @@ var __webpack_exports__ = {};
 (() => {
 var __webpack_exports__ = {};
 /*!*************************************************************************************************************!*\
-  !*** ./node_modules/webpack-inject-plugin/dist/webpack-inject-plugin.loader.js?id=webpack-inject-module-2! ***!
+  !*** ./node_modules/webpack-inject-plugin/dist/webpack-inject-plugin.loader.js?id=webpack-inject-module-3! ***!
   \*************************************************************************************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_vex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/vex */ "./src/vex.ts");
 
             _src_vex__WEBPACK_IMPORTED_MODULE_0__.Vex.Flow.VERSION = "3.0.9";
-            _src_vex__WEBPACK_IMPORTED_MODULE_0__.Vex.Flow.BUILD = "ad9a957bed4f2593e63d0ac9b072baa14494114a";
+            _src_vex__WEBPACK_IMPORTED_MODULE_0__.Vex.Flow.BUILD = "6c373fc6e0e699bb6ac90e05e11c9dce6364c1b7";
 })();
 
 // This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.
 (() => {
-var exports = __webpack_exports__;
 /*!**********************!*\
   !*** ./src/index.ts ***!
   \**********************/
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _vex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vex */ "./src/vex.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-var vex_1 = __webpack_require__(/*! ./vex */ "./src/vex.ts");
-exports.default = vex_1.Vex;
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_vex__WEBPACK_IMPORTED_MODULE_0__.Vex);
 
 })();
 
