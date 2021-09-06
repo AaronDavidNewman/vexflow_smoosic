@@ -5,21 +5,29 @@
 // The file implements notes for Tablature notation. This consists of one or
 // more fret positions, and can either be drawn with or without stems.
 //
-// See `tests/tabnote_tests.js` for usage examples
+// See `tests/tabnote_tests.ts` for usage examples.
 
-import { RuntimeError } from './util';
-import { Flow } from './flow';
-import { Modifier } from './modifier';
-import { Stem } from './stem';
-import { StemmableNote } from './stemmablenote';
 import { Dot } from './dot';
+import { Flow } from './flow';
 import { Glyph, GlyphProps } from './glyph';
+import { Modifier } from './modifier';
 import { Stave } from './stave';
 import { StaveNoteStruct } from './stavenote';
-import { ModifierContext } from './modifiercontext';
+import { Stem } from './stem';
+import { StemmableNote } from './stemmablenote';
+import { defined, RuntimeError } from './util';
+
+export interface TabNotePosition {
+  // For example, on a six stringed instrument, `str` ranges from 1 to 6.
+  str: number;
+
+  // fret: 'X' indicates an unused/muted string.
+  // fret: 3 indicates the third fret.
+  fret: number | string;
+}
 
 export interface TabNoteStruct extends StaveNoteStruct {
-  positions: { str: string; fret: string }[];
+  positions: TabNotePosition[];
 }
 // Gets the unused strings grouped together if consecutive.
 //
@@ -116,7 +124,7 @@ function getPartialStemLines(stem_y: number, unused_strings: number[][], stave: 
 export class TabNote extends StemmableNote {
   protected ghost: boolean;
   protected glyphs: GlyphProps[] = [];
-  protected positions: { str: string; fret: string }[];
+  protected positions: TabNotePosition[];
 
   static get CATEGORY(): string {
     return 'tabnotes';
@@ -129,8 +137,8 @@ export class TabNote extends StemmableNote {
     this.setAttribute('type', 'TabNote');
 
     this.ghost = false; // Renders parenthesis around notes
+
     // Note properties
-    //
     // The fret positions in the note. An array of `{ str: X, fret: X }`
     this.positions = tab_struct.positions;
 
@@ -156,13 +164,7 @@ export class TabNote extends StemmableNote {
     };
 
     this.glyph = Flow.getGlyphProps(this.duration, this.noteType);
-
-    if (!this.glyph) {
-      throw new RuntimeError(
-        'BadArguments',
-        `Invalid note initialization data (No glyph found): ${JSON.stringify(tab_struct)}`
-      );
-    }
+    defined(this.glyph, 'BadArguments', `No glyph found for duration '${this.duration}' and type '${this.noteType}'`);
 
     this.buildStem();
 
@@ -230,7 +232,7 @@ export class TabNote extends StemmableNote {
     for (let i = 0; i < this.positions.length; ++i) {
       let fret = this.positions[i].fret;
       if (this.ghost) fret = '(' + fret + ')';
-      const glyph = Flow.tabToGlyph(fret, this.render_options.scale);
+      const glyph = Flow.tabToGlyph(fret.toString(), this.render_options.scale);
       this.glyphs.push(glyph as GlyphProps);
       this.width = Math.max(glyph.getWidth(), this.width);
     }
@@ -280,19 +282,8 @@ export class TabNote extends StemmableNote {
   }
 
   // Get the fret positions for the note
-  getPositions(): { str: string; fret: string }[] {
+  getPositions(): TabNotePosition[] {
     return this.positions;
-  }
-
-  // Add self to the provided modifier context `mc`
-  addToModifierContext(mc: ModifierContext): this {
-    this.modifierContext = mc;
-    for (let i = 0; i < this.modifiers.length; ++i) {
-      this.modifierContext.addMember(this.modifiers[i]);
-    }
-    this.modifierContext.addMember(this);
-    this.preFormatted = false;
-    return this;
   }
 
   // Get the default `x` and `y` coordinates for a modifier at a specific

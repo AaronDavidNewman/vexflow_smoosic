@@ -1,21 +1,21 @@
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// MIT License
 
-import { RuntimeError } from './util';
+import { BoundingBox } from './boundingbox';
+import { Clef } from './clef';
 import { Element, ElementStyle } from './element';
 import { Flow } from './flow';
+import { KeySignature } from './keysignature';
 import { Barline, BarlineType } from './stavebarline';
 import { StaveModifier } from './stavemodifier';
 import { Repetition } from './staverepetition';
 import { StaveSection } from './stavesection';
-import { StaveTempo } from './stavetempo';
+import { StaveTempo, StaveTempoOptions } from './stavetempo';
 import { StaveText } from './stavetext';
-import { BoundingBox } from './boundingbox';
-import { Clef } from './clef';
-import { KeySignature } from './keysignature';
-import { TimeSignature } from './timesignature';
 import { Volta } from './stavevolta';
+import { TimeSignature } from './timesignature';
 import { Bounds, FontInfo } from './types/common';
-import { StaveTempoOptions } from './stavetempo';
+import { RuntimeError } from './util';
 
 export interface StaveLineConfig {
   visible: boolean;
@@ -45,15 +45,16 @@ export interface StaveOptions {
 }
 
 export class Stave extends Element {
-  protected x: number;
   protected start_x: number;
   protected clef: string;
   protected options: StaveOptions;
   protected endClef?: string;
-  protected width: number;
-  // Initialised in resetLines called in constructor
-  protected height: number = 0;
+
+  protected x: number;
   protected y: number;
+  protected width: number;
+  // Initialized by the constructor via this.resetLines().
+  protected height: number = 0;
 
   protected formatted: boolean;
   protected end_x: number;
@@ -76,7 +77,7 @@ export class Stave extends Element {
     return musicFont.lookupMetric('stave.endPaddingMax');
   }
 
-  constructor(x: number, y: number, width: number, options: Partial<StaveOptions>) {
+  constructor(x: number, y: number, width: number, options?: Partial<StaveOptions>) {
     super();
     this.setAttribute('type', 'Stave');
 
@@ -188,8 +189,8 @@ export class Stave extends Element {
     return this.options.num_lines;
   }
 
-  setNumLines(lines: string): this {
-    this.options.num_lines = parseInt(lines, 10);
+  setNumLines(n: number): this {
+    this.options.num_lines = n;
     this.resetLines();
     return this;
   }
@@ -430,7 +431,7 @@ export class Stave extends Element {
     return this;
   }
 
-  setClef(clefSpec: string, size: string, annotation: string, position?: number): this {
+  setClef(clefSpec: string, size?: string, annotation?: string, position?: number): this {
     if (position === undefined) {
       position = StaveModifier.Position.BEGIN;
     }
@@ -455,7 +456,7 @@ export class Stave extends Element {
     return this.clef;
   }
 
-  setEndClef(clefSpec: string, size: string, annotation: string): this {
+  setEndClef(clefSpec: string, size?: string, annotation?: string): this {
     this.setClef(clefSpec, size, annotation, StaveModifier.Position.END);
     return this;
   }
@@ -464,7 +465,7 @@ export class Stave extends Element {
     return this.endClef;
   }
 
-  setKeySignature(keySpec: string, cancelKeySpec: string, position?: number): this {
+  setKeySignature(keySpec: string, cancelKeySpec?: string, position?: number): this {
     if (position === undefined) {
       position = StaveModifier.Position.BEGIN;
     }
@@ -479,12 +480,12 @@ export class Stave extends Element {
     return this;
   }
 
-  setEndKeySignature(keySpec: string, cancelKeySpec: string): this {
+  setEndKeySignature(keySpec: string, cancelKeySpec?: string): this {
     this.setKeySignature(keySpec, cancelKeySpec, StaveModifier.Position.END);
     return this;
   }
 
-  setTimeSignature(timeSpec: string, customPadding: number, position?: number): this {
+  setTimeSignature(timeSpec: string, customPadding?: number, position?: number): this {
     if (position === undefined) {
       position = StaveModifier.Position.BEGIN;
     }
@@ -504,7 +505,17 @@ export class Stave extends Element {
     return this;
   }
 
-  addKeySignature(keySpec: string, cancelKeySpec: string, position?: number): this {
+  /**
+   * Add a key signature to the stave.
+   *
+   * Example:
+   * `stave.addKeySignature('Db');`
+   * @param keySpec new key specification `[A-G][b|#]?`
+   * @param cancelKeySpec
+   * @param position
+   * @returns
+   */
+  addKeySignature(keySpec: string, cancelKeySpec?: string, position?: number): this {
     if (position === undefined) {
       position = StaveModifier.Position.BEGIN;
     }
@@ -512,6 +523,18 @@ export class Stave extends Element {
     return this;
   }
 
+  /**
+   * Add a clef to the stave.
+   *
+   * Example:
+   *
+   * stave.addClef('treble')
+   * @param clef clef (treble|bass|...) see {@link Clef.types}
+   * @param size
+   * @param annotation
+   * @param position
+   * @returns
+   */
   addClef(clef: string, size?: string, annotation?: string, position?: number): this {
     if (position === undefined || position === StaveModifier.Position.BEGIN) {
       this.clef = clef;
@@ -523,17 +546,28 @@ export class Stave extends Element {
     return this;
   }
 
-  addEndClef(clef: string, size: string, annotation: string): this {
+  addEndClef(clef: string, size?: string, annotation?: string): this {
     this.addClef(clef, size, annotation, StaveModifier.Position.END);
     return this;
   }
 
+  /**
+   * Add a time signature to the stave
+   *
+   * Example:
+   *
+   * `stave.addTimeSignature('4/4');`
+   * @param timeSpec time signature specification `(C\||C|\d\/\d)`
+   * @param customPadding
+   * @param position
+   * @returns
+   */
   addTimeSignature(timeSpec: string, customPadding?: number, position?: number): this {
     this.addModifier(new TimeSignature(timeSpec, customPadding), position);
     return this;
   }
 
-  addEndTimeSignature(timeSpec: string, customPadding: number): this {
+  addEndTimeSignature(timeSpec: string, customPadding?: number): this {
     this.addTimeSignature(timeSpec, customPadding, StaveModifier.Position.END);
     return this;
   }

@@ -1,20 +1,19 @@
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-//
-// This class implements a parser for a simple language to generate
-// VexFlow objects.
+// MIT License
 
 /* eslint max-classes-per-file: "off" */
 
-import { RuntimeError, log } from './util';
-import { StaveNote } from './stavenote';
-import { Match, Parser, Result, Rule, RuleFunction } from './parser';
-import { Articulation } from './articulation';
-import { FretHandFinger } from './frethandfinger';
-import { Factory } from './factory';
-import { RenderContext } from './types/common';
 import { Accidental } from './accidental';
-import { Modifier } from './modifier';
+import { Articulation } from './articulation';
+import { Factory } from './factory';
+import { FretHandFinger } from './frethandfinger';
+import { Parser, Match, Result, Rule, RuleFunction } from './parser';
+import { RenderContext } from './types/common';
+import { RuntimeError, log, defined } from './util';
+import { StaveNote } from './stavenote';
+import { TupletOptions } from './tuplet';
 import { Voice } from './voice';
+import { Music } from 'music';
 
 // To enable logging for this class. Set `Vex.Flow.EasyScore.DEBUG` to `true`.
 // eslint-disable-next-line
@@ -96,8 +95,9 @@ export class Grammar {
   }
   ACCIDENTAL(): Rule {
     return {
-      expect: [this.ACCIDENTALS],
+      expect: [this.MICROTONES, this.ACCIDENTALS],
       maybe: true,
+      or: true,
     };
   }
   DOTS(): Rule {
@@ -168,7 +168,10 @@ export class Grammar {
     return { token: '[0-9]+' };
   }
   ACCIDENTALS(): Rule {
-    return { token: 'bbs|bb|bss|bs|b|db|d|##|#|n|\\+\\+-|\\+-|\\+\\+|\\+|k|o' };
+    return { token: 'bb|b|##|#|n' };
+  }
+  MICROTONES(): Rule {
+    return { token: 'bbs|bss|bs|db|d|\\+\\+-|\\+-|\\+\\+|\\+|k|o' };
   }
   DURATIONS(): Rule {
     return { token: '[0-9whq]+' };
@@ -230,7 +233,7 @@ interface BuilderElements {
   accidentals: (Accidental | undefined)[][];
 }
 
-interface BuilderOptions {
+export interface BuilderOptions {
   stem?: string;
   clef?: string;
   // eslint-disable-next-line
@@ -337,40 +340,37 @@ export class Builder {
     const options = { ...this.options, ...this.piece.options };
 
     // reset() sets this.options.stem & this.options.clef but we check to make sure nothing has changed.
-    if (options.stem === undefined) {
-      throw new RuntimeError('options.stem is not defined');
-    }
-    if (options.clef === undefined) {
-      throw new RuntimeError('options.clef is not defined');
-    }
-    const stem: string = options.stem.toLowerCase(); // e.g., auto | up | down
-    const clef: string = options.clef; // e.g., treble | bass
+    // e.g., auto | up | down
+    const stem = defined(options.stem, 'BadArguments', 'options.stem is not defined').toLowerCase();
+    // e.g., treble | bass
+    const clef = defined(options.clef, 'BadArguments', 'options.clef is not defined').toLowerCase();
 
-    const autoStem = stem === 'auto';
-    const stemDirection = !autoStem && stem === 'up' ? StaveNote.STEM_UP : StaveNote.STEM_DOWN;
-
-    // Build StaveNotes.
     const { chord, duration, dots, type } = this.piece;
-    const keys: string[] = chord.map((notePiece) => notePiece.key + '/' + notePiece.octave);
-    const note = factory.StaveNote({
-      keys,
-      duration,
-      dots,
-      type,
-      clef,
-      auto_stem: autoStem,
-    });
-    if (!autoStem) note.setStemDirection(stemDirection);
+
+    // Create a string[] that will be assigned to the .keys property of the StaveNote.
+    // Each string in the array represents a note pitch and is of the form: {NoteName}{Accidental}/{Octave}
+    // Only standard accidentals are included in the .keys property. Microtonal accidentals are not included.
+    const standardAccidentals = Music.accidentals;
+    const keys = chord.map(
+      (notePiece) =>
+        notePiece.key +
+        (standardAccidentals.includes(notePiece.accid ?? '') ? notePiece.accid : '') +
+        '/' +
+        notePiece.octave
+    );
+    const auto_stem = stem === 'auto'; // StaveNoteStruct expects the underscore & lowercase.
+
+    // Build a StaveNote using the information we gathered.
+    const note = factory.StaveNote({ keys, duration, dots, type, clef, auto_stem });
+    if (!auto_stem) note.setStemDirection(stem === 'up' ? StaveNote.STEM_UP : StaveNote.STEM_DOWN);
 
     // Attach accidentals.
     const accidentals: (Accidental | undefined)[] = [];
     chord.forEach((notePiece: NotePiece, index: number) => {
       const accid = notePiece.accid;
       if (typeof accid === 'string') {
-        const accidental: Accidental = factory.Accidental({ type: accid });
-        // TODO: Remove "as unknown as Modifier".
-        // This compilation warning will be fixed after factory & accidental are migrated to typescript.
-        note.addAccidental(index, accidental as unknown as Modifier);
+        const accidental = factory.Accidental({ type: accid });
+        note.addAccidental(index, accidental);
         accidentals.push(accidental);
       } else {
         accidentals.push(undefined);
@@ -380,7 +380,7 @@ export class Builder {
     // Attach dots.
     for (let i = 0; i < dots; i++) note.addDotToAll();
 
-    this.commitHooks.forEach((fn) => fn(options, note, this));
+    this.commitHooks.forEach((commitHook) => commitHook(options, note, this));
 
     this.elements.notes.push(note);
     this.elements.accidentals.push(accidentals);
@@ -414,6 +414,10 @@ export interface EasyScoreDefaults {
   [x: string]: any; // allow arbitrary properties via set(defaults)
 }
 
+/**
+ * EasyScore implements a parser for a simple language to generate
+ * VexFlow objects.
+ */
 export class EasyScore {
   static DEBUG: boolean = false;
 
@@ -433,7 +437,13 @@ export class EasyScore {
     };
   }
 
-  set(defaults: EasyScoreDefaults): this {
+  /**
+   * Set the Score defaults (`Type` must be set appropriately to avoid Errors when adding Staves).
+   * @param defaults.clef default clef ( treble | bass ...) see {@link Clef.types}
+   * @param defaults.type default time signature ( 4/4 | 9/8 ...)
+   * @param defaults.stem default stem arrangement (auto | up | down)
+   */
+  set(defaults: Partial<EasyScoreDefaults>): this {
     Object.assign(this.defaults, defaults);
     return this;
   }
@@ -470,16 +480,12 @@ export class EasyScore {
     return result;
   }
 
-  // TODO: Add stricter typing after migrating Factory
-  // eslint-disable-next-line
-  beam(notes: StaveNote[], options: any = {}): StaveNote[] {
+  beam(notes: StaveNote[], options?: { autoStem?: boolean; secondaryBeamBreaks?: number[] }): StaveNote[] {
     this.factory.Beam({ notes, options });
     return notes;
   }
 
-  // TODO: Add stricter typing after migrating Factory
-  // eslint-disable-next-line
-  tuplet(notes: StaveNote[], options: any = {}): StaveNote[] {
+  tuplet(notes: StaveNote[], options?: TupletOptions): StaveNote[] {
     this.factory.Tuplet({ notes, options });
     return notes;
   }
@@ -490,9 +496,7 @@ export class EasyScore {
     return this.builder.getElements().notes;
   }
 
-  // TODO: Add stricter typing after migrating Factory
-  // eslint-disable-next-line
-  voice(notes: StaveNote[], options?: any): Voice {
+  voice(notes: StaveNote[], options: { time?: string; options?: { softmaxFactor: number } } = {}): Voice {
     options = { time: this.defaults.time, ...options };
     return this.factory.Voice(options).addTickables(notes);
   }

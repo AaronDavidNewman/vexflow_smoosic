@@ -3,16 +3,16 @@
 //
 // VexFlow Test Support Library
 
-import { Font } from '../src/font';
-import { ContextBuilder, Renderer } from '../src/renderer';
-import { RenderContext } from '../src/types/common';
-import { Assert } from './declarations';
+import { Flow } from 'flow';
+import { Assert } from './types/qunit';
+import { RenderContext } from 'types/common';
+import { ContextBuilder, Renderer } from 'renderer';
+import { Factory } from 'factory';
+import { Font, Fonts } from 'font';
 
 /* eslint-disable */
-declare var global: any;
-declare var $: any;
-declare var QUnit: any;
-const VF: any = Vex.Flow;
+declare const global: any;
+declare const $: any;
 /* eslint-enable */
 
 export interface TestOptions {
@@ -20,16 +20,19 @@ export interface TestOptions {
   params: any /* eslint-disable-line */;
   assert: Assert;
   backend: number;
+
+  // Some tests use this field to pass around the ContextBuilder function.
+  contextBuilder?: ContextBuilder;
 }
 
 // Each test case will switch through the available fonts, and then restore the original font when done.
 let originalFontStack: Font[];
 function useTempFontStack(fontName: string): void {
-  originalFontStack = VF.DEFAULT_FONT_STACK;
-  VF.DEFAULT_FONT_STACK = VexFlowTests.FONT_STACKS[fontName];
+  originalFontStack = Flow.DEFAULT_FONT_STACK;
+  Flow.DEFAULT_FONT_STACK = VexFlowTests.FONT_STACKS[fontName];
 }
 function restoreOriginalFontStack(): void {
-  VF.DEFAULT_FONT_STACK = originalFontStack;
+  Flow.DEFAULT_FONT_STACK = originalFontStack;
 }
 
 // A micro util inspired by jQuery.
@@ -77,54 +80,6 @@ if (!global.$) {
   };
 }
 
-/**
- * When generating PNG images for the visual regression tests,
- * we mock out the QUnit methods (since we don't care about assertions).
- */
-function setupQUnitMockObject() {
-  // eslint-disable-next-line
-  const QUMock: any = {};
-
-  QUMock.assertions = {
-    ok: () => true,
-    equal: () => true,
-    deepEqual: () => true,
-    expect: () => true,
-    throws: () => true,
-    notOk: () => true,
-    notEqual: () => true,
-    notDeepEqual: () => true,
-    strictEqual: () => true,
-    notStrictEqual: () => true,
-    test: { module: { name: '' } },
-  };
-
-  QUMock.module = (name: string): void => {
-    QUMock.current_module = name;
-  };
-
-  // See: https://api.qunitjs.com/QUnit/test/
-  QUMock.test = (name: number, callback: (assert: Assert) => void): void => {
-    QUMock.current_test = name;
-    QUMock.assertions.test.module.name = name;
-    VF.shims.process.stdout.write(' \u001B[0G' + QUMock.current_module + ' :: ' + name + '\u001B[0K');
-    callback(QUMock.assertions);
-  };
-
-  global.QUnit = QUMock;
-  global.test = QUMock.test;
-  global.ok = QUMock.assertions.ok;
-  global.equal = QUMock.assertions.equal;
-  global.deepEqual = QUMock.assertions.deepEqual;
-  global.expect = QUMock.assertions.expect;
-  global.throws = QUMock.assertions.throws;
-  global.notOk = QUMock.assertions.notOk;
-  global.notEqual = QUMock.assertions.notEqual;
-  global.notDeepEqual = QUMock.assertions.notDeepEqual;
-  global.strictEqual = QUMock.assertions.strictEqual;
-  global.notStrictEqual = QUMock.assertions.notStrictEqual;
-}
-
 export type TestFunction = (options: TestOptions, contextBuilder: ContextBuilder) => void;
 
 /** Allow `name` to be used inside file names. */
@@ -157,6 +112,14 @@ const NODE_TEST_CONFIG = {
  *
  */
 class VexFlowTests {
+  // See: generate_png_images.js
+  // Provides access to Node JS fs & process.
+  // eslint-disable-next-line
+  static shims: any;
+
+  // Defined in run.ts
+  static run: () => void;
+
   static RUN_CANVAS_TESTS = true;
   static RUN_SVG_TESTS = true;
   static RUN_NODE_TESTS = false;
@@ -171,9 +134,9 @@ class VexFlowTests {
    *
    */
   static FONT_STACKS: Record<string, Font[]> = {
-    Bravura: [VF.Fonts.Bravura(), VF.Fonts.Gonville(), VF.Fonts.Custom()],
-    Gonville: [VF.Fonts.Gonville(), VF.Fonts.Bravura(), VF.Fonts.Custom()],
-    Petaluma: [VF.Fonts.Petaluma(), VF.Fonts.Gonville(), VF.Fonts.Custom()],
+    Bravura: [Fonts.Bravura(), Fonts.Gonville(), Fonts.Custom()],
+    Gonville: [Fonts.Gonville(), Fonts.Bravura(), Fonts.Custom()],
+    Petaluma: [Fonts.Petaluma(), Fonts.Gonville(), Fonts.Custom()],
   };
 
   static set NODE_FONT_STACKS(fontStacks: string[]) {
@@ -215,25 +178,9 @@ class VexFlowTests {
     return vexOutput;
   }
 
-  /**
-   * @param options
-   * @param width
-   * @param height
-   * @returns
-   */
-  static makeFactory(
-    options: { elementId: any; backend: any } /* eslint-disable-line */,
-    width: number = 450,
-    height: number = 140
-  ): any /* Factory */ /* eslint-disable-line */ {
-    return new VF.Factory({
-      renderer: {
-        elementId: options.elementId,
-        backend: options.backend,
-        width: width || 450,
-        height: height || 140,
-      },
-    });
+  static makeFactory(options: TestOptions, width: number = 450, height: number = 140): Factory {
+    const { elementId, backend } = options;
+    return new Factory({ renderer: { elementId, backend, width, height } });
   }
 
   // eslint-disable-next-line
@@ -266,7 +213,7 @@ class VexFlowTests {
    * @param element
    */
   static runNodeTestHelper(fontName: string, element: HTMLElement): void {
-    if (VF.Renderer.lastContext !== undefined) {
+    if (Renderer.lastContext !== undefined) {
       const moduleName = sanitizeName(QUnit.current_module);
       const testName = sanitizeName(QUnit.current_test);
       // If we are only testing Bravura, we OMIT the font name from the
@@ -280,12 +227,9 @@ class VexFlowTests {
       const imageData = (element as HTMLCanvasElement).toDataURL().split(';base64,').pop();
       const imageBuffer = Buffer.from(imageData as string, 'base64');
 
-      VF.shims.fs.writeFileSync(fileName, imageBuffer, { encoding: 'base64' });
+      VexFlowTests.shims.fs.writeFileSync(fileName, imageBuffer, { encoding: 'base64' });
     }
   }
-
-  // Defined in run.js
-  // static run() { ... }
 
   /** Run QUnit.test(...) for each font. */
   // eslint-disable-next-line
@@ -294,19 +238,17 @@ class VexFlowTests {
       QUnit.test(name, (assert: Assert) => {
         useTempFontStack(fontStackName);
         const elementId = VexFlowTests.generateTestID(`${testType.toLowerCase()}_` + fontStackName);
-        const title = assert.test.module.name + ' / ' + name + ` / ${testType} + ${fontStackName}`;
+        const title = assert.test.module.name + ' › ' + name + ` › ${testType} + ${fontStackName}`;
         const element = VexFlowTests.createTest(elementId, title, tagName);
         const options: TestOptions = { elementId, params, assert, backend };
         const isSVG = backend === Renderer.Backends.SVG;
-        const contextBuilder: ContextBuilder = isSVG ? VF.Renderer.getSVGContext : VF.Renderer.getCanvasContext;
+        const contextBuilder: ContextBuilder = isSVG ? Renderer.getSVGContext : Renderer.getCanvasContext;
         testFunc(options, contextBuilder);
         restoreOriginalFontStack();
         if (helper) helper(fontStackName, element);
       });
     });
   }
-
-  static plotNoteWidth = VF.Note.plotMetrics;
 
   /**
    * @param ctx
@@ -343,10 +285,6 @@ class VexFlowTests {
   }
 }
 
-if (!global.QUnit) {
-  setupQUnitMockObject();
-}
-
 /** Currently unused. */
 /*
 global.almostEqual = (value: number, expectedValue: number, errorMargin: number): boolean => {
@@ -354,7 +292,20 @@ global.almostEqual = (value: number, expectedValue: number, errorMargin: number)
 };
 */
 
-global.VF = VF;
-global.VF.Test = VexFlowTests;
+/**
+ * Used with array.reduce(...) to flatten arrays of arrays in the tests.
+ */
+// eslint-disable-next-line
+const concat = (a: any[], b: any[]): any[] => a.concat(b);
 
-export { VexFlowTests };
+/** Used in KeySignature and ClefKeySignature Tests. */
+const MAJOR_KEYS = ['C', 'F', 'Bb', 'Eb', 'Ab', 'Db', 'Gb', 'Cb', 'G', 'D', 'A', 'E', 'B', 'F#', 'C#'];
+const MINOR_KEYS = ['Am', 'Dm', 'Gm', 'Cm', 'Fm', 'Bbm', 'Ebm', 'Abm', 'Em', 'Bm', 'F#m', 'C#m', 'G#m', 'D#m', 'A#m'];
+
+// We no longer provide a global.VF in tests.
+// Everything can be accessed via Vex.Flow.* and Vex.Flow.Test.* or by importing the class directly.
+// eslint-disable-next-line
+// @ts-ignore
+Flow.Test = VexFlowTests;
+
+export { VexFlowTests, concat, MAJOR_KEYS, MINOR_KEYS };

@@ -7,9 +7,9 @@
 // *Throughout these comments, a "note" refers to the entire `StaveNote`,
 // and a "key" refers to a specific pitch/notehead within a note.*
 //
-// See `tests/stavenote_tests.js` for usage examples.
+// See `tests/stavenote_tests.ts` for usage examples.
 
-import { RuntimeError, log, midLine, warn } from './util';
+import { RuntimeError, log, midLine, warn, defined } from './util';
 import { Flow } from './flow';
 import { BoundingBox } from './boundingbox';
 import { Stem } from './stem';
@@ -18,13 +18,12 @@ import { StemmableNote } from './stemmablenote';
 import { StemOptions } from './stem';
 import { Modifier } from './modifier';
 import { Dot } from './dot';
-import { KeyProps } from './types/common';
 import { Beam } from './beam';
-import { ModifierContext } from './modifiercontext';
 import { ElementStyle } from './element';
 import { Stave } from './stave';
 import { Note, NoteStruct } from './note';
 import { ModifierContextState } from './modifiercontext';
+import { Accidental } from './accidental';
 
 export interface StaveNoteHeadBounds {
   y_top: number;
@@ -58,16 +57,14 @@ export interface StaveNoteStruct extends NoteStruct {
   stroke_px?: number;
   glyph_font_scale?: number;
   stem_direction?: number;
-  auto_stem: boolean;
+  auto_stem?: boolean;
   octave_shift?: number;
-  clef: string;
+  clef?: string;
 }
 
 // To enable logging for this class. Set `Vex.Flow.StaveNote.DEBUG` to `true`.
-function L(
-  ...args: // eslint-disable-next-line
-  any[]
-) {
+// eslint-disable-next-line
+function L(...args: any[]) {
   if (StaveNote.DEBUG) log('Vex.Flow.StaveNote', args);
 }
 
@@ -308,19 +305,14 @@ export class StaveNote extends StemmableNote {
   }
 
   static formatByY(notes: StaveNote[], state: ModifierContextState): void {
-    // NOTE: this function does not support more than two voices per stave
-    // use with care.
-    let hasStave = true;
+    // NOTE: this function does not support more than two voices per stave. Use with care.
 
+    let hasStave = true;
     for (let i = 0; i < notes.length; i++) {
       hasStave = hasStave && notes[i].getStave() != undefined;
     }
-
     if (!hasStave) {
-      throw new RuntimeError(
-        'Stave Missing',
-        'All notes must have a stave - Vex.Flow.ModifierContext.formatMultiVoice!'
-      );
+      throw new RuntimeError('NoStave', 'All notes must have a stave.');
     }
 
     let xShift = 0;
@@ -374,20 +366,16 @@ export class StaveNote extends StemmableNote {
   constructor(noteStruct: StaveNoteStruct) {
     super(noteStruct);
     this.setAttribute('type', 'StaveNote');
-    // Ledger Lines default width 2.0
+
+    // Set default width of ledger lines to 2.0.
     this.ledgerLineStyle = { lineWidth: 2.0 };
-    this.clef = noteStruct.clef;
-    this.octave_shift = noteStruct.octave_shift;
 
-    // Pull note rendering properties
+    this.clef = noteStruct.clef ?? 'treble';
+    this.octave_shift = noteStruct.octave_shift ?? 0;
+
+    // Pull note rendering properties.
     this.glyph = Flow.getGlyphProps(this.duration, this.noteType);
-
-    if (!this.glyph) {
-      throw new RuntimeError(
-        'BadArguments',
-        `Invalid note initialization data (No glyph found): ${JSON.stringify(noteStruct)}`
-      );
-    }
+    defined(this.glyph, 'BadArguments', `No glyph found for duration '${this.duration}' and type '${this.noteType}'`);
 
     // if true, displace note to right
     this.displaced = false;
@@ -417,7 +405,7 @@ export class StaveNote extends StemmableNote {
     if (noteStruct.auto_stem) {
       this.autoStem();
     } else {
-      this.setStemDirection(noteStruct.stem_direction);
+      this.setStemDirection(noteStruct.stem_direction ?? Stem.UP);
     }
     this.reset();
     this.buildFlag();
@@ -667,7 +655,9 @@ export class StaveNote extends StemmableNote {
     return resultLine;
   }
 
-  // Determine if current note is a rest
+  /**
+   * @returns true if this note is a type of rest. Rests don't have pitches, but take up space in the score.
+   */
   isRest(): boolean {
     return this.glyph.rest;
   }
@@ -731,16 +721,6 @@ export class StaveNote extends StemmableNote {
     }
 
     return this;
-  }
-
-  // Get the pitches in the note
-  getKeys(): string[] {
-    return this.keys;
-  }
-
-  // Get the properties for all the keys in the note
-  getKeyProps(): KeyProps[] {
-    return this.keyProps;
   }
 
   // Check if note is shifted to the right
@@ -875,48 +855,6 @@ export class StaveNote extends StemmableNote {
     return this.keyProps[index].line;
   }
 
-  // Add self to modifier context. `mContext` is the `ModifierContext`
-  // to be added to.
-  addToModifierContext(mContext: ModifierContext): this {
-    this.modifierContext = mContext;
-    for (let i = 0; i < this.modifiers.length; ++i) {
-      this.modifierContext.addMember(this.modifiers[i]);
-    }
-    this.modifierContext.addMember(this);
-    this.setPreFormatted(false);
-    return this;
-  }
-
-  // Generic function to add modifiers to a note
-  //
-  // Parameters:
-  // * `index`: The index of the key that we're modifying
-  // * `modifier`: The modifier to add
-  addModifier(a: number | Modifier, b: number | Modifier): this {
-    let index: number;
-    let modifier: Modifier;
-
-    if (typeof a === 'object' && typeof b === 'number') {
-      index = b;
-      modifier = a;
-    } else if (typeof a === 'number' && typeof b === 'object') {
-      // eslint-disable-next-line
-      console.warn('deprecated call signature to addModifier, use addModifier(modifier, index) instead');
-      index = a;
-      modifier = b;
-    } else {
-      throw new RuntimeError(
-        'WrongParams',
-        'Call signature to addModifier not supported, use addModifier(modifier, index) instead.'
-      );
-    }
-    modifier.setNote(this);
-    modifier.setIndex(index);
-    this.modifiers.push(modifier);
-    this.setPreFormatted(false);
-    return this;
-  }
-
   // Helper function to add an accidental to a key
   addAccidental(index: number, accidental: Modifier): this {
     return this.addModifier(accidental, index);
@@ -949,17 +887,13 @@ export class StaveNote extends StemmableNote {
   }
 
   // Get all accidentals in the `ModifierContext`
-  getAccidentals(): Modifier[] {
-    if (!this.modifierContext)
-      throw new RuntimeError('NoModifierContext', 'No modifier context attached to this note.');
-    return this.modifierContext.getMembers('accidentals') as Modifier[];
+  getAccidentals(): Accidental[] {
+    return this.checkModifierContext().getMembers('accidentals') as Accidental[];
   }
 
   // Get all dots in the `ModifierContext`
-  getDots(): Modifier[] {
-    if (!this.modifierContext)
-      throw new RuntimeError('NoModifierContext', 'No modifier context attached to this note.');
-    return this.modifierContext.getMembers('dots') as Modifier[];
+  getDots(): Dot[] {
+    return this.checkModifierContext().getMembers('dots') as Dot[];
   }
 
   // Get the width of the note if it is displaced. Used for `Voice`
@@ -993,19 +927,14 @@ export class StaveNote extends StemmableNote {
         noteHeadPadding = StaveNote.minNoteheadPadding;
       }
     }
-    const glyphWidth = this.getGlyphWidth();
-    let noteWidth: number;
 
-    const flagWidth: number = this.flag?.getMetrics()?.width ?? 0;
-    if (this.shouldDrawFlag() && this.stem_direction === Stem.DOWN) {
-      noteWidth = Math.max(flagWidth + Flow.STEM_WIDTH, glyphWidth);
-    } else if (this.shouldDrawFlag() && this.stem_direction === Stem.UP) {
-      noteWidth = flagWidth + glyphWidth + Flow.STEM_WIDTH;
-    } else {
-      noteWidth = glyphWidth;
+    let width = this.getGlyphWidth() + this.leftDisplacedHeadPx + this.rightDisplacedHeadPx + noteHeadPadding;
+
+    // For upward flagged notes, the width of the flag needs to be added
+    if (this.shouldDrawFlag() && this.stem_direction === Stem.UP) {
+      width += this.getGlyphWidth();
+      // TODO: Add flag width as a separate metric
     }
-    const width = noteWidth + this.leftDisplacedHeadPx + this.rightDisplacedHeadPx + noteHeadPadding;
-
     this.setWidth(width);
     this.setPreFormatted(true);
   }

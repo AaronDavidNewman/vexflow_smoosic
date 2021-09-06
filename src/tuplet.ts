@@ -44,7 +44,7 @@
  * }
  */
 
-import { RuntimeError, check } from './util';
+import { RuntimeError, defined } from './util';
 import { Element } from './element';
 import { Formatter } from './formatter';
 import { Glyph } from './glyph';
@@ -73,7 +73,10 @@ export class Tuplet extends Element {
   protected y_pos: number;
   protected x_pos: number;
   protected width: number;
-  protected location: number;
+
+  // location is initialized by the constructor via setTupletLocation(...).
+  protected location!: number;
+
   protected notes_occupied: number;
   protected ratioed: boolean;
   protected numerator_glyphs: Glyph[] = [];
@@ -118,7 +121,8 @@ export class Tuplet extends Element {
     this.y_pos = 16;
     this.x_pos = 100;
     this.width = 200;
-    this.location = this.options.location || Tuplet.LOCATION_TOP;
+
+    this.setTupletLocation(this.options.location || Tuplet.LOCATION_TOP);
 
     Formatter.AlignRestsToNotes(notes, true, true);
     this.resolveGlyphs();
@@ -156,13 +160,13 @@ export class Tuplet extends Element {
   }
 
   /**
-   * Set the tuplet to be displayed either on the top or bottom of the stave
+   * Set the tuplet indicator to be displayed either on the top or bottom of the stave.
    */
   setTupletLocation(location: number): this {
-    if (!location) {
+    if (location !== Tuplet.LOCATION_TOP && location !== Tuplet.LOCATION_BOTTOM) {
+      // eslint-disable-next-line
+      console.warn(`Invalid tuplet location [${location}]. Using Tuplet.LOCATION_TOP.`);
       location = Tuplet.LOCATION_TOP;
-    } else if (location !== Tuplet.LOCATION_TOP && location !== Tuplet.LOCATION_BOTTOM) {
-      throw new RuntimeError('BadArgument', 'Invalid tuplet location: ' + location);
     }
 
     this.location = location;
@@ -178,22 +182,11 @@ export class Tuplet extends Element {
   }
 
   beatsOccupiedDeprecationWarning(): void {
-    const msg = [
-      'beats_occupied has been deprecated as an ',
-      'option for tuplets. Please use notes_occupied ',
-      'instead. Calls to getBeatsOccupied and ',
-      'setBeatsOccupied should now be routed to ',
-      'getNotesOccupied and setNotesOccupied instead',
-    ].join('');
-
     // eslint-disable-next-line
-    if (console && console.warn) {
-      // eslint-disable-next-line
-      console.warn(msg);
-    } else if (console) {
-      // eslint-disable-next-line
-      console.log(msg);
-    }
+    console.warn(
+      'beats_occupied has been deprecated as an option for tuplets. Please use notes_occupied instead.',
+      'Calls to getBeatsOccupied / setBeatsOccupied should now be routed to getNotesOccupied / setNotesOccupied.'
+    );
   }
 
   getBeatsOccupied(): number {
@@ -245,7 +238,7 @@ export class Tuplet extends Element {
     // Count the tuplets that are on the same side (above/below)
     // as this tuplet:
     function countTuplets(note: Note, location: number) {
-      return note.tupletStack.filter((tuplet) => tuplet.location === location).length;
+      return note.getTupletStack().filter((tuplet) => tuplet.location === location).length;
     }
 
     this.notes.forEach((note) => {
@@ -320,7 +313,7 @@ export class Tuplet extends Element {
     // determine y value for tuplet
     this.y_pos = this.getYPosition();
 
-    const addGlyphWidth = (width: number, glyph: Glyph) => width + check<number>(glyph.getMetrics().width);
+    const addGlyphWidth = (width: number, glyph: Glyph) => width + defined(glyph.getMetrics().width);
 
     // calculate total width of tuplet notation
     let width = this.numerator_glyphs.reduce(addGlyphWidth, 0);
@@ -361,7 +354,7 @@ export class Tuplet extends Element {
     let x_offset = 0;
     this.numerator_glyphs.forEach((glyph) => {
       glyph.render(ctx, notation_start_x + x_offset, this.y_pos + this.point / 3 - 2 + shiftY);
-      x_offset += check<number>(glyph.getMetrics().width);
+      x_offset += defined(glyph.getMetrics().width);
     });
 
     // display colon and denominator if the ratio is to be shown
@@ -379,7 +372,7 @@ export class Tuplet extends Element {
       x_offset += this.point * 0.32;
       this.denom_glyphs.forEach((glyph) => {
         glyph.render(ctx, notation_start_x + x_offset, this.y_pos + this.point / 3 - 2 + shiftY);
-        x_offset += check<number>(glyph.getMetrics().width);
+        x_offset += defined(glyph.getMetrics().width);
       });
     }
   }

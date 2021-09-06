@@ -1,13 +1,12 @@
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 
-import { RuntimeError, midLine, log, check } from './util';
+import { RuntimeError, midLine, log, defined } from './util';
 import { Beam } from './beam';
 import { Flow } from './flow';
 import { Fraction } from './fraction';
 import { Voice } from './voice';
 import { StaveConnector } from './staveconnector';
-import { Note } from './note';
 import { ModifierContext } from './modifiercontext';
 import { TickContext } from './tickcontext';
 import { RenderContext } from './types/common';
@@ -17,7 +16,7 @@ import { Tickable } from './tickable';
 import { TabStave } from './tabstave';
 import { TabNote } from './tabnote';
 import { BoundingBox } from './boundingbox';
-import { StaveNote } from './stavenote';
+import { isNote, isStaveNote } from './typeguard';
 
 interface Distance {
   maxNegativeShiftPx: number;
@@ -48,7 +47,7 @@ export interface AlignmentContexts<T> {
   resolutionMultiplier: number;
 }
 
-type addToContextFn<T> = (tickable: Note, context: T, voiceIndex: number) => void;
+type addToContextFn<T> = (tickable: Tickable, context: T, voiceIndex: number) => void;
 type makeContextFn<T> = (tick?: { tickID: number }) => T;
 
 /**
@@ -105,24 +104,36 @@ function L(...args: any[]) {
   if (Formatter.DEBUG) log('Vex.Flow.Formatter', args);
 }
 
-/** Helper function to locate the next non-rest note(s). */
-function lookAhead(notes: Note[], restLine: number, i: number, compare: boolean) {
+/**
+ * Get the rest line number of the next non-rest note(s).
+ * @param notes array of Notes
+ * @param currRestLine
+ * @param currNoteIndex current note index
+ * @param compare if true, return the midpoint between the current rest line and the next rest line
+ * @returns a line number, which determines the vertical position of a rest.
+ */
+function getRestLineForNextNoteGroup(
+  notes: Tickable[],
+  currRestLine: number,
+  currNoteIndex: number,
+  compare: boolean
+): number {
   // If no valid next note group, nextRestLine is same as current.
-  let nextRestLine = restLine;
+  let nextRestLine = currRestLine;
 
-  // Get the rest line for next valid non-rest note group.
-  for (i += 1; i < notes.length; i += 1) {
-    const note = notes[i];
-    if (!note.isRest() && !note.shouldIgnoreTicks()) {
+  // Start with the next note and keep going until we find a valid non-rest note group.
+  for (let noteIndex = currNoteIndex + 1; noteIndex < notes.length; noteIndex++) {
+    const note = notes[noteIndex];
+    if (isNote(note) && !note.isRest() && !note.shouldIgnoreTicks()) {
       nextRestLine = note.getLineForRest();
       break;
     }
   }
 
   // Locate the mid point between two lines.
-  if (compare && restLine !== nextRestLine) {
-    const top = Math.max(restLine, nextRestLine);
-    const bot = Math.min(restLine, nextRestLine);
+  if (compare && currRestLine !== nextRestLine) {
+    const top = Math.max(currRestLine, nextRestLine);
+    const bot = Math.min(currRestLine, nextRestLine);
     nextRestLine = midLine(top, bot);
   }
   return nextRestLine;
@@ -167,7 +178,7 @@ export class Formatter {
    * Helper function to layout "notes" one after the other without
    * regard for proportions. Useful for tests and debugging.
    */
-  static SimpleFormat(notes: Note[], x = 0, { paddingBetween = 10 } = {}): void {
+  static SimpleFormat(notes: Tickable[], x = 0, { paddingBetween = 10 } = {}): void {
     notes.reduce((accumulator, note) => {
       note.addToModifierContext(new ModifierContext());
       const tick = new TickContext().addTickable(note).preFormat();
@@ -292,7 +303,7 @@ export class Formatter {
     tabstave: TabStave,
     stave: Stave,
     tabnotes: TabNote[],
-    notes: Note[],
+    notes: Tickable[],
     autobeam: boolean,
     params: FormatOptions
   ): void {
@@ -332,40 +343,43 @@ export class Formatter {
   }
 
   /**
-   * Auto position rests based on previous/next note positions.
-   * @param notes an array of notes.
-   * @param alignAllNotes if set to false, only aligns non-beamed notes.
-   * @param alignTuplets if set to false, ignores tuplets.
+   * Automatically set the vertical position of rests based on previous/next note positions.
+   * @param tickables an array of Tickables.
+   * @param alignAllNotes If `false`, only align rests that are within a group of beamed notes.
+   * @param alignTuplets If `false`, ignores tuplets.
    */
-  static AlignRestsToNotes(notes: Note[], alignAllNotes: boolean, alignTuplets?: boolean): void {
-    notes.forEach((note, index) => {
-      if (note instanceof StaveNote && note.isRest()) {
-        if (note.getTuplet() && !alignTuplets) return;
+  static AlignRestsToNotes(tickables: Tickable[], alignAllNotes: boolean, alignTuplets?: boolean): void {
+    tickables.forEach((currTickable: Tickable, index: number) => {
+      if (isStaveNote(currTickable) && currTickable.isRest()) {
+        if (currTickable.getTuplet() && !alignTuplets) {
+          return;
+        }
 
         // If activated rests not on default can be rendered as specified.
-        const position = note.getGlyph().position.toUpperCase();
-        if (position !== 'R/4' && position !== 'B/4') return;
+        const position = currTickable.getGlyph().position.toUpperCase();
+        if (position !== 'R/4' && position !== 'B/4') {
+          return;
+        }
 
-        if (alignAllNotes || note.getBeam()) {
+        if (alignAllNotes || currTickable.getBeam()) {
           // Align rests with previous/next notes.
-          const props = note.getKeyProps()[0];
+          const props = currTickable.getKeyProps()[0];
           if (index === 0) {
-            props.line = lookAhead(notes, props.line, index, false);
-            note.setKeyLine(0, props.line);
-          } else if (index > 0 && index < notes.length) {
-            // If previous note is a rest, use its line number.
-            let restLine;
-            const prevNote = notes[index - 1];
-            if (prevNote && prevNote.isRest()) {
-              restLine = prevNote.keyProps[0].line;
-              props.line = restLine;
-            } else {
-              restLine = prevNote.getLineForRest();
-              // Get the rest line for next valid non-rest note group.
-              props.line = lookAhead(notes, restLine, index, true);
+            props.line = getRestLineForNextNoteGroup(tickables, props.line, index, false);
+          } else if (index > 0 && index < tickables.length) {
+            // If previous tickable is a rest, use its line number.
+            const prevTickable = tickables[index - 1];
+            if (isStaveNote(prevTickable)) {
+              if (prevTickable.isRest()) {
+                props.line = prevTickable.getKeyProps()[0].line;
+              } else {
+                const restLine = prevTickable.getLineForRest();
+                // Get the rest line for next valid non-rest note group.
+                props.line = getRestLineForNextNoteGroup(tickables, restLine, index, true);
+              }
             }
-            note.setKeyLine(0, props.line);
           }
+          currTickable.setKeyLine(0, props.line);
         }
       }
     });
@@ -412,9 +426,10 @@ export class Formatter {
   }
 
   /**
-   * Find all the rests in each of the `voices` and align them
-   * to neighboring notes. If `alignAllNotes` is `false`, then only
-   * align non-beamed notes.
+   * Find all the rests in each of the `voices` and align them to neighboring notes.
+   *
+   * @param voices
+   * @param alignAllNotes If `false`, only align rests within beamed groups of notes. If `true`, align all rests.
    */
   alignRests(voices: Voice[], alignAllNotes: boolean): void {
     if (!voices || !voices.length) {
@@ -478,12 +493,12 @@ export class Formatter {
       if (context.getTickables().length < voices.length) {
         unalignedCtxCount += 1;
       }
-      // calculate the 'width entropy' over all the tickables
-      context.getTickables().forEach((tt) => {
-        wsum += tt.getMetrics().width;
-        dsum += tt.getTicks().value();
-        widths.push(tt.getMetrics().width);
-        durations.push(tt.getTicks().value());
+      // Calculate the 'width entropy' over all the Tickables.
+      context.getTickables().forEach((t: Tickable) => {
+        wsum += t.getMetrics().width;
+        dsum += t.getTicks().value();
+        widths.push(t.getMetrics().width);
+        durations.push(t.getTicks().value());
       });
       const width = context.getWidth();
       this.minTotalWidth += width;
@@ -492,11 +507,11 @@ export class Formatter {
     this.hasMinTotalWidth = true;
     // normalized (0-1) STDDEV of widths/durations gives us padding hints.
     const wavg = wsum > 0 ? wsum / widths.length : 1 / widths.length;
-    const wvar = widths.map((ll) => Math.pow(ll - wavg, 2)).reduce((a, b) => a + b);
+    const wvar = sumArray(widths.map((ll) => Math.pow(ll - wavg, 2)));
     const wpads = Math.pow(wvar / widths.length, 0.5) / wavg;
 
     const davg = dsum / durations.length;
-    const dvar = durations.map((ll) => Math.pow(ll - davg, 2)).reduce((a, b) => a + b);
+    const dvar = sumArray(durations.map((ll) => Math.pow(ll - davg, 2)));
     const dpads = Math.pow(dvar / durations.length, 0.5) / davg;
 
     // Find max of 3 methods pad the width with that
@@ -541,9 +556,9 @@ export class Formatter {
     return resolutionMultiplier;
   }
 
-  /** Create `ModifierContext`s for each tick in `voices`. */
+  /** Create a `ModifierContext` for each tick in `voices`. */
   createModifierContexts(voices: Voice[]): AlignmentContexts<ModifierContext> {
-    const fn: addToContextFn<ModifierContext> = (tickable: Note, context: ModifierContext) =>
+    const fn: addToContextFn<ModifierContext> = (tickable: Tickable, context: ModifierContext) =>
       tickable.addToModifierContext(context);
     const contexts = createContexts(voices, () => new ModifierContext(), fn);
     this.modifierContexts = contexts;
@@ -551,11 +566,11 @@ export class Formatter {
   }
 
   /**
-   * Create `TickContext`s for each tick in `voices`. Also calculate the
+   * Create a `TickContext` for each tick in `voices`. Also calculate the
    * total number of ticks in voices.
    */
   createTickContexts(voices: Voice[]): AlignmentContexts<TickContext> {
-    const fn: addToContextFn<TickContext> = (tickable: Note, context: TickContext, voiceIndex: number) =>
+    const fn: addToContextFn<TickContext> = (tickable: Tickable, context: TickContext, voiceIndex: number) =>
       context.addTickable(tickable, voiceIndex);
     const contexts = createContexts(voices, (tick?: { tickID: number }) => new TickContext(tick), fn);
     this.tickContexts = contexts;
@@ -577,7 +592,7 @@ export class Formatter {
     // Initialize context maps.
     const contexts = this.tickContexts;
     if (!contexts) {
-      throw new RuntimeError('NoTickContexts', 'preFormat requires TickContexs');
+      throw new RuntimeError('NoTickContexts', 'preFormat requires TickContexts');
     }
 
     const { list: contextList, map: contextMap } = contexts;
@@ -625,7 +640,7 @@ export class Formatter {
     const formatterOptions = this.formatterOptions;
     const softmaxFactor = formatterOptions.softmaxFactor || 100;
     const exp = (tick: number) => softmaxFactor ** (contextMap[tick].getMaxTicks().value() / totalTicks);
-    const expTicksUsed = contextList.map(exp).reduce((a: number, b: number) => a + b);
+    const expTicksUsed = sumArray(contextList.map(exp));
 
     this.minTotalWidth = x + shift;
     this.hasMinTotalWidth = true;
@@ -644,7 +659,7 @@ export class Formatter {
       const distances: Distance[] = contextList.map((tick: number, i: number) => {
         const context: TickContext = contextMap[tick];
         const voices = context.getTickablesByVoice();
-        let backTickable: Note | undefined;
+        let backTickable: Tickable | undefined;
         if (i > 0) {
           const prevContext: TickContext = contextMap[contextList[i - 1]];
           // Go through each tickable and search backwards for another tickable
@@ -701,7 +716,7 @@ export class Formatter {
               if (formatterOptions.globalSoftmax) {
                 const t = totalTicks;
                 expectedDistance = (softmaxFactor ** (maxTicks / t) / expTicksUsed) * adjustedJustifyWidth;
-              } else if (backTickable) {
+              } else if (typeof backTickable !== 'undefined') {
                 expectedDistance = backTickable.getVoice().softmax(maxTicks) * adjustedJustifyWidth;
               }
 
@@ -729,7 +744,7 @@ export class Formatter {
         if (index > 0) {
           const contextX = context.getX();
           const ideal = idealDistances[index];
-          const errorPx = check<Tickable>(ideal.fromTickable).getX() + ideal.expectedDistance - (contextX + spaceAccum);
+          const errorPx = defined(ideal.fromTickable).getX() + ideal.expectedDistance - (contextX + spaceAccum);
 
           let negativeShiftPx = 0;
           if (errorPx > 0) {
@@ -743,7 +758,7 @@ export class Formatter {
         }
 
         // Move center aligned tickables to middle
-        context.getCenterAlignedTickables().forEach((tickable: Note) => {
+        context.getCenterAlignedTickables().forEach((tickable: Tickable) => {
           tickable.setCenterXShift(centerX - context.getX());
         });
       });
@@ -888,8 +903,6 @@ export class Formatter {
       ...options,
     };
 
-    const sum = (arr: number[]) => arr.reduce((a, b) => a + b);
-
     // Move `current` tickcontext by `shift` pixels, and adjust the freedom
     // on adjacent tickcontexts.
     function move(current: TickContext, shift: number, prev?: TickContext, next?: TickContext) {
@@ -910,7 +923,7 @@ export class Formatter {
 
       move(context, shift, prevContext, nextContext);
 
-      const cost = -sum(context.getTickables().map((t) => t.getFormatterMetrics().space.deviation));
+      const cost = -sumArray(context.getTickables().map((t) => t.getFormatterMetrics().space.deviation));
 
       if (cost > 0) {
         shift = -Math.min(context.getFormatterMetrics().freedom.right, Math.abs(cost));
@@ -922,7 +935,7 @@ export class Formatter {
         }
       }
 
-      shift *= check<{ alpha: number }>(options).alpha;
+      shift *= defined(options).alpha;
       this.totalShift += shift;
     });
 
@@ -997,3 +1010,7 @@ export class Formatter {
     return this.format(voices, justifyWidth, options);
   }
 }
+
+// Helper functions.
+const sum = (a: number, b: number) => a + b;
+const sumArray = (arr: number[]) => arr.reduce(sum, 0);

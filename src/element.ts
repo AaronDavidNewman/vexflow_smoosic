@@ -2,7 +2,7 @@
 // @author Mohit Cheppudira
 // MIT License
 
-import { RuntimeError } from './util';
+import { defined } from './util';
 import { Registry } from './registry';
 import { BoundingBox } from './boundingbox';
 import { Font } from './font';
@@ -40,9 +40,11 @@ export abstract class Element {
   protected style?: ElementStyle;
   private attrs: ElementAttributes;
   protected boundingBox?: BoundingBox;
-  protected fontStack: Font[];
-  protected musicFont: Font;
   protected registry?: Registry;
+
+  // fontStack and musicFont are both initialized by the constructor via this.setFontStack(...).
+  protected fontStack!: Font[];
+  protected musicFont!: Font;
 
   protected static newID(): string {
     return `auto${Element.ID++}`;
@@ -58,9 +60,7 @@ export abstract class Element {
     };
 
     this.rendered = false;
-
-    this.fontStack = Flow.DEFAULT_FONT_STACK;
-    this.musicFont = Flow.DEFAULT_FONT_STACK[0];
+    this.setFontStack(Flow.DEFAULT_FONT_STACK);
 
     // If a default registry exist, then register with it right away.
     Registry.getDefaultRegistry()?.register(this);
@@ -203,6 +203,11 @@ export abstract class Element {
     return this;
   }
 
+  /** Get the boundingBox. */
+  getBoundingBox(): BoundingBox | undefined {
+    return this.boundingBox;
+  }
+
   /** Return the context. */
   getContext(): RenderContext | undefined {
     return this.context;
@@ -214,16 +219,8 @@ export abstract class Element {
     return this;
   }
 
-  /** Get the boundingBox. */
-  getBoundingBox(): BoundingBox | undefined {
-    return this.boundingBox;
-  }
-
   /** Validate and return the context. */
   checkContext(): RenderContext {
-    if (!this.context) {
-      throw new RuntimeError('NoContext', 'No rendering context attached to instance.');
-    }
-    return this.context;
+    return defined(this.context, 'NoContext', 'No rendering context attached to instance.');
   }
 }

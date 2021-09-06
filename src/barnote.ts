@@ -4,10 +4,10 @@
 import { log } from './util';
 import { Note } from './note';
 import { Barline, BarlineType } from './stavebarline';
+import { ModifierContext } from './modifiercontext';
 
-function L(
-  // eslint-disable-next-line
-  ...args: any[]) {
+// eslint-disable-next-line
+function L(...args: any[]) {
   if (BarNote.DEBUG) log('Vex.Flow.BarNote', args);
 }
 
@@ -16,12 +16,13 @@ function L(
  * be added to a voice and rendered in the middle of a stave. Since it has no
  * duration, it consumes no `tick`s, and is dealt with appropriately by the formatter.
  *
- * See `tests/barnote_tests.js` for usage examples.
+ * See `tests/barnote_tests.ts` for usage examples.
  */
 export class BarNote extends Note {
   protected metrics: { widths: Record<string, number> };
   /** To enable logging for this class. Set `Vex.Flow.BarNote.DEBUG` to `true`. */
   static DEBUG: boolean;
+  // Initialized by the constructor via this.setType(type)
   protected type!: BarlineType;
 
   constructor(type = BarlineType.SINGLE) {
@@ -62,12 +63,14 @@ export class BarNote extends Note {
     return this;
   }
 
-  /** overridden to ignore. */
-  addToModifierContext(): this {
+  /* Overridden to ignore */
+  // eslint-disable-next-line
+  addToModifierContext(mc: ModifierContext): this {
+    // DO NOTHING.
     return this;
   }
 
-  /** overridden to ignore. */
+  /** Overridden to ignore. */
   preFormat(): this {
     this.setPreFormatted(true);
     return this;

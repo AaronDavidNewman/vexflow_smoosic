@@ -3,9 +3,11 @@
 
 import { Note } from './note';
 import { KeySignature } from './keysignature';
+import { ModifierContext } from './modifiercontext';
 
 export class KeySigNote extends Note {
   protected keySignature: KeySignature;
+
   constructor(keySpec: string, cancelKeySpec: string, alterKeySpec: string) {
     super({ duration: 'b' });
     this.setAttribute('type', 'KeySigNote');
@@ -16,8 +18,10 @@ export class KeySigNote extends Note {
     this.ignore_ticks = true;
   }
 
-  addToModifierContext(): this {
-    /* overridden to ignore */
+  /* Overridden to ignore */
+  // eslint-disable-next-line
+  addToModifierContext(mc: ModifierContext): this {
+    // DO NOTHING.
     return this;
   }
 
