@@ -46,13 +46,13 @@ function validNotes(): void {
 
   try {
     music.getNoteParts('r');
-  } catch (e) {
+  } catch (e: any) {
     equal(e.code, 'BadArguments', 'Invalid note: r');
   }
 
   try {
     music.getNoteParts('');
-  } catch (e) {
+  } catch (e: any) {
     equal(e.code, 'BadArguments', "Invalid note: ''");
   }
 }
@@ -89,19 +89,19 @@ function validKeys(): void {
 
   try {
     music.getKeyParts('r');
-  } catch (e) {
+  } catch (e: any) {
     equal(e.code, 'BadArguments', 'Invalid key: r');
   }
 
   try {
     music.getKeyParts('');
-  } catch (e) {
+  } catch (e: any) {
     equal(e.code, 'BadArguments', "Invalid key: ''");
   }
 
   try {
     music.getKeyParts('#m');
-  } catch (e) {
+  } catch (e: any) {
     equal(e.code, 'BadArguments', 'Invalid key: #m');
   }
 }
