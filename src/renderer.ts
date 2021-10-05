@@ -33,28 +33,20 @@ export class Renderer {
     DOWN: 3, // Downward leg
   };
 
-  /**
-   * Set this to true if you're using VexFlow inside a runtime
-   * that does not allow modifying canvas objects. There is a small
-   * performance degradation due to the extra indirection.
-   */
-  static readonly USE_CANVAS_PROXY = false;
-
   static lastContext?: RenderContext = undefined;
 
   static buildContext(
-    elementId: string,
+    elementId: string | HTMLCanvasElement | HTMLDivElement,
     backend: number,
     width: number,
     height: number,
-    background?: string
+    background: string = '#FFF'
   ): RenderContext {
     const renderer = new Renderer(elementId, backend);
     if (width && height) {
       renderer.resize(width, height);
     }
 
-    if (!background) background = '#FFF';
     const ctx = renderer.getContext();
     ctx.setBackgroundFillStyle(background);
     Renderer.lastContext = ctx;
@@ -67,43 +59,6 @@ export class Renderer {
 
   static getSVGContext(elementId: string, width: number, height: number, background?: string): RenderContext {
     return Renderer.buildContext(elementId, Renderer.Backends.SVG, width, height, background);
-  }
-
-  // eslint-disable-next-line
-  static bolsterCanvasContext(ctx: any): RenderContext {
-    if (Renderer.USE_CANVAS_PROXY) {
-      return new CanvasContext(ctx);
-    }
-
-    // Modify the CanvasRenderingContext2D to include the following methods, if they do not already exist.
-    // TODO: Is a Proxy object appropriate here?
-    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
-    const methodNames = [
-      'clear',
-      'setFont',
-      'setRawFont',
-      'setFillStyle',
-      'setBackgroundFillStyle',
-      'setStrokeStyle',
-      'setShadowColor',
-      'setShadowBlur',
-      'setLineWidth',
-      'setLineCap',
-      'openGroup',
-      'closeGroup',
-      'getGroup',
-    ];
-
-    ctx.vexFlowCanvasContext = ctx;
-
-    methodNames.forEach((methodName) => {
-      if (!(methodName in ctx)) {
-        // eslint-disable-next-line
-        ctx[methodName] = (CanvasContext.prototype as any)[methodName];
-      }
-    });
-
-    return ctx;
   }
 
   // Draw a dashed line (horizontal, vertical or diagonal
@@ -157,7 +112,7 @@ export class Renderer {
       throw new RuntimeError('BadArgument', 'Invalid id for renderer.');
     } else if (typeof canvasId === 'string') {
       this.elementId = canvasId;
-      this.element = document.getElementById(canvasId as string) as HTMLCanvasElement | HTMLDivElement;
+      this.element = document.getElementById(canvasId) as HTMLCanvasElement | HTMLDivElement;
     } else if ('getContext' in canvasId /* HTMLCanvasElement */) {
       this.element = canvasId as HTMLCanvasElement;
     } else {
@@ -171,8 +126,14 @@ export class Renderer {
       const canvasElement = this.element as HTMLCanvasElement;
       if (!canvasElement.getContext) {
         throw new RuntimeError('BadElement', `Can't get canvas context from element: ${canvasId}`);
+      } else {
+        const context = canvasElement.getContext('2d');
+        if (context) {
+          this.ctx = new CanvasContext(context);
+        } else {
+          throw new RuntimeError('BadElement', `Can't get canvas context from element: ${canvasId}`);
+        }
       }
-      this.ctx = Renderer.bolsterCanvasContext(canvasElement.getContext('2d'));
     } else if (this.backend === Renderer.Backends.SVG) {
       this.ctx = new SVGContext(this.element);
     } else {
@@ -183,9 +144,15 @@ export class Renderer {
   resize(width: number, height: number): this {
     if (this.backend === Renderer.Backends.CANVAS) {
       const canvasElement = this.element as HTMLCanvasElement;
-      [width, height] = CanvasContext.SanitizeCanvasDims(width, height);
-
       const devicePixelRatio = window.devicePixelRatio || 1;
+
+      // Scale the canvas size by the device pixel ratio clamping to the maximum
+      // supported size.
+      [width, height] = CanvasContext.SanitizeCanvasDims(width * devicePixelRatio, height * devicePixelRatio);
+
+      // Divide back down by the pixel ratio and convert to integers.
+      width = (width / devicePixelRatio) | 0;
+      height = (height / devicePixelRatio) | 0;
 
       canvasElement.width = width * devicePixelRatio;
       canvasElement.height = height * devicePixelRatio;

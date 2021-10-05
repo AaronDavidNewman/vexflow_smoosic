@@ -13,13 +13,13 @@ export enum Justification {
 }
 
 export interface TextNoteStruct extends NoteStruct {
+  text?: string;
+  glyph?: string;
   ignore_ticks?: boolean;
   smooth?: boolean;
-  glyph?: string;
   font?: FontInfo;
   subscript?: string;
   superscript?: string;
-  text: string;
 }
 
 /**
@@ -28,6 +28,10 @@ export interface TextNoteStruct extends NoteStruct {
  * Examples of this would be such as dynamics, lyrics, chord changes, etc.
  */
 export class TextNote extends Note {
+  static get CATEGORY(): string {
+    return 'TextNote';
+  }
+
   protected text: string;
   protected superscript?: string;
   protected subscript?: string;
@@ -104,37 +108,35 @@ export class TextNote extends Note {
     };
   }
 
-  constructor(options: TextNoteStruct) {
-    super(options);
-    this.setAttribute('type', 'TextNote');
+  constructor(noteStruct: TextNoteStruct) {
+    super(noteStruct);
 
-    // Note properties
-    this.text = options.text;
-    this.superscript = options.superscript;
-    this.subscript = options.subscript;
-    this.glyph = undefined;
+    this.text = noteStruct.text || '';
+    this.superscript = noteStruct.superscript;
+    this.subscript = noteStruct.subscript;
     this.font = {
       family: 'Arial',
       size: 12,
       weight: '',
-      ...options.font,
+      ...noteStruct.font,
     };
+    this.line = noteStruct.line || 0;
+    this.smooth = noteStruct.smooth || false;
+    this.ignore_ticks = noteStruct.ignore_ticks || false;
+    this.justification = Justification.LEFT;
 
     // Determine and set initial note width. Note that the text width is
     // an approximation and isn't very accurate. The only way to accurately
-    // measure the length of text is with `canvasmeasureText()`
-    if (options.glyph) {
-      const struct = TextNote.GLYPHS[options.glyph];
-      if (!struct) throw new RuntimeError('Invalid glyph type: ' + options.glyph);
+    // measure the length of text is with `CanvasRenderingContext2D.measureText()`.
+    if (noteStruct.glyph) {
+      const struct = TextNote.GLYPHS[noteStruct.glyph];
+      if (!struct) throw new RuntimeError('Invalid glyph type: ' + noteStruct.glyph);
 
       this.glyph = new Glyph(struct.code, 40, { category: 'textNote' });
       this.setWidth(this.glyph.getMetrics().width);
+    } else {
+      this.glyph = undefined;
     }
-
-    this.line = options.line || 0;
-    this.smooth = options.smooth || false;
-    this.ignore_ticks = options.ignore_ticks || false;
-    this.justification = TextNote.Justification.LEFT;
   }
 
   /** Set the horizontal justification of the TextNote. */
@@ -207,23 +209,18 @@ export class TextNote extends Note {
       ctx.setFont(this.font.family, this.font.size, this.font.weight);
       ctx.fillText(this.text, x, y);
 
-      let height = ctx.measureText(this.text).height;
-      // CanvasRenderingContext2D.measureText() does not have a height field.
-      if (typeof height === 'undefined') {
-        // TODO: Consolidate calls to ctx.measureText('M').
-        height = ctx.measureText('M').width;
-      }
+      const height = ctx.measureText(this.text).height;
 
       // Write superscript
       if (this.superscript) {
         ctx.setFont(this.font.family, this.font.size / 1.3, this.font.weight);
-        ctx.fillText(this.superscript, x + width + 2, y - height / 2.2);
+        ctx.fillText(this.superscript, x + this.width + 2, y - height / 2.2);
       }
 
       // Write subscript
       if (this.subscript) {
         ctx.setFont(this.font.family, this.font.size / 1.3, this.font.weight);
-        ctx.fillText(this.subscript, x + width + 2, y + height / 2.2 - 1);
+        ctx.fillText(this.subscript, x + this.width + 2, y + height / 2.2 - 1);
       }
 
       this.restoreStyle(ctx);

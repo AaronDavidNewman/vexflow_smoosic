@@ -14,6 +14,20 @@ import { ModifierContextState } from './modifiercontext';
 import { isNote, isStaveNote, isTabNote } from './typeguard';
 
 export class Stroke extends Modifier {
+  static get CATEGORY(): string {
+    return 'Stroke';
+  }
+
+  static readonly Type = {
+    BRUSH_DOWN: 1,
+    BRUSH_UP: 2,
+    ROLL_DOWN: 3, // Arpeggiated chord
+    ROLL_UP: 4, // Arpeggiated chord
+    RASQUEDO_DOWN: 5,
+    RASQUEDO_UP: 6,
+    ARPEGGIO_DIRECTIONLESS: 7, // Arpeggiated chord without upwards or downwards arrow
+  };
+
   protected options: {
     all_voices: boolean;
   };
@@ -27,20 +41,6 @@ export class Stroke extends Modifier {
     stroke_spacing: number;
   };
   protected font: FontInfo;
-
-  static get CATEGORY(): string {
-    return 'strokes';
-  }
-
-  static readonly Type = {
-    BRUSH_DOWN: 1,
-    BRUSH_UP: 2,
-    ROLL_DOWN: 3, // Arpeggiated chord
-    ROLL_UP: 4, // Arpeggiated chord
-    RASQUEDO_DOWN: 5,
-    RASQUEDO_UP: 6,
-    ARPEGGIO_DIRECTIONLESS: 7, // Arpeggiated chord without upwards or downwards arrow
-  };
 
   // Arrange strokes inside `ModifierContext`
   static format(strokes: Stroke[], state: ModifierContextState): boolean {
@@ -79,14 +79,13 @@ export class Stroke extends Modifier {
     return true;
   }
 
-  constructor(type: number, options: { all_voices: boolean }) {
+  constructor(type: number, options?: { all_voices: boolean }) {
     super();
-    this.setAttribute('type', 'Stroke');
 
-    this.options = { ...options };
+    this.options = { all_voices: true, ...options };
 
     // multi voice - span stroke across all voices if true
-    this.all_voices = 'all_voices' in this.options ? this.options.all_voices : true;
+    this.all_voices = this.options.all_voices;
 
     // multi voice - end note of stroke, set in draw()
     this.type = type;
@@ -108,10 +107,6 @@ export class Stroke extends Modifier {
     this.setWidth(10);
   }
 
-  getCategory(): string {
-    return Stroke.CATEGORY;
-  }
-
   getPosition(): number {
     return this.position;
   }
@@ -131,7 +126,7 @@ export class Stroke extends Modifier {
     let topY = start.y;
     let botY = start.y;
     const x = start.x - 5;
-    const line_space = note.checkStave().getOptions().spacing_between_lines_px;
+    const line_space = note.checkStave().getSpacingBetweenLines();
 
     const notes = this.checkModifierContext().getMembers(note.getCategory());
     for (let i = 0; i < notes.length; i++) {
@@ -139,7 +134,6 @@ export class Stroke extends Modifier {
       if (isNote(note)) {
         // Only Note objects have getYs().
         // note is an instance of either StaveNote or TabNote.
-        // note.getCategory() returns 'stavenotes' or 'tabnotes'
         ys = note.getYs();
         for (let n = 0; n < ys.length; n++) {
           if (this.note === notes[i] || this.all_voices) {

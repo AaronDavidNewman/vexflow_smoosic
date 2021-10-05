@@ -9,14 +9,11 @@ import { Flow } from './flow';
 import { Music } from './music';
 import { Modifier } from './modifier';
 import { Glyph } from './glyph';
-import { GraceNoteGroup } from './gracenotegroup';
-import { GraceNote } from './gracenote';
 import { ModifierContextState } from './modifiercontext';
 import { Voice } from './voice';
 import { Note } from './note';
-import { StaveNote } from './stavenote';
 import { Tickable } from './tickable';
-import { isCategory, isStaveNote } from './typeguard';
+import { isCategory, isGraceNote, isGraceNoteGroup, isStaveNote } from './typeguard';
 
 type Line = {
   column: number;
@@ -63,7 +60,7 @@ export class Accidental extends Modifier {
 
   /** Accidentals category string. */
   static get CATEGORY(): string {
-    return 'accidentals';
+    return 'Accidental';
   }
 
   /** Arrange accidentals inside a ModifierContext. */
@@ -92,7 +89,7 @@ export class Accidental extends Modifier {
     // First determine the accidentals' Y positions from the note.keys
     for (let i = 0; i < accidentals.length; ++i) {
       const acc = accidentals[i];
-      const note = acc.getNote() as StaveNote;
+      const note = acc.getNote();
       const stave = note.getStave();
       const index = acc.checkIndex();
       const props = note.getKeyProps()[index];
@@ -104,7 +101,7 @@ export class Accidental extends Modifier {
         prevNote = note;
       }
       if (stave) {
-        const lineSpace = stave.getOptions().spacing_between_lines_px;
+        const lineSpace = stave.getSpacingBetweenLines();
         const y = stave.getYForLine(props.line);
         const accLine = Math.round((y / lineSpace) * 2) / 2;
         accList.push({ y, line: accLine, shift: shiftL, acc, lineSpace });
@@ -462,9 +459,8 @@ export class Accidental extends Modifier {
 
         // process grace notes
         staveNote.getModifiers().forEach((modifier: Modifier) => {
-          // TODO: Replace with isCategory()?
-          if (modifier.getCategory() === GraceNoteGroup.CATEGORY) {
-            (modifier as GraceNoteGroup).getGraceNotes().forEach(processNote);
+          if (isGraceNoteGroup(modifier)) {
+            modifier.getGraceNotes().forEach(processNote);
           }
         });
       };
@@ -480,7 +476,6 @@ export class Accidental extends Modifier {
    */
   constructor(type: string) {
     super();
-    this.setAttribute('type', 'Accidental');
 
     L('New accidental: ', type);
 
@@ -521,11 +516,6 @@ export class Accidental extends Modifier {
     }
   }
 
-  /** Get element category string. */
-  getCategory(): string {
-    return Accidental.CATEGORY;
-  }
-
   /** Get width in pixels. */
   getWidth(): number {
     if (this.cautionary) {
@@ -549,7 +539,7 @@ export class Accidental extends Modifier {
     this.note = note;
 
     // Accidentals attached to grace notes are rendered smaller.
-    if (note.getCategory() === GraceNote.CATEGORY) {
+    if (isGraceNote(note)) {
       this.render_options.font_scale = 25;
       this.reset();
     }

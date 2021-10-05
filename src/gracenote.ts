@@ -6,14 +6,12 @@ import { Stem } from './stem';
 import { Flow } from './flow';
 
 export interface GraceNoteStruct extends StaveNoteStruct {
-  slash: boolean;
+  slash?: boolean;
 }
-export class GraceNote extends StaveNote {
-  protected slash: boolean;
-  protected slur: boolean;
 
+export class GraceNote extends StaveNote {
   static get CATEGORY(): string {
-    return 'gracenotes';
+    return 'GraceNote';
   }
 
   static get LEDGER_LINE_OFFSET(): number {
@@ -24,17 +22,17 @@ export class GraceNote extends StaveNote {
     return 0.66;
   }
 
-  constructor(note_struct: GraceNoteStruct) {
-    super({
-      ...{
-        glyph_font_scale: Flow.DEFAULT_NOTATION_FONT_SCALE * GraceNote.SCALE,
-        stroke_px: GraceNote.LEDGER_LINE_OFFSET,
-      },
-      ...note_struct,
-    });
-    this.setAttribute('type', 'GraceNote');
+  protected slash: boolean;
+  protected slur: boolean;
 
-    this.slash = note_struct.slash;
+  constructor(noteStruct: GraceNoteStruct) {
+    super({
+      glyph_font_scale: Flow.DEFAULT_NOTATION_FONT_SCALE * GraceNote.SCALE,
+      stroke_px: GraceNote.LEDGER_LINE_OFFSET,
+      ...noteStruct,
+    });
+
+    this.slash = noteStruct.slash || false;
     this.slur = true;
 
     this.buildNoteHeads();
@@ -58,10 +56,6 @@ export class GraceNote extends StaveNote {
     }
 
     return 0;
-  }
-
-  getCategory(): string {
-    return GraceNote.CATEGORY;
   }
 
   // FIXME: move this to more basic class.
@@ -133,7 +127,7 @@ export class GraceNote extends StaveNote {
         };
       }
 
-      // FIXME: avoide staff lines, leadger lines or others.
+      // FIXME: avoid staff lines, ledger lines or others.
 
       const ctx = this.checkContext();
       ctx.save();

@@ -13,7 +13,8 @@ import { Tickable } from './tickable';
 export interface VoiceTime {
   num_beats: number;
   beat_value: number;
-  resolution: number;
+  /** Defaults to `Flow.RESOLUTION` if not provided. */
+  resolution?: number;
 }
 
 export enum VoiceMode {
@@ -26,19 +27,9 @@ export enum VoiceMode {
  * `Voice` is mainly a container object to group `Tickables` for formatting.
  */
 export class Voice extends Element {
-  protected resolutionMultiplier: number;
-  protected smallestTickCount: Fraction;
-  protected stave?: Stave;
-  protected mode: VoiceMode;
-  protected expTicksUsed?: number;
-  protected preFormatted?: boolean;
-  protected options: { softmaxFactor: number };
-
-  protected readonly totalTicks: Fraction;
-  protected readonly ticksUsed: Fraction;
-  protected readonly largestTickWidth: number;
-  protected readonly tickables: Tickable[];
-  protected readonly time: VoiceTime;
+  static get CATEGORY(): string {
+    return 'Voice';
+  }
 
   /**
    * Modes allow the addition of ticks in three different ways:
@@ -50,49 +41,54 @@ export class Voice extends Element {
     return VoiceMode;
   }
 
-  constructor(time?: Partial<VoiceTime> | string, options?: { softmaxFactor: number }) {
+  protected resolutionMultiplier: number = 1;
+  protected smallestTickCount: Fraction;
+  protected stave?: Stave;
+  protected mode: VoiceMode = VoiceMode.STRICT;
+  protected expTicksUsed?: number;
+  protected preFormatted?: boolean;
+  protected options: { softmaxFactor: number };
+
+  protected readonly totalTicks: Fraction;
+  protected readonly ticksUsed: Fraction = new Fraction(0, 1);
+  protected readonly largestTickWidth: number = 0;
+  protected readonly tickables: Tickable[] = [];
+  protected readonly time: Required<VoiceTime>;
+
+  constructor(time?: VoiceTime | string, options?: { softmaxFactor: number }) {
     super();
-    this.setAttribute('type', 'Voice');
 
     this.options = {
       softmaxFactor: 100,
       ...options,
     };
 
-    // Time signature shortcut: "4/4", "3/8", etc.
+    // Convert the `time` string into a VoiceTime object if necessary.
+    let voiceTime: VoiceTime | undefined;
     if (typeof time === 'string') {
+      // Time signature shortcut: "4/4", "3/8", etc.
       const match = time.match(/(\d+)\/(\d+)/);
       if (match) {
-        time = {
+        voiceTime = {
           num_beats: parseInt(match[1]),
           beat_value: parseInt(match[2]),
-          resolution: Flow.RESOLUTION,
         };
       }
+    } else {
+      voiceTime = time;
     }
 
-    // Default time sig is 4/4
+    // Default time signature is 4/4.
     this.time = {
-      ...{
-        num_beats: 4,
-        beat_value: 4,
-        resolution: Flow.RESOLUTION,
-      },
-      ...(time as VoiceTime),
+      num_beats: 4,
+      beat_value: 4,
+      resolution: Flow.RESOLUTION,
+      ...voiceTime,
     };
 
     // Recalculate total ticks.
     this.totalTicks = new Fraction(this.time.num_beats * (this.time.resolution / this.time.beat_value), 1);
-
-    this.resolutionMultiplier = 1;
-
-    // Set defaults
-    this.tickables = [];
-    this.ticksUsed = new Fraction(0, 1);
     this.smallestTickCount = this.totalTicks.clone();
-    this.largestTickWidth = 0;
-    // Do we care about strictly timed notes
-    this.mode = Voice.Mode.STRICT;
   }
 
   /** Get the total ticks in the voice. */
@@ -127,7 +123,7 @@ export class Voice extends Element {
 
   /**
    * Set the voice mode.
-   * @param mode value from `Voice.Mode`
+   * @param mode value from `VoiceMode`
    */
   setMode(mode: number): this {
     this.mode = mode;
@@ -176,13 +172,13 @@ export class Voice extends Element {
 
   /** Set the voice mode to strict or soft. */
   setStrict(strict: boolean): this {
-    this.mode = strict ? Voice.Mode.STRICT : Voice.Mode.SOFT;
+    this.mode = strict ? VoiceMode.STRICT : VoiceMode.SOFT;
     return this;
   }
 
   /** Determine if the voice is complete according to the voice mode. */
   isComplete(): boolean {
-    if (this.mode === Voice.Mode.STRICT || this.mode === Voice.Mode.FULL) {
+    if (this.mode === VoiceMode.STRICT || this.mode === VoiceMode.FULL) {
       return this.ticksUsed.equals(this.totalTicks);
     } else {
       return true;
@@ -234,7 +230,7 @@ export class Voice extends Element {
       this.expTicksUsed = 0; // reset
 
       if (
-        (this.mode === Voice.Mode.STRICT || this.mode === Voice.Mode.FULL) &&
+        (this.mode === VoiceMode.STRICT || this.mode === VoiceMode.FULL) &&
         this.ticksUsed.greaterThan(this.totalTicks)
       ) {
         this.ticksUsed.subtract(ticks);

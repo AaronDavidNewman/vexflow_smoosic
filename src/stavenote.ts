@@ -52,12 +52,13 @@ export interface StaveNoteFormatSettings {
 }
 
 export interface StaveNoteStruct extends NoteStruct {
+  /** `Stem.UP` or `Stem.DOWN`. */
+  stem_direction?: number;
+  auto_stem?: boolean;
   stem_down_x_offset?: number;
   stem_up_x_offset?: number;
   stroke_px?: number;
   glyph_font_scale?: number;
-  stem_direction?: number;
-  auto_stem?: boolean;
   octave_shift?: number;
   clef?: string;
 }
@@ -93,6 +94,33 @@ function centerRest(rest: StaveNoteFormatSettings, noteU: StaveNoteFormatSetting
 export class StaveNote extends StemmableNote {
   static DEBUG: boolean;
 
+  static get CATEGORY(): string {
+    return 'StaveNote';
+  }
+
+  /**
+   * @deprecated Use Stem.UP.
+   */
+  static get STEM_UP(): number {
+    return Stem.UP;
+  }
+
+  /**
+   * @deprecated Use Stem.DOWN.
+   */
+  static get STEM_DOWN(): number {
+    return Stem.DOWN;
+  }
+
+  static get DEFAULT_LEDGER_LINE_OFFSET(): number {
+    return 3;
+  }
+
+  static get minNoteheadPadding(): number {
+    const musicFont = Flow.DEFAULT_FONT_STACK[0];
+    return musicFont.lookupMetric('glyphs.noteHead.minPadding');
+  }
+
   minLine: number = 0;
   maxLine: number = 0;
 
@@ -105,23 +133,6 @@ export class StaveNote extends StemmableNote {
   protected note_heads: NoteHead[];
   protected ledgerLineStyle: ElementStyle;
   protected flagStyle?: ElementStyle;
-
-  static get CATEGORY(): string {
-    return 'stavenotes';
-  }
-  static get STEM_UP(): number {
-    return Stem.UP;
-  }
-  static get STEM_DOWN(): number {
-    return Stem.DOWN;
-  }
-  static get DEFAULT_LEDGER_LINE_OFFSET(): number {
-    return 3;
-  }
-  static get minNoteheadPadding() {
-    const musicFont = Flow.DEFAULT_FONT_STACK[0];
-    return musicFont.lookupMetric('glyphs.noteHead.minPadding');
-  }
 
   // ## Static Methods
   //
@@ -365,10 +376,8 @@ export class StaveNote extends StemmableNote {
 
   constructor(noteStruct: StaveNoteStruct) {
     super(noteStruct);
-    this.setAttribute('type', 'StaveNote');
 
-    // Set default width of ledger lines to 2.0.
-    this.ledgerLineStyle = { lineWidth: 2.0 };
+    this.ledgerLineStyle = {};
 
     this.clef = noteStruct.clef ?? 'treble';
     this.octave_shift = noteStruct.octave_shift ?? 0;
@@ -390,12 +399,10 @@ export class StaveNote extends StemmableNote {
 
     this.render_options = {
       ...this.render_options,
-      ...{
-        // font size for note heads and rests
-        glyph_font_scale: noteStruct.glyph_font_scale || Flow.DEFAULT_NOTATION_FONT_SCALE,
-        // number of stroke px to the left and right of head
-        stroke_px: noteStruct.stroke_px || StaveNote.DEFAULT_LEDGER_LINE_OFFSET,
-      },
+      // font size for note heads and rests
+      glyph_font_scale: noteStruct.glyph_font_scale || Flow.DEFAULT_NOTATION_FONT_SCALE,
+      // number of stroke px to the left and right of head
+      stroke_px: noteStruct.stroke_px || StaveNote.DEFAULT_LEDGER_LINE_OFFSET,
     };
 
     this.calculateKeyProps();
@@ -434,10 +441,6 @@ export class StaveNote extends StemmableNote {
     this.beam = beam;
     this.calcNoteDisplacements();
     return this;
-  }
-
-  getCategory(): string {
-    return StaveNote.CATEGORY;
   }
 
   // Builds a `Stem` for the note
@@ -888,12 +891,12 @@ export class StaveNote extends StemmableNote {
 
   // Get all accidentals in the `ModifierContext`
   getAccidentals(): Accidental[] {
-    return this.checkModifierContext().getMembers('accidentals') as Accidental[];
+    return this.checkModifierContext().getMembers(Accidental.CATEGORY) as Accidental[];
   }
 
   // Get all dots in the `ModifierContext`
   getDots(): Dot[] {
-    return this.checkModifierContext().getMembers('dots') as Dot[];
+    return this.checkModifierContext().getMembers(Dot.CATEGORY) as Dot[];
   }
 
   // Get the width of the note if it is displaced. Used for `Voice`
@@ -1051,6 +1054,9 @@ export class StaveNote extends StemmableNote {
       displaced_x,
       non_displaced_x,
     } = this.getNoteHeadBounds();
+
+    // Early out if there are no ledger lines to draw.
+    if (highest_line < 6 && lowest_line > 0) return;
 
     const min_x = Math.min(displaced_x ?? 0, non_displaced_x ?? 0);
 

@@ -12,18 +12,18 @@ import { RenderContext } from './types/common';
 import { RuntimeError } from './util';
 import { Voice } from './voice';
 
-export interface SystemFormatterOptions extends Partial<FormatterOptions> {
-  alpha: number;
+export interface SystemFormatterOptions extends FormatterOptions {
+  alpha?: number;
 }
 
 export interface SystemParams {
-  stave: Stave;
   voices: Voice[];
+  stave?: Stave;
   noJustification?: boolean;
-  options: Partial<StaveOptions>;
-  spaceAbove: number;
-  spaceBelow: number;
-  debugNoteMetrics: boolean;
+  options?: StaveOptions;
+  spaceAbove?: number;
+  spaceBelow?: number;
+  debugNoteMetrics?: boolean;
 }
 
 /**
@@ -39,18 +39,17 @@ export interface SystemParams {
  */
 export interface SystemOptions {
   factory?: Factory;
-  noPadding: boolean;
-  debugFormatter: boolean;
-  connector?: StaveConnector;
-  spaceBetweenStaves: number;
-  formatIterations: number;
-  autoWidth: boolean;
-  x: number;
-  width: number;
-  y: number;
-  details: SystemFormatterOptions;
-  formatOptions: FormatOptions;
-  noJustification: boolean;
+  noPadding?: boolean;
+  debugFormatter?: boolean;
+  spaceBetweenStaves?: number;
+  formatIterations?: number;
+  autoWidth?: boolean;
+  x?: number;
+  width?: number;
+  y?: number;
+  details?: SystemFormatterOptions;
+  formatOptions?: FormatOptions;
+  noJustification?: boolean;
 }
 
 /**
@@ -59,24 +58,30 @@ export interface SystemOptions {
  * the system are formatted together.
  */
 export class System extends Element {
-  protected options!: SystemOptions;
+  static get CATEGORY(): string {
+    return 'System';
+  }
+
+  protected options!: Required<SystemOptions>;
   protected factory!: Factory;
   protected formatter?: Formatter;
   protected startX?: number;
   protected lastY?: number;
-  protected parts: SystemParams[];
+  protected parts: Required<SystemParams>[];
   protected connector?: StaveConnector;
   protected debugNoteMetricsYs?: { y: number; voice: Voice }[];
-  constructor(params: Partial<SystemOptions> = {}) {
+
+  constructor(params: SystemOptions = {}) {
     super();
-    this.setAttribute('type', 'System');
     this.setOptions(params);
     this.parts = [];
   }
 
   /** Set formatting options. */
-  setOptions(options: Partial<SystemOptions> = {}): void {
+  setOptions(options: SystemOptions = {}): void {
+    this.factory = options.factory ?? new Factory({ renderer: { elementId: null, width: 0, height: 0 } });
     this.options = {
+      factory: this.factory,
       x: 10,
       y: 10,
       width: 500,
@@ -95,11 +100,10 @@ export class System extends Element {
         ...options.formatOptions,
       },
     };
+
     if (this.options.noJustification === false && typeof options.width === 'undefined') {
       this.options.autoWidth = true;
     }
-
-    this.factory = this.options.factory || new Factory({ renderer: { elementId: null, width: 0, height: 0 } });
   }
 
   /** Set associated context. */
@@ -113,7 +117,7 @@ export class System extends Element {
    * Add connector between staves.
    * @param type see {@link StaveConnector.typeString}
    */
-  addConnector(type = 'double'): StaveConnector {
+  addConnector(type: string = 'double'): StaveConnector {
     this.connector = this.factory.StaveConnector({
       top_stave: this.parts[0].stave,
       bottom_stave: this.parts[this.parts.length - 1].stave,
@@ -139,49 +143,42 @@ export class System extends Element {
    *
    *  `score.voice(score.notes('C#4/h, C#4', {stem: 'down'}))]});`
    */
-  addStave(paramsItems: Partial<SystemParams>): Stave {
-    let stave = paramsItems.stave;
-    if (!stave) {
-      stave = this.factory.Stave({
-        x: this.options.x,
-        y: this.options.y,
-        width: this.options.width,
-        options: {
-          left_bar: false,
-          ...paramsItems.options,
-        },
-      });
-    }
+  addStave(params: SystemParams): Stave {
+    const staveOptions: StaveOptions = { left_bar: false, ...params.options };
 
-    const params: SystemParams = {
+    const stave =
+      params.stave ??
+      this.factory.Stave({ x: this.options.x, y: this.options.y, width: this.options.width, options: staveOptions });
+
+    const p = {
       stave,
-      voices: [],
+      /* voices: [], */
       spaceAbove: 0, // stave spaces
       spaceBelow: 0, // stave spaces
       debugNoteMetrics: false,
-      ...paramsItems,
-      options: {
-        left_bar: false,
-        ...paramsItems.options,
-      },
+      noJustification: false,
+      ...params,
+      options: staveOptions, // this needs to go after ...params, so we can override the options field.
     };
 
-    params.voices.forEach((voice) =>
+    const ctx = this.getContext();
+    p.voices.forEach((voice) =>
       voice
-        .setContext(this.getContext())
-        .setStave(params.stave)
+        .setContext(ctx)
+        .setStave(stave)
         .getTickables()
-        .forEach((tickable) => tickable.setStave(params.stave))
+        .forEach((tickable) => tickable.setStave(stave))
     );
 
-    this.parts.push(params);
-    return params.stave;
+    this.parts.push(p);
+    return stave;
   }
 
   /** Format the system. */
   format(): void {
+    const options_details = this.options.details;
     let justifyWidth = 0;
-    const formatter = new Formatter({ ...this.options.details });
+    const formatter = new Formatter(options_details);
     this.formatter = formatter;
 
     let y = this.options.y;
@@ -226,7 +223,7 @@ export class System extends Element {
     formatter.format(allVoices, this.options.noJustification ? 0 : justifyWidth, this.options.formatOptions);
 
     for (let i = 0; i < this.options.formatIterations; i++) {
-      formatter.tune({ alpha: this.options.details.alpha });
+      formatter.tune(options_details);
     }
 
     this.startX = startX;
@@ -240,7 +237,7 @@ export class System extends Element {
     // Render debugging information, if requested.
     const ctx = this.checkContext();
     if (!this.formatter || !this.startX || !this.lastY || !this.debugNoteMetricsYs) {
-      throw new RuntimeError('NoFormated', 'Format must be instatiated before draw');
+      throw new RuntimeError('NoFormatter', 'format() must be called before draw()');
     }
     this.setRendered();
 

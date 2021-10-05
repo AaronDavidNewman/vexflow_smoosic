@@ -1,10 +1,17 @@
 import { Note } from '../note';
 
 export interface FontInfo {
-  size: number;
-  weight: string;
   family: string;
+  size: number;
+  /** `bold` or a numeric string '900' as inspired by CSS font-weight. */
+  weight: string;
+  /** `italic` as inspired by CSS font-style. */
   style?: string;
+}
+
+export interface TextMeasure {
+  width: number;
+  height: number;
 }
 
 export interface Bounds {
@@ -52,7 +59,7 @@ export interface TypeProps extends KeyProps {
 
 export interface RenderContext {
   clear(): void;
-  setFont(family: string, size: number, weight: string): this;
+  setFont(family: string, size: number, weight: string = ''): this;
   setRawFont(font: string): this;
   setFillStyle(style: string): this;
   setBackgroundFillStyle(style: string): this;
@@ -73,19 +80,20 @@ export interface RenderContext {
   bezierCurveTo(cp1x: number, cp1y: number, cp2x: number, cp2y: number, x: number, y: number): this;
   quadraticCurveTo(cpx: number, cpy: number, x: number, y: number): this;
   arc(x: number, y: number, radius: number, startAngle: number, endAngle: number, antiClockwise: boolean): this;
-  glow(): this;
+  // eslint-disable-next-line
   fill(attributes?: any): this;
   stroke(): this;
   closePath(): this;
   fillText(text: string, x: number, y: number): this;
   save(): this;
   restore(): this;
+  // eslint-disable-next-line
   openGroup(cls: string, id?: string, attrs?: { pointerBBox: boolean }): any;
   closeGroup(): void;
+  // eslint-disable-next-line
   add(child: any): void;
 
-  /** canvas returns TextMetrics and SVG returns SVGRect. */
-  measureText(text: string): { width: number; height?: number };
+  measureText(text: string): TextMeasure;
 
   /** Maintain compatibility with the CanvasRenderingContext2D API. */
   font: string;

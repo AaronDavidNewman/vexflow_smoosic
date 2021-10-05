@@ -19,7 +19,7 @@ import { KeySignature } from 'keysignature';
 import { NoteSubGroup } from 'notesubgroup';
 import { Ornament } from 'ornament';
 import { ContextBuilder } from 'renderer';
-import { StaveModifier } from 'stavemodifier';
+import { StaveModifierPosition } from 'stavemodifier';
 import { StaveNote } from 'stavenote';
 import { Stroke } from 'strokes';
 import { TabNote, TabNoteStruct } from 'tabnote';
@@ -59,7 +59,7 @@ function stave(options: TestOptions): void {
   keySig.addToStave(stave);
   keySig.setStyle(FS('blue'));
   stave.addTimeSignature('4/4');
-  const timeSig = stave.getModifiers(StaveModifier.Position.BEGIN, TimeSignature.CATEGORY);
+  const timeSig = stave.getModifiers(StaveModifierPosition.BEGIN, TimeSignature.CATEGORY);
   timeSig[0].setStyle(FS('brown'));
 
   const notes = [
@@ -116,7 +116,7 @@ function tab(options: TestOptions, contextBuilder: ContextBuilder): void {
   stave.getModifiers()[2].setStyle(FS('blue'));
   stave.setContext(ctx).draw();
 
-  const tabNote = (struct: TabNoteStruct) => new TabNote(struct);
+  const tabNote = (noteStruct: TabNoteStruct) => new TabNote(noteStruct);
 
   const notes = [
     tabNote({

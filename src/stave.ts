@@ -1,13 +1,14 @@
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 
+import { isBarline } from 'typeguard';
 import { BoundingBox } from './boundingbox';
 import { Clef } from './clef';
 import { Element, ElementStyle } from './element';
 import { Flow } from './flow';
 import { KeySignature } from './keysignature';
 import { Barline, BarlineType } from './stavebarline';
-import { StaveModifier } from './stavemodifier';
+import { StaveModifier, StaveModifierPosition } from './stavemodifier';
 import { Repetition } from './staverepetition';
 import { StaveSection } from './stavesection';
 import { StaveTempo, StaveTempoOptions } from './stavetempo';
@@ -18,36 +19,54 @@ import { Bounds, FontInfo } from './types/common';
 import { RuntimeError } from './util';
 
 export interface StaveLineConfig {
-  visible: boolean;
+  visible?: boolean;
 }
 
 export interface StaveOptions {
-  // [name: string]: any;
-  spacing: number;
-  thickness: number;
-  x_shift: number;
-  y_shift: number;
-  position_end?: number;
-  invert?: boolean;
+  spacing?: number;
+  thickness?: number;
+  x_shift?: number;
+  y_shift?: number;
   cps?: { x: number; y: number }[];
-  bottom_text_position: number;
-  line_config: StaveLineConfig[];
-  space_below_staff_ln: number;
-  glyph_spacing_px: number;
-  space_above_staff_ln: number;
-  vertical_bar_width: number;
-  fill_style: string;
-  left_bar: boolean;
-  right_bar: boolean;
-  spacing_between_lines_px: number;
-  top_text_position: number;
-  num_lines: number;
+  bottom_text_position?: number;
+  line_config?: StaveLineConfig[];
+  space_below_staff_ln?: number;
+  glyph_spacing_px?: number;
+  space_above_staff_ln?: number;
+  vertical_bar_width?: number;
+  fill_style?: string;
+  left_bar?: boolean;
+  right_bar?: boolean;
+  spacing_between_lines_px?: number;
+  top_text_position?: number;
+  num_lines?: number;
 }
 
+// Used by Stave.format() to sort the modifiers at the beginning and end of a stave.
+// The keys (computed property names) match the CATEGORY property in the
+// Barline, Clef, KeySignature, TimeSignature classes.
+const SORT_ORDER_BEG_MODIFIERS = {
+  [Barline.CATEGORY]: 0,
+  [Clef.CATEGORY]: 1,
+  [KeySignature.CATEGORY]: 2,
+  [TimeSignature.CATEGORY]: 3,
+};
+
+const SORT_ORDER_END_MODIFIERS = {
+  [TimeSignature.CATEGORY]: 0,
+  [KeySignature.CATEGORY]: 1,
+  [Barline.CATEGORY]: 2,
+  [Clef.CATEGORY]: 3,
+};
+
 export class Stave extends Element {
+  static get CATEGORY(): string {
+    return 'Stave';
+  }
+
   protected start_x: number;
   protected clef: string;
-  protected options: StaveOptions;
+  protected options: Required<StaveOptions>;
   protected endClef?: string;
 
   protected x: number;
@@ -77,9 +96,8 @@ export class Stave extends Element {
     return musicFont.lookupMetric('stave.endPaddingMax');
   }
 
-  constructor(x: number, y: number, width: number, options?: Partial<StaveOptions>) {
+  constructor(x: number, y: number, width: number, options?: StaveOptions) {
     super();
-    this.setAttribute('type', 'Stave');
 
     this.x = x;
     this.y = y;
@@ -113,10 +131,11 @@ export class Stave extends Element {
       top_text_position: 1, // in staff lines
       bottom_text_position: 4, // in staff lines
       line_config: [],
+      cps: [],
+      ...options,
     };
     this.bounds = { x: this.x, y: this.y, w: this.width, h: 0 };
-    this.options = { ...this.options, ...options };
-    this.defaultLedgerLineStyle = {};
+    this.defaultLedgerLineStyle = { strokeStyle: '#444', lineWidth: 1.4 };
 
     this.resetLines();
 
@@ -135,6 +154,7 @@ export class Stave extends Element {
   getDefaultLedgerLineStyle(): ElementStyle {
     return { ...this.getStyle(), ...this.defaultLedgerLineStyle };
   }
+
   space(spacing: number): number {
     return this.options.spacing_between_lines_px * spacing;
   }
@@ -146,10 +166,6 @@ export class Stave extends Element {
     }
     this.height = (this.options.num_lines + this.options.space_above_staff_ln) * this.options.spacing_between_lines_px;
     this.options.bottom_text_position = this.options.num_lines;
-  }
-
-  getOptions(): StaveOptions {
-    return this.options;
   }
 
   setNoteStartX(x: number): this {
@@ -244,7 +260,7 @@ export class Stave extends Element {
       fillStyle: this.options.fill_style,
       strokeStyle: this.options.fill_style, // yes, this is correct for legacy compatibility
       lineWidth: Flow.STAVE_LINE_THICKNESS,
-      ...(this.style || {}),
+      ...this.style,
     };
   }
 
@@ -259,19 +275,19 @@ export class Stave extends Element {
    * @param  {Number} index The index from which to determine the shift
    * @return {Number}       The amount of pixels shifted
    */
-  getModifierXShift(index = 0): number {
+  getModifierXShift(index: number = 0): number {
     if (typeof index !== 'number') {
       throw new RuntimeError('InvalidIndex', 'Must be of number type');
     }
 
     if (!this.formatted) this.format();
 
-    if (this.getModifiers(StaveModifier.Position.BEGIN).length === 1) {
+    if (this.getModifiers(StaveModifierPosition.BEGIN).length === 1) {
       return 0;
     }
 
     // for right position modifiers zero shift seems correct, see 'Volta + Modifier Measure Test'
-    if (this.modifiers[index].getPosition() === StaveModifier.Position.RIGHT) {
+    if (this.modifiers[index].getPosition() === StaveModifierPosition.RIGHT) {
       return 0;
     }
 
@@ -318,10 +334,10 @@ export class Stave extends Element {
     text: string,
     position: number,
     options: {
-      shift_x: number;
-      shift_y: number;
-      justification: number;
-    }
+      shift_x?: number;
+      shift_y?: number;
+      justification?: number;
+    } = {}
   ): this {
     this.modifiers.push(new StaveText(text, position, options));
     return this;
@@ -384,9 +400,7 @@ export class Stave extends Element {
     const options = this.options;
     const spacing = options.spacing_between_lines_px;
     const headroom = options.space_above_staff_ln;
-    const y = this.y + headroom * spacing + 5 * spacing - line * spacing;
-
-    return y;
+    return this.y + headroom * spacing + 5 * spacing - line * spacing;
   }
 
   getYForGlyphs(): number {
@@ -407,7 +421,7 @@ export class Stave extends Element {
   }
 
   addEndModifier(modifier: StaveModifier): this {
-    this.addModifier(modifier, StaveModifier.Position.END);
+    this.addModifier(modifier, StaveModifierPosition.END);
     return this;
   }
 
@@ -433,10 +447,10 @@ export class Stave extends Element {
 
   setClef(clefSpec: string, size?: string, annotation?: string, position?: number): this {
     if (position === undefined) {
-      position = StaveModifier.Position.BEGIN;
+      position = StaveModifierPosition.BEGIN;
     }
 
-    if (position === StaveModifier.Position.END) {
+    if (position === StaveModifierPosition.END) {
       this.endClef = clefSpec;
     } else {
       this.clef = clefSpec;
@@ -457,7 +471,7 @@ export class Stave extends Element {
   }
 
   setEndClef(clefSpec: string, size?: string, annotation?: string): this {
-    this.setClef(clefSpec, size, annotation, StaveModifier.Position.END);
+    this.setClef(clefSpec, size, annotation, StaveModifierPosition.END);
     return this;
   }
 
@@ -467,7 +481,7 @@ export class Stave extends Element {
 
   setKeySignature(keySpec: string, cancelKeySpec?: string, position?: number): this {
     if (position === undefined) {
-      position = StaveModifier.Position.BEGIN;
+      position = StaveModifierPosition.BEGIN;
     }
 
     const keySignatures = this.getModifiers(position, KeySignature.CATEGORY) as KeySignature[];
@@ -481,13 +495,13 @@ export class Stave extends Element {
   }
 
   setEndKeySignature(keySpec: string, cancelKeySpec?: string): this {
-    this.setKeySignature(keySpec, cancelKeySpec, StaveModifier.Position.END);
+    this.setKeySignature(keySpec, cancelKeySpec, StaveModifierPosition.END);
     return this;
   }
 
   setTimeSignature(timeSpec: string, customPadding?: number, position?: number): this {
     if (position === undefined) {
-      position = StaveModifier.Position.BEGIN;
+      position = StaveModifierPosition.BEGIN;
     }
 
     const timeSignatures = this.getModifiers(position, TimeSignature.CATEGORY) as TimeSignature[];
@@ -500,8 +514,8 @@ export class Stave extends Element {
     return this;
   }
 
-  setEndTimeSignature(timeSpec: string, customPadding: number): this {
-    this.setTimeSignature(timeSpec, customPadding, StaveModifier.Position.END);
+  setEndTimeSignature(timeSpec: string, customPadding?: number): this {
+    this.setTimeSignature(timeSpec, customPadding, StaveModifierPosition.END);
     return this;
   }
 
@@ -517,7 +531,7 @@ export class Stave extends Element {
    */
   addKeySignature(keySpec: string, cancelKeySpec?: string, position?: number): this {
     if (position === undefined) {
-      position = StaveModifier.Position.BEGIN;
+      position = StaveModifierPosition.BEGIN;
     }
     this.addModifier(new KeySignature(keySpec, cancelKeySpec).setPosition(position), position);
     return this;
@@ -536,9 +550,9 @@ export class Stave extends Element {
    * @returns
    */
   addClef(clef: string, size?: string, annotation?: string, position?: number): this {
-    if (position === undefined || position === StaveModifier.Position.BEGIN) {
+    if (position === undefined || position === StaveModifierPosition.BEGIN) {
       this.clef = clef;
-    } else if (position === StaveModifier.Position.END) {
+    } else if (position === StaveModifierPosition.END) {
       this.endClef = clef;
     }
 
@@ -547,7 +561,7 @@ export class Stave extends Element {
   }
 
   addEndClef(clef: string, size?: string, annotation?: string): this {
-    this.addClef(clef, size, annotation, StaveModifier.Position.END);
+    this.addClef(clef, size, annotation, StaveModifierPosition.END);
     return this;
   }
 
@@ -568,7 +582,7 @@ export class Stave extends Element {
   }
 
   addEndTimeSignature(timeSpec: string, customPadding?: number): this {
-    this.addTimeSignature(timeSpec, customPadding, StaveModifier.Position.END);
+    this.addTimeSignature(timeSpec, customPadding, StaveModifierPosition.END);
     return this;
   }
 
@@ -578,16 +592,32 @@ export class Stave extends Element {
     return this;
   }
 
+  /**
+   * @param position
+   * @param category
+   * @returns array of StaveModifiers that match the provided position and category.
+   */
   getModifiers(position?: number, category?: string): StaveModifier[] {
-    if (position === undefined && category === undefined) return this.modifiers;
-
-    return this.modifiers.filter(
-      (modifier) =>
-        (position === undefined || position === modifier.getPosition()) &&
-        (category === undefined || category === modifier.getCategory())
-    );
+    const noPosition = position === undefined;
+    const noCategory = category === undefined;
+    if (noPosition && noCategory) {
+      return this.modifiers;
+    } else if (noPosition) {
+      // A category was provided.
+      return this.modifiers.filter((m: StaveModifier) => category === m.getCategory());
+    } else if (noCategory) {
+      // A position was provided.
+      return this.modifiers.filter((m: StaveModifier) => position === m.getPosition());
+    } else {
+      // Both position and category were provided!
+      return this.modifiers.filter((m: StaveModifier) => position === m.getPosition() && category === m.getCategory());
+    }
   }
 
+  /**
+   * Use the modifier's `getCategory()` as a key for the `order` array.
+   * The retrieved value is used to sort modifiers from left to right (0 to to 3).
+   */
   sortByCategory(items: StaveModifier[], order: Record<string, number>): void {
     for (let i = items.length - 1; i >= 0; i--) {
       for (let j = 0; j < i; j++) {
@@ -604,22 +634,11 @@ export class Stave extends Element {
     const begBarline = this.modifiers[0] as Barline;
     const endBarline = this.modifiers[1];
 
-    const begModifiers = this.getModifiers(StaveModifier.Position.BEGIN);
-    const endModifiers = this.getModifiers(StaveModifier.Position.END);
+    const begModifiers = this.getModifiers(StaveModifierPosition.BEGIN);
+    const endModifiers = this.getModifiers(StaveModifierPosition.END);
 
-    this.sortByCategory(begModifiers, {
-      barlines: 0,
-      clefs: 1,
-      keysignatures: 2,
-      timesignatures: 3,
-    });
-
-    this.sortByCategory(endModifiers, {
-      timesignatures: 0,
-      keysignatures: 1,
-      barlines: 2,
-      clefs: 3,
-    });
+    this.sortByCategory(begModifiers, SORT_ORDER_BEG_MODIFIERS);
+    this.sortByCategory(endModifiers, SORT_ORDER_END_MODIFIERS);
 
     if (begModifiers.length > 1 && begBarline.getType() === BarlineType.REPEAT_BEGIN) {
       begModifiers.push(begModifiers.splice(0, 1)[0]);
@@ -661,7 +680,7 @@ export class Stave extends Element {
 
     for (let i = 0; i < endModifiers.length; i++) {
       modifier = endModifiers[i];
-      lastBarlineIdx = modifier.getCategory() === Barline.CATEGORY ? i : lastBarlineIdx;
+      lastBarlineIdx = isBarline(modifier) ? i : lastBarlineIdx;
 
       widths.right = 0;
       widths.left = 0;
@@ -732,11 +751,12 @@ export class Stave extends Element {
 
     // Draw the modifiers (bar lines, coda, segno, repeat brackets, etc.)
     for (let i = 0; i < this.modifiers.length; i++) {
+      const modifier = this.modifiers[i];
       // Only draw modifier if it has a draw function
-      if (typeof this.modifiers[i].draw === 'function') {
-        this.modifiers[i].applyStyle(ctx);
-        this.modifiers[i].draw(this, this.getModifierXShift(i));
-        this.modifiers[i].restoreStyle(ctx);
+      if (typeof modifier.draw === 'function') {
+        modifier.applyStyle(ctx);
+        modifier.draw(this, this.getModifierXShift(i));
+        modifier.restoreStyle(ctx);
       }
     }
 
@@ -753,33 +773,8 @@ export class Stave extends Element {
     return this;
   }
 
-  // Draw Simple barlines for backward compatability
-  // Do not delete - draws the beginning bar of the stave
-  drawVertical(x: number, isDouble: boolean): void {
-    this.drawVerticalFixed(this.x + x, isDouble);
-  }
-
-  drawVerticalFixed(x: number, isDouble: boolean): void {
-    const ctx = this.checkContext();
-
-    const top_line = this.getYForLine(0);
-    const bottom_line = this.getYForLine(this.options.num_lines - 1);
-    if (isDouble) {
-      ctx.fillRect(x - 3, top_line, 1, bottom_line - top_line + 1);
-    }
-    ctx.fillRect(x, top_line, 1, bottom_line - top_line + 1);
-  }
-
-  drawVerticalBar(x: number): void {
-    this.drawVerticalBarFixed(this.x + x);
-  }
-
-  drawVerticalBarFixed(x: number): void {
-    const ctx = this.checkContext();
-
-    const top_line = this.getYForLine(0);
-    const bottom_line = this.getYForLine(this.options.num_lines - 1);
-    ctx.fillRect(x, top_line, 1, bottom_line - top_line + 1);
+  getVerticalBarWidth(): number {
+    return this.options.vertical_bar_width;
   }
 
   /**
@@ -842,8 +837,8 @@ export class Stave extends Element {
     //  configuration options were supplied.
     // eslint-disable-next-line
     for (const line_config in lines_configuration) {
-      // Allow 'null' to be used if the caller just wants the default for a particular node.
-      if (!lines_configuration[line_config]) {
+      // Allow '{}' to be used if the caller just wants the default for a particular node.
+      if (lines_configuration[line_config].visible == undefined) {
         lines_configuration[line_config] = this.options.line_config[line_config];
       }
       this.options.line_config[line_config] = {

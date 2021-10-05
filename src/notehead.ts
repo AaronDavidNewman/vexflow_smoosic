@@ -5,7 +5,6 @@ import { RuntimeError, log, defined } from './util';
 import { Flow } from './flow';
 import { Note, NoteStruct } from './note';
 import { Stem } from './stem';
-import { StaveNote } from './stavenote';
 import { Glyph, GlyphProps } from './glyph';
 import { RenderContext } from './types/common';
 import { BoundingBox } from './boundingbox';
@@ -18,6 +17,7 @@ function L(...args: any[]) {
 }
 
 export interface NoteHeadStruct extends NoteStruct {
+  line?: number;
   glyph_font_scale?: number;
   slashed?: boolean;
   style?: ElementStyle;
@@ -25,13 +25,11 @@ export interface NoteHeadStruct extends NoteStruct {
   stem_up_x_offset?: number;
   custom_glyph_code?: string;
   x_shift?: number;
-  line?: number;
   stem_direction?: number;
   displaced?: boolean;
-  //  duration: string;
-  note_type: string;
-  y?: number;
+  note_type?: string;
   x?: number;
+  y?: number;
   index?: number;
 }
 
@@ -100,12 +98,15 @@ export class NoteHead extends Note {
   /** To enable logging for this class. Set `Vex.Flow.NoteHead.DEBUG` to `true`. */
   static DEBUG: boolean;
 
+  static get CATEGORY(): string {
+    return 'NoteHead';
+  }
+
   glyph_code: string;
 
   protected custom_glyph: boolean = false;
   protected stem_up_x_offset: number = 0;
   protected stem_down_x_offset: number = 0;
-  protected note_type: string;
   protected displaced: boolean;
   protected stem_direction: number;
 
@@ -115,55 +116,43 @@ export class NoteHead extends Note {
   protected index?: number;
   protected slashed: boolean;
 
-  static get CATEGORY(): string {
-    return 'notehead';
-  }
+  constructor(noteStruct: NoteHeadStruct) {
+    super(noteStruct);
 
-  constructor(head_options: NoteHeadStruct) {
-    super(head_options);
-    this.setAttribute('type', 'NoteHead');
-
-    this.index = head_options.index;
-    this.x = head_options.x || 0;
-    this.y = head_options.y || 0;
-    this.note_type = head_options.note_type;
-    this.duration = head_options.duration;
-    this.displaced = head_options.displaced || false;
-    this.stem_direction = head_options.stem_direction || StaveNote.STEM_UP;
-    this.line = head_options.line || 0;
+    this.index = noteStruct.index;
+    this.x = noteStruct.x || 0;
+    this.y = noteStruct.y || 0;
+    if (noteStruct.note_type) this.noteType = noteStruct.note_type;
+    this.displaced = noteStruct.displaced || false;
+    this.stem_direction = noteStruct.stem_direction || Stem.UP;
+    this.line = noteStruct.line || 0;
 
     // Get glyph code based on duration and note type. This could be
     // regular notes, rests, or other custom codes.
-    this.glyph = Flow.getGlyphProps(this.duration, this.note_type);
-    defined(this.glyph, 'BadArguments', `No glyph found for duration '${this.duration}' and type '${this.note_type}'`);
+    this.glyph = Flow.getGlyphProps(this.duration, this.noteType);
+    defined(this.glyph, 'BadArguments', `No glyph found for duration '${this.duration}' and type '${this.noteType}'`);
 
     this.glyph_code = this.glyph.code_head;
-    this.x_shift = head_options.x_shift || 0;
-    if (head_options.custom_glyph_code) {
+    this.x_shift = noteStruct.x_shift || 0;
+    if (noteStruct.custom_glyph_code) {
       this.custom_glyph = true;
-      this.glyph_code = head_options.custom_glyph_code;
-      this.stem_up_x_offset = head_options.stem_up_x_offset || 0;
-      this.stem_down_x_offset = head_options.stem_down_x_offset || 0;
+      this.glyph_code = noteStruct.custom_glyph_code;
+      this.stem_up_x_offset = noteStruct.stem_up_x_offset || 0;
+      this.stem_down_x_offset = noteStruct.stem_down_x_offset || 0;
     }
 
-    this.style = head_options.style;
-    this.slashed = head_options.slashed || false;
+    this.style = noteStruct.style;
+    this.slashed = noteStruct.slashed || false;
 
     this.render_options = {
       ...this.render_options,
-      ...{
-        // font size for note heads
-        glyph_font_scale: head_options.glyph_font_scale || Flow.DEFAULT_NOTATION_FONT_SCALE,
-        // number of stroke px to the left and right of head
-        stroke_px: 3,
-      },
+      // font size for note heads
+      glyph_font_scale: noteStruct.glyph_font_scale || Flow.DEFAULT_NOTATION_FONT_SCALE,
+      // number of stroke px to the left and right of head
+      stroke_px: 3,
     };
 
     this.setWidth(this.glyph.getWidth(this.render_options.glyph_font_scale));
-  }
-
-  getCategory(): string {
-    return NoteHead.CATEGORY;
   }
 
   /** Get the width of the notehead. */
@@ -277,7 +266,7 @@ export class NoteHead extends Note {
 
     const y = this.y;
 
-    L("Drawing note head '", this.note_type, this.duration, "' at", head_x, y);
+    L("Drawing note head '", this.noteType, this.duration, "' at", head_x, y);
 
     // Begin and end positions for head.
     const stem_direction = this.stem_direction;
@@ -288,7 +277,7 @@ export class NoteHead extends Note {
     }
 
     const categorySuffix = `${this.glyph_code}Stem${stem_direction === Stem.UP ? 'Up' : 'Down'}`;
-    if (this.note_type === 's') {
+    if (this.noteType === 's') {
       const staveSpace = this.checkStave().getSpacingBetweenLines();
       drawSlashNoteHead(ctx, this.duration, head_x, y, stem_direction, staveSpace);
     } else {

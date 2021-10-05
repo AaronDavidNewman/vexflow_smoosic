@@ -2,12 +2,19 @@
 // Author Taehoon Moon 2014
 
 import { RuntimeError } from './util';
-import { StaveModifier } from './stavemodifier';
-import { TextNote } from './textnote';
-import { FontInfo } from './types/common';
+import { StaveModifier, StaveModifierPosition } from './stavemodifier';
+import { Justification, TextNote } from './textnote';
 import { Stave } from './stave';
+import { FontInfo } from 'types/common';
 
 export class StaveText extends StaveModifier {
+  static get CATEGORY(): string {
+    return 'StaveText';
+  }
+
+  protected text: string;
+  protected shift_x?: number;
+  protected shift_y?: number;
   protected options: {
     shift_x: number;
     shift_y: number;
@@ -15,25 +22,12 @@ export class StaveText extends StaveModifier {
   };
   protected font: FontInfo;
 
-  protected text: string;
-  protected shift_x?: number;
-  protected shift_y?: number;
-
-  static get CATEGORY(): string {
-    return 'stavetext';
-  }
-
   constructor(
     text: string,
     position: number,
-    options: {
-      shift_x: number;
-      shift_y: number;
-      justification: number;
-    }
+    options: { shift_x?: number; shift_y?: number; justification?: number } = {}
   ) {
     super();
-    this.setAttribute('type', 'StaveText');
 
     this.setWidth(16);
     this.text = text;
@@ -42,18 +36,14 @@ export class StaveText extends StaveModifier {
       shift_x: 0,
       shift_y: 0,
       justification: TextNote.Justification.CENTER,
+      ...options,
     };
-    this.options = { ...this.options, ...options };
 
     this.font = {
       family: 'times',
       size: 16,
       weight: 'normal',
     };
-  }
-
-  getCategory(): string {
-    return StaveText.CATEGORY;
   }
 
   setStaveText(text: string): this {
@@ -92,20 +82,18 @@ export class StaveText extends StaveModifier {
 
     let x;
     let y;
-    const Position = StaveModifier.Position;
-    const Justification = TextNote.Justification;
     switch (this.position) {
-      case Position.LEFT:
-      case Position.RIGHT:
+      case StaveModifierPosition.LEFT:
+      case StaveModifierPosition.RIGHT:
         y = (stave.getYForLine(0) + stave.getBottomLineY()) / 2 + this.options.shift_y;
-        if (this.position === Position.LEFT) {
+        if (this.position === StaveModifierPosition.LEFT) {
           x = stave.getX() - text_width - 24 + this.options.shift_x;
         } else {
           x = stave.getX() + stave.getWidth() + 24 + this.options.shift_x;
         }
         break;
-      case Position.ABOVE:
-      case Position.BELOW:
+      case StaveModifierPosition.ABOVE:
+      case StaveModifierPosition.BELOW:
         x = stave.getX() + this.options.shift_x;
         if (this.options.justification === Justification.CENTER) {
           x += stave.getWidth() / 2 - text_width / 2;
@@ -113,7 +101,7 @@ export class StaveText extends StaveModifier {
           x += stave.getWidth() - text_width;
         }
 
-        if (this.position === Position.ABOVE) {
+        if (this.position === StaveModifierPosition.ABOVE) {
           y = stave.getYForTopText(2) + this.options.shift_y;
         } else {
           y = stave.getYForBottomText(2) + this.options.shift_y;

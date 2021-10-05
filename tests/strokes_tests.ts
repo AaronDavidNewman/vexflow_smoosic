@@ -3,12 +3,6 @@
 //
 // Strokes Tests
 
-/* eslint-disable */
-// @ts-nocheck
-
-// TODO: Stroke constructor's second argument should be optional.
-// TODO: Factory.GraceNote() should probably take a Partial<GraceNoteStruct>
-
 import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 import { Beam } from 'beam';
 import { Bend } from 'bend';
@@ -86,7 +80,7 @@ function arpeggioDirectionless(options: TestOptions): void {
 
   const notes1 = score.notes('(g4 b4 d5)/4, (g4 b4 d5 g5), (g4 b4 d5 g5), (g4 b4 d5)', { stem: 'up' });
 
-  const graceNoteStructs: Partial<GraceNoteStruct>[] = [
+  const graceNoteStructs: GraceNoteStruct[] = [
     { keys: ['e/4'], duration: '32' },
     { keys: ['f/4'], duration: '32' },
     { keys: ['g/4'], duration: '32' },
@@ -226,6 +220,7 @@ function multiNotationAndTab(options: TestOptions): void {
   ok(true, 'Strokes Test Notation & Tab Multi Voice');
 }
 
+/*
 function drawTabStrokes(options: TestOptions): void {
   const f = VexFlowTests.makeFactory(options, 600, 200);
   const stave1 = f.TabStave({ width: 250 }).setEndBarType(Barline.type.DOUBLE);
@@ -313,6 +308,7 @@ function drawTabStrokes(options: TestOptions): void {
 
   ok(true, 'Strokes Tab test');
 }
+*/
 
 function notesWithTab(options: TestOptions): void {
   const f = VexFlowTests.makeFactory(options, 500, 300);

@@ -38,14 +38,17 @@ export interface TextFontRegistry {
 }
 
 // To enable logging for this class. Set `Vex.Flow.TextFont.DEBUG` to `true`.
-function L(
-  // eslint-disable-next-line
-  ...args: any[]) {
+// eslint-disable-next-line
+function L(...args: any[]) {
   if (TextFont.DEBUG) log('Vex.Flow.TextFont', args);
 }
 
 export class TextFont {
-  protected static debug: boolean;
+  static DEBUG: boolean;
+  static get CATEGORY(): string {
+    return 'TextFont';
+  }
+
   resolution: number = 1000;
   protected name?: string;
   protected glyphs: Record<string, TextFontMetrics> = {};
@@ -67,18 +70,6 @@ export class TextFont {
 
   protected size: number;
   protected attrs: { type: string };
-
-  static get CATEGORY(): string {
-    return 'textFont';
-  }
-
-  static get DEBUG(): boolean {
-    return TextFont.debug;
-  }
-
-  static set DEBUG(val: boolean) {
-    TextFont.debug = val;
-  }
 
   // ### fontRegistry
   // Getter of an array of available fonts.  Applications may register their
@@ -189,6 +180,9 @@ export class TextFont {
     let selectedFont = undefined;
     const fallback = TextFont.fontRegistry[0];
     let candidates: TextFontRegistry[] = [];
+    if (!fd.family) {
+      fd.family = 'Arial';
+    }
     const families = fd.family.split(',');
     for (i = 0; i < families.length; ++i) {
       const famliy = families[i];
@@ -254,7 +248,7 @@ export class TextFont {
     this.maxSizeGlyph = 'H';
     this.weight = '';
     this.style = '';
-    this.attrs = { type: 'TextFont' };
+    this.attrs = { type: TextFont.CATEGORY };
     if (!params.name) {
       throw new RuntimeError('BadArgument', 'Font constructor must specify a name');
     }

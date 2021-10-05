@@ -2,38 +2,35 @@
 // Author Radosaw Eichler 2012
 
 import { Flow } from './flow';
-import { StaveModifier } from './stavemodifier';
+import { StaveModifier, StaveModifierPosition } from './stavemodifier';
 import { Glyph } from './glyph';
-import { FontInfo } from './types/common';
 import { Stave } from './stave';
+import { FontInfo } from 'types/common';
 
 export interface StaveTempoOptions {
-  bpm: number;
-  dots: number;
-  duration: string;
-  name: string;
+  bpm?: number;
+  duration?: string;
+  dots?: number;
+  name?: string;
 }
 
 export class StaveTempo extends StaveModifier {
-  protected font: FontInfo;
-  protected render_options: {
-    glyph_font_scale: number;
-  };
+  static get CATEGORY(): string {
+    return 'StaveTempo';
+  }
 
+  protected font: FontInfo;
+  /** Font size for note. */
+  protected render_options = { glyph_font_scale: 30 };
   protected tempo: StaveTempoOptions;
   protected shift_x: number;
   protected shift_y: number;
 
-  static get CATEGORY(): string {
-    return 'stavetempo';
-  }
-
   constructor(tempo: StaveTempoOptions, x: number, shift_y: number) {
     super();
-    this.setAttribute('type', 'StaveTempo');
 
     this.tempo = tempo;
-    this.position = StaveModifier.Position.ABOVE;
+    this.position = StaveModifierPosition.ABOVE;
     this.x = x;
     this.shift_x = 10;
     this.shift_y = shift_y;
@@ -42,13 +39,6 @@ export class StaveTempo extends StaveModifier {
       size: 14,
       weight: 'bold',
     };
-    this.render_options = {
-      glyph_font_scale: 30, // font size for note
-    };
-  }
-
-  getCategory(): string {
-    return StaveTempo.CATEGORY;
   }
 
   setTempo(tempo: StaveTempoOptions): this {
@@ -76,7 +66,7 @@ export class StaveTempo extends StaveModifier {
     const scale = options.glyph_font_scale / 38;
     const name = this.tempo.name;
     const duration = this.tempo.duration;
-    const dots = this.tempo.dots;
+    const dots = this.tempo.dots || 0;
     const bpm = this.tempo.bpm;
     const font = this.font;
     let x = this.x + this.shift_x + shift_x;

@@ -7,6 +7,7 @@
 //
 // See `tests/tabnote_tests.ts` for usage examples.
 
+import { isDot } from 'typeguard';
 import { Dot } from './dot';
 import { Flow } from './flow';
 import { Glyph, GlyphProps } from './glyph';
@@ -29,6 +30,7 @@ export interface TabNotePosition {
 export interface TabNoteStruct extends StaveNoteStruct {
   positions: TabNotePosition[];
 }
+
 // Gets the unused strings grouped together if consecutive.
 //
 // Parameters:
@@ -122,45 +124,42 @@ function getPartialStemLines(stem_y: number, unused_strings: number[][], stave: 
 }
 
 export class TabNote extends StemmableNote {
+  static get CATEGORY(): string {
+    return 'TabNote';
+  }
+
   protected ghost: boolean;
   protected glyphs: GlyphProps[] = [];
   protected positions: TabNotePosition[];
 
-  static get CATEGORY(): string {
-    return 'tabnotes';
-  }
-
-  // Initialize the TabNote with a `tab_struct` full of properties
+  // Initialize the TabNote with a `noteStruct` full of properties
   // and whether to `draw_stem` when rendering the note
-  constructor(tab_struct: TabNoteStruct, draw_stem?: boolean) {
-    super(tab_struct);
-    this.setAttribute('type', 'TabNote');
+  constructor(noteStruct: TabNoteStruct, draw_stem: boolean = false) {
+    super(noteStruct);
 
     this.ghost = false; // Renders parenthesis around notes
 
     // Note properties
     // The fret positions in the note. An array of `{ str: X, fret: X }`
-    this.positions = tab_struct.positions;
+    this.positions = noteStruct.positions || [];
 
     // Render Options
     this.render_options = {
       ...this.render_options,
-      ...{
-        // font size for note heads and rests
-        glyph_font_scale: Flow.DEFAULT_TABLATURE_FONT_SCALE,
-        // Flag to draw a stem
-        draw_stem,
-        // Flag to draw dot modifiers
-        draw_dots: draw_stem,
-        // Flag to extend the main stem through the stave and fret positions
-        draw_stem_through_stave: false,
-        // vertical shift from stave line
-        y_shift: 0,
-        // normal glyph scale
-        scale: 1.0,
-        // default tablature font
-        font: '10pt Arial',
-      },
+      // font size for note heads and rests
+      glyph_font_scale: Flow.DEFAULT_TABLATURE_FONT_SCALE,
+      // Flag to draw a stem
+      draw_stem,
+      // Flag to draw dot modifiers
+      draw_dots: draw_stem,
+      // Flag to extend the main stem through the stave and fret positions
+      draw_stem_through_stave: false,
+      // vertical shift from stave line
+      y_shift: 0,
+      // normal glyph scale
+      scale: 1.0,
+      // default tablature font
+      font: '10pt Arial',
     };
 
     this.glyph = Flow.getGlyphProps(this.duration, this.noteType);
@@ -168,8 +167,8 @@ export class TabNote extends StemmableNote {
 
     this.buildStem();
 
-    if (tab_struct.stem_direction) {
-      this.setStemDirection(tab_struct.stem_direction);
+    if (noteStruct.stem_direction) {
+      this.setStemDirection(noteStruct.stem_direction);
     } else {
       this.setStemDirection(Stem.UP);
     }
@@ -182,11 +181,6 @@ export class TabNote extends StemmableNote {
   reset(): this {
     if (this.stave) this.setStave(this.stave);
     return this;
-  }
-
-  // The ModifierContext category
-  getCategory(): string {
-    return TabNote.CATEGORY;
   }
 
   // Set as ghost `TabNote`, surrounds the fret positions with parenthesis.
@@ -258,7 +252,7 @@ export class TabNote extends StemmableNote {
         const text = '' + glyph.text;
         if (text.toUpperCase() !== 'X') {
           ctx.save();
-          ctx.setRawFont(this.render_options.font as string);
+          ctx.setRawFont(this.render_options.font);
           glyph.width = ctx.measureText(text).width;
           ctx.restore();
           glyph.getWidth = () => glyph.width;
@@ -376,12 +370,13 @@ export class TabNote extends StemmableNote {
     }
   }
 
-  // Render the modifiers onto the context
+  // Render the modifiers onto the context.
   drawModifiers(): void {
-    // Draw the modifiers
     this.modifiers.forEach((modifier) => {
-      // Only draw the dots if enabled
-      if (modifier.getCategory() === Dot.CATEGORY && !this.render_options.draw_dots) return;
+      // Only draw the dots if enabled.
+      if (isDot(modifier) && !this.render_options.draw_dots) {
+        return;
+      }
 
       modifier.setContext(this.getContext());
       modifier.drawWithStyle();
@@ -446,7 +441,7 @@ export class TabNote extends StemmableNote {
     }
   }
 
-  // The main rendering function for the entire note
+  // The main rendering function for the entire note.
   draw(): void {
     const ctx = this.checkContext();
 

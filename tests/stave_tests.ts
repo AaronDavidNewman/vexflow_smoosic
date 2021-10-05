@@ -3,20 +3,8 @@
 //
 // Basic Stave Tests
 
-/* eslint-disable */
-// @ts-nocheck
-
-// TODO: Stave.setText()'s third arg needs to be Partial<T> or have more optional fields.
 // TODO: Like Stave.setTempo(t: StaveTempoOptions, ...), Stave.setText(...) could declare an interface called StaveTextOptions.
 //       This helps developers because they can use the named type in their code for type checking.
-// TODO: Stave.drawVerticalBar() only accepts one arg, but we pass in a second (boolean).
-//       Stave.drawVertical() requires two args, but we only pass in one. The second is a boolean. Did we mix up something?
-// TODO: Stave.setEndTimeSignature()'s second arg should be optional.
-// TODO: VoltaType.BEGIN_MID is used, but doesn't exist. Did it exist in the past?
-// TODO: Stave.setConfigForLines(lines_configuration: StaveLineConfig[])'s comment (and our test case) shows that null is a valid option in the array.
-//       Should we change it to undefined? Or should the type be (StaveLineConfig | null)[] instead?
-// TODO: In the drawTempo test case, Stave.setTempo(...) receives incomplete options, so it should probably take a Partial<StaveTempoOptions>.
-//       Additionally, it receives an unexpected option note: '8'.
 
 import { VexFlowTests, TestOptions } from './vexflow_test_helpers';
 import { ContextBuilder } from 'renderer';
@@ -30,7 +18,7 @@ import { Stave } from 'stave';
 import { Barline, BarlineType } from 'stavebarline';
 import { StaveNote } from 'stavenote';
 import { Repetition } from 'staverepetition';
-import { Volta, VoltaType } from 'stavevolta';
+import { VoltaType } from 'stavevolta';
 import { Justification } from 'textnote';
 import { TimeSignature } from 'timesignature';
 import { StaveModifier } from 'stavemodifier';
@@ -43,7 +31,6 @@ const StaveTests = {
     const run = VexFlowTests.runTests;
     run('Stave Draw Test', draw);
     run('Open Stave Draw Test', drawOpenStave);
-    run('Vertical Bar Test', drawVerticalBar);
     run('Multiple Stave Barline Test', drawMultipleMeasures);
     run('Multiple Stave Repeats Test', drawRepeats);
     run('Stave End Modifiers Test', drawEndModifiers);
@@ -72,8 +59,11 @@ function sortByCategory(): void {
   const bar0 = new Barline(BarlineType.SINGLE);
   const bar1 = new Barline(BarlineType.DOUBLE);
   const bar2 = new Barline(BarlineType.NONE);
-  const order0 = { barlines: 0, clefs: 1, keysignatures: 2, timesignatures: 3 };
-  const order1 = { timesignatures: 0, keysignatures: 1, barlines: 2, clefs: 3 };
+
+  // const order0 = { barlines: 0, clefs: 1, keysignatures: 2, timesignatures: 3 };
+  // const order1 = { timesignatures: 0, keysignatures: 1, barlines: 2, clefs: 3 };
+  const order0 = { Barline: 0, Clef: 1, KeySignature: 2, TimeSignature: 3 };
+  const order1 = { TimeSignature: 0, KeySignature: 1, Barline: 2, Clef: 3 };
 
   const sortAndCompare = (title: string, a: StaveModifier[], b: StaveModifier[], order: Record<string, number>) => {
     stave.sortByCategory(a, order);
@@ -142,19 +132,6 @@ function drawOpenStave(options: TestOptions, contextBuilder: ContextBuilder): vo
   stave = new Stave(10, 150, 300, { right_bar: false });
   stave.setContext(ctx);
   stave.draw();
-
-  ok(true, 'all pass');
-}
-
-function drawVerticalBar(options: TestOptions, contextBuilder: ContextBuilder): void {
-  const ctx = contextBuilder(options.elementId, 400, 120);
-  const stave = new Stave(10, 10, 300);
-  stave.setContext(ctx);
-  stave.draw();
-  stave.drawVerticalBar(50, true);
-  stave.drawVerticalBar(150, false);
-  stave.drawVertical(250, true);
-  stave.drawVertical(300);
 
   ok(true, 'all pass');
 }
@@ -544,7 +521,7 @@ function drawVoltaModifier(options: TestOptions, contextBuilder: ContextBuilder)
   const mm2 = new Stave(mm1.getX() + mm1.getWidth(), mm1.getY(), 175);
   mm2.setBegBarType(BarlineType.REPEAT_BEGIN);
   mm2.setRepetitionTypeRight(Repetition.type.DS, 25);
-  mm2.setVoltaType(Volta.type.BEGIN_MID, '2.', -5);
+  mm2.setVoltaType(VoltaType.BEGIN, '2.', -5);
   mm2.addClef('treble');
   mm2.addKeySignature('A');
   mm2.setMeasure(2);
@@ -578,7 +555,7 @@ function drawVoltaModifier(options: TestOptions, contextBuilder: ContextBuilder)
 
   // bar 5: d.s. shift (similar potential x-shift concern)
   const mm5 = new Stave(mm4.getX() + mm4.getWidth(), mm4.getY(), 175);
-  // mm5.addModifier(new Repetition(Repetition.type.DS, mm4.getX() + mm4.getWidth(), 50), StaveModifier.Position.RIGHT);
+  // mm5.addModifier(new Repetition(Repetition.type.DS, mm4.getX() + mm4.getWidth(), 50), StaveModifierPosition.RIGHT);
   mm5.setEndBarType(BarlineType.DOUBLE);
   mm5.setRepetitionTypeRight(Repetition.type.DS, 25);
   mm5.addClef('treble');
@@ -591,7 +568,7 @@ function drawVoltaModifier(options: TestOptions, contextBuilder: ContextBuilder)
 
   // bar 6: d.s. without modifiers
   const mm6 = new Stave(mm5.getX() + mm5.getWidth(), mm5.getY(), 175);
-  // mm5.addModifier(new Repetition(Repetition.type.DS, mm4.getX() + mm4.getWidth(), 50), StaveModifier.Position.RIGHT);
+  // mm5.addModifier(new Repetition(Repetition.type.DS, mm4.getX() + mm4.getWidth(), 50), StaveModifierPosition.RIGHT);
   mm6.setRepetitionTypeRight(Repetition.type.DS, 25);
   mm6.setMeasure(6);
   mm6.setSection('E', 0);
@@ -608,7 +585,6 @@ function drawTempo(options: TestOptions, contextBuilder: ContextBuilder): void {
   let x = 0;
   let y = 50;
 
-  // TODO: Change tempo to Partial<StaveTempoOptions> or make .name optional in StaveTempoOptions.
   function drawTempoStaveBar(width: number, tempo: StaveTempoOptions, tempo_y: number, notes?: StaveNote[]) {
     const staveBar = new Stave(padding + x, y, width);
     if (x === 0) staveBar.addClef('treble');
@@ -630,7 +606,7 @@ function drawTempo(options: TestOptions, contextBuilder: ContextBuilder): void {
   drawTempoStaveBar(100, { duration: '8', dots: 2, bpm: 90 }, 0);
   drawTempoStaveBar(100, { duration: '16', dots: 1, bpm: 96 }, 0);
   drawTempoStaveBar(100, { duration: '32', bpm: 70 }, 0);
-  drawTempoStaveBar(250, { name: 'Andante', note: '8', bpm: 120 }, -20, [
+  drawTempoStaveBar(250, { name: 'Andante', bpm: 120 }, -20, [
     new StaveNote({ keys: ['c/4'], duration: '8' }),
     new StaveNote({ keys: ['d/4'], duration: '8' }),
     new StaveNote({ keys: ['g/4'], duration: '8' }),
@@ -685,7 +661,7 @@ function configureAllLines(options: TestOptions, contextBuilder: ContextBuilder)
   const ctx = contextBuilder(options.elementId, 400, 120);
   const stave = new Stave(10, 10, 300);
   stave
-    .setConfigForLines([{ visible: false }, null, { visible: false }, { visible: true }, { visible: false }])
+    .setConfigForLines([{ visible: false }, {}, { visible: false }, { visible: true }, { visible: false }])
     .setContext(ctx)
     .draw();
 

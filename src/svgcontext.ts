@@ -2,8 +2,8 @@
 // MIT License
 // @author Gregory Ristow (2015)
 
-import { RuntimeError, prefix } from './util';
-import { RenderContext } from './types/common';
+import { RuntimeError, normalizeAngle, prefix } from './util';
+import { RenderContext, TextMeasure } from './types/common';
 
 // eslint-disable-next-line
 type Attributes = { [key: string]: any };
@@ -41,10 +41,70 @@ interface State {
   lineWidth: number;
 }
 
+class MeasureTextCache {
+  protected txt?: SVGTextElement;
+
+  // The cache is keyed first by the text string, then by the font attributes
+  // joined together.
+  protected cache: Record<string, Record<string, TextMeasure>> = {};
+
+  lookup(text: string, svg: SVGSVGElement, attributes: Attributes): TextMeasure {
+    let entries = this.cache[text];
+    if (entries === undefined) {
+      entries = {};
+      this.cache[text] = entries;
+    }
+
+    const family = attributes['font-family'];
+    const size = attributes['font-size'];
+    const style = attributes['font-style'];
+    const weight = attributes['font-weight'];
+
+    const key = `${family}%${size}%${style}%${weight}`;
+    let entry = entries[key];
+    if (entry === undefined) {
+      entry = this.measureImpl(text, svg, attributes);
+      entries[key] = entry;
+    }
+    return entry;
+  }
+
+  measureImpl(text: string, svg: SVGSVGElement, attributes: Attributes): TextMeasure {
+    let txt = this.txt;
+    if (!txt) {
+      // Create the SVG text element that will be used to measure text in the event
+      // of a cache miss.
+      txt = document.createElementNS(SVG_NS, 'text');
+      this.txt = txt;
+    }
+
+    txt.textContent = text;
+    txt.setAttributeNS(null, 'font-family', attributes['font-family']);
+    txt.setAttributeNS(null, 'font-size', attributes['font-size']);
+    txt.setAttributeNS(null, 'font-style', attributes['font-style']);
+    txt.setAttributeNS(null, 'font-weight', attributes['font-weight']);
+    svg.appendChild(txt);
+    const bbox = txt.getBBox();
+    svg.removeChild(txt);
+
+    // Remove the trailing 'pt' from the font size and scale to convert from points
+    // to canvas units.
+    // CSS specifies dpi to be 96 and there are 72 points to an inch: 96/72 == 4/3.
+    const fontSize = attributes['font-size'];
+    const height = (fontSize.substring(0, fontSize.length - 2) * 4) / 3;
+    return {
+      width: bbox.width,
+      height: height,
+    };
+  }
+}
+
 /**
  * SVG rendering context with an API similar to CanvasRenderingContext2D.
  */
 export class SVGContext implements RenderContext {
+  protected static measureTextCache = new MeasureTextCache();
+
   element: HTMLElement; // the parent DOM object
   svg: SVGSVGElement;
   width: number = 0;
@@ -60,13 +120,11 @@ export class SVGContext implements RenderContext {
   parent: SVGGElement;
   groups: SVGGElement[];
   fontString: string = '';
-  fontSize: number = 0;
-  ie: boolean = false; // true if the browser is Internet Explorer.
 
   constructor(element: HTMLElement) {
     this.element = element;
 
-    const svg = this.create('svg') as SVGSVGElement;
+    const svg = this.create('svg');
     // Add it to the canvas:
     this.element.appendChild(svg);
 
@@ -113,18 +171,27 @@ export class SVGContext implements RenderContext {
     };
 
     this.state_stack = [];
-
-    // Test for Internet Explorer
-    this.iePolyfill();
   }
 
+  /**
+   * Use one of the overload signatures to create an SVG element of a specific type.
+   * The last overload accepts an arbitrary string, and is identical to the
+   * implementation signature.
+   * Feel free to add new overloads for other SVG element types as required.
+   */
+  create(svgElementType: 'g'): SVGGElement;
+  create(svgElementType: 'path'): SVGPathElement;
+  create(svgElementType: 'rect'): SVGRectElement;
+  create(svgElementType: 'svg'): SVGSVGElement;
+  create(svgElementType: 'text'): SVGTextElement;
+  create(svgElementType: string): SVGElement;
   create(svgElementType: string): SVGElement {
     return document.createElementNS(SVG_NS, svgElementType);
   }
 
   // Allow grouping elements in containers for interactivity.
   openGroup(cls: string, id?: string, attrs?: { pointerBBox: boolean }): SVGGElement {
-    const group: SVGGElement = this.create('g') as SVGGElement;
+    const group = this.create('g');
     this.groups.push(group);
     this.parent.appendChild(group);
     this.parent = group;
@@ -144,19 +211,6 @@ export class SVGContext implements RenderContext {
 
   add(elem: SVGElement): void {
     this.parent.appendChild(elem);
-  }
-
-  // Tests if the browser is Internet Explorer; if it is,
-  // we do some tricks to improve text layout. See the
-  // note at ieMeasureTextFix() for details.
-  iePolyfill(): void {
-    if (typeof navigator !== 'undefined') {
-      this.ie =
-        /MSIE 9/i.test(navigator.userAgent) ||
-        /MSIE 10/i.test(navigator.userAgent) ||
-        /rv:11\.0/i.test(navigator.userAgent) ||
-        /Trident/i.test(navigator.userAgent);
-    }
   }
 
   // ### Styling & State Methods:
@@ -195,9 +249,6 @@ export class SVGContext implements RenderContext {
       'font-style': foundItalic ? 'italic' : 'normal',
     };
 
-    // Store the font size so that if the browser is Internet
-    // Explorer we can fix its calculations of text width.
-    this.fontSize = Number(size);
     // Currently this.fontString only supports size & family. See setRawFont().
     this.fontString = `${size}pt ${family}`;
     this.attributes = { ...this.attributes, ...fontAttributes };
@@ -220,9 +271,6 @@ export class SVGContext implements RenderContext {
     this.attributes['font-family'] = family;
     this.state['font-family'] = family;
 
-    // Saves fontSize for IE polyfill.
-    // Use the Number() function to parse the array returned by String.prototype.match()!
-    this.fontSize = Number(size.match(/\d+/));
     return this;
   }
 
@@ -394,7 +442,7 @@ export class SVGContext implements RenderContext {
     }
 
     // Create the rect & style it:
-    const rectangle: SVGRectElement = this.create('rect') as SVGRectElement;
+    const rectangle = this.create('rect');
     if (typeof attributes === 'undefined') {
       attributes = {
         fill: 'none',
@@ -412,12 +460,8 @@ export class SVGContext implements RenderContext {
   }
 
   fillRect(x: number, y: number, width: number, height: number): this {
-    if (height < 0) {
-      y += height;
-      height *= -1;
-    }
-
-    this.rect(x, y, width, height, this.attributes);
+    const attributes = { fill: this.attributes.fill };
+    this.rect(x, y, width, height, attributes);
     return this;
   }
 
@@ -477,62 +521,49 @@ export class SVGContext implements RenderContext {
     return this;
   }
 
-  // This is an attempt (hack) to simulate the HTML5 canvas arc method.
   arc(x: number, y: number, radius: number, startAngle: number, endAngle: number, antiClockwise: boolean): this {
-    function normalizeAngle(angle: number) {
-      while (angle < 0) {
-        angle += Math.PI * 2;
-      }
-      while (angle > Math.PI * 2) {
-        angle -= Math.PI * 2;
-      }
-      return angle;
-    }
+    const x0 = x + radius * Math.cos(startAngle);
+    const y0 = y + radius * Math.sin(startAngle);
 
-    startAngle = normalizeAngle(startAngle);
-    endAngle = normalizeAngle(endAngle);
-
-    // Swap the start and end angles if necessary.
-    if (startAngle > endAngle) {
-      const tmp = startAngle;
-      startAngle = endAngle;
-      endAngle = tmp;
-      antiClockwise = !antiClockwise;
-    }
-
-    const delta = endAngle - startAngle;
-    if (delta > Math.PI) {
-      this.arcHelper(x, y, radius, startAngle, startAngle + delta / 2, antiClockwise);
-      this.arcHelper(x, y, radius, startAngle + delta / 2, endAngle, antiClockwise);
+    // Handle the edge case from the Canvas spec where arc length is greater than
+    // the circle's circumference:
+    //   https://html.spec.whatwg.org/multipage/canvas.html#ellipse-method-steps
+    if (
+      (!antiClockwise && endAngle - startAngle > 2 * Math.PI) ||
+      (antiClockwise && startAngle - endAngle > 2 * Math.PI)
+    ) {
+      const x1 = x + radius * Math.cos(startAngle + Math.PI);
+      const y1 = y + radius * Math.sin(startAngle + Math.PI);
+      // There's no way to specify a completely circular arc in SVG so we have to
+      // use two semi-circular arcs.
+      this.path += `M${x0} ${y0} A${radius} ${radius} 0 0 0 ${x1} ${y1} `;
+      this.path += `A${radius} ${radius} 0 0 0 ${x0} ${y0}`;
+      this.pen.x = x0;
+      this.pen.y = y0;
     } else {
-      this.arcHelper(x, y, radius, startAngle, endAngle, antiClockwise);
+      const x1 = x + radius * Math.cos(endAngle);
+      const y1 = y + radius * Math.sin(endAngle);
+
+      startAngle = normalizeAngle(startAngle);
+      endAngle = normalizeAngle(endAngle);
+
+      let large: boolean;
+      if (Math.abs(endAngle - startAngle) < Math.PI) {
+        large = antiClockwise;
+      } else {
+        large = !antiClockwise;
+      }
+      if (startAngle > endAngle) {
+        large = !large;
+      }
+
+      const sweep = !antiClockwise;
+
+      this.path += `M${x0} ${y0} A${radius} ${radius} 0 ${+large} ${+sweep} ${x1} ${y1}`;
+      this.pen.x = x1;
+      this.pen.y = y1;
     }
     return this;
-  }
-
-  arcHelper(x: number, y: number, radius: number, startAngle: number, endAngle: number, antiClockwise: boolean): void {
-    const x1 = x + radius * Math.cos(startAngle);
-    const y1 = y + radius * Math.sin(startAngle);
-
-    const x2 = x + radius * Math.cos(endAngle);
-    const y2 = y + radius * Math.sin(endAngle);
-
-    let largeArcFlag = 0;
-    let sweepFlag = 0;
-    if (antiClockwise) {
-      sweepFlag = 1;
-      if (endAngle - startAngle < Math.PI) {
-        largeArcFlag = 1;
-      }
-    } else if (endAngle - startAngle > Math.PI) {
-      largeArcFlag = 1;
-    }
-
-    this.path += `M${x1} ${y1} A${radius} ${radius} 0 ${largeArcFlag} ${sweepFlag} ${x2} ${y2}`;
-
-    if (!isNaN(this.pen.x) && !isNaN(this.pen.y)) {
-      this.path += 'M' + this.pen.x + ' ' + this.pen.y;
-    }
   }
 
   closePath(): this {
@@ -540,41 +571,24 @@ export class SVGContext implements RenderContext {
     return this;
   }
 
-  // Adapted from the source for Raphael's Element.glow
-  glow(): this {
-    // Calculate the width & paths of the glow:
-    if (this.shadow_attributes.width > 0) {
-      const sa = this.shadow_attributes;
-      const num_paths = sa.width / 2;
-      // Stroke at varying widths to create effect of gaussian blur:
-      for (let i = 1; i <= num_paths; i++) {
-        const attributes: Attributes = {
-          stroke: sa.color,
-          'stroke-linejoin': 'round',
-          'stroke-linecap': 'round',
-          'stroke-width': +(((sa.width * 0.4) / num_paths) * i).toFixed(3),
-          opacity: +((sa.opacity || 0.3) / num_paths).toFixed(3),
-        };
-
-        const path = this.create('path');
-        attributes.d = this.path;
-        this.applyAttributes(path, attributes);
-        this.add(path);
-      }
-    }
-    return this;
+  private getShadowStyle(): string {
+    const sa = this.shadow_attributes;
+    // A CSS drop-shadow filter blur looks different than a canvas shadowBlur
+    // of the same radius, so we scale the drop-shadow radius here to make it
+    // look close to the canvas shadow.
+    return `filter: drop-shadow(0 0 ${sa.width / 1.5}px ${sa.color})`;
   }
 
   fill(attributes: Attributes): this {
-    // If our current path is set to glow, make it glow
-    this.glow();
-
     const path = this.create('path');
     if (typeof attributes === 'undefined') {
       attributes = { ...this.attributes, stroke: 'none' };
     }
 
     attributes.d = this.path;
+    if (this.shadow_attributes.width > 0) {
+      attributes.style = this.getShadowStyle();
+    }
 
     this.applyAttributes(path, attributes);
     this.add(path);
@@ -582,9 +596,6 @@ export class SVGContext implements RenderContext {
   }
 
   stroke(): this {
-    // If our current path is set to glow, make it glow.
-    this.glow();
-
     const path = this.create('path');
     const attributes: Attributes = {
       ...this.attributes,
@@ -592,6 +603,9 @@ export class SVGContext implements RenderContext {
       'stroke-width': this.lineWidth,
       d: this.path,
     };
+    if (this.shadow_attributes.width > 0) {
+      attributes.style = this.getShadowStyle();
+    }
 
     this.applyAttributes(path, attributes);
     this.add(path);
@@ -599,51 +613,8 @@ export class SVGContext implements RenderContext {
   }
 
   // ## Text Methods:
-  measureText(text: string): SVGRect {
-    const txt = this.create('text') as SVGTextElement;
-    if (typeof txt.getBBox !== 'function') {
-      return { x: 0, y: 0, width: 0, height: 0 } as SVGRect;
-    }
-
-    txt.textContent = text;
-    this.applyAttributes(txt, this.attributes);
-
-    // Temporarily add it to the document for measurement.
-    this.svg.appendChild(txt);
-
-    let bbox: SVGRect = txt.getBBox();
-    if (this.ie && text !== '' && this.attributes['font-style'] === 'italic') {
-      bbox = this.ieMeasureTextFix(bbox);
-    }
-
-    this.svg.removeChild(txt);
-    return bbox;
-  }
-
-  ieMeasureTextFix(bbox: DOMRect): SVGRect {
-    // Internet Explorer over-pads text in italics,
-    // resulting in giant width estimates for measureText.
-    // To fix this, we use this formula, tested against
-    // ie 11:
-    // overestimate (in pixels) = FontSize(in pt) * 1.196 + 1.96
-    // And then subtract the overestimate from calculated width.
-
-    const fontSize = Number(this.fontSize);
-    const m = 1.196;
-    const b = 1.9598;
-    const widthCorrection = m * fontSize + b;
-    const width = bbox.width - widthCorrection;
-    const height = bbox.height - 1.5;
-
-    // Get non-protected copy:
-    const box = {
-      x: bbox.x,
-      y: bbox.y,
-      width,
-      height,
-    };
-
-    return box as SVGRect;
+  measureText(text: string): TextMeasure {
+    return SVGContext.measureTextCache.lookup(text, this.svg, this.attributes);
   }
 
   fillText(text: string, x: number, y: number): this {

@@ -42,10 +42,12 @@ export interface GlyphProps {
 
   getMetrics(): GlyphMetrics;
 }
+
 export interface GlyphOptions {
   fontStack: Font[];
   category?: string;
 }
+
 export interface GlyphMetrics {
   width: number;
   height: number;
@@ -162,6 +164,10 @@ class GlyphOutline {
 }
 
 export class Glyph extends Element {
+  static get CATEGORY(): string {
+    return 'Glyph';
+  }
+
   protected static cache = new GlyphCache();
 
   bbox: BoundingBox = new BoundingBox(0, 0, 0, 0);
@@ -291,7 +297,6 @@ export class Glyph extends Element {
     const go = new GlyphOutline(outline, x_pos, y_pos, scale);
 
     ctx.beginPath();
-    ctx.moveTo(x_pos, y_pos);
     let x, y: number;
     while (!go.done()) {
       switch (go.next()) {
@@ -373,7 +378,6 @@ export class Glyph extends Element {
    */
   constructor(code: string, point: number, options?: { category: string }) {
     super();
-    this.setAttribute('type', 'Glyph');
 
     this.code = code;
     this.point = point;
