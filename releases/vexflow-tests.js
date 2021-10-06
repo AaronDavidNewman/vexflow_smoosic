@@ -1,5 +1,5 @@
 /*!
- * VexFlow 3.0.9   2021-09-08T09:52:22.267Z   3c0b744d22fb5604b3c4475341ff14354d50453a
+ * VexFlow 3.0.9   2021-10-06T13:11:26.021Z   123eca67e30641282721144f7d8bc32d3e6ee663
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * http://www.vexflow.com   http://github.com/0xfe/vexflow
  */
@@ -33,15 +33,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _music__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./music */ "./src/music.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-/* harmony import */ var _gracenotegroup__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./gracenotegroup */ "./src/gracenotegroup.ts");
-/* harmony import */ var _gracenote__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
-/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
+/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 // @author Mohit Cheppudira
 // @author Greg Ristow (modifications)
-
-
 
 
 
@@ -69,7 +65,6 @@ class Accidental extends _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier {
      */
     constructor(type) {
         super();
-        this.setAttribute('type', 'Accidental');
         L('New accidental: ', type);
         this.type = type;
         this.position = _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.LEFT;
@@ -90,7 +85,7 @@ class Accidental extends _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier {
     }
     /** Accidentals category string. */
     static get CATEGORY() {
-        return 'accidentals';
+        return 'Accidental';
     }
     /** Arrange accidentals inside a ModifierContext. */
     static format(accidentals, state) {
@@ -120,7 +115,7 @@ class Accidental extends _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier {
                 prevNote = note;
             }
             if (stave) {
-                const lineSpace = stave.getOptions().spacing_between_lines_px;
+                const lineSpace = stave.getSpacingBetweenLines();
                 const y = stave.getYForLine(props.line);
                 const accLine = Math.round((y / lineSpace) * 2) / 2;
                 accList.push({ y, line: accLine, shift: shiftL, acc, lineSpace });
@@ -394,7 +389,7 @@ class Accidental extends _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier {
             const modifiedPitches = [];
             const processNote = (t) => {
                 // Only StaveNote implements .addAccidental(), which is used below.
-                if (!(0,_typeguard__WEBPACK_IMPORTED_MODULE_8__.isStaveNote)(t) || t.isRest() || t.shouldIgnoreTicks()) {
+                if (!(0,_typeguard__WEBPACK_IMPORTED_MODULE_6__.isStaveNote)(t) || t.isRest() || t.shouldIgnoreTicks()) {
                     return;
                 }
                 // Go through each key and determine if an accidental should be applied.
@@ -412,7 +407,7 @@ class Accidental extends _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier {
                     const previouslyModified = modifiedPitches.indexOf(pitch) > -1;
                     // Remove accidentals
                     staveNote.getModifiers().forEach((modifier, index) => {
-                        if ((0,_typeguard__WEBPACK_IMPORTED_MODULE_8__.isCategory)(modifier, Accidental) &&
+                        if ((0,_typeguard__WEBPACK_IMPORTED_MODULE_6__.isCategory)(modifier, Accidental) &&
                             modifier.type == accidentalString &&
                             modifier.getIndex() == keyIndex) {
                             staveNote.getModifiers().splice(index, 1);
@@ -433,8 +428,7 @@ class Accidental extends _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier {
                 });
                 // process grace notes
                 staveNote.getModifiers().forEach((modifier) => {
-                    // TODO: Replace with isCategory()?
-                    if (modifier.getCategory() === _gracenotegroup__WEBPACK_IMPORTED_MODULE_6__.GraceNoteGroup.CATEGORY) {
+                    if ((0,_typeguard__WEBPACK_IMPORTED_MODULE_6__.isGraceNoteGroup)(modifier)) {
                         modifier.getGraceNotes().forEach(processNote);
                     }
                 });
@@ -452,10 +446,6 @@ class Accidental extends _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier {
             this.parenLeft.setOriginX(1.0);
             this.parenRight.setOriginX(1.0);
         }
-    }
-    /** Get element category string. */
-    getCategory() {
-        return Accidental.CATEGORY;
     }
     /** Get width in pixels. */
     getWidth() {
@@ -477,7 +467,7 @@ class Accidental extends _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier {
         (0,_util__WEBPACK_IMPORTED_MODULE_0__.defined)(note, 'ArgumentError', `Bad note value: ${note}`);
         this.note = note;
         // Accidentals attached to grace notes are rendered smaller.
-        if (note.getCategory() === _gracenote__WEBPACK_IMPORTED_MODULE_7__.GraceNote.CATEGORY) {
+        if ((0,_typeguard__WEBPACK_IMPORTED_MODULE_6__.isGraceNote)(note)) {
             this.render_options.font_scale = 25;
             this.reset();
         }
@@ -576,9 +566,8 @@ class Annotation extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
      */
     constructor(text) {
         super();
-        this.setAttribute('type', 'Annotation');
         this.text = text;
-        this.justification = Annotation.Justify.CENTER;
+        this.justification = Justify.CENTER;
         this.vert_justification = Annotation.VerticalJustify.TOP;
         this.setFont('Arial', 10);
         // The default width is calculated from the text.
@@ -586,7 +575,7 @@ class Annotation extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
     }
     /** Annotations category string. */
     static get CATEGORY() {
-        return 'annotations';
+        return 'Annotation';
     }
     /** Arrange annotations within a `ModifierContext` */
     static format(annotations, state) {
@@ -618,10 +607,6 @@ class Annotation extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
         state.left_shift += width / 2;
         state.right_shift += width / 2;
         return true;
-    }
-    /** Get element category string. */
-    getCategory() {
-        return Annotation.CATEGORY;
     }
     /** Set font family, size, and weight. E.g., `Arial`, `10pt`, `Bold`. */
     setFont(family, size, weight = '') {
@@ -724,10 +709,10 @@ class Annotation extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
 /** Text annotations can be positioned and justified relative to the note. */
 Annotation.Justify = Justify;
 Annotation.JustifyString = {
-    left: Annotation.Justify.LEFT,
-    right: Annotation.Justify.RIGHT,
-    center: Annotation.Justify.CENTER,
-    centerStem: Annotation.Justify.CENTER_STEM,
+    left: Justify.LEFT,
+    right: Justify.RIGHT,
+    center: Justify.CENTER,
+    centerStem: Justify.CENTER_STEM,
 };
 Annotation.VerticalJustify = VerticalJustify;
 Annotation.VerticalJustifyString = {
@@ -757,14 +742,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stem */ "./src/stem.ts");
-/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-/* harmony import */ var _gracenote__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
-/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
+/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Larry Kuhns.
 // MIT License
-
-
 
 
 
@@ -810,10 +791,12 @@ function snapLineToStaff(canSitBetweenLines, line, position, offsetDirection) {
         return snappedLine;
     }
 }
+// Helper function for checking if a Note object is either a StaveNote or a GraceNote.
+const isStaveOrGraceNote = (note) => (0,_typeguard__WEBPACK_IMPORTED_MODULE_5__.isStaveNote)(note) || (0,_typeguard__WEBPACK_IMPORTED_MODULE_5__.isGraceNote)(note);
 function getTopY(note, textLine) {
     const stemDirection = note.getStemDirection();
     const { topY: stemTipY, baseY: stemBaseY } = note.getStemExtents();
-    if (isStaveOrGraceNoteCategory(note)) {
+    if (isStaveOrGraceNote(note)) {
         if (note.hasStem()) {
             if (stemDirection === _stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP) {
                 return stemTipY;
@@ -826,7 +809,7 @@ function getTopY(note, textLine) {
             return Math.min(...note.getYs());
         }
     }
-    else if ((0,_typeguard__WEBPACK_IMPORTED_MODULE_7__.isTabNote)(note)) {
+    else if ((0,_typeguard__WEBPACK_IMPORTED_MODULE_5__.isTabNote)(note)) {
         if (note.hasStem()) {
             if (stemDirection === _stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP) {
                 return stemTipY;
@@ -846,7 +829,7 @@ function getTopY(note, textLine) {
 function getBottomY(note, textLine) {
     const stemDirection = note.getStemDirection();
     const { topY: stemTipY, baseY: stemBaseY } = note.getStemExtents();
-    if (isStaveOrGraceNoteCategory(note)) {
+    if (isStaveOrGraceNote(note)) {
         if (note.hasStem()) {
             if (stemDirection === _stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP) {
                 return stemBaseY;
@@ -859,7 +842,7 @@ function getBottomY(note, textLine) {
             return Math.max(...note.getYs());
         }
     }
-    else if ((0,_typeguard__WEBPACK_IMPORTED_MODULE_7__.isTabNote)(note)) {
+    else if ((0,_typeguard__WEBPACK_IMPORTED_MODULE_5__.isTabNote)(note)) {
         if (note.hasStem()) {
             if (stemDirection === _stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP) {
                 return note.checkStave().getYForBottomText(textLine);
@@ -889,7 +872,7 @@ function getBottomY(note, textLine) {
 function getInitialOffset(note, position) {
     const isOnStemTip = (position === ABOVE && note.getStemDirection() === _stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP) ||
         (position === BELOW && note.getStemDirection() === _stem__WEBPACK_IMPORTED_MODULE_4__.Stem.DOWN);
-    if (isStaveOrGraceNoteCategory(note)) {
+    if (isStaveOrGraceNote(note)) {
         if (note.hasStem() && isOnStemTip) {
             return 0.5;
         }
@@ -908,11 +891,6 @@ function getInitialOffset(note, position) {
         }
     }
 }
-// Helper function for checking if a Note object is either a StaveNote or a GraceNote.
-function isStaveOrGraceNoteCategory(note) {
-    const category = note.getCategory();
-    return category === _stavenote__WEBPACK_IMPORTED_MODULE_5__.StaveNote.CATEGORY || category === _gracenote__WEBPACK_IMPORTED_MODULE_6__.GraceNote.CATEGORY;
-}
 /**
  * Articulations and Accents are modifiers that can be
  * attached to notes. The complete list of articulations is available in
@@ -927,7 +905,6 @@ class Articulation extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
      */
     constructor(type) {
         super();
-        this.setAttribute('type', 'Articulation');
         this.type = type;
         this.position = BELOW;
         this.render_options = {
@@ -937,7 +914,7 @@ class Articulation extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
     }
     /** Articulations category string. */
     static get CATEGORY() {
-        return 'articulations';
+        return 'Articulation';
     }
     /**
      * FIXME:
@@ -1005,10 +982,6 @@ class Articulation extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
         this.glyph = new _glyph__WEBPACK_IMPORTED_MODULE_3__.Glyph(code !== null && code !== void 0 ? code : '', this.render_options.font_scale);
         this.setWidth((0,_util__WEBPACK_IMPORTED_MODULE_0__.defined)(this.glyph.getMetrics().width));
     }
-    /** Get element category string. */
-    getCategory() {
-        return Articulation.CATEGORY;
-    }
     /** Render articulation in position next to note. */
     draw() {
         const ctx = this.checkContext();
@@ -1019,7 +992,7 @@ class Articulation extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
         const canSitBetweenLines = this.articulation.between_lines;
         const stave = note.checkStave();
         const staffSpace = stave.getSpacingBetweenLines();
-        const isTab = (0,_typeguard__WEBPACK_IMPORTED_MODULE_7__.isTabNote)(note);
+        const isTab = (0,_typeguard__WEBPACK_IMPORTED_MODULE_5__.isTabNote)(note);
         // Articulations are centered over/under the note head.
         const { x } = note.getModifierStartXY(position, index);
         const shouldSitOutsideStaff = !canSitBetweenLines || isTab;
@@ -1039,9 +1012,7 @@ class Articulation extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
         }[position]();
         if (!isTab) {
             const offsetDirection = position === ABOVE ? -1 : +1;
-            const noteLine = isTab
-                ? note.getPositions()[index].str
-                : note.getKeyProps()[index].line;
+            const noteLine = note.getKeyProps()[index].line;
             const distanceFromNote = (note.getYs()[index] - y) / staffSpace;
             const articLine = distanceFromNote + Number(noteLine);
             const snappedLine = snapLineToStaff(canSitBetweenLines, articLine, position, offsetDirection);
@@ -1091,7 +1062,6 @@ function L(...args) {
 class BarNote extends _note__WEBPACK_IMPORTED_MODULE_1__.Note {
     constructor(type = _stavebarline__WEBPACK_IMPORTED_MODULE_2__.BarlineType.SINGLE) {
         super({ duration: 'b' });
-        this.setAttribute('type', 'BarNote');
         this.metrics = {
             widths: {},
         };
@@ -1108,6 +1078,9 @@ class BarNote extends _note__WEBPACK_IMPORTED_MODULE_1__.Note {
         // Tell the formatter that bar notes have no duration.
         this.ignore_ticks = true;
         this.setType(type);
+    }
+    static get CATEGORY() {
+        return 'BarNote';
     }
     /** Get the type of bar note.*/
     getType() {
@@ -1165,11 +1138,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
 /* harmony import */ var _tuplet__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./tuplet */ "./src/tuplet.ts");
 /* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./stem */ "./src/stem.ts");
-/* harmony import */ var _tabnote__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
-/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+/* harmony import */ var typeguard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! typeguard */ "./src/typeguard.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
-
 
 
 
@@ -1191,13 +1162,13 @@ function calculateStemDirection(notes) {
     }
     return _stem__WEBPACK_IMPORTED_MODULE_5__.Stem.UP;
 }
-const getStemSlope = (firstNote, lastNote) => {
+function getStemSlope(firstNote, lastNote) {
     const firstStemTipY = firstNote.getStemExtents().topY;
     const firstStemX = firstNote.getStemX();
     const lastStemTipY = lastNote.getStemExtents().topY;
     const lastStemX = lastNote.getStemX();
     return (lastStemTipY - firstStemTipY) / (lastStemX - firstStemX);
-};
+}
 const BEAM_LEFT = 'L';
 const BEAM_RIGHT = 'R';
 const BEAM_BOTH = 'B';
@@ -1207,7 +1178,6 @@ class Beam extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         super();
         this.slope = 0;
         this.y_shift = 0;
-        this.setAttribute('type', 'Beam');
         if (!notes || notes.length === 0) {
             throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'No notes provided for beam.');
         }
@@ -1231,10 +1201,10 @@ class Beam extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         }
         let stem_direction = this.stem_direction;
         // Figure out optimal stem direction based on given notes
-        if (auto_stem && notes[0].getCategory() === _stavenote__WEBPACK_IMPORTED_MODULE_7__.StaveNote.CATEGORY) {
+        if (auto_stem && (0,typeguard__WEBPACK_IMPORTED_MODULE_6__.isStaveNote)(notes[0])) {
             stem_direction = calculateStemDirection(notes);
         }
-        else if (auto_stem && notes[0].getCategory() === _tabnote__WEBPACK_IMPORTED_MODULE_6__.TabNote.CATEGORY) {
+        else if (auto_stem && (0,typeguard__WEBPACK_IMPORTED_MODULE_6__.isTabNote)(notes[0])) {
             // Auto Stem TabNotes
             const stem_weight = notes.reduce((memo, note) => memo + note.getStemDirection(), 0);
             stem_direction = stem_weight > -1 ? _stem__WEBPACK_IMPORTED_MODULE_5__.Stem.UP : _stem__WEBPACK_IMPORTED_MODULE_5__.Stem.DOWN;
@@ -1264,6 +1234,9 @@ class Beam extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
             flat_beams: false,
             min_flat_beam_offset: 15,
         };
+    }
+    static get CATEGORY() {
+        return 'Beam';
     }
     /**
      * Get the default beam groups for a provided time signature.
@@ -1322,10 +1295,7 @@ class Beam extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
      * @param groups an array of `Fraction` representing beat groupings for the beam
      */
     static applyAndGetBeams(voice, stem_direction, groups) {
-        return Beam.generateBeams(voice.getTickables(), {
-            groups,
-            stem_direction,
-        });
+        return Beam.generateBeams(voice.getTickables(), { groups, stem_direction });
     }
     /**
      * A helper function to autimatically build beams for a voice with
@@ -1922,7 +1892,7 @@ class Beam extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         if (this.postFormatted)
             return;
         // Calculate a smart slope if we're not forcing the beams to be flat.
-        if (this.notes[0].getCategory() === _tabnote__WEBPACK_IMPORTED_MODULE_6__.TabNote.CATEGORY || this.render_options.flat_beams) {
+        if ((0,typeguard__WEBPACK_IMPORTED_MODULE_6__.isTabNote)(this.notes[0]) || this.render_options.flat_beams) {
             this.calculateFlatSlope();
         }
         else {
@@ -1971,8 +1941,8 @@ __webpack_require__.r(__webpack_exports__);
 /** Bend implements tablature bends. */
 class Bend extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
     /**
-     * Constructor.
      * Example of a phrase:
+     * ```
      *    [{
      *     type: UP,
      *     text: "whole"
@@ -1998,13 +1968,13 @@ class Bend extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
      *     text: "1 1/2"
      *     width: 8;
      *   }]
+     * ```
      * @param text text for bend ("Full", "Half", etc.) (DEPRECATED)
      * @param release if true, render a release. (DEPRECATED)
      * @param phrase if set, ignore "text" and "release", and use the more sophisticated phrase specified
      */
     constructor(text, release = false, phrase) {
         super();
-        this.setAttribute('type', 'Bend');
         this.text = text;
         this.x_shift = 0;
         this.release = release;
@@ -2027,7 +1997,7 @@ class Bend extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
         this.updateWidth();
     }
     static get CATEGORY() {
-        return 'bends';
+        return 'Bend';
     }
     static get UP() {
         return 0;
@@ -2035,7 +2005,6 @@ class Bend extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
     static get DOWN() {
         return 1;
     }
-    // ## Static Methods
     // Arrange bends in `ModifierContext`
     static format(bends, state) {
         if (!bends || bends.length === 0)
@@ -2053,10 +2022,6 @@ class Bend extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
         state.right_shift += last_width;
         state.top_text_line += 1;
         return true;
-    }
-    /** Get element category string. */
-    getCategory() {
-        return Bend.CATEGORY;
     }
     /** Set horizontal shift in pixels. */
     setXShift(value) {
@@ -2478,12 +2443,10 @@ __webpack_require__.r(__webpack_exports__);
  */
 class CanvasContext {
     /**
-     * This constructor is only called if Renderer.USE_CANVAS_PROXY is true.
-     * In most instances, we do not need to create a CanvasContext object.
-     * See Renderer.bolsterCanvasContext().
      * @param context
      */
     constructor(context) {
+        this.textHeight = 0;
         // Use a name that is unlikely to clash with a canvas context property.
         this.vexFlowCanvasContext = context;
         if (!context.canvas) {
@@ -2534,10 +2497,16 @@ class CanvasContext {
     }
     setFont(family, size, weight) {
         this.vexFlowCanvasContext.font = (weight || '') + ' ' + size + 'pt ' + family;
+        this.textHeight = (size * 4) / 3;
         return this;
     }
     setRawFont(font) {
         this.vexFlowCanvasContext.font = font;
+        const fontArray = font.split(' ');
+        const size = Number(fontArray[0].match(/\d+/));
+        // The font size is specified in points, scale it to canvas units.
+        // CSS specifies dpi to be 96 and there are 72 points to an inch: 96/72 == 4/3.
+        this.textHeight = (size * 4) / 3;
         return this;
     }
     setFillStyle(style) {
@@ -2567,7 +2536,13 @@ class CanvasContext {
         return this;
     }
     setShadowBlur(blur) {
-        this.vexFlowCanvasContext.shadowBlur = blur;
+        // CanvasRenderingContext2D does not scale the shadow blur by the current
+        // transform, so we have to do it manually. We assume uniform scaling
+        // (though allow for rotation) because the blur can only be scaled
+        // uniformly anyway.
+        const t = this.vexFlowCanvasContext.getTransform();
+        const scale = Math.sqrt(t.a * t.a + t.b * t.b + t.c * t.c + t.d * t.d);
+        this.vexFlowCanvasContext.shadowBlur = scale * blur;
         return this;
     }
     setLineWidth(width) {
@@ -2578,15 +2553,8 @@ class CanvasContext {
         this.vexFlowCanvasContext.lineCap = capType;
         return this;
     }
-    // setLineDash is the one native method in a canvas context
-    // that begins with set, therefore we don't bolster the method
-    // if it already exists (see Renderer.bolsterCanvasContext).
-    // If it doesn't exist, we bolster it and assume it's looking for
-    // a ctx.lineDash method, as previous versions of VexFlow
-    // expected.
     setLineDash(dash) {
-        // eslint-disable-next-line
-        this.vexFlowCanvasContext.lineDash = dash;
+        this.vexFlowCanvasContext.setLineDash(dash);
         return this;
     }
     // Only called if Renderer.USE_CANVAS_PROXY is true.
@@ -2633,14 +2601,8 @@ class CanvasContext {
         this.vexFlowCanvasContext.quadraticCurveTo(cpx, cpy, x, y);
         return this;
     }
-    // This is an attempt (hack) to simulate the HTML5 canvas arc method.
-    arc(x, y, radius, startAngle, endAngle, antiClockwise) {
-        this.vexFlowCanvasContext.arc(x, y, radius, startAngle, endAngle, antiClockwise);
-        return this;
-    }
-    // CanvasRenderingContext2D does not have a glow function.
-    glow() {
-        // DO NOTHING.
+    arc(x, y, radius, startAngle, endAngle, counterclockwise) {
+        this.vexFlowCanvasContext.arc(x, y, radius, startAngle, endAngle, counterclockwise);
         return this;
     }
     fill() {
@@ -2656,7 +2618,11 @@ class CanvasContext {
         return this;
     }
     measureText(text) {
-        return this.vexFlowCanvasContext.measureText(text);
+        const metrics = this.vexFlowCanvasContext.measureText(text);
+        return {
+            width: metrics.width,
+            height: this.textHeight,
+        };
     }
     fillText(text, x, y) {
         this.vexFlowCanvasContext.fillText(text, x, y);
@@ -2671,7 +2637,7 @@ class CanvasContext {
         return this;
     }
     set font(value) {
-        this.vexFlowCanvasContext.font = value;
+        this.setRawFont(value);
     }
     get font() {
         return this.vexFlowCanvasContext.font;
@@ -2701,6 +2667,10 @@ class CanvasContext {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HorizontalJustify": () => (/* binding */ HorizontalJustify),
+/* harmony export */   "VerticalJustify": () => (/* binding */ VerticalJustify),
+/* harmony export */   "SymbolTypes": () => (/* binding */ SymbolTypes),
+/* harmony export */   "SymbolModifiers": () => (/* binding */ SymbolModifiers),
 /* harmony export */   "ChordSymbol": () => (/* binding */ ChordSymbol)
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
@@ -2710,10 +2680,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
-// ## Description
+// Author: @AaronDavidNewman
 //
-// This file implements chord symbols as modifiers that can be attached to
-// notes.  Chord symbols can contain multiple 'blocks' which can contain
+// This implements chord symbols as modifiers that can be attached to notes.
+// Chord symbols can contain multiple 'blocks' which can contain
 // text or glyphs with various positioning options.
 //
 // See `tests/chordsymbol_tests.ts` for usage examples.
@@ -2728,17 +2698,40 @@ function L(...args) {
     if (ChordSymbol.DEBUG)
         (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.ChordSymbol', args);
 }
+var HorizontalJustify;
+(function (HorizontalJustify) {
+    HorizontalJustify[HorizontalJustify["LEFT"] = 1] = "LEFT";
+    HorizontalJustify[HorizontalJustify["CENTER"] = 2] = "CENTER";
+    HorizontalJustify[HorizontalJustify["RIGHT"] = 3] = "RIGHT";
+    HorizontalJustify[HorizontalJustify["CENTER_STEM"] = 4] = "CENTER_STEM";
+})(HorizontalJustify || (HorizontalJustify = {}));
+var VerticalJustify;
+(function (VerticalJustify) {
+    VerticalJustify[VerticalJustify["TOP"] = 1] = "TOP";
+    VerticalJustify[VerticalJustify["BOTTOM"] = 2] = "BOTTOM";
+})(VerticalJustify || (VerticalJustify = {}));
+var SymbolTypes;
+(function (SymbolTypes) {
+    SymbolTypes[SymbolTypes["GLYPH"] = 1] = "GLYPH";
+    SymbolTypes[SymbolTypes["TEXT"] = 2] = "TEXT";
+    SymbolTypes[SymbolTypes["LINE"] = 3] = "LINE";
+})(SymbolTypes || (SymbolTypes = {}));
+var SymbolModifiers;
+(function (SymbolModifiers) {
+    SymbolModifiers[SymbolModifiers["NONE"] = 1] = "NONE";
+    SymbolModifiers[SymbolModifiers["SUBSCRIPT"] = 2] = "SUBSCRIPT";
+    SymbolModifiers[SymbolModifiers["SUPERSCRIPT"] = 3] = "SUPERSCRIPT";
+})(SymbolModifiers || (SymbolModifiers = {}));
+/**
+ * ChordSymbol is a modifier that creates a chord symbol above/below a chord.
+ * As a modifier, it is attached to an existing note.
+ */
 class ChordSymbol extends _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier {
-    // ## Prototype Methods
-    //
-    // chordSymbol is a modifier that creates a chord symbol above/below a chord
-    // This is the modifier version, meaning it is attached to an existing note.
     constructor() {
         super();
-        this.setAttribute('type', 'ChordSymbol');
         this.symbolBlocks = [];
-        this.horizontal = ChordSymbol.horizontalJustify.LEFT;
-        this.vertical = ChordSymbol.verticalJustify.TOP;
+        this.horizontal = HorizontalJustify.LEFT;
+        this.vertical = VerticalJustify.TOP;
         this.useKerning = true;
         this.reportWidth = true;
         let fontFamily = 'Arial';
@@ -2756,19 +2749,17 @@ class ChordSymbol extends _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier {
         this.textFont = _textfont__WEBPACK_IMPORTED_MODULE_3__.TextFont.getTextFontFromVexFontData(this.font);
     }
     static get CATEGORY() {
-        return 'chordSymbol';
+        return 'ChordSymbol';
     }
     static get superSubRatio() {
         return ChordSymbol.chordSymbolMetrics.global.superSubRatio;
     }
-    // ### NOTEXTFORMAT
-    // used to globally turn off text formatting, if the built-in formatting does not
-    // work for your font..
-    static get NOTEXTFORMAT() {
-        return typeof ChordSymbol.noFormat === 'undefined' ? false : ChordSymbol.noFormat;
-    }
-    static set NOTEXTFORMAT(val) {
+    /** Currently unused: Globally turn off text formatting, if the built-in formatting does not work for your font. */
+    static set NO_TEXT_FORMAT(val) {
         ChordSymbol.noFormat = val;
+    }
+    static get NO_TEXT_FORMAT() {
+        return ChordSymbol.noFormat;
     }
     // eslint-disable-next-line
     static getMetricForGlyph(glyphCode) {
@@ -2838,11 +2829,10 @@ class ChordSymbol extends _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier {
     static get upperKerningText() {
         return _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.DEFAULT_FONT_STACK[0].getMetrics().glyphs.chordSymbol.global.upperKerningText;
     }
-    // ### format
-    // try to estimate the width of the whole chord symbol, based on the
-    // sum of the widths of the individual blocks.  Also estimate how many
-    // lines above/below the staff we need`
-    // eslint-disable-next-line
+    /**
+     * Estimate the width of the whole chord symbol, based on the sum of the widths of the individual blocks.
+     * Estimate how many lines above/below the staff we need.
+     */
     static format(instances, state) {
         if (!instances || instances.length === 0)
             return false;
@@ -2860,7 +2850,7 @@ class ChordSymbol extends _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier {
                 const sup = instance.isSuperscript(symbol);
                 const sub = instance.isSubscript(symbol);
                 const subAdj = sup || sub ? ChordSymbol.superSubRatio : 1;
-                const adj = symbol.symbolType === ChordSymbol.symbolTypes.GLYPH ? glyphAdj * subAdj : fontAdj * subAdj;
+                const adj = symbol.symbolType === SymbolTypes.GLYPH ? glyphAdj * subAdj : fontAdj * subAdj;
                 // If there are super/subscripts, they extend beyond the line so
                 // assume they take up 2 lines
                 if (sup || sub) {
@@ -2868,17 +2858,19 @@ class ChordSymbol extends _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier {
                 }
                 // If there is a symbol-specific offset, add it but consider font
                 // size since font and glyphs will be interspersed
-                if (symbol.symbolType === ChordSymbol.symbolTypes.GLYPH) {
+                if (symbol.symbolType === SymbolTypes.GLYPH && symbol.glyph !== undefined) {
                     symbol.yShift += ChordSymbol.getYShiftForGlyph(symbol.glyph) * instance.pointsToPixels * subAdj;
                     symbol.xShift += ChordSymbol.getXShiftForGlyph(symbol.glyph) * instance.pointsToPixels * subAdj;
                     symbol.glyph.scale = symbol.glyph.scale * adj;
                     symbol.width = ChordSymbol.getWidthForGlyph(symbol.glyph) * instance.pointsToPixels * subAdj;
                 }
-                else if (symbol.symbolType === ChordSymbol.symbolTypes.TEXT) {
+                else if (symbol.symbolType === SymbolTypes.TEXT) {
                     symbol.width = symbol.width * instance.textFont.pointsToPixels * subAdj;
                     symbol.yShift += instance.getYOffsetForText(symbol.text) * adj;
                 }
-                if (symbol.symbolType === ChordSymbol.symbolTypes.GLYPH && symbol.glyph.code === ChordSymbol.glyphs.over.code) {
+                if (symbol.symbolType === SymbolTypes.GLYPH &&
+                    symbol.glyph !== undefined &&
+                    symbol.glyph.code === ChordSymbol.glyphs.over.code) {
                     lineSpaces = 2;
                 }
                 symbol.width += ChordSymbol.spacingBetweenBlocks * instance.pointsToPixels * subAdj;
@@ -2908,7 +2900,7 @@ class ChordSymbol extends _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier {
             // make kerning adjustments after computing super/subscripts
             instance.updateKerningAdjustments();
             instance.updateOverBarAdjustments();
-            if (instance.getVertical() === ChordSymbol.verticalJustify.TOP) {
+            if (instance.getVertical() === VerticalJustify.TOP) {
                 instance.setTextLine(state.top_text_line);
                 state.top_text_line += lineSpaces;
             }
@@ -2947,21 +2939,21 @@ class ChordSymbol extends _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier {
         return this.reportWidth;
     }
     updateOverBarAdjustments() {
-        let symIx = 0;
-        const barIx = this.symbolBlocks.findIndex((symbol) => symbol.symbolType === ChordSymbol.symbolTypes.GLYPH && symbol.glyph.code === 'csymDiagonalArrangementSlash');
-        if (barIx < 0) {
+        const barIndex = this.symbolBlocks.findIndex(({ symbolType, glyph }) => symbolType === SymbolTypes.GLYPH && glyph !== undefined && glyph.code === 'csymDiagonalArrangementSlash');
+        if (barIndex < 0) {
             return;
         }
-        const bar = this.symbolBlocks[barIx];
+        const bar = this.symbolBlocks[barIndex];
         const xoff = bar.width / 4;
         const yoff = 0.25 * this.pointsToPixels;
-        for (symIx === 0; symIx < barIx; ++symIx) {
-            const symbol = this.symbolBlocks[symIx];
+        let symIndex = 0;
+        for (symIndex === 0; symIndex < barIndex; ++symIndex) {
+            const symbol = this.symbolBlocks[symIndex];
             symbol.xShift = symbol.xShift + xoff;
             symbol.yShift = symbol.yShift - yoff;
         }
-        for (symIx = barIx + 1; symIx < this.symbolBlocks.length; ++symIx) {
-            const symbol = this.symbolBlocks[symIx];
+        for (symIndex = barIndex + 1; symIndex < this.symbolBlocks.length; ++symIndex) {
+            const symbol = this.symbolBlocks[symIndex];
             symbol.xShift = symbol.xShift - xoff;
             symbol.yShift = symbol.yShift + yoff;
         }
@@ -2974,178 +2966,157 @@ class ChordSymbol extends _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier {
             symbol.xShift += accum;
         }
     }
-    // ### getKerningAdjustment
-    // Do some very basic kerning so that letter chords like 'A' don't have
-    // the extensions hanging off to the right.
+    /** Do some basic kerning so that letter chords like 'A' don't have the extensions hanging off to the right. */
     getKerningAdjustment(j) {
         if (!this.useKerning) {
             return 0;
         }
-        const symbol = this.symbolBlocks[j];
-        const kernConst = ChordSymbol.kerningOffset * this.pointsToPixels;
+        const currSymbol = this.symbolBlocks[j];
         const prevSymbol = j > 0 ? this.symbolBlocks[j - 1] : undefined;
-        let rv = 0;
+        let adjustment = 0;
         // Move things into the '/' over bar
-        if (symbol.symbolType === ChordSymbol.symbolTypes.GLYPH && symbol.glyph.code === ChordSymbol.glyphs.over.code) {
-            rv += symbol.glyph.metrics.x_shift;
+        if (currSymbol.symbolType === SymbolTypes.GLYPH &&
+            currSymbol.glyph !== undefined &&
+            currSymbol.glyph.code === ChordSymbol.glyphs.over.code) {
+            adjustment += currSymbol.glyph.metrics.x_shift;
         }
         if (prevSymbol !== undefined &&
-            prevSymbol.symbolType === ChordSymbol.symbolTypes.GLYPH &&
+            prevSymbol.symbolType === SymbolTypes.GLYPH &&
+            prevSymbol.glyph !== undefined &&
             prevSymbol.glyph.code === ChordSymbol.glyphs.over.code) {
-            rv += prevSymbol.glyph.metrics.x_shift;
+            adjustment += prevSymbol.glyph.metrics.x_shift;
         }
-        // For superscripts that follow a letter without much top part, move it to the
-        // left slightly
+        // For superscripts that follow a letter without much top part, move it to the left slightly
         let preKernUpper = false;
         let preKernLower = false;
-        if (prevSymbol != null && prevSymbol.symbolType === ChordSymbol.symbolTypes.TEXT) {
+        if (prevSymbol !== undefined && prevSymbol.symbolType === SymbolTypes.TEXT) {
             preKernUpper = ChordSymbol.upperKerningText.some((xx) => xx === prevSymbol.text[prevSymbol.text.length - 1]);
             preKernLower = ChordSymbol.lowerKerningText.some((xx) => xx === prevSymbol.text[prevSymbol.text.length - 1]);
         }
-        // TODO: adjustkern for  for font size.
+        const kerningOffsetPixels = ChordSymbol.kerningOffset * this.pointsToPixels;
+        // TODO: adjust kern for font size.
         // Where should this constant live?
-        if (preKernUpper && symbol.symbolModifier === ChordSymbol.symbolModifiers.SUPERSCRIPT) {
-            rv += kernConst;
+        if (preKernUpper && currSymbol.symbolModifier === SymbolModifiers.SUPERSCRIPT) {
+            adjustment += kerningOffsetPixels;
         }
-        if (preKernLower && symbol.symbolType === ChordSymbol.symbolTypes.TEXT) {
-            if (symbol.text[0] >= 'a' && symbol.text[0] <= 'z') {
-                rv += kernConst / 2;
+        if (preKernLower && currSymbol.symbolType === SymbolTypes.TEXT) {
+            if (currSymbol.text[0] >= 'a' && currSymbol.text[0] <= 'z') {
+                adjustment += kerningOffsetPixels / 2;
             }
             if (ChordSymbol.upperKerningText.some((xx) => xx === (prevSymbol === null || prevSymbol === void 0 ? void 0 : prevSymbol.text[prevSymbol.text.length - 1]))) {
-                rv += kernConst / 2;
+                adjustment += kerningOffsetPixels / 2;
             }
         }
-        return rv;
+        return adjustment;
     }
-    // ### getSymbolBlock
-    // ChordSymbol allows multiple blocks so we can mix glyphs and font text.
-    // Each block can have its own vertical orientation
+    /**
+     * ChordSymbol allows multiple blocks so we can mix glyphs and font text.
+     * Each block can have its own vertical orientation.
+     */
     // eslint-disable-next-line
-    getSymbolBlock(parameters) {
-        parameters = parameters == undefined ? {} : parameters;
-        const symbolType = parameters.symbolType ? parameters.symbolType : ChordSymbol.symbolTypes.TEXT;
-        const text = parameters.text ? parameters.text : '';
-        const symbolModifier = parameters.symbolModifier ? parameters.symbolModifier : ChordSymbol.symbolModifiers.NONE;
-        const xShift = 0;
-        const yShift = 0;
-        const vAlign = 0;
-        const rv = {
-            text,
+    getSymbolBlock(params = {}) {
+        var _a, _b, _c;
+        const symbolType = (_a = params.symbolType) !== null && _a !== void 0 ? _a : SymbolTypes.TEXT;
+        const symbolBlock = {
+            text: (_b = params.text) !== null && _b !== void 0 ? _b : '',
             symbolType,
-            symbolModifier,
-            xShift,
-            yShift,
-            vAlign,
+            symbolModifier: (_c = params.symbolModifier) !== null && _c !== void 0 ? _c : SymbolModifiers.NONE,
+            xShift: 0,
+            yShift: 0,
+            vAlign: false,
             width: 0,
-            glyph: undefined,
         };
-        rv.width = 0;
-        // Note: all symbol widths are resolution and font-independent.  We convert to
-        // pixel values when we know what the font is.
-        if (symbolType === ChordSymbol.symbolTypes.GLYPH && typeof parameters.glyph === 'string') {
-            const glyphArgs = ChordSymbol.glyphs[parameters.glyph];
+        // Note: all symbol widths are resolution and font-independent.
+        // We convert to pixel values when we know what the font is.
+        if (symbolType === SymbolTypes.GLYPH && typeof params.glyph === 'string') {
+            const glyphArgs = ChordSymbol.glyphs[params.glyph];
             const glyphPoints = 20;
-            rv.glyph = new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph(glyphArgs.code, glyphPoints, { category: 'chordSymbol' });
+            symbolBlock.glyph = new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph(glyphArgs.code, glyphPoints, { category: 'chordSymbol' });
             // Beware: glyph.metrics is not the same as glyph.getMetrics() !
             // rv.glyph.point = rv.glyph.point * rv.glyph.metrics.scale;
             // rv.width = rv.glyph.getMetrics().width;
             // don't set yShift here, b/c we need to do it at formatting time after the font is set.
         }
-        else if (symbolType === ChordSymbol.symbolTypes.TEXT) {
-            let twidth = 0;
-            for (let i = 0; i < rv.text.length; ++i) {
-                twidth += this.getWidthForCharacter(rv.text[i]);
+        else if (symbolType === SymbolTypes.TEXT) {
+            let textWidth = 0;
+            for (let i = 0; i < symbolBlock.text.length; ++i) {
+                textWidth += this.getWidthForCharacter(symbolBlock.text[i]);
             }
-            rv.width = twidth;
+            symbolBlock.width = textWidth;
         }
-        else if (symbolType === ChordSymbol.symbolTypes.LINE) {
-            rv.width = parameters.width;
+        else if (symbolType === SymbolTypes.LINE) {
+            symbolBlock.width = params.width;
         }
-        return rv;
+        return symbolBlock;
     }
-    // ### addSymbolBlock
-    // Add a symbol to this chord, could be text, glyph or line.
+    /** Add a symbol to this chord, could be text, glyph or line. */
     // eslint-disable-next-line
     addSymbolBlock(parameters) {
         this.symbolBlocks.push(this.getSymbolBlock(parameters));
         return this;
     }
-    // ### Convenience functions follow that let you create different types of
-    // chord symbol parts easily
-    // ### addText
-    // Add a text block
+    // ### Convenience functions for creating different types of chord symbol parts.
+    /** Add a text block. */
     // eslint-disable-next-line
-    addText(text, parameters) {
-        parameters = parameters == null ? {} : parameters;
-        parameters.text = text;
-        parameters.symbolType = ChordSymbol.symbolTypes.TEXT;
-        return this.addSymbolBlock(parameters);
+    addText(text, parameters = {}) {
+        const symbolType = SymbolTypes.TEXT;
+        return this.addSymbolBlock(Object.assign(Object.assign({}, parameters), { text, symbolType }));
     }
-    // ### addTextSuperscript
-    // add a text block with superscript modifier
+    /** Add a text block with superscript modifier. */
     addTextSuperscript(text) {
-        const symbolType = ChordSymbol.symbolTypes.TEXT;
-        const symbolModifier = ChordSymbol.symbolModifiers.SUPERSCRIPT;
+        const symbolType = SymbolTypes.TEXT;
+        const symbolModifier = SymbolModifiers.SUPERSCRIPT;
         return this.addSymbolBlock({ text, symbolType, symbolModifier });
     }
-    // ### addTextSubscript
-    // add a text block with subscript modifier
+    /** Add a text block with subscript modifier. */
     addTextSubscript(text) {
-        const symbolType = ChordSymbol.symbolTypes.TEXT;
-        const symbolModifier = ChordSymbol.symbolModifiers.SUBSCRIPT;
+        const symbolType = SymbolTypes.TEXT;
+        const symbolModifier = SymbolModifiers.SUBSCRIPT;
         return this.addSymbolBlock({ text, symbolType, symbolModifier });
     }
-    // ### addGlyphSuperscript
-    // add a glyph block with superscript modifier
+    /** Add a glyph block with superscript modifier. */
     addGlyphSuperscript(glyph) {
-        const symbolType = ChordSymbol.symbolTypes.GLYPH;
-        const symbolModifier = ChordSymbol.symbolModifiers.SUPERSCRIPT;
+        const symbolType = SymbolTypes.GLYPH;
+        const symbolModifier = SymbolModifiers.SUPERSCRIPT;
         return this.addSymbolBlock({ glyph, symbolType, symbolModifier });
     }
+    /** Add a glyph block. */
     // eslint-disable-next-line
-    addGlyph(glyph, parameters) {
-        parameters = parameters == null ? {} : parameters;
-        parameters.glyph = glyph;
-        parameters.symbolType = ChordSymbol.symbolTypes.GLYPH;
-        return this.addSymbolBlock(parameters);
+    addGlyph(glyph, params = {}) {
+        const symbolType = SymbolTypes.GLYPH;
+        return this.addSymbolBlock(Object.assign(Object.assign({}, params), { glyph, symbolType }));
     }
-    // ### addGlyphOrText
-    // Add a glyph for each character in 'text'.  If the glyph is not
-    // available, use text from the font.  E.g.:
-    // `addGlyphOrText("(+5#11)")`
-    // will use text for the '5' and '11', and glyphs for everything else.
+    /**
+     * Add a glyph for each character in 'text'. If the glyph is not available, use text from the font.
+     * e.g. `addGlyphOrText('(+5#11)')` will use text for the '5' and '11', and glyphs for everything else.
+     */
     // eslint-disable-next-line
-    addGlyphOrText(text, parameters) {
-        parameters = parameters == null ? {} : parameters;
+    addGlyphOrText(text, params = {}) {
         let str = '';
         for (let i = 0; i < text.length; ++i) {
-            if (ChordSymbol.glyphs[text[i]]) {
+            const char = text[i];
+            if (ChordSymbol.glyphs[char]) {
                 if (str.length > 0) {
-                    this.addText(str, parameters);
+                    this.addText(str, params);
                     str = '';
                 }
-                this.addGlyph(text[i], parameters);
+                this.addGlyph(char, params);
             }
             else {
-                str += text[i];
+                // Collect consecutive characters with no glyphs.
+                str += char;
             }
         }
         if (str.length > 0) {
-            this.addText(str, parameters);
+            this.addText(str, params);
         }
         return this;
     }
-    // ### Add a line of the given width, used as a continuation of the previous
-    // symbol in analysis, or lyrics, etc.
+    /** Add a line of the given width, used as a continuation of the previous symbol in analysis, or lyrics, etc. */
     // eslint-disable-next-line
-    addLine(width, parameters) {
-        parameters = parameters == null ? {} : parameters;
-        parameters.symbolType = ChordSymbol.symbolTypes.LINE;
-        parameters.width = width;
-        return this.addSymbolBlock(parameters);
-    }
-    getCategory() {
-        return ChordSymbol.CATEGORY;
+    addLine(width, params = {}) {
+        const symbolType = SymbolTypes.LINE;
+        return this.addSymbolBlock(Object.assign(Object.assign({}, params), { symbolType, width }));
     }
     // Set font family, size, and weight. E.g., `Arial`, `10pt`, `Bold`.
     setFont(family, size, weight) {
@@ -3162,35 +3133,36 @@ class ChordSymbol extends _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier {
         this.useKerning = val;
         return this;
     }
-    // Set vertical position of text (above or below stave). `just` must be
-    // a value in `ChordSymbol.vertical`.
-    setVertical(just) {
-        this.vertical = typeof just === 'string' ? ChordSymbol.verticalJustifyString[just] : just;
+    /** Set vertical position of text (above or below stave). */
+    setVertical(vj) {
+        this.vertical = typeof vj === 'string' ? ChordSymbol.verticalJustifyString[vj] : vj;
         return this;
     }
     getVertical() {
         return this.vertical;
     }
-    // Get and set horizontal justification. `justification` is a value in
-    // `ChordSymbol.Justify`.
-    setHorizontal(just) {
-        this.horizontal = typeof just === 'string' ? ChordSymbol.horizontalJustifyString[just] : just;
+    /** Set horizontal justification. */
+    setHorizontal(hj) {
+        this.horizontal = typeof hj === 'string' ? ChordSymbol.horizontalJustifyString[hj] : hj;
         return this;
     }
+    getHorizontal() {
+        return this.horizontal;
+    }
     getWidth() {
-        let rv = 0;
+        let width = 0;
         this.symbolBlocks.forEach((symbol) => {
-            rv += symbol.vAlign ? 0 : symbol.width;
+            width += symbol.vAlign ? 0 : symbol.width;
         });
-        return rv;
+        return width;
     }
     isSuperscript(symbol) {
-        return symbol.symbolModifier !== undefined && symbol.symbolModifier === ChordSymbol.symbolModifiers.SUPERSCRIPT;
+        return symbol.symbolModifier !== undefined && symbol.symbolModifier === SymbolModifiers.SUPERSCRIPT;
     }
     isSubscript(symbol) {
-        return symbol.symbolModifier !== undefined && symbol.symbolModifier === ChordSymbol.symbolModifiers.SUBSCRIPT;
+        return symbol.symbolModifier !== undefined && symbol.symbolModifier === SymbolModifiers.SUBSCRIPT;
     }
-    // Render text and glyphs above/below the note
+    /** Render text and glyphs above/below the note. */
     draw() {
         const ctx = this.checkContext();
         const note = this.checkAttachedNote();
@@ -3204,13 +3176,12 @@ class ChordSymbol extends _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier {
         let y;
         // The position of the text varies based on whether or not the note
         // has a stem.
-        const has_stem = note.hasStem();
+        const hasStem = note.hasStem();
         const stave = note.checkStave();
-        if (this.vertical === ChordSymbol.verticalJustify.BOTTOM) {
-            // HACK: We need to compensate for the text's height since its origin
-            // is bottom-right.
+        if (this.vertical === VerticalJustify.BOTTOM) {
+            // HACK: We need to compensate for the text's height since its origin is bottom-right.
             y = stave.getYForBottomText(this.text_line + _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.TEXT_HEIGHT_OFFSET_HACK);
-            if (has_stem) {
+            if (hasStem) {
                 const stem_ext = note.checkStem().getExtents();
                 const spacing = stave.getSpacingBetweenLines();
                 const stem_base = note.getStemDirection() === 1 ? stem_ext.baseY : stem_ext.topY;
@@ -3218,25 +3189,26 @@ class ChordSymbol extends _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier {
             }
         }
         else {
-            // (this.vertical === ChordSymbol.verticalJustify.TOP)
+            // (this.vertical === VerticalJustify.TOP)
             y = Math.min(stave.getYForTopText(this.text_line), note.getYs()[0] - 10);
-            if (has_stem) {
+            if (hasStem) {
                 const stem_ext = note.checkStem().getExtents();
                 const spacing = stave.getSpacingBetweenLines();
                 y = Math.min(y, stem_ext.topY - 5 - spacing * this.text_line);
             }
         }
         let x = start.x;
-        if (this.horizontal === ChordSymbol.horizontalJustify.LEFT) {
+        if (this.horizontal === HorizontalJustify.LEFT) {
             x = start.x;
         }
-        else if (this.horizontal === ChordSymbol.horizontalJustify.RIGHT) {
+        else if (this.horizontal === HorizontalJustify.RIGHT) {
             x = start.x + this.getWidth();
         }
-        else if (this.horizontal === ChordSymbol.horizontalJustify.CENTER) {
+        else if (this.horizontal === HorizontalJustify.CENTER) {
             x = start.x - this.getWidth() / 2;
-        } /* CENTER_STEM */
+        }
         else {
+            // HorizontalJustify.CENTER_STEM
             x = note.getStemX() - this.getWidth() / 2;
         }
         L('Rendering ChordSymbol: ', this.textFont, x, y);
@@ -3253,27 +3225,27 @@ class ChordSymbol extends _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier {
                 curY += this.subscriptOffset;
             }
             L('curY sup/sub ', curY);
-            if (symbol.symbolType === ChordSymbol.symbolTypes.TEXT) {
+            if (symbol.symbolType === SymbolTypes.TEXT) {
                 if (sp || sub) {
                     ctx.save();
                     ctx.setFont(this.font.family, this.font.size * ChordSymbol.superSubRatio, this.font.weight);
                 }
-                // We estimate the text width, fill it in with the empirical value so the
-                // formatting is even.
-                /* const textDim = ctx.measureText(symbol.text);
-                symbol.width = textDim.width; */
+                // TODO???
+                // We estimate the text width, fill it in with the empirical value so the formatting is even.
+                // const textDim = ctx.measureText(symbol.text);
+                // symbol.width = textDim.width;
                 L('Rendering Text: ', symbol.text, x + symbol.xShift, curY + symbol.yShift);
                 ctx.fillText(symbol.text, x + symbol.xShift, curY + symbol.yShift);
                 if (sp || sub) {
                     ctx.restore();
                 }
             }
-            else if (symbol.symbolType === ChordSymbol.symbolTypes.GLYPH) {
+            else if (symbol.symbolType === SymbolTypes.GLYPH && symbol.glyph) {
                 curY += symbol.yShift;
                 L('Rendering Glyph: ', symbol.glyph.code, x + symbol.xShift, curY);
                 symbol.glyph.render(ctx, x + symbol.xShift, curY);
             }
-            else if (symbol.symbolType === ChordSymbol.symbolTypes.LINE) {
+            else if (symbol.symbolType === SymbolTypes.LINE) {
                 L('Rendering Line : ', symbol.width, x, curY);
                 ctx.beginPath();
                 ctx.setLineWidth(1); // ?
@@ -3291,28 +3263,22 @@ class ChordSymbol extends _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier {
     }
 }
 ChordSymbol.DEBUG = false;
+/** Currently unused. */
+ChordSymbol.noFormat = false;
 // Chord symbols can be positioned and justified relative to the note.
-ChordSymbol.horizontalJustify = {
-    LEFT: 1,
-    CENTER: 2,
-    RIGHT: 3,
-    CENTER_STEM: 4,
-};
+ChordSymbol.horizontalJustify = HorizontalJustify;
 ChordSymbol.horizontalJustifyString = {
-    left: ChordSymbol.horizontalJustify.LEFT,
-    right: ChordSymbol.horizontalJustify.RIGHT,
-    center: ChordSymbol.horizontalJustify.CENTER,
-    centerStem: ChordSymbol.horizontalJustify.CENTER_STEM,
+    left: HorizontalJustify.LEFT,
+    right: HorizontalJustify.RIGHT,
+    center: HorizontalJustify.CENTER,
+    centerStem: HorizontalJustify.CENTER_STEM,
 };
-ChordSymbol.verticalJustify = {
-    TOP: 1,
-    BOTTOM: 2,
-};
+ChordSymbol.verticalJustify = VerticalJustify;
 ChordSymbol.verticalJustifyString = {
-    top: ChordSymbol.verticalJustify.TOP,
-    above: ChordSymbol.verticalJustify.TOP,
-    below: ChordSymbol.verticalJustify.BOTTOM,
-    bottom: ChordSymbol.verticalJustify.BOTTOM,
+    top: VerticalJustify.TOP,
+    above: VerticalJustify.TOP,
+    below: VerticalJustify.BOTTOM,
+    bottom: VerticalJustify.BOTTOM,
 };
 // Glyph data
 ChordSymbol.glyphs = {
@@ -3377,16 +3343,8 @@ ChordSymbol.glyphs = {
         code: 'accidentalFlat',
     },
 };
-ChordSymbol.symbolTypes = {
-    GLYPH: 1,
-    TEXT: 2,
-    LINE: 3,
-};
-ChordSymbol.symbolModifiers = {
-    NONE: 1,
-    SUBSCRIPT: 2,
-    SUPERSCRIPT: 3,
-};
+ChordSymbol.symbolTypes = SymbolTypes;
+ChordSymbol.symbolModifiers = SymbolModifiers;
 
 
 /***/ }),
@@ -3429,15 +3387,13 @@ class Clef extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier {
          * `Clef.types`
          */
         this.clef = Clef.types['treble'];
-        this.setAttribute('type', 'Clef');
-        this.setPosition(_stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier.Position.BEGIN);
+        this.setPosition(_stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifierPosition.BEGIN);
         this.setType(type, size, annotation);
         this.setWidth(this.musicFont.lookupMetric(`clef.${this.size}.width`));
         L('Creating clef:', type);
     }
-    /** Clefs category string. */
     static get CATEGORY() {
-        return 'clefs';
+        return 'Clef';
     }
     /**
      * Every clef name is associated with a glyph code from the font file
@@ -3506,10 +3462,6 @@ class Clef extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier {
             },
         };
     }
-    /** Get element category string. */
-    getCategory() {
-        return Clef.CATEGORY;
-    }
     /** Set clef type, size and annotation. */
     setType(type, size, annotation) {
         this.type = type;
@@ -3552,7 +3504,7 @@ class Clef extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier {
         this.stave = stave;
         if (this.type === 'tab') {
             const glyph = (0,_util__WEBPACK_IMPORTED_MODULE_0__.defined)(this.glyph, 'ClefError', "Can't set stave without glyph.");
-            const numLines = this.stave.getOptions().num_lines;
+            const numLines = this.stave.getNumLines();
             const point = this.musicFont.lookupMetric(`clef.lineCount.${numLines}.point`);
             const shiftY = this.musicFont.lookupMetric(`clef.lineCount.${numLines}.shiftY`);
             glyph.setPoint(point);
@@ -3562,8 +3514,6 @@ class Clef extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier {
     }
     /** Render clef. */
     draw() {
-        if (!this.x)
-            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('ClefError', "Can't draw clef without x.");
         const glyph = (0,_util__WEBPACK_IMPORTED_MODULE_0__.defined)(this.glyph, 'ClefError', "Can't draw clef without glyph.");
         const stave = this.checkStave();
         this.setRendered();
@@ -3608,7 +3558,6 @@ __webpack_require__.r(__webpack_exports__);
 class ClefNote extends _note__WEBPACK_IMPORTED_MODULE_0__.Note {
     constructor(type, size, annotation) {
         super({ duration: 'b' });
-        this.setAttribute('type', 'ClefNote');
         this.type = type;
         this.clef_obj = new _clef__WEBPACK_IMPORTED_MODULE_1__.Clef(type, size, annotation);
         this.clef = this.clef_obj.clef;
@@ -3618,7 +3567,7 @@ class ClefNote extends _note__WEBPACK_IMPORTED_MODULE_0__.Note {
         this.ignore_ticks = true;
     }
     static get CATEGORY() {
-        return 'clefnote';
+        return 'ClefNote';
     }
     /** Set clef type, size and annotation. */
     setType(type, size, annotation) {
@@ -3648,10 +3597,6 @@ class ClefNote extends _note__WEBPACK_IMPORTED_MODULE_0__.Note {
     addToModifierContext(mc) {
         // DO NOTHING.
         return this;
-    }
-    /** Get element category string. */
-    getCategory() {
-        return ClefNote.CATEGORY;
     }
     /** Set preformatted. */
     preFormat() {
@@ -3740,8 +3685,8 @@ function renderHairpin(ctx, params) {
 }
 class Crescendo extends _note__WEBPACK_IMPORTED_MODULE_1__.Note {
     // Initialize the crescendo's properties
-    constructor(note_struct) {
-        super(note_struct);
+    constructor(noteStruct) {
+        super(noteStruct);
         this.options = {
             // Extensions to the length of the crescendo on either side
             extend_left: 0,
@@ -3749,13 +3694,16 @@ class Crescendo extends _note__WEBPACK_IMPORTED_MODULE_1__.Note {
             // Vertical shift
             y_shift: 0,
         };
-        this.setAttribute('type', 'Crescendo');
         // Whether the object is a decrescendo
         this.decrescendo = false;
         // The staff line to be placed on
-        this.line = note_struct.line || 0;
+        this.line = noteStruct.line || 0;
         // The height at the open end of the cresc/decresc
         this.height = 15;
+    }
+    /** Crescendo category string. */
+    static get CATEGORY() {
+        return 'Crescendo';
     }
     // Set the line to center the element on
     setLine(line) {
@@ -3835,26 +3783,28 @@ class Curve extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
     //    y_shift: pixels to shift
     constructor(from, to, options) {
         super();
-        this.setAttribute('type', 'Curve');
-        this.render_options = Object.assign({ thickness: 2, x_shift: 0, y_shift: 10, position: Curve.Position.NEAR_HEAD, position_end: Curve.Position.NEAR_HEAD, invert: false, cps: [
+        this.render_options = Object.assign({ thickness: 2, x_shift: 0, y_shift: 10, position: CurvePosition.NEAR_HEAD, position_end: CurvePosition.NEAR_HEAD, invert: false, cps: [
                 { x: 0, y: 10 },
                 { x: 0, y: 10 },
             ] }, options);
         this.from = from;
         this.to = to;
     }
+    static get CATEGORY() {
+        return 'Curve';
+    }
     static get Position() {
         return CurvePosition;
     }
     static get PositionString() {
         return {
-            nearHead: Curve.Position.NEAR_HEAD,
-            nearTop: Curve.Position.NEAR_TOP,
+            nearHead: CurvePosition.NEAR_HEAD,
+            nearTop: CurvePosition.NEAR_TOP,
         };
     }
     setNotes(from, to) {
         if (!from && !to) {
-            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'Curve needs to have either first_note or last_note set.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'Curve needs to have either `from` or `to` set.');
         }
         this.from = from;
         this.to = to;
@@ -3868,7 +3818,6 @@ class Curve extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
     }
     renderCurve(params) {
         const ctx = this.checkContext();
-        const cps = this.render_options.cps;
         const x_shift = this.render_options.x_shift;
         const y_shift = this.render_options.y_shift * params.direction;
         const first_x = params.first_x + x_shift;
@@ -3876,11 +3825,14 @@ class Curve extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
         const last_x = params.last_x - x_shift;
         const last_y = params.last_y + y_shift;
         const thickness = this.render_options.thickness;
+        const cps = this.render_options.cps;
+        const { x: cp0x, y: cp0y } = cps[0];
+        const { x: cp1x, y: cp1y } = cps[1];
         const cp_spacing = (last_x - first_x) / (cps.length + 2);
         ctx.beginPath();
         ctx.moveTo(first_x, first_y);
-        ctx.bezierCurveTo(first_x + cp_spacing + cps[0].x, first_y + cps[0].y * params.direction, last_x - cp_spacing + cps[1].x, last_y + cps[1].y * params.direction, last_x, last_y);
-        ctx.bezierCurveTo(last_x - cp_spacing + cps[1].x, last_y + (cps[1].y + thickness) * params.direction, first_x + cp_spacing + cps[0].x, first_y + (cps[0].y + thickness) * params.direction, first_x, first_y);
+        ctx.bezierCurveTo(first_x + cp_spacing + cp0x, first_y + cp0y * params.direction, last_x - cp_spacing + cp1x, last_y + cp1y * params.direction, last_x, last_y);
+        ctx.bezierCurveTo(last_x - cp_spacing + cp1x, last_y + (cp1y + thickness) * params.direction, first_x + cp_spacing + cp0x, first_y + (cp0y + thickness) * params.direction, first_x, first_y);
         ctx.stroke();
         ctx.closePath();
         ctx.fill();
@@ -3902,14 +3854,14 @@ class Curve extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
         }
         const position = getPosition(this.render_options.position);
         const position_end = getPosition(this.render_options.position_end);
-        if (position === Curve.Position.NEAR_TOP) {
+        if (position === CurvePosition.NEAR_TOP) {
             metric = 'topY';
             end_metric = 'topY';
         }
-        if (position_end === Curve.Position.NEAR_HEAD) {
+        if (position_end === CurvePosition.NEAR_HEAD) {
             end_metric = 'baseY';
         }
-        else if (position_end === Curve.Position.NEAR_TOP) {
+        else if (position_end === CurvePosition.NEAR_TOP) {
             end_metric = 'topY';
         }
         if (first_note) {
@@ -3958,9 +3910,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-/* harmony import */ var _tabnote__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
-/* harmony import */ var _gracenote__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
-/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
+/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
 // VexFlow - Music Engraving for HTML5
 // Copyright Mohit Muthanna 2010
 //
@@ -3968,22 +3918,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
 class Dot extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
-    /**
-     * @constructor
-     */
     constructor() {
         super();
-        this.setAttribute('type', 'Dot');
         this.position = _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.RIGHT;
         this.radius = 2;
         this.setWidth(5);
         this.dot_shiftY = 0;
     }
     static get CATEGORY() {
-        return 'dots';
+        return 'Dot';
     }
     // Arrange dots inside a ModifierContext.
     static format(dots, state) {
@@ -3998,12 +3942,12 @@ class Dot extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
             const note = dot.getNote();
             let props;
             let shift;
-            if ((0,_typeguard__WEBPACK_IMPORTED_MODULE_4__.isStaveNote)(note)) {
+            if ((0,_typeguard__WEBPACK_IMPORTED_MODULE_2__.isStaveNote)(note)) {
                 const index = dot.checkIndex();
                 props = note.getKeyProps()[index];
                 shift = note.getRightDisplacedHeadPx();
             }
-            else if ((0,_typeguard__WEBPACK_IMPORTED_MODULE_4__.isTabNote)(note)) {
+            else if ((0,_typeguard__WEBPACK_IMPORTED_MODULE_2__.isTabNote)(note)) {
                 props = { line: 0.5 }; // Shim key props for dot placement
                 shift = 0;
             }
@@ -4065,12 +4009,9 @@ class Dot extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
         state.right_shift += x_width;
         return true;
     }
-    getCategory() {
-        return Dot.CATEGORY;
-    }
     setNote(note) {
         this.note = note;
-        if (note.getCategory() === _gracenote__WEBPACK_IMPORTED_MODULE_3__.GraceNote.CATEGORY) {
+        if ((0,_typeguard__WEBPACK_IMPORTED_MODULE_2__.isGraceNote)(note)) {
             this.radius *= 0.5;
             this.setWidth(3);
         }
@@ -4085,10 +4026,10 @@ class Dot extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
         const note = this.checkAttachedNote();
         this.setRendered();
         const stave = note.checkStave();
-        const lineSpace = stave.getOptions().spacing_between_lines_px;
+        const lineSpace = stave.getSpacingBetweenLines();
         const start = note.getModifierStartXY(this.position, this.index, { forceFlagRight: true });
-        // Set the starting y coordinate to the base of the stem for TabNotes
-        if (note.getCategory() === _tabnote__WEBPACK_IMPORTED_MODULE_2__.TabNote.CATEGORY) {
+        // Set the starting y coordinate to the base of the stem for TabNotes.
+        if ((0,_typeguard__WEBPACK_IMPORTED_MODULE_2__.isTabNote)(note)) {
             start.y = note.getStemExtents().baseY;
         }
         const x = start.x + this.x_shift + this.width - this.radius;
@@ -4117,8 +4058,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _frethandfinger__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./frethandfinger */ "./src/frethandfinger.ts");
 /* harmony import */ var _parser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./parser */ "./src/parser.ts");
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./util */ "./src/util.ts");
-/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-/* harmony import */ var _music__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./music */ "./src/music.ts");
+/* harmony import */ var _music__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./music */ "./src/music.ts");
+/* harmony import */ var stem__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! stem */ "./src/stem.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 
@@ -4325,7 +4266,7 @@ class Builder {
         this.factory = factory;
         this.reset();
     }
-    reset(options = {}) {
+    reset(options) {
         this.options = Object.assign({ stem: 'auto', clef: 'treble' }, options);
         this.elements = { notes: [], accidentals: [] };
         this.rollingDuration = '8';
@@ -4403,7 +4344,7 @@ class Builder {
         // Create a string[] that will be assigned to the .keys property of the StaveNote.
         // Each string in the array represents a note pitch and is of the form: {NoteName}{Accidental}/{Octave}
         // Only standard accidentals are included in the .keys property. Microtonal accidentals are not included.
-        const standardAccidentals = _music__WEBPACK_IMPORTED_MODULE_5__.Music.accidentals;
+        const standardAccidentals = _music__WEBPACK_IMPORTED_MODULE_4__.Music.accidentals;
         const keys = chord.map((notePiece) => {
             var _a;
             return notePiece.key +
@@ -4415,7 +4356,7 @@ class Builder {
         // Build a StaveNote using the information we gathered.
         const note = factory.StaveNote({ keys, duration, dots, type, clef, auto_stem });
         if (!auto_stem)
-            note.setStemDirection(stem === 'up' ? _stavenote__WEBPACK_IMPORTED_MODULE_4__.StaveNote.STEM_UP : _stavenote__WEBPACK_IMPORTED_MODULE_4__.StaveNote.STEM_DOWN);
+            note.setStemDirection(stem === 'up' ? stem__WEBPACK_IMPORTED_MODULE_5__.Stem.UP : stem__WEBPACK_IMPORTED_MODULE_5__.Stem.DOWN);
         // Attach accidentals.
         const accidentals = [];
         chord.forEach((notePiece, index) => {
@@ -4485,7 +4426,7 @@ class EasyScore {
      * @returns this
      */
     setOptions(options) {
-        var _a;
+        var _a, _b;
         // eslint-disable-next-line
         const factory = options.factory; // ! operator, because options.factory was set in Factory.EasyScore().
         const builder = (_a = options.builder) !== null && _a !== void 0 ? _a : new Builder(factory);
@@ -4495,7 +4436,7 @@ class EasyScore {
         this.builder = builder;
         this.grammar = new EasyScoreGrammar(this.builder);
         this.parser = new _parser__WEBPACK_IMPORTED_MODULE_2__.Parser(this.grammar);
-        this.options.commitHooks.forEach((commitHook) => this.addCommitHook(commitHook));
+        (_b = this.options.commitHooks) === null || _b === void 0 ? void 0 : _b.forEach((commitHook) => this.addCommitHook(commitHook));
         return this;
     }
     setContext(context) {
@@ -4561,13 +4502,12 @@ __webpack_require__.r(__webpack_exports__);
  * of general functions and properties that can be inherited by all VexFlow elements.
  */
 class Element {
-    /** Constructor. */
-    constructor({ type } = {}) {
+    constructor() {
         var _a;
         this.attrs = {
             id: Element.newID(),
             el: undefined,
-            type: type || 'Base',
+            type: this.getCategory(),
             classes: {},
         };
         this.rendered = false;
@@ -4575,8 +4515,15 @@ class Element {
         // If a default registry exist, then register with it right away.
         (_a = _registry__WEBPACK_IMPORTED_MODULE_1__.Registry.getDefaultRegistry()) === null || _a === void 0 ? void 0 : _a.register(this);
     }
+    static get CATEGORY() {
+        return 'Element';
+    }
     static newID() {
         return `auto${Element.ID++}`;
+    }
+    /** Get element category string. */
+    getCategory() {
+        return this.constructor.CATEGORY;
     }
     /** Set music fonts stack. */
     setFontStack(fontStack) {
@@ -4638,28 +4585,26 @@ class Element {
     }
     /** Add a class label (An element can have multiple class labels).  */
     addClass(className) {
+        var _a;
         this.attrs.classes[className] = true;
-        if (this.registry) {
-            this.registry.onUpdate({
-                id: this.attrs.id,
-                name: 'class',
-                value: className,
-                oldValue: undefined,
-            });
-        }
+        (_a = this.registry) === null || _a === void 0 ? void 0 : _a.onUpdate({
+            id: this.attrs.id,
+            name: 'class',
+            value: className,
+            oldValue: undefined,
+        });
         return this;
     }
     /** Remove a class label (An element can have multiple class labels).  */
     removeClass(className) {
+        var _a;
         delete this.attrs.classes[className];
-        if (this.registry) {
-            this.registry.onUpdate({
-                id: this.attrs.id,
-                name: 'class',
-                value: undefined,
-                oldValue: className,
-            });
-        }
+        (_a = this.registry) === null || _a === void 0 ? void 0 : _a.onUpdate({
+            id: this.attrs.id,
+            name: 'class',
+            value: undefined,
+            oldValue: className,
+        });
         return this;
     }
     /** Call back from registry after the element is registered. */
@@ -4688,13 +4633,12 @@ class Element {
     /** Set an attribute. */
     // eslint-disable-next-line
     setAttribute(name, value) {
+        var _a;
         const oldID = this.attrs.id;
         const oldValue = this.attrs[name];
         this.attrs[name] = value;
-        if (this.registry) {
-            // Register with old id to support id changes.
-            this.registry.onUpdate({ id: oldID, name, value, oldValue });
-        }
+        // Register with old id to support id changes.
+        (_a = this.registry) === null || _a === void 0 ? void 0 : _a.onUpdate({ id: oldID, name, value, oldValue });
         return this;
     }
     /** Get the boundingBox. */
@@ -4829,8 +4773,6 @@ function L(...args) {
  */
 class Factory {
     /**
-     * Constructor.
-     *
      * Example:
      *
      * Create an SVG renderer and attach it to the DIV element named "boo" to render using <page-width> 1200 and <page-height> 600
@@ -4839,7 +4781,7 @@ class Factory {
      */
     constructor(options = {}) {
         L('New factory: ', options);
-        const defaults = {
+        this.options = {
             stave: {
                 space: 10,
             },
@@ -4856,7 +4798,6 @@ class Factory {
                 weight: '',
             },
         };
-        this.options = defaults;
         this.setOptions(options);
     }
     /**
@@ -4878,28 +4819,19 @@ class Factory {
         this.voices = [];
         this.stave = undefined; // current stave
     }
-    getOptions() {
-        return this.options;
-    }
-    setOptions(options = {}) {
-        if (options.stave)
-            this.options.stave = options.stave;
-        if (options.renderer)
-            this.options.renderer = options.renderer;
-        if (options.font)
-            this.options.font = options.font;
-        if (this.options.renderer.elementId !== null) {
-            this.initRenderer();
-        }
+    setOptions(options) {
+        this.options = Object.assign(Object.assign({}, this.options), options);
+        this.initRenderer();
         this.reset();
     }
     initRenderer() {
-        if (!this.options.renderer)
-            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoRenderer');
         const { elementId, backend, width, height, background } = this.options.renderer;
+        if (elementId === null) {
+            return;
+        }
         if (elementId === '') {
             L(this);
-            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('HTML DOM element not set in Factory');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('renderer.elementId not set in FactoryOptions');
         }
         this.context = _renderer__WEBPACK_IMPORTED_MODULE_11__.Renderer.buildContext(elementId, backend !== null && backend !== void 0 ? backend : _renderer__WEBPACK_IMPORTED_MODULE_11__.Renderer.Backends.SVG, width, height, background);
     }
@@ -4917,44 +4849,19 @@ class Factory {
         return this.voices;
     }
     /** Return pixels from current stave spacing. */
-    space(spacing) {
-        if (!this.options.stave)
-            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoStave');
-        return this.options.stave.space * spacing;
-    }
-    Stave(paramsP = {}) {
-        if (!this.options.renderer)
-            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoRenderer');
-        if (!this.options.stave)
-            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoStave');
-        const params = Object.assign({
-            x: 0,
-            y: 0,
-            width: this.options.renderer.width - this.space(1),
-            options: {
-                spacing_between_lines_px: this.options.stave.space,
-            },
-        }, paramsP);
-        const stave = new _stave__WEBPACK_IMPORTED_MODULE_12__.Stave(params.x, params.y, params.width, params.options);
+    Stave(params) {
+        const staveSpace = this.options.stave.space;
+        const p = Object.assign({ x: 0, y: 0, width: this.options.renderer.width - staveSpace * 1.0, options: { spacing_between_lines_px: staveSpace * 1.0 } }, params);
+        const stave = new _stave__WEBPACK_IMPORTED_MODULE_12__.Stave(p.x, p.y, p.width, p.options);
         this.staves.push(stave);
         stave.setContext(this.context);
         this.stave = stave;
         return stave;
     }
-    TabStave(paramsP = {}) {
-        if (!this.options.renderer)
-            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoRenderer');
-        if (!this.options.stave)
-            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoStave');
-        const params = Object.assign({
-            x: 0,
-            y: 0,
-            width: this.options.renderer.width - this.space(1),
-            options: {
-                spacing_between_lines_px: this.options.stave.space * 1.3,
-            },
-        }, paramsP);
-        const stave = new _tabstave__WEBPACK_IMPORTED_MODULE_38__.TabStave(params.x, params.y, params.width, params.options);
+    TabStave(params) {
+        const staveSpace = this.options.stave.space;
+        const p = Object.assign({ x: 0, y: 0, width: this.options.renderer.width - staveSpace * 1.0, options: { spacing_between_lines_px: staveSpace * 1.3 } }, params);
+        const stave = new _tabstave__WEBPACK_IMPORTED_MODULE_38__.TabStave(p.x, p.y, p.width, p.options);
         this.staves.push(stave);
         stave.setContext(this.context);
         this.stave = stave;
@@ -4992,8 +4899,8 @@ class Factory {
         this.renderQ.push(ghostNote);
         return ghostNote;
     }
-    TextNote(textNoteStruct) {
-        const textNote = new _textnote__WEBPACK_IMPORTED_MODULE_39__.TextNote(textNoteStruct);
+    TextNote(noteStruct) {
+        const textNote = new _textnote__WEBPACK_IMPORTED_MODULE_39__.TextNote(noteStruct);
         if (this.stave)
             textNote.setStave(this.stave);
         textNote.setContext(this.context);
@@ -5008,26 +4915,21 @@ class Factory {
         this.renderQ.push(barNote);
         return barNote;
     }
-    ClefNote(paramsP = {}) {
-        const params = Object.assign({
-            type: 'treble',
-            options: {
+    ClefNote(params) {
+        const p = Object.assign({ type: 'treble', options: {
                 size: 'default',
                 annotation: undefined,
-            },
-        }, paramsP);
-        const clefNote = new _clefnote__WEBPACK_IMPORTED_MODULE_31__.ClefNote(params.type, params.options.size, params.options.annotation);
+            } }, params);
+        const clefNote = new _clefnote__WEBPACK_IMPORTED_MODULE_31__.ClefNote(p.type, p.options.size, p.options.annotation);
         if (this.stave)
             clefNote.setStave(this.stave);
         clefNote.setContext(this.context);
         this.renderQ.push(clefNote);
         return clefNote;
     }
-    TimeSigNote(paramsP = {}) {
-        const params = Object.assign({
-            time: '4/4',
-        }, paramsP);
-        const timeSigNote = new _timesignote__WEBPACK_IMPORTED_MODULE_29__.TimeSigNote(params.time);
+    TimeSigNote(params) {
+        const p = Object.assign({ time: '4/4' }, params);
+        const timeSigNote = new _timesignote__WEBPACK_IMPORTED_MODULE_29__.TimeSigNote(p.time);
         if (this.stave)
             timeSigNote.setStave(this.stave);
         timeSigNote.setContext(this.context);
@@ -5067,71 +4969,50 @@ class Factory {
         accid.setContext(this.context);
         return accid;
     }
-    Annotation(paramsP = {}) {
-        const params = Object.assign({
-            text: 'p',
-            vJustify: 'below',
-            hJustify: 'center',
-            fontFamily: 'Times',
-            fontSize: 14,
-            fontWeight: 'bold italic',
-            options: {},
-        }, paramsP);
-        const annotation = new _annotation__WEBPACK_IMPORTED_MODULE_3__.Annotation(params.text);
-        annotation.setJustification(params.hJustify);
-        annotation.setVerticalJustification(params.vJustify);
-        annotation.setFont(params.fontFamily, params.fontSize, params.fontWeight);
+    Annotation(params) {
+        const p = Object.assign({ text: 'p', vJustify: 'below', hJustify: 'center', fontFamily: 'Times', fontSize: 14, fontWeight: 'bold italic', options: {} }, params);
+        const annotation = new _annotation__WEBPACK_IMPORTED_MODULE_3__.Annotation(p.text);
+        annotation.setJustification(p.hJustify);
+        annotation.setVerticalJustification(p.vJustify);
+        annotation.setFont(p.fontFamily, p.fontSize, p.fontWeight);
         annotation.setContext(this.context);
         return annotation;
     }
-    ChordSymbol(paramsP = {}) {
-        const params = Object.assign({
-            vJustify: 'top',
-            hJustify: 'center',
-            kerning: true,
-            reportWidth: true,
-        }, paramsP);
+    ChordSymbol(params) {
+        const p = Object.assign({ vJustify: 'top', hJustify: 'center', kerning: true, reportWidth: true }, params);
         const chordSymbol = new _chordsymbol__WEBPACK_IMPORTED_MODULE_4__.ChordSymbol();
-        chordSymbol.setHorizontal(params.hJustify);
-        chordSymbol.setVertical(params.vJustify);
-        chordSymbol.setEnableKerning(params.kerning);
-        chordSymbol.setReportWidth(params.reportWidth);
+        chordSymbol.setHorizontal(p.hJustify);
+        chordSymbol.setVertical(p.vJustify);
+        chordSymbol.setEnableKerning(p.kerning);
+        chordSymbol.setReportWidth(p.reportWidth);
         // There is a default font based on the engraving font.  Only set then
         // font if it is specific, else use the default
-        if (typeof params.fontFamily === 'string' && typeof params.fontSize === 'number') {
-            if (typeof params.fontWeight === 'string')
-                chordSymbol.setFont(params.fontFamily, params.fontSize, params.fontWeight);
+        if (typeof p.fontFamily === 'string' && typeof p.fontSize === 'number') {
+            if (typeof p.fontWeight === 'string')
+                chordSymbol.setFont(p.fontFamily, p.fontSize, p.fontWeight);
             else
-                chordSymbol.setFont(params.fontFamily, params.fontSize, '');
+                chordSymbol.setFont(p.fontFamily, p.fontSize, '');
         }
-        else if (typeof params.fontSize === 'number') {
-            chordSymbol.setFontSize(params.fontSize);
+        else if (typeof p.fontSize === 'number') {
+            chordSymbol.setFontSize(p.fontSize);
         }
         chordSymbol.setContext(this.context);
         return chordSymbol;
     }
-    Articulation(paramsP = {}) {
-        const params = Object.assign({
-            type: 'a.',
-            position: 'above',
-        }, paramsP);
-        const articulation = new _articulation__WEBPACK_IMPORTED_MODULE_2__.Articulation(params.type);
-        articulation.setPosition(params.position);
+    Articulation(params) {
+        const p = Object.assign({ type: 'a.', position: 'above' }, params);
+        const articulation = new _articulation__WEBPACK_IMPORTED_MODULE_2__.Articulation(p.type);
+        articulation.setPosition(p.position);
         articulation.setContext(this.context);
         return articulation;
     }
-    TextDynamics(paramsP = {}) {
-        const params = Object.assign({
-            text: 'p',
-            duration: 'q',
-            dots: 0,
-            line: 0,
-        }, paramsP);
+    TextDynamics(params) {
+        const p = Object.assign({ text: 'p', duration: 'q', dots: 0, line: 0 }, params);
         const text = new _textdynamics__WEBPACK_IMPORTED_MODULE_8__.TextDynamics({
-            text: params.text,
-            line: params.line,
-            duration: params.duration,
-            dots: params.dots,
+            text: p.text,
+            line: p.line,
+            duration: p.duration,
+            dots: p.dots,
         });
         if (this.stave)
             text.setStave(this.stave);
@@ -5139,13 +5020,10 @@ class Factory {
         this.renderQ.push(text);
         return text;
     }
-    Fingering(paramsP) {
-        const params = Object.assign({
-            number: '0',
-            position: 'left',
-        }, paramsP);
-        const fingering = new _frethandfinger__WEBPACK_IMPORTED_MODULE_6__.FretHandFinger(params.number);
-        fingering.setPosition(params.position);
+    Fingering(params) {
+        const p = Object.assign({ number: '0', position: 'left' }, params);
+        const fingering = new _frethandfinger__WEBPACK_IMPORTED_MODULE_6__.FretHandFinger(p.number);
+        fingering.setPosition(p.position);
         fingering.setContext(this.context);
         return fingering;
     }
@@ -5156,24 +5034,21 @@ class Factory {
         return stringNumber;
     }
     TickContext() {
-        return new _tickcontext__WEBPACK_IMPORTED_MODULE_20__.TickContext().setContext(this.context);
+        return new _tickcontext__WEBPACK_IMPORTED_MODULE_20__.TickContext();
     }
     ModifierContext() {
         return new _modifiercontext__WEBPACK_IMPORTED_MODULE_9__.ModifierContext();
     }
     MultiMeasureRest(params) {
-        if (params.number_of_measures === undefined)
-            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoNumberOfMeasures');
-        const multimeasurerest = new _multimeasurerest__WEBPACK_IMPORTED_MODULE_10__.MultiMeasureRest(params.number_of_measures, params);
-        multimeasurerest.setContext(this.context);
-        this.renderQ.push(multimeasurerest);
-        return multimeasurerest;
+        const numMeasures = (0,_util__WEBPACK_IMPORTED_MODULE_0__.defined)(params.number_of_measures, 'NoNumberOfMeasures');
+        const multiMeasureRest = new _multimeasurerest__WEBPACK_IMPORTED_MODULE_10__.MultiMeasureRest(numMeasures, params);
+        multiMeasureRest.setContext(this.context);
+        this.renderQ.push(multiMeasureRest);
+        return multiMeasureRest;
     }
-    Voice(paramsP = {}) {
-        const params = Object.assign({
-            time: '4/4',
-        }, paramsP);
-        const voice = new _voice__WEBPACK_IMPORTED_MODULE_22__.Voice(params.time, params.options);
+    Voice(params) {
+        const p = Object.assign({ time: '4/4' }, params);
+        const voice = new _voice__WEBPACK_IMPORTED_MODULE_22__.Voice(p.time, p.options);
         this.voices.push(voice);
         return voice;
     }
@@ -5183,15 +5058,12 @@ class Factory {
         this.renderQ.push(connector);
         return connector;
     }
-    Formatter(options = {}) {
+    Formatter(options) {
         return new _formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter(options);
     }
-    Tuplet(paramsP = {}) {
-        const params = Object.assign({
-            notes: [],
-            options: {},
-        }, paramsP);
-        const tuplet = new _tuplet__WEBPACK_IMPORTED_MODULE_21__.Tuplet(params.notes, params.options).setContext(this.context);
+    Tuplet(params) {
+        const p = Object.assign({ notes: [], options: {} }, params);
+        const tuplet = new _tuplet__WEBPACK_IMPORTED_MODULE_21__.Tuplet(p.notes, p.options).setContext(this.context);
         this.renderQ.push(tuplet);
         return tuplet;
     }
@@ -5266,6 +5138,9 @@ class Factory {
         this.renderQ.push(textBracket);
         return textBracket;
     }
+    // TODO: SystemOptions make all properties optional.
+    // eslint-disable-next-line
+    // @ts-ignore
     System(params = {}) {
         params.factory = this;
         const system = new _system__WEBPACK_IMPORTED_MODULE_19__.System(params).setContext(this.context);
@@ -5273,13 +5148,11 @@ class Factory {
         return system;
     }
     /**
-     * Creates EasyScore. Normally the first step after constructing a Factory.
-     *
-     * Example:
-     *
-     * `const vf: Factory = new Vex.Flow.Factory({renderer: { elementId: 'boo', width: 1200, height: 600 }});`
-     *
-     * `const score: EasyScore = vf.EasyScore();`
+     * Creates EasyScore. Normally the first step after constructing a Factory. For example:
+     * ```
+     * const vf: Factory = new Vex.Flow.Factory({renderer: { elementId: 'boo', width: 1200, height: 600 }});
+     * const score: EasyScore = vf.EasyScore();
+     * ```
      * @param options.factory optional instance of Factory
      * @param options.builder instance of Builder
      * @param options.commitHooks function to call after a note element is created
@@ -5289,42 +5162,37 @@ class Factory {
         options.factory = this;
         return new _easyscore__WEBPACK_IMPORTED_MODULE_28__.EasyScore(options);
     }
-    PedalMarking(paramsP = {}) {
-        const params = Object.assign({
-            notes: [],
-            options: {
+    PedalMarking(params) {
+        const p = Object.assign({ notes: [], options: {
                 style: 'mixed',
-            },
-        }, paramsP);
-        const pedal = new _pedalmarking__WEBPACK_IMPORTED_MODULE_32__.PedalMarking(params.notes);
-        pedal.setType(_pedalmarking__WEBPACK_IMPORTED_MODULE_32__.PedalMarking.typeString[params.options.style]);
+            } }, params);
+        const pedal = new _pedalmarking__WEBPACK_IMPORTED_MODULE_32__.PedalMarking(p.notes);
+        pedal.setType(_pedalmarking__WEBPACK_IMPORTED_MODULE_32__.PedalMarking.typeString[p.options.style]);
         pedal.setContext(this.context);
         this.renderQ.push(pedal);
         return pedal;
     }
-    NoteSubGroup(paramsP = {}) {
-        const params = Object.assign({
-            notes: [],
-        }, paramsP);
-        const group = new _notesubgroup__WEBPACK_IMPORTED_MODULE_27__.NoteSubGroup(params.notes);
+    NoteSubGroup(params) {
+        const p = Object.assign({ notes: [] }, params);
+        const group = new _notesubgroup__WEBPACK_IMPORTED_MODULE_27__.NoteSubGroup(p.notes);
         group.setContext(this.context);
         return group;
     }
     TextFont(params) {
         params.factory = this;
-        const textFont = new _textfont__WEBPACK_IMPORTED_MODULE_40__.TextFont(params);
-        return textFont;
+        return new _textfont__WEBPACK_IMPORTED_MODULE_40__.TextFont(params);
     }
     /** Render the score. */
     draw() {
-        this.systems.forEach((i) => i.setContext(this.context).format());
-        this.staves.forEach((i) => i.setContext(this.context).draw());
-        this.voices.forEach((i) => i.setContext(this.context).draw());
-        this.renderQ.forEach((i) => {
-            if (!i.isRendered())
-                i.setContext(this.context).draw();
+        const ctx = this.context;
+        this.systems.forEach((s) => s.setContext(ctx).format());
+        this.staves.forEach((s) => s.setContext(ctx).draw());
+        this.voices.forEach((v) => v.setContext(ctx).draw());
+        this.renderQ.forEach((e) => {
+            if (!e.isRendered())
+                e.setContext(ctx).draw();
         });
-        this.systems.forEach((i) => i.setContext(this.context).draw());
+        this.systems.forEach((s) => s.setContext(ctx).draw());
         this.reset();
     }
 }
@@ -18062,6 +17930,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+// Helper function
+const sumArray = (arr) => arr.reduce((a, b) => a + b, 0);
 /**
  * Create `Alignment`s for each tick in `voices`. Also calculate the
  * total number of ticks in voices.
@@ -18149,8 +18019,8 @@ function getRestLineForNextNoteGroup(notes, currRestLine, currNoteIndex, compare
  * here (`FormatAndDraw`, `FormatAndDrawTab`) also serve as useful usage examples.
  */
 class Formatter {
-    constructor(formatterOptions = {}) {
-        this.formatterOptions = Object.assign({ globalSoftmax: false, maxIterations: 5 }, formatterOptions);
+    constructor(options) {
+        this.formatterOptions = Object.assign({ globalSoftmax: false, softmaxFactor: 100, maxIterations: 5 }, options);
         this.justifyWidth = 0;
         this.totalCost = 0;
         this.totalShift = 0;
@@ -18331,13 +18201,6 @@ class Formatter {
             }
         });
     }
-    static estimateJustifiedMinWidth(voices, formatterOptions) {
-        const formatter = new Formatter(formatterOptions);
-        voices.forEach((voice) => {
-            formatter.joinVoices([voice]);
-        });
-        return formatter.preCalculateMinTotalWidth(voices);
-    }
     /**
      * Find all the rests in each of the `voices` and align them to neighboring notes.
      *
@@ -18500,8 +18363,6 @@ class Formatter {
         // Pass 1: Give each note maximum width requested by context.
         contextList.forEach((tick) => {
             const context = contextMap[tick];
-            if (renderingContext)
-                context.setContext(renderingContext);
             // Make sure that all tickables in this context have calculated their
             // space requirements.
             context.preFormat();
@@ -18516,8 +18377,7 @@ class Formatter {
             shift = width - metrics.totalLeftPx;
         });
         // Use softmax based on all notes across all staves. (options.globalSoftmax)
-        const formatterOptions = this.formatterOptions;
-        const softmaxFactor = formatterOptions.softmaxFactor || 100;
+        const { globalSoftmax, softmaxFactor, maxIterations } = this.formatterOptions;
         const exp = (tick) => Math.pow(softmaxFactor, (contextMap[tick].getMaxTicks().value() / totalTicks));
         const expTicksUsed = sumArray(contextList.map(exp));
         this.minTotalWidth = x + shift;
@@ -18576,7 +18436,7 @@ class Formatter {
                             maxNegativeShiftPx = Math.min(maxNegativeShiftPx, context.getX() - (prevContext.getX() + adjustedJustifyWidth * 0.05));
                             // Calculate the expected distance of the current context from the last matching tickable. The
                             // distance is scaled down by the softmax for the voice.
-                            if (formatterOptions.globalSoftmax) {
+                            if (globalSoftmax) {
                                 const t = totalTicks;
                                 expectedDistance = (Math.pow(softmaxFactor, (maxTicks / t)) / expTicksUsed) * adjustedJustifyWidth;
                             }
@@ -18626,19 +18486,45 @@ class Formatter {
             lastContext.getMetrics().notePx -
             lastContext.getMetrics().totalRightPx -
             firstContext.getMetrics().totalLeftPx;
-        let targetWidth = adjustedJustifyWidth;
-        let actualWidth = shiftToIdealDistances(calculateIdealDistances(targetWidth));
         const musicFont = _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.DEFAULT_FONT_STACK[0];
-        const paddingMax = musicFont.lookupMetric('stave.endPaddingMax');
-        const paddingMin = musicFont.lookupMetric('stave.endPaddingMin');
+        const configMinPadding = musicFont.lookupMetric('stave.endPaddingMin');
+        const configMaxPadding = musicFont.lookupMetric('stave.endPaddingMax');
+        let targetWidth = adjustedJustifyWidth;
+        let distances = calculateIdealDistances(targetWidth);
+        let actualWidth = shiftToIdealDistances(distances);
+        // Calculate right justification by finding max of (configured value, min distance between tickables)
+        // so measures with lots of white space use it evenly, and crowded measures use at least the configured
+        // space
+        const calcMinDistance = (targetWidth, distances) => {
+            let mdCalc = targetWidth / 2;
+            if (distances.length > 1) {
+                for (let di = 1; di < distances.length; ++di) {
+                    mdCalc = Math.min(distances[di].expectedDistance / 2, mdCalc);
+                }
+            }
+            return mdCalc;
+        };
+        const minDistance = calcMinDistance(targetWidth, distances);
+        const multiNote = contextList.length > 1;
+        // right justify to either the configured padding, or the min distance between notes, whichever is greatest.
+        let paddingMax = configMaxPadding;
+        // This * 2 keeps the existing formatting unless there is 'a lot' of extra whitespace, which won't break
+        // existing visual regression tests.
+        if (paddingMax * 2 < minDistance) {
+            paddingMax = minDistance;
+            L('Right padding to ' + minDistance);
+        }
+        const paddingMin = paddingMax - (configMaxPadding - configMinPadding);
         const maxX = adjustedJustifyWidth - paddingMin;
-        let iterations = this.formatterOptions.maxIterations;
-        while ((actualWidth > maxX && iterations > 0) || (actualWidth + paddingMax < maxX && iterations > 1)) {
+        let iterations = maxIterations;
+        while ((actualWidth > maxX && iterations > 0 && multiNote) ||
+            (actualWidth + paddingMax < maxX && iterations > 1 && multiNote)) {
             // If we couldn't fit all the notes into the jusification width, it's because the softmax-scaled
             // widths between different durations differ across stave (e.g., 1 quarter note is not the same pixel-width
             // as 4 16th-notes). Run another pass, now that we know how much to justify.
             targetWidth -= actualWidth - maxX;
-            actualWidth = shiftToIdealDistances(calculateIdealDistances(targetWidth));
+            distances = calculateIdealDistances(targetWidth);
+            actualWidth = shiftToIdealDistances(distances);
             iterations--;
         }
         // Just one context. Done formatting.
@@ -18739,10 +18625,12 @@ class Formatter {
      * the formatter should make based on its cost function.
      */
     tune(options) {
-        if (!this.tickContexts)
-            return 0;
+        var _a;
         const contexts = this.tickContexts;
-        options = Object.assign({ alpha: 0.5 }, options);
+        if (!contexts) {
+            return 0;
+        }
+        const alpha = (_a = options === null || options === void 0 ? void 0 : options.alpha) !== null && _a !== void 0 ? _a : 0.5;
         // Move `current` tickcontext by `shift` pixels, and adjust the freedom
         // on adjacent tickcontexts.
         function move(current, shift, prev, next) {
@@ -18773,7 +18661,7 @@ class Formatter {
                     shift = 0;
                 }
             }
-            shift *= (0,_util__WEBPACK_IMPORTED_MODULE_0__.defined)(options).alpha;
+            shift *= alpha;
             this.totalShift += shift;
         });
         return this.evaluate();
@@ -18825,8 +18713,7 @@ class Formatter {
             this.postFormat();
         return this;
     }
-    // This method is just like `format` except that the `justifyWidth` is inferred
-    // from the `stave`.
+    // This method is just like `format` except that the `justifyWidth` is inferred from the `stave`.
     formatToStave(voices, stave, optionsParam) {
         const options = Object.assign({ padding: 10, context: stave.getContext() }, optionsParam);
         // eslint-disable-next-line
@@ -18835,9 +18722,6 @@ class Formatter {
         return this.format(voices, justifyWidth, options);
     }
 }
-// Helper functions.
-const sum = (a, b) => a + b;
-const sumArray = (arr) => arr.reduce(sum, 0);
 
 
 /***/ }),
@@ -18861,14 +18745,14 @@ __webpack_require__.r(__webpack_exports__);
 
 /** Fraction represents a rational number. */
 class Fraction {
-    /** Construct providing numerator and denominator. */
+    /** Set the numerator and denominator. */
     constructor(numerator, denominator) {
         this.numerator = 1;
         this.denominator = 1;
         this.set(numerator, denominator);
     }
     static get CATEGORY() {
-        return 'fractions';
+        return 'Fraction';
     }
     /** GCD: Greatest common divisor using Euclidean algorithm. */
     static GCD(a, b) {
@@ -18904,10 +18788,7 @@ class Fraction {
             return Fraction.LCM(args.shift(), Fraction.LCMM(args));
         }
     }
-    getCategory() {
-        return Fraction.CATEGORY;
-    }
-    /** Set numerator and denominator. */
+    /** Set the numerator and denominator. */
     set(numerator = 1, denominator = 1) {
         this.numerator = numerator;
         this.denominator = denominator;
@@ -19086,13 +18967,9 @@ __webpack_require__.r(__webpack_exports__);
 // Class to draws string numbers into the notation.
 
 
-/**
- * @constructor
- */
 class FretHandFinger extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
     constructor(finger) {
         super();
-        this.setAttribute('type', 'FretHandFinger');
         this.finger = finger;
         this.width = 7;
         this.position = _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.LEFT; // Default position above stem or note head
@@ -19107,7 +18984,7 @@ class FretHandFinger extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
         };
     }
     static get CATEGORY() {
-        return 'frethandfinger';
+        return 'FretHandFinger';
     }
     // Arrange fingerings inside a ModifierContext.
     static format(nums, state) {
@@ -19180,21 +19057,13 @@ class FretHandFinger extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
         return true;
     }
     static easyScoreHook({ fingerings } = {}, note, builder) {
-        if (!fingerings)
-            return;
-        fingerings
-            .split(',')
-            .map((fingeringString) => {
+        fingerings === null || fingerings === void 0 ? void 0 : fingerings.split(',').map((fingeringString) => {
             const split = fingeringString.trim().split('.');
             const params = { number: split[0] };
             if (split[1])
                 params.position = split[1];
             return builder.getFactory().Fingering(params);
-        })
-            .map((fingering, index) => note.addModifier(fingering, index));
-    }
-    getCategory() {
-        return FretHandFinger.CATEGORY;
+        }).map((fingering, index) => note.addModifier(fingering, index));
     }
     setFretHandFinger(finger) {
         this.finger = finger;
@@ -19263,26 +19132,27 @@ __webpack_require__.r(__webpack_exports__);
 // ## Description
 
 
+const ERROR_MSG = 'Ghost note must have valid initialization data to identify duration.';
 class GhostNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_1__.StemmableNote {
-    /** @constructor */
+    static get CATEGORY() {
+        return 'GhostNote';
+    }
     constructor(parameter) {
-        // Sanity check
         if (!parameter) {
-            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'Ghost note must have valid initialization data to identify duration.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', ERROR_MSG);
         }
-        let note_struct;
-        // Preserve backwards-compatibility
+        let noteStruct;
         if (typeof parameter === 'string') {
-            note_struct = { duration: parameter };
+            // Preserve backwards-compatibility
+            noteStruct = { duration: parameter };
         }
         else if (typeof parameter === 'object') {
-            note_struct = parameter;
+            noteStruct = parameter;
         }
         else {
-            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'Ghost note must have valid initialization data to identify ' + 'duration.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', ERROR_MSG);
         }
-        super(note_struct);
-        this.setAttribute('type', 'GhostNote');
+        super(noteStruct);
         // Note properties
         this.setWidth(0);
     }
@@ -19425,7 +19295,6 @@ class Glyph extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
         this.topGlyphs = [];
         this.botGlyphs = [];
         this.scale = 1;
-        this.setAttribute('type', 'Glyph');
         this.code = code;
         this.point = point;
         this.options = {
@@ -19443,6 +19312,9 @@ class Glyph extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
         else {
             this.reset();
         }
+    }
+    static get CATEGORY() {
+        return 'Glyph';
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////
     // Static methods for loading and rendering glyphs.
@@ -19532,7 +19404,6 @@ class Glyph extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
     static renderOutline(ctx, outline, scale, x_pos, y_pos) {
         const go = new GlyphOutline(outline, x_pos, y_pos, scale);
         ctx.beginPath();
-        ctx.moveTo(x_pos, y_pos);
         let x, y;
         while (!go.done()) {
             switch (go.next()) {
@@ -19725,12 +19596,14 @@ class GlyphNote extends _note__WEBPACK_IMPORTED_MODULE_0__.Note {
     constructor(glyph, noteStruct, options) {
         super(noteStruct);
         this.options = Object.assign({ ignoreTicks: false, line: 2 }, options);
-        this.setAttribute('type', 'GlyphNote');
         // Note properties
         this.ignore_ticks = this.options.ignoreTicks;
         if (glyph) {
             this.setGlyph(glyph);
         }
+    }
+    static get CATEGORY() {
+        return 'GlyphNote';
     }
     setGlyph(glyph) {
         this.glyph = glyph;
@@ -19763,13 +19636,14 @@ class GlyphNote extends _note__WEBPACK_IMPORTED_MODULE_0__.Note {
         this.setRendered();
         ctx.openGroup('glyphNote', this.getAttribute('id'));
         // Context is set when setStave is called on Note
-        if (!this.glyph.getContext()) {
-            this.glyph.setContext(ctx);
+        const glyph = this.glyph;
+        if (!glyph.getContext()) {
+            glyph.setContext(ctx);
         }
-        this.glyph.setStave(stave);
-        this.glyph.setYShift(stave.getYForLine(this.options.line) - stave.getYForGlyphs());
+        glyph.setStave(stave);
+        glyph.setYShift(stave.getYForLine(this.options.line) - stave.getYForGlyphs());
         const x = this.isCenterAligned() ? this.getAbsoluteX() - this.getWidth() / 2 : this.getAbsoluteX();
-        this.glyph.renderToStave(x);
+        glyph.renderToStave(x);
         this.drawModifiers();
         ctx.closeGroup();
     }
@@ -19798,19 +19672,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class GraceNote extends _stavenote__WEBPACK_IMPORTED_MODULE_1__.StaveNote {
-    constructor(note_struct) {
-        super(Object.assign({
-            glyph_font_scale: _flow__WEBPACK_IMPORTED_MODULE_3__.Flow.DEFAULT_NOTATION_FONT_SCALE * GraceNote.SCALE,
-            stroke_px: GraceNote.LEDGER_LINE_OFFSET,
-        }, note_struct));
-        this.setAttribute('type', 'GraceNote');
-        this.slash = note_struct.slash;
+    constructor(noteStruct) {
+        super(Object.assign({ glyph_font_scale: _flow__WEBPACK_IMPORTED_MODULE_3__.Flow.DEFAULT_NOTATION_FONT_SCALE * GraceNote.SCALE, stroke_px: GraceNote.LEDGER_LINE_OFFSET }, noteStruct));
+        this.slash = noteStruct.slash || false;
         this.slur = true;
         this.buildNoteHeads();
         this.width = 3;
     }
     static get CATEGORY() {
-        return 'gracenotes';
+        return 'GraceNote';
     }
     static get LEDGER_LINE_OFFSET() {
         return 2;
@@ -19832,9 +19702,6 @@ class GraceNote extends _stavenote__WEBPACK_IMPORTED_MODULE_1__.StaveNote {
             return ret;
         }
         return 0;
-    }
-    getCategory() {
-        return GraceNote.CATEGORY;
     }
     // FIXME: move this to more basic class.
     getStaveNoteScale() {
@@ -19895,7 +19762,7 @@ class GraceNote extends _stavenote__WEBPACK_IMPORTED_MODULE_1__.StaveNote {
                     y2: y + offsets.y2 * offsetScale,
                 };
             }
-            // FIXME: avoide staff lines, leadger lines or others.
+            // FIXME: avoid staff lines, ledger lines or others.
             const ctx = this.checkContext();
             ctx.save();
             ctx.setLineWidth(1 * offsetScale); // FIXME: use more appropriate value.
@@ -19960,7 +19827,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _beam__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./beam */ "./src/beam.ts");
 /* harmony import */ var _stavetie__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
 /* harmony import */ var _tabtie__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./tabtie */ "./src/tabtie.ts");
-/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+/* harmony import */ var typeguard__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! typeguard */ "./src/typeguard.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
@@ -19988,7 +19855,6 @@ class GraceNoteGroup extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
     constructor(grace_notes, show_slur) {
         super();
         this.preFormatted = false;
-        this.setAttribute('type', 'GraceNoteGroup');
         this.position = _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier.Position.LEFT;
         this.grace_notes = grace_notes;
         this.width = 0;
@@ -20008,7 +19874,7 @@ class GraceNoteGroup extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
         return this;
     }
     static get CATEGORY() {
-        return 'gracenotegroups';
+        return 'GraceNoteGroup';
     }
     /** Arranges groups inside a `ModifierContext`. */
     static format(gracenote_groups, state) {
@@ -20022,7 +19888,7 @@ class GraceNoteGroup extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
         for (let i = 0; i < gracenote_groups.length; ++i) {
             const gracenote_group = gracenote_groups[i];
             const note = gracenote_group.getNote();
-            const is_stavenote = note.getCategory() === _stavenote__WEBPACK_IMPORTED_MODULE_8__.StaveNote.CATEGORY;
+            const is_stavenote = (0,typeguard__WEBPACK_IMPORTED_MODULE_8__.isStaveNote)(note);
             const spacing = is_stavenote ? group_spacing_stave : group_spacing_tab;
             if (is_stavenote && note !== prev_note) {
                 // Iterate through all notes to get the displaced pixels
@@ -20049,9 +19915,6 @@ class GraceNoteGroup extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
         }
         state.left_shift += group_shift;
         return true;
-    }
-    getCategory() {
-        return GraceNoteGroup.CATEGORY;
     }
     preFormat() {
         if (this.preFormatted)
@@ -20086,17 +19949,13 @@ class GraceNoteGroup extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
         this.setRendered();
         L('Drawing grace note group for:', note);
         this.alignSubNotesWithNote(this.getGraceNotes(), note); // Modifier function
-        // Draw notes
-        this.grace_notes.forEach((graceNote) => {
-            graceNote.setContext(ctx).draw();
-        });
-        // Draw beam
-        this.beams.forEach((beam) => {
-            beam.setContext(ctx).draw();
-        });
+        // Draw grace notes.
+        this.grace_notes.forEach((graceNote) => graceNote.setContext(ctx).draw());
+        // Draw beams.
+        this.beams.forEach((beam) => beam.setContext(ctx).draw());
         if (this.show_slur) {
-            // Create and draw slur
-            const is_stavenote = note.getCategory() === _stavenote__WEBPACK_IMPORTED_MODULE_8__.StaveNote.CATEGORY;
+            // Create and draw slur.
+            const is_stavenote = (0,typeguard__WEBPACK_IMPORTED_MODULE_8__.isStaveNote)(note);
             const TieClass = is_stavenote ? _stavetie__WEBPACK_IMPORTED_MODULE_6__.StaveTie : _tabtie__WEBPACK_IMPORTED_MODULE_7__.TabTie;
             this.slur = new TieClass({
                 last_note: this.grace_notes[0],
@@ -20137,27 +19996,18 @@ __webpack_require__.r(__webpack_exports__);
 
 class GraceTabNote extends _tabnote__WEBPACK_IMPORTED_MODULE_0__.TabNote {
     static get CATEGORY() {
-        return 'gracetabnotes';
+        return 'GraceTabNote';
     }
-    constructor(note_struct) {
-        super(note_struct, false);
-        this.setAttribute('type', 'GraceTabNote');
-        this.render_options = Object.assign(Object.assign({}, this.render_options), {
+    constructor(noteStruct) {
+        super(noteStruct, false);
+        this.render_options = Object.assign(Object.assign({}, this.render_options), { 
             // vertical shift from stave line
-            y_shift: 0.3,
+            y_shift: 0.3, 
             // grace glyph scale
-            scale: 0.6,
+            scale: 0.6, 
             // grace tablature font
-            font: '7.5pt Arial',
-        });
+            font: '7.5pt Arial' });
         this.updateWidth();
-    }
-    getCategory() {
-        return GraceTabNote.CATEGORY;
-    }
-    draw() {
-        super.draw();
-        this.setRendered();
     }
 }
 
@@ -20319,19 +20169,15 @@ class KeySignature extends _stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveModi
     constructor(keySpec, cancelKeySpec, alterKeySpec) {
         super();
         this.accList = [];
-        this.setAttribute('type', 'KeySignature');
         this.setKeySig(keySpec, cancelKeySpec, alterKeySpec);
-        this.setPosition(_stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveModifier.Position.BEGIN);
+        this.setPosition(_stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveModifierPosition.BEGIN);
         this.glyphFontScale = 38; // TODO(0xFE): Should this match StaveNote?
         this.glyphs = [];
         this.xPositions = []; // relative to this.x
         this.paddingForced = false;
     }
     static get CATEGORY() {
-        return 'keysignatures';
-    }
-    getCategory() {
-        return KeySignature.CATEGORY;
+        return 'KeySignature';
     }
     // Add an accidental glyph to the `KeySignature` instance which represents
     // the provided `acc`. If `nextAcc` is also provided, the appropriate
@@ -20502,7 +20348,7 @@ class KeySignature extends _stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveModi
             this.convertToAlterAccList(this.alterKeySpec);
         }
         if (this.accList.length > 0) {
-            const clef = (this.position === _stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveModifier.Position.END ? stave.getEndClef() : stave.getClef()) || stave.getClef();
+            const clef = (this.position === _stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveModifierPosition.END ? stave.getEndClef() : stave.getClef()) || stave.getClef();
             if (cancelAccList) {
                 this.convertAccLines(clef, cancelAccList.type, cancelAccList.accList);
             }
@@ -20514,9 +20360,6 @@ class KeySignature extends _stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveModi
         this.formatted = true;
     }
     draw() {
-        if (!this.x) {
-            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('KeySignatureError', "Can't draw key signature without x.");
-        }
         const stave = this.checkStave();
         if (!this.formatted)
             this.format();
@@ -20613,10 +20456,12 @@ __webpack_require__.r(__webpack_exports__);
 class KeySigNote extends _note__WEBPACK_IMPORTED_MODULE_0__.Note {
     constructor(keySpec, cancelKeySpec, alterKeySpec) {
         super({ duration: 'b' });
-        this.setAttribute('type', 'KeySigNote');
         this.keySignature = new _keysignature__WEBPACK_IMPORTED_MODULE_1__.KeySignature(keySpec, cancelKeySpec, alterKeySpec);
         // Note properties
         this.ignore_ticks = true;
+    }
+    static get CATEGORY() {
+        return 'KeySigNote';
     }
     /* Overridden to ignore */
     // eslint-disable-next-line
@@ -20684,7 +20529,6 @@ var ModifierPosition;
 class Modifier extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
     constructor() {
         super();
-        this.setAttribute('type', 'Modifier');
         this.width = 0;
         // The `text_line` is reserved space above or below a stave.
         this.text_line = 0;
@@ -20693,7 +20537,10 @@ class Modifier extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
         this.y_shift = 0;
         this.spacingFromNextModifier = 0;
     }
-    /** Modifiers category string. */
+    /**
+     * Modifiers category string. Every modifier has a different category.
+     * The `ModifierContext` uses this to determine the type and order of the modifiers.
+     */
     static get CATEGORY() {
         return 'Modifier';
     }
@@ -20703,23 +20550,16 @@ class Modifier extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
     }
     static get PositionString() {
         return {
-            center: Modifier.Position.CENTER,
-            above: Modifier.Position.ABOVE,
-            below: Modifier.Position.BELOW,
-            left: Modifier.Position.LEFT,
-            right: Modifier.Position.RIGHT,
+            center: ModifierPosition.CENTER,
+            above: ModifierPosition.ABOVE,
+            below: ModifierPosition.BELOW,
+            left: ModifierPosition.LEFT,
+            right: ModifierPosition.RIGHT,
         };
     }
     /** Called when position changes. */
     reset() {
         // DO NOTHING.
-    }
-    /**
-     * Every modifier has a category. The `ModifierContext` uses this to determine
-     * the type and order of the modifiers.
-     */
-    getCategory() {
-        return Modifier.CATEGORY;
     }
     /** Get modifier widths. */
     getWidth() {
@@ -20739,8 +20579,9 @@ class Modifier extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
      * Also verifies that the index is valid.
      */
     checkAttachedNote() {
-        (0,_util__WEBPACK_IMPORTED_MODULE_0__.defined)(this.index, 'NoIndex', `Can't draw ${this.getCategory()} without an index.`);
-        return (0,_util__WEBPACK_IMPORTED_MODULE_0__.defined)(this.note, 'NoNote', `Can't draw ${this.getCategory()} without a note.`);
+        const category = this.getCategory();
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.defined)(this.index, 'NoIndex', `Can't draw ${category} without an index.`);
+        return (0,_util__WEBPACK_IMPORTED_MODULE_0__.defined)(this.note, 'NoNote', `Can't draw ${category} without a note.`);
     }
     /**
      * Set attached note.
@@ -20941,6 +20782,12 @@ class ModifierContext {
         L('addModifier is deprecated, use addMember instead.');
         return this.addMember(member);
     }
+    /**
+     * this.members maps CATEGORY strings to arrays of Tickable | Modifier | StaveNote | TabNote.
+     * Here we add a new member to this.members, and create a new array if needed.
+     * @param member
+     * @returns this
+     */
     addMember(member) {
         const category = member.getCategory();
         if (!this.members[category]) {
@@ -20951,6 +20798,9 @@ class ModifierContext {
         this.preFormatted = false;
         return this;
     }
+    /**
+     * @deprecated
+     */
     getModifiers(category) {
         L('getModifiers is deprecated, use getMembers instead.');
         return this.getMembers(category);
@@ -21020,11 +20870,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _notehead__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./notehead */ "./src/notehead.ts");
 /* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 /* harmony import */ var _timesignature__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
-/* harmony import */ var _stavebarline__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
+/* harmony import */ var typeguard__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! typeguard */ "./src/typeguard.ts");
 // VexFlow - Music Engraving for HTML5
 // Copyright Mohit Muthanna 2010
 //
-// This class implements multiple measure rests
+// This class implements multiple measure rests.
 
 
 
@@ -21033,58 +20883,43 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-let semibrave_rest;
-function get_semibrave_rest() {
-    if (!semibrave_rest) {
-        const notehead = new _notehead__WEBPACK_IMPORTED_MODULE_4__.NoteHead({ duration: 'w', note_type: 'r' });
-        semibrave_rest = {
-            glyph_font_scale: notehead.render_options.glyph_font_scale,
-            glyph_code: notehead.glyph_code,
-            width: notehead.getWidth(),
+let semibreve_rest;
+function get_semibreve_rest() {
+    if (!semibreve_rest) {
+        const noteHead = new _notehead__WEBPACK_IMPORTED_MODULE_4__.NoteHead({ duration: 'w', note_type: 'r' });
+        semibreve_rest = {
+            glyph_font_scale: noteHead.render_options.glyph_font_scale,
+            glyph_code: noteHead.glyph_code,
+            width: noteHead.getWidth(),
         };
     }
-    return semibrave_rest;
+    return semibreve_rest;
 }
 class MultiMeasureRest extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
-    // Parameters:
-    // * `number_of_measures` - Number of measures.
-    // * `options` - The options object.
-    //   * `show_number` - Show number of measures string or not.
-    //   * `number_line` -  Staff line to render the number of measures string.
-    //   * `number_glyph_point` - Size of the number of measures string glyphs.
-    //   * `padding_left` - Left padding from stave x.
-    //   * `padding_right` - Right padding from stave end x.
-    //   * `line` - Staff line to render rest line or rest symbols.
-    //   * `spacing_between_lines_px` - Spacing between staff lines to
-    // resolve serif height or {2-bar and 4-bar}rest symbol height.
-    //   * `line_thickness` - Rest line thickness.
-    //   * `serif_thickness` - Rest serif line thickness.
-    //   * `use_symbols` - Use rest symbols or not.
-    //   * `symbol_spacing` - Spacing between each rest symbol glyphs.
-    //   * `semibrave_rest_glyph_scale` - Size of the semibrave(1-bar) rest symbol.
+    /**
+     *
+     * @param number_of_measures Number of measures.
+     * @param options The options object.
+     */
     constructor(number_of_measures, options) {
         super();
-        this.setAttribute('type', 'MultiMeasureRest');
-        const point = this.musicFont.lookupMetric('digits.point');
-        const fontLineShift = this.musicFont.lookupMetric('digits.shiftLine', 0);
-        this.render_options = {
-            show_number: true,
-            number_line: -0.5,
-            number_glyph_point: point,
-            line: 2,
-            spacing_between_lines_px: 10,
-            serif_thickness: 2,
-            use_symbols: false,
-            /* same as NoteHead. */
-            semibrave_rest_glyph_scale: _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.DEFAULT_NOTATION_FONT_SCALE,
-        };
-        this.render_options = Object.assign(Object.assign({}, this.render_options), options);
-        this.render_options.number_line += fontLineShift;
+        this.xs = { left: NaN, right: NaN };
+        this.hasPaddingLeft = false;
+        this.hasPaddingRight = false;
+        this.hasLineThickness = false;
+        this.hasSymbolSpacing = false;
         this.number_of_measures = number_of_measures;
-        this.xs = {
-            left: NaN,
-            right: NaN,
-        };
+        // Keep track of whether these four options were provided.
+        this.hasPaddingLeft = typeof options.padding_left === 'number';
+        this.hasPaddingRight = typeof options.padding_right === 'number';
+        this.hasLineThickness = typeof options.line_thickness === 'number';
+        this.hasSymbolSpacing = typeof options.symbol_spacing === 'number';
+        this.render_options = Object.assign({ use_symbols: false, show_number: true, number_line: -0.5, number_glyph_point: this.musicFont.lookupMetric('digits.point'), line: 2, spacing_between_lines_px: _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.STAVE_LINE_DISTANCE, serif_thickness: 2, semibreve_rest_glyph_scale: _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.DEFAULT_NOTATION_FONT_SCALE, padding_left: 0, padding_right: 0, line_thickness: 5, symbol_spacing: 0 }, options);
+        const fontLineShift = this.musicFont.lookupMetric('digits.shiftLine', 0);
+        this.render_options.number_line += fontLineShift;
+    }
+    static get CATEGORY() {
+        return 'MultiMeasureRest';
     }
     getXs() {
         return this.xs;
@@ -21099,62 +20934,68 @@ class MultiMeasureRest extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
     checkStave() {
         return (0,_util__WEBPACK_IMPORTED_MODULE_0__.defined)(this.stave, 'NoStave', 'No stave attached to instance.');
     }
-    drawLine(ctx, left, right, sbl) {
-        const y = this.checkStave().getYForLine(this.render_options.line);
+    drawLine(stave, ctx, left, right, spacingBetweenLines) {
+        const options = this.render_options;
+        const y = stave.getYForLine(options.line);
         const padding = (right - left) * 0.1;
         left += padding;
         right -= padding;
-        const serif = {
-            thickness: this.render_options.serif_thickness,
-            height: sbl,
-        };
-        let lineThicknessHalf = sbl * 0.25;
-        if (this.render_options.line_thickness != undefined) {
-            lineThicknessHalf = this.render_options.line_thickness * 0.5;
+        let lineThicknessHalf;
+        if (this.hasLineThickness) {
+            lineThicknessHalf = options.line_thickness * 0.5;
         }
+        else {
+            lineThicknessHalf = spacingBetweenLines * 0.25;
+        }
+        const serifThickness = options.serif_thickness;
+        const top = y - spacingBetweenLines;
+        const bot = y + spacingBetweenLines;
+        const leftIndented = left + serifThickness;
+        const rightIndented = right - serifThickness;
+        const lineTop = y - lineThicknessHalf;
+        const lineBottom = y + lineThicknessHalf;
         ctx.save();
         ctx.beginPath();
-        ctx.moveTo(left, y - sbl);
-        ctx.lineTo(left + serif.thickness, y - sbl);
-        ctx.lineTo(left + serif.thickness, y - lineThicknessHalf);
-        ctx.lineTo(right - serif.thickness, y - lineThicknessHalf);
-        ctx.lineTo(right - serif.thickness, y - sbl);
-        ctx.lineTo(right, y - sbl);
-        ctx.lineTo(right, y + sbl);
-        ctx.lineTo(right - serif.thickness, y + sbl);
-        ctx.lineTo(right - serif.thickness, y + lineThicknessHalf);
-        ctx.lineTo(left + serif.thickness, y + lineThicknessHalf);
-        ctx.lineTo(left + serif.thickness, y + sbl);
-        ctx.lineTo(left, y + sbl);
+        ctx.moveTo(left, top);
+        ctx.lineTo(leftIndented, top);
+        ctx.lineTo(leftIndented, lineTop);
+        ctx.lineTo(rightIndented, lineTop);
+        ctx.lineTo(rightIndented, top);
+        ctx.lineTo(right, top);
+        ctx.lineTo(right, bot);
+        ctx.lineTo(rightIndented, bot);
+        ctx.lineTo(rightIndented, lineBottom);
+        ctx.lineTo(leftIndented, lineBottom);
+        ctx.lineTo(leftIndented, bot);
+        ctx.lineTo(left, bot);
         ctx.closePath();
         ctx.fill();
     }
-    drawSymbols(ctx, left, right, sbl) {
-        const stave = this.checkStave();
+    drawSymbols(stave, ctx, left, right, spacingBetweenLines) {
         const n4 = Math.floor(this.number_of_measures / 4);
         const n = this.number_of_measures % 4;
         const n2 = Math.floor(n / 2);
         const n1 = n % 2;
-        const semibrave_rest = get_semibrave_rest();
-        const semibrave_rest_width = semibrave_rest.width * (this.render_options.semibrave_rest_glyph_scale / semibrave_rest.glyph_font_scale);
+        const options = this.render_options;
+        const rest = get_semibreve_rest();
+        const rest_scale = options.semibreve_rest_glyph_scale;
+        const rest_width = rest.width * (rest_scale / rest.glyph_font_scale);
         const glyphs = {
             2: {
-                width: semibrave_rest_width * 0.5,
-                height: sbl,
+                width: rest_width * 0.5,
+                height: spacingBetweenLines,
             },
             1: {
-                width: semibrave_rest_width,
+                width: rest_width,
             },
         };
-        let spacing = semibrave_rest_width * 1.35;
-        if (this.render_options.symbol_spacing != undefined) {
-            spacing = this.render_options.symbol_spacing;
-        }
+        const spacing = this.hasSymbolSpacing ? options.symbol_spacing : rest_width * 1.35;
         const width = n4 * glyphs[2].width + n2 * glyphs[2].width + n1 * glyphs[1].width + (n4 + n2 + n1 - 1) * spacing;
         let x = left + (right - left) * 0.5 - width * 0.5;
-        const yTop = stave.getYForLine(this.render_options.line - 1);
-        const yMiddle = stave.getYForLine(this.render_options.line);
-        const yBottom = stave.getYForLine(this.render_options.line + 1);
+        const line = options.line;
+        const yTop = stave.getYForLine(line - 1);
+        const yMiddle = stave.getYForLine(line);
+        const yBottom = stave.getYForLine(line + 1);
         ctx.save();
         ctx.setStrokeStyle('none');
         ctx.setLineWidth(0);
@@ -21168,7 +21009,7 @@ class MultiMeasureRest extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
             x += glyphs[2].width + spacing;
         }
         for (let i = 0; i < n1; ++i) {
-            _glyph__WEBPACK_IMPORTED_MODULE_3__.Glyph.renderGlyph(ctx, x, yTop, this.render_options.semibrave_rest_glyph_scale, semibrave_rest.glyph_code);
+            _glyph__WEBPACK_IMPORTED_MODULE_3__.Glyph.renderGlyph(ctx, x, yTop, rest_scale, rest.glyph_code);
             x += glyphs[1].width + spacing;
         }
         ctx.restore();
@@ -21177,37 +21018,40 @@ class MultiMeasureRest extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         const ctx = this.checkContext();
         this.setRendered();
         const stave = this.checkStave();
-        const sbl = this.render_options.spacing_between_lines_px;
         let left = stave.getNoteStartX();
         let right = stave.getNoteEndX();
-        // FIXME: getNoteStartX() returns x+5(barline width) and
-        // getNoteEndX() returns x + width(no barline width) by default. how to fix?
-        const begModifiers = stave.getModifiers(_stavemodifier__WEBPACK_IMPORTED_MODULE_5__.StaveModifier.Position.BEGIN);
-        if (begModifiers.length === 1 && begModifiers[0].getCategory() === _stavebarline__WEBPACK_IMPORTED_MODULE_7__.Barline.CATEGORY) {
+        // FIXME: getNoteStartX() returns x + 5(barline width)
+        //        getNoteEndX() returns x + width(no barline width)
+        // See Stave constructor. How do we fix this?
+        // Here, we subtract the barline width.
+        const begModifiers = stave.getModifiers(_stavemodifier__WEBPACK_IMPORTED_MODULE_5__.StaveModifierPosition.BEGIN);
+        if (begModifiers.length === 1 && (0,typeguard__WEBPACK_IMPORTED_MODULE_7__.isBarline)(begModifiers[0])) {
             left -= begModifiers[0].getWidth();
         }
-        if (this.render_options.padding_left != undefined) {
-            left = stave.getX() + this.render_options.padding_left;
+        const options = this.render_options;
+        if (this.hasPaddingLeft) {
+            left = stave.getX() + options.padding_left;
         }
-        if (this.render_options.padding_right != undefined) {
-            right = stave.getX() + stave.getWidth() - this.render_options.padding_right;
+        if (this.hasPaddingRight) {
+            right = stave.getX() + stave.getWidth() - options.padding_right;
         }
         this.xs.left = left;
         this.xs.right = right;
-        if (this.render_options.use_symbols) {
-            this.drawSymbols(ctx, left, right, sbl);
+        const spacingBetweenLines = options.spacing_between_lines_px;
+        if (options.use_symbols) {
+            this.drawSymbols(stave, ctx, left, right, spacingBetweenLines);
         }
         else {
-            this.drawLine(ctx, left, right, sbl);
+            this.drawLine(stave, ctx, left, right, spacingBetweenLines);
         }
-        if (this.render_options.show_number) {
+        if (options.show_number) {
             const timeSpec = '/' + this.number_of_measures;
             const timeSig = new _timesignature__WEBPACK_IMPORTED_MODULE_6__.TimeSignature(timeSpec, 0, false);
-            timeSig.point = this.render_options.number_glyph_point;
+            timeSig.point = options.number_glyph_point;
             timeSig.setTimeSig(timeSpec);
             timeSig.setStave(stave);
             timeSig.setX(left + (right - left) * 0.5 - timeSig.getInfo().glyph.getMetrics().width * 0.5);
-            timeSig.bottomLine = this.render_options.number_line;
+            timeSig.bottomLine = options.number_line;
             timeSig.setContext(ctx).draw();
         }
     }
@@ -21633,34 +21477,34 @@ class Note extends _tickable__WEBPACK_IMPORTED_MODULE_2__.Tickable {
     /**
      * Every note is a tickable, i.e., it can be mutated by the `Formatter` class for
      * positioning and layout.
-     * To create a new note you need to provide a `noteStruct`.
+     *
+     * @param noteStruct To create a new note you need to provide a `noteStruct`.
      */
     constructor(noteStruct) {
         super();
-        this.setAttribute('type', 'Note');
         if (!noteStruct) {
             throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'Note must have valid initialization data to identify duration and type.');
         }
         /** Parses `noteStruct` and get note properties. */
-        const initStruct = Note.parseNoteStruct(noteStruct);
-        if (!initStruct) {
+        const parsedNoteStruct = Note.parseNoteStruct(noteStruct);
+        if (!parsedNoteStruct) {
             throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', `Invalid note initialization object: ${JSON.stringify(noteStruct)}`);
         }
         // Set note properties from parameters.
         this.keys = noteStruct.keys || [];
         // per-pitch properties
         this.keyProps = [];
-        this.duration = initStruct.duration;
-        this.dots = initStruct.dots;
-        this.noteType = initStruct.type;
-        this.customTypes = initStruct.customTypes;
+        this.duration = parsedNoteStruct.duration;
+        this.dots = parsedNoteStruct.dots;
+        this.noteType = parsedNoteStruct.type;
+        this.customTypes = parsedNoteStruct.customTypes;
         if (noteStruct.duration_override) {
             // Custom duration
             this.setDuration(noteStruct.duration_override);
         }
         else {
             // Default duration
-            this.setIntrinsicTicks(initStruct.ticks);
+            this.setIntrinsicTicks(parsedNoteStruct.ticks);
         }
         this.modifiers = [];
         // Get the glyph code for this note from the font.
@@ -21692,7 +21536,7 @@ class Note extends _tickable__WEBPACK_IMPORTED_MODULE_2__.Tickable {
         };
     }
     static get CATEGORY() {
-        return 'note';
+        return 'Note';
     }
     /** Debug helper. Displays various note metrics for the given note. */
     static plotMetrics(ctx, note, yPos) {
@@ -21736,6 +21580,9 @@ class Note extends _tickable__WEBPACK_IMPORTED_MODULE_2__.Tickable {
         ctx.restore();
     }
     static parseDuration(durationString) {
+        if (!durationString) {
+            return undefined;
+        }
         const regexp = /(\d*\/?\d+|[a-z])(d*)([nrhms]|$)/;
         const result = regexp.exec(durationString);
         if (!result) {
@@ -21747,10 +21594,8 @@ class Note extends _tickable__WEBPACK_IMPORTED_MODULE_2__.Tickable {
         return { duration, dots, type };
     }
     static parseNoteStruct(noteStruct) {
-        const durationString = noteStruct.duration;
-        const customTypes = [];
         // Preserve backwards-compatibility
-        const durationProps = Note.parseDuration(durationString);
+        const durationProps = Note.parseDuration(noteStruct.duration);
         if (!durationProps) {
             return undefined;
         }
@@ -21760,6 +21605,7 @@ class Note extends _tickable__WEBPACK_IMPORTED_MODULE_2__.Tickable {
             return undefined;
         }
         // If no type specified, check duration or custom types
+        const customTypes = [];
         if (!type) {
             type = durationProps.type || 'n';
             // If we have keys, try and check if we've got a custom glyph
@@ -21843,13 +21689,6 @@ class Note extends _tickable__WEBPACK_IMPORTED_MODULE_2__.Tickable {
         this.setYs([stave.getYForLine(0)]); // Update Y values if the stave is changed.
         this.setContext(this.stave.getContext());
         return this;
-    }
-    /**
-     * `Note` is not really a modifier, but is used in
-     * a `ModifierContext`.
-     */
-    getCategory() {
-        return Note.CATEGORY;
     }
     /** Get spacing to the left of the notes. */
     getLeftDisplacedHeadPx() {
@@ -22107,12 +21946,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 /* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./note */ "./src/note.ts");
 /* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./stem */ "./src/stem.ts");
-/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-/* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+/* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
-
 
 
 
@@ -22173,47 +22010,42 @@ function drawSlashNoteHead(ctx, duration, x, y, stem_direction, staveSpace) {
  * See `tests/notehead_tests.ts` for usage examples.
  */
 class NoteHead extends _note__WEBPACK_IMPORTED_MODULE_2__.Note {
-    constructor(head_options) {
-        super(head_options);
+    constructor(noteStruct) {
+        super(noteStruct);
         this.custom_glyph = false;
         this.stem_up_x_offset = 0;
         this.stem_down_x_offset = 0;
-        this.setAttribute('type', 'NoteHead');
-        this.index = head_options.index;
-        this.x = head_options.x || 0;
-        this.y = head_options.y || 0;
-        this.note_type = head_options.note_type;
-        this.duration = head_options.duration;
-        this.displaced = head_options.displaced || false;
-        this.stem_direction = head_options.stem_direction || _stavenote__WEBPACK_IMPORTED_MODULE_4__.StaveNote.STEM_UP;
-        this.line = head_options.line || 0;
+        this.index = noteStruct.index;
+        this.x = noteStruct.x || 0;
+        this.y = noteStruct.y || 0;
+        if (noteStruct.note_type)
+            this.noteType = noteStruct.note_type;
+        this.displaced = noteStruct.displaced || false;
+        this.stem_direction = noteStruct.stem_direction || _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.UP;
+        this.line = noteStruct.line || 0;
         // Get glyph code based on duration and note type. This could be
         // regular notes, rests, or other custom codes.
-        this.glyph = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.getGlyphProps(this.duration, this.note_type);
-        (0,_util__WEBPACK_IMPORTED_MODULE_0__.defined)(this.glyph, 'BadArguments', `No glyph found for duration '${this.duration}' and type '${this.note_type}'`);
+        this.glyph = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.getGlyphProps(this.duration, this.noteType);
+        (0,_util__WEBPACK_IMPORTED_MODULE_0__.defined)(this.glyph, 'BadArguments', `No glyph found for duration '${this.duration}' and type '${this.noteType}'`);
         this.glyph_code = this.glyph.code_head;
-        this.x_shift = head_options.x_shift || 0;
-        if (head_options.custom_glyph_code) {
+        this.x_shift = noteStruct.x_shift || 0;
+        if (noteStruct.custom_glyph_code) {
             this.custom_glyph = true;
-            this.glyph_code = head_options.custom_glyph_code;
-            this.stem_up_x_offset = head_options.stem_up_x_offset || 0;
-            this.stem_down_x_offset = head_options.stem_down_x_offset || 0;
+            this.glyph_code = noteStruct.custom_glyph_code;
+            this.stem_up_x_offset = noteStruct.stem_up_x_offset || 0;
+            this.stem_down_x_offset = noteStruct.stem_down_x_offset || 0;
         }
-        this.style = head_options.style;
-        this.slashed = head_options.slashed || false;
-        this.render_options = Object.assign(Object.assign({}, this.render_options), {
+        this.style = noteStruct.style;
+        this.slashed = noteStruct.slashed || false;
+        this.render_options = Object.assign(Object.assign({}, this.render_options), { 
             // font size for note heads
-            glyph_font_scale: head_options.glyph_font_scale || _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.DEFAULT_NOTATION_FONT_SCALE,
+            glyph_font_scale: noteStruct.glyph_font_scale || _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.DEFAULT_NOTATION_FONT_SCALE, 
             // number of stroke px to the left and right of head
-            stroke_px: 3,
-        });
+            stroke_px: 3 });
         this.setWidth(this.glyph.getWidth(this.render_options.glyph_font_scale));
     }
     static get CATEGORY() {
-        return 'notehead';
-    }
-    getCategory() {
-        return NoteHead.CATEGORY;
+        return 'NoteHead';
     }
     /** Get the width of the notehead. */
     getWidth() {
@@ -22273,7 +22105,7 @@ class NoteHead extends _note__WEBPACK_IMPORTED_MODULE_2__.Note {
         const spacing = this.checkStave().getSpacingBetweenLines();
         const half_spacing = spacing / 2;
         const min_y = this.y - half_spacing;
-        return new _boundingbox__WEBPACK_IMPORTED_MODULE_6__.BoundingBox(this.getAbsoluteX(), min_y, this.width, spacing);
+        return new _boundingbox__WEBPACK_IMPORTED_MODULE_5__.BoundingBox(this.getAbsoluteX(), min_y, this.width, spacing);
     }
     /** Set notehead to a provided `stave`. */
     setStave(stave) {
@@ -22304,7 +22136,7 @@ class NoteHead extends _note__WEBPACK_IMPORTED_MODULE_2__.Note {
             head_x += this.stem_direction === _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.UP ? this.stem_up_x_offset : this.stem_down_x_offset;
         }
         const y = this.y;
-        L("Drawing note head '", this.note_type, this.duration, "' at", head_x, y);
+        L("Drawing note head '", this.noteType, this.duration, "' at", head_x, y);
         // Begin and end positions for head.
         const stem_direction = this.stem_direction;
         const glyph_font_scale = this.render_options.glyph_font_scale;
@@ -22312,12 +22144,12 @@ class NoteHead extends _note__WEBPACK_IMPORTED_MODULE_2__.Note {
             this.applyStyle(ctx);
         }
         const categorySuffix = `${this.glyph_code}Stem${stem_direction === _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.UP ? 'Up' : 'Down'}`;
-        if (this.note_type === 's') {
+        if (this.noteType === 's') {
             const staveSpace = this.checkStave().getSpacingBetweenLines();
             drawSlashNoteHead(ctx, this.duration, head_x, y, stem_direction, staveSpace);
         }
         else {
-            _glyph__WEBPACK_IMPORTED_MODULE_5__.Glyph.renderGlyph(ctx, head_x, y, glyph_font_scale, this.glyph_code, {
+            _glyph__WEBPACK_IMPORTED_MODULE_4__.Glyph.renderGlyph(ctx, head_x, y, glyph_font_scale, this.glyph_code, {
                 font: this.musicFont,
                 category: this.custom_glyph ? `noteHead.custom.${categorySuffix}` : `noteHead.standard.${categorySuffix}`,
             });
@@ -22361,7 +22193,6 @@ class NoteSubGroup extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
     constructor(subNotes) {
         super();
         this.preFormatted = false;
-        this.setAttribute('type', 'NoteSubGroup');
         this.position = _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.LEFT;
         this.subNotes = subNotes;
         this.subNotes.forEach((subNote) => {
@@ -22377,7 +22208,7 @@ class NoteSubGroup extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
         this.voice.addTickables(this.subNotes);
     }
     static get CATEGORY() {
-        return 'notesubgroup';
+        return 'NoteSubGroup';
     }
     // Arrange groups inside a `ModifierContext`
     static format(groups, state) {
@@ -22391,9 +22222,6 @@ class NoteSubGroup extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
         }
         state.left_shift += width;
         return true;
-    }
-    getCategory() {
-        return NoteSubGroup.CATEGORY;
     }
     preFormat() {
         if (this.preFormatted)
@@ -22435,9 +22263,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 /* harmony import */ var _tickcontext__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
-/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-/* harmony import */ var _tabnote__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+/* harmony import */ var stem__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! stem */ "./src/stem.ts");
+/* harmony import */ var typeguard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! typeguard */ "./src/typeguard.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Cyril Silverman
 // MIT License
@@ -22467,7 +22295,6 @@ class Ornament extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
      */
     constructor(type) {
         super();
-        this.setAttribute('type', 'Ornament');
         this.type = type;
         this.delayed = false;
         this.render_options = {
@@ -22492,7 +22319,7 @@ class Ornament extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
         }
         this.x_shift = metrics ? metrics.xOffset : 0;
         this.y_shift = metrics ? metrics.yOffset : 0;
-        this.glyph = new _glyph__WEBPACK_IMPORTED_MODULE_5__.Glyph(this.ornament.code, this.render_options.font_scale, {
+        this.glyph = new _glyph__WEBPACK_IMPORTED_MODULE_4__.Glyph(this.ornament.code, this.render_options.font_scale, {
             category: `ornament.${this.ornament.code}`,
         });
         // Is this a jazz ornament that goes between this note and the next note.
@@ -22507,7 +22334,7 @@ class Ornament extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
     }
     /** Ornaments category string. */
     static get CATEGORY() {
-        return 'ornaments';
+        return 'Ornament';
     }
     /** Arrange ornaments inside `ModifierContext` */
     static format(ornaments, state) {
@@ -22608,10 +22435,6 @@ class Ornament extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
     getMetrics() {
         return this.getFontStack()[0].getMetrics().glyphs.jazzOrnaments[this.ornament.code];
     }
-    /** Get element category string. */
-    getCategory() {
-        return Ornament.CATEGORY;
-    }
     /** Set whether the ornament is to be delayed. */
     setDelayed(delayed) {
         this.delayed = delayed;
@@ -22620,14 +22443,14 @@ class Ornament extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
     /** Set the upper accidental for the ornament. */
     setUpperAccidental(accid) {
         const scale = this.render_options.font_scale / 1.3;
-        this.accidentalUpper = new _glyph__WEBPACK_IMPORTED_MODULE_5__.Glyph(_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.accidentalCodes(accid).code, scale);
+        this.accidentalUpper = new _glyph__WEBPACK_IMPORTED_MODULE_4__.Glyph(_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.accidentalCodes(accid).code, scale);
         this.accidentalUpper.setOrigin(0.5, 1.0);
         return this;
     }
     /** Set the lower accidental for the ornament. */
     setLowerAccidental(accid) {
         const scale = this.render_options.font_scale / 1.3;
-        this.accidentalLower = new _glyph__WEBPACK_IMPORTED_MODULE_5__.Glyph(_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.accidentalCodes(accid).code, scale);
+        this.accidentalLower = new _glyph__WEBPACK_IMPORTED_MODULE_4__.Glyph(_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.accidentalCodes(accid).code, scale);
         this.accidentalLower.setOrigin(0.5, 1.0);
         return this;
     }
@@ -22642,11 +22465,11 @@ class Ornament extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
         ctx.openGroup(classString, this.getAttribute('id'));
         // Get stem extents
         const stemExtents = note.checkStem().getExtents();
-        let y = stemDir === _stavenote__WEBPACK_IMPORTED_MODULE_4__.StaveNote.STEM_DOWN ? stemExtents.baseY : stemExtents.topY;
+        let y = stemDir === stem__WEBPACK_IMPORTED_MODULE_5__.Stem.DOWN ? stemExtents.baseY : stemExtents.topY;
         // TabNotes don't have stems attached to them. Tab stems are rendered outside the stave.
-        if (note.getCategory() === _tabnote__WEBPACK_IMPORTED_MODULE_6__.TabNote.CATEGORY) {
+        if ((0,typeguard__WEBPACK_IMPORTED_MODULE_6__.isTabNote)(note)) {
             if (note.hasStem()) {
-                if (stemDir === _stavenote__WEBPACK_IMPORTED_MODULE_4__.StaveNote.STEM_DOWN) {
+                if (stemDir === stem__WEBPACK_IMPORTED_MODULE_5__.Stem.DOWN) {
                     y = stave.getYForTopText(this.text_line);
                 }
             }
@@ -22655,7 +22478,7 @@ class Ornament extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
                 y = stave.getYForTopText(this.text_line);
             }
         }
-        const isPlacedOnNoteheadSide = stemDir === _stavenote__WEBPACK_IMPORTED_MODULE_4__.StaveNote.STEM_DOWN;
+        const isPlacedOnNoteheadSide = stemDir === stem__WEBPACK_IMPORTED_MODULE_5__.Stem.DOWN;
         const spacing = stave.getSpacingBetweenLines();
         let lineSpacing = 1;
         // Beamed stems are longer than quarter note stems, adjust accordingly
@@ -22987,7 +22810,6 @@ function drawPedalGlyph(name, context, x, y, point) {
 class PedalMarking extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
     constructor(notes) {
         super();
-        this.setAttribute('type', 'PedalMarking');
         this.notes = notes;
         this.type = PedalMarking.type.TEXT;
         this.line = 0;
@@ -23006,13 +22828,8 @@ class PedalMarking extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
             color: 'black',
         };
     }
-    /** Set pedal type. */
-    setType(type) {
-        type = typeof type === 'string' ? PedalMarking.typeString[type] : type;
-        if (type >= PedalMarking.type.TEXT && type <= PedalMarking.type.MIXED) {
-            this.type = type;
-        }
-        return this;
+    static get CATEGORY() {
+        return 'PedalMarking';
     }
     /**
      * Create a sustain pedal marking. Returns the defaults PedalMarking.
@@ -23035,6 +22852,14 @@ class PedalMarking extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
         pedal.setType(PedalMarking.type.TEXT);
         pedal.setCustomText('una corda', 'tre corda');
         return pedal;
+    }
+    /** Set pedal type. */
+    setType(type) {
+        type = typeof type === 'string' ? PedalMarking.typeString[type] : type;
+        if (type >= PedalMarking.type.TEXT && type <= PedalMarking.type.MIXED) {
+            this.type = type;
+        }
+        return this;
     }
     /**
      * Set custom text for the `depress`/`release` pedal markings. No text is
@@ -23381,7 +23206,15 @@ class Renderer {
             if (!canvasElement.getContext) {
                 throw new _util__WEBPACK_IMPORTED_MODULE_2__.RuntimeError('BadElement', `Can't get canvas context from element: ${canvasId}`);
             }
-            this.ctx = Renderer.bolsterCanvasContext(canvasElement.getContext('2d'));
+            else {
+                const context = canvasElement.getContext('2d');
+                if (context) {
+                    this.ctx = new _canvascontext__WEBPACK_IMPORTED_MODULE_0__.CanvasContext(context);
+                }
+                else {
+                    throw new _util__WEBPACK_IMPORTED_MODULE_2__.RuntimeError('BadElement', `Can't get canvas context from element: ${canvasId}`);
+                }
+            }
         }
         else if (this.backend === Renderer.Backends.SVG) {
             this.ctx = new _svgcontext__WEBPACK_IMPORTED_MODULE_1__.SVGContext(this.element);
@@ -23390,13 +23223,11 @@ class Renderer {
             throw new _util__WEBPACK_IMPORTED_MODULE_2__.RuntimeError('InvalidBackend', `No support for backend: ${this.backend}`);
         }
     }
-    static buildContext(elementId, backend, width, height, background) {
+    static buildContext(elementId, backend, width, height, background = '#FFF') {
         const renderer = new Renderer(elementId, backend);
         if (width && height) {
             renderer.resize(width, height);
         }
-        if (!background)
-            background = '#FFF';
         const ctx = renderer.getContext();
         ctx.setBackgroundFillStyle(background);
         Renderer.lastContext = ctx;
@@ -23407,38 +23238,6 @@ class Renderer {
     }
     static getSVGContext(elementId, width, height, background) {
         return Renderer.buildContext(elementId, Renderer.Backends.SVG, width, height, background);
-    }
-    // eslint-disable-next-line
-    static bolsterCanvasContext(ctx) {
-        if (Renderer.USE_CANVAS_PROXY) {
-            return new _canvascontext__WEBPACK_IMPORTED_MODULE_0__.CanvasContext(ctx);
-        }
-        // Modify the CanvasRenderingContext2D to include the following methods, if they do not already exist.
-        // TODO: Is a Proxy object appropriate here?
-        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
-        const methodNames = [
-            'clear',
-            'setFont',
-            'setRawFont',
-            'setFillStyle',
-            'setBackgroundFillStyle',
-            'setStrokeStyle',
-            'setShadowColor',
-            'setShadowBlur',
-            'setLineWidth',
-            'setLineCap',
-            'openGroup',
-            'closeGroup',
-            'getGroup',
-        ];
-        ctx.vexFlowCanvasContext = ctx;
-        methodNames.forEach((methodName) => {
-            if (!(methodName in ctx)) {
-                // eslint-disable-next-line
-                ctx[methodName] = _canvascontext__WEBPACK_IMPORTED_MODULE_0__.CanvasContext.prototype[methodName];
-            }
-        });
-        return ctx;
     }
     // Draw a dashed line (horizontal, vertical or diagonal
     // dashPattern = [3,3] draws a 3 pixel dash followed by a three pixel space.
@@ -23473,8 +23272,13 @@ class Renderer {
     resize(width, height) {
         if (this.backend === Renderer.Backends.CANVAS) {
             const canvasElement = this.element;
-            [width, height] = _canvascontext__WEBPACK_IMPORTED_MODULE_0__.CanvasContext.SanitizeCanvasDims(width, height);
             const devicePixelRatio = window.devicePixelRatio || 1;
+            // Scale the canvas size by the device pixel ratio clamping to the maximum
+            // supported size.
+            [width, height] = _canvascontext__WEBPACK_IMPORTED_MODULE_0__.CanvasContext.SanitizeCanvasDims(width * devicePixelRatio, height * devicePixelRatio);
+            // Divide back down by the pixel ratio and convert to integers.
+            width = (width / devicePixelRatio) | 0;
+            height = (height / devicePixelRatio) | 0;
             canvasElement.width = width * devicePixelRatio;
             canvasElement.height = height * devicePixelRatio;
             canvasElement.style.width = width + 'px';
@@ -23500,12 +23304,6 @@ Renderer.LineEndType = {
     UP: 2,
     DOWN: 3, // Downward leg
 };
-/**
- * Set this to true if you're using VexFlow inside a runtime
- * that does not allow modifying canvas objects. There is a small
- * performance degradation due to the extra indirection.
- */
-Renderer.USE_CANVAS_PROXY = false;
 Renderer.lastContext = undefined;
 
 
@@ -23526,17 +23324,19 @@ __webpack_require__.r(__webpack_exports__);
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 
 
+// Map `type` to SMuFL glyph code.
+const CODES = {
+    '1': 'repeat1Bar',
+    '2': 'repeat2Bars',
+    '4': 'repeat4Bars',
+    slash: 'repeatBarSlash',
+};
 class RepeatNote extends _glyphnote__WEBPACK_IMPORTED_MODULE_0__.GlyphNote {
+    static get CATEGORY() {
+        return 'RepeatNote';
+    }
     constructor(type, noteStruct, options) {
-        // Smufl Codes
-        const CODES = {
-            '1': 'repeat1Bar',
-            '2': 'repeat2Bars',
-            '4': 'repeat4Bars',
-            slash: 'repeatBarSlash',
-        };
         super(undefined, Object.assign({ duration: 'q', align_center: type !== 'slash' }, noteStruct), options);
-        this.setAttribute('type', 'RepeatNote');
         const glyphCode = CODES[type] || 'repeat1Bar';
         const glyph = new _glyph__WEBPACK_IMPORTED_MODULE_1__.Glyph(glyphCode, this.musicFont.lookupMetric('repeatNote.point', 40), { category: 'repeatNote' });
         this.setGlyph(glyph);
@@ -23556,20 +23356,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Stave": () => (/* binding */ Stave)
 /* harmony export */ });
-/* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
-/* harmony import */ var _clef__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./clef */ "./src/clef.ts");
-/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./element */ "./src/element.ts");
-/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-/* harmony import */ var _keysignature__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./keysignature */ "./src/keysignature.ts");
-/* harmony import */ var _stavebarline__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
-/* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
-/* harmony import */ var _staverepetition__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./staverepetition */ "./src/staverepetition.ts");
-/* harmony import */ var _stavesection__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./stavesection */ "./src/stavesection.ts");
-/* harmony import */ var _stavetempo__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./stavetempo */ "./src/stavetempo.ts");
-/* harmony import */ var _stavetext__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./stavetext */ "./src/stavetext.ts");
-/* harmony import */ var _stavevolta__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./stavevolta */ "./src/stavevolta.ts");
-/* harmony import */ var _timesignature__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var typeguard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! typeguard */ "./src/typeguard.ts");
+/* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
+/* harmony import */ var _clef__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./clef */ "./src/clef.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./element */ "./src/element.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _keysignature__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./keysignature */ "./src/keysignature.ts");
+/* harmony import */ var _stavebarline__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
+/* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
+/* harmony import */ var _staverepetition__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./staverepetition */ "./src/staverepetition.ts");
+/* harmony import */ var _stavesection__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./stavesection */ "./src/stavesection.ts");
+/* harmony import */ var _stavetempo__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./stavetempo */ "./src/stavetempo.ts");
+/* harmony import */ var _stavetext__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./stavetext */ "./src/stavetext.ts");
+/* harmony import */ var _stavevolta__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./stavevolta */ "./src/stavevolta.ts");
+/* harmony import */ var _timesignature__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 
@@ -23586,12 +23387,27 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
+
+// Used by Stave.format() to sort the modifiers at the beginning and end of a stave.
+// The keys (computed property names) match the CATEGORY property in the
+// Barline, Clef, KeySignature, TimeSignature classes.
+const SORT_ORDER_BEG_MODIFIERS = {
+    [_stavebarline__WEBPACK_IMPORTED_MODULE_6__.Barline.CATEGORY]: 0,
+    [_clef__WEBPACK_IMPORTED_MODULE_2__.Clef.CATEGORY]: 1,
+    [_keysignature__WEBPACK_IMPORTED_MODULE_5__.KeySignature.CATEGORY]: 2,
+    [_timesignature__WEBPACK_IMPORTED_MODULE_13__.TimeSignature.CATEGORY]: 3,
+};
+const SORT_ORDER_END_MODIFIERS = {
+    [_timesignature__WEBPACK_IMPORTED_MODULE_13__.TimeSignature.CATEGORY]: 0,
+    [_keysignature__WEBPACK_IMPORTED_MODULE_5__.KeySignature.CATEGORY]: 1,
+    [_stavebarline__WEBPACK_IMPORTED_MODULE_6__.Barline.CATEGORY]: 2,
+    [_clef__WEBPACK_IMPORTED_MODULE_2__.Clef.CATEGORY]: 3,
+};
+class Stave extends _element__WEBPACK_IMPORTED_MODULE_3__.Element {
     constructor(x, y, width, options) {
         super();
         // Initialized by the constructor via this.resetLines().
         this.height = 0;
-        this.setAttribute('type', 'Stave');
         this.x = x;
         this.y = y;
         this.width = width;
@@ -23607,42 +23423,27 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
             size: 8,
             weight: '',
         };
-        this.options = {
-            spacing: 2,
-            thickness: 2,
-            x_shift: 0,
-            y_shift: 10,
-            vertical_bar_width: 10,
-            glyph_spacing_px: 10,
-            num_lines: 5,
-            fill_style: '#999999',
-            left_bar: true,
-            right_bar: true,
-            spacing_between_lines_px: _flow__WEBPACK_IMPORTED_MODULE_3__.Flow.STAVE_LINE_DISTANCE,
-            space_above_staff_ln: 4,
-            space_below_staff_ln: 4,
-            top_text_position: 1,
-            bottom_text_position: 4,
-            line_config: [],
-        };
+        this.options = Object.assign({ spacing: 2, thickness: 2, x_shift: 0, y_shift: 10, vertical_bar_width: 10, glyph_spacing_px: 10, num_lines: 5, fill_style: '#999999', left_bar: true, right_bar: true, spacing_between_lines_px: _flow__WEBPACK_IMPORTED_MODULE_4__.Flow.STAVE_LINE_DISTANCE, space_above_staff_ln: 4, space_below_staff_ln: 4, top_text_position: 1, bottom_text_position: 4, line_config: [], cps: [] }, options);
         this.bounds = { x: this.x, y: this.y, w: this.width, h: 0 };
-        this.options = Object.assign(Object.assign({}, this.options), options);
-        this.defaultLedgerLineStyle = {};
+        this.defaultLedgerLineStyle = { strokeStyle: '#444', lineWidth: 1.4 };
         this.resetLines();
         // beg bar
-        this.addModifier(new _stavebarline__WEBPACK_IMPORTED_MODULE_5__.Barline(this.options.left_bar ? _stavebarline__WEBPACK_IMPORTED_MODULE_5__.BarlineType.SINGLE : _stavebarline__WEBPACK_IMPORTED_MODULE_5__.BarlineType.NONE));
+        this.addModifier(new _stavebarline__WEBPACK_IMPORTED_MODULE_6__.Barline(this.options.left_bar ? _stavebarline__WEBPACK_IMPORTED_MODULE_6__.BarlineType.SINGLE : _stavebarline__WEBPACK_IMPORTED_MODULE_6__.BarlineType.NONE));
         // end bar
-        this.addEndModifier(new _stavebarline__WEBPACK_IMPORTED_MODULE_5__.Barline(this.options.right_bar ? _stavebarline__WEBPACK_IMPORTED_MODULE_5__.BarlineType.SINGLE : _stavebarline__WEBPACK_IMPORTED_MODULE_5__.BarlineType.NONE));
+        this.addEndModifier(new _stavebarline__WEBPACK_IMPORTED_MODULE_6__.Barline(this.options.right_bar ? _stavebarline__WEBPACK_IMPORTED_MODULE_6__.BarlineType.SINGLE : _stavebarline__WEBPACK_IMPORTED_MODULE_6__.BarlineType.NONE));
+    }
+    static get CATEGORY() {
+        return 'Stave';
     }
     // This is the sum of the padding that normally goes on left + right of a stave during
     // drawing.  Used to size staves correctly with content width
     static get defaultPadding() {
-        const musicFont = _flow__WEBPACK_IMPORTED_MODULE_3__.Flow.DEFAULT_FONT_STACK[0];
+        const musicFont = _flow__WEBPACK_IMPORTED_MODULE_4__.Flow.DEFAULT_FONT_STACK[0];
         return musicFont.lookupMetric('stave.padding') + musicFont.lookupMetric('stave.endPaddingMax');
     }
     // Right padding, used by system if startX is already determined.
     static get rightPadding() {
-        const musicFont = _flow__WEBPACK_IMPORTED_MODULE_3__.Flow.DEFAULT_FONT_STACK[0];
+        const musicFont = _flow__WEBPACK_IMPORTED_MODULE_4__.Flow.DEFAULT_FONT_STACK[0];
         return musicFont.lookupMetric('stave.endPaddingMax');
     }
     /** Set default style for ledger lines. */
@@ -23663,9 +23464,6 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         }
         this.height = (this.options.num_lines + this.options.space_above_staff_ln) * this.options.spacing_between_lines_px;
         this.options.bottom_text_position = this.options.num_lines;
-    }
-    getOptions() {
-        return this.options;
     }
     setNoteStartX(x) {
         if (!this.formatted)
@@ -23710,10 +23508,10 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         return this.y;
     }
     getTopLineTopY() {
-        return this.getYForLine(0) - _flow__WEBPACK_IMPORTED_MODULE_3__.Flow.STAVE_LINE_THICKNESS / 2;
+        return this.getYForLine(0) - _flow__WEBPACK_IMPORTED_MODULE_4__.Flow.STAVE_LINE_THICKNESS / 2;
     }
     getBottomLineBottomY() {
-        return this.getYForLine(this.getNumLines() - 1) + _flow__WEBPACK_IMPORTED_MODULE_3__.Flow.STAVE_LINE_THICKNESS / 2;
+        return this.getYForLine(this.getNumLines() - 1) + _flow__WEBPACK_IMPORTED_MODULE_4__.Flow.STAVE_LINE_THICKNESS / 2;
     }
     setX(x) {
         const shift = x - this.x;
@@ -23739,7 +23537,7 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         return this.width;
     }
     getStyle() {
-        return Object.assign({ fillStyle: this.options.fill_style, strokeStyle: this.options.fill_style, lineWidth: _flow__WEBPACK_IMPORTED_MODULE_3__.Flow.STAVE_LINE_THICKNESS }, (this.style || {}));
+        return Object.assign({ fillStyle: this.options.fill_style, strokeStyle: this.options.fill_style, lineWidth: _flow__WEBPACK_IMPORTED_MODULE_4__.Flow.STAVE_LINE_THICKNESS }, this.style);
     }
     setMeasure(measure) {
         this.measure = measure;
@@ -23753,51 +23551,51 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
      */
     getModifierXShift(index = 0) {
         if (typeof index !== 'number') {
-            throw new _util__WEBPACK_IMPORTED_MODULE_13__.RuntimeError('InvalidIndex', 'Must be of number type');
+            throw new _util__WEBPACK_IMPORTED_MODULE_14__.RuntimeError('InvalidIndex', 'Must be of number type');
         }
         if (!this.formatted)
             this.format();
-        if (this.getModifiers(_stavemodifier__WEBPACK_IMPORTED_MODULE_6__.StaveModifier.Position.BEGIN).length === 1) {
+        if (this.getModifiers(_stavemodifier__WEBPACK_IMPORTED_MODULE_7__.StaveModifierPosition.BEGIN).length === 1) {
             return 0;
         }
         // for right position modifiers zero shift seems correct, see 'Volta + Modifier Measure Test'
-        if (this.modifiers[index].getPosition() === _stavemodifier__WEBPACK_IMPORTED_MODULE_6__.StaveModifier.Position.RIGHT) {
+        if (this.modifiers[index].getPosition() === _stavemodifier__WEBPACK_IMPORTED_MODULE_7__.StaveModifierPosition.RIGHT) {
             return 0;
         }
         let start_x = this.start_x - this.x;
         const begBarline = this.modifiers[0];
-        if (begBarline.getType() === _stavebarline__WEBPACK_IMPORTED_MODULE_5__.BarlineType.REPEAT_BEGIN && start_x > begBarline.getWidth()) {
+        if (begBarline.getType() === _stavebarline__WEBPACK_IMPORTED_MODULE_6__.BarlineType.REPEAT_BEGIN && start_x > begBarline.getWidth()) {
             start_x -= begBarline.getWidth();
         }
         return start_x;
     }
     // Coda & Segno Symbol functions
     setRepetitionTypeLeft(type, y) {
-        this.modifiers.push(new _staverepetition__WEBPACK_IMPORTED_MODULE_7__.Repetition(type, this.x, y));
+        this.modifiers.push(new _staverepetition__WEBPACK_IMPORTED_MODULE_8__.Repetition(type, this.x, y));
         return this;
     }
     setRepetitionTypeRight(type, y) {
-        this.modifiers.push(new _staverepetition__WEBPACK_IMPORTED_MODULE_7__.Repetition(type, this.x, y));
+        this.modifiers.push(new _staverepetition__WEBPACK_IMPORTED_MODULE_8__.Repetition(type, this.x, y));
         return this;
     }
     // Volta functions
     setVoltaType(type, number_t, y) {
-        this.modifiers.push(new _stavevolta__WEBPACK_IMPORTED_MODULE_11__.Volta(type, number_t, this.x, y));
+        this.modifiers.push(new _stavevolta__WEBPACK_IMPORTED_MODULE_12__.Volta(type, number_t, this.x, y));
         return this;
     }
     // Section functions
     setSection(section, y) {
-        this.modifiers.push(new _stavesection__WEBPACK_IMPORTED_MODULE_8__.StaveSection(section, this.x, y));
+        this.modifiers.push(new _stavesection__WEBPACK_IMPORTED_MODULE_9__.StaveSection(section, this.x, y));
         return this;
     }
     // Tempo functions
     setTempo(tempo, y) {
-        this.modifiers.push(new _stavetempo__WEBPACK_IMPORTED_MODULE_9__.StaveTempo(tempo, this.x, y));
+        this.modifiers.push(new _stavetempo__WEBPACK_IMPORTED_MODULE_10__.StaveTempo(tempo, this.x, y));
         return this;
     }
     // Text functions
-    setText(text, position, options) {
-        this.modifiers.push(new _stavetext__WEBPACK_IMPORTED_MODULE_10__.StaveText(text, position, options));
+    setText(text, position, options = {}) {
+        this.modifiers.push(new _stavetext__WEBPACK_IMPORTED_MODULE_11__.StaveText(text, position, options));
         return this;
     }
     getHeight() {
@@ -23807,7 +23605,7 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         return this.options.spacing_between_lines_px;
     }
     getBoundingBox() {
-        return new _boundingbox__WEBPACK_IMPORTED_MODULE_0__.BoundingBox(this.x, this.y, this.width, this.getBottomY() - this.y);
+        return new _boundingbox__WEBPACK_IMPORTED_MODULE_1__.BoundingBox(this.x, this.y, this.width, this.getBottomY() - this.y);
     }
     getBottomY() {
         const options = this.options;
@@ -23844,8 +23642,7 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         const options = this.options;
         const spacing = options.spacing_between_lines_px;
         const headroom = options.space_above_staff_ln;
-        const y = this.y + headroom * spacing + 5 * spacing - line * spacing;
-        return y;
+        return this.y + headroom * spacing + 5 * spacing - line * spacing;
     }
     getYForGlyphs() {
         return this.getYForLine(3);
@@ -23862,13 +23659,13 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         return this;
     }
     addEndModifier(modifier) {
-        this.addModifier(modifier, _stavemodifier__WEBPACK_IMPORTED_MODULE_6__.StaveModifier.Position.END);
+        this.addModifier(modifier, _stavemodifier__WEBPACK_IMPORTED_MODULE_7__.StaveModifierPosition.END);
         return this;
     }
     // Bar Line functions
     setBegBarType(type) {
         // Only valid bar types at beginning of stave is none, single or begin repeat
-        const { SINGLE, REPEAT_BEGIN, NONE } = _stavebarline__WEBPACK_IMPORTED_MODULE_5__.BarlineType;
+        const { SINGLE, REPEAT_BEGIN, NONE } = _stavebarline__WEBPACK_IMPORTED_MODULE_6__.BarlineType;
         if (type === SINGLE || type === REPEAT_BEGIN || type === NONE) {
             this.modifiers[0].setType(type);
             this.formatted = false;
@@ -23877,7 +23674,7 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
     }
     setEndBarType(type) {
         // Repeat end not valid at end of stave
-        if (type !== _stavebarline__WEBPACK_IMPORTED_MODULE_5__.BarlineType.REPEAT_BEGIN) {
+        if (type !== _stavebarline__WEBPACK_IMPORTED_MODULE_6__.BarlineType.REPEAT_BEGIN) {
             this.modifiers[1].setType(type);
             this.formatted = false;
         }
@@ -23885,15 +23682,15 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
     }
     setClef(clefSpec, size, annotation, position) {
         if (position === undefined) {
-            position = _stavemodifier__WEBPACK_IMPORTED_MODULE_6__.StaveModifier.Position.BEGIN;
+            position = _stavemodifier__WEBPACK_IMPORTED_MODULE_7__.StaveModifierPosition.BEGIN;
         }
-        if (position === _stavemodifier__WEBPACK_IMPORTED_MODULE_6__.StaveModifier.Position.END) {
+        if (position === _stavemodifier__WEBPACK_IMPORTED_MODULE_7__.StaveModifierPosition.END) {
             this.endClef = clefSpec;
         }
         else {
             this.clef = clefSpec;
         }
-        const clefs = this.getModifiers(position, _clef__WEBPACK_IMPORTED_MODULE_1__.Clef.CATEGORY);
+        const clefs = this.getModifiers(position, _clef__WEBPACK_IMPORTED_MODULE_2__.Clef.CATEGORY);
         if (clefs.length === 0) {
             this.addClef(clefSpec, size, annotation, position);
         }
@@ -23906,7 +23703,7 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         return this.clef;
     }
     setEndClef(clefSpec, size, annotation) {
-        this.setClef(clefSpec, size, annotation, _stavemodifier__WEBPACK_IMPORTED_MODULE_6__.StaveModifier.Position.END);
+        this.setClef(clefSpec, size, annotation, _stavemodifier__WEBPACK_IMPORTED_MODULE_7__.StaveModifierPosition.END);
         return this;
     }
     getEndClef() {
@@ -23914,9 +23711,9 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
     }
     setKeySignature(keySpec, cancelKeySpec, position) {
         if (position === undefined) {
-            position = _stavemodifier__WEBPACK_IMPORTED_MODULE_6__.StaveModifier.Position.BEGIN;
+            position = _stavemodifier__WEBPACK_IMPORTED_MODULE_7__.StaveModifierPosition.BEGIN;
         }
-        const keySignatures = this.getModifiers(position, _keysignature__WEBPACK_IMPORTED_MODULE_4__.KeySignature.CATEGORY);
+        const keySignatures = this.getModifiers(position, _keysignature__WEBPACK_IMPORTED_MODULE_5__.KeySignature.CATEGORY);
         if (keySignatures.length === 0) {
             this.addKeySignature(keySpec, cancelKeySpec, position);
         }
@@ -23926,14 +23723,14 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         return this;
     }
     setEndKeySignature(keySpec, cancelKeySpec) {
-        this.setKeySignature(keySpec, cancelKeySpec, _stavemodifier__WEBPACK_IMPORTED_MODULE_6__.StaveModifier.Position.END);
+        this.setKeySignature(keySpec, cancelKeySpec, _stavemodifier__WEBPACK_IMPORTED_MODULE_7__.StaveModifierPosition.END);
         return this;
     }
     setTimeSignature(timeSpec, customPadding, position) {
         if (position === undefined) {
-            position = _stavemodifier__WEBPACK_IMPORTED_MODULE_6__.StaveModifier.Position.BEGIN;
+            position = _stavemodifier__WEBPACK_IMPORTED_MODULE_7__.StaveModifierPosition.BEGIN;
         }
-        const timeSignatures = this.getModifiers(position, _timesignature__WEBPACK_IMPORTED_MODULE_12__.TimeSignature.CATEGORY);
+        const timeSignatures = this.getModifiers(position, _timesignature__WEBPACK_IMPORTED_MODULE_13__.TimeSignature.CATEGORY);
         if (timeSignatures.length === 0) {
             this.addTimeSignature(timeSpec, customPadding, position);
         }
@@ -23943,7 +23740,7 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         return this;
     }
     setEndTimeSignature(timeSpec, customPadding) {
-        this.setTimeSignature(timeSpec, customPadding, _stavemodifier__WEBPACK_IMPORTED_MODULE_6__.StaveModifier.Position.END);
+        this.setTimeSignature(timeSpec, customPadding, _stavemodifier__WEBPACK_IMPORTED_MODULE_7__.StaveModifierPosition.END);
         return this;
     }
     /**
@@ -23958,9 +23755,9 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
      */
     addKeySignature(keySpec, cancelKeySpec, position) {
         if (position === undefined) {
-            position = _stavemodifier__WEBPACK_IMPORTED_MODULE_6__.StaveModifier.Position.BEGIN;
+            position = _stavemodifier__WEBPACK_IMPORTED_MODULE_7__.StaveModifierPosition.BEGIN;
         }
-        this.addModifier(new _keysignature__WEBPACK_IMPORTED_MODULE_4__.KeySignature(keySpec, cancelKeySpec).setPosition(position), position);
+        this.addModifier(new _keysignature__WEBPACK_IMPORTED_MODULE_5__.KeySignature(keySpec, cancelKeySpec).setPosition(position), position);
         return this;
     }
     /**
@@ -23976,17 +23773,17 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
      * @returns
      */
     addClef(clef, size, annotation, position) {
-        if (position === undefined || position === _stavemodifier__WEBPACK_IMPORTED_MODULE_6__.StaveModifier.Position.BEGIN) {
+        if (position === undefined || position === _stavemodifier__WEBPACK_IMPORTED_MODULE_7__.StaveModifierPosition.BEGIN) {
             this.clef = clef;
         }
-        else if (position === _stavemodifier__WEBPACK_IMPORTED_MODULE_6__.StaveModifier.Position.END) {
+        else if (position === _stavemodifier__WEBPACK_IMPORTED_MODULE_7__.StaveModifierPosition.END) {
             this.endClef = clef;
         }
-        this.addModifier(new _clef__WEBPACK_IMPORTED_MODULE_1__.Clef(clef, size, annotation), position);
+        this.addModifier(new _clef__WEBPACK_IMPORTED_MODULE_2__.Clef(clef, size, annotation), position);
         return this;
     }
     addEndClef(clef, size, annotation) {
-        this.addClef(clef, size, annotation, _stavemodifier__WEBPACK_IMPORTED_MODULE_6__.StaveModifier.Position.END);
+        this.addClef(clef, size, annotation, _stavemodifier__WEBPACK_IMPORTED_MODULE_7__.StaveModifierPosition.END);
         return this;
     }
     /**
@@ -24001,11 +23798,11 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
      * @returns
      */
     addTimeSignature(timeSpec, customPadding, position) {
-        this.addModifier(new _timesignature__WEBPACK_IMPORTED_MODULE_12__.TimeSignature(timeSpec, customPadding), position);
+        this.addModifier(new _timesignature__WEBPACK_IMPORTED_MODULE_13__.TimeSignature(timeSpec, customPadding), position);
         return this;
     }
     addEndTimeSignature(timeSpec, customPadding) {
-        this.addTimeSignature(timeSpec, customPadding, _stavemodifier__WEBPACK_IMPORTED_MODULE_6__.StaveModifier.Position.END);
+        this.addTimeSignature(timeSpec, customPadding, _stavemodifier__WEBPACK_IMPORTED_MODULE_7__.StaveModifierPosition.END);
         return this;
     }
     // Deprecated
@@ -24013,12 +23810,34 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         this.addClef('treble');
         return this;
     }
+    /**
+     * @param position
+     * @param category
+     * @returns array of StaveModifiers that match the provided position and category.
+     */
     getModifiers(position, category) {
-        if (position === undefined && category === undefined)
+        const noPosition = position === undefined;
+        const noCategory = category === undefined;
+        if (noPosition && noCategory) {
             return this.modifiers;
-        return this.modifiers.filter((modifier) => (position === undefined || position === modifier.getPosition()) &&
-            (category === undefined || category === modifier.getCategory()));
+        }
+        else if (noPosition) {
+            // A category was provided.
+            return this.modifiers.filter((m) => category === m.getCategory());
+        }
+        else if (noCategory) {
+            // A position was provided.
+            return this.modifiers.filter((m) => position === m.getPosition());
+        }
+        else {
+            // Both position and category were provided!
+            return this.modifiers.filter((m) => position === m.getPosition() && category === m.getCategory());
+        }
     }
+    /**
+     * Use the modifier's `getCategory()` as a key for the `order` array.
+     * The retrieved value is used to sort modifiers from left to right (0 to to 3).
+     */
     sortByCategory(items, order) {
         for (let i = items.length - 1; i >= 0; i--) {
             for (let j = 0; j < i; j++) {
@@ -24033,26 +23852,16 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
     format() {
         const begBarline = this.modifiers[0];
         const endBarline = this.modifiers[1];
-        const begModifiers = this.getModifiers(_stavemodifier__WEBPACK_IMPORTED_MODULE_6__.StaveModifier.Position.BEGIN);
-        const endModifiers = this.getModifiers(_stavemodifier__WEBPACK_IMPORTED_MODULE_6__.StaveModifier.Position.END);
-        this.sortByCategory(begModifiers, {
-            barlines: 0,
-            clefs: 1,
-            keysignatures: 2,
-            timesignatures: 3,
-        });
-        this.sortByCategory(endModifiers, {
-            timesignatures: 0,
-            keysignatures: 1,
-            barlines: 2,
-            clefs: 3,
-        });
-        if (begModifiers.length > 1 && begBarline.getType() === _stavebarline__WEBPACK_IMPORTED_MODULE_5__.BarlineType.REPEAT_BEGIN) {
+        const begModifiers = this.getModifiers(_stavemodifier__WEBPACK_IMPORTED_MODULE_7__.StaveModifierPosition.BEGIN);
+        const endModifiers = this.getModifiers(_stavemodifier__WEBPACK_IMPORTED_MODULE_7__.StaveModifierPosition.END);
+        this.sortByCategory(begModifiers, SORT_ORDER_BEG_MODIFIERS);
+        this.sortByCategory(endModifiers, SORT_ORDER_END_MODIFIERS);
+        if (begModifiers.length > 1 && begBarline.getType() === _stavebarline__WEBPACK_IMPORTED_MODULE_6__.BarlineType.REPEAT_BEGIN) {
             begModifiers.push(begModifiers.splice(0, 1)[0]);
-            begModifiers.splice(0, 0, new _stavebarline__WEBPACK_IMPORTED_MODULE_5__.Barline(_stavebarline__WEBPACK_IMPORTED_MODULE_5__.BarlineType.SINGLE));
+            begModifiers.splice(0, 0, new _stavebarline__WEBPACK_IMPORTED_MODULE_6__.Barline(_stavebarline__WEBPACK_IMPORTED_MODULE_6__.BarlineType.SINGLE));
         }
         if (endModifiers.indexOf(endBarline) > 0) {
-            endModifiers.splice(0, 0, new _stavebarline__WEBPACK_IMPORTED_MODULE_5__.Barline(_stavebarline__WEBPACK_IMPORTED_MODULE_5__.BarlineType.NONE));
+            endModifiers.splice(0, 0, new _stavebarline__WEBPACK_IMPORTED_MODULE_6__.Barline(_stavebarline__WEBPACK_IMPORTED_MODULE_6__.BarlineType.NONE));
         }
         let width;
         let padding;
@@ -24080,7 +23889,7 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         let lastBarlineIdx = 0;
         for (let i = 0; i < endModifiers.length; i++) {
             modifier = endModifiers[i];
-            lastBarlineIdx = modifier.getCategory() === _stavebarline__WEBPACK_IMPORTED_MODULE_5__.Barline.CATEGORY ? i : lastBarlineIdx;
+            lastBarlineIdx = (0,typeguard__WEBPACK_IMPORTED_MODULE_0__.isBarline)(modifier) ? i : lastBarlineIdx;
             widths.right = 0;
             widths.left = 0;
             widths.paddingRight = 0;
@@ -24141,11 +23950,12 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         }
         // Draw the modifiers (bar lines, coda, segno, repeat brackets, etc.)
         for (let i = 0; i < this.modifiers.length; i++) {
+            const modifier = this.modifiers[i];
             // Only draw modifier if it has a draw function
-            if (typeof this.modifiers[i].draw === 'function') {
-                this.modifiers[i].applyStyle(ctx);
-                this.modifiers[i].draw(this, this.getModifierXShift(i));
-                this.modifiers[i].restoreStyle(ctx);
+            if (typeof modifier.draw === 'function') {
+                modifier.applyStyle(ctx);
+                modifier.draw(this, this.getModifierXShift(i));
+                modifier.restoreStyle(ctx);
             }
         }
         // Render measure numbers
@@ -24159,28 +23969,8 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         }
         return this;
     }
-    // Draw Simple barlines for backward compatability
-    // Do not delete - draws the beginning bar of the stave
-    drawVertical(x, isDouble) {
-        this.drawVerticalFixed(this.x + x, isDouble);
-    }
-    drawVerticalFixed(x, isDouble) {
-        const ctx = this.checkContext();
-        const top_line = this.getYForLine(0);
-        const bottom_line = this.getYForLine(this.options.num_lines - 1);
-        if (isDouble) {
-            ctx.fillRect(x - 3, top_line, 1, bottom_line - top_line + 1);
-        }
-        ctx.fillRect(x, top_line, 1, bottom_line - top_line + 1);
-    }
-    drawVerticalBar(x) {
-        this.drawVerticalBarFixed(this.x + x);
-    }
-    drawVerticalBarFixed(x) {
-        const ctx = this.checkContext();
-        const top_line = this.getYForLine(0);
-        const bottom_line = this.getYForLine(this.options.num_lines - 1);
-        ctx.fillRect(x, top_line, 1, bottom_line - top_line + 1);
+    getVerticalBarWidth() {
+        return this.options.vertical_bar_width;
     }
     /**
      * Get the current configuration for the Stave.
@@ -24198,13 +23988,13 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
      */
     setConfigForLine(line_number, line_config) {
         if (line_number >= this.options.num_lines || line_number < 0) {
-            throw new _util__WEBPACK_IMPORTED_MODULE_13__.RuntimeError('StaveConfigError', 'The line number must be within the range of the number of lines in the Stave.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_14__.RuntimeError('StaveConfigError', 'The line number must be within the range of the number of lines in the Stave.');
         }
         if (line_config.visible === undefined) {
-            throw new _util__WEBPACK_IMPORTED_MODULE_13__.RuntimeError('StaveConfigError', "The line configuration object is missing the 'visible' property.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_14__.RuntimeError('StaveConfigError', "The line configuration object is missing the 'visible' property.");
         }
         if (typeof line_config.visible !== 'boolean') {
-            throw new _util__WEBPACK_IMPORTED_MODULE_13__.RuntimeError('StaveConfigError', "The line configuration objects 'visible' property must be true or false.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_14__.RuntimeError('StaveConfigError', "The line configuration objects 'visible' property must be true or false.");
         }
         this.options.line_config[line_number] = line_config;
         return this;
@@ -24220,14 +24010,14 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
      */
     setConfigForLines(lines_configuration) {
         if (lines_configuration.length !== this.options.num_lines) {
-            throw new _util__WEBPACK_IMPORTED_MODULE_13__.RuntimeError('StaveConfigError', 'The length of the lines configuration array must match the number of lines in the Stave');
+            throw new _util__WEBPACK_IMPORTED_MODULE_14__.RuntimeError('StaveConfigError', 'The length of the lines configuration array must match the number of lines in the Stave');
         }
         // Make sure the defaults are present in case an incomplete set of
         //  configuration options were supplied.
         // eslint-disable-next-line
         for (const line_config in lines_configuration) {
-            // Allow 'null' to be used if the caller just wants the default for a particular node.
-            if (!lines_configuration[line_config]) {
+            // Allow '{}' to be used if the caller just wants the default for a particular node.
+            if (lines_configuration[line_config].visible == undefined) {
                 lines_configuration[line_config] = this.options.line_config[line_config];
             }
             this.options.line_config[line_config] = Object.assign(Object.assign({}, this.options.line_config[line_config]), lines_configuration[line_config]);
@@ -24269,12 +24059,8 @@ var BarlineType;
     BarlineType[BarlineType["NONE"] = 7] = "NONE";
 })(BarlineType || (BarlineType = {}));
 class Barline extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier {
-    /**
-     * @constructor
-     */
     constructor(type) {
         super();
-        this.setAttribute('type', 'Barline');
         this.thickness = _flow__WEBPACK_IMPORTED_MODULE_0__.Flow.STAVE_LINE_THICKNESS;
         const TYPE = BarlineType;
         this.widths = {};
@@ -24336,11 +24122,11 @@ class Barline extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier 
             paddingLeft: 5,
             paddingRight: 5,
         };
-        this.setPosition(_stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier.Position.BEGIN);
+        this.setPosition(_stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifierPosition.BEGIN);
         this.setType(type);
     }
     static get CATEGORY() {
-        return 'barlines';
+        return 'Barline';
     }
     static get type() {
         return BarlineType;
@@ -24355,9 +24141,6 @@ class Barline extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier 
             repeatBoth: BarlineType.REPEAT_BOTH,
             none: BarlineType.NONE,
         };
-    }
-    getCategory() {
-        return Barline.CATEGORY;
     }
     getType() {
         return this.type;
@@ -24497,7 +24280,6 @@ function drawBoldDoubleLine(ctx, type, topX, topY, botY) {
 class StaveConnector extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
     constructor(top_stave, bottom_stave) {
         super();
-        this.setAttribute('type', 'StaveConnector');
         this.thickness = _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.STAVE_LINE_THICKNESS;
         this.width = 3;
         this.top_stave = top_stave;
@@ -24513,6 +24295,9 @@ class StaveConnector extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
         this.x_shift = 0;
         this.texts = [];
     }
+    static get CATEGORY() {
+        return 'StaveConnector';
+    }
     /**
      * Set type.
      * @param type see {@link StaveConnector.type} & {@link StaveConnector.typeString}
@@ -24525,16 +24310,12 @@ class StaveConnector extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
         return this;
     }
     /** Set optional associated Text. */
-    setText(text, options) {
+    setText(text, options = {}) {
         this.texts.push({
             content: text,
             options: Object.assign({ shift_x: 0, shift_y: 0 }, options),
         });
         return this;
-    }
-    /** Set text font. */
-    setFont(font) {
-        this.font = Object.assign(Object.assign({}, this.font), font);
     }
     /** Set connector x shift. */
     setXShift(x_shift) {
@@ -24740,7 +24521,6 @@ class StaveHairpin extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
      */
     constructor(notes, type) {
         super();
-        this.setAttribute('type', 'StaveHairpin');
         this.setNotes(notes);
         this.hairpin = type;
         this.position = _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier.Position.BELOW;
@@ -24752,6 +24532,9 @@ class StaveHairpin extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
             right_shift_ticks: 0,
             left_shift_ticks: 0,
         };
+    }
+    static get CATEGORY() {
+        return 'StaveHairpin';
     }
     /* Helper function to convert ticks into pixels.
      * Requires a Formatter with voices joined and formatted (to
@@ -25000,7 +24783,6 @@ class StaveLine extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
     //  ```
     constructor(notes) {
         super();
-        this.setAttribute('type', 'StaveLine');
         this.setNotes(notes);
         this.text = '';
         this.font = {
@@ -25031,6 +24813,9 @@ class StaveLine extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
             text_position_vertical: StaveLine.TextVerticalPosition.TOP,
             text_justification: StaveLine.TextJustification.CENTER,
         };
+    }
+    static get CATEGORY() {
+        return 'StaveLine';
     }
     // Set the font for the `StaveLine` text
     setFont(font) {
@@ -25209,9 +24994,11 @@ class StaveModifier extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
         super();
         this.width = 0;
         this.x = 0;
-        this.setAttribute('type', 'StaveModifier');
         this.padding = 10;
-        this.position = StaveModifier.Position.ABOVE;
+        this.position = StaveModifierPosition.ABOVE;
+    }
+    static get CATEGORY() {
+        return 'StaveModifier';
     }
     static get Position() {
         return StaveModifierPosition;
@@ -25246,9 +25033,6 @@ class StaveModifier extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
     setX(x) {
         this.x = x;
         return this;
-    }
-    getCategory() {
-        return '';
     }
     placeGlyphOnLine(glyph, stave, line, customShift = 0) {
         glyph.setYShift(stave.getYForLine(line !== null && line !== void 0 ? line : 0) - stave.getYForGlyphs() + customShift);
@@ -25294,6 +25078,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _stemmablenote__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 /* harmony import */ var _dot__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./dot */ "./src/dot.ts");
+/* harmony import */ var _accidental__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./accidental */ "./src/accidental.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
@@ -25304,6 +25089,7 @@ __webpack_require__.r(__webpack_exports__);
 // and a "key" refers to a specific pitch/notehead within a note.*
 //
 // See `tests/stavenote_tests.ts` for usage examples.
+
 
 
 
@@ -25341,9 +25127,7 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_5__.StemmableNot
         super(noteStruct);
         this.minLine = 0;
         this.maxLine = 0;
-        this.setAttribute('type', 'StaveNote');
-        // Set default width of ledger lines to 2.0.
-        this.ledgerLineStyle = { lineWidth: 2.0 };
+        this.ledgerLineStyle = {};
         this.clef = (_a = noteStruct.clef) !== null && _a !== void 0 ? _a : 'treble';
         this.octave_shift = (_b = noteStruct.octave_shift) !== null && _b !== void 0 ? _b : 0;
         // Pull note rendering properties.
@@ -25358,12 +25142,11 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_5__.StemmableNot
         this.note_heads = [];
         this.modifiers = [];
         this.ledgerLineStyle = {};
-        this.render_options = Object.assign(Object.assign({}, this.render_options), {
+        this.render_options = Object.assign(Object.assign({}, this.render_options), { 
             // font size for note heads and rests
-            glyph_font_scale: noteStruct.glyph_font_scale || _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.DEFAULT_NOTATION_FONT_SCALE,
+            glyph_font_scale: noteStruct.glyph_font_scale || _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.DEFAULT_NOTATION_FONT_SCALE, 
             // number of stroke px to the left and right of head
-            stroke_px: noteStruct.stroke_px || StaveNote.DEFAULT_LEDGER_LINE_OFFSET,
-        });
+            stroke_px: noteStruct.stroke_px || StaveNote.DEFAULT_LEDGER_LINE_OFFSET });
         this.calculateKeyProps();
         this.buildStem();
         // Set the stem direction
@@ -25377,11 +25160,17 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_5__.StemmableNot
         this.buildFlag();
     }
     static get CATEGORY() {
-        return 'stavenotes';
+        return 'StaveNote';
     }
+    /**
+     * @deprecated Use Stem.UP.
+     */
     static get STEM_UP() {
         return _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.UP;
     }
+    /**
+     * @deprecated Use Stem.DOWN.
+     */
     static get STEM_DOWN() {
         return _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.DOWN;
     }
@@ -25623,9 +25412,6 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_5__.StemmableNot
         this.beam = beam;
         this.calcNoteDisplacements();
         return this;
-    }
-    getCategory() {
-        return StaveNote.CATEGORY;
     }
     // Builds a `Stem` for the note
     buildStem() {
@@ -26017,11 +25803,11 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_5__.StemmableNot
     }
     // Get all accidentals in the `ModifierContext`
     getAccidentals() {
-        return this.checkModifierContext().getMembers('accidentals');
+        return this.checkModifierContext().getMembers(_accidental__WEBPACK_IMPORTED_MODULE_8__.Accidental.CATEGORY);
     }
     // Get all dots in the `ModifierContext`
     getDots() {
-        return this.checkModifierContext().getMembers('dots');
+        return this.checkModifierContext().getMembers(_dot__WEBPACK_IMPORTED_MODULE_7__.Dot.CATEGORY);
     }
     // Get the width of the note if it is displaced. Used for `Voice`
     // formatting
@@ -26147,6 +25933,9 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_5__.StemmableNot
             throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoCanvasContext', "Can't draw without a canvas context.");
         }
         const { highest_line, lowest_line, highest_displaced_line, highest_non_displaced_line, lowest_displaced_line, lowest_non_displaced_line, displaced_x, non_displaced_x, } = this.getNoteHeadBounds();
+        // Early out if there are no ledger lines to draw.
+        if (highest_line < 6 && lowest_line > 0)
+            return;
         const min_x = Math.min(displaced_x !== null && displaced_x !== void 0 ? displaced_x : 0, non_displaced_x !== null && non_displaced_x !== void 0 ? non_displaced_x : 0);
         const drawLedgerLine = (y, normal, displaced) => {
             let x;
@@ -26355,7 +26144,6 @@ __webpack_require__.r(__webpack_exports__);
 class Repetition extends _stavemodifier__WEBPACK_IMPORTED_MODULE_0__.StaveModifier {
     constructor(type, x, y_shift) {
         super();
-        this.setAttribute('type', 'Repetition');
         this.symbol_type = type;
         this.x = x;
         this.x_shift = 0;
@@ -26368,10 +26156,7 @@ class Repetition extends _stavemodifier__WEBPACK_IMPORTED_MODULE_0__.StaveModifi
         };
     }
     static get CATEGORY() {
-        return 'repetitions';
-    }
-    getCategory() {
-        return Repetition.CATEGORY;
+        return 'Repetition';
     }
     setShiftX(x) {
         this.x_shift = x;
@@ -26441,7 +26226,7 @@ class Repetition extends _stavemodifier__WEBPACK_IMPORTED_MODULE_0__.StaveModifi
         let symbol_x = x + this.x_shift;
         if (this.symbol_type === Repetition.type.CODA_LEFT) {
             // Offset Coda text to right of stave beginning
-            text_x = this.x + stave.getOptions().vertical_bar_width;
+            text_x = this.x + stave.getVerticalBarWidth();
             symbol_x = text_x + ctx.measureText(text).width + 12;
         }
         else if (this.symbol_type === Repetition.type.DS) {
@@ -26498,7 +26283,6 @@ __webpack_require__.r(__webpack_exports__);
 class StaveSection extends _stavemodifier__WEBPACK_IMPORTED_MODULE_0__.StaveModifier {
     constructor(section, x, shift_y) {
         super();
-        this.setAttribute('type', 'StaveSection');
         this.setWidth(16);
         this.section = section;
         this.x = x;
@@ -26511,10 +26295,7 @@ class StaveSection extends _stavemodifier__WEBPACK_IMPORTED_MODULE_0__.StaveModi
         };
     }
     static get CATEGORY() {
-        return 'stavesection';
-    }
-    getCategory() {
-        return StaveSection.CATEGORY;
+        return 'StaveSection';
     }
     setStaveSection(section) {
         this.section = section;
@@ -26577,9 +26358,10 @@ __webpack_require__.r(__webpack_exports__);
 class StaveTempo extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier {
     constructor(tempo, x, shift_y) {
         super();
-        this.setAttribute('type', 'StaveTempo');
+        /** Font size for note. */
+        this.render_options = { glyph_font_scale: 30 };
         this.tempo = tempo;
-        this.position = _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier.Position.ABOVE;
+        this.position = _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifierPosition.ABOVE;
         this.x = x;
         this.shift_x = 10;
         this.shift_y = shift_y;
@@ -26588,15 +26370,9 @@ class StaveTempo extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifi
             size: 14,
             weight: 'bold',
         };
-        this.render_options = {
-            glyph_font_scale: 30, // font size for note
-        };
     }
     static get CATEGORY() {
-        return 'stavetempo';
-    }
-    getCategory() {
-        return StaveTempo.CATEGORY;
+        return 'StaveTempo';
     }
     setTempo(tempo) {
         this.tempo = tempo;
@@ -26619,7 +26395,7 @@ class StaveTempo extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifi
         const scale = options.glyph_font_scale / 38;
         const name = this.tempo.name;
         const duration = this.tempo.duration;
-        const dots = this.tempo.dots;
+        const dots = this.tempo.dots || 0;
         const bpm = this.tempo.bpm;
         const font = this.font;
         let x = this.x + this.shift_x + shift_x;
@@ -26693,18 +26469,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class StaveText extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier {
-    constructor(text, position, options) {
+    constructor(text, position, options = {}) {
         super();
-        this.setAttribute('type', 'StaveText');
         this.setWidth(16);
         this.text = text;
         this.position = position;
-        this.options = {
-            shift_x: 0,
-            shift_y: 0,
-            justification: _textnote__WEBPACK_IMPORTED_MODULE_2__.TextNote.Justification.CENTER,
-        };
-        this.options = Object.assign(Object.assign({}, this.options), options);
+        this.options = Object.assign({ shift_x: 0, shift_y: 0, justification: _textnote__WEBPACK_IMPORTED_MODULE_2__.TextNote.Justification.CENTER }, options);
         this.font = {
             family: 'times',
             size: 16,
@@ -26712,10 +26482,7 @@ class StaveText extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifie
         };
     }
     static get CATEGORY() {
-        return 'stavetext';
-    }
-    getCategory() {
-        return StaveText.CATEGORY;
+        return 'StaveText';
     }
     setStaveText(text) {
         this.text = text;
@@ -26746,29 +26513,27 @@ class StaveText extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifie
         const text_width = ctx.measureText('' + this.text).width;
         let x;
         let y;
-        const Position = _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier.Position;
-        const Justification = _textnote__WEBPACK_IMPORTED_MODULE_2__.TextNote.Justification;
         switch (this.position) {
-            case Position.LEFT:
-            case Position.RIGHT:
+            case _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifierPosition.LEFT:
+            case _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifierPosition.RIGHT:
                 y = (stave.getYForLine(0) + stave.getBottomLineY()) / 2 + this.options.shift_y;
-                if (this.position === Position.LEFT) {
+                if (this.position === _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifierPosition.LEFT) {
                     x = stave.getX() - text_width - 24 + this.options.shift_x;
                 }
                 else {
                     x = stave.getX() + stave.getWidth() + 24 + this.options.shift_x;
                 }
                 break;
-            case Position.ABOVE:
-            case Position.BELOW:
+            case _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifierPosition.ABOVE:
+            case _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifierPosition.BELOW:
                 x = stave.getX() + this.options.shift_x;
-                if (this.options.justification === Justification.CENTER) {
+                if (this.options.justification === _textnote__WEBPACK_IMPORTED_MODULE_2__.Justification.CENTER) {
                     x += stave.getWidth() / 2 - text_width / 2;
                 }
-                else if (this.options.justification === Justification.RIGHT) {
+                else if (this.options.justification === _textnote__WEBPACK_IMPORTED_MODULE_2__.Justification.RIGHT) {
                     x += stave.getWidth() - text_width;
                 }
-                if (this.position === Position.ABOVE) {
+                if (this.position === _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifierPosition.ABOVE) {
                     y = stave.getYForTopText(2) + this.options.shift_y;
                 }
                 else {
@@ -26821,7 +26586,6 @@ class StaveTie extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
      */
     constructor(notes, text) {
         super();
-        this.setAttribute('type', 'StaveTie');
         this.setNotes(notes);
         this.text = text;
         this.render_options = {
@@ -26835,6 +26599,9 @@ class StaveTie extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
             font: { family: 'Arial', size: 10, weight: '' },
         };
         this.font = this.render_options.font;
+    }
+    static get CATEGORY() {
+        return 'StaveTie';
     }
     setFont(font) {
         this.font = font;
@@ -26997,7 +26764,6 @@ var VoltaType;
 class Volta extends _stavemodifier__WEBPACK_IMPORTED_MODULE_0__.StaveModifier {
     constructor(type, number, x, y_shift) {
         super();
-        this.setAttribute('type', 'Volta');
         this.volta = type;
         this.x = x;
         this.y_shift = y_shift;
@@ -27009,13 +26775,10 @@ class Volta extends _stavemodifier__WEBPACK_IMPORTED_MODULE_0__.StaveModifier {
         };
     }
     static get CATEGORY() {
-        return 'voltas';
+        return 'Volta';
     }
     static get type() {
         return VoltaType;
-    }
-    getCategory() {
-        return Volta.CATEGORY;
     }
     setShiftY(y) {
         this.y_shift = y;
@@ -27025,17 +26788,17 @@ class Volta extends _stavemodifier__WEBPACK_IMPORTED_MODULE_0__.StaveModifier {
         const ctx = stave.checkContext();
         this.setRendered();
         let width = stave.getWidth() - x; // don't include x (offset) for width
-        const top_y = stave.getYForTopText(stave.getOptions().num_lines) + this.y_shift;
-        const vert_height = 1.5 * stave.getOptions().spacing_between_lines_px;
+        const top_y = stave.getYForTopText(stave.getNumLines()) + this.y_shift;
+        const vert_height = 1.5 * stave.getSpacingBetweenLines();
         switch (this.volta) {
-            case Volta.type.BEGIN:
+            case VoltaType.BEGIN:
                 ctx.fillRect(this.x + x, top_y, 1, vert_height);
                 break;
-            case Volta.type.END:
+            case VoltaType.END:
                 width -= 5;
                 ctx.fillRect(this.x + x + width, top_y, 1, vert_height);
                 break;
-            case Volta.type.BEGIN_END:
+            case VoltaType.BEGIN_END:
                 width -= 3;
                 ctx.fillRect(this.x + x, top_y, 1, vert_height);
                 ctx.fillRect(this.x + x + width, top_y, 1, vert_height);
@@ -27044,7 +26807,7 @@ class Volta extends _stavemodifier__WEBPACK_IMPORTED_MODULE_0__.StaveModifier {
                 break;
         }
         // If the beginning of a volta, draw measure number
-        if (this.volta === Volta.type.BEGIN || this.volta === Volta.type.BEGIN_END) {
+        if (this.volta === VoltaType.BEGIN || this.volta === VoltaType.BEGIN_END) {
             ctx.save();
             ctx.setFont(this.font.family, this.font.size, this.font.weight);
             ctx.fillText(this.number, this.x + x + 5, top_y + 15);
@@ -27092,7 +26855,6 @@ class Stem extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
         this.stem_down_y_offset = 0;
         this.stem_up_y_base_offset = 0;
         this.stem_down_y_base_offset = 0;
-        this.setAttribute('type', 'Stem');
         // Default notehead x bounds
         this.x_begin = (options === null || options === void 0 ? void 0 : options.x_begin) || 0;
         this.x_end = (options === null || options === void 0 ? void 0 : options.x_end) || 0;
@@ -27113,7 +26875,7 @@ class Stem extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
         this.setOptions(options);
     }
     static get CATEGORY() {
-        return 'stem';
+        return 'Stem';
     }
     // Stem directions
     static get UP() {
@@ -27157,10 +26919,6 @@ class Stem extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
     setYBounds(y_top, y_bottom) {
         this.y_top = y_top;
         this.y_bottom = y_bottom;
-    }
-    // The category of the object
-    getCategory() {
-        return Stem.CATEGORY;
     }
     // Gets the entire height for the stem
     getHeight() {
@@ -27265,12 +27023,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class StemmableNote extends _note__WEBPACK_IMPORTED_MODULE_4__.Note {
-    constructor(note_struct) {
-        super(note_struct);
-        this.setAttribute('type', 'StemmableNote');
+    constructor(noteStruct) {
+        super(noteStruct);
     }
     static get CATEGORY() {
-        return 'stemmablenote';
+        return 'StemmableNote';
     }
     // Get and set the note's `Stem`
     getStem() {
@@ -27472,9 +27229,6 @@ class StemmableNote extends _note__WEBPACK_IMPORTED_MODULE_4__.Note {
         this.setStem(new _stem__WEBPACK_IMPORTED_MODULE_2__.Stem(stemOptions));
         (_a = this.stem) === null || _a === void 0 ? void 0 : _a.setContext(this.getContext()).draw();
     }
-    getCategory() {
-        return StemmableNote.CATEGORY;
-    }
 }
 
 
@@ -27493,8 +27247,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 /* harmony import */ var _renderer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./renderer */ "./src/renderer.ts");
-/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
+/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
+/* harmony import */ var stem__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! stem */ "./src/stem.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Larry Kuhns
 //
@@ -27509,7 +27263,6 @@ __webpack_require__.r(__webpack_exports__);
 class StringNumber extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
     constructor(number) {
         super();
-        this.setAttribute('type', 'StringNumber');
         this.string_number = number;
         this.setWidth(20); // ???
         this.position = _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.ABOVE; // Default position above stem or note head
@@ -27527,7 +27280,7 @@ class StringNumber extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
         };
     }
     static get CATEGORY() {
-        return 'stringnumber';
+        return 'StringNumber';
     }
     // ## Static Methods
     // Arrange string numbers inside a `ModifierContext`
@@ -27545,7 +27298,7 @@ class StringNumber extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
             const num = nums[i];
             const note = num.getNote();
             const pos = num.getPosition();
-            if (!(0,_typeguard__WEBPACK_IMPORTED_MODULE_4__.isStaveNote)(note)) {
+            if (!(0,_typeguard__WEBPACK_IMPORTED_MODULE_3__.isStaveNote)(note)) {
                 throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NoStaveNote');
             }
             const index = num.checkIndex();
@@ -27606,9 +27359,6 @@ class StringNumber extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
         state.right_shift += x_widthR;
         return true;
     }
-    getCategory() {
-        return StringNumber.CATEGORY;
-    }
     setLineEndType(leg) {
         if (leg >= _renderer__WEBPACK_IMPORTED_MODULE_2__.Renderer.LineEndType.NONE && leg <= _renderer__WEBPACK_IMPORTED_MODULE_2__.Renderer.LineEndType.DOWN) {
             this.leg = leg;
@@ -27639,7 +27389,7 @@ class StringNumber extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
         const ctx = this.checkContext();
         const note = this.checkAttachedNote();
         this.setRendered();
-        const line_space = note.checkStave().getOptions().spacing_between_lines_px;
+        const line_space = note.checkStave().getSpacingBetweenLines();
         const start = note.getModifierStartXY(this.position, this.index);
         let dot_x = start.x + this.x_shift + this.x_offset;
         let dot_y = start.y + this.y_shift + this.y_offset;
@@ -27649,7 +27399,7 @@ class StringNumber extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
                 const stem_ext = note.getStemExtents();
                 let top = stem_ext.topY;
                 let bottom = stem_ext.baseY + 2;
-                if (note.getStemDirection() === _stavenote__WEBPACK_IMPORTED_MODULE_3__.StaveNote.STEM_DOWN) {
+                if (note.getStemDirection() === stem__WEBPACK_IMPORTED_MODULE_4__.Stem.DOWN) {
                     top = stem_ext.baseY;
                     bottom = stem_ext.topY - 2;
                 }
@@ -27680,7 +27430,7 @@ class StringNumber extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
         const x = dot_x - ctx.measureText(this.string_number).width / 2;
         ctx.fillText('' + this.string_number, x, dot_y + 4.5);
         const lastNote = this.last_note;
-        if ((0,_typeguard__WEBPACK_IMPORTED_MODULE_4__.isStemmableNote)(lastNote)) {
+        if ((0,_typeguard__WEBPACK_IMPORTED_MODULE_3__.isStemmableNote)(lastNote)) {
             // Only StemmableNote objects have getStemX().
             const end = lastNote.getStemX() - note.getX() + 5;
             ctx.setStrokeStyle('#000000');
@@ -27743,10 +27493,9 @@ __webpack_require__.r(__webpack_exports__);
 class Stroke extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
     constructor(type, options) {
         super();
-        this.setAttribute('type', 'Stroke');
-        this.options = Object.assign({}, options);
+        this.options = Object.assign({ all_voices: true }, options);
         // multi voice - span stroke across all voices if true
-        this.all_voices = 'all_voices' in this.options ? this.options.all_voices : true;
+        this.all_voices = this.options.all_voices;
         // multi voice - end note of stroke, set in draw()
         this.type = type;
         this.position = _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.LEFT;
@@ -27764,7 +27513,7 @@ class Stroke extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
         this.setWidth(10);
     }
     static get CATEGORY() {
-        return 'strokes';
+        return 'Stroke';
     }
     // Arrange strokes inside `ModifierContext`
     static format(strokes, state) {
@@ -27799,9 +27548,6 @@ class Stroke extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
         state.left_shift += xShift;
         return true;
     }
-    getCategory() {
-        return Stroke.CATEGORY;
-    }
     getPosition() {
         return this.position;
     }
@@ -27818,14 +27564,13 @@ class Stroke extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
         let topY = start.y;
         let botY = start.y;
         const x = start.x - 5;
-        const line_space = note.checkStave().getOptions().spacing_between_lines_px;
+        const line_space = note.checkStave().getSpacingBetweenLines();
         const notes = this.checkModifierContext().getMembers(note.getCategory());
         for (let i = 0; i < notes.length; i++) {
             const note = notes[i];
             if ((0,_typeguard__WEBPACK_IMPORTED_MODULE_3__.isNote)(note)) {
                 // Only Note objects have getYs().
                 // note is an instance of either StaveNote or TabNote.
-                // note.getCategory() returns 'stavenotes' or 'tabnotes'
                 ys = note.getYs();
                 for (let n = 0; n < ys.length; n++) {
                     if (this.note === notes[i] || this.all_voices) {
@@ -27994,6 +27739,58 @@ const attrNamesToIgnoreMap = {
 };
 /** Create the SVG in the SVG namespace. */
 const SVG_NS = 'http://www.w3.org/2000/svg';
+const TWO_PI = 2 * Math.PI;
+class MeasureTextCache {
+    constructor() {
+        // The cache is keyed first by the text string, then by the font attributes
+        // joined together.
+        this.cache = {};
+    }
+    lookup(text, svg, attributes) {
+        let entries = this.cache[text];
+        if (entries === undefined) {
+            entries = {};
+            this.cache[text] = entries;
+        }
+        const family = attributes['font-family'];
+        const size = attributes['font-size'];
+        const style = attributes['font-style'];
+        const weight = attributes['font-weight'];
+        const key = `${family}%${size}%${style}%${weight}`;
+        let entry = entries[key];
+        if (entry === undefined) {
+            entry = this.measureImpl(text, svg, attributes);
+            entries[key] = entry;
+        }
+        return entry;
+    }
+    measureImpl(text, svg, attributes) {
+        let txt = this.txt;
+        if (!txt) {
+            // Create the SVG text element that will be used to measure text in the event
+            // of a cache miss.
+            txt = document.createElementNS(SVG_NS, 'text');
+            this.txt = txt;
+        }
+        txt.textContent = text;
+        txt.setAttributeNS(null, 'font-family', attributes['font-family']);
+        txt.setAttributeNS(null, 'font-size', attributes['font-size']);
+        txt.setAttributeNS(null, 'font-style', attributes['font-style']);
+        txt.setAttributeNS(null, 'font-weight', attributes['font-weight']);
+        svg.appendChild(txt);
+        const bbox = txt.getBBox();
+        svg.removeChild(txt);
+        // Remove the trailing 'pt' from the font size and scale to convert from points
+        // to canvas units.
+        // CSS specifies dpi to be 96 and there are 72 points to an inch: 96/72 == 4/3.
+        const fontSize = attributes['font-size'];
+        const height = (fontSize.substring(0, fontSize.length - 2) * 4) / 3;
+        return {
+            width: bbox.width,
+            height: height,
+        };
+    }
+}
 /**
  * SVG rendering context with an API similar to CanvasRenderingContext2D.
  */
@@ -28002,8 +27799,6 @@ class SVGContext {
         this.width = 0;
         this.height = 0;
         this.fontString = '';
-        this.fontSize = 0;
-        this.ie = false; // true if the browser is Internet Explorer.
         this.element = element;
         const svg = this.create('svg');
         // Add it to the canvas:
@@ -28035,8 +27830,6 @@ class SVGContext {
             color: 'black',
         };
         this.state_stack = [];
-        // Test for Internet Explorer
-        this.iePolyfill();
     }
     create(svgElementType) {
         return document.createElementNS(SVG_NS, svgElementType);
@@ -28062,18 +27855,6 @@ class SVGContext {
     }
     add(elem) {
         this.parent.appendChild(elem);
-    }
-    // Tests if the browser is Internet Explorer; if it is,
-    // we do some tricks to improve text layout. See the
-    // note at ieMeasureTextFix() for details.
-    iePolyfill() {
-        if (typeof navigator !== 'undefined') {
-            this.ie =
-                /MSIE 9/i.test(navigator.userAgent) ||
-                    /MSIE 10/i.test(navigator.userAgent) ||
-                    /rv:11\.0/i.test(navigator.userAgent) ||
-                    /Trident/i.test(navigator.userAgent);
-        }
     }
     // ### Styling & State Methods:
     setFont(family, size, weight) {
@@ -28108,9 +27889,6 @@ class SVGContext {
             'font-weight': foundBold ? 'bold' : weight,
             'font-style': foundItalic ? 'italic' : 'normal',
         };
-        // Store the font size so that if the browser is Internet
-        // Explorer we can fix its calculations of text width.
-        this.fontSize = Number(size);
         // Currently this.fontString only supports size & family. See setRawFont().
         this.fontString = `${size}pt ${family}`;
         this.attributes = Object.assign(Object.assign({}, this.attributes), fontAttributes);
@@ -28128,9 +27906,6 @@ class SVGContext {
         const family = fontArray[1];
         this.attributes['font-family'] = family;
         this.state['font-family'] = family;
-        // Saves fontSize for IE polyfill.
-        // Use the Number() function to parse the array returned by String.prototype.match()!
-        this.fontSize = Number(size.match(/\d+/));
         return this;
     }
     setFillStyle(style) {
@@ -28291,11 +28066,8 @@ class SVGContext {
         return this;
     }
     fillRect(x, y, width, height) {
-        if (height < 0) {
-            y += height;
-            height *= -1;
-        }
-        this.rect(x, y, width, height, this.attributes);
+        const attributes = { fill: this.attributes.fill };
+        this.rect(x, y, width, height, attributes);
         return this;
     }
     clearRect(x, y, width, height) {
@@ -28347,143 +28119,82 @@ class SVGContext {
         this.pen.y = y;
         return this;
     }
-    // This is an attempt (hack) to simulate the HTML5 canvas arc method.
-    arc(x, y, radius, startAngle, endAngle, antiClockwise) {
-        function normalizeAngle(angle) {
-            while (angle < 0) {
-                angle += Math.PI * 2;
-            }
-            while (angle > Math.PI * 2) {
-                angle -= Math.PI * 2;
-            }
-            return angle;
-        }
-        startAngle = normalizeAngle(startAngle);
-        endAngle = normalizeAngle(endAngle);
-        // Swap the start and end angles if necessary.
-        if (startAngle > endAngle) {
-            const tmp = startAngle;
-            startAngle = endAngle;
-            endAngle = tmp;
-            antiClockwise = !antiClockwise;
-        }
-        const delta = endAngle - startAngle;
-        if (delta > Math.PI) {
-            this.arcHelper(x, y, radius, startAngle, startAngle + delta / 2, antiClockwise);
-            this.arcHelper(x, y, radius, startAngle + delta / 2, endAngle, antiClockwise);
+    arc(x, y, radius, startAngle, endAngle, counterclockwise) {
+        const x0 = x + radius * Math.cos(startAngle);
+        const y0 = y + radius * Math.sin(startAngle);
+        // Handle the edge case where arc length is greater than or equal to
+        // the circle's circumference:
+        //   https://html.spec.whatwg.org/multipage/canvas.html#ellipse-method-steps
+        if ((!counterclockwise && endAngle - startAngle >= TWO_PI) ||
+            (counterclockwise && startAngle - endAngle >= TWO_PI)) {
+            const x1 = x + radius * Math.cos(startAngle + Math.PI);
+            const y1 = y + radius * Math.sin(startAngle + Math.PI);
+            // There's no way to specify a completely circular arc in SVG so we have to
+            // use two semi-circular arcs.
+            this.path += `M${x0} ${y0} A${radius} ${radius} 0 0 0 ${x1} ${y1} `;
+            this.path += `A${radius} ${radius} 0 0 0 ${x0} ${y0}`;
+            this.pen.x = x0;
+            this.pen.y = y0;
         }
         else {
-            this.arcHelper(x, y, radius, startAngle, endAngle, antiClockwise);
+            const x1 = x + radius * Math.cos(endAngle);
+            const y1 = y + radius * Math.sin(endAngle);
+            startAngle = (0,_util__WEBPACK_IMPORTED_MODULE_0__.normalizeAngle)(startAngle);
+            endAngle = (0,_util__WEBPACK_IMPORTED_MODULE_0__.normalizeAngle)(endAngle);
+            let large;
+            if (Math.abs(endAngle - startAngle) < Math.PI) {
+                large = counterclockwise;
+            }
+            else {
+                large = !counterclockwise;
+            }
+            if (startAngle > endAngle) {
+                large = !large;
+            }
+            const sweep = !counterclockwise;
+            this.path += `M${x0} ${y0} A${radius} ${radius} 0 ${+large} ${+sweep} ${x1} ${y1}`;
+            this.pen.x = x1;
+            this.pen.y = y1;
         }
         return this;
-    }
-    arcHelper(x, y, radius, startAngle, endAngle, antiClockwise) {
-        const x1 = x + radius * Math.cos(startAngle);
-        const y1 = y + radius * Math.sin(startAngle);
-        const x2 = x + radius * Math.cos(endAngle);
-        const y2 = y + radius * Math.sin(endAngle);
-        let largeArcFlag = 0;
-        let sweepFlag = 0;
-        if (antiClockwise) {
-            sweepFlag = 1;
-            if (endAngle - startAngle < Math.PI) {
-                largeArcFlag = 1;
-            }
-        }
-        else if (endAngle - startAngle > Math.PI) {
-            largeArcFlag = 1;
-        }
-        this.path += `M${x1} ${y1} A${radius} ${radius} 0 ${largeArcFlag} ${sweepFlag} ${x2} ${y2}`;
-        if (!isNaN(this.pen.x) && !isNaN(this.pen.y)) {
-            this.path += 'M' + this.pen.x + ' ' + this.pen.y;
-        }
     }
     closePath() {
         this.path += 'Z';
         return this;
     }
-    // Adapted from the source for Raphael's Element.glow
-    glow() {
-        // Calculate the width & paths of the glow:
-        if (this.shadow_attributes.width > 0) {
-            const sa = this.shadow_attributes;
-            const num_paths = sa.width / 2;
-            // Stroke at varying widths to create effect of gaussian blur:
-            for (let i = 1; i <= num_paths; i++) {
-                const attributes = {
-                    stroke: sa.color,
-                    'stroke-linejoin': 'round',
-                    'stroke-linecap': 'round',
-                    'stroke-width': +(((sa.width * 0.4) / num_paths) * i).toFixed(3),
-                    opacity: +((sa.opacity || 0.3) / num_paths).toFixed(3),
-                };
-                const path = this.create('path');
-                attributes.d = this.path;
-                this.applyAttributes(path, attributes);
-                this.add(path);
-            }
-        }
-        return this;
+    getShadowStyle() {
+        const sa = this.shadow_attributes;
+        // A CSS drop-shadow filter blur looks different than a canvas shadowBlur
+        // of the same radius, so we scale the drop-shadow radius here to make it
+        // look close to the canvas shadow.
+        return `filter: drop-shadow(0 0 ${sa.width / 1.5}px ${sa.color})`;
     }
     fill(attributes) {
-        // If our current path is set to glow, make it glow
-        this.glow();
         const path = this.create('path');
         if (typeof attributes === 'undefined') {
             attributes = Object.assign(Object.assign({}, this.attributes), { stroke: 'none' });
         }
         attributes.d = this.path;
+        if (this.shadow_attributes.width > 0) {
+            attributes.style = this.getShadowStyle();
+        }
         this.applyAttributes(path, attributes);
         this.add(path);
         return this;
     }
     stroke() {
-        // If our current path is set to glow, make it glow.
-        this.glow();
         const path = this.create('path');
         const attributes = Object.assign(Object.assign({}, this.attributes), { fill: 'none', 'stroke-width': this.lineWidth, d: this.path });
+        if (this.shadow_attributes.width > 0) {
+            attributes.style = this.getShadowStyle();
+        }
         this.applyAttributes(path, attributes);
         this.add(path);
         return this;
     }
     // ## Text Methods:
     measureText(text) {
-        const txt = this.create('text');
-        if (typeof txt.getBBox !== 'function') {
-            return { x: 0, y: 0, width: 0, height: 0 };
-        }
-        txt.textContent = text;
-        this.applyAttributes(txt, this.attributes);
-        // Temporarily add it to the document for measurement.
-        this.svg.appendChild(txt);
-        let bbox = txt.getBBox();
-        if (this.ie && text !== '' && this.attributes['font-style'] === 'italic') {
-            bbox = this.ieMeasureTextFix(bbox);
-        }
-        this.svg.removeChild(txt);
-        return bbox;
-    }
-    ieMeasureTextFix(bbox) {
-        // Internet Explorer over-pads text in italics,
-        // resulting in giant width estimates for measureText.
-        // To fix this, we use this formula, tested against
-        // ie 11:
-        // overestimate (in pixels) = FontSize(in pt) * 1.196 + 1.96
-        // And then subtract the overestimate from calculated width.
-        const fontSize = Number(this.fontSize);
-        const m = 1.196;
-        const b = 1.9598;
-        const widthCorrection = m * fontSize + b;
-        const width = bbox.width - widthCorrection;
-        const height = bbox.height - 1.5;
-        // Get non-protected copy:
-        const box = {
-            x: bbox.x,
-            y: bbox.y,
-            width,
-            height,
-        };
-        return box;
+        return SVGContext.measureTextCache.lookup(text, this.svg, this.attributes);
     }
     fillText(text, x, y) {
         if (!text || text.length <= 0) {
@@ -28568,6 +28279,7 @@ class SVGContext {
         return this.attributes.stroke;
     }
 }
+SVGContext.measureTextCache = new MeasureTextCache();
 
 
 /***/ }),
@@ -28606,17 +28318,20 @@ __webpack_require__.r(__webpack_exports__);
 class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
     constructor(params = {}) {
         super();
-        this.setAttribute('type', 'System');
         this.setOptions(params);
         this.parts = [];
     }
+    static get CATEGORY() {
+        return 'System';
+    }
     /** Set formatting options. */
     setOptions(options = {}) {
-        this.options = Object.assign(Object.assign({ x: 10, y: 10, width: 500, spaceBetweenStaves: 12, autoWidth: false, noJustification: false, debugFormatter: false, formatIterations: 0, noPadding: false }, options), { details: Object.assign({ alpha: 0.5 }, options.details), formatOptions: Object.assign({}, options.formatOptions) });
+        var _a;
+        this.factory = (_a = options.factory) !== null && _a !== void 0 ? _a : new _factory__WEBPACK_IMPORTED_MODULE_2__.Factory({ renderer: { elementId: null, width: 0, height: 0 } });
+        this.options = Object.assign(Object.assign({ factory: this.factory, x: 10, y: 10, width: 500, spaceBetweenStaves: 12, autoWidth: false, noJustification: false, debugFormatter: false, formatIterations: 0, noPadding: false }, options), { details: Object.assign({ alpha: 0.5 }, options.details), formatOptions: Object.assign({}, options.formatOptions) });
         if (this.options.noJustification === false && typeof options.width === 'undefined') {
             this.options.autoWidth = true;
         }
-        this.factory = this.options.factory || new _factory__WEBPACK_IMPORTED_MODULE_2__.Factory({ renderer: { elementId: null, width: 0, height: 0 } });
     }
     /** Set associated context. */
     setContext(context) {
@@ -28653,29 +28368,27 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
      *
      *  `score.voice(score.notes('C#4/h, C#4', {stem: 'down'}))]});`
      */
-    addStave(paramsItems) {
-        let stave = paramsItems.stave;
-        if (!stave) {
-            stave = this.factory.Stave({
-                x: this.options.x,
-                y: this.options.y,
-                width: this.options.width,
-                options: Object.assign({ left_bar: false }, paramsItems.options),
-            });
-        }
-        const params = Object.assign(Object.assign({ stave, voices: [], spaceAbove: 0, spaceBelow: 0, debugNoteMetrics: false }, paramsItems), { options: Object.assign({ left_bar: false }, paramsItems.options) });
-        params.voices.forEach((voice) => voice
-            .setContext(this.getContext())
-            .setStave(params.stave)
+    addStave(params) {
+        var _a;
+        const staveOptions = Object.assign({ left_bar: false }, params.options);
+        const stave = (_a = params.stave) !== null && _a !== void 0 ? _a : this.factory.Stave({ x: this.options.x, y: this.options.y, width: this.options.width, options: staveOptions });
+        const p = Object.assign(Object.assign({ stave, 
+            /* voices: [], */
+            spaceAbove: 0, spaceBelow: 0, debugNoteMetrics: false, noJustification: false }, params), { options: staveOptions });
+        const ctx = this.getContext();
+        p.voices.forEach((voice) => voice
+            .setContext(ctx)
+            .setStave(stave)
             .getTickables()
-            .forEach((tickable) => tickable.setStave(params.stave)));
-        this.parts.push(params);
-        return params.stave;
+            .forEach((tickable) => tickable.setStave(stave)));
+        this.parts.push(p);
+        return stave;
     }
     /** Format the system. */
     format() {
+        const options_details = this.options.details;
         let justifyWidth = 0;
-        const formatter = new _formatter__WEBPACK_IMPORTED_MODULE_3__.Formatter(Object.assign({}, this.options.details));
+        const formatter = new _formatter__WEBPACK_IMPORTED_MODULE_3__.Formatter(options_details);
         this.formatter = formatter;
         let y = this.options.y;
         let startX = 0;
@@ -28717,7 +28430,7 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
         }
         formatter.format(allVoices, this.options.noJustification ? 0 : justifyWidth, this.options.formatOptions);
         for (let i = 0; i < this.options.formatIterations; i++) {
-            formatter.tune({ alpha: this.options.details.alpha });
+            formatter.tune(options_details);
         }
         this.startX = startX;
         this.debugNoteMetricsYs = debugNoteMetricsYs;
@@ -28729,7 +28442,7 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
         // Render debugging information, if requested.
         const ctx = this.checkContext();
         if (!this.formatter || !this.startX || !this.lastY || !this.debugNoteMetricsYs) {
-            throw new _util__WEBPACK_IMPORTED_MODULE_6__.RuntimeError('NoFormated', 'Format must be instatiated before draw');
+            throw new _util__WEBPACK_IMPORTED_MODULE_6__.RuntimeError('NoFormatter', 'format() must be called before draw()');
         }
         this.setRendered();
         if (this.options.debugFormatter) {
@@ -30057,13 +29770,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "TabNote": () => (/* binding */ TabNote)
 /* harmony export */ });
-/* harmony import */ var _dot__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dot */ "./src/dot.ts");
-/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
-/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
-/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-/* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stem */ "./src/stem.ts");
-/* harmony import */ var _stemmablenote__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var typeguard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! typeguard */ "./src/typeguard.ts");
+/* harmony import */ var _dot__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dot */ "./src/dot.ts");
+/* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
+/* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
+/* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
+/* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./stem */ "./src/stem.ts");
+/* harmony import */ var _stemmablenote__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
@@ -30072,6 +29786,7 @@ __webpack_require__.r(__webpack_exports__);
 // more fret positions, and can either be drawn with or without stems.
 //
 // See `tests/tabnote_tests.ts` for usage examples.
+
 
 
 
@@ -30159,58 +29874,52 @@ function getPartialStemLines(stem_y, unused_strings, stave, stem_direction) {
     });
     return stem_lines;
 }
-class TabNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_5__.StemmableNote {
-    // Initialize the TabNote with a `tab_struct` full of properties
+class TabNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_6__.StemmableNote {
+    // Initialize the TabNote with a `noteStruct` full of properties
     // and whether to `draw_stem` when rendering the note
-    constructor(tab_struct, draw_stem) {
-        super(tab_struct);
+    constructor(noteStruct, draw_stem = false) {
+        super(noteStruct);
         this.glyphs = [];
-        this.setAttribute('type', 'TabNote');
         this.ghost = false; // Renders parenthesis around notes
         // Note properties
         // The fret positions in the note. An array of `{ str: X, fret: X }`
-        this.positions = tab_struct.positions;
+        this.positions = noteStruct.positions || [];
         // Render Options
-        this.render_options = Object.assign(Object.assign({}, this.render_options), {
+        this.render_options = Object.assign(Object.assign({}, this.render_options), { 
             // font size for note heads and rests
-            glyph_font_scale: _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.DEFAULT_TABLATURE_FONT_SCALE,
+            glyph_font_scale: _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.DEFAULT_TABLATURE_FONT_SCALE, 
             // Flag to draw a stem
-            draw_stem,
+            draw_stem, 
             // Flag to draw dot modifiers
-            draw_dots: draw_stem,
+            draw_dots: draw_stem, 
             // Flag to extend the main stem through the stave and fret positions
-            draw_stem_through_stave: false,
+            draw_stem_through_stave: false, 
             // vertical shift from stave line
-            y_shift: 0,
+            y_shift: 0, 
             // normal glyph scale
-            scale: 1.0,
+            scale: 1.0, 
             // default tablature font
-            font: '10pt Arial',
-        });
-        this.glyph = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.getGlyphProps(this.duration, this.noteType);
-        (0,_util__WEBPACK_IMPORTED_MODULE_6__.defined)(this.glyph, 'BadArguments', `No glyph found for duration '${this.duration}' and type '${this.noteType}'`);
+            font: '10pt Arial' });
+        this.glyph = _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.getGlyphProps(this.duration, this.noteType);
+        (0,_util__WEBPACK_IMPORTED_MODULE_7__.defined)(this.glyph, 'BadArguments', `No glyph found for duration '${this.duration}' and type '${this.noteType}'`);
         this.buildStem();
-        if (tab_struct.stem_direction) {
-            this.setStemDirection(tab_struct.stem_direction);
+        if (noteStruct.stem_direction) {
+            this.setStemDirection(noteStruct.stem_direction);
         }
         else {
-            this.setStemDirection(_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP);
+            this.setStemDirection(_stem__WEBPACK_IMPORTED_MODULE_5__.Stem.UP);
         }
         // Renders parenthesis around notes
         this.ghost = false;
         this.updateWidth();
     }
     static get CATEGORY() {
-        return 'tabnotes';
+        return 'TabNote';
     }
     reset() {
         if (this.stave)
             this.setStave(this.stave);
         return this;
-    }
-    // The ModifierContext category
-    getCategory() {
-        return TabNote.CATEGORY;
     }
     // Set as ghost `TabNote`, surrounds the fret positions with parenthesis.
     // Often used for indicating frets that are being bent to
@@ -30238,7 +29947,7 @@ class TabNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_5__.StemmableNote 
     }
     // Add a dot to the note
     addDot() {
-        const dot = new _dot__WEBPACK_IMPORTED_MODULE_0__.Dot();
+        const dot = new _dot__WEBPACK_IMPORTED_MODULE_1__.Dot();
         this.dots += 1;
         return this.addModifier(dot, 0);
     }
@@ -30250,7 +29959,7 @@ class TabNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_5__.StemmableNote 
             let fret = this.positions[i].fret;
             if (this.ghost)
                 fret = '(' + fret + ')';
-            const glyph = _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.tabToGlyph(fret.toString(), this.render_options.scale);
+            const glyph = _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.tabToGlyph(fret.toString(), this.render_options.scale);
             this.glyphs.push(glyph);
             this.width = Math.max(glyph.getWidth(), this.width);
         }
@@ -30300,19 +30009,19 @@ class TabNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_5__.StemmableNote 
     // `position` at a fret position `index`
     getModifierStartXY(position, index) {
         if (!this.preFormatted) {
-            throw new _util__WEBPACK_IMPORTED_MODULE_6__.RuntimeError('UnformattedNote', "Can't call GetModifierStartXY on an unformatted note");
+            throw new _util__WEBPACK_IMPORTED_MODULE_7__.RuntimeError('UnformattedNote', "Can't call GetModifierStartXY on an unformatted note");
         }
         if (this.ys.length === 0) {
-            throw new _util__WEBPACK_IMPORTED_MODULE_6__.RuntimeError('NoYValues', 'No Y-Values calculated for this note.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_7__.RuntimeError('NoYValues', 'No Y-Values calculated for this note.');
         }
         let x = 0;
-        if (position === _modifier__WEBPACK_IMPORTED_MODULE_3__.Modifier.Position.LEFT) {
+        if (position === _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.LEFT) {
             x = -1 * 2; // FIXME: modifier padding, move to font file
         }
-        else if (position === _modifier__WEBPACK_IMPORTED_MODULE_3__.Modifier.Position.RIGHT) {
+        else if (position === _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.RIGHT) {
             x = this.width + 2; // FIXME: modifier padding, move to font file
         }
-        else if (position === _modifier__WEBPACK_IMPORTED_MODULE_3__.Modifier.Position.BELOW || position === _modifier__WEBPACK_IMPORTED_MODULE_3__.Modifier.Position.ABOVE) {
+        else if (position === _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.BELOW || position === _modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.ABOVE) {
             const note_glyph_width = this.glyph.getWidth();
             x = note_glyph_width / 2;
         }
@@ -30345,7 +30054,7 @@ class TabNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_5__.StemmableNote 
         // fret number and the stem
         const stemUpLine = -0.5;
         const stemDownLine = num_lines - 0.5;
-        const stemStartLine = _stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP === this.stem_direction ? stemUpLine : stemDownLine;
+        const stemStartLine = _stem__WEBPACK_IMPORTED_MODULE_5__.Stem.UP === this.stem_direction ? stemUpLine : stemDownLine;
         return this.checkStave().getYForLine(stemStartLine);
     }
     // Get the stem extents for the tabnote
@@ -30361,20 +30070,20 @@ class TabNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_5__.StemmableNote 
         if (glyph.flag && shouldDrawFlag) {
             const flag_x = this.getStemX() + 1;
             const flag_y = this.getStemY() - this.checkStem().getHeight();
-            const flag_code = stem_direction === _stem__WEBPACK_IMPORTED_MODULE_4__.Stem.DOWN
+            const flag_code = stem_direction === _stem__WEBPACK_IMPORTED_MODULE_5__.Stem.DOWN
                 ? glyph.code_flag_downstem // Down stems have flags on the left.
                 : glyph.code_flag_upstem;
             // Draw the Flag
-            _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph.renderGlyph(context, flag_x, flag_y, glyph_font_scale, flag_code, { category: 'flag.tabStem' });
+            _glyph__WEBPACK_IMPORTED_MODULE_3__.Glyph.renderGlyph(context, flag_x, flag_y, glyph_font_scale, flag_code, { category: 'flag.tabStem' });
         }
     }
-    // Render the modifiers onto the context
+    // Render the modifiers onto the context.
     drawModifiers() {
-        // Draw the modifiers
         this.modifiers.forEach((modifier) => {
-            // Only draw the dots if enabled
-            if (modifier.getCategory() === _dot__WEBPACK_IMPORTED_MODULE_0__.Dot.CATEGORY && !this.render_options.draw_dots)
+            // Only draw the dots if enabled.
+            if ((0,typeguard__WEBPACK_IMPORTED_MODULE_0__.isDot)(modifier) && !this.render_options.draw_dots) {
                 return;
+            }
             modifier.setContext(this.getContext());
             modifier.drawWithStyle();
         });
@@ -30392,7 +30101,7 @@ class TabNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_5__.StemmableNote 
             const unused_strings = getUnusedStringGroups(total_lines, strings_used);
             const stem_lines = getPartialStemLines(stem_y, unused_strings, this.checkStave(), this.getStemDirection());
             ctx.save();
-            ctx.setLineWidth(_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.WIDTH);
+            ctx.setLineWidth(_stem__WEBPACK_IMPORTED_MODULE_5__.Stem.WIDTH);
             stem_lines.forEach((bounds) => {
                 if (bounds.length === 0)
                     return;
@@ -30419,7 +30128,7 @@ class TabNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_5__.StemmableNote 
             // FIXME: Magic numbers.
             ctx.clearRect(tab_x - 2, y - 3, glyph.getWidth() + 4, 6);
             if (glyph.code) {
-                _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph.renderGlyph(ctx, tab_x, y, this.render_options.glyph_font_scale * this.render_options.scale, glyph.code);
+                _glyph__WEBPACK_IMPORTED_MODULE_3__.Glyph.renderGlyph(ctx, tab_x, y, this.render_options.glyph_font_scale * this.render_options.scale, glyph.code);
             }
             else {
                 ctx.save();
@@ -30430,11 +30139,11 @@ class TabNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_5__.StemmableNote 
             }
         }
     }
-    // The main rendering function for the entire note
+    // The main rendering function for the entire note.
     draw() {
         const ctx = this.checkContext();
         if (this.ys.length === 0) {
-            throw new _util__WEBPACK_IMPORTED_MODULE_6__.RuntimeError('NoYValues', "Can't draw note without Y values.");
+            throw new _util__WEBPACK_IMPORTED_MODULE_7__.RuntimeError('NoYValues', "Can't draw note without Y values.");
         }
         this.setRendered();
         const render_stem = this.beam == undefined && this.render_options.draw_stem;
@@ -30477,6 +30186,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class TabSlide extends _tabtie__WEBPACK_IMPORTED_MODULE_0__.TabTie {
+    static get CATEGORY() {
+        return 'TabSlide';
+    }
     static get SLIDE_UP() {
         return 1;
     }
@@ -30506,7 +30218,6 @@ class TabSlide extends _tabtie__WEBPACK_IMPORTED_MODULE_0__.TabTie {
      */
     constructor(notes, direction) {
         super(notes, 'sl.');
-        this.setAttribute('type', 'TabSlide');
         // Determine the direction automatically if it is not provided.
         if (!direction) {
             let first_fret = notes.first_note.getPositions()[0].fret;
@@ -30578,14 +30289,12 @@ __webpack_require__.r(__webpack_exports__);
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 
 class TabStave extends _stave__WEBPACK_IMPORTED_MODULE_0__.Stave {
+    static get CATEGORY() {
+        return 'TabStave';
+    }
     constructor(x, y, width, options) {
-        const tab_options = Object.assign({
-            spacing_between_lines_px: 13,
-            num_lines: 6,
-            top_text_position: 1,
-        }, options);
+        const tab_options = Object.assign({ spacing_between_lines_px: 13, num_lines: 6, top_text_position: 1 }, options);
         super(x, y, width, tab_options);
-        this.setAttribute('type', 'TabStave');
     }
     getYForGlyphs() {
         return this.getYForLine(2.5);
@@ -30618,6 +30327,9 @@ __webpack_require__.r(__webpack_exports__);
 // ties include: regular ties, hammer ons, pull offs, and slides.
 
 class TabTie extends _stavetie__WEBPACK_IMPORTED_MODULE_0__.StaveTie {
+    static get CATEGORY() {
+        return 'TabTie';
+    }
     static createHammeron(notes) {
         return new TabTie(notes, 'H');
     }
@@ -30637,7 +30349,6 @@ class TabTie extends _stavetie__WEBPACK_IMPORTED_MODULE_0__.StaveTie {
      */
     constructor(notes, text) {
         super(notes, text);
-        this.setAttribute('type', 'TabTie');
         this.render_options.cp1 = 9;
         this.render_options.cp2 = 11;
         this.render_options.y_shift = 3;
@@ -30676,9 +30387,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 // To enable logging for this class. Set `Vex.Flow.TextBracket.DEBUG` to `true`.
-function L(
 // eslint-disable-next-line
-...args) {
+function L(...args) {
     if (TextBracket.DEBUG)
         (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.TextBracket', args);
 }
@@ -30688,9 +30398,8 @@ var TextBracketPosition;
     TextBracketPosition[TextBracketPosition["BOTTOM"] = -1] = "BOTTOM";
 })(TextBracketPosition || (TextBracketPosition = {}));
 class TextBracket extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
-    constructor({ start, stop, text = '', superscript = '', position = TextBracket.Position.TOP }) {
+    constructor({ start, stop, text = '', superscript = '', position = TextBracketPosition.TOP }) {
         super();
-        this.setAttribute('type', 'TextBracket');
         this.start = start;
         this.stop = stop;
         this.text = text;
@@ -30714,21 +30423,30 @@ class TextBracket extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
             underline_superscript: true,
         };
     }
+    static get CATEGORY() {
+        return 'TextBracket';
+    }
+    /**
+     * @deprecated
+     */
     static get Positions() {
-        L('Positions is deprecated, use Position instead.');
-        return TextBracket.Position;
+        L('Positions is deprecated, use TextBracketPosition instead.');
+        return TextBracketPosition;
     }
     static get Position() {
         return TextBracketPosition;
     }
+    /**
+     * @deprecated Use `TextBracket.PositionString` instead.
+     */
     static get PositionsString() {
         L('PositionsString is deprecated, use PositionString instead.');
-        return TextBracket.PositionsString;
+        return TextBracket.PositionString;
     }
     static get PositionString() {
         return {
-            top: TextBracket.Position.TOP,
-            bottom: TextBracket.Position.BOTTOM,
+            top: TextBracketPosition.TOP,
+            bottom: TextBracketPosition.BOTTOM,
         };
     }
     // Apply the text backet styling to the provided `context`
@@ -30765,10 +30483,10 @@ class TextBracket extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         this.setRendered();
         let y = 0;
         switch (this.position) {
-            case TextBracket.Position.TOP:
+            case TextBracketPosition.TOP:
                 y = this.start.checkStave().getYForTopText(this.line);
                 break;
-            case TextBracket.Position.BOTTOM:
+            case TextBracketPosition.BOTTOM:
                 y = this.start.checkStave().getYForBottomText(this.line + _flow__WEBPACK_IMPORTED_MODULE_1__.Flow.TEXT_HEIGHT_OFFSET_HACK);
                 break;
             default:
@@ -30784,30 +30502,32 @@ class TextBracket extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         // Draw text
         ctx.fillText(this.text, start.x, start.y);
         // Get the width and height for the octave number
-        const main_width = ctx.measureText(this.text).width;
-        const main_height = ctx.measureText('M').width;
+        const main_measure = ctx.measureText(this.text);
+        const main_width = main_measure.width;
+        const main_height = main_measure.height;
         // Calculate the y position for the super script
         const super_y = start.y - main_height / 2.5;
         // Draw the superscript
         ctx.setFont(this.font.family, this.font.size / 1.4, this.font.weight);
         ctx.fillText(this.superscript, start.x + main_width + 1, super_y);
         // Determine width and height of the superscript
-        const superscript_width = ctx.measureText(this.superscript).width;
-        const super_height = ctx.measureText('M').width;
+        const super_measure = ctx.measureText(this.superscript);
+        const super_width = super_measure.width;
+        const super_height = super_measure.height;
         // Setup initial coordinates for the bracket line
         let start_x = start.x;
         let line_y = super_y;
         const end_x = stop.x + this.stop.getGlyph().getWidth();
         // Adjust x and y coordinates based on position
-        if (this.position === TextBracket.Position.TOP) {
-            start_x += main_width + superscript_width + 5;
+        if (this.position === TextBracketPosition.TOP) {
+            start_x += main_width + super_width + 5;
             line_y -= super_height / 2.7;
         }
-        else if (this.position === TextBracket.Position.BOTTOM) {
+        else if (this.position === TextBracketPosition.BOTTOM) {
             line_y += super_height / 2.7;
             start_x += main_width + 2;
             if (!this.render_options.underline_superscript) {
-                start_x += superscript_width;
+                start_x += super_width;
             }
         }
         if (this.render_options.dashed) {
@@ -30869,22 +30589,24 @@ function L(...args) {
  */
 class TextDynamics extends _note__WEBPACK_IMPORTED_MODULE_1__.Note {
     /**
+     * Create the dynamics marking.
+     *
      * A `TextDynamics` object inherits from `Note` so that it can be formatted
      * within a `Voice`.
-     * Create the dynamics marking. `text_struct` is an object
-     * that contains a `duration` property and a `sequence` of
-     * letters that represents the letters to render
+     *
+     * @param noteStruct an object that contains a `duration` property and a
+     * `sequence` of letters that represents the letters to render.
      */
-    constructor(text_struct) {
-        super(text_struct);
-        this.setAttribute('type', 'TextDynamics');
-        this.sequence = text_struct.text.toLowerCase();
-        this.line = text_struct.line || 0;
+    constructor(noteStruct) {
+        super(noteStruct);
+        this.sequence = (noteStruct.text || '').toLowerCase();
+        this.line = noteStruct.line || 0;
         this.glyphs = [];
-        this.render_options = Object.assign(Object.assign({}, this.render_options), {
-            glyph_font_size: 40,
-        });
+        this.render_options = Object.assign(Object.assign({}, this.render_options), { glyph_font_size: 40 });
         L('New Dynamics Text: ', this.sequence);
+    }
+    static get CATEGORY() {
+        return 'TextDynamics';
     }
     /** The glyph data for each dynamics letter. */
     static get GLYPHS() {
@@ -30986,9 +30708,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 // To enable logging for this class. Set `Vex.Flow.TextFont.DEBUG` to `true`.
-function L(
 // eslint-disable-next-line
-...args) {
+function L(...args) {
     if (TextFont.DEBUG)
         (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.TextFont', args);
 }
@@ -31007,7 +30728,7 @@ class TextFont {
         this.maxSizeGlyph = 'H';
         this.weight = '';
         this.style = '';
-        this.attrs = { type: 'TextFont' };
+        this.attrs = { type: TextFont.CATEGORY };
         if (!params.name) {
             throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArgument', 'Font constructor must specify a name');
         }
@@ -31027,13 +30748,7 @@ class TextFont {
         this.updateCacheKey();
     }
     static get CATEGORY() {
-        return 'textFont';
-    }
-    static get DEBUG() {
-        return TextFont.debug;
-    }
-    static set DEBUG(val) {
-        TextFont.debug = val;
+        return 'TextFont';
     }
     // ### fontRegistry
     // Getter of an array of available fonts.  Applications may register their
@@ -31140,6 +30855,9 @@ class TextFont {
         let selectedFont = undefined;
         const fallback = TextFont.fontRegistry[0];
         let candidates = [];
+        if (!fd.family) {
+            fd.family = 'Arial';
+        }
         const families = fd.family.split(',');
         for (i = 0; i < families.length; ++i) {
             const famliy = families[i];
@@ -31299,29 +31017,32 @@ var Justification;
  * Examples of this would be such as dynamics, lyrics, chord changes, etc.
  */
 class TextNote extends _note__WEBPACK_IMPORTED_MODULE_1__.Note {
-    constructor(options) {
-        super(options);
-        this.setAttribute('type', 'TextNote');
-        // Note properties
-        this.text = options.text;
-        this.superscript = options.superscript;
-        this.subscript = options.subscript;
-        this.glyph = undefined;
-        this.font = Object.assign({ family: 'Arial', size: 12, weight: '' }, options.font);
+    constructor(noteStruct) {
+        super(noteStruct);
+        this.text = noteStruct.text || '';
+        this.superscript = noteStruct.superscript;
+        this.subscript = noteStruct.subscript;
+        this.font = Object.assign({ family: 'Arial', size: 12, weight: '' }, noteStruct.font);
+        this.line = noteStruct.line || 0;
+        this.smooth = noteStruct.smooth || false;
+        this.ignore_ticks = noteStruct.ignore_ticks || false;
+        this.justification = Justification.LEFT;
         // Determine and set initial note width. Note that the text width is
         // an approximation and isn't very accurate. The only way to accurately
-        // measure the length of text is with `canvasmeasureText()`
-        if (options.glyph) {
-            const struct = TextNote.GLYPHS[options.glyph];
+        // measure the length of text is with `CanvasRenderingContext2D.measureText()`.
+        if (noteStruct.glyph) {
+            const struct = TextNote.GLYPHS[noteStruct.glyph];
             if (!struct)
-                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('Invalid glyph type: ' + options.glyph);
+                throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('Invalid glyph type: ' + noteStruct.glyph);
             this.glyph = new _glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph(struct.code, 40, { category: 'textNote' });
             this.setWidth(this.glyph.getMetrics().width);
         }
-        this.line = options.line || 0;
-        this.smooth = options.smooth || false;
-        this.ignore_ticks = options.ignore_ticks || false;
-        this.justification = TextNote.Justification.LEFT;
+        else {
+            this.glyph = undefined;
+        }
+    }
+    static get CATEGORY() {
+        return 'TextNote';
     }
     static get Justification() {
         return Justification;
@@ -31452,21 +31173,16 @@ class TextNote extends _note__WEBPACK_IMPORTED_MODULE_1__.Note {
             this.applyStyle(ctx);
             ctx.setFont(this.font.family, this.font.size, this.font.weight);
             ctx.fillText(this.text, x, y);
-            let height = ctx.measureText(this.text).height;
-            // CanvasRenderingContext2D.measureText() does not have a height field.
-            if (typeof height === 'undefined') {
-                // TODO: Consolidate calls to ctx.measureText('M').
-                height = ctx.measureText('M').width;
-            }
+            const height = ctx.measureText(this.text).height;
             // Write superscript
             if (this.superscript) {
                 ctx.setFont(this.font.family, this.font.size / 1.3, this.font.weight);
-                ctx.fillText(this.superscript, x + width + 2, y - height / 2.2);
+                ctx.fillText(this.superscript, x + this.width + 2, y - height / 2.2);
             }
             // Write subscript
             if (this.subscript) {
                 ctx.setFont(this.font.family, this.font.size / 1.3, this.font.weight);
-                ctx.fillText(this.subscript, x + width + 2, y + height / 2.2 - 1);
+                ctx.fillText(this.subscript, x + this.width + 2, y + height / 2.2 - 1);
             }
             this.restoreStyle(ctx);
         }
@@ -31501,12 +31217,10 @@ __webpack_require__.r(__webpack_exports__);
  * has a duration, i.e., Tickables occupy space in the musical rendering dimension.
  */
 class Tickable extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
-    /** Constructor */
     constructor() {
         super();
         this.preFormatted = false;
         this.postFormatted = false;
-        this.setAttribute('type', 'Tickable');
         // These properties represent the duration of
         // this tickable element.
         this.ticks = new _fraction__WEBPACK_IMPORTED_MODULE_2__.Fraction(0, 1); // Fractional value of ticks
@@ -31545,9 +31259,6 @@ class Tickable extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
     }
     static get CATEGORY() {
         return 'Tickable';
-    }
-    getCategory() {
-        return Tickable.CATEGORY;
     }
     /** Reset the Tickable, this function will be overloaded. */
     reset() {
@@ -31785,8 +31496,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "TickContext": () => (/* binding */ TickContext)
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
-/* harmony import */ var _tickable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tickable */ "./src/tickable.ts");
-/* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
+/* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
@@ -31794,17 +31504,16 @@ __webpack_require__.r(__webpack_exports__);
 // tabs, etc.
 
 
-
 /**
  * TickContext formats abstract tickable objects, such as notes, chords, tabs, etc.
  */
-class TickContext extends _tickable__WEBPACK_IMPORTED_MODULE_1__.Tickable {
+class TickContext {
     constructor(options) {
-        super();
+        this.preFormatted = false;
+        this.postFormatted = false;
         this.tickID = options && options.tickID ? options.tickID : 0;
-        this.setAttribute('type', 'TickContext');
-        this.currentTick = new _fraction__WEBPACK_IMPORTED_MODULE_2__.Fraction(0, 1);
-        this.maxTicks = new _fraction__WEBPACK_IMPORTED_MODULE_2__.Fraction(0, 1);
+        this.currentTick = new _fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction(0, 1);
+        this.maxTicks = new _fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction(0, 1);
         this.maxTickable = undefined; // Biggest tickable
         this.minTicks = undefined; // this can remian null if all tickables have ignore_ticks
         this.minTickable = undefined;
@@ -31824,10 +31533,13 @@ class TickContext extends _tickable__WEBPACK_IMPORTED_MODULE_1__.Tickable {
         this.totalLeftPx = 0; // Total left pixels
         this.totalRightPx = 0; // Total right pixels
         this.tContexts = []; // Parent array of tick contexts
-    }
-    // eslint-disable-next-line
-    draw(...args) {
-        // DO NOTHING.
+        this.width = 0;
+        this.formatterMetrics = {
+            // The freedom of a tickcontext is the distance it can move without colliding
+            // with neighboring elements. A formatter can set these values during its
+            // formatting pass, which a different formatter can then use to fine tune.
+            freedom: { left: 0, right: 0 },
+        };
     }
     static getNextContext(tContext) {
         const contexts = tContext.tContexts;
@@ -31917,14 +31629,13 @@ class TickContext extends _tickable__WEBPACK_IMPORTED_MODULE_1__.Tickable {
     }
     setCurrentTick(tick) {
         this.currentTick = tick;
-        this.setPreFormatted(false);
+        this.preFormatted = false;
     }
     addTickable(tickable, voiceIndex) {
         if (!tickable) {
             throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArgument', 'Invalid tickable added.');
         }
         if (!tickable.shouldIgnoreTicks()) {
-            this.ignore_ticks = false;
             const ticks = tickable.getTicks();
             if (ticks.greaterThan(this.maxTicks)) {
                 this.maxTicks = ticks.clone();
@@ -31942,7 +31653,7 @@ class TickContext extends _tickable__WEBPACK_IMPORTED_MODULE_1__.Tickable {
         tickable.setTickContext(this);
         this.tickables.push(tickable);
         this.tickablesByVoice[voiceIndex || 0] = tickable;
-        this.setPreFormatted(false);
+        this.preFormatted = false;
         return this;
     }
     preFormat() {
@@ -31976,12 +31687,8 @@ class TickContext extends _tickable__WEBPACK_IMPORTED_MODULE_1__.Tickable {
         this.postFormatted = true;
         return this;
     }
-    getStave() {
-        throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NotImplemented', 'getStave() not implemented.');
-    }
-    // eslint-disable-next-line
-    setStave(stave) {
-        throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('NotImplemented', 'setStave() not implemented.');
+    getFormatterMetrics() {
+        return this.formatterMetrics;
     }
 }
 
@@ -32095,20 +31802,19 @@ const assertIsValidFraction = (timeSpec) => {
 class TimeSignature extends _stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveModifier {
     constructor(timeSpec = '4/4', customPadding = 15, validate_args = true) {
         super();
-        this.setAttribute('type', 'TimeSignature');
         this.validate_args = validate_args;
         const padding = customPadding;
         this.point = this.musicFont.lookupMetric('digits.point');
         const fontLineShift = this.musicFont.lookupMetric('digits.shiftLine', 0);
         this.topLine = 2 + fontLineShift;
         this.bottomLine = 4 + fontLineShift;
-        this.setPosition(_stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveModifier.Position.BEGIN);
+        this.setPosition(_stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveModifierPosition.BEGIN);
         this.info = this.parseTimeSpec(timeSpec);
         this.setWidth((0,_util__WEBPACK_IMPORTED_MODULE_0__.defined)(this.info.glyph.getMetrics().width));
         this.setPadding(padding);
     }
     static get CATEGORY() {
-        return 'timesignatures';
+        return 'TimeSignature';
     }
     static get glyphs() {
         return {
@@ -32123,9 +31829,6 @@ class TimeSignature extends _stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveMod
                 line: 2,
             },
         };
-    }
-    getCategory() {
-        return TimeSignature.CATEGORY;
     }
     parseTimeSpec(timeSpec) {
         if (timeSpec === 'C' || timeSpec === 'C|') {
@@ -32156,9 +31859,6 @@ class TimeSignature extends _stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveMod
         return this;
     }
     draw() {
-        if (!this.x) {
-            throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('TimeSignatureError', "Can't draw time signature without x.");
-        }
         const stave = this.checkStave();
         this.setRendered();
         this.info.glyph.setStave(stave);
@@ -32190,12 +31890,14 @@ __webpack_require__.r(__webpack_exports__);
 class TimeSigNote extends _note__WEBPACK_IMPORTED_MODULE_0__.Note {
     constructor(timeSpec, customPadding) {
         super({ duration: 'b' });
-        this.setAttribute('type', 'TimeSigNote');
         const timeSignature = new _timesignature__WEBPACK_IMPORTED_MODULE_1__.TimeSignature(timeSpec, customPadding);
         this.timeSigInfo = timeSignature.getInfo();
         this.setWidth(this.timeSigInfo.glyph.getMetrics().width);
         // Note properties
         this.ignore_ticks = true;
+    }
+    static get CATEGORY() {
+        return 'TimeSigNote';
     }
     /* Overridden to ignore */
     // eslint-disable-next-line
@@ -32237,6 +31939,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _gracenote__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
 /* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./stem */ "./src/stem.ts");
+/* harmony import */ var typeguard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! typeguard */ "./src/typeguard.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Mike Corrigan <corrigan@gmail.com>
 // MIT License
@@ -32244,26 +31947,20 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 /** Tremolo implements tremolo notation. */
 class Tremolo extends _modifier__WEBPACK_IMPORTED_MODULE_0__.Modifier {
     /**
-     * Constructor.
      * @param num number of bars
      */
     constructor(num) {
         super();
-        this.setAttribute('type', 'Tremolo');
         this.num = num;
         this.position = _modifier__WEBPACK_IMPORTED_MODULE_0__.Modifier.Position.CENTER;
         this.code = 'tremolo1';
     }
-    /** Tremolos category string. */
     static get CATEGORY() {
-        return 'tremolo';
-    }
-    /** Get element CATEGORY string. */
-    getCategory() {
-        return Tremolo.CATEGORY;
+        return 'Tremolo';
     }
     /** Draw the tremolo on the rendering context. */
     draw() {
@@ -32273,9 +31970,9 @@ class Tremolo extends _modifier__WEBPACK_IMPORTED_MODULE_0__.Modifier {
         const stemDirection = note.getStemDirection();
         const start = note.getModifierStartXY(this.position, this.index);
         let x = start.x;
-        const isGraceNote = note.getCategory() === _gracenote__WEBPACK_IMPORTED_MODULE_2__.GraceNote.CATEGORY;
-        const scale = isGraceNote ? _gracenote__WEBPACK_IMPORTED_MODULE_2__.GraceNote.SCALE : 1;
-        const category = `tremolo.${isGraceNote ? 'grace' : 'default'}`;
+        const gn = (0,typeguard__WEBPACK_IMPORTED_MODULE_4__.isGraceNote)(note);
+        const scale = gn ? _gracenote__WEBPACK_IMPORTED_MODULE_2__.GraceNote.SCALE : 1;
+        const category = `tremolo.${gn ? 'grace' : 'default'}`;
         const y_spacing = this.musicFont.lookupMetric(`${category}.spacing`) * stemDirection;
         const height = this.num * y_spacing;
         let y = note.getStemExtents().baseY - height;
@@ -32448,15 +32145,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class Tuplet extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
-    constructor(notes, options) {
+    constructor(notes, options = {}) {
         super();
         this.numerator_glyphs = [];
         this.denom_glyphs = [];
-        this.setAttribute('type', 'Tuplet');
         if (!notes || !notes.length) {
             throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArguments', 'No notes provided for tuplet.');
         }
-        this.options = Object.assign({}, options);
+        this.options = options;
         this.notes = notes;
         this.num_notes = this.options.num_notes != undefined ? this.options.num_notes : notes.length;
         // We accept beats_occupied, but warn that it's deprecated:
@@ -32481,6 +32177,9 @@ class Tuplet extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
         _formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter.AlignRestsToNotes(notes, true, true);
         this.resolveGlyphs();
         this.attach();
+    }
+    static get CATEGORY() {
+        return 'Tuplet';
     }
     static get LOCATION_TOP() {
         return 1;
@@ -32705,12 +32404,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "isStemmableNote": () => (/* binding */ isStemmableNote),
 /* harmony export */   "isStaveNote": () => (/* binding */ isStaveNote),
 /* harmony export */   "isTabNote": () => (/* binding */ isTabNote),
+/* harmony export */   "isGraceNote": () => (/* binding */ isGraceNote),
+/* harmony export */   "isGraceNoteGroup": () => (/* binding */ isGraceNoteGroup),
+/* harmony export */   "isDot": () => (/* binding */ isDot),
+/* harmony export */   "isBarline": () => (/* binding */ isBarline),
 /* harmony export */   "isCategory": () => (/* binding */ isCategory)
 /* harmony export */ });
-/* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./note */ "./src/note.ts");
-/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
-/* harmony import */ var _stemmablenote__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
-/* harmony import */ var _tabnote__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
+/* harmony import */ var dot__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dot */ "./src/dot.ts");
+/* harmony import */ var gracenote__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! gracenote */ "./src/gracenote.ts");
+/* harmony import */ var gracenotegroup__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! gracenotegroup */ "./src/gracenotegroup.ts");
+/* harmony import */ var stavebarline__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! stavebarline */ "./src/stavebarline.ts");
+/* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./note */ "./src/note.ts");
+/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+/* harmony import */ var _stemmablenote__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
+/* harmony import */ var _tabnote__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Ron B. Yeh
 // MIT License
@@ -32718,11 +32425,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-// Helper functions for checking an object's type, via `instanceof` and `obj.getCategory()`.
-const isNote = (obj) => isCategory(obj, _note__WEBPACK_IMPORTED_MODULE_0__.Note);
-const isStemmableNote = (obj) => isCategory(obj, _stemmablenote__WEBPACK_IMPORTED_MODULE_2__.StemmableNote);
-const isStaveNote = (obj) => isCategory(obj, _stavenote__WEBPACK_IMPORTED_MODULE_1__.StaveNote);
-const isTabNote = (obj) => isCategory(obj, _tabnote__WEBPACK_IMPORTED_MODULE_3__.TabNote);
+
+
+
+
+// Helper functions for checking an object's type, via `instanceof` and `obj.constructor.CATEGORY`.
+const isNote = (obj) => isCategory(obj, _note__WEBPACK_IMPORTED_MODULE_4__.Note);
+const isStemmableNote = (obj) => isCategory(obj, _stemmablenote__WEBPACK_IMPORTED_MODULE_6__.StemmableNote);
+const isStaveNote = (obj) => isCategory(obj, _stavenote__WEBPACK_IMPORTED_MODULE_5__.StaveNote);
+const isTabNote = (obj) => isCategory(obj, _tabnote__WEBPACK_IMPORTED_MODULE_7__.TabNote);
+const isGraceNote = (obj) => isCategory(obj, gracenote__WEBPACK_IMPORTED_MODULE_1__.GraceNote);
+const isGraceNoteGroup = (obj) => isCategory(obj, gracenotegroup__WEBPACK_IMPORTED_MODULE_2__.GraceNoteGroup);
+const isDot = (obj) => isCategory(obj, dot__WEBPACK_IMPORTED_MODULE_0__.Dot);
+const isBarline = (obj) => isCategory(obj, stavebarline__WEBPACK_IMPORTED_MODULE_3__.Barline);
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/ban-types */
@@ -32731,9 +32446,9 @@ const isTabNote = (obj) => isCategory(obj, _tabnote__WEBPACK_IMPORTED_MODULE_3__
  * @param obj check if this object is an instance of the provided `cls`.
  * @param cls a JavaScript class, such as `StaveNote`. `cls` is a constructor function, and it has a `prototype` property, and
  *            optionally a `CATEGORY` property (used in VexFlow for flexible type checking).
- * @param checkAncestors defaults to `true`, so we walk up the prototype chain to look for a matching `.getCategory()`.
+ * @param checkAncestors defaults to `true`, so we walk up the prototype chain to look for a matching `CATEGORY`.
  *        If `false`, we do not check the superclass or other ancestors.
- * @returns true if `obj` is an instance of `ClassName`, or has a `.getCategory()` that matches `ClassName.CATEGORY`.
+ * @returns true if `obj` is an instance of `ClassName`, or has a static `CATEGORY` property that matches `ClassName.CATEGORY`.
  */
 function isCategory(obj, cls, checkAncestors = true) {
     // obj is NOT an instance of cls if it is: undefined, a number, a primitive string, or null.
@@ -32742,18 +32457,20 @@ function isCategory(obj, cls, checkAncestors = true) {
     }
     // `obj.constructor` is a reference to the constructor function that created the `obj` instance.
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/constructor
-    if (obj instanceof cls || obj.constructor === cls) {
+    let constructorFcn = obj.constructor;
+    if (obj instanceof cls || constructorFcn === cls) {
         return true;
     }
-    // If instanceof fails, fall back to checking if the object's .getCategory() matches the class's .CATEGORY property.
+    // If instanceof fails, fall back to checking if the object's static .CATEGORY matches the class's .CATEGORY property.
     const categoryToMatch = cls.CATEGORY;
     if (categoryToMatch === undefined) {
         return false;
     }
     if (checkAncestors) {
-        // Walk up the prototype chain to look for a matching .getCategory().
+        // Walk up the prototype chain to look for a matching obj.constructor.CATEGORY.
         while (obj !== null) {
-            if ('getCategory' in obj && obj.getCategory() === categoryToMatch) {
+            constructorFcn = obj.constructor;
+            if ('CATEGORY' in constructorFcn && constructorFcn.CATEGORY === categoryToMatch) {
                 return true;
             }
             obj = Object.getPrototypeOf(obj);
@@ -32761,8 +32478,8 @@ function isCategory(obj, cls, checkAncestors = true) {
         return false;
     }
     else {
-        // Do not walk up the prototype chain. Just check this particular object's .getCategory().
-        return 'getCategory' in obj && obj.getCategory() === categoryToMatch;
+        // Do not walk up the prototype chain. Just check this particular object's static .CATEGORY string.
+        return 'CATEGORY' in constructorFcn && constructorFcn.CATEGORY === categoryToMatch;
     }
 }
 
@@ -32783,7 +32500,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "warn": () => (/* binding */ warn),
 /* harmony export */   "midLine": () => (/* binding */ midLine),
 /* harmony export */   "drawDot": () => (/* binding */ drawDot),
-/* harmony export */   "prefix": () => (/* binding */ prefix)
+/* harmony export */   "prefix": () => (/* binding */ prefix),
+/* harmony export */   "normalizeAngle": () => (/* binding */ normalizeAngle)
 /* harmony export */ });
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
@@ -32853,6 +32571,16 @@ function drawDot(ctx, x, y, color = '#55') {
  */
 function prefix(text) {
     return `vf-${text}`;
+}
+/**
+ * Convert an arbitrary angle in radians to the equivalent one in the range [0, pi).
+ */
+function normalizeAngle(a) {
+    a = a % (2 * Math.PI);
+    if (a < 0) {
+        a += 2 * Math.PI;
+    }
+    return a;
 }
 
 
@@ -32970,7 +32698,6 @@ __webpack_require__.r(__webpack_exports__);
 class Vibrato extends _modifier__WEBPACK_IMPORTED_MODULE_0__.Modifier {
     constructor() {
         super();
-        this.setAttribute('type', 'Vibrato');
         this.position = _modifier__WEBPACK_IMPORTED_MODULE_0__.Modifier.Position.RIGHT;
         this.render_options = {
             harsh: false,
@@ -32981,9 +32708,8 @@ class Vibrato extends _modifier__WEBPACK_IMPORTED_MODULE_0__.Modifier {
         };
         this.setVibratoWidth(this.render_options.vibrato_width);
     }
-    /** Get element CATEGORY string. */
     static get CATEGORY() {
-        return 'vibratos';
+        return 'Vibrato';
     }
     /** Arrange vibratos inside a `ModifierContext`. */
     static format(vibratos, state, context) {
@@ -33009,10 +32735,6 @@ class Vibrato extends _modifier__WEBPACK_IMPORTED_MODULE_0__.Modifier {
         state.right_shift += width;
         state.top_text_line += 1;
         return true;
-    }
-    /** Get element category string. */
-    getCategory() {
-        return Vibrato.CATEGORY;
     }
     /** Set harsh vibrato. */
     setHarsh(harsh) {
@@ -33101,9 +32823,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function L(
 // eslint-disable-next-line
-...args) {
+function L(...args) {
     if (VibratoBracket.DEBUG)
         (0,_util__WEBPACK_IMPORTED_MODULE_0__.log)('Vex.Flow.VibratoBracket', args);
 }
@@ -33116,7 +32837,6 @@ class VibratoBracket extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
      */
     constructor(bracket_data) {
         super();
-        this.setAttribute('type', 'VibratoBracket');
         this.start = bracket_data.start;
         this.stop = bracket_data.stop;
         this.line = 1;
@@ -33127,6 +32847,9 @@ class VibratoBracket extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
             wave_girth: 2,
             vibrato_width: 0,
         };
+    }
+    static get CATEGORY() {
+        return 'VibratoBracket';
     }
     /** Set line position of the vibrato bracket. */
     setLine(line) {
@@ -33195,35 +32918,35 @@ var VoiceMode;
 class Voice extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
     constructor(time, options) {
         super();
-        this.setAttribute('type', 'Voice');
+        this.resolutionMultiplier = 1;
+        this.mode = VoiceMode.STRICT;
+        this.ticksUsed = new _fraction__WEBPACK_IMPORTED_MODULE_3__.Fraction(0, 1);
+        this.largestTickWidth = 0;
+        this.tickables = [];
         this.options = Object.assign({ softmaxFactor: 100 }, options);
-        // Time signature shortcut: "4/4", "3/8", etc.
+        // Convert the `time` string into a VoiceTime object if necessary.
+        let voiceTime;
         if (typeof time === 'string') {
+            // Time signature shortcut: "4/4", "3/8", etc.
             const match = time.match(/(\d+)\/(\d+)/);
             if (match) {
-                time = {
+                voiceTime = {
                     num_beats: parseInt(match[1]),
                     beat_value: parseInt(match[2]),
-                    resolution: _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.RESOLUTION,
                 };
             }
         }
-        // Default time sig is 4/4
-        this.time = Object.assign({
-            num_beats: 4,
-            beat_value: 4,
-            resolution: _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.RESOLUTION,
-        }, time);
+        else {
+            voiceTime = time;
+        }
+        // Default time signature is 4/4.
+        this.time = Object.assign({ num_beats: 4, beat_value: 4, resolution: _flow__WEBPACK_IMPORTED_MODULE_2__.Flow.RESOLUTION }, voiceTime);
         // Recalculate total ticks.
         this.totalTicks = new _fraction__WEBPACK_IMPORTED_MODULE_3__.Fraction(this.time.num_beats * (this.time.resolution / this.time.beat_value), 1);
-        this.resolutionMultiplier = 1;
-        // Set defaults
-        this.tickables = [];
-        this.ticksUsed = new _fraction__WEBPACK_IMPORTED_MODULE_3__.Fraction(0, 1);
         this.smallestTickCount = this.totalTicks.clone();
-        this.largestTickWidth = 0;
-        // Do we care about strictly timed notes
-        this.mode = Voice.Mode.STRICT;
+    }
+    static get CATEGORY() {
+        return 'Voice';
     }
     /**
      * Modes allow the addition of ticks in three different ways:
@@ -33260,7 +32983,7 @@ class Voice extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
     }
     /**
      * Set the voice mode.
-     * @param mode value from `Voice.Mode`
+     * @param mode value from `VoiceMode`
      */
     setMode(mode) {
         this.mode = mode;
@@ -33303,12 +33026,12 @@ class Voice extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
     }
     /** Set the voice mode to strict or soft. */
     setStrict(strict) {
-        this.mode = strict ? Voice.Mode.STRICT : Voice.Mode.SOFT;
+        this.mode = strict ? VoiceMode.STRICT : VoiceMode.SOFT;
         return this;
     }
     /** Determine if the voice is complete according to the voice mode. */
     isComplete() {
-        if (this.mode === Voice.Mode.STRICT || this.mode === Voice.Mode.FULL) {
+        if (this.mode === VoiceMode.STRICT || this.mode === VoiceMode.FULL) {
             return this.ticksUsed.equals(this.totalTicks);
         }
         else {
@@ -33353,7 +33076,7 @@ class Voice extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
             // Update the total ticks for this line.
             this.ticksUsed.add(ticks);
             this.expTicksUsed = 0; // reset
-            if ((this.mode === Voice.Mode.STRICT || this.mode === Voice.Mode.FULL) &&
+            if ((this.mode === VoiceMode.STRICT || this.mode === VoiceMode.FULL) &&
                 this.ticksUsed.greaterThan(this.totalTicks)) {
                 this.ticksUsed.subtract(ticks);
                 throw new _util__WEBPACK_IMPORTED_MODULE_0__.RuntimeError('BadArgument', 'Too many ticks.');
@@ -33712,7 +33435,7 @@ function cautionary(options) {
     voice.getTickables().forEach((tickable) => {
         tickable
             .getModifiers()
-            .filter((modifier) => modifier.getAttribute('type') === 'Accidental')
+            .filter((modifier) => modifier.getAttribute('type') === accidental__WEBPACK_IMPORTED_MODULE_2__.Accidental.CATEGORY)
             .forEach((accid) => accid.setAsCautionary());
     });
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
@@ -34339,8 +34062,8 @@ const AnnotationTests = {
 };
 const FONT_SIZE = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.Font.size;
 // Helper functions to create TabNote and StaveNote objects.
-const tabNote = (struct) => new tabnote__WEBPACK_IMPORTED_MODULE_9__.TabNote(struct);
-const staveNote = (struct) => new stavenote__WEBPACK_IMPORTED_MODULE_8__.StaveNote(struct);
+const tabNote = (noteStruct) => new tabnote__WEBPACK_IMPORTED_MODULE_9__.TabNote(noteStruct);
+const staveNote = (noteStruct) => new stavenote__WEBPACK_IMPORTED_MODULE_8__.StaveNote(noteStruct);
 /**
  * Show lyrics using Annotation objects.
  */
@@ -35947,9 +35670,6 @@ __webpack_require__.r(__webpack_exports__);
 // MIT License
 //
 // Barline Tests
-/* eslint-disable */
-// @ts-nocheck
-// TODO: Factory.BarNote()'s type argument expects BarlineType, but we pass in string. Did the previous API allow string?
 
 
 const BarlineTests = {
@@ -36643,9 +36363,6 @@ __webpack_require__.r(__webpack_exports__);
 // MIT License
 //
 // Bend Tests
-/* eslint-disable */
-// @ts-nocheck
-// TODO: ctx.setFont()'s 3rd argument "weight" should be optional, and default to ''.
 
 
 
@@ -36667,7 +36384,7 @@ const BendTests = {
     },
 };
 // Helper functions for creating TabNote and Bend objects.
-const note = (struct) => new tabnote__WEBPACK_IMPORTED_MODULE_4__.TabNote(struct);
+const note = (noteStruct) => new tabnote__WEBPACK_IMPORTED_MODULE_4__.TabNote(noteStruct);
 const bendWithText = (text, release = false) => new bend__WEBPACK_IMPORTED_MODULE_1__.Bend(text, release);
 const bendWithPhrase = (phrase) => new bend__WEBPACK_IMPORTED_MODULE_1__.Bend('', false, phrase);
 /**
@@ -36961,8 +36678,6 @@ __webpack_require__.r(__webpack_exports__);
 // MIT License
 //
 // BoundingBoxComputation Tests
-// TODO: Provide a unique names for each test, so we can render separate PNGs.
-// Append an index to line 20 'Quadratic Test' and line 21 'Cubic Test'.
 
 
 
@@ -36971,8 +36686,12 @@ const BoundingBoxComputationTests = {
         QUnit.module('BoundingBoxComputation');
         test('Point Test', point);
         const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
-        quadraticParams.forEach((params /*, index*/) => run('Quadratic Test', quadratic, params));
-        cubicParams.forEach((params /*, index*/) => run('Cubic Test', cubic, params));
+        quadraticParams.forEach((params, index) => {
+            run(`Quadratic Test ${index}`, quadratic, params);
+        });
+        cubicParams.forEach((params, index) => {
+            run(`Cubic Test ${index}`, cubic, params);
+        });
     },
 };
 function point() {
@@ -37193,9 +36912,6 @@ __webpack_require__.r(__webpack_exports__);
 // MIT License
 //
 // ChordSymbol Tests
-/* eslint-disable */
-// @ts-nocheck
-// ChordSymbol methods addGlyphOrText(), addLine(), addText()) need their second arguments to be optional.
 
 
 
@@ -37990,16 +37706,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "EasyScoreTests": () => (/* binding */ EasyScoreTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
-/* harmony import */ var easyscore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! easyscore */ "./src/easyscore.ts");
-/* harmony import */ var frethandfinger__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! frethandfinger */ "./src/frethandfinger.ts");
-/* harmony import */ var modifier__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! modifier */ "./src/modifier.ts");
-/* harmony import */ var staveconnector__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! staveconnector */ "./src/staveconnector.ts");
-/* harmony import */ var stavenote__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! stavenote */ "./src/stavenote.ts");
+/* harmony import */ var articulation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! articulation */ "./src/articulation.ts");
+/* harmony import */ var easyscore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! easyscore */ "./src/easyscore.ts");
+/* harmony import */ var frethandfinger__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! frethandfinger */ "./src/frethandfinger.ts");
+/* harmony import */ var modifier__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! modifier */ "./src/modifier.ts");
+/* harmony import */ var staveconnector__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! staveconnector */ "./src/staveconnector.ts");
 /* harmony import */ var tuplet__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tuplet */ "./src/tuplet.ts");
+/* harmony import */ var stem__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! stem */ "./src/stem.ts");
 // [VexFlow](https://vexflow.com/) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 //
 // EasyScore Tests
+
 
 
 
@@ -38046,14 +37764,14 @@ function createShortcuts(score) {
  * - all strings in `mustFail` fail to parse (i.e., Result.success is `false`).
  */
 function basic() {
-    const score = new easyscore__WEBPACK_IMPORTED_MODULE_1__.EasyScore();
+    const score = new easyscore__WEBPACK_IMPORTED_MODULE_2__.EasyScore();
     const mustPass = ['c4', 'c#4', 'c4/r', 'c#5', 'c3/x', 'c3//x'];
     const mustFail = ['', '()', '7', '(c#4 e5 g6'];
     mustPass.forEach((line) => equal(score.parse(line).success, true, line));
     mustFail.forEach((line) => equal(score.parse(line).success, false, line));
 }
 function accidentals() {
-    const score = new easyscore__WEBPACK_IMPORTED_MODULE_1__.EasyScore();
+    const score = new easyscore__WEBPACK_IMPORTED_MODULE_2__.EasyScore();
     const mustPass = [
         'c3',
         'c##3, cb3',
@@ -38107,14 +37825,14 @@ function accidentals() {
     mustFail.forEach((line) => equal(score.parse(line).success, false, line));
 }
 function durations() {
-    const score = new easyscore__WEBPACK_IMPORTED_MODULE_1__.EasyScore();
+    const score = new easyscore__WEBPACK_IMPORTED_MODULE_2__.EasyScore();
     const mustPass = ['c3/4', 'c##3/w, cb3', 'c##3/w, cb3/q', 'c##3/q, cb3/32', '(c##3 cbb3 cn3), cb3'];
     const mustFail = ['Cn3/]', '/', '(cq cbb3 cn3), cb3', '(cdd7 cbb3 cn3), cb3'];
     mustPass.forEach((line) => equal(score.parse(line).success, true, line));
     mustFail.forEach((line) => equal(score.parse(line).success, false, line));
 }
 function chords() {
-    const score = new easyscore__WEBPACK_IMPORTED_MODULE_1__.EasyScore();
+    const score = new easyscore__WEBPACK_IMPORTED_MODULE_2__.EasyScore();
     const mustPass = [
         '(c5)',
         '(c3 e0 g9)',
@@ -38128,7 +37846,7 @@ function chords() {
     mustFail.forEach((line) => equal(score.parse(line).success, false, line));
 }
 function dots() {
-    const score = new easyscore__WEBPACK_IMPORTED_MODULE_1__.EasyScore();
+    const score = new easyscore__WEBPACK_IMPORTED_MODULE_2__.EasyScore();
     const mustPass = [
         'c3/4.',
         'c##3/w.., cb3',
@@ -38143,14 +37861,14 @@ function dots() {
     mustFail.forEach((line) => equal(score.parse(line).success, false, line));
 }
 function types() {
-    const score = new easyscore__WEBPACK_IMPORTED_MODULE_1__.EasyScore();
+    const score = new easyscore__WEBPACK_IMPORTED_MODULE_2__.EasyScore();
     const mustPass = ['c3/4/x.', 'c##3//r.., cb3', 'c##3/x.., cb3', 'c##3/r.., cb3', 'd##3/w/s, cb3/q...', 'Fb4'];
     const mustFail = ['c4/q/U', '(c##4, cbb4 cn4)/w.., (c#5 cb2 a3)/32', 'z#3'];
     mustPass.forEach((line) => equal(score.parse(line).success, true, line));
     mustFail.forEach((line) => equal(score.parse(line).success, false, line));
 }
 function options() {
-    const score = new easyscore__WEBPACK_IMPORTED_MODULE_1__.EasyScore();
+    const score = new easyscore__WEBPACK_IMPORTED_MODULE_2__.EasyScore();
     const mustPass = [
         'c3/4.[foo="bar"]',
         'c##3/w.., cb3[id="blah"]',
@@ -38181,7 +37899,7 @@ function drawBasicTest(options) {
         voices: [voice(notes('c#3/q, cn3/q, bb3/q, d##3/q', { clef: 'bass' }))],
     })
         .addClef('bass');
-    system.addConnector().setType(staveconnector__WEBPACK_IMPORTED_MODULE_4__.StaveConnector.type.BRACKET);
+    system.addConnector().setType(staveconnector__WEBPACK_IMPORTED_MODULE_5__.StaveConnector.type.BRACKET);
     f.draw();
     expect(0);
 }
@@ -38203,7 +37921,7 @@ function drawAccidentalsTest(options) {
         voices: [voice(notes('c+-3/q, c+3/q, bb3/q, d##3/q', { clef: 'bass' }))],
     })
         .addClef('bass');
-    system.addConnector().setType(staveconnector__WEBPACK_IMPORTED_MODULE_4__.StaveConnector.type.BRACKET);
+    system.addConnector().setType(staveconnector__WEBPACK_IMPORTED_MODULE_5__.StaveConnector.type.BRACKET);
     f.draw();
     expect(0);
 }
@@ -38270,17 +37988,17 @@ function drawOptionsTest(options) {
     equal(note0.getAttribute('id'), 'foobar');
     ok(note0.hasClass('red'));
     ok(note0.hasClass('bold'));
-    equal(note0_modifier0.getCategory(), 'articulations');
+    equal(note0_modifier0.getCategory(), articulation__WEBPACK_IMPORTED_MODULE_1__.Articulation.CATEGORY);
     equal(note0_modifier0.type, 'a.');
-    equal(note0_modifier0.getPosition(), modifier__WEBPACK_IMPORTED_MODULE_3__.Modifier.Position.BELOW);
-    equal(note0_modifier1.getCategory(), 'articulations');
+    equal(note0_modifier0.getPosition(), modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.BELOW);
+    equal(note0_modifier1.getCategory(), articulation__WEBPACK_IMPORTED_MODULE_1__.Articulation.CATEGORY);
     equal(note0_modifier1.type, 'a-');
-    equal(note0_modifier1.getPosition(), modifier__WEBPACK_IMPORTED_MODULE_3__.Modifier.Position.ABOVE);
-    equal(note0.getStemDirection(), stavenote__WEBPACK_IMPORTED_MODULE_5__.StaveNote.STEM_UP);
-    equal(note1_modifier0.getCategory(), 'articulations');
+    equal(note0_modifier1.getPosition(), modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.ABOVE);
+    equal(note0.getStemDirection(), stem__WEBPACK_IMPORTED_MODULE_7__.Stem.UP);
+    equal(note1_modifier0.getCategory(), articulation__WEBPACK_IMPORTED_MODULE_1__.Articulation.CATEGORY);
     equal(note1_modifier0.type, 'a>');
-    equal(note1_modifier0.getPosition(), modifier__WEBPACK_IMPORTED_MODULE_3__.Modifier.Position.ABOVE);
-    equal(notes[2].getStemDirection(), stavenote__WEBPACK_IMPORTED_MODULE_5__.StaveNote.STEM_DOWN);
+    equal(note1_modifier0.getPosition(), modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.ABOVE);
+    equal(notes[2].getStemDirection(), stem__WEBPACK_IMPORTED_MODULE_7__.Stem.DOWN);
 }
 function drawFingeringsTest(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 500, 200);
@@ -38290,30 +38008,30 @@ function drawFingeringsTest(options) {
     system.addStave({ voices: [score.voice(notes)] });
     f.draw();
     const note0_modifier0 = notes[0].getModifiers()[0];
-    equal(note0_modifier0.getCategory(), frethandfinger__WEBPACK_IMPORTED_MODULE_2__.FretHandFinger.CATEGORY);
+    equal(note0_modifier0.getCategory(), frethandfinger__WEBPACK_IMPORTED_MODULE_3__.FretHandFinger.CATEGORY);
     equal(note0_modifier0.getFretHandFinger(), '1');
-    equal(note0_modifier0.getPosition(), modifier__WEBPACK_IMPORTED_MODULE_3__.Modifier.Position.LEFT);
+    equal(note0_modifier0.getPosition(), modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.LEFT);
     const note1_modifier0 = notes[1].getModifiers()[0];
-    equal(note1_modifier0.getCategory(), frethandfinger__WEBPACK_IMPORTED_MODULE_2__.FretHandFinger.CATEGORY);
+    equal(note1_modifier0.getCategory(), frethandfinger__WEBPACK_IMPORTED_MODULE_3__.FretHandFinger.CATEGORY);
     equal(note1_modifier0.getFretHandFinger(), '3');
-    equal(note1_modifier0.getPosition(), modifier__WEBPACK_IMPORTED_MODULE_3__.Modifier.Position.ABOVE);
+    equal(note1_modifier0.getPosition(), modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.ABOVE);
     const note2_modifier0 = notes[2].getModifiers()[0];
-    equal(note2_modifier0.getCategory(), frethandfinger__WEBPACK_IMPORTED_MODULE_2__.FretHandFinger.CATEGORY);
+    equal(note2_modifier0.getCategory(), frethandfinger__WEBPACK_IMPORTED_MODULE_3__.FretHandFinger.CATEGORY);
     equal(note2_modifier0.getFretHandFinger(), '5');
-    equal(note2_modifier0.getPosition(), modifier__WEBPACK_IMPORTED_MODULE_3__.Modifier.Position.BELOW);
+    equal(note2_modifier0.getPosition(), modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.BELOW);
     const note3_modifiers = notes[3].getModifiers();
     const note3_modifier0 = note3_modifiers[0];
     const note3_modifier1 = note3_modifiers[1];
     const note3_modifier2 = note3_modifiers[2];
-    equal(note3_modifier0.getCategory(), frethandfinger__WEBPACK_IMPORTED_MODULE_2__.FretHandFinger.CATEGORY);
+    equal(note3_modifier0.getCategory(), frethandfinger__WEBPACK_IMPORTED_MODULE_3__.FretHandFinger.CATEGORY);
     equal(note3_modifier0.getFretHandFinger(), '1');
-    equal(note3_modifier0.getPosition(), modifier__WEBPACK_IMPORTED_MODULE_3__.Modifier.Position.LEFT);
-    equal(note3_modifier1.getCategory(), frethandfinger__WEBPACK_IMPORTED_MODULE_2__.FretHandFinger.CATEGORY);
+    equal(note3_modifier0.getPosition(), modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.LEFT);
+    equal(note3_modifier1.getCategory(), frethandfinger__WEBPACK_IMPORTED_MODULE_3__.FretHandFinger.CATEGORY);
     equal(note3_modifier1.getFretHandFinger(), '3');
-    equal(note3_modifier1.getPosition(), modifier__WEBPACK_IMPORTED_MODULE_3__.Modifier.Position.LEFT);
-    equal(note3_modifier2.getCategory(), frethandfinger__WEBPACK_IMPORTED_MODULE_2__.FretHandFinger.CATEGORY);
+    equal(note3_modifier1.getPosition(), modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.LEFT);
+    equal(note3_modifier2.getCategory(), frethandfinger__WEBPACK_IMPORTED_MODULE_3__.FretHandFinger.CATEGORY);
     equal(note3_modifier2.getFretHandFinger(), '5');
-    equal(note3_modifier2.getPosition(), modifier__WEBPACK_IMPORTED_MODULE_3__.Modifier.Position.LEFT);
+    equal(note3_modifier2.getPosition(), modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.LEFT);
 }
 function keys(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 500, 200);
@@ -38368,7 +38086,9 @@ function defaults() {
     const factory = new factory__WEBPACK_IMPORTED_MODULE_2__.Factory({
         renderer: { elementId: null, width: 700, height: 500 },
     });
-    const options = factory.getOptions();
+    // eslint-disable-next-line
+    // @ts-ignore access a protected member for testing purposes.
+    const options = factory.options;
     equal(options.renderer.width, 700);
     equal(options.renderer.height, 500);
     equal(options.renderer.elementId, null);
@@ -38425,9 +38145,6 @@ __webpack_require__.r(__webpack_exports__);
 // MIT License
 //
 // Formatter Tests
-/* eslint-disable */
-// @ts-nocheck
-// TODO: SystemOptions.details might need to be typed as Partial<SystemFormatterOptions>
 
 
 
@@ -38446,6 +38163,7 @@ const FormatterTests = {
         QUnit.module('Formatter');
         test('TickContext Building', buildTickContexts);
         const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
+        run('Whitespace and justify', rightJustify);
         run('Notehead padding', noteHeadPadding);
         run('Justification and alignment with accidentals', accidentalJustification);
         run('Long measure taking full space', longMeasureProblems);
@@ -38495,6 +38213,33 @@ function buildTickContexts() {
     equal(tickables1[0].getX(), tickables2[0].getX(), 'First notes of both voices have the same X');
     equal(tickables1[2].getX(), tickables2[2].getX(), 'Last notes of both voices have the same X');
     ok(tickables1[1].getX() < tickables2[1].getX(), 'Second note of voice 2 is to the right of the second note of voice 1');
+}
+function rightJustify(options) {
+    const y = 40;
+    const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 1200, 300);
+    const getTickables = (time, n, duration) => {
+        const tickar = [];
+        let i = 0;
+        for (i = 0; i < n; ++i) {
+            tickar.push(new stavenote__WEBPACK_IMPORTED_MODULE_10__.StaveNote({ keys: ['f/4'], duration }));
+        }
+        return new voice__WEBPACK_IMPORTED_MODULE_11__.Voice(time).addTickables(tickar);
+    };
+    const renderTest = (time, n, duration, x, width) => {
+        const VF = Vex.Flow;
+        const formatter = f.Formatter();
+        const stave = f.Stave({ x, y: 40, width });
+        // stave.addClef('treble').addTimeSignature('4/4');
+        const voice = getTickables(time, n, duration);
+        formatter.joinVoices([voice]).formatToStave([voice], stave);
+        stave.draw();
+        voice.draw(f.getContext(), stave);
+    };
+    renderTest({ num_beats: 4, beat_value: 4, resolution: 4 * 4096 }, 2, '2', 10, 300);
+    renderTest({ num_beats: 4, beat_value: 4, resolution: 4 * 4096 }, 1, 'w', 310, 300);
+    renderTest({ num_beats: 3, beat_value: 4, resolution: 4 * 4096 }, 3, '4', 610, 300);
+    renderTest({ num_beats: 3, beat_value: 4, resolution: 4 * 4096 }, 6, '8', 910, 300);
+    ok(true);
 }
 function noteHeadPadding(options) {
     const registry = new registry__WEBPACK_IMPORTED_MODULE_7__.Registry();
@@ -38646,6 +38391,13 @@ function unalignedNoteDurations2(options) {
     ok(voice1.getTickables()[1].getX() > voice2.getTickables()[1].getX());
 }
 function justifyStaveNotes(options) {
+    function glyphPixels() {
+        return 96 * (38 / (flow__WEBPACK_IMPORTED_MODULE_4__.Flow.DEFAULT_FONT_STACK[0].getResolution() * 72));
+    }
+    function glyphWidth(vexGlyph) {
+        const glyph = flow__WEBPACK_IMPORTED_MODULE_4__.Flow.DEFAULT_FONT_STACK[0].getGlyphs()[vexGlyph];
+        return (glyph.x_max - glyph.x_min) * glyphPixels();
+    }
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 520, 280);
     const ctx = f.getContext();
     const score = f.EasyScore();
@@ -38656,7 +38408,9 @@ function justifyStaveNotes(options) {
             score.voice(score.notes('(cbb4 en4 a4)/2, (d4 e4 f4)/8, (d4 f4 a4)/8, (cn4 f#4 a4)/4', { stem: 'down' })),
             score.voice(score.notes('(bb4 e#5 a5)/4, (d5 e5 f5)/2, (c##5 fb5 a5)/4', { stem: 'up' })),
         ];
-        f.Formatter().joinVoices(voices).format(voices, width);
+        f.Formatter()
+            .joinVoices(voices)
+            .format(voices, width - (stave__WEBPACK_IMPORTED_MODULE_8__.Stave.defaultPadding + glyphWidth('gClef')));
         // Show the the width of notes via a horizontal line with red, green, yellow, blue, gray indicators.
         voices[0].getTickables().forEach((note) => note__WEBPACK_IMPORTED_MODULE_6__.Note.plotMetrics(ctx, note, y + 140)); // Bottom line.
         voices[1].getTickables().forEach((note) => note__WEBPACK_IMPORTED_MODULE_6__.Note.plotMetrics(ctx, note, y - 20)); // Top Line
@@ -38799,7 +38553,7 @@ function proportional(options) {
         debugFormatter: debug,
         noJustification: !(options.params.justify === undefined && true),
         formatIterations: options.params.iterations,
-        options: { alpha: options.params.alpha },
+        details: { alpha: options.params.alpha },
     });
     const score = f.EasyScore();
     const voices = [
@@ -39234,13 +38988,6 @@ __webpack_require__.r(__webpack_exports__);
 // MIT License
 //
 // GlyphNote Tests
-/* eslint-disable */
-// @ts-nocheck
-// TODO: Factory.GlyphNote()'s third argument should be optional.
-// TODO: Factory.RepeatNote()'s second and third arguments should both be optional.
-// TODO: Line 42 - Object literal may only specify known properties, and 'options' does not exist in type 'Partial<SystemOptions>'
-// TODO: ChordSymbol.addGlyphOrText(text: string[], ...) should instead take a string (not an array)!
-//       The implementation looks like text is an array, but we are actually just pulling out individual characters from the string.
 
 
 
@@ -39264,7 +39011,7 @@ function chordChanges(options) {
         width: 250,
         debugFormatter: options.params.debug,
         noPadding: options.params.noPadding,
-        options: { alpha: options.params.alpha },
+        details: { alpha: options.params.alpha },
     });
     const score = f.EasyScore();
     const notes = [
@@ -39301,7 +39048,7 @@ function basic(options) {
         width: 250,
         debugFormatter: options.params.debug,
         noPadding: options.params.noPadding,
-        options: { alpha: options.params.alpha },
+        details: { alpha: options.params.alpha },
     });
     const score = f.EasyScore();
     const newVoice = (notes) => score.voice(notes, { time: '1/4' });
@@ -39330,7 +39077,7 @@ function repeatNote(options) {
         width: 250,
         debugFormatter: options.params.debug,
         noPadding: options.params.noPadding,
-        options: { alpha: options.params.alpha },
+        details: { alpha: options.params.alpha },
     });
     const score = f.EasyScore();
     const createVoice = (notes) => score.voice(notes, { time: '1/4' });
@@ -39373,11 +39120,6 @@ __webpack_require__.r(__webpack_exports__);
 // MIT License
 //
 // GraceNote Tests
-/* eslint-disable */
-// @ts-nocheck
-// TODO: Factory.GraceNote() should take a Partial<GraceNoteStruct>
-//       Or .slash should be optional.
-//       The GraceNote constructor should also make sure that slash is set to false (instead of undefined).
 // TODO: In the 'stem' test (aka Grace Note Stem › SVG + Petaluma in flow.html), the Petaluma note heads are not scaled down properly.
 
 
@@ -39781,8 +39523,8 @@ const GraceTabNoteTests = {
     },
 };
 // Helper functions to create TabNote and GraceTabNote objects.
-const tabNote = (struct) => new tabnote__WEBPACK_IMPORTED_MODULE_5__.TabNote(struct);
-const graceTabNote = (struct) => new gracetabnote__WEBPACK_IMPORTED_MODULE_4__.GraceTabNote(struct);
+const tabNote = (noteStruct) => new tabnote__WEBPACK_IMPORTED_MODULE_5__.TabNote(noteStruct);
+const graceTabNote = (noteStruct) => new gracetabnote__WEBPACK_IMPORTED_MODULE_4__.GraceTabNote(noteStruct);
 /**
  * Helper function to build a RenderContext and TabStave.
  */
@@ -40068,10 +39810,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 // Key Signature Tests
 //
-/* eslint-disable */
-// @ts-nocheck
-// TODO: KeySignature.alterKey(alterKeySpec: string) should accept a string[] instead.
-// TODO: Factory.KeySigNote() should take a Partial<T>, or allow cancelKey and alterKey to be optional.
 
 
 
@@ -40489,10 +40227,6 @@ __webpack_require__.r(__webpack_exports__);
 // MIT License
 //
 // MultiMeasureRest Tests
-/* eslint-disable */
-// @ts-nocheck
-// TODO: Line 158: Expected 2 arguments, but got 1.
-//       stave.setEndTimeSignature()'s second argument should be optional.
 
 
 const MultiMeasureRestTests = {
@@ -40535,7 +40269,12 @@ function simple(options) {
         [line_spacing_15px, { number_of_measures: 12, spacing_between_lines_px: 15, number_glyph_point: 40 * 1.5 }],
         [
             line_spacing_15px,
-            { number_of_measures: 9, spacing_between_lines_px: 15, use_symbols: true, number_glyph_point: 40 * 1.5 },
+            {
+                number_of_measures: 9,
+                spacing_between_lines_px: 15,
+                use_symbols: true,
+                number_glyph_point: 40 * 1.5,
+            },
         ],
         [
             line_spacing_15px,
@@ -40544,7 +40283,7 @@ function simple(options) {
                 spacing_between_lines_px: 15,
                 use_symbols: true,
                 number_glyph_point: 40 * 1.5,
-                semibrave_rest_glyph_scale: flow__WEBPACK_IMPORTED_MODULE_1__.Flow.DEFAULT_NOTATION_FONT_SCALE * 1.5,
+                semibreve_rest_glyph_scale: flow__WEBPACK_IMPORTED_MODULE_1__.Flow.DEFAULT_NOTATION_FONT_SCALE * 1.5,
             },
         ],
     ];
@@ -40848,10 +40587,6 @@ __webpack_require__.r(__webpack_exports__);
 // MIT License
 //
 // NoteHead Tests
-/* eslint-disable */
-// @ts-nocheck
-// TODO: NoteHead constructor should take a Partial<NoteHeadStruct>.
-//       In the basicBoundingBoxes() test case, we omit the note_type option.
 // TODO: There is a bug in RenderContext.scale(). The CanvasContext works as expected.
 //       Each time you call scale(sx, sy), it multiplies the sx and sy by the currently stored scale.
 //       The SVGContext operates differently. It just sets the sx and sy as the new scale, instead of multiplying it.
@@ -40903,8 +40638,8 @@ function basic(options, contextBuilder) {
 /**
  * Used by the next two test cases to draw a note.
  */
-function showNote(struct, stave, ctx, x) {
-    const note = new stavenote__WEBPACK_IMPORTED_MODULE_5__.StaveNote(struct).setStave(stave);
+function showNote(noteStruct, stave, ctx, x) {
+    const note = new stavenote__WEBPACK_IMPORTED_MODULE_5__.StaveNote(noteStruct).setStave(stave);
     new tickcontext__WEBPACK_IMPORTED_MODULE_6__.TickContext().addTickable(note).preFormat().setX(x);
     note.setContext(ctx).draw();
     return note;
@@ -41041,7 +40776,7 @@ const NoteSubGroupTests = {
 // Return three helper functions for creating StaveNotes, and adding Accidental & NoteSubGroup to those StaveNotes.
 function createShortcuts(f) {
     return {
-        createStaveNote: (struct) => f.StaveNote(struct),
+        createStaveNote: (noteStruct) => f.StaveNote(noteStruct),
         addAccidental: (note, accid) => note.addModifier(f.Accidental({ type: accid }), 0),
         addSubGroup: (note, subNotes) => note.addModifier(f.NoteSubGroup({ notes: subNotes }), 0),
     };
@@ -41798,7 +41533,6 @@ __webpack_require__.r(__webpack_exports__);
 /* eslint-disable */
 // @ts-nocheck
 // TODO: Type 'Tickable[]' is not assignable to type 'StemmableNote[]'.
-// TODO: Factory.GraceNote() should take a Partial<GraceNoteStruct>. We are omitting the 'slash' property.
 
 
 
@@ -42006,10 +41740,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var easyscore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! easyscore */ "./src/easyscore.ts");
 /* harmony import */ var factory__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! factory */ "./src/factory.ts");
 /* harmony import */ var registry__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! registry */ "./src/registry.ts");
+/* harmony import */ var stavenote__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! stavenote */ "./src/stavenote.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 //
 // Registry Tests
+
 
 
 
@@ -42030,11 +41766,9 @@ function registerAndClear() {
     equal(foobar.getAttribute('id'), 'foobar');
     registry.clear();
     notOk(registry.getElementById('foobar'));
-    throws(() => {
-        // eslint-disable-next-line
-        // @ts-ignore: intentional type mismatch to trigger an error.
-        registry.register(score.notes('C4'));
-    });
+    // eslint-disable-next-line
+    // @ts-ignore: intentional type mismatch to trigger an error.
+    throws(() => registry.register(score.notes('C4')));
     registry.clear();
     ok(registry.register(score.notes('C4[id="boobar"]')[0]).getElementById('boobar'));
 }
@@ -42049,9 +41783,9 @@ function defaultRegistry() {
     ok(registry.getElementById('boobar'));
     notOk(registry.getElementById('foobar'));
     registry.clear();
-    equal(registry.getElementsByType('StaveNote').length, 0);
+    equal(registry.getElementsByType(stavenote__WEBPACK_IMPORTED_MODULE_3__.StaveNote.CATEGORY).length, 0);
     score.notes('C5');
-    const elements = registry.getElementsByType('StaveNote');
+    const elements = registry.getElementsByType(stavenote__WEBPACK_IMPORTED_MODULE_3__.StaveNote.CATEGORY);
     equal(elements.length, 1);
 }
 function classes() {
@@ -42325,7 +42059,7 @@ function basic(options, contextBuilder) {
     ok(true, 'Dotted Rest Test');
 }
 // Optional: Use a helper function to make your code more concise.
-const note = (s) => new stavenote__WEBPACK_IMPORTED_MODULE_5__.StaveNote(s);
+const note = (noteStruct) => new stavenote__WEBPACK_IMPORTED_MODULE_5__.StaveNote(noteStruct);
 /**
  * Rests are intermixed within beamed notes (with the stems and beams at the top).
  */
@@ -42524,7 +42258,7 @@ function singleVoiceAlignAll(options, contextBuilder) {
 function multiVoice(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 600, 200);
     const stave = new stave__WEBPACK_IMPORTED_MODULE_4__.Stave(50, 10, 500).addClef('treble').setContext(ctx).addTimeSignature('4/4').draw();
-    const noteOnStave = (s) => new stavenote__WEBPACK_IMPORTED_MODULE_5__.StaveNote(s).setStave(stave);
+    const noteOnStave = (noteStruct) => new stavenote__WEBPACK_IMPORTED_MODULE_5__.StaveNote(noteStruct).setStave(stave);
     const notes1 = [
         noteOnStave({ keys: ['c/4', 'e/4', 'g/4'], duration: '4' }),
         noteOnStave({ keys: ['b/4'], duration: '4r' }),
@@ -43035,19 +42769,8 @@ __webpack_require__.r(__webpack_exports__);
 // MIT License
 //
 // Basic Stave Tests
-/* eslint-disable */
-// @ts-nocheck
-// TODO: Stave.setText()'s third arg needs to be Partial<T> or have more optional fields.
 // TODO: Like Stave.setTempo(t: StaveTempoOptions, ...), Stave.setText(...) could declare an interface called StaveTextOptions.
 //       This helps developers because they can use the named type in their code for type checking.
-// TODO: Stave.drawVerticalBar() only accepts one arg, but we pass in a second (boolean).
-//       Stave.drawVertical() requires two args, but we only pass in one. The second is a boolean. Did we mix up something?
-// TODO: Stave.setEndTimeSignature()'s second arg should be optional.
-// TODO: VoltaType.BEGIN_MID is used, but doesn't exist. Did it exist in the past?
-// TODO: Stave.setConfigForLines(lines_configuration: StaveLineConfig[])'s comment (and our test case) shows that null is a valid option in the array.
-//       Should we change it to undefined? Or should the type be (StaveLineConfig | null)[] instead?
-// TODO: In the drawTempo test case, Stave.setTempo(...) receives incomplete options, so it should probably take a Partial<StaveTempoOptions>.
-//       Additionally, it receives an unexpected option note: '8'.
 
 
 
@@ -43069,7 +42792,6 @@ const StaveTests = {
         const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
         run('Stave Draw Test', draw);
         run('Open Stave Draw Test', drawOpenStave);
-        run('Vertical Bar Test', drawVerticalBar);
         run('Multiple Stave Barline Test', drawMultipleMeasures);
         run('Multiple Stave Repeats Test', drawRepeats);
         run('Stave End Modifiers Test', drawEndModifiers);
@@ -43097,8 +42819,10 @@ function sortByCategory() {
     const bar0 = new stavebarline__WEBPACK_IMPORTED_MODULE_8__.Barline(stavebarline__WEBPACK_IMPORTED_MODULE_8__.BarlineType.SINGLE);
     const bar1 = new stavebarline__WEBPACK_IMPORTED_MODULE_8__.Barline(stavebarline__WEBPACK_IMPORTED_MODULE_8__.BarlineType.DOUBLE);
     const bar2 = new stavebarline__WEBPACK_IMPORTED_MODULE_8__.Barline(stavebarline__WEBPACK_IMPORTED_MODULE_8__.BarlineType.NONE);
-    const order0 = { barlines: 0, clefs: 1, keysignatures: 2, timesignatures: 3 };
-    const order1 = { timesignatures: 0, keysignatures: 1, barlines: 2, clefs: 3 };
+    // const order0 = { barlines: 0, clefs: 1, keysignatures: 2, timesignatures: 3 };
+    // const order1 = { timesignatures: 0, keysignatures: 1, barlines: 2, clefs: 3 };
+    const order0 = { Barline: 0, Clef: 1, KeySignature: 2, TimeSignature: 3 };
+    const order1 = { TimeSignature: 0, KeySignature: 1, Barline: 2, Clef: 3 };
     const sortAndCompare = (title, a, b, order) => {
         stave.sortByCategory(a, order);
         // Verify that the two arrays are identical.
@@ -43136,17 +42860,6 @@ function drawOpenStave(options, contextBuilder) {
     stave = new stave__WEBPACK_IMPORTED_MODULE_7__.Stave(10, 150, 300, { right_bar: false });
     stave.setContext(ctx);
     stave.draw();
-    ok(true, 'all pass');
-}
-function drawVerticalBar(options, contextBuilder) {
-    const ctx = contextBuilder(options.elementId, 400, 120);
-    const stave = new stave__WEBPACK_IMPORTED_MODULE_7__.Stave(10, 10, 300);
-    stave.setContext(ctx);
-    stave.draw();
-    stave.drawVerticalBar(50, true);
-    stave.drawVerticalBar(150, false);
-    stave.drawVertical(250, true);
-    stave.drawVertical(300);
     ok(true, 'all pass');
 }
 function drawMultipleMeasures(options, contextBuilder) {
@@ -43450,7 +43163,7 @@ function drawVoltaModifier(options, contextBuilder) {
     const mm2 = new stave__WEBPACK_IMPORTED_MODULE_7__.Stave(mm1.getX() + mm1.getWidth(), mm1.getY(), 175);
     mm2.setBegBarType(stavebarline__WEBPACK_IMPORTED_MODULE_8__.BarlineType.REPEAT_BEGIN);
     mm2.setRepetitionTypeRight(staverepetition__WEBPACK_IMPORTED_MODULE_10__.Repetition.type.DS, 25);
-    mm2.setVoltaType(stavevolta__WEBPACK_IMPORTED_MODULE_11__.Volta.type.BEGIN_MID, '2.', -5);
+    mm2.setVoltaType(stavevolta__WEBPACK_IMPORTED_MODULE_11__.VoltaType.BEGIN, '2.', -5);
     mm2.addClef('treble');
     mm2.addKeySignature('A');
     mm2.setMeasure(2);
@@ -43481,7 +43194,7 @@ function drawVoltaModifier(options, contextBuilder) {
     formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter.FormatAndDraw(ctx, mm4, notesmm4);
     // bar 5: d.s. shift (similar potential x-shift concern)
     const mm5 = new stave__WEBPACK_IMPORTED_MODULE_7__.Stave(mm4.getX() + mm4.getWidth(), mm4.getY(), 175);
-    // mm5.addModifier(new Repetition(Repetition.type.DS, mm4.getX() + mm4.getWidth(), 50), StaveModifier.Position.RIGHT);
+    // mm5.addModifier(new Repetition(Repetition.type.DS, mm4.getX() + mm4.getWidth(), 50), StaveModifierPosition.RIGHT);
     mm5.setEndBarType(stavebarline__WEBPACK_IMPORTED_MODULE_8__.BarlineType.DOUBLE);
     mm5.setRepetitionTypeRight(staverepetition__WEBPACK_IMPORTED_MODULE_10__.Repetition.type.DS, 25);
     mm5.addClef('treble');
@@ -43493,7 +43206,7 @@ function drawVoltaModifier(options, contextBuilder) {
     formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter.FormatAndDraw(ctx, mm5, notesmm5);
     // bar 6: d.s. without modifiers
     const mm6 = new stave__WEBPACK_IMPORTED_MODULE_7__.Stave(mm5.getX() + mm5.getWidth(), mm5.getY(), 175);
-    // mm5.addModifier(new Repetition(Repetition.type.DS, mm4.getX() + mm4.getWidth(), 50), StaveModifier.Position.RIGHT);
+    // mm5.addModifier(new Repetition(Repetition.type.DS, mm4.getX() + mm4.getWidth(), 50), StaveModifierPosition.RIGHT);
     mm6.setRepetitionTypeRight(staverepetition__WEBPACK_IMPORTED_MODULE_10__.Repetition.type.DS, 25);
     mm6.setMeasure(6);
     mm6.setSection('E', 0);
@@ -43507,7 +43220,6 @@ function drawTempo(options, contextBuilder) {
     const padding = 10;
     let x = 0;
     let y = 50;
-    // TODO: Change tempo to Partial<StaveTempoOptions> or make .name optional in StaveTempoOptions.
     function drawTempoStaveBar(width, tempo, tempo_y, notes) {
         const staveBar = new stave__WEBPACK_IMPORTED_MODULE_7__.Stave(padding + x, y, width);
         if (x === 0)
@@ -43527,7 +43239,7 @@ function drawTempo(options, contextBuilder) {
     drawTempoStaveBar(100, { duration: '8', dots: 2, bpm: 90 }, 0);
     drawTempoStaveBar(100, { duration: '16', dots: 1, bpm: 96 }, 0);
     drawTempoStaveBar(100, { duration: '32', bpm: 70 }, 0);
-    drawTempoStaveBar(250, { name: 'Andante', note: '8', bpm: 120 }, -20, [
+    drawTempoStaveBar(250, { name: 'Andante', bpm: 120 }, -20, [
         new stavenote__WEBPACK_IMPORTED_MODULE_9__.StaveNote({ keys: ['c/4'], duration: '8' }),
         new stavenote__WEBPACK_IMPORTED_MODULE_9__.StaveNote({ keys: ['d/4'], duration: '8' }),
         new stavenote__WEBPACK_IMPORTED_MODULE_9__.StaveNote({ keys: ['g/4'], duration: '8' }),
@@ -43576,7 +43288,7 @@ function configureAllLines(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 120);
     const stave = new stave__WEBPACK_IMPORTED_MODULE_7__.Stave(10, 10, 300);
     stave
-        .setConfigForLines([{ visible: false }, null, { visible: false }, { visible: true }, { visible: false }])
+        .setConfigForLines([{ visible: false }, {}, { visible: false }, { visible: true }, { visible: false }])
         .setContext(ctx)
         .draw();
     const config = stave.getConfigForLines();
@@ -43644,10 +43356,6 @@ __webpack_require__.r(__webpack_exports__);
 // MIT License
 //
 // StaveConnector Tests
-/* eslint-disable */
-// @ts-nocheck
-// TODO: StaveConnector.setText() needs an optional shift_x.
-// TODO: Stave.setText()'s third argument needs to be optional.
 // TODO: Should we change StaveConnector.type => StaveConnectorType? We are inconsistent with this.
 
 
@@ -44074,7 +43782,6 @@ __webpack_require__.r(__webpack_exports__);
 /* eslint-disable */
 // @ts-nocheck
 // TODO: Incorrect property names in the options object: vo, left_ho, right_ho.
-// TODO: StaveHairpin.setRenderOptions() should take a Partial<StaveHairpinRenderOptions>.
 
 
 const StaveHairpinTests = {
@@ -44335,9 +44042,6 @@ __webpack_require__.r(__webpack_exports__);
 // MIT License
 //
 // StaveModifier Tests
-/* eslint-disable */
-// @ts-nocheck
-// TODO: Make second argument to setEndTimeSignature(...) optional.
 
 
 
@@ -44347,7 +44051,6 @@ const StaveModifierTests = {
         QUnit.module('StaveModifier');
         const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
         run('Stave Draw Test', draw);
-        run('Vertical Bar Test', drawVerticalBar);
         run('Begin & End StaveModifier Test', drawBeginAndEnd);
     },
 };
@@ -44362,20 +44065,6 @@ function draw(options, contextBuilder) {
     equal(stave.getYForLine(4), 90, 'getYForLine(4) - Bottom Line');
     ok(true, 'all pass');
 }
-/**
- * Draw three vertical lines. The last line is not visible, because it overlaps
- * the right border of the stave at x = 300.
- */
-function drawVerticalBar(options, contextBuilder) {
-    const ctx = contextBuilder(options.elementId, 400, 120);
-    const stave = new stave__WEBPACK_IMPORTED_MODULE_1__.Stave(10, 10, 300);
-    stave.setContext(ctx);
-    stave.draw();
-    stave.drawVerticalBar(100);
-    stave.drawVerticalBar(150);
-    stave.drawVerticalBar(300);
-    ok(true, 'all pass');
-}
 function drawBeginAndEnd(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
     const stave = new stave__WEBPACK_IMPORTED_MODULE_1__.Stave(10, 10, 400);
@@ -44383,23 +44072,23 @@ function drawBeginAndEnd(options, contextBuilder) {
     stave.setTimeSignature('C|');
     stave.setKeySignature('Db');
     stave.setClef('treble');
-    stave.setBegBarType(stavebarline__WEBPACK_IMPORTED_MODULE_2__.Barline.type.REPEAT_BEGIN);
+    stave.setBegBarType(stavebarline__WEBPACK_IMPORTED_MODULE_2__.BarlineType.REPEAT_BEGIN);
     stave.setEndClef('alto');
     stave.setEndTimeSignature('9/8');
     stave.setEndKeySignature('G', 'C#');
-    stave.setEndBarType(stavebarline__WEBPACK_IMPORTED_MODULE_2__.Barline.type.DOUBLE);
+    stave.setEndBarType(stavebarline__WEBPACK_IMPORTED_MODULE_2__.BarlineType.DOUBLE);
     stave.draw();
     // change
-    const END = stavemodifier__WEBPACK_IMPORTED_MODULE_3__.StaveModifier.Position.END;
+    const END = stavemodifier__WEBPACK_IMPORTED_MODULE_3__.StaveModifierPosition.END;
     stave.setY(100);
     stave.setTimeSignature('3/4');
     stave.setKeySignature('G', 'C#');
     stave.setClef('bass');
-    stave.setBegBarType(stavebarline__WEBPACK_IMPORTED_MODULE_2__.Barline.type.SINGLE);
+    stave.setBegBarType(stavebarline__WEBPACK_IMPORTED_MODULE_2__.BarlineType.SINGLE);
     stave.setClef('treble', undefined, undefined, END);
     stave.setTimeSignature('C', undefined, END);
     stave.setKeySignature('F', undefined, END);
-    stave.setEndBarType(stavebarline__WEBPACK_IMPORTED_MODULE_2__.Barline.type.SINGLE);
+    stave.setEndBarType(stavebarline__WEBPACK_IMPORTED_MODULE_2__.BarlineType.SINGLE);
     stave.draw();
     ok(true, 'all pass');
 }
@@ -44598,21 +44287,21 @@ function ticksNewAPI() {
 }
 function stem() {
     const note = new stavenote__WEBPACK_IMPORTED_MODULE_11__.StaveNote({ keys: ['c/4', 'e/4', 'g/4'], duration: 'w' });
-    equal(note.getStemDirection(), stavenote__WEBPACK_IMPORTED_MODULE_11__.StaveNote.STEM_UP, 'Default note has UP stem');
+    equal(note.getStemDirection(), stem__WEBPACK_IMPORTED_MODULE_12__.Stem.UP, 'Default note has UP stem');
 }
 function autoStem() {
     const testData = [
-        [['c/5', 'e/5', 'g/5'], stavenote__WEBPACK_IMPORTED_MODULE_11__.StaveNote.STEM_DOWN],
-        [['e/4', 'g/4', 'c/5'], stavenote__WEBPACK_IMPORTED_MODULE_11__.StaveNote.STEM_UP],
-        [['c/5'], stavenote__WEBPACK_IMPORTED_MODULE_11__.StaveNote.STEM_DOWN],
-        [['a/4', 'e/5', 'g/5'], stavenote__WEBPACK_IMPORTED_MODULE_11__.StaveNote.STEM_DOWN],
-        [['b/4'], stavenote__WEBPACK_IMPORTED_MODULE_11__.StaveNote.STEM_DOWN],
+        [['c/5', 'e/5', 'g/5'], stem__WEBPACK_IMPORTED_MODULE_12__.Stem.DOWN],
+        [['e/4', 'g/4', 'c/5'], stem__WEBPACK_IMPORTED_MODULE_12__.Stem.UP],
+        [['c/5'], stem__WEBPACK_IMPORTED_MODULE_12__.Stem.DOWN],
+        [['a/4', 'e/5', 'g/5'], stem__WEBPACK_IMPORTED_MODULE_12__.Stem.DOWN],
+        [['b/4'], stem__WEBPACK_IMPORTED_MODULE_12__.Stem.DOWN],
     ];
     testData.forEach((td) => {
         const keys = td[0];
         const expectedStemDirection = td[1];
         const note = new stavenote__WEBPACK_IMPORTED_MODULE_11__.StaveNote({ keys: keys, auto_stem: true, duration: '8' });
-        equal(note.getStemDirection(), expectedStemDirection, 'Stem must be ' + (expectedStemDirection === stavenote__WEBPACK_IMPORTED_MODULE_11__.StaveNote.STEM_UP ? 'up' : 'down'));
+        equal(note.getStemDirection(), expectedStemDirection, 'Stem must be ' + (expectedStemDirection === stem__WEBPACK_IMPORTED_MODULE_12__.Stem.UP ? 'up' : 'down'));
     });
 }
 function stemExtensionPitch() {
@@ -44704,7 +44393,7 @@ function drawBasic(options, contextBuilder) {
         higherKeys[k] = higherKeys[k] + (5 + octaveShift);
     }
     const restKeys = [restKey];
-    const note_structs = [
+    const noteStructs = [
         { clef: clef, keys: higherKeys, duration: '1/2' },
         { clef: clef, keys: lowerKeys, duration: 'w' },
         { clef: clef, keys: higherKeys, duration: 'h' },
@@ -44734,13 +44423,13 @@ function drawBasic(options, contextBuilder) {
         { clef: clef, keys: restKeys, duration: '128r' },
         { keys: ['x/4'], duration: 'h' },
     ];
-    expect(note_structs.length * 2);
+    expect(noteStructs.length * 2);
     const colorDescendants = (parentItem, color) => () => parentItem.querySelectorAll('*').forEach((child) => {
         child.setAttribute('fill', color);
         child.setAttribute('stroke', color);
     });
-    for (let i = 0; i < note_structs.length; ++i) {
-        const note = draw(staveNote(note_structs[i]), stave, ctx, (i + 1) * 25);
+    for (let i = 0; i < noteStructs.length; ++i) {
+        const note = draw(staveNote(noteStructs[i]), stave, ctx, (i + 1) * 25);
         // If this is an interactivity test (ui: true), then attach mouseover & mouseout handlers to the notes.
         if (options.params.ui) {
             const item = note.getAttribute('el');
@@ -44767,7 +44456,7 @@ function drawBoundingBoxes(options, contextBuilder) {
         higherKeys[k] = higherKeys[k] + (5 + octaveShift);
     }
     const restKeys = [restKey];
-    const note_structs = [
+    const noteStructs = [
         { clef: clef, keys: higherKeys, duration: '1/2' },
         { clef: clef, keys: lowerKeys, duration: 'w' },
         { clef: clef, keys: higherKeys, duration: 'h' },
@@ -44797,9 +44486,9 @@ function drawBoundingBoxes(options, contextBuilder) {
         { clef: clef, keys: restKeys, duration: '128r' },
         { keys: ['x/4'], duration: 'h' },
     ];
-    expect(note_structs.length * 2);
-    for (let i = 0; i < note_structs.length; ++i) {
-        const note = draw(staveNote(note_structs[i]), stave, ctx, (i + 1) * 25, true /* drawBoundingBox */, false /* addModifierContext */);
+    expect(noteStructs.length * 2);
+    for (let i = 0; i < noteStructs.length; ++i) {
+        const note = draw(staveNote(noteStructs[i]), stave, ctx, (i + 1) * 25, true /* drawBoundingBox */, false /* addModifierContext */);
         ok(note.getX() > 0, 'Note ' + i + ' has X value');
         ok(note.getYs().length > 0, 'Note ' + i + ' has Y values');
     }
@@ -44811,7 +44500,7 @@ function drawBass(options, contextBuilder) {
     stave.setContext(ctx);
     stave.addClef('bass');
     stave.draw();
-    const note_structs = [
+    const noteStructs = [
         { clef: 'bass', keys: ['c/3', 'e/3', 'a/3'], duration: '1/2' },
         { clef: 'bass', keys: ['c/2', 'e/2', 'a/2'], duration: 'w' },
         { clef: 'bass', keys: ['c/3', 'e/3', 'a/3'], duration: 'h' },
@@ -44833,8 +44522,8 @@ function drawBass(options, contextBuilder) {
         { keys: ['r/4'], duration: '32r' },
         { keys: ['x/4'], duration: 'h' },
     ];
-    for (let i = 0; i < note_structs.length; ++i) {
-        const note = draw(staveNote(note_structs[i]), stave, ctx, (i + 1) * 25);
+    for (let i = 0; i < noteStructs.length; ++i) {
+        const note = draw(staveNote(noteStructs[i]), stave, ctx, (i + 1) * 25);
         ok(note.getX() > 0, 'Note ' + i + ' has X value');
         ok(note.getYs().length > 0, 'Note ' + i + ' has Y values');
     }
@@ -44847,7 +44536,7 @@ function displacements(options, contextBuilder) {
     const stave = new stave__WEBPACK_IMPORTED_MODULE_10__.Stave(10, 10, 650);
     stave.setContext(ctx);
     stave.draw();
-    const note_structs = [
+    const noteStructs = [
         { keys: ['g/3', 'a/3', 'c/4', 'd/4', 'e/4'], duration: '1/2' },
         { keys: ['g/3', 'a/3', 'c/4', 'd/4', 'e/4'], duration: 'w' },
         { keys: ['d/4', 'e/4', 'f/4'], duration: 'h' },
@@ -44867,9 +44556,9 @@ function displacements(options, contextBuilder) {
             stem_direction: stem__WEBPACK_IMPORTED_MODULE_12__.Stem.DOWN,
         },
     ];
-    expect(note_structs.length * 2);
-    for (let i = 0; i < note_structs.length; ++i) {
-        const note = draw(staveNote(note_structs[i]), stave, ctx, (i + 1) * 45);
+    expect(noteStructs.length * 2);
+    for (let i = 0; i < noteStructs.length; ++i) {
+        const note = draw(staveNote(noteStructs[i]), stave, ctx, (i + 1) * 45);
         ok(note.getX() > 0, 'Note ' + i + ' has X value');
         ok(note.getYs().length > 0, 'Note ' + i + ' has Y values');
     }
@@ -44879,7 +44568,7 @@ function drawHarmonicAndMuted(options, contextBuilder) {
     const stave = new stave__WEBPACK_IMPORTED_MODULE_10__.Stave(10, 10, 950);
     stave.setContext(ctx);
     stave.draw();
-    const note_structs = [
+    const noteStructs = [
         { keys: ['c/4', 'e/4', 'a/4'], duration: '1/2h' },
         { keys: ['c/4', 'e/4', 'a/4'], duration: 'wh' },
         { keys: ['c/4', 'e/4', 'a/4'], duration: 'hh' },
@@ -44917,9 +44606,9 @@ function drawHarmonicAndMuted(options, contextBuilder) {
         { keys: ['c/4', 'e/4', 'a/4'], duration: '64m', stem_direction: stem__WEBPACK_IMPORTED_MODULE_12__.Stem.DOWN },
         { keys: ['c/4', 'e/4', 'a/4'], duration: '128m', stem_direction: stem__WEBPACK_IMPORTED_MODULE_12__.Stem.DOWN },
     ];
-    expect(note_structs.length * 2);
-    for (let i = 0; i < note_structs.length; ++i) {
-        const note = draw(staveNote(note_structs[i]), stave, ctx, i * 25 + 5);
+    expect(noteStructs.length * 2);
+    for (let i = 0; i < noteStructs.length; ++i) {
+        const note = draw(staveNote(noteStructs[i]), stave, ctx, i * 25 + 5);
         ok(note.getX() > 0, 'Note ' + i + ' has X value');
         ok(note.getYs().length > 0, 'Note ' + i + ' has Y values');
     }
@@ -44969,7 +44658,7 @@ function drawKeyStyles(options, contextBuilder) {
     const note = new stavenote__WEBPACK_IMPORTED_MODULE_11__.StaveNote({ keys: ['g/4', 'bb/4', 'd/5'], duration: 'q' })
         .setStave(stave)
         .addAccidental(1, new accidental__WEBPACK_IMPORTED_MODULE_1__.Accidental('b'))
-        .setKeyStyle(1, { shadowBlur: 15, shadowColor: 'blue', fillStyle: 'blue' });
+        .setKeyStyle(1, { shadowBlur: 2, shadowColor: 'blue', fillStyle: 'blue' });
     new tickcontext__WEBPACK_IMPORTED_MODULE_15__.TickContext().addTickable(note).preFormat().setX(25);
     stave.setContext(ctx).draw();
     note.setContext(ctx).draw();
@@ -44983,7 +44672,7 @@ function drawNoteStyles(options, contextBuilder) {
     const note = new stavenote__WEBPACK_IMPORTED_MODULE_11__.StaveNote({ keys: ['g/4', 'bb/4', 'd/5'], duration: '8' })
         .setStave(stave)
         .addAccidental(1, new accidental__WEBPACK_IMPORTED_MODULE_1__.Accidental('b'));
-    note.setStyle({ shadowBlur: 15, shadowColor: 'blue', fillStyle: 'blue', strokeStyle: 'blue' });
+    note.setStyle({ shadowBlur: 2, shadowColor: 'blue', fillStyle: 'blue', strokeStyle: 'blue' });
     new tickcontext__WEBPACK_IMPORTED_MODULE_15__.TickContext().addTickable(note).preFormat().setX(25);
     stave.setContext(ctx).draw();
     note.setContext(ctx).draw();
@@ -44997,7 +44686,7 @@ function drawNoteStemStyles(options, contextBuilder) {
     const note = new stavenote__WEBPACK_IMPORTED_MODULE_11__.StaveNote({ keys: ['g/4', 'bb/4', 'd/5'], duration: 'q' })
         .setStave(stave)
         .addAccidental(1, new accidental__WEBPACK_IMPORTED_MODULE_1__.Accidental('b'));
-    note.setStemStyle({ shadowBlur: 15, shadowColor: 'blue', fillStyle: 'blue', strokeStyle: 'blue' });
+    note.setStemStyle({ shadowBlur: 2, shadowColor: 'blue', fillStyle: 'blue', strokeStyle: 'blue' });
     new tickcontext__WEBPACK_IMPORTED_MODULE_15__.TickContext().addTickable(note).preFormat().setX(25);
     stave.setContext(ctx).draw();
     note.setContext(ctx).draw();
@@ -45059,7 +44748,7 @@ function drawNoteStylesWithFlag(options, contextBuilder) {
     const note = new stavenote__WEBPACK_IMPORTED_MODULE_11__.StaveNote({ keys: ['g/4', 'bb/4', 'd/5'], duration: '8' })
         .setStave(stave)
         .addAccidental(1, new accidental__WEBPACK_IMPORTED_MODULE_1__.Accidental('b'));
-    note.setFlagStyle({ shadowBlur: 15, shadowColor: 'blue', fillStyle: 'blue', strokeStyle: 'blue' });
+    note.setFlagStyle({ shadowBlur: 2, shadowColor: 'blue', fillStyle: 'blue', strokeStyle: 'blue' });
     new tickcontext__WEBPACK_IMPORTED_MODULE_15__.TickContext().addTickable(note).preFormat().setX(25);
     stave.setContext(ctx).draw();
     note.setContext(ctx).draw();
@@ -45104,7 +44793,7 @@ function drawBeamStyles(options, contextBuilder) {
     staveNotes[1].setStemStyle({ strokeStyle: 'orange' });
     staveNotes[1].setKeyStyle(0, { fillStyle: 'darkturquoise' });
     staveNotes[5].setStyle({ fillStyle: 'tomato', strokeStyle: 'tomato' });
-    beam3.setStyle({ shadowBlur: 20, shadowColor: 'blue' });
+    beam3.setStyle({ shadowBlur: 4, shadowColor: 'blue' });
     staveNotes[9].setLedgerLineStyle({ fillStyle: 'lawngreen', strokeStyle: 'lawngreen', lineWidth: 1 });
     staveNotes[9].setFlagStyle({ fillStyle: 'orange', strokeStyle: 'orange' });
     formatter__WEBPACK_IMPORTED_MODULE_6__.Formatter.FormatAndDraw(ctx, stave, staveNotes, false);
@@ -45448,9 +45137,6 @@ __webpack_require__.r(__webpack_exports__);
 // MIT License
 //
 // StringNumber Tests
-/* eslint-disable */
-// @ts-nocheck
-// TODO: Stroke constructor's second argument should be optional.
 
 
 
@@ -45727,10 +45413,6 @@ __webpack_require__.r(__webpack_exports__);
 // MIT License
 //
 // Strokes Tests
-/* eslint-disable */
-// @ts-nocheck
-// TODO: Stroke constructor's second argument should be optional.
-// TODO: Factory.GraceNote() should probably take a Partial<GraceNoteStruct>
 
 
 
@@ -45898,82 +45580,95 @@ function multiNotationAndTab(options) {
     f.draw();
     ok(true, 'Strokes Test Notation & Tab Multi Voice');
 }
-function drawTabStrokes(options) {
-    const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 200);
-    const stave1 = f.TabStave({ width: 250 }).setEndBarType(stavebarline__WEBPACK_IMPORTED_MODULE_3__.Barline.type.DOUBLE);
-    const tabNotes1 = [
-        f.TabNote({
-            positions: [
-                { str: 2, fret: 8 },
-                { str: 3, fret: 9 },
-                { str: 4, fret: 10 },
-            ],
-            duration: '4',
-        }),
-        f.TabNote({
-            positions: [
-                { str: 3, fret: 7 },
-                { str: 4, fret: 8 },
-                { str: 5, fret: 9 },
-            ],
-            duration: '4',
-        }),
-        f.TabNote({
-            positions: [
-                { str: 1, fret: 5 },
-                { str: 2, fret: 6 },
-                { str: 3, fret: 7 },
-                { str: 4, fret: 7 },
-                { str: 5, fret: 5 },
-                { str: 6, fret: 5 },
-            ],
-            duration: '4',
-        }),
-        f.TabNote({
-            positions: [
-                { str: 4, fret: 3 },
-                { str: 5, fret: 4 },
-                { str: 6, fret: 5 },
-            ],
-            duration: '4',
-        }),
-    ];
-    tabNotes1[0].addStroke(0, new strokes__WEBPACK_IMPORTED_MODULE_4__.Stroke(1));
-    tabNotes1[1].addStroke(0, new strokes__WEBPACK_IMPORTED_MODULE_4__.Stroke(2));
-    tabNotes1[2].addStroke(0, new strokes__WEBPACK_IMPORTED_MODULE_4__.Stroke(3));
-    tabNotes1[3].addStroke(0, new strokes__WEBPACK_IMPORTED_MODULE_4__.Stroke(4));
-    const tabVoice1 = f.Voice().addTickables(tabNotes1);
-    f.Formatter().joinVoices([tabVoice1]).formatToStave([tabVoice1], stave1);
-    // bar 2
-    const stave2 = f.TabStave({ x: stave1.getWidth() + stave1.getX(), width: 300 }).setEndBarType(stavebarline__WEBPACK_IMPORTED_MODULE_3__.Barline.type.DOUBLE);
-    const tabNotes2 = [
-        f.TabNote({
-            positions: [
-                { str: 2, fret: 7 },
-                { str: 3, fret: 8 },
-                { str: 4, fret: 9 },
-            ],
-            duration: '2',
-        }),
-        f.TabNote({
-            positions: [
-                { str: 1, fret: 5 },
-                { str: 2, fret: 6 },
-                { str: 3, fret: 7 },
-                { str: 4, fret: 7 },
-                { str: 5, fret: 5 },
-                { str: 6, fret: 5 },
-            ],
-            duration: '2',
-        }),
-    ];
-    tabNotes2[0].addStroke(0, new strokes__WEBPACK_IMPORTED_MODULE_4__.Stroke(6));
-    tabNotes2[1].addStroke(0, new strokes__WEBPACK_IMPORTED_MODULE_4__.Stroke(5));
-    const tabVoice2 = f.Voice().addTickables(tabNotes2);
-    f.Formatter().joinVoices([tabVoice2]).formatToStave([tabVoice2], stave2);
-    f.draw();
-    ok(true, 'Strokes Tab test');
+/*
+function drawTabStrokes(options: TestOptions): void {
+  const f = VexFlowTests.makeFactory(options, 600, 200);
+  const stave1 = f.TabStave({ width: 250 }).setEndBarType(Barline.type.DOUBLE);
+
+  const tabNotes1 = [
+    f.TabNote({
+      positions: [
+        { str: 2, fret: 8 },
+        { str: 3, fret: 9 },
+        { str: 4, fret: 10 },
+      ],
+      duration: '4',
+    }),
+    f.TabNote({
+      positions: [
+        { str: 3, fret: 7 },
+        { str: 4, fret: 8 },
+        { str: 5, fret: 9 },
+      ],
+      duration: '4',
+    }),
+    f.TabNote({
+      positions: [
+        { str: 1, fret: 5 },
+        { str: 2, fret: 6 },
+        { str: 3, fret: 7 },
+        { str: 4, fret: 7 },
+        { str: 5, fret: 5 },
+        { str: 6, fret: 5 },
+      ],
+      duration: '4',
+    }),
+    f.TabNote({
+      positions: [
+        { str: 4, fret: 3 },
+        { str: 5, fret: 4 },
+        { str: 6, fret: 5 },
+      ],
+      duration: '4',
+    }),
+  ];
+
+  tabNotes1[0].addStroke(0, new Stroke(1));
+  tabNotes1[1].addStroke(0, new Stroke(2));
+  tabNotes1[2].addStroke(0, new Stroke(3));
+  tabNotes1[3].addStroke(0, new Stroke(4));
+
+  const tabVoice1 = f.Voice().addTickables(tabNotes1);
+
+  f.Formatter().joinVoices([tabVoice1]).formatToStave([tabVoice1], stave1);
+
+  // bar 2
+  const stave2 = f.TabStave({ x: stave1.getWidth() + stave1.getX(), width: 300 }).setEndBarType(Barline.type.DOUBLE);
+
+  const tabNotes2 = [
+    f.TabNote({
+      positions: [
+        { str: 2, fret: 7 },
+        { str: 3, fret: 8 },
+        { str: 4, fret: 9 },
+      ],
+      duration: '2',
+    }),
+    f.TabNote({
+      positions: [
+        { str: 1, fret: 5 },
+        { str: 2, fret: 6 },
+        { str: 3, fret: 7 },
+        { str: 4, fret: 7 },
+        { str: 5, fret: 5 },
+        { str: 6, fret: 5 },
+      ],
+      duration: '2',
+    }),
+  ];
+
+  tabNotes2[0].addStroke(0, new Stroke(6));
+  tabNotes2[1].addStroke(0, new Stroke(5));
+
+  const tabVoice2 = f.Voice().addTickables(tabNotes2);
+
+  f.Formatter().joinVoices([tabVoice2]).formatToStave([tabVoice2], stave2);
+
+  f.draw();
+
+  ok(true, 'Strokes Tab test');
 }
+*/
 function notesWithTab(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 500, 300);
     const stave = f.Stave({ x: 15, y: 40, width: 450 }).addClef('treble');
@@ -46170,7 +45865,7 @@ function stave(options) {
     keySig.addToStave(stave);
     keySig.setStyle(FS('blue'));
     stave.addTimeSignature('4/4');
-    const timeSig = stave.getModifiers(stavemodifier__WEBPACK_IMPORTED_MODULE_8__.StaveModifier.Position.BEGIN, timesignature__WEBPACK_IMPORTED_MODULE_12__.TimeSignature.CATEGORY);
+    const timeSig = stave.getModifiers(stavemodifier__WEBPACK_IMPORTED_MODULE_8__.StaveModifierPosition.BEGIN, timesignature__WEBPACK_IMPORTED_MODULE_12__.TimeSignature.CATEGORY);
     timeSig[0].setStyle(FS('brown'));
     const notes = [
         f
@@ -46215,7 +45910,7 @@ function tab(options, contextBuilder) {
     const stave = new tabstave__WEBPACK_IMPORTED_MODULE_11__.TabStave(10, 10, 450).addTabGlyph();
     stave.getModifiers()[2].setStyle(FS('blue'));
     stave.setContext(ctx).draw();
-    const tabNote = (struct) => new tabnote__WEBPACK_IMPORTED_MODULE_10__.TabNote(struct);
+    const tabNote = (noteStruct) => new tabnote__WEBPACK_IMPORTED_MODULE_10__.TabNote(noteStruct);
     const notes = [
         tabNote({
             positions: [
@@ -46393,8 +46088,8 @@ function draw(options, contextBuilder) {
         },
     ];
     // Helper function
-    function showNote(struct, stave, ctx, x) {
-        const tabNote = new tabnote__WEBPACK_IMPORTED_MODULE_4__.TabNote(struct);
+    function showNote(noteStruct, stave, ctx, x) {
+        const tabNote = new tabnote__WEBPACK_IMPORTED_MODULE_4__.TabNote(noteStruct);
         const tickContext = new tickcontext__WEBPACK_IMPORTED_MODULE_6__.TickContext();
         tickContext.addTickable(tabNote).preFormat().setX(x);
         tabNote.setContext(ctx).setStave(stave);
@@ -46804,7 +46499,7 @@ function setupContext(options, width) {
     return { context, stave };
 }
 // Helper function to create TabNote objects.
-const tabNote = (struct) => new tabnote__WEBPACK_IMPORTED_MODULE_3__.TabNote(struct);
+const tabNote = (noteStruct) => new tabnote__WEBPACK_IMPORTED_MODULE_3__.TabNote(noteStruct);
 /**
  * Test Case
  */
@@ -46920,13 +46615,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "TabStaveTests": () => (/* binding */ TabStaveTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
-/* harmony import */ var stavebarline__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! stavebarline */ "./src/stavebarline.ts");
-/* harmony import */ var tabstave__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! tabstave */ "./src/tabstave.ts");
+/* harmony import */ var tabstave__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tabstave */ "./src/tabstave.ts");
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 //
 // TabStave Tests
-
 
 
 const TabStaveTests = {
@@ -46934,12 +46627,11 @@ const TabStaveTests = {
         QUnit.module('TabStave');
         const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
         run('TabStave Draw Test', draw);
-        run('Vertical Bar Test', drawVerticalBar);
     },
 };
 function draw(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 160);
-    const stave = new tabstave__WEBPACK_IMPORTED_MODULE_2__.TabStave(10, 10, 300);
+    const stave = new tabstave__WEBPACK_IMPORTED_MODULE_1__.TabStave(10, 10, 300);
     stave.setNumLines(6);
     stave.setContext(ctx);
     stave.draw();
@@ -46947,18 +46639,6 @@ function draw(options, contextBuilder) {
     equal(stave.getYForLine(5), 127, 'getYForLine(5)');
     equal(stave.getYForLine(0), 62, 'getYForLine(0) - Top Line');
     equal(stave.getYForLine(4), 114, 'getYForLine(4) - Bottom Line');
-    ok(true, 'all pass');
-}
-function drawVerticalBar(options, contextBuilder) {
-    const ctx = contextBuilder(options.elementId, 400, 160);
-    const stave = new tabstave__WEBPACK_IMPORTED_MODULE_2__.TabStave(10, 10, 300);
-    stave.setNumLines(6);
-    stave.setContext(ctx);
-    stave.drawVerticalBar(50);
-    stave.drawVerticalBar(100);
-    stave.drawVerticalBar(150);
-    stave.setEndBarType(stavebarline__WEBPACK_IMPORTED_MODULE_1__.Barline.type.END);
-    stave.draw();
     ok(true, 'all pass');
 }
 
@@ -47011,7 +46691,7 @@ const TabTieTests = {
 /**
  * Helper function to create TabNote objects.
  */
-const tabNote = (struct) => new tabnote__WEBPACK_IMPORTED_MODULE_4__.TabNote(struct);
+const tabNote = (noteStruct) => new tabnote__WEBPACK_IMPORTED_MODULE_4__.TabNote(noteStruct);
 /**
  * Helper function to create a RenderContext and TabStave.
  */
@@ -47322,8 +47002,6 @@ __webpack_require__.r(__webpack_exports__);
 /* eslint-disable */
 // @ts-nocheck
 // TODO: TextNote needs a setFont() accessor.
-// TODO: Line 177 => Property 'text' is missing but required in type 'TextNoteStruct'.
-//       Maybe Factory.TextNote() should accept a Partial<TextNoteStruct>?
 
 
 
@@ -47527,9 +47205,9 @@ function textDynamics(options) {
         f.TextDynamics({ text: 'mf', duration: '4' }),
         f.TextDynamics({ text: 'sff', duration: '4' }),
     ], { time: '7/4' });
-    // This is refactored to use preCalculateMinWidth... to exercise  
+    // This is refactored to use preCalculateMinWidth... to exercise
     // a bug fix when textDynamic got formatted more than once.
-    var formatter = f.Formatter();
+    const formatter = f.Formatter();
     formatter.joinVoices([voice]);
     // const width = 250; //formatter.preCalculateMinTotalWidth([voice]);
     const width = formatter.preCalculateMinTotalWidth([voice]);
@@ -47981,10 +47659,6 @@ __webpack_require__.r(__webpack_exports__);
 // MIT License
 //
 // Tuplet Tests
-/* eslint-disable */
-// @ts-nocheck
-// TODO: Factory.Voice() requires its 'time' parameter to be a string.
-//       However, we pass { num_beats: 4, beat_value: 4 }.
 
 
 
@@ -48472,6 +48146,8 @@ __webpack_require__.r(__webpack_exports__);
 // MIT License
 //
 // TypeGuard Tests
+// eslint-disable-next-line
+// @ts-nocheck to support ES5 style class declaration in the fakeES5() test case.
 
 
 
@@ -48480,7 +48156,8 @@ const TypeGuardTests = {
     Start() {
         QUnit.module('TypeGuard');
         test('Real VexFlow Types', real);
-        test('Fake VexFlow Types', fake);
+        test('Fake VexFlow Types in ES5', fakeES5);
+        test('Fake VexFlow Types in ES6', fakeES6);
         test('instanceof', fallbackToInstanceOf);
         test('Edge Case ES5/ES6', edgeCaseES5vsES6);
     },
@@ -48497,19 +48174,50 @@ function real() {
     ok((0,typeguard__WEBPACK_IMPORTED_MODULE_0__.isStemmableNote)(t), 'TabNote extends StemmableNote');
     ok((0,typeguard__WEBPACK_IMPORTED_MODULE_0__.isNote)(t), 'TabNote extends StemmableNote which extends Note, so t is a Note');
 }
-function fake() {
-    const fakeStaveNote = {
-        getCategory: () => 'stavenotes',
-    };
-    ok((0,typeguard__WEBPACK_IMPORTED_MODULE_0__.isStaveNote)(fakeStaveNote), 'Fake StaveNote is a StaveNote.');
-    notOk((0,typeguard__WEBPACK_IMPORTED_MODULE_0__.isNote)(fakeStaveNote), 'Fake StaveNote is not a Note. Categories do not match.');
-    const fakeStemmableNote = {
-        getCategory() {
-            return stemmablenote__WEBPACK_IMPORTED_MODULE_3__.StemmableNote.CATEGORY;
-        },
-    };
-    ok((0,typeguard__WEBPACK_IMPORTED_MODULE_0__.isStemmableNote)(fakeStemmableNote), 'Returns the correct category string.');
-    notOk((0,typeguard__WEBPACK_IMPORTED_MODULE_0__.isNote)(fakeStemmableNote), 'The fake stemmable note does not have any ancestors with the correct category.');
+/**
+ * Helper function to test the fake VexFlow objects we create in fakeES5() and fakeES6().
+ */
+function checkFakeObjects(fakeStemmableNote, fakeStaveNote) {
+    ok((0,typeguard__WEBPACK_IMPORTED_MODULE_0__.isStemmableNote)(fakeStemmableNote), 'Fake StemmableNote is a StemmableNote.');
+    notOk((0,typeguard__WEBPACK_IMPORTED_MODULE_0__.isNote)(fakeStemmableNote), 'Fake StemmableNote is not a Note (no ancestors with the correct CATEGORY).');
+    ok((0,typeguard__WEBPACK_IMPORTED_MODULE_0__.isCategory)(fakeStaveNote, stavenote__WEBPACK_IMPORTED_MODULE_1__.StaveNote), 'Fake StaveNote is a StaveNote.');
+    ok((0,typeguard__WEBPACK_IMPORTED_MODULE_0__.isStaveNote)(fakeStaveNote), 'Fake StaveNote is a StaveNote (via helper function).');
+    ok((0,typeguard__WEBPACK_IMPORTED_MODULE_0__.isCategory)(fakeStaveNote, stemmablenote__WEBPACK_IMPORTED_MODULE_3__.StemmableNote), 'Fake StaveNote is also a StemmableNote (via inheritance).');
+    notOk((0,typeguard__WEBPACK_IMPORTED_MODULE_0__.isNote)(fakeStaveNote), 'Fake StaveNote is not a Note. CATEGORY does not match.');
+}
+/**
+ * Demonstrate that an object (ES5-style) can pass the isCategory(...) test if it
+ * has the correct static .CATEGORY property.
+ */
+function fakeES5() {
+    function FakeStemmableNote() {
+        this.isFake = true;
+    }
+    FakeStemmableNote.CATEGORY = stemmablenote__WEBPACK_IMPORTED_MODULE_3__.StemmableNote.CATEGORY;
+    function FakeStaveNote() {
+        FakeStemmableNote.call(this);
+    }
+    FakeStaveNote.CATEGORY = stavenote__WEBPACK_IMPORTED_MODULE_1__.StaveNote.CATEGORY;
+    FakeStaveNote.prototype = Object.create(FakeStemmableNote.prototype);
+    FakeStaveNote.prototype.constructor = FakeStaveNote;
+    const fakeStemmableNote = new FakeStemmableNote();
+    const fakeStaveNote = new FakeStaveNote();
+    checkFakeObjects(fakeStemmableNote, fakeStaveNote);
+}
+/**
+ * Demonstrate that an object (ES6-style) can pass the isCategory(...) test if it
+ * or its ancestor has the correct static .CATEGORY property.
+ */
+function fakeES6() {
+    class FakeStemmableNote {
+    }
+    FakeStemmableNote.CATEGORY = stemmablenote__WEBPACK_IMPORTED_MODULE_3__.StemmableNote.CATEGORY;
+    class FakeStaveNote extends FakeStemmableNote {
+    }
+    FakeStaveNote.CATEGORY = stavenote__WEBPACK_IMPORTED_MODULE_1__.StaveNote.CATEGORY;
+    const fakeStemmableNote = new FakeStemmableNote();
+    const fakeStaveNote = new FakeStaveNote();
+    checkFakeObjects(fakeStemmableNote, fakeStaveNote);
 }
 /**
  * In this test, isCategory() should work just like instanceof,
@@ -49130,7 +48838,7 @@ const VibratoTests = {
     },
 };
 // Helper function to create TabNote objects.
-const tabNote = (struct) => new tabnote__WEBPACK_IMPORTED_MODULE_3__.TabNote(struct);
+const tabNote = (noteStruct) => new tabnote__WEBPACK_IMPORTED_MODULE_3__.TabNote(noteStruct);
 /**
  * Default vibrato symbol (wavy line) on top of a tab with two notes fretted.
  */
@@ -49463,7 +49171,7 @@ var __webpack_exports__ = {};
   \*************************************************************************************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! flow */ "./src/flow.ts");
-flow__WEBPACK_IMPORTED_MODULE_0__.Flow.VERSION="3.0.9";flow__WEBPACK_IMPORTED_MODULE_0__.Flow.BUILD="3c0b744d22fb5604b3c4475341ff14354d50453a";
+flow__WEBPACK_IMPORTED_MODULE_0__.Flow.VERSION="3.0.9";flow__WEBPACK_IMPORTED_MODULE_0__.Flow.BUILD="123eca67e30641282721144f7d8bc32d3e6ee663";
 })();
 
 // This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.
