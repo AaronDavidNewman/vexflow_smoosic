@@ -91,7 +91,7 @@ const VFPrefixTests = {
 };
 
 function VF_Prefix(): void {
-  const VF = Vex.Flow as unknown as typeof Flow;
+  const VF = Flow;
   equal(Accidental, VF.Accidental);
   equal(Annotation, VF.Annotation);
   equal(Articulation, VF.Articulation);
