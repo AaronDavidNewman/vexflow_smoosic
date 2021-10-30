@@ -1,5 +1,5 @@
 /*!
- * VexFlow 3.0.9   2021-10-30T17:17:21.289Z   bb6b7443c9d50c426788e11b8e84f20b0bcae81a
+ * VexFlow 3.0.9   2021-10-30T17:57:38.836Z   9647dea9d47dba15468e21cfb4689797ef473ca5
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * http://www.vexflow.com   http://github.com/0xfe/vexflow
  */
@@ -33317,7 +33317,7 @@ var __webpack_exports__ = {};
   \*************************************************************************************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! flow */ "./src/flow.ts");
-flow__WEBPACK_IMPORTED_MODULE_0__.Flow.VERSION="3.0.9";flow__WEBPACK_IMPORTED_MODULE_0__.Flow.BUILD="bb6b7443c9d50c426788e11b8e84f20b0bcae81a";
+flow__WEBPACK_IMPORTED_MODULE_0__.Flow.VERSION="3.0.9";flow__WEBPACK_IMPORTED_MODULE_0__.Flow.BUILD="9647dea9d47dba15468e21cfb4689797ef473ca5";
 })();
 
 // This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.
