@@ -481,7 +481,7 @@ export class Formatter {
     }
 
     // eslint-disable-next-line
-  const { list: contextList, map: contextMap } = this.tickContexts!;
+    const { list: contextList, map: contextMap } = this.tickContexts!;
     this.minTotalWidth = 0;
 
     // Go through each tick context and calculate total width,

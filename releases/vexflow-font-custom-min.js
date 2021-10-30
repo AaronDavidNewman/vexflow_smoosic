@@ -1,5 +1,5 @@
 /*!
- * VexFlow 3.0.9   2021-10-30T17:57:38.836Z   9647dea9d47dba15468e21cfb4689797ef473ca5
+ * VexFlow 3.0.9   2021-10-30T20:18:25.518Z   3c8da63c734ed4a3d5d514de924d6fc96f6de5d3
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * http://www.vexflow.com   http://github.com/0xfe/vexflow
  */

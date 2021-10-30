@@ -1,5 +1,5 @@
 /*!
- * VexFlow 3.0.9   2021-10-30T17:57:38.836Z   9647dea9d47dba15468e21cfb4689797ef473ca5
+ * VexFlow 3.0.9   2021-10-30T20:18:25.518Z   3c8da63c734ed4a3d5d514de924d6fc96f6de5d3
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * http://www.vexflow.com   http://github.com/0xfe/vexflow
  */
@@ -5534,6 +5534,7 @@ const Flow = {
     clefProperties(clef) {
         return _tables__WEBPACK_IMPORTED_MODULE_60__.Tables.clefProperties(clef);
     },
+    // eslint-disable-next-line
     keyProperties(key, clef, params) {
         return _tables__WEBPACK_IMPORTED_MODULE_60__.Tables.keyProperties(key, clef, params);
     },
@@ -25233,7 +25234,6 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_6__.StemmableNot
         // Drawing
         this.note_heads = [];
         this.modifiers = [];
-        this.ledgerLineStyle = {};
         this.render_options = Object.assign(Object.assign({}, this.render_options), { 
             // font size for note heads and rests
             glyph_font_scale: noteStruct.glyph_font_scale || _tables__WEBPACK_IMPORTED_MODULE_7__.Tables.DEFAULT_NOTATION_FONT_SCALE, 
@@ -25917,9 +25917,9 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_6__.StemmableNot
     }
     // Pre-render formatting
     preFormat() {
-        let noteHeadPadding = 0;
         if (this.preFormatted)
             return;
+        let noteHeadPadding = 0;
         if (this.modifierContext) {
             this.modifierContext.preFormat();
             // If there are no modifiers on this note, make sure there is adequate padding
@@ -26043,13 +26043,7 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_6__.StemmableNot
             ctx.lineTo(x + ledgerWidth, y);
             ctx.stroke();
         };
-        const style = Object.assign(Object.assign({}, (stave.getStyle() || {})), (this.getLedgerLineStyle() || {}));
-        if (typeof style.lineWidth === 'undefined') {
-            style.lineWidth = _tables__WEBPACK_IMPORTED_MODULE_7__.Tables.STAVE_LINE_THICKNESS * 2;
-        }
-        else {
-            style.lineWidth *= 2;
-        }
+        const style = Object.assign(Object.assign({}, stave.getDefaultLedgerLineStyle()), this.getLedgerLineStyle());
         this.applyStyle(ctx, style);
         // Draw ledger lines below the staff:
         for (let line = 6; line <= highest_line; ++line) {
@@ -33317,7 +33311,7 @@ var __webpack_exports__ = {};
   \*************************************************************************************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! flow */ "./src/flow.ts");
-flow__WEBPACK_IMPORTED_MODULE_0__.Flow.VERSION="3.0.9";flow__WEBPACK_IMPORTED_MODULE_0__.Flow.BUILD="9647dea9d47dba15468e21cfb4689797ef473ca5";
+flow__WEBPACK_IMPORTED_MODULE_0__.Flow.VERSION="3.0.9";flow__WEBPACK_IMPORTED_MODULE_0__.Flow.BUILD="3c8da63c734ed4a3d5d514de924d6fc96f6de5d3";
 })();
 
 // This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.

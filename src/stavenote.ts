@@ -395,7 +395,6 @@ export class StaveNote extends StemmableNote {
     // Drawing
     this.note_heads = [];
     this.modifiers = [];
-    this.ledgerLineStyle = {};
 
     this.render_options = {
       ...this.render_options,
@@ -920,8 +919,9 @@ export class StaveNote extends StemmableNote {
 
   // Pre-render formatting
   preFormat(): void {
-    let noteHeadPadding = 0;
     if (this.preFormatted) return;
+
+    let noteHeadPadding = 0;
     if (this.modifierContext) {
       this.modifierContext.preFormat();
       // If there are no modifiers on this note, make sure there is adequate padding
@@ -938,6 +938,7 @@ export class StaveNote extends StemmableNote {
       width += this.getGlyphWidth();
       // TODO: Add flag width as a separate metric
     }
+
     this.setWidth(width);
     this.setPreFormatted(true);
   }
@@ -1073,12 +1074,7 @@ export class StaveNote extends StemmableNote {
       ctx.stroke();
     };
 
-    const style = { ...(stave.getStyle() || {}), ...(this.getLedgerLineStyle() || {}) };
-    if (typeof style.lineWidth === 'undefined') {
-      style.lineWidth = Tables.STAVE_LINE_THICKNESS * 2;
-    } else {
-      style.lineWidth *= 2;
-    }
+    const style = { ...stave.getDefaultLedgerLineStyle(), ...this.getLedgerLineStyle() };
     this.applyStyle(ctx, style);
 
     // Draw ledger lines below the staff:

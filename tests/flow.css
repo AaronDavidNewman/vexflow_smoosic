@@ -7,13 +7,8 @@
   font-weight: normal;
   font-style: normal;
 }
-
 @font-face {
-    font-family: 'Roboto Slab';
-    src: url('https://aarondavidnewman.github.io/Smoosic/build/styles/fonts/RobotoSlab-Regular.woff2') format('woff2'),
-         url('https://aarondavidnewman.github.io/Smoosic/build/styles/fonts/RobotoSlab-Regular.woff') format('woff');
-    font-weight: 500;
-    font-style: normal;
+  font-family: 'Roboto Slab', serif;
 }
 body {
   padding: 20px;
