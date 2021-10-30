@@ -1,14 +1,15 @@
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 
-import { defined, RuntimeError } from './util';
-import { Element } from './element';
-import { BoundingBoxComputation } from './boundingboxcomputation';
 import { BoundingBox } from './boundingbox';
+import { BoundingBoxComputation } from './boundingboxcomputation';
+import { Element } from './element';
 import { Font, FontGlyph } from './font';
-import { RenderContext, TypeProps } from './types/common';
+import { RenderContext } from './rendercontext';
 import { Stave } from './stave';
 import { Stem } from './stem';
-import { Flow } from './flow';
+import { Tables } from './tables';
+import { TypeProps } from './types/common';
+import { defined, RuntimeError } from './util';
 
 export interface DurationCode {
   common: TypeProps;
@@ -278,7 +279,7 @@ export class Glyph extends Element {
     options?: { font?: Font; category: string }
   ): GlyphMetrics {
     const params = {
-      fontStack: Flow.DEFAULT_FONT_STACK,
+      fontStack: Tables.DEFAULT_FONT_STACK,
       ...options,
     };
     const data = Glyph.cache.lookup(params.fontStack, code, params.category);

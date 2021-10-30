@@ -1,22 +1,22 @@
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 
-import { RuntimeError, midLine, log, defined } from './util';
 import { Beam } from './beam';
-import { Flow } from './flow';
-import { Fraction } from './fraction';
-import { Voice } from './voice';
-import { StaveConnector } from './staveconnector';
-import { ModifierContext } from './modifiercontext';
-import { TickContext } from './tickcontext';
-import { RenderContext } from './types/common';
-import { Stave } from './stave';
-import { StemmableNote } from './stemmablenote';
-import { Tickable } from './tickable';
-import { TabStave } from './tabstave';
-import { TabNote } from './tabnote';
 import { BoundingBox } from './boundingbox';
+import { Fraction } from './fraction';
+import { ModifierContext } from './modifiercontext';
+import { RenderContext } from './rendercontext';
+import { Stave } from './stave';
+import { StaveConnector } from './staveconnector';
+import { StemmableNote } from './stemmablenote';
+import { Tables } from './tables';
+import { TabNote } from './tabnote';
+import { TabStave } from './tabstave';
+import { Tickable } from './tickable';
+import { TickContext } from './tickcontext';
 import { isNote, isStaveNote } from './typeguard';
+import { defined, log, midLine, RuntimeError } from './util';
+import { Voice } from './voice';
 
 interface Distance {
   maxNegativeShiftPx: number;
@@ -207,7 +207,7 @@ export class Formatter {
     options?: { stavePadding: number }
   ): void {
     options = {
-      stavePadding: Flow.DEFAULT_FONT_STACK[0].lookupMetric('stave.padding'),
+      stavePadding: Tables.DEFAULT_FONT_STACK[0].lookupMetric('stave.padding'),
       ...options,
     };
 
@@ -275,7 +275,7 @@ export class Formatter {
     }
 
     // Start by creating a voice and adding all the notes to it.
-    const voice = new Voice(Flow.TIME4_4).setMode(Voice.Mode.SOFT).addTickables(notes);
+    const voice = new Voice(Tables.TIME4_4).setMode(Voice.Mode.SOFT).addTickables(notes);
 
     // Then create beams, if requested.
     const beams = options.auto_beam ? Beam.applyAndGetBeams(voice) : [];
@@ -327,10 +327,10 @@ export class Formatter {
     }
 
     // Create a `4/4` voice for `notes`.
-    const notevoice = new Voice(Flow.TIME4_4).setMode(Voice.Mode.SOFT).addTickables(notes);
+    const notevoice = new Voice(Tables.TIME4_4).setMode(Voice.Mode.SOFT).addTickables(notes);
 
     // Create a `4/4` voice for `tabnotes`.
-    const tabvoice = new Voice(Flow.TIME4_4).setMode(Voice.Mode.SOFT).addTickables(tabnotes);
+    const tabvoice = new Voice(Tables.TIME4_4).setMode(Voice.Mode.SOFT).addTickables(tabnotes);
 
     // Then create beams, if requested.
     const beams = opts.auto_beam ? Beam.applyAndGetBeams(notevoice) : [];
@@ -459,7 +459,7 @@ export class Formatter {
    * @returns the estimated width in pixels
    */
   preCalculateMinTotalWidth(voices: Voice[]): number {
-    const unalignedPadding = Flow.DEFAULT_FONT_STACK[0].lookupMetric('stave.unalignedNotePadding');
+    const unalignedPadding = Tables.DEFAULT_FONT_STACK[0].lookupMetric('stave.unalignedNotePadding');
     // Calculate additional padding based on 3 methods:
     // 1) unaligned beats in voices, 2) variance of width, 3) variance of durations
     let unalignedCtxCount = 0;
@@ -768,11 +768,11 @@ export class Formatter {
       lastContext.getMetrics().notePx -
       lastContext.getMetrics().totalRightPx -
       firstContext.getMetrics().totalLeftPx;
-    const musicFont = Flow.DEFAULT_FONT_STACK[0];
+    const musicFont = Tables.DEFAULT_FONT_STACK[0];
     const configMinPadding = musicFont.lookupMetric('stave.endPaddingMin');
     const configMaxPadding = musicFont.lookupMetric('stave.endPaddingMax');
     let targetWidth = adjustedJustifyWidth;
-    let distances = calculateIdealDistances(targetWidth);
+    const distances = calculateIdealDistances(targetWidth);
     let actualWidth = shiftToIdealDistances(distances);
     // Calculate right justification by finding max of (configured value, min distance between tickables)
     // so measures with lots of white space use it evenly, and crowded measures use at least the configured
@@ -787,34 +787,25 @@ export class Formatter {
       return mdCalc;
     };
     const minDistance = calcMinDistance(targetWidth, distances);
-    const multiNote = contextList.length > 1;
+
+    // Just one context. Done formatting.
+    if (contextList.length === 1) return 0;
+
     // right justify to either the configured padding, or the min distance between notes, whichever is greatest.
-    let paddingMax = configMaxPadding;
     // This * 2 keeps the existing formatting unless there is 'a lot' of extra whitespace, which won't break
     // existing visual regression tests.
-    if (paddingMax * 2 < minDistance) {
-      paddingMax = minDistance;
-      L('Right padding to ' + minDistance);
-    }
+    const paddingMax = configMaxPadding * 2 < minDistance ? minDistance : configMaxPadding;
     const paddingMin = paddingMax - (configMaxPadding - configMinPadding);
     const maxX = adjustedJustifyWidth - paddingMin;
 
     let iterations = maxIterations;
-    while (
-      (actualWidth > maxX && iterations > 0 && multiNote) ||
-      (actualWidth + paddingMax < maxX && iterations > 1 && multiNote)
-    ) {
-      // If we couldn't fit all the notes into the jusification width, it's because the softmax-scaled
-      // widths between different durations differ across stave (e.g., 1 quarter note is not the same pixel-width
-      // as 4 16th-notes). Run another pass, now that we know how much to justify.
+    // Adjust justification width until the right margin is as close as possible to the calculated padding,
+    // without going over
+    while ((actualWidth > maxX && iterations > 0) || (actualWidth + paddingMax < maxX && iterations > 1)) {
       targetWidth -= actualWidth - maxX;
-      distances = calculateIdealDistances(targetWidth);
-      actualWidth = shiftToIdealDistances(distances);
+      actualWidth = shiftToIdealDistances(calculateIdealDistances(targetWidth));
       iterations--;
     }
-
-    // Just one context. Done formatting.
-    if (contextList.length === 1) return 0;
 
     this.justifyWidth = justifyWidth;
     return this.evaluate();

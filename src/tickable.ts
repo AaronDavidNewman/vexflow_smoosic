@@ -1,12 +1,12 @@
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 
-import { Stave } from './stave';
 import { Element } from './element';
-import { Flow } from './flow';
 import { Fraction } from './fraction';
 import { Modifier } from './modifier';
 import { ModifierContext } from './modifiercontext';
+import { Stave } from './stave';
+import { Tables } from './tables';
 import { TickContext } from './tickcontext';
 import { Tuplet } from './tuplet';
 import { defined, RuntimeError } from './util';
@@ -341,7 +341,7 @@ export abstract class Tickable extends Element {
 
   /** Set the duration. */
   setDuration(duration: Fraction): void {
-    const ticks = duration.numerator * (Flow.RESOLUTION / duration.denominator);
+    const ticks = duration.numerator * (Tables.RESOLUTION / duration.denominator);
     this.ticks = this.tickMultiplier.clone().multiply(ticks);
     this.intrinsicTicks = this.ticks.value();
   }

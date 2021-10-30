@@ -7,13 +7,13 @@
 // render notes as a `Modifier`
 // ex) ClefNote, TimeSigNote and BarNote.
 
-import { Flow } from './flow';
-import { Modifier } from './modifier';
 import { Formatter } from './formatter';
-import { Voice } from './voice';
+import { Modifier } from './modifier';
 import { ModifierContextState } from './modifiercontext';
 import { Note } from './note';
-import { RenderContext } from './types/common';
+import { RenderContext } from './rendercontext';
+import { Tables } from './tables';
+import { Voice } from './voice';
 
 export class NoteSubGroup extends Modifier {
   static get CATEGORY(): string {
@@ -54,7 +54,7 @@ export class NoteSubGroup extends Modifier {
     this.voice = new Voice({
       num_beats: 4,
       beat_value: 4,
-      resolution: Flow.RESOLUTION,
+      resolution: Tables.RESOLUTION,
     }).setStrict(false);
 
     this.voice.addTickables(this.subNotes);

@@ -2,15 +2,16 @@
 // Author: Cyril Silverman
 // MIT License
 
-import { RuntimeError, log, defined } from './util';
-import { Flow } from './flow';
-import { Modifier } from './modifier';
-import { TickContext } from './tickcontext';
-import { Glyph } from './glyph';
-import { StemmableNote } from './stemmablenote';
-import { ModifierContextState } from './modifiercontext';
 import { Stem } from 'stem';
 import { isTabNote } from 'typeguard';
+
+import { Glyph } from './glyph';
+import { Modifier } from './modifier';
+import { ModifierContextState } from './modifiercontext';
+import { StemmableNote } from './stemmablenote';
+import { Tables } from './tables';
+import { TickContext } from './tickcontext';
+import { defined, log, RuntimeError } from './util';
 
 // eslint-disable-next-line
 function L(...args: any[]) {
@@ -43,7 +44,7 @@ export class Ornament extends Modifier {
   protected delayed: boolean;
   protected reportedWidth: number;
   protected adjustForStemDirection: boolean;
-  protected render_options: {
+  public render_options: {
     accidentalUpperPadding: number;
     accidentalLowerPadding: number;
     font_scale: number;
@@ -173,7 +174,7 @@ export class Ornament extends Modifier {
       accidentalUpperPadding: 3,
     };
 
-    this.ornament = Flow.ornamentCodes(this.type);
+    this.ornament = Tables.ornamentCodes(this.type);
 
     // new ornaments have their origin at the origin, and have more specific
     // metrics.  Legacy ornaments do some
@@ -223,7 +224,7 @@ export class Ornament extends Modifier {
   /** Set the upper accidental for the ornament. */
   setUpperAccidental(accid: string): this {
     const scale = this.render_options.font_scale / 1.3;
-    this.accidentalUpper = new Glyph(Flow.accidentalCodes(accid).code, scale);
+    this.accidentalUpper = new Glyph(Tables.accidentalCodes(accid).code, scale);
     this.accidentalUpper.setOrigin(0.5, 1.0);
     return this;
   }
@@ -231,7 +232,7 @@ export class Ornament extends Modifier {
   /** Set the lower accidental for the ornament. */
   setLowerAccidental(accid: string): this {
     const scale = this.render_options.font_scale / 1.3;
-    this.accidentalLower = new Glyph(Flow.accidentalCodes(accid).code, scale);
+    this.accidentalLower = new Glyph(Tables.accidentalCodes(accid).code, scale);
     this.accidentalLower.setOrigin(0.5, 1.0);
     return this;
   }

@@ -3,7 +3,6 @@
 //
 // Voice Tests
 
-import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 import { Flow } from 'flow';
 import { Formatter } from 'formatter';
 import { ContextBuilder } from 'renderer';
@@ -11,7 +10,9 @@ import { Stave } from 'stave';
 import { Barline } from 'stavebarline';
 import { StaveNote } from 'stavenote';
 import { Voice } from 'voice';
+
 import { MockTickable } from './mocks';
+import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
 const VoiceTests = {
   Start(): void {
@@ -89,7 +90,11 @@ function full(options: TestOptions, contextBuilder: ContextBuilder): void {
 
   stave.setContext(ctx).draw();
   voice.draw(ctx);
-  voice.getBoundingBox()?.draw(ctx);
+  const bb = voice.getBoundingBox();
+  if (bb) {
+    ctx.rect(bb.getX(), bb.getY(), bb.getW(), bb.getH());
+  }
+  ctx.stroke();
 
   throws(
     () => voice.addTickable(new StaveNote({ keys: ['c/4'], duration: '2' })),

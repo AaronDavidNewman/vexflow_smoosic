@@ -6,15 +6,15 @@
 // This class implements hairpins between notes.
 // Hairpins can be either crescendo or decrescendo.
 
-import { RuntimeError } from './util';
 import { Element } from './element';
 import { Modifier } from './modifier';
 import { Note } from './note';
-import { RenderContext } from './types/common';
+import { RenderContext } from './rendercontext';
+import { RuntimeError } from './util';
 
 export interface StaveHairpinRenderOptions {
-  right_shift_ticks: number;
-  left_shift_ticks: number;
+  right_shift_ticks?: number;
+  left_shift_ticks?: number;
   left_shift_px: number;
   right_shift_px: number;
   height: number;
@@ -29,7 +29,7 @@ export class StaveHairpin extends Element {
   protected hairpin: number;
 
   protected position: number;
-  protected render_options: StaveHairpinRenderOptions;
+  public render_options: StaveHairpinRenderOptions;
 
   // notes is initialized by the constructor via this.setNotes(notes).
   protected notes!: Record<string, Note>;
@@ -70,8 +70,8 @@ export class StaveHairpin extends Element {
       throw new RuntimeError('BadArguments', 'A valid Formatter must be provide to draw offsets by ticks.');
     }
 
-    const l_shift_px = ppt * options.left_shift_ticks;
-    const r_shift_px = ppt * options.right_shift_ticks;
+    const l_shift_px = ppt * (options.left_shift_ticks ?? 0);
+    const r_shift_px = ppt * (options.right_shift_ticks ?? 0);
 
     const hairpin_options = {
       height: options.height,

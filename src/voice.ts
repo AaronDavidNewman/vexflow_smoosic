@@ -2,13 +2,13 @@
 // MIT License
 
 import { BoundingBox } from './boundingbox';
-import { RuntimeError, defined } from './util';
 import { Element } from './element';
-import { Flow } from './flow';
 import { Fraction } from './fraction';
-import { RenderContext } from './types/common';
+import { RenderContext } from './rendercontext';
 import { Stave } from './stave';
+import { Tables } from './tables';
 import { Tickable } from './tickable';
+import { defined, RuntimeError } from './util';
 
 export interface VoiceTime {
   num_beats: number;
@@ -82,7 +82,7 @@ export class Voice extends Element {
     this.time = {
       num_beats: 4,
       beat_value: 4,
-      resolution: Flow.RESOLUTION,
+      resolution: Tables.RESOLUTION,
       ...voiceTime,
     };
 

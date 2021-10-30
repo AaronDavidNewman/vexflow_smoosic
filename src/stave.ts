@@ -2,10 +2,10 @@
 // MIT License
 
 import { isBarline } from 'typeguard';
+
 import { BoundingBox } from './boundingbox';
 import { Clef } from './clef';
 import { Element, ElementStyle } from './element';
-import { Flow } from './flow';
 import { KeySignature } from './keysignature';
 import { Barline, BarlineType } from './stavebarline';
 import { StaveModifier, StaveModifierPosition } from './stavemodifier';
@@ -14,6 +14,7 @@ import { StaveSection } from './stavesection';
 import { StaveTempo, StaveTempoOptions } from './stavetempo';
 import { StaveText } from './stavetext';
 import { Volta } from './stavevolta';
+import { Tables } from './tables';
 import { TimeSignature } from './timesignature';
 import { Bounds, FontInfo } from './types/common';
 import { RuntimeError } from './util';
@@ -85,14 +86,14 @@ export class Stave extends Element {
   protected defaultLedgerLineStyle: ElementStyle;
 
   // This is the sum of the padding that normally goes on left + right of a stave during
-  // drawing.  Used to size staves correctly with content width
-  static get defaultPadding() {
-    const musicFont = Flow.DEFAULT_FONT_STACK[0];
+  // drawing. Used to size staves correctly with content width.
+  static get defaultPadding(): number {
+    const musicFont = Tables.DEFAULT_FONT_STACK[0];
     return musicFont.lookupMetric('stave.padding') + musicFont.lookupMetric('stave.endPaddingMax');
   }
   // Right padding, used by system if startX is already determined.
   static get rightPadding(): number {
-    const musicFont = Flow.DEFAULT_FONT_STACK[0];
+    const musicFont = Tables.DEFAULT_FONT_STACK[0];
     return musicFont.lookupMetric('stave.endPaddingMax');
   }
 
@@ -125,7 +126,7 @@ export class Stave extends Element {
       fill_style: '#999999',
       left_bar: true, // draw vertical bar on left
       right_bar: true, // draw vertical bar on right
-      spacing_between_lines_px: Flow.STAVE_LINE_DISTANCE, // in pixels
+      spacing_between_lines_px: Tables.STAVE_LINE_DISTANCE, // in pixels
       space_above_staff_ln: 4, // in staff lines
       space_below_staff_ln: 4, // in staff lines
       top_text_position: 1, // in staff lines
@@ -221,11 +222,11 @@ export class Stave extends Element {
   }
 
   getTopLineTopY(): number {
-    return this.getYForLine(0) - Flow.STAVE_LINE_THICKNESS / 2;
+    return this.getYForLine(0) - Tables.STAVE_LINE_THICKNESS / 2;
   }
 
   getBottomLineBottomY(): number {
-    return this.getYForLine(this.getNumLines() - 1) + Flow.STAVE_LINE_THICKNESS / 2;
+    return this.getYForLine(this.getNumLines() - 1) + Tables.STAVE_LINE_THICKNESS / 2;
   }
 
   setX(x: number): this {
@@ -259,7 +260,7 @@ export class Stave extends Element {
     return {
       fillStyle: this.options.fill_style,
       strokeStyle: this.options.fill_style, // yes, this is correct for legacy compatibility
-      lineWidth: Flow.STAVE_LINE_THICKNESS,
+      lineWidth: Tables.STAVE_LINE_THICKNESS,
       ...this.style,
     };
   }
@@ -728,6 +729,7 @@ export class Stave extends Element {
     const ctx = this.checkContext();
     this.setRendered();
 
+    ctx.openGroup('stave', this.getAttribute('id'));
     if (!this.formatted) this.format();
 
     const num_lines = this.options.num_lines;
@@ -769,7 +771,7 @@ export class Stave extends Element {
       ctx.fillText('' + this.measure, this.x - text_width / 2, y);
       ctx.restore();
     }
-
+    ctx.closeGroup();
     return this;
   }
 

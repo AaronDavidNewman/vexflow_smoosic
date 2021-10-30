@@ -2,10 +2,10 @@
 // Co-author: Benjamin W. Bohl
 // MIT License
 
-import { log, defined } from './util';
-import { StaveModifier, StaveModifierPosition } from './stavemodifier';
 import { Glyph } from './glyph';
 import { Stave } from './stave';
+import { StaveModifier, StaveModifierPosition } from './stavemodifier';
+import { defined, log } from './util';
 
 export interface ClefType {
   point: number;
@@ -187,10 +187,12 @@ export class Clef extends StaveModifier {
   draw(): void {
     const glyph = defined(this.glyph, 'ClefError', "Can't draw clef without glyph.");
     const stave = this.checkStave();
+    const ctx = stave.checkContext();
     this.setRendered();
 
+    ctx.openGroup('clef', this.getAttribute('id'));
     glyph.setStave(stave);
-    glyph.setContext(stave.getContext());
+    glyph.setContext(ctx);
     if (this.clef.line !== undefined) {
       this.placeGlyphOnLine(glyph, stave, this.clef.line);
     }
@@ -199,8 +201,9 @@ export class Clef extends StaveModifier {
     if (this.annotation !== undefined && this.attachment !== undefined) {
       this.placeGlyphOnLine(this.attachment, stave, this.annotation.line);
       this.attachment.setStave(stave);
-      this.attachment.setContext(stave.getContext());
+      this.attachment.setContext(ctx);
       this.attachment.renderToStave(this.x);
     }
+    ctx.closeGroup();
   }
 }

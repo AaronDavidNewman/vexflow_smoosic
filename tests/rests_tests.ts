@@ -3,16 +3,17 @@
 //
 // Rests Tests
 
-import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
-import { RenderContext } from 'types/common';
 import { Beam } from 'beam';
 import { Flow } from 'flow';
 import { Formatter } from 'formatter';
+import { RenderContext } from 'rendercontext';
 import { ContextBuilder } from 'renderer';
 import { Stave } from 'stave';
 import { StaveNote, StaveNoteStruct } from 'stavenote';
 import { Tuplet } from 'tuplet';
 import { Voice } from 'voice';
+
+import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
 const RestsTests = {
   Start(): void {

@@ -8,14 +8,15 @@
 //
 // See `tests/chordsymbol_tests.ts` for usage examples.
 
-import { log } from './util';
-import { Flow } from './flow';
-import { Glyph } from './glyph';
-import { TextFont } from './textfont';
-import { Modifier } from './modifier';
-import { FontInfo } from './types/common';
-import { StemmableNote } from './stemmablenote';
 import { ModifierContextState } from 'modifiercontext';
+
+import { Glyph } from './glyph';
+import { Modifier } from './modifier';
+import { StemmableNote } from './stemmablenote';
+import { Tables } from './tables';
+import { TextFont } from './textfont';
+import { FontInfo } from './types/common';
+import { log } from './util';
 
 // To enable logging for this class. Set `Vex.Flow.ChordSymbol.DEBUG` to `true`.
 // eslint-disable-next-line
@@ -135,7 +136,7 @@ export class ChordSymbol extends Modifier {
   }
 
   static get engravingFontResolution(): number {
-    return Flow.DEFAULT_FONT_STACK[0].getResolution();
+    return Tables.DEFAULT_FONT_STACK[0].getResolution();
   }
 
   static get spacingBetweenBlocks(): number {
@@ -252,15 +253,15 @@ export class ChordSymbol extends Modifier {
 
   // eslint-disable-next-line
   static get chordSymbolMetrics(): any {
-    return Flow.DEFAULT_FONT_STACK[0].getMetrics().glyphs.chordSymbol;
+    return Tables.DEFAULT_FONT_STACK[0].getMetrics().glyphs.chordSymbol;
   }
 
   static get lowerKerningText(): string[] {
-    return Flow.DEFAULT_FONT_STACK[0].getMetrics().glyphs.chordSymbol.global.lowerKerningText;
+    return Tables.DEFAULT_FONT_STACK[0].getMetrics().glyphs.chordSymbol.global.lowerKerningText;
   }
 
   static get upperKerningText(): string[] {
-    return Flow.DEFAULT_FONT_STACK[0].getMetrics().glyphs.chordSymbol.global.upperKerningText;
+    return Tables.DEFAULT_FONT_STACK[0].getMetrics().glyphs.chordSymbol.global.upperKerningText;
   }
 
   /**
@@ -691,7 +692,7 @@ export class ChordSymbol extends Modifier {
 
     if (this.vertical === VerticalJustify.BOTTOM) {
       // HACK: We need to compensate for the text's height since its origin is bottom-right.
-      y = stave.getYForBottomText(this.text_line + Flow.TEXT_HEIGHT_OFFSET_HACK);
+      y = stave.getYForBottomText(this.text_line + Tables.TEXT_HEIGHT_OFFSET_HACK);
       if (hasStem) {
         const stem_ext = note.checkStem().getExtents();
         const spacing = stave.getSpacingBetweenLines();

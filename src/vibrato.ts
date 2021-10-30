@@ -1,10 +1,10 @@
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 
-import { Modifier } from './modifier';
 import { Bend } from './bend';
-import { RenderContext } from './types/common';
+import { Modifier } from './modifier';
 import { ModifierContext, ModifierContextState } from './modifiercontext';
+import { RenderContext } from './rendercontext';
 
 export interface VibratoRenderOptions {
   wave_height: number;
@@ -20,7 +20,7 @@ export class Vibrato extends Modifier {
     return 'Vibrato';
   }
 
-  protected render_options: VibratoRenderOptions;
+  public render_options: VibratoRenderOptions;
 
   /** Arrange vibratos inside a `ModifierContext`. */
   static format(vibratos: Vibrato[], state: ModifierContextState, context: ModifierContext): boolean {

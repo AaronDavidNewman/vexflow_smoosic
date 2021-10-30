@@ -1,11 +1,12 @@
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Radosaw Eichler 2012
 
-import { Flow } from './flow';
-import { StaveModifier, StaveModifierPosition } from './stavemodifier';
+import { FontInfo } from 'types/common';
+
 import { Glyph } from './glyph';
 import { Stave } from './stave';
-import { FontInfo } from 'types/common';
+import { StaveModifier, StaveModifierPosition } from './stavemodifier';
+import { Tables } from './tables';
 
 export interface StaveTempoOptions {
   bpm?: number;
@@ -21,7 +22,7 @@ export class StaveTempo extends StaveModifier {
 
   protected font: FontInfo;
   /** Font size for note. */
-  protected render_options = { glyph_font_scale: 30 };
+  public render_options = { glyph_font_scale: 30 };
   protected tempo: StaveTempoOptions;
   protected shift_x: number;
   protected shift_y: number;
@@ -89,7 +90,7 @@ export class StaveTempo extends StaveModifier {
         x += ctx.measureText('(').width;
       }
 
-      const code = Flow.getGlyphProps(duration);
+      const code = Tables.getGlyphProps(duration);
 
       x += 3 * scale;
       Glyph.renderGlyph(ctx, x, y, options.glyph_font_scale, code.code_head);

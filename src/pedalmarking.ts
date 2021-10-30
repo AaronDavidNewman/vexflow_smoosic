@@ -1,11 +1,12 @@
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 
-import { RuntimeError, log } from './util';
 import { Element } from './element';
 import { Glyph } from './glyph';
-import { FontInfo, RenderContext } from './types/common';
+import { RenderContext } from './rendercontext';
 import { StaveNote } from './stavenote';
+import { FontInfo } from './types/common';
+import { log, RuntimeError } from './util';
 
 // eslint-disable-next-line
 function L(...args: any[]) {
@@ -42,7 +43,7 @@ export class PedalMarking extends Element {
   protected type: number;
   protected custom_depress_text: string;
   protected custom_release_text: string;
-  protected render_options: {
+  public render_options: {
     color: string;
     bracket_height: number;
     text_margin_right: number;

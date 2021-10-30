@@ -1,12 +1,13 @@
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 
-import { RuntimeError } from './util';
 import { Element } from './element';
-import { Flow } from './flow';
 import { Glyph } from './glyph';
-import { FontInfo, RenderContext } from './types/common';
+import { RenderContext } from './rendercontext';
 import { Stave } from './stave';
+import { Tables } from './tables';
+import { FontInfo } from './types/common';
+import { RuntimeError } from './util';
 
 function drawBoldDoubleLine(ctx: RenderContext, type: number, topX: number, topY: number, botY: number) {
   if (type !== StaveConnector.type.BOLD_DOUBLE_LEFT && type !== StaveConnector.type.BOLD_DOUBLE_RIGHT) {
@@ -97,7 +98,7 @@ export class StaveConnector extends Element {
   constructor(top_stave: Stave, bottom_stave: Stave) {
     super();
 
-    this.thickness = Flow.STAVE_LINE_THICKNESS;
+    this.thickness = Tables.STAVE_LINE_THICKNESS;
     this.width = 3;
     this.top_stave = top_stave;
     this.bottom_stave = bottom_stave;

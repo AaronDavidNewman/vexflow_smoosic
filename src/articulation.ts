@@ -2,16 +2,16 @@
 // Author: Larry Kuhns.
 // MIT License
 
-import { RuntimeError, log, defined } from './util';
-import { Flow } from './flow';
-import { Modifier } from './modifier';
+import { Builder } from './easyscore';
 import { Glyph } from './glyph';
-import { Stem } from './stem';
+import { Modifier } from './modifier';
+import { ModifierContextState } from './modifiercontext';
 import { Note } from './note';
 import { StaveNote } from './stavenote';
-import { ModifierContextState } from './modifiercontext';
-import { Builder } from './easyscore';
+import { Stem } from './stem';
+import { Tables } from './tables';
 import { isGraceNote, isStaveNote, isTabNote } from './typeguard';
+import { defined, log, RuntimeError } from './util';
 
 export interface ArticulationStruct {
   code?: string;
@@ -176,7 +176,7 @@ export class Articulation extends Modifier {
   /** Articulation code provided to the constructor. */
   readonly type: string;
 
-  protected render_options: { font_scale: number };
+  public render_options: { font_scale: number };
   // articulation defined calling reset in constructor
   protected articulation!: ArticulationStruct;
   // glyph defined calling reset in constructor
@@ -268,7 +268,7 @@ export class Articulation extends Modifier {
   }
 
   protected reset(): void {
-    this.articulation = Flow.articulationCodes(this.type);
+    this.articulation = Tables.articulationCodes(this.type);
     const articulation = defined(this.articulation, 'ArgumentError', `Articulation not found: ${this.type}`);
     const code = (this.position === ABOVE ? articulation.aboveCode : articulation.belowCode) || articulation.code;
     this.glyph = new Glyph(code ?? '', this.render_options.font_scale);

@@ -4,10 +4,10 @@
 // This file implements the `Stem` object. Generally this object is handled
 // by its parent `StemmableNote`.
 
-import { RuntimeError, log } from './util';
-import { Element } from './element';
-import { Flow } from './flow';
 import { BoundingBox } from './boundingbox';
+import { Element } from './element';
+import { Tables } from './tables';
+import { log, RuntimeError } from './util';
 
 // To enable logging for this class. Set `Vex.Flow.Stem.DEBUG` to `true`.
 // eslint-disable-next-line
@@ -48,10 +48,10 @@ export class Stem extends Element {
 
   // Theme
   static get WIDTH(): number {
-    return Flow.STEM_WIDTH;
+    return Tables.STEM_WIDTH;
   }
   static get HEIGHT(): number {
-    return Flow.STEM_HEIGHT;
+    return Tables.STEM_HEIGHT;
   }
 
   protected hide: boolean;

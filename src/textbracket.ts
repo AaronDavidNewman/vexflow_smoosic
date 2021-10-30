@@ -7,12 +7,13 @@
 // The octave transposition markings (8va, 8vb, 15va, 15vb) can be created
 // using this class.
 
-import { RuntimeError, log } from './util';
-import { Flow } from './flow';
 import { Element } from './element';
-import { Renderer } from './renderer';
-import { FontInfo, RenderContext } from './types/common';
 import { Note } from './note';
+import { RenderContext } from './rendercontext';
+import { Renderer } from './renderer';
+import { Tables } from './tables';
+import { FontInfo } from './types/common';
+import { log, RuntimeError } from './util';
 
 export interface TextBracketParams {
   start: Note;
@@ -40,7 +41,7 @@ export class TextBracket extends Element {
     return 'TextBracket';
   }
 
-  render_options: {
+  public render_options: {
     dashed: boolean;
     color: string;
     line_width: number;
@@ -161,7 +162,7 @@ export class TextBracket extends Element {
         y = this.start.checkStave().getYForTopText(this.line);
         break;
       case TextBracketPosition.BOTTOM:
-        y = this.start.checkStave().getYForBottomText(this.line + Flow.TEXT_HEIGHT_OFFSET_HACK);
+        y = this.start.checkStave().getYForBottomText(this.line + Tables.TEXT_HEIGHT_OFFSET_HACK);
         break;
       default:
         throw new RuntimeError('InvalidPosition', `The position ${this.position} is invalid.`);

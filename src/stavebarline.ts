@@ -2,9 +2,9 @@
 //
 // Author Larry Kuhns 2011
 
-import { Flow } from './flow';
-import { LayoutMetrics, StaveModifier, StaveModifierPosition } from './stavemodifier';
 import { Stave } from './stave';
+import { LayoutMetrics, StaveModifier, StaveModifierPosition } from './stavemodifier';
+import { Tables } from './tables';
 
 export enum BarlineType {
   SINGLE = 1,
@@ -46,7 +46,7 @@ export class Barline extends StaveModifier {
 
   constructor(type: BarlineType | string) {
     super();
-    this.thickness = Flow.STAVE_LINE_THICKNESS;
+    this.thickness = Tables.STAVE_LINE_THICKNESS;
 
     const TYPE = BarlineType;
     this.widths = {};

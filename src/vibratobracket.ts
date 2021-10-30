@@ -2,10 +2,10 @@
 // Author: Balazs Forian-Szabo
 // MIT License
 
-import { log } from './util';
 import { Element } from './element';
-import { Vibrato } from './vibrato';
 import { Note } from './note';
+import { log } from './util';
+import { Vibrato } from './vibrato';
 
 // eslint-disable-next-line
 function L(...args: any[]) {
@@ -25,7 +25,7 @@ export class VibratoBracket extends Element {
 
   protected start?: Note;
   protected stop?: Note;
-  protected render_options: {
+  public render_options: {
     vibrato_width: number;
     wave_height: number;
     wave_girth: number;
@@ -38,11 +38,11 @@ export class VibratoBracket extends Element {
    * An undefined value for the start or stop note indicates that the vibrato
    * is drawn from the beginning or until the end of the stave accordingly.
    */
-  constructor(bracket_data: { stop?: Note; start?: Note }) {
+  constructor(bracket_data: { stop?: Note | null; start?: Note | null }) {
     super();
 
-    this.start = bracket_data.start;
-    this.stop = bracket_data.stop;
+    if (bracket_data.start) this.start = bracket_data.start;
+    if (bracket_data.stop) this.stop = bracket_data.stop;
 
     this.line = 1;
 

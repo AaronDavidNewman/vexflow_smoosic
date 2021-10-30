@@ -2,12 +2,12 @@
 // @author Mohit Cheppudira
 // MIT License
 
-import { defined } from './util';
-import { Registry } from './registry';
 import { BoundingBox } from './boundingbox';
 import { Font } from './font';
-import { RenderContext } from './types/common';
-import { Flow } from './flow';
+import { Registry } from './registry';
+import { RenderContext } from './rendercontext';
+import { Tables } from './tables';
+import { defined } from './util';
 
 /** Element attributes. */
 export interface ElementAttributes {
@@ -63,7 +63,7 @@ export abstract class Element {
     };
 
     this.rendered = false;
-    this.setFontStack(Flow.DEFAULT_FONT_STACK);
+    this.setFontStack(Tables.DEFAULT_FONT_STACK);
 
     // If a default registry exist, then register with it right away.
     Registry.getDefaultRegistry()?.register(this);

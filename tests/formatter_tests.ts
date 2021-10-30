@@ -3,10 +3,8 @@
 //
 // Formatter Tests
 
-import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 import { Annotation } from 'annotation';
 import { Beam } from 'beam';
-import { Tables } from 'tables';
 import { Bend } from 'bend';
 import { Flow } from 'flow';
 import { FontGlyph } from 'font';
@@ -17,7 +15,9 @@ import { Stave } from 'stave';
 import { StaveConnector } from 'staveconnector';
 import { StaveNote } from 'stavenote';
 import { Voice, VoiceTime } from 'voice';
+
 import { MockTickable } from './mocks';
+import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
 const FormatterTests = {
   Start(): void {
@@ -40,8 +40,8 @@ const FormatterTests = {
     run('Tight', tightNotes1);
     run('Tight 2', tightNotes2);
     run('Annotations', annotations);
-    run('Proportional Formatting - No Justification', proportional, { justify: false, debug: true, iterations: 0 });
     run('Proportional Formatting - No Tuning', proportional, { debug: true, iterations: 0 });
+    run('Proportional Formatting - No Justification', proportional, { justify: false, debug: true, iterations: 0 });
     run('Proportional Formatting (20 iterations)', proportional, { debug: true, iterations: 20, alpha: 0.5 });
   },
 };
@@ -92,7 +92,6 @@ function buildTickContexts(): void {
   );
 }
 function rightJustify(options: TestOptions): void {
-  const y = 40;
   const f = VexFlowTests.makeFactory(options, 1200, 300);
   const getTickables = (time: VoiceTime, n: number, duration: string): Voice => {
     const tickar: StaveNote[] = [];
@@ -103,7 +102,6 @@ function rightJustify(options: TestOptions): void {
     return new Voice(time).addTickables(tickar);
   };
   const renderTest = (time: VoiceTime, n: number, duration: string, x: number, width: number) => {
-    const VF = Vex.Flow;
     const formatter = f.Formatter();
 
     const stave = f.Stave({ x, y: 40, width });
@@ -485,7 +483,7 @@ function proportional(options: TestOptions): void {
   const debug = options.params.debug;
   Registry.enableDefaultRegistry(new Registry());
 
-  const f = VexFlowTests.makeFactory(options, 650, 750);
+  const f = VexFlowTests.makeFactory(options, 775, 750);
   const system = f.System({
     x: 50,
     autoWidth: true,

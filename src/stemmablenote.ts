@@ -4,12 +4,12 @@
 // `StemmableNote` is an abstract interface for notes with optional stems.
 // Examples of stemmable notes are `StaveNote` and `TabNote`
 
-import { RuntimeError } from './util';
-import { Flow } from './flow';
-import { Stem, StemOptions } from './stem';
 import { Glyph } from './glyph';
-import { Note, NoteStruct } from './note';
 import { GlyphProps } from './glyph';
+import { Note, NoteStruct } from './note';
+import { Stem, StemOptions } from './stem';
+import { Tables } from './tables';
+import { RuntimeError } from './util';
 
 export abstract class StemmableNote extends Note {
   static get CATEGORY(): string {
@@ -87,7 +87,7 @@ export abstract class StemmableNote extends Note {
 
   // Get the minimum length of stem
   getStemMinimumLength(): number {
-    const frac = Flow.durationToFraction(this.duration);
+    const frac = Tables.durationToFraction(this.duration);
     let length = frac.value() <= 1 ? 0 : 20;
     // if note is flagged, cannot shorten beam
     switch (this.duration) {
@@ -237,7 +237,7 @@ export abstract class StemmableNote extends Note {
   }
 
   hasFlag(): boolean {
-    return Flow.getGlyphProps(this.duration).flag && !this.beam;
+    return Tables.getGlyphProps(this.duration).flag && !this.beam;
   }
 
   /** Post formats the note. */

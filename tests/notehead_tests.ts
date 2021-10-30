@@ -10,16 +10,17 @@
 // TODO: The middle C note head is missing a ledger line. Should it automatically draw one? In older versions of VexFlow, there is a ledger line.
 //       See: https://www.vexflow.com/tests/?module=NoteHead
 
-import { VexFlowTests, TestOptions } from './vexflow_test_helpers';
 import { Flow } from 'flow';
 import { Formatter } from 'formatter';
 import { NoteHead } from 'notehead';
+import { RenderContext } from 'rendercontext';
 import { ContextBuilder } from 'renderer';
 import { Stave } from 'stave';
 import { StaveNote, StaveNoteStruct } from 'stavenote';
 import { TickContext } from 'tickcontext';
 import { Voice } from 'voice';
-import { RenderContext } from 'types/common';
+
+import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
 const NoteHeadTests = {
   Start(): void {
@@ -35,8 +36,9 @@ const NoteHeadTests = {
 function setContextStyle(ctx: RenderContext): void {
   // TODO: scale() method in SVGContext and CanvasContext should work similarly!
   // The final scale should be 1.8.
-  ctx.scale(0.9, 0.9);
-  ctx.scale(2.0, 2.0);
+  // ctx.scale(0.9, 0.9);
+  // ctx.scale(2.0, 2.0);
+  ctx.scale(1.8, 1.8);
   ctx.fillStyle = '#221';
   ctx.strokeStyle = '#221';
   ctx.font = '10pt Arial';
@@ -164,27 +166,29 @@ function drumChordHeads(options: TestOptions, contextBuilder: ContextBuilder): v
 }
 
 function basicBoundingBoxes(options: TestOptions, contextBuilder: ContextBuilder): void {
-  const ctx = contextBuilder(options.elementId, 350, 250);
+  const ctx = contextBuilder(options.elementId, 450, 250);
   setContextStyle(ctx);
 
+  // 250 is 450/1.8
   const stave = new Stave(10, 0, 250).addClef('treble');
   stave.setContext(ctx).draw();
 
   const formatter = new Formatter();
   const voice = new Voice(Flow.TIME4_4).setStrict(false);
 
-  const note_head1 = new NoteHead({ duration: '4', line: 3 });
-  const note_head2 = new NoteHead({ duration: '2', line: 2.5 });
-  const note_head3 = new NoteHead({ duration: '1', line: 0 });
+  const nh1 = new NoteHead({ duration: '4', line: 3 });
+  const nh2 = new NoteHead({ duration: '2', line: 2.5 });
+  const nh3 = new NoteHead({ duration: '1', line: 0 });
 
-  voice.addTickables([note_head1, note_head2, note_head3]);
+  voice.addTickables([nh1, nh2, nh3]);
   formatter.joinVoices([voice]).formatToStave([voice], stave);
 
   voice.draw(ctx, stave);
 
-  note_head1.getBoundingBox().draw(ctx);
-  note_head2.getBoundingBox().draw(ctx);
-  note_head3.getBoundingBox().draw(ctx);
+  for (const bb of [nh1.getBoundingBox(), nh2.getBoundingBox(), nh3.getBoundingBox()]) {
+    ctx.rect(bb.getX(), bb.getY(), bb.getW(), bb.getH());
+  }
+  ctx.stroke();
 
   ok('NoteHead Bounding Boxes');
 }

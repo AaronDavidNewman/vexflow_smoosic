@@ -1,8 +1,8 @@
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 
+import { Tables } from './tables';
 import { RuntimeError } from './util';
-import { Flow } from './flow';
 
 /** `Tuning` implements varies types of tunings for tablature. */
 export class Tuning {
@@ -29,7 +29,7 @@ export class Tuning {
 
   /** Return the note number associated to the note string. */
   noteToInteger(noteString: string): number {
-    return Flow.keyProperties(noteString).int_value;
+    return Tables.keyProperties(noteString).int_value;
   }
 
   /**
@@ -85,6 +85,6 @@ export class Tuning {
     const octave = Math.floor(noteValue / 12);
     const value = noteValue % 12;
 
-    return `${Flow.integerToNote(value)}/${octave}`;
+    return `${Tables.integerToNote(value)}/${octave}`;
   }
 }

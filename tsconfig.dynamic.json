@@ -18,5 +18,6 @@
       "@custom": ["fonts/loadDynamic"],
       "@leland": ["fonts/loadDynamic"]
     },
-  }
+  },
+  "exclude": ["./src/fonts/legacy"]
 }

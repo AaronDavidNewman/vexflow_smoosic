@@ -2,54 +2,54 @@
 // @author Mohit Cheppudira
 // MIT License
 
-import { RuntimeError, log, defined } from './util';
 import { Accidental } from './accidental';
-import { Articulation } from './articulation';
 import { Annotation } from './annotation';
+import { Articulation } from './articulation';
+import { BarNote } from './barnote';
+import { Beam } from './beam';
 import { ChordSymbol } from './chordsymbol';
-// import { WidthFormatter } from './widthformatter';
+import { ClefNote } from './clefnote';
+import { Curve, CurveOptions } from './curve';
+import { EasyScore, EasyScoreOptions } from './easyscore';
+import { Element } from './element';
 import { Formatter, FormatterOptions } from './formatter';
 import { FretHandFinger } from './frethandfinger';
-import { StringNumber } from './stringnumber';
-import { TextDynamics } from './textdynamics';
-import { ModifierContext } from './modifiercontext';
-import { MultiMeasureRest, MultimeasureRestRenderOptions } from './multimeasurerest';
-import { Renderer } from './renderer';
-import { Stave, StaveOptions } from './stave';
-import { StaveTie } from './stavetie';
-import { StaveLine } from './staveline';
-import { StaveNote, StaveNoteStruct } from './stavenote';
+import { GhostNote } from './ghostnote';
+import { Glyph } from './glyph';
 import { GlyphNote, GlyphNoteOptions } from './glyphnote';
-import { RepeatNote } from './repeatnote';
-import { StaveConnector } from './staveconnector';
-import { System, SystemOptions } from './system';
-import { TickContext } from './tickcontext';
-import { Tuplet, TupletOptions } from './tuplet';
-import { Voice, VoiceTime } from './voice';
-import { Beam } from './beam';
-import { Curve, CurveOptions } from './curve';
 import { GraceNote, GraceNoteStruct } from './gracenote';
 import { GraceNoteGroup } from './gracenotegroup';
-import { NoteSubGroup } from './notesubgroup';
-import { EasyScore, EasyScoreOptions } from './easyscore';
-import { TimeSigNote } from './timesignote';
 import { KeySigNote } from './keysignote';
-import { ClefNote } from './clefnote';
+import { ModifierContext } from './modifiercontext';
+import { MultiMeasureRest, MultimeasureRestRenderOptions } from './multimeasurerest';
+import { Note, NoteStruct } from './note';
+import { NoteSubGroup } from './notesubgroup';
 import { PedalMarking } from './pedalmarking';
-import { TextBracket } from './textbracket';
-import { VibratoBracket } from './vibratobracket';
-import { GhostNote } from './ghostnote';
-import { BarNote } from './barnote';
+import { RenderContext } from './rendercontext';
+import { Renderer } from './renderer';
+import { RepeatNote } from './repeatnote';
+import { Stave, StaveOptions } from './stave';
+import { BarlineType } from './stavebarline';
+import { StaveConnector } from './staveconnector';
+import { StaveLine } from './staveline';
+import { StaveNote, StaveNoteStruct } from './stavenote';
+import { StaveTie } from './stavetie';
+import { StemmableNote } from './stemmablenote';
+import { StringNumber } from './stringnumber';
+import { System, SystemOptions } from './system';
 import { TabNote, TabNoteStruct } from './tabnote';
 import { TabStave } from './tabstave';
-import { TextNote, TextNoteStruct } from './textnote';
+import { TextBracket } from './textbracket';
+import { TextDynamics } from './textdynamics';
 import { TextFont, TextFontRegistry } from './textfont';
-import { FontInfo, RenderContext } from './types/common';
-import { Note, NoteStruct } from './note';
-import { Glyph } from './glyph';
-import { BarlineType } from './stavebarline';
-import { StemmableNote } from './stemmablenote';
-import { Element } from './element';
+import { TextNote, TextNoteStruct } from './textnote';
+import { TickContext } from './tickcontext';
+import { TimeSigNote } from './timesignote';
+import { Tuplet, TupletOptions } from './tuplet';
+import { FontInfo } from './types/common';
+import { defined, log, RuntimeError } from './util';
+import { VibratoBracket } from './vibratobracket';
+import { Voice, VoiceTime } from './voice';
 
 export interface FactoryOptions {
   stave?: {
@@ -94,7 +94,7 @@ export class Factory {
    * `const vf: Factory = Vex.Flow.Factory.newFromElementId('boo', 1200, 600 );`
    */
   static newFromElementId(elementId: string | null, width = 500, height = 200): Factory {
-    return new Factory({ renderer: { elementId, width, height, backend: Renderer.Backends.SVG } });
+    return new Factory({ renderer: { elementId, width, height } });
   }
 
   protected options: Required<FactoryOptions>;
@@ -121,7 +121,6 @@ export class Factory {
       },
       renderer: {
         elementId: '',
-        backend: Renderer.Backends.SVG,
         width: 500,
         height: 200,
         background: '#FFF',
@@ -151,23 +150,27 @@ export class Factory {
   }
 
   initRenderer(): void {
-    const { elementId, backend, width, height, background } = this.options.renderer;
-    if (elementId === null) {
+    const { elementId, width, height, background } = this.options.renderer;
+    if (elementId == null) {
       return;
     }
 
-    if (elementId === '') {
+    if (elementId == '') {
       L(this);
       throw new RuntimeError('renderer.elementId not set in FactoryOptions');
     }
 
-    this.context = Renderer.buildContext(
-      elementId as string,
-      backend ?? Renderer.Backends.SVG,
-      width,
-      height,
-      background
-    );
+    let backend = this.options.renderer.backend;
+    if (backend === undefined) {
+      const elem = document.getElementById(elementId);
+      if (elem instanceof window.HTMLCanvasElement) {
+        backend = Renderer.Backends.CANVAS;
+      } else {
+        backend = Renderer.Backends.SVG;
+      }
+    }
+
+    this.context = Renderer.buildContext(elementId as string, backend, width, height, background);
   }
 
   getContext(): RenderContext {
@@ -515,8 +518,8 @@ export class Factory {
   }
 
   StaveTie(params: {
-    from: Note;
-    to: Note;
+    from: Note | null;
+    to: Note | null;
     first_indices?: number[];
     last_indices?: number[];
     text?: string;
@@ -561,8 +564,8 @@ export class Factory {
   }
 
   VibratoBracket(params: {
-    from: Note;
-    to: Note;
+    from: Note | null;
+    to: Note | null;
     options: {
       harsh?: boolean;
       line?: number;
@@ -609,9 +612,6 @@ export class Factory {
     return textBracket;
   }
 
-  // TODO: SystemOptions make all properties optional.
-  // eslint-disable-next-line
-  // @ts-ignore
   System(params: SystemOptions = {}): System {
     params.factory = this;
     const system = new System(params).setContext(this.context);

@@ -5,19 +5,20 @@
 // This file implements `GraceNoteGroup` which is used to format and
 // render grace notes.
 
-import { log } from './util';
-import { Flow } from './flow';
-import { Modifier } from './modifier';
-import { Formatter } from './formatter';
-import { Voice } from './voice';
-import { Beam } from './beam';
-import { StaveTie } from './stavetie';
-import { TabTie } from './tabtie';
-import { Note } from './note';
-import { StemmableNote } from './stemmablenote';
-import { ModifierContextState } from './modifiercontext';
-import { RenderContext } from './types/common';
 import { isStaveNote } from 'typeguard';
+
+import { Beam } from './beam';
+import { Formatter } from './formatter';
+import { Modifier } from './modifier';
+import { ModifierContextState } from './modifiercontext';
+import { Note } from './note';
+import { RenderContext } from './rendercontext';
+import { StaveTie } from './stavetie';
+import { StemmableNote } from './stemmablenote';
+import { Tables } from './tables';
+import { TabTie } from './tabtie';
+import { log } from './util';
+import { Voice } from './voice';
 
 // To enable logging for this class. Set `GraceNoteGroup.DEBUG` to `true`.
 // eslint-disable-next-line
@@ -39,7 +40,7 @@ export class GraceNoteGroup extends Modifier {
 
   protected preFormatted: boolean = false;
   protected formatter: Formatter;
-  protected render_options: { slur_y_shift: number };
+  public render_options: { slur_y_shift: number };
   protected slur?: StaveTie | TabTie;
   protected beams: Beam[];
 
@@ -106,7 +107,7 @@ export class GraceNoteGroup extends Modifier {
     this.voice = new Voice({
       num_beats: 4,
       beat_value: 4,
-      resolution: Flow.RESOLUTION,
+      resolution: Tables.RESOLUTION,
     }).setStrict(false);
 
     this.render_options = {

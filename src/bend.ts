@@ -1,10 +1,10 @@
 // [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 
-import { RuntimeError } from './util';
-import { Flow } from './flow';
 import { Modifier } from './modifier';
 import { ModifierContextState } from './modifiercontext';
+import { Tables } from './tables';
+import { RuntimeError } from './util';
 
 export interface BendPhrase {
   x?: number;
@@ -12,13 +12,6 @@ export interface BendPhrase {
   text: string;
   width?: number;
   draw_width?: number;
-}
-
-export interface BendRenderOptions {
-  line_width: number;
-  release_width: number;
-  bend_width: number;
-  line_style: string;
 }
 
 /** Bend implements tablature bends. */
@@ -60,7 +53,12 @@ export class Bend extends Modifier {
   protected release: boolean;
   protected phrase: BendPhrase[];
   protected font: string;
-  protected render_options: BendRenderOptions;
+  public render_options: {
+    line_width: number;
+    release_width: number;
+    bend_width: number;
+    line_style: string;
+  };
 
   /**
    * Example of a phrase:
@@ -149,7 +147,7 @@ export class Bend extends Modifier {
       if (ctxThat) {
         text_width = ctxThat.measureText(text).width;
       } else {
-        text_width = Flow.textWidth(text);
+        text_width = Tables.textWidth(text);
       }
 
       return text_width;

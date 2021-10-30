@@ -3,17 +3,17 @@
 // @author Mohit Cheppudira
 // @author Greg Ristow (modifications)
 
-import { log, defined } from './util';
 import { Fraction } from './fraction';
-import { Flow } from './flow';
-import { Music } from './music';
-import { Modifier } from './modifier';
 import { Glyph } from './glyph';
+import { Modifier } from './modifier';
 import { ModifierContextState } from './modifiercontext';
-import { Voice } from './voice';
+import { Music } from './music';
 import { Note } from './note';
+import { Tables } from './tables';
 import { Tickable } from './tickable';
 import { isCategory, isGraceNote, isGraceNoteGroup, isStaveNote } from './typeguard';
+import { defined, log } from './util';
+import { Voice } from './voice';
 
 type Line = {
   column: number;
@@ -46,7 +46,7 @@ export class Accidental extends Modifier {
     code: string;
     parenRightPaddingAdjustment: number;
   };
-  protected render_options: {
+  public render_options: {
     parenLeftPadding: number;
     stroke_px: number;
     font_scale: number;
@@ -73,7 +73,7 @@ export class Accidental extends Modifier {
       lineSpace?: number;
     };
 
-    const musicFont = Flow.DEFAULT_FONT_STACK[0];
+    const musicFont = Tables.DEFAULT_FONT_STACK[0];
     const noteheadAccidentalPadding = musicFont.lookupMetric('accidental.noteheadAccidentalPadding');
     const leftShift = state.left_shift + noteheadAccidentalPadding;
     const accidentalSpacing = musicFont.lookupMetric('accidental.accidentalSpacing');
@@ -277,7 +277,7 @@ export class Accidental extends Modifier {
         // the accidentalsColumnsTable housed in tables.js.
       } else {
         for (groupMember = i; groupMember <= groupEnd; groupMember++) {
-          column = Flow.accidentalColumnsTable[groupLength][endCase][groupMember - i];
+          column = Tables.accidentalColumnsTable[groupLength][endCase][groupMember - i];
           lineList[groupMember].column = column;
           totalColumns = totalColumns > column ? totalColumns : column;
         }
@@ -397,7 +397,8 @@ export class Accidental extends Modifier {
     if (!keySignature) keySignature = 'C';
 
     // Get the scale map, which represents the current state of each pitch.
-    const scaleMap = music.createScaleMap(keySignature);
+    const scaleMapKey = music.createScaleMap(keySignature);
+    const scaleMap: Record<string, string> = {};
 
     tickPositions.forEach((tickPos: number) => {
       const tickables = tickNoteMap[tickPos];
@@ -416,6 +417,7 @@ export class Accidental extends Modifier {
         const staveNote = t;
         staveNote.keys.forEach((keyString: string, keyIndex: number) => {
           const key = music.getNoteParts(keyString.split('/')[0]);
+          const octave = keyString.split('/')[1];
 
           // Force a natural for every key without an accidental
           const accidentalString = key.accidental || 'n';
@@ -423,11 +425,12 @@ export class Accidental extends Modifier {
 
           // Determine if the current pitch has the same accidental
           // as the scale state
-          const sameAccidental = scaleMap[key.root] === pitch;
+          if (!scaleMap[key.root + octave]) scaleMap[key.root + octave] = scaleMapKey[key.root];
+          const sameAccidental = scaleMap[key.root + octave] === pitch;
 
           // Determine if an identical pitch in the chord already
           // modified the accidental state
-          const previouslyModified = modifiedPitches.indexOf(pitch) > -1;
+          const previouslyModified = modifiedPitches.indexOf(keyString) > -1;
 
           // Remove accidentals
           staveNote.getModifiers().forEach((modifier, index) => {
@@ -444,7 +447,7 @@ export class Accidental extends Modifier {
           if (!sameAccidental || (sameAccidental && previouslyModified)) {
             // Modify the scale map so that the root pitch has an
             // updated state
-            scaleMap[key.root] = pitch;
+            scaleMap[key.root + octave] = pitch;
 
             // Create the accidental
             const accidental = new Accidental(accidentalString);
@@ -453,7 +456,7 @@ export class Accidental extends Modifier {
             staveNote.addAccidental(keyIndex, accidental);
 
             // Add the pitch to list of pitches that modified accidentals
-            modifiedPitches.push(pitch);
+            modifiedPitches.push(keyString);
           }
         });
 
@@ -494,7 +497,7 @@ export class Accidental extends Modifier {
       parenRightPadding: 2,
     };
 
-    this.accidental = Flow.accidentalCodes(this.type);
+    this.accidental = Tables.accidentalCodes(this.type);
     defined(this.accidental, 'ArgumentError', `Unknown accidental type: ${type}`);
 
     // Cautionary accidentals have parentheses around them
@@ -509,8 +512,8 @@ export class Accidental extends Modifier {
     this.glyph.setOriginX(1.0);
 
     if (this.cautionary) {
-      this.parenLeft = new Glyph(Flow.accidentalCodes('{').code, fontScale);
-      this.parenRight = new Glyph(Flow.accidentalCodes('}').code, fontScale);
+      this.parenLeft = new Glyph(Tables.accidentalCodes('{').code, fontScale);
+      this.parenRight = new Glyph(Tables.accidentalCodes('}').code, fontScale);
       this.parenLeft.setOriginX(1.0);
       this.parenRight.setOriginX(1.0);
     }

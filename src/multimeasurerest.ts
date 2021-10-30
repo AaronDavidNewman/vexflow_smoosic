@@ -3,16 +3,17 @@
 //
 // This class implements multiple measure rests.
 
-import { defined } from './util';
-import { Flow } from './flow';
+import { isBarline } from 'typeguard';
+
 import { Element } from './element';
 import { Glyph } from './glyph';
 import { NoteHead } from './notehead';
-import { StaveModifierPosition } from './stavemodifier';
-import { TimeSignature } from './timesignature';
+import { RenderContext } from './rendercontext';
 import { Stave } from './stave';
-import { RenderContext } from './types/common';
-import { isBarline } from 'typeguard';
+import { StaveModifierPosition } from './stavemodifier';
+import { Tables } from './tables';
+import { TimeSignature } from './timesignature';
+import { defined } from './util';
 
 export interface MultimeasureRestRenderOptions {
   /** Extracted by Factory.MultiMeasureRest() and passed to the MultiMeasureRest constructor. */
@@ -55,7 +56,7 @@ export interface MultimeasureRestRenderOptions {
   serif_thickness?: number;
 }
 
-let semibreve_rest: { glyph_font_scale: number; glyph_code: string; width: number };
+let semibreve_rest: { glyph_font_scale: number; glyph_code: string; width: number } | undefined;
 
 function get_semibreve_rest() {
   if (!semibreve_rest) {
@@ -74,7 +75,7 @@ export class MultiMeasureRest extends Element {
     return 'MultiMeasureRest';
   }
 
-  protected render_options: Required<MultimeasureRestRenderOptions>;
+  public render_options: Required<MultimeasureRestRenderOptions>;
   protected xs = { left: NaN, right: NaN };
   protected number_of_measures: number;
 
@@ -107,9 +108,9 @@ export class MultiMeasureRest extends Element {
       number_line: -0.5,
       number_glyph_point: this.musicFont.lookupMetric('digits.point'), // same as TimeSignature.
       line: 2,
-      spacing_between_lines_px: Flow.STAVE_LINE_DISTANCE, // same as Stave.
+      spacing_between_lines_px: Tables.STAVE_LINE_DISTANCE, // same as Stave.
       serif_thickness: 2,
-      semibreve_rest_glyph_scale: Flow.DEFAULT_NOTATION_FONT_SCALE, // same as NoteHead.
+      semibreve_rest_glyph_scale: Tables.DEFAULT_NOTATION_FONT_SCALE, // same as NoteHead.
       padding_left: 0,
       padding_right: 0,
       line_thickness: 5,
@@ -184,6 +185,11 @@ export class MultiMeasureRest extends Element {
     const n1 = n % 2;
 
     const options = this.render_options;
+
+    // FIXME: TODO: invalidate semibreve_rest at the appropriate time
+    // (e.g., if the system font settings are changed).
+    semibreve_rest = undefined;
+
     const rest = get_semibreve_rest();
     const rest_scale = options.semibreve_rest_glyph_scale;
     const rest_width = rest.width * (rest_scale / rest.glyph_font_scale);
@@ -197,7 +203,8 @@ export class MultiMeasureRest extends Element {
       },
     };
 
-    const spacing = this.hasSymbolSpacing ? options.symbol_spacing : rest_width * 1.35;
+    /* 10: normal spacingBetweenLines */
+    const spacing = this.hasSymbolSpacing ? options.symbol_spacing : 10;
 
     const width = n4 * glyphs[2].width + n2 * glyphs[2].width + n1 * glyphs[1].width + (n4 + n2 + n1 - 1) * spacing;
     let x = left + (right - left) * 0.5 - width * 0.5;

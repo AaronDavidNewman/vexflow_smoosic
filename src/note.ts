@@ -2,16 +2,17 @@
 // MIT License
 
 import { Beam } from './beam';
-import { RuntimeError, drawDot, defined } from './util';
-import { Flow } from './flow';
 import { Fraction } from './fraction';
 import { GlyphProps } from './glyph';
 import { Modifier } from './modifier';
+import { RenderContext } from './rendercontext';
 import { Stave } from './stave';
 import { Stroke } from './strokes';
+import { Tables } from './tables';
 import { Tickable } from './tickable';
 import { TickContext } from './tickcontext';
-import { KeyProps, RenderContext } from './types/common';
+import { KeyProps } from './types/common';
+import { defined, drawDot, RuntimeError } from './util';
 import { Voice } from './voice';
 
 export interface NoteMetrics {
@@ -35,21 +36,6 @@ export interface NoteDuration {
   duration: string;
   dots: number;
   type: string;
-}
-
-export interface NoteRenderOptions {
-  draw_stem_through_stave?: boolean;
-  draw_dots?: boolean;
-  draw_stem?: boolean;
-  y_shift: number;
-  extend_left?: number;
-  extend_right?: number;
-  glyph_font_scale: number;
-  annotation_spacing: number;
-  glyph_font_size?: number;
-  scale: number;
-  font: string;
-  stroke_px: number;
 }
 
 export interface ParsedNote {
@@ -92,7 +78,20 @@ export abstract class Note extends Tickable {
   keyProps: KeyProps[];
 
   protected stave?: Stave;
-  render_options: NoteRenderOptions;
+  public render_options: {
+    draw_stem_through_stave?: boolean;
+    draw_dots?: boolean;
+    draw_stem?: boolean;
+    y_shift: number;
+    extend_left?: number;
+    extend_right?: number;
+    glyph_font_scale: number;
+    annotation_spacing: number;
+    glyph_font_size?: number;
+    scale: number;
+    font: string;
+    stroke_px: number;
+  };
   protected duration: string;
   protected dots: number;
   protected leftDisplacedHeadPx: number;
@@ -178,7 +177,7 @@ export abstract class Note extends Tickable {
 
     // If specified type is invalid, return undefined
     let type = noteStruct.type;
-    if (type && !Flow.validTypes[type]) {
+    if (type && !Tables.validTypes[type]) {
       return undefined;
     }
 
@@ -198,7 +197,7 @@ export abstract class Note extends Tickable {
     }
 
     // Calculate the tick duration of the note
-    let ticks = Flow.durationToTicks(durationProps.duration);
+    let ticks = Tables.durationToTicks(durationProps.duration);
     if (!ticks) {
       return undefined;
     }
@@ -267,8 +266,8 @@ export abstract class Note extends Tickable {
     this.modifiers = [];
 
     // Get the glyph code for this note from the font.
-    this.glyph = Flow.getGlyphProps(this.duration, this.noteType);
-    this.customGlyphs = this.customTypes.map((t) => Flow.getGlyphProps(this.duration, t));
+    this.glyph = Tables.getGlyphProps(this.duration, this.noteType);
+    this.customGlyphs = this.customTypes.map((t) => Tables.getGlyphProps(this.duration, t));
 
     // Note to play for audio players.
     this.playNote = undefined;

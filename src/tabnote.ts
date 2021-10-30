@@ -8,14 +8,15 @@
 // See `tests/tabnote_tests.ts` for usage examples.
 
 import { isDot } from 'typeguard';
+
 import { Dot } from './dot';
-import { Flow } from './flow';
 import { Glyph, GlyphProps } from './glyph';
 import { Modifier } from './modifier';
 import { Stave } from './stave';
 import { StaveNoteStruct } from './stavenote';
 import { Stem } from './stem';
 import { StemmableNote } from './stemmablenote';
+import { Tables } from './tables';
 import { defined, RuntimeError } from './util';
 
 export interface TabNotePosition {
@@ -147,7 +148,7 @@ export class TabNote extends StemmableNote {
     this.render_options = {
       ...this.render_options,
       // font size for note heads and rests
-      glyph_font_scale: Flow.DEFAULT_TABLATURE_FONT_SCALE,
+      glyph_font_scale: Tables.DEFAULT_TABLATURE_FONT_SCALE,
       // Flag to draw a stem
       draw_stem,
       // Flag to draw dot modifiers
@@ -162,7 +163,7 @@ export class TabNote extends StemmableNote {
       font: '10pt Arial',
     };
 
-    this.glyph = Flow.getGlyphProps(this.duration, this.noteType);
+    this.glyph = Tables.getGlyphProps(this.duration, this.noteType);
     defined(this.glyph, 'BadArguments', `No glyph found for duration '${this.duration}' and type '${this.noteType}'`);
 
     this.buildStem();
@@ -226,7 +227,7 @@ export class TabNote extends StemmableNote {
     for (let i = 0; i < this.positions.length; ++i) {
       let fret = this.positions[i].fret;
       if (this.ghost) fret = '(' + fret + ')';
-      const glyph = Flow.tabToGlyph(fret.toString(), this.render_options.scale);
+      const glyph = Tables.tabToGlyph(fret.toString(), this.render_options.scale);
       this.glyphs.push(glyph as GlyphProps);
       this.width = Math.max(glyph.getWidth(), this.width);
     }

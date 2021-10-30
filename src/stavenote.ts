@@ -9,21 +9,21 @@
 //
 // See `tests/stavenote_tests.ts` for usage examples.
 
-import { RuntimeError, log, midLine, warn, defined } from './util';
-import { Flow } from './flow';
-import { BoundingBox } from './boundingbox';
-import { Stem } from './stem';
-import { NoteHead } from './notehead';
-import { StemmableNote } from './stemmablenote';
-import { StemOptions } from './stem';
-import { Modifier } from './modifier';
-import { Dot } from './dot';
-import { Beam } from './beam';
-import { ElementStyle } from './element';
-import { Stave } from './stave';
-import { Note, NoteStruct } from './note';
-import { ModifierContextState } from './modifiercontext';
 import { Accidental } from './accidental';
+import { Beam } from './beam';
+import { BoundingBox } from './boundingbox';
+import { Dot } from './dot';
+import { ElementStyle } from './element';
+import { Modifier } from './modifier';
+import { ModifierContextState } from './modifiercontext';
+import { Note, NoteStruct } from './note';
+import { NoteHead } from './notehead';
+import { Stave } from './stave';
+import { Stem } from './stem';
+import { StemOptions } from './stem';
+import { StemmableNote } from './stemmablenote';
+import { Tables } from './tables';
+import { defined, log, midLine, RuntimeError, warn } from './util';
 
 export interface StaveNoteHeadBounds {
   y_top: number;
@@ -117,7 +117,7 @@ export class StaveNote extends StemmableNote {
   }
 
   static get minNoteheadPadding(): number {
-    const musicFont = Flow.DEFAULT_FONT_STACK[0];
+    const musicFont = Tables.DEFAULT_FONT_STACK[0];
     return musicFont.lookupMetric('glyphs.noteHead.minPadding');
   }
 
@@ -383,7 +383,7 @@ export class StaveNote extends StemmableNote {
     this.octave_shift = noteStruct.octave_shift ?? 0;
 
     // Pull note rendering properties.
-    this.glyph = Flow.getGlyphProps(this.duration, this.noteType);
+    this.glyph = Tables.getGlyphProps(this.duration, this.noteType);
     defined(this.glyph, 'BadArguments', `No glyph found for duration '${this.duration}' and type '${this.noteType}'`);
 
     // if true, displace note to right
@@ -400,7 +400,7 @@ export class StaveNote extends StemmableNote {
     this.render_options = {
       ...this.render_options,
       // font size for note heads and rests
-      glyph_font_scale: noteStruct.glyph_font_scale || Flow.DEFAULT_NOTATION_FONT_SCALE,
+      glyph_font_scale: noteStruct.glyph_font_scale || Tables.DEFAULT_NOTATION_FONT_SCALE,
       // number of stroke px to the left and right of head
       stroke_px: noteStruct.stroke_px || StaveNote.DEFAULT_LEDGER_LINE_OFFSET,
     };
@@ -539,7 +539,7 @@ export class StaveNote extends StemmableNote {
       if (this.glyph.rest) this.glyph.position = key;
 
       const options = { octave_shift: this.octave_shift || 0 };
-      const props = Flow.keyProperties(key, this.clef, options);
+      const props = Tables.keyProperties(key, this.clef, options);
 
       if (!props) {
         throw new RuntimeError('BadArguments', `Invalid key for note properties: ${key}`);
@@ -602,7 +602,7 @@ export class StaveNote extends StemmableNote {
 
     if (this.isRest()) {
       const y = this.ys[0];
-      const frac = Flow.durationToFraction(this.duration);
+      const frac = Tables.durationToFraction(this.duration);
       if (frac.equals(1) || frac.equals(2)) {
         minY = y - halfLineSpacing;
         maxY = y + halfLineSpacing;
@@ -1075,7 +1075,7 @@ export class StaveNote extends StemmableNote {
 
     const style = { ...(stave.getStyle() || {}), ...(this.getLedgerLineStyle() || {}) };
     if (typeof style.lineWidth === 'undefined') {
-      style.lineWidth = Flow.STAVE_LINE_THICKNESS * 2;
+      style.lineWidth = Tables.STAVE_LINE_THICKNESS * 2;
     } else {
       style.lineWidth *= 2;
     }

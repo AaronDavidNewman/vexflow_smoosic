@@ -5,10 +5,10 @@
 // See tables.js for the internal time signatures
 // representation
 
-import { RuntimeError, defined } from './util';
 import { Glyph } from './glyph';
 import { StaveModifier, StaveModifierPosition } from './stavemodifier';
 import { TimeSignatureGlyph } from './timesigglyph';
+import { defined, RuntimeError } from './util';
 
 export interface TimeSignatureInfo {
   glyph: Glyph;
@@ -113,11 +113,14 @@ export class TimeSignature extends StaveModifier {
 
   draw(): void {
     const stave = this.checkStave();
-
+    const ctx = stave.checkContext();
     this.setRendered();
+
+    ctx.openGroup('timesignature', this.getAttribute('id'));
     this.info.glyph.setStave(stave);
-    this.info.glyph.setContext(stave.getContext());
+    this.info.glyph.setContext(ctx);
     this.placeGlyphOnLine(this.info.glyph, stave, this.info.line);
     this.info.glyph.renderToStave(this.x);
+    ctx.closeGroup();
   }
 }
