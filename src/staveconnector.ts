@@ -1,12 +1,13 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 
 import { Element } from './element';
+import { Font, FontInfo, FontStyle, FontWeight } from './font';
 import { Glyph } from './glyph';
 import { RenderContext } from './rendercontext';
 import { Stave } from './stave';
 import { Tables } from './tables';
-import { FontInfo } from './types/common';
+import { Category } from './typeguard';
 import { RuntimeError } from './util';
 
 function drawBoldDoubleLine(ctx: RenderContext, type: number, topX: number, topY: number, botY: number) {
@@ -32,24 +33,15 @@ function drawBoldDoubleLine(ctx: RenderContext, type: number, topX: number, topY
 /** StaveConnector implements the connector lines between staves of a system. */
 export class StaveConnector extends Element {
   static get CATEGORY(): string {
-    return 'StaveConnector';
+    return Category.StaveConnector;
   }
 
-  protected thickness: number;
-  protected width: number;
-  protected font: FontInfo;
-  protected texts: {
-    content: string;
-    options: {
-      shift_x: number;
-      shift_y: number;
-    };
-  }[];
-
-  protected type: number;
-  protected x_shift: number;
-  protected top_stave: Stave;
-  protected bottom_stave: Stave;
+  static TEXT_FONT: Required<FontInfo> = {
+    family: Font.SERIF,
+    size: 16,
+    weight: FontWeight.NORMAL,
+    style: FontStyle.NORMAL,
+  };
 
   /**
    * SINGLE_LEFT and SINGLE are the same value for compatibility
@@ -95,6 +87,20 @@ export class StaveConnector extends Element {
     none: StaveConnector.type.NONE,
   };
 
+  protected width: number;
+  protected texts: {
+    content: string;
+    options: { shift_x: number; shift_y: number };
+  }[];
+
+  protected type: number;
+
+  readonly top_stave: Stave;
+  readonly bottom_stave: Stave;
+  readonly thickness: number;
+
+  protected x_shift: number;
+
   constructor(top_stave: Stave, bottom_stave: Stave) {
     super();
 
@@ -103,11 +109,8 @@ export class StaveConnector extends Element {
     this.top_stave = top_stave;
     this.bottom_stave = bottom_stave;
     this.type = StaveConnector.type.DOUBLE;
-    this.font = {
-      family: 'times',
-      size: 16,
-      weight: 'normal',
-    };
+    this.resetFont();
+
     // 1. Offset Bold Double Left to align with offset Repeat Begin bars
     // 2. Offset BRACE type not to overlap with another StaveConnector
     this.x_shift = 0;
@@ -140,7 +143,6 @@ export class StaveConnector extends Element {
     return this;
   }
 
-  /** Set connector x shift. */
   setXShift(x_shift: number): this {
     if (typeof x_shift !== 'number') {
       throw new RuntimeError('InvalidType', 'x_shift must be a Number');
@@ -148,6 +150,10 @@ export class StaveConnector extends Element {
 
     this.x_shift = x_shift;
     return this;
+  }
+
+  getXShift(): number {
+    return this.x_shift;
   }
 
   /** Render connector and associated text. */
@@ -260,7 +266,8 @@ export class StaveConnector extends Element {
 
     ctx.save();
     ctx.setLineWidth(2);
-    ctx.setFont(this.font.family, this.font.size, this.font.weight);
+    ctx.setFont(this.textFont);
+
     // Add stave connector text
     for (let i = 0; i < this.texts.length; i++) {
       const text = this.texts[i];

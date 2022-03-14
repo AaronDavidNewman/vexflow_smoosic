@@ -1,4 +1,4 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 
 import { Element } from './element';
@@ -9,6 +9,7 @@ import { Stave } from './stave';
 import { Tables } from './tables';
 import { TickContext } from './tickcontext';
 import { Tuplet } from './tuplet';
+import { Category } from './typeguard';
 import { defined, RuntimeError } from './util';
 import { Voice } from './voice';
 
@@ -33,7 +34,7 @@ export interface FormatterMetrics {
  */
 export abstract class Tickable extends Element {
   static get CATEGORY(): string {
-    return 'Tickable';
+    return Category.Tickable;
   }
 
   protected ignore_ticks: boolean;
@@ -44,8 +45,6 @@ export abstract class Tickable extends Element {
   protected voice?: Voice;
   protected width: number;
   protected x_shift: number;
-  protected preFormatted: boolean = false;
-  protected postFormatted: boolean = false;
   protected modifierContext?: ModifierContext;
   protected tickContext?: TickContext;
   protected modifiers: Modifier[];
@@ -53,6 +52,9 @@ export abstract class Tickable extends Element {
   protected formatterMetrics: FormatterMetrics;
   protected intrinsicTicks: number;
   protected align_center: boolean;
+
+  private _preFormatted: boolean = false;
+  private _postFormatted: boolean = false;
 
   constructor() {
     super();
@@ -130,7 +132,7 @@ export abstract class Tickable extends Element {
 
   /** Get width of note. Used by the formatter for positioning. */
   getWidth(): number {
-    if (!this.preFormatted) {
+    if (!this._preFormatted) {
       throw new RuntimeError('UnformattedNote', "Can't call GetWidth on an unformatted note.");
     }
 
@@ -267,15 +269,18 @@ export abstract class Tickable extends Element {
       this.modifierContext.addMember(this.modifiers[i]);
     }
     this.modifierContext.addMember(this);
-    this.setPreFormatted(false);
+    this._preFormatted = false;
     return this;
   }
 
-  /** Optional, if tickable has modifiers, associate a Modifier. */
-  // eslint-disable-next-line
-  addModifier(mod: Modifier, ...optionalArgs: any[]): this {
-    this.modifiers.push(mod);
-    this.setPreFormatted(false);
+  /**
+   * Optional, if tickable has modifiers, associate a Modifier.
+   * @param mod the modifier
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  addModifier(modifier: Modifier, index: number = 0): this {
+    this.modifiers.push(modifier);
+    this._preFormatted = false;
     return this;
   }
 
@@ -287,7 +292,7 @@ export abstract class Tickable extends Element {
   /** Set the Tick Context. */
   setTickContext(tc: TickContext): void {
     this.tickContext = tc;
-    this.setPreFormatted(false);
+    this._preFormatted = false;
   }
 
   checkTickContext(message = 'Tickable has no tick context.'): TickContext {
@@ -296,7 +301,7 @@ export abstract class Tickable extends Element {
 
   /** Preformat the Tickable. */
   preFormat(): void {
-    if (this.preFormatted) return;
+    if (this._preFormatted) return;
 
     this.width = 0;
     if (this.modifierContext) {
@@ -306,15 +311,28 @@ export abstract class Tickable extends Element {
   }
 
   /** Set preformatted status. */
-  setPreFormatted(value: boolean): void {
-    this.preFormatted = value;
+  set preFormatted(value: boolean) {
+    this._preFormatted = value;
+  }
+
+  get preFormatted(): boolean {
+    return this._preFormatted;
   }
 
   /** Postformat the Tickable. */
   postFormat(): this {
-    if (this.postFormatted) return this;
-    this.postFormatted = true;
+    if (this._postFormatted) return this;
+    this._postFormatted = true;
     return this;
+  }
+
+  /** Set postformatted status. */
+  set postFormatted(value: boolean) {
+    this._postFormatted = value;
+  }
+
+  get postFormatted(): boolean {
+    return this._postFormatted;
   }
 
   /** Return the intrinsic ticks. */

@@ -1,9 +1,10 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 
 import { Glyph } from './glyph';
-import { GlyphNote } from './glyphnote';
-import { GlyphNoteOptions } from './glyphnote';
+import { GlyphNote, GlyphNoteOptions } from './glyphnote';
 import { NoteStruct } from './note';
+import { Tables } from './tables';
+import { Category } from './typeguard';
 
 // Map `type` to SMuFL glyph code.
 const CODES: Record<string, string> = {
@@ -15,14 +16,16 @@ const CODES: Record<string, string> = {
 
 export class RepeatNote extends GlyphNote {
   static get CATEGORY(): string {
-    return 'RepeatNote';
+    return Category.RepeatNote;
   }
 
   constructor(type: string, noteStruct?: NoteStruct, options?: GlyphNoteOptions) {
     super(undefined, { duration: 'q', align_center: type !== 'slash', ...noteStruct }, options);
 
     const glyphCode = CODES[type] || 'repeat1Bar';
-    const glyph = new Glyph(glyphCode, this.musicFont.lookupMetric('repeatNote.point', 40), { category: 'repeatNote' });
+    const glyph = new Glyph(glyphCode, Tables.currentMusicFont().lookupMetric('repeatNote.point', 40), {
+      category: 'repeatNote',
+    });
     this.setGlyph(glyph);
   }
 }

@@ -1,4 +1,4 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 // This file implements the `Stem` object. Generally this object is handled
@@ -7,9 +7,9 @@
 import { BoundingBox } from './boundingbox';
 import { Element } from './element';
 import { Tables } from './tables';
+import { Category } from './typeguard';
 import { log, RuntimeError } from './util';
 
-// To enable logging for this class. Set `Vex.Flow.Stem.DEBUG` to `true`.
 // eslint-disable-next-line
 function L(...args: any[]) {
   if (Stem.DEBUG) log('Vex.Flow.Stem', args);
@@ -32,10 +32,11 @@ export interface StemOptions {
 }
 
 export class Stem extends Element {
-  static DEBUG: boolean;
+  /** To enable logging for this class. Set `Vex.Flow.Stem.DEBUG` to `true`. */
+  static DEBUG: boolean = false;
 
   static get CATEGORY(): string {
-    return 'Stem';
+    return Category.Stem;
   }
 
   // Stem directions
@@ -146,7 +147,7 @@ export class Stem extends Element {
 
   // Get the y coordinates for the very base of the stem to the top of
   // the extension
-  getExtents(): Record<string, number> {
+  getExtents(): { topY: number; baseY: number } {
     const isStemUp = this.stem_direction === Stem.UP;
     const ys = [this.y_top, this.y_bottom];
     const stemHeight = Stem.HEIGHT + this.stem_extension;
@@ -170,7 +171,7 @@ export class Stem extends Element {
   }
 
   adjustHeightForFlag(): void {
-    this.renderHeightAdjustment = this.musicFont.lookupMetric('stem.heightAdjustmentForFlag', -3);
+    this.renderHeightAdjustment = Tables.currentMusicFont().lookupMetric('stem.heightAdjustmentForFlag', -3);
   }
 
   adjustHeightForBeam(): void {

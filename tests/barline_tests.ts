@@ -1,10 +1,9 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 //
 // Barline Tests
 
-import { Barline, BarlineType } from 'stavebarline';
-
+import { Barline, BarlineType } from '../src/stavebarline';
 import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
 const BarlineTests = {
@@ -21,6 +20,10 @@ function enums(): void {
   // VexFlow 4.0 renamed Barline.type => BarlineType.
   // The old way still works, for backwards compatibility.
   equal(Barline.type, BarlineType);
+
+  const a = BarlineType['DOUBLE'];
+  const b = BarlineType.DOUBLE;
+  equal(a, b);
 }
 
 function simple(options: TestOptions): void {
@@ -32,8 +35,8 @@ function simple(options: TestOptions): void {
     f.BarNote({ type: 'single' }),
     f
       .StaveNote({ keys: ['c/4', 'f/4', 'a/4'], stem_direction: -1, duration: '2' })
-      .addAccidental(0, f.Accidental({ type: 'n' }))
-      .addAccidental(1, f.Accidental({ type: '#' })),
+      .addModifier(f.Accidental({ type: 'n' }), 0)
+      .addModifier(f.Accidental({ type: '#' }), 1),
   ];
 
   const voice = f.Voice().addTickables(notes);
@@ -52,8 +55,8 @@ function style(options: TestOptions): void {
     f.BarNote({ type: 'single' }),
     f
       .StaveNote({ keys: ['c/4', 'f/4', 'a/4'], stem_direction: -1, duration: '2' })
-      .addAccidental(0, f.Accidental({ type: 'n' }))
-      .addAccidental(1, f.Accidental({ type: '#' })),
+      .addModifier(f.Accidental({ type: 'n' }), 0)
+      .addModifier(f.Accidental({ type: '#' }), 1),
   ];
   notes[1].setStyle({ shadowBlur: 15, shadowColor: 'blue', fillStyle: 'blue', strokeStyle: 'blue' });
 
@@ -64,4 +67,5 @@ function style(options: TestOptions): void {
   ok(true, 'Style');
 }
 
+VexFlowTests.register(BarlineTests);
 export { BarlineTests };

@@ -1,10 +1,12 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 
 import { Bend } from './bend';
 import { Modifier } from './modifier';
 import { ModifierContext, ModifierContextState } from './modifiercontext';
 import { RenderContext } from './rendercontext';
+import { Tables } from './tables';
+import { Category } from './typeguard';
 
 export interface VibratoRenderOptions {
   wave_height: number;
@@ -17,7 +19,7 @@ export interface VibratoRenderOptions {
 /** `Vibrato` implements diverse vibratos. */
 export class Vibrato extends Modifier {
   static get CATEGORY(): string {
-    return 'Vibrato';
+    return Category.Vibrato;
   }
 
   public render_options: VibratoRenderOptions;
@@ -34,7 +36,11 @@ export class Vibrato extends Modifier {
     // If there's a bend, drop the text line
     const bends = context.getMembers(Bend.CATEGORY) as Bend[];
     if (bends && bends.length > 0) {
-      text_line--;
+      const bendHeight =
+        bends.map((bb) => bb.getTextHeight()).reduce((a, b) => (a > b ? a : b)) / Tables.STAVE_LINE_DISTANCE;
+      text_line = text_line - (bendHeight + 1);
+    } else {
+      state.top_text_line += 1;
     }
 
     // Format Vibratos
@@ -47,7 +53,6 @@ export class Vibrato extends Modifier {
     }
 
     state.right_shift += width;
-    state.top_text_line += 1;
     return true;
   }
 

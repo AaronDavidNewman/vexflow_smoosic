@@ -1,17 +1,17 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
-
-import { Stem } from 'stem';
 
 import { Accidental } from './accidental';
 import { Articulation } from './articulation';
+import { Dot } from './dot';
 import { Factory } from './factory';
 import { FretHandFinger } from './frethandfinger';
 import { Music } from './music';
 import { Note } from './note';
 import { Grammar, Match, Parser, Result, Rule, RuleFunction } from './parser';
 import { RenderContext } from './rendercontext';
-import { StaveNote } from './stavenote';
+import { Stem } from './stem';
+import { StemmableNote } from './stemmablenote';
 import { TupletOptions } from './tuplet';
 import { defined, log, RuntimeError } from './util';
 import { Voice } from './voice';
@@ -23,9 +23,9 @@ function L(...args: any[]): void {
 }
 
 // eslint-disable-next-line
-type CommitHook = (obj: any, note: StaveNote, builder: Builder) => void;
+export type CommitHook = (obj: any, note: StemmableNote, builder: Builder) => void;
 
-class EasyScoreGrammar implements Grammar {
+export class EasyScoreGrammar implements Grammar {
   builder: Builder;
 
   constructor(builder: Builder) {
@@ -176,7 +176,7 @@ class EasyScoreGrammar implements Grammar {
     return { token: '[0-9whq]+' };
   }
   TYPES(): Rule {
-    return { token: '[rRsSxX]' };
+    return { token: '[rRsSmMhHgG]' };
   }
   LPAREN(): Rule {
     return { token: '[(]' };
@@ -210,13 +210,13 @@ class EasyScoreGrammar implements Grammar {
   }
 }
 
-interface NotePiece {
+export interface NotePiece {
   key: string;
   accid?: string | null;
   octave?: string;
 }
 
-class Piece {
+export class Piece {
   chord: NotePiece[] = [];
   duration: string;
   dots: number = 0;
@@ -227,8 +227,8 @@ class Piece {
   }
 }
 
-interface BuilderElements {
-  notes: StaveNote[];
+export interface BuilderElements {
+  notes: StemmableNote[];
   accidentals: (Accidental | undefined)[][];
 }
 
@@ -359,8 +359,11 @@ export class Builder {
     );
     const auto_stem = stem === 'auto'; // StaveNoteStruct expects the underscore & lowercase.
 
-    // Build a StaveNote using the information we gathered.
-    const note = factory.StaveNote({ keys, duration, dots, type, clef, auto_stem });
+    // Build a GhostNote or StaveNote using the information we gathered.
+    const note =
+      type?.toLowerCase() == 'g'
+        ? factory.GhostNote({ duration, dots })
+        : factory.StaveNote({ keys, duration, dots, type, clef, auto_stem });
     if (!auto_stem) note.setStemDirection(stem === 'up' ? Stem.UP : Stem.DOWN);
 
     // Attach accidentals.
@@ -369,7 +372,7 @@ export class Builder {
       const accid = notePiece.accid;
       if (typeof accid === 'string') {
         const accidental = factory.Accidental({ type: accid });
-        note.addAccidental(index, accidental);
+        note.addModifier(accidental, index);
         accidentals.push(accidental);
       } else {
         accidentals.push(undefined);
@@ -377,7 +380,7 @@ export class Builder {
     });
 
     // Attach dots.
-    for (let i = 0; i < dots; i++) note.addDotToAll();
+    for (let i = 0; i < dots; i++) Dot.buildAndAttach([note], { all: true });
 
     this.commitHooks.forEach((commitHook) => commitHook(options, note, this));
 
@@ -405,7 +408,7 @@ export interface EasyScoreDefaults extends Record<string, any> {
 /**
  * Commit hook used by EasyScore.setOptions().
  */
-function setId(options: { id?: string }, note: StaveNote) {
+function setId(options: { id?: string }, note: StemmableNote) {
   if (options.id === undefined) return;
   note.setAttribute('id', options.id);
 }
@@ -416,7 +419,7 @@ const commaSeparatedRegex = /\s*,\s*/;
 /**
  * Commit hook used by EasyScore.setOptions().
  */
-function setClass(options: { class?: string }, note: StaveNote) {
+function setClass(options: { class?: string }, note: StemmableNote) {
   if (options.class === undefined) return;
   options.class.split(commaSeparatedRegex).forEach((className: string) => note.addClass(className));
 }
@@ -498,17 +501,17 @@ export class EasyScore {
     return result;
   }
 
-  beam(notes: StaveNote[], options?: { autoStem?: boolean; secondaryBeamBreaks?: number[] }): StaveNote[] {
+  beam(notes: StemmableNote[], options?: { autoStem?: boolean; secondaryBeamBreaks?: number[] }): StemmableNote[] {
     this.factory.Beam({ notes, options });
     return notes;
   }
 
-  tuplet(notes: StaveNote[], options?: TupletOptions): StaveNote[] {
+  tuplet(notes: StemmableNote[], options?: TupletOptions): StemmableNote[] {
     this.factory.Tuplet({ notes, options });
     return notes;
   }
 
-  notes(line: string, options: BuilderOptions = {}): StaveNote[] {
+  notes(line: string, options: BuilderOptions = {}): StemmableNote[] {
     options = { clef: this.defaults.clef, stem: this.defaults.stem, ...options };
     this.parse(line, options);
     return this.builder.getElements().notes;

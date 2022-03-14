@@ -1,4 +1,4 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 // Author: Cyril Silverman
 //
@@ -6,17 +6,16 @@
 
 // TODO: Formatting for Jazz Ornaments is incorrect. The last note + ornament bleeds into the next measure.
 
-import { Accidental } from 'accidental';
-import { Beam } from 'beam';
-import { Formatter } from 'formatter';
-import { Glyph } from 'glyph';
-import { Ornament } from 'ornament';
-import { ContextBuilder } from 'renderer';
-import { Stave } from 'stave';
-import { StaveNote } from 'stavenote';
-import { Tables } from 'tables';
-import { Voice, VoiceMode } from 'voice';
-
+import { Accidental } from '../src/accidental';
+import { Beam } from '../src/beam';
+import { Dot } from '../src/dot';
+import { Formatter } from '../src/formatter';
+import { Glyph } from '../src/glyph';
+import { Ornament } from '../src/ornament';
+import { ContextBuilder } from '../src/renderer';
+import { Stave } from '../src/stave';
+import { StaveNote } from '../src/stavenote';
+import { Voice, VoiceMode } from '../src/voice';
 import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
 const OrnamentTests = {
@@ -217,7 +216,6 @@ function drawOrnamentsWithAccidentals(options: TestOptions, contextBuilder: Cont
 
   notes[0].addModifier(new Ornament('mordent').setUpperAccidental('#').setLowerAccidental('#'), 0);
   notes[1].addModifier(new Ornament('turn_inverted').setLowerAccidental('b').setUpperAccidental('b'), 0);
-  notes[1].addModifier(new Ornament('turn_inverted').setLowerAccidental('b').setUpperAccidental('b'), 0);
   notes[2].addModifier(new Ornament('turn').setUpperAccidental('##').setLowerAccidental('##'), 0);
   notes[3].addModifier(new Ornament('mordent_inverted').setLowerAccidental('db').setUpperAccidental('db'), 0);
   notes[4].addModifier(new Ornament('turn_inverted').setUpperAccidental('++').setLowerAccidental('++'), 0);
@@ -233,7 +231,7 @@ function drawOrnamentsWithAccidentals(options: TestOptions, contextBuilder: Cont
 }
 
 function jazzOrnaments(options: TestOptions): void {
-  const clefWidth = Glyph.getWidth(Tables.DEFAULT_FONT_STACK, 'gClef', 38); // widest clef
+  const clefWidth = Glyph.getWidth('gClef', 38); // widest clef
 
   // Helper function.
   function draw(modifiers: Ornament[], keys: string[], x: number, width: number, y: number, stemDirection?: number) {
@@ -241,10 +239,10 @@ function jazzOrnaments(options: TestOptions): void {
     const note = (keys: string[], duration: string, modifier: Ornament, stemDirection?: number) => {
       const n = new StaveNote({ keys, duration, stem_direction: stemDirection })
         .addModifier(modifier, 0)
-        .addAccidental(0, new Accidental('b'));
+        .addModifier(new Accidental('b'), 0);
       const dot = duration.indexOf('d') >= 0;
       if (dot) {
-        n.addDotToAll();
+        Dot.buildAndAttach([n], { all: true });
       }
       return n;
     };
@@ -392,4 +390,5 @@ function jazzOrnaments(options: TestOptions): void {
   draw(mods, ['e/4'], curX, width, curY);
 }
 
+VexFlowTests.register(OrnamentTests);
 export { OrnamentTests };

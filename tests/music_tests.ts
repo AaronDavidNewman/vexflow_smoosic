@@ -1,10 +1,11 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 //
 // Music Tests
 
-import { KeyManager } from 'keymanager';
-import { Music } from 'music';
+import { KeyManager } from '../src/keymanager';
+import { Music } from '../src/music';
+import { VexFlowTests } from './vexflow_test_helpers';
 
 const MusicTests = {
   Start(): void {
@@ -246,4 +247,5 @@ function scaleIntervals(): void {
   equal(m.getCanonicalIntervalName(m.getIntervalBetween(m.getNoteValue('d'), m.getNoteValue('c'), -1)), 'M2');
 }
 
+VexFlowTests.register(MusicTests);
 export { MusicTests };

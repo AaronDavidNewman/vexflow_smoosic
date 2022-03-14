@@ -6,6 +6,7 @@ import { Beam } from './beam';
 import { Bend } from './bend';
 import { BoundingBox } from './boundingbox';
 import { BoundingBoxComputation } from './boundingboxcomputation';
+import { CanvasContext } from './canvascontext';
 import { ChordSymbol } from './chordsymbol';
 import { Clef } from './clef';
 import { ClefNote } from './clefnote';
@@ -15,7 +16,7 @@ import { Dot } from './dot';
 import { EasyScore } from './easyscore';
 import { Element } from './element';
 import { Factory } from './factory';
-import { Font, Fonts } from './font';
+import { Font, FontModule } from './font';
 import { Formatter } from './formatter';
 import { Fraction } from './fraction';
 import { FretHandFinger } from './frethandfinger';
@@ -28,7 +29,7 @@ import { GraceTabNote } from './gracetabnote';
 import { KeyManager } from './keymanager';
 import { KeySignature } from './keysignature';
 import { KeySigNote } from './keysignote';
-import { Modifier } from './modifier';
+import { Modifier, ModifierPosition } from './modifier';
 import { ModifierContext } from './modifiercontext';
 import { MultiMeasureRest } from './multimeasurerest';
 import { Music } from './music';
@@ -36,6 +37,7 @@ import { Note } from './note';
 import { NoteHead } from './notehead';
 import { NoteSubGroup } from './notesubgroup';
 import { Ornament } from './ornament';
+import { Parenthesis } from './parenthesis';
 import { Parser } from './parser';
 import { PedalMarking } from './pedalmarking';
 import { Registry } from './registry';
@@ -43,7 +45,7 @@ import { RenderContext } from './rendercontext';
 import { Renderer } from './renderer';
 import { RepeatNote } from './repeatnote';
 import { Stave } from './stave';
-import { Barline } from './stavebarline';
+import { Barline, BarlineType } from './stavebarline';
 import { StaveConnector } from './staveconnector';
 import { StaveHairpin } from './stavehairpin';
 import { StaveLine } from './staveline';
@@ -57,6 +59,7 @@ import { Volta } from './stavevolta';
 import { Stem } from './stem';
 import { StringNumber } from './stringnumber';
 import { Stroke } from './strokes';
+import { SVGContext } from './svgcontext';
 import { System } from './system';
 import { Tables } from './tables';
 import { TabNote } from './tabnote';
@@ -65,7 +68,7 @@ import { TabStave } from './tabstave';
 import { TabTie } from './tabtie';
 import { TextBracket } from './textbracket';
 import { TextDynamics } from './textdynamics';
-import { TextFont } from './textfont';
+import { TextFormatter } from './textformatter';
 import { TextNote } from './textnote';
 import { TickContext } from './tickcontext';
 import { TimeSignature } from './timesignature';
@@ -73,171 +76,239 @@ import { TimeSigNote } from './timesignote';
 import { Tremolo } from './tremolo';
 import { Tuning } from './tuning';
 import { Tuplet } from './tuplet';
+import { DATE, ID, VERSION } from './version';
 import { Vibrato } from './vibrato';
 import { VibratoBracket } from './vibratobracket';
 import { Voice } from './voice';
 
-export const Flow = {
-  Accidental,
-  Annotation,
-  Articulation,
-  Barline,
-  BarNote,
-  Beam,
-  Bend,
-  BoundingBox,
-  BoundingBoxComputation,
-  ChordSymbol,
-  Clef,
-  ClefNote,
-  Crescendo,
-  Curve,
-  Dot,
-  EasyScore,
-  Element,
-  Factory,
-  Font,
-  Fonts,
-  Formatter,
-  Fraction,
-  FretHandFinger,
-  GhostNote,
-  Glyph,
-  GlyphNote,
-  GraceNote,
-  GraceNoteGroup,
-  GraceTabNote,
-  KeyManager,
-  KeySignature,
-  KeySigNote,
-  Modifier,
-  ModifierContext,
-  MultiMeasureRest,
-  Music,
-  Note,
-  NoteHead,
-  NoteSubGroup,
-  Ornament,
-  Parser,
-  PedalMarking,
-  Registry,
-  RenderContext,
-  Renderer,
-  RepeatNote,
-  Repetition,
-  Stave,
-  StaveConnector,
-  StaveHairpin,
-  StaveLine,
-  StaveModifier,
-  StaveNote,
-  StaveTempo,
-  StaveText,
-  StaveTie,
-  Stem,
-  StringNumber,
-  Stroke,
-  System,
-  TabNote,
-  TabSlide,
-  TabStave,
-  TabTie,
-  TextBracket,
-  TextDynamics,
-  TextFont,
-  TextNote,
-  TickContext,
-  TimeSignature,
-  TimeSigNote,
-  Tremolo,
-  Tuning,
-  Tuplet,
-  Vibrato,
-  VibratoBracket,
-  Voice,
-  Volta,
+export class Flow {
+  static get BUILD() {
+    return {
+      /** version number. */
+      VERSION: VERSION,
+      /** git commit ID that this library was built from. */
+      ID: ID,
+      /** The date when this library was compiled. */
+      DATE: DATE,
+    };
+  }
 
-  // BUILD and VERSION are set by webpack. See: Gruntfile.js.
-  BUILD: '',
-  VERSION: '',
+  static Accidental = Accidental;
+  static Annotation = Annotation;
+  static Articulation = Articulation;
+  static Barline = Barline;
+  static BarNote = BarNote;
+  static Beam = Beam;
+  static Bend = Bend;
+  static BoundingBox = BoundingBox;
+  static BoundingBoxComputation = BoundingBoxComputation;
+  static CanvasContext = CanvasContext;
+  static ChordSymbol = ChordSymbol;
+  static Clef = Clef;
+  static ClefNote = ClefNote;
+  static Crescendo = Crescendo;
+  static Curve = Curve;
+  static Dot = Dot;
+  static EasyScore = EasyScore;
+  static Element = Element;
+  static Factory = Factory;
+  static get Flow() {
+    // This (circular reference) provides a handy shortcut for importing VexFlow via `require()`.
+    // For example:
+    // const Vex = require('vexflow');
+    // const { Flow, Stave, StaveNote, Formatter, Renderer } = Vex.Flow;
+    return Flow;
+  }
+  static Font = Font;
+  static Formatter = Formatter;
+  static Fraction = Fraction;
+  static FretHandFinger = FretHandFinger;
+  static GhostNote = GhostNote;
+  static Glyph = Glyph;
+  static GlyphNote = GlyphNote;
+  static GraceNote = GraceNote;
+  static GraceNoteGroup = GraceNoteGroup;
+  static GraceTabNote = GraceTabNote;
+  static KeyManager = KeyManager;
+  static KeySignature = KeySignature;
+  static KeySigNote = KeySigNote;
+  static Modifier = Modifier;
+  static ModifierContext = ModifierContext;
+  static MultiMeasureRest = MultiMeasureRest;
+  static Music = Music;
+  static Note = Note;
+  static NoteHead = NoteHead;
+  static NoteSubGroup = NoteSubGroup;
+  static Ornament = Ornament;
+  static Parenthesis = Parenthesis;
+  static Parser = Parser;
+  static PedalMarking = PedalMarking;
+  static Registry = Registry;
+  static RenderContext = RenderContext;
+  static Renderer = Renderer;
+  static RepeatNote = RepeatNote;
+  static Repetition = Repetition;
+  static Stave = Stave;
+  static StaveConnector = StaveConnector;
+  static StaveHairpin = StaveHairpin;
+  static StaveLine = StaveLine;
+  static StaveModifier = StaveModifier;
+  static StaveNote = StaveNote;
+  static StaveTempo = StaveTempo;
+  static StaveText = StaveText;
+  static StaveTie = StaveTie;
+  static Stem = Stem;
+  static StringNumber = StringNumber;
+  static Stroke = Stroke;
+  static SVGContext = SVGContext;
+  static System = System;
+  static TabNote = TabNote;
+  static TabSlide = TabSlide;
+  static TabStave = TabStave;
+  static TabTie = TabTie;
+  static TextBracket = TextBracket;
+  static TextDynamics = TextDynamics;
+  static TextFormatter = TextFormatter;
+  static TextNote = TextNote;
+  static TickContext = TickContext;
+  static TimeSignature = TimeSignature;
+  static TimeSigNote = TimeSigNote;
+  static Tremolo = Tremolo;
+  static Tuning = Tuning;
+  static Tuplet = Tuplet;
+  static Vibrato = Vibrato;
+  static VibratoBracket = VibratoBracket;
+  static Voice = Voice;
+  static Volta = Volta;
 
-  get DEFAULT_FONT_STACK(): Font[] {
-    return Tables.DEFAULT_FONT_STACK;
-  },
-  set DEFAULT_FONT_STACK(value: Font[]) {
-    Tables.DEFAULT_FONT_STACK = value;
-  },
-  get DEFAULT_NOTATION_FONT_SCALE(): number {
-    return Tables.DEFAULT_NOTATION_FONT_SCALE;
-  },
-  set DEFAULT_NOTATION_FONT_SCALE(value: number) {
-    Tables.DEFAULT_NOTATION_FONT_SCALE = value;
-  },
-  get DEFAULT_TABLATURE_FONT_SCALE(): number {
-    return Tables.DEFAULT_TABLATURE_FONT_SCALE;
-  },
-  set DEFAULT_TABLATURE_FONT_SCALE(value: number) {
-    Tables.DEFAULT_TABLATURE_FONT_SCALE = value;
-  },
-  get RESOLUTION(): number {
-    return Tables.RESOLUTION;
-  },
-  set RESOLUTION(value: number) {
-    Tables.RESOLUTION = value;
-  },
-  get SLASH_NOTEHEAD_WIDTH(): number {
-    return Tables.SLASH_NOTEHEAD_WIDTH;
-  },
-  set SLASH_NOTEHEAD_WIDTH(value: number) {
-    Tables.SLASH_NOTEHEAD_WIDTH = value;
-  },
-  get STAVE_LINE_DISTANCE(): number {
-    return Tables.STAVE_LINE_DISTANCE;
-  },
-  set STAVE_LINE_DISTANCE(value: number) {
-    Tables.STAVE_LINE_DISTANCE = value;
-  },
-  get STAVE_LINE_THICKNESS(): number {
-    return Tables.STAVE_LINE_THICKNESS;
-  },
-  set STAVE_LINE_THICKNESS(value: number) {
-    Tables.STAVE_LINE_THICKNESS = value;
-  },
-  get STEM_HEIGHT(): number {
-    return Tables.STEM_HEIGHT;
-  },
-  set STEM_HEIGHT(value: number) {
-    Tables.STEM_HEIGHT = value;
-  },
-  get STEM_WIDTH(): number {
-    return Tables.STEM_WIDTH;
-  },
-  set STEM_WIDTH(value: number) {
-    Tables.STEM_WIDTH = value;
-  },
-  get TIME4_4(): { num_beats: number; beat_value: number; resolution: number } {
-    return Tables.TIME4_4;
-  },
-  set TIME4_4(value: { num_beats: number; beat_value: number; resolution: number }) {
-    Tables.TIME4_4 = value;
-  },
-  get accidentalMap(): Record<string, { code: string; parenRightPaddingAdjustment: number }> {
-    return Tables.accidentalMap;
-  },
-  get unicode(): Record<string, string> {
-    return Tables.unicode;
-  },
-  keySignature(spec: string): { type: string; line: number }[] {
-    return Tables.keySignature(spec);
-  },
-  clefProperties(clef: string): { line_shift: number } {
-    return Tables.clefProperties(clef);
-  },
+  // enums need to be exported too!
+  static BarlineType = BarlineType;
+  static ModifierPosition = ModifierPosition;
+  // ... more to come ...
+
+  /**
+   * Examples:
+   * ```
+   * Vex.Flow.setMusicFont('Petaluma');
+   * Vex.Flow.setMusicFont('Bravura', 'Gonville');
+   * ```
+   *
+   * **CASE 1**: You are using `vexflow.js`, which includes all music fonts (Bravura, Gonville, Petaluma, Custom).
+   * In this case, calling this method is optional, since VexFlow already defaults to a music font stack of:
+   * 'Bravura', 'Gonville', 'Custom'.
+   *
+   * **CASE 2**: You are using `vexflow-bravura.js` or `vexflow-petaluma.js` or `vexflow-gonville.js`,
+   * which includes a single music font. Calling this method is unnecessary.
+   *
+   * **CASE 3**: You are using the light weight `vexflow-core.js` to take advantage of lazy loading for fonts.
+   * In this case, the default music font stack is empty.
+   * Example:
+   * ```
+   * await Vex.Flow.fetchMusicFont('Petaluma');
+   * Vex.Flow.setMusicFont('Petaluma');
+   * ... (do VexFlow stuff) ...
+   * ```
+   * See `demos/fonts/` for more examples.
+   *
+   * @returns an array of Font objects corresponding to the provided `fontNames`.
+   */
+  static setMusicFont(...fontNames: string[]): Font[] {
+    // Convert the array of font names into an array of Font objects.
+    const fonts = fontNames.map((fontName) => Font.load(fontName));
+    Tables.MUSIC_FONT_STACK = fonts;
+    Glyph.MUSIC_FONT_STACK = fonts.slice();
+    Glyph.CURRENT_CACHE_KEY = fontNames.join(',');
+    return fonts;
+  }
+
+  /**
+   * Used with vexflow-core which supports dynamic font loading.
+   */
   // eslint-disable-next-line
-  keyProperties(key: string, clef?: string, params?: any): any {
+  static async fetchMusicFont(fontName: string, fontModuleOrPath?: string | FontModule): Promise<void> {
+    // The default implementation does nothing.
+    // See vexflow-core.ts for the implementation that vexflow-core.js uses.
+  }
+
+  static getMusicFont(): string[] {
+    const fonts = Tables.MUSIC_FONT_STACK;
+    return fonts.map((font) => font.getName());
+  }
+
+  static get NOTATION_FONT_SCALE(): number {
+    return Tables.NOTATION_FONT_SCALE;
+  }
+  static set NOTATION_FONT_SCALE(value: number) {
+    Tables.NOTATION_FONT_SCALE = value;
+  }
+  static get TABLATURE_FONT_SCALE(): number {
+    return Tables.TABLATURE_FONT_SCALE;
+  }
+  static set TABLATURE_FONT_SCALE(value: number) {
+    Tables.TABLATURE_FONT_SCALE = value;
+  }
+  static get RESOLUTION(): number {
+    return Tables.RESOLUTION;
+  }
+  static set RESOLUTION(value: number) {
+    Tables.RESOLUTION = value;
+  }
+  static get SLASH_NOTEHEAD_WIDTH(): number {
+    return Tables.SLASH_NOTEHEAD_WIDTH;
+  }
+  static set SLASH_NOTEHEAD_WIDTH(value: number) {
+    Tables.SLASH_NOTEHEAD_WIDTH = value;
+  }
+  static get STAVE_LINE_DISTANCE(): number {
+    return Tables.STAVE_LINE_DISTANCE;
+  }
+  static set STAVE_LINE_DISTANCE(value: number) {
+    Tables.STAVE_LINE_DISTANCE = value;
+  }
+  static get STAVE_LINE_THICKNESS(): number {
+    return Tables.STAVE_LINE_THICKNESS;
+  }
+  static set STAVE_LINE_THICKNESS(value: number) {
+    Tables.STAVE_LINE_THICKNESS = value;
+  }
+  static get STEM_HEIGHT(): number {
+    return Tables.STEM_HEIGHT;
+  }
+  static set STEM_HEIGHT(value: number) {
+    Tables.STEM_HEIGHT = value;
+  }
+  static get STEM_WIDTH(): number {
+    return Tables.STEM_WIDTH;
+  }
+  static set STEM_WIDTH(value: number) {
+    Tables.STEM_WIDTH = value;
+  }
+  static get TIME4_4(): { num_beats: number; beat_value: number; resolution: number } {
+    return Tables.TIME4_4;
+  }
+  static get accidentalMap(): Record<string, { code: string; parenRightPaddingAdjustment: number }> {
+    return Tables.accidentalMap;
+  }
+  static get unicode(): Record<string, string> {
+    return Tables.unicode;
+  }
+  static keySignature(spec: string): { type: string; line: number }[] {
+    return Tables.keySignature(spec);
+  }
+  static hasKeySignature(spec: string): boolean {
+    return Tables.hasKeySignature(spec);
+  }
+  static getKeySignatures(): Record<string, { acc?: string; num: number }> {
+    return Tables.getKeySignatures();
+  }
+  static clefProperties(clef: string): { line_shift: number } {
+    return Tables.clefProperties(clef);
+  }
+  // eslint-disable-next-line
+  static keyProperties(key: string, clef?: string, params?: any): any {
     return Tables.keyProperties(key, clef, params);
-  },
-  durationToTicks(duration: string): number {
+  }
+  static durationToTicks(duration: string): number {
     return Tables.durationToTicks(duration);
-  },
-};
+  }
+}

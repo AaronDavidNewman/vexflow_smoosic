@@ -1,8 +1,9 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 
 import { BoundingBox } from './boundingbox';
 import { Glyph } from './glyph';
 import { Note, NoteStruct } from './note';
+import { Category } from './typeguard';
 
 export interface GlyphNoteOptions {
   ignoreTicks?: boolean;
@@ -11,7 +12,7 @@ export interface GlyphNoteOptions {
 
 export class GlyphNote extends Note {
   static get CATEGORY(): string {
-    return 'GlyphNote';
+    return Category.GlyphNote;
   }
 
   protected options: Required<GlyphNoteOptions>;
@@ -45,7 +46,7 @@ export class GlyphNote extends Note {
     if (!this.preFormatted && this.modifierContext) {
       this.modifierContext.preFormat();
     }
-    this.setPreFormatted(true);
+    this.preFormatted = true;
     return this;
   }
 

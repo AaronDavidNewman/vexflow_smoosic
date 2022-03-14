@@ -1,11 +1,10 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 //
 // TabStave Tests
 
-import { ContextBuilder } from 'renderer';
-import { TabStave } from 'tabstave';
-
+import { ContextBuilder } from '../src/renderer';
+import { TabStave } from '../src/tabstave';
 import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
 const TabStaveTests = {
@@ -31,4 +30,5 @@ function draw(options: TestOptions, contextBuilder: ContextBuilder): void {
   ok(true, 'all pass');
 }
 
+VexFlowTests.register(TabStaveTests);
 export { TabStaveTests };

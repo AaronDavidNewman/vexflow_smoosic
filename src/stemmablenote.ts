@@ -1,19 +1,19 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 // `StemmableNote` is an abstract interface for notes with optional stems.
 // Examples of stemmable notes are `StaveNote` and `TabNote`
 
-import { Glyph } from './glyph';
-import { GlyphProps } from './glyph';
+import { Glyph, GlyphProps } from './glyph';
 import { Note, NoteStruct } from './note';
 import { Stem, StemOptions } from './stem';
 import { Tables } from './tables';
+import { Category } from './typeguard';
 import { RuntimeError } from './util';
 
 export abstract class StemmableNote extends Note {
   static get CATEGORY(): string {
-    return 'StemmableNote';
+    return Category.StemmableNote;
   }
 
   stem_direction?: number;
@@ -126,6 +126,13 @@ export abstract class StemmableNote extends Note {
 
     this.stem_direction = direction;
 
+    // Reset and reformat everything. Flag has to be built before calling getStemExtension.
+    this.reset();
+    if (this.hasFlag()) {
+      this.buildFlag();
+    }
+    this.beam = undefined;
+
     if (this.stem) {
       this.stem.setDirection(direction);
       this.stem.setExtension(this.getStemExtension());
@@ -135,7 +142,7 @@ export abstract class StemmableNote extends Note {
       const glyph = this.getBaseCustomNoteHeadGlyph() || this.getGlyph();
 
       // Get the font-specific customizations for the note heads.
-      const offsets = this.musicFont.lookupMetric(`stem.noteHead.${glyph.code_head}`, {
+      const offsets = Tables.currentMusicFont().lookupMetric(`stem.noteHead.${glyph.code_head}`, {
         offsetYBaseStemUp: 0,
         offsetYTopStemUp: 0,
         offsetYBaseStemDown: 0,
@@ -151,12 +158,6 @@ export abstract class StemmableNote extends Note {
       });
     }
 
-    // Reset and reformat everything.
-    this.reset();
-    if (this.hasFlag()) {
-      this.buildFlag();
-    }
-    this.beam = undefined;
     if (this.preFormatted) {
       this.preFormat();
     }
@@ -185,6 +186,11 @@ export abstract class StemmableNote extends Note {
       return this.stem_extension_override;
     }
 
+    // Use stem_beam_extension with beams
+    if (this.beam) {
+      return glyph.stem_beam_extension;
+    }
+
     if (glyph) {
       return this.getStemDirection() === Stem.UP ? glyph.stem_up_extension : glyph.stem_down_extension;
     }
@@ -199,7 +205,7 @@ export abstract class StemmableNote extends Note {
   }
 
   // Get the top and bottom `y` values of the stem.
-  getStemExtents(): Record<string, number> {
+  getStemExtents(): { topY: number; baseY: number } {
     if (!this.stem) throw new RuntimeError('NoStem', 'No stem attached to this note.');
     return this.stem.getExtents();
   }
@@ -244,7 +250,6 @@ export abstract class StemmableNote extends Note {
   postFormat(): this {
     this.beam?.postFormat();
     this.postFormatted = true;
-
     return this;
   }
 

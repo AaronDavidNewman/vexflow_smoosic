@@ -1,4 +1,4 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 // @author Mohit Cheppudira
 // @author Greg Ristow (modifications)
@@ -11,11 +11,11 @@ import { Music } from './music';
 import { Note } from './note';
 import { Tables } from './tables';
 import { Tickable } from './tickable';
-import { isCategory, isGraceNote, isGraceNoteGroup, isStaveNote } from './typeguard';
+import { Category, isAccidental, isGraceNote, isGraceNoteGroup, isStaveNote } from './typeguard';
 import { defined, log } from './util';
 import { Voice } from './voice';
 
-type Line = {
+export type Line = {
   column: number;
   line: number;
   flatLine: boolean;
@@ -41,14 +41,13 @@ export class Accidental extends Modifier {
   /** Accidental code provided to the constructor. */
   readonly type: string;
   /** To enable logging for this class. Set `Vex.Flow.Accidental.DEBUG` to `true`. */
-  static DEBUG: boolean;
+  static DEBUG: boolean = false;
   protected accidental: {
     code: string;
     parenRightPaddingAdjustment: number;
   };
   public render_options: {
     parenLeftPadding: number;
-    stroke_px: number;
     font_scale: number;
     parenRightPadding: number;
   };
@@ -60,11 +59,21 @@ export class Accidental extends Modifier {
 
   /** Accidentals category string. */
   static get CATEGORY(): string {
-    return 'Accidental';
+    return Category.Accidental;
   }
 
   /** Arrange accidentals inside a ModifierContext. */
   static format(accidentals: Accidental[], state: ModifierContextState): void {
+    // If there are no accidentals, no need to format their positions.
+    if (!accidentals || accidentals.length === 0) return;
+
+    const musicFont = Tables.currentMusicFont();
+    const noteheadAccidentalPadding = musicFont.lookupMetric('accidental.noteheadAccidentalPadding');
+    const leftShift = state.left_shift + noteheadAccidentalPadding;
+    const accidentalSpacing = musicFont.lookupMetric('accidental.accidentalSpacing');
+    const additionalPadding = musicFont.lookupMetric('accidental.leftPadding'); // padding to the left of all accidentals
+
+    // A type used just in this formatting function.
     type AccidentalListItem = {
       y?: number;
       line: number;
@@ -73,22 +82,14 @@ export class Accidental extends Modifier {
       lineSpace?: number;
     };
 
-    const musicFont = Tables.DEFAULT_FONT_STACK[0];
-    const noteheadAccidentalPadding = musicFont.lookupMetric('accidental.noteheadAccidentalPadding');
-    const leftShift = state.left_shift + noteheadAccidentalPadding;
-    const accidentalSpacing = musicFont.lookupMetric('accidental.accidentalSpacing');
-    const additionalPadding = musicFont.lookupMetric('accidental.leftPadding'); // padding to the left of all accidentals
-
-    // If there are no accidentals, we needn't format their positions
-    if (!accidentals || accidentals.length === 0) return;
-
     const accList: AccidentalListItem[] = [];
     let prevNote = undefined;
     let shiftL = 0;
 
     // First determine the accidentals' Y positions from the note.keys
     for (let i = 0; i < accidentals.length; ++i) {
-      const acc = accidentals[i];
+      const acc: Accidental = accidentals[i];
+
       const note = acc.getNote();
       const stave = note.getStave();
       const index = acc.checkIndex();
@@ -96,7 +97,7 @@ export class Accidental extends Modifier {
       if (note !== prevNote) {
         // Iterate through all notes to get the displaced pixels
         for (let n = 0; n < note.keys.length; ++n) {
-          shiftL = Math.max(note.getLeftDisplacedHeadPx(), shiftL);
+          shiftL = Math.max(note.getLeftDisplacedHeadPx() - note.getXShift(), shiftL);
         }
         prevNote = note;
       }
@@ -175,7 +176,7 @@ export class Accidental extends Modifier {
     // need 2.5 lines of clearance above or below).
     //
     // Classic layouts and exception patterns are found in the 'tables.js'
-    // in 'Vex.Flow.accidentalColumnsTable'
+    // in 'Tables.accidentalColumnsTable'
     //
     // Beyond 6 vertical accidentals, default to the parallel ascending lines approach,
     // using as few columns as possible for the verticle structure.
@@ -250,7 +251,7 @@ export class Accidental extends Modifier {
 
       let groupMember;
       let column;
-      // If the group contains more than seven members, use ascending parallel lines
+      // If the group contains seven members or more, use ascending parallel lines
       // of accidentals, using as few columns as possible while avoiding collisions.
       if (groupLength >= 7) {
         // First, determine how many columns to use:
@@ -272,10 +273,9 @@ export class Accidental extends Modifier {
           lineList[groupMember].column = column;
           totalColumns = totalColumns > column ? totalColumns : column;
         }
-
-        // Otherwise, if the group contains fewer than seven members, use the layouts from
-        // the accidentalsColumnsTable housed in tables.js.
       } else {
+        // If the group contains fewer than seven members, use the layouts from
+        // the Tables.accidentalColumnsTable (See: tables.ts).
         for (groupMember = i; groupMember <= groupEnd; groupMember++) {
           column = Tables.accidentalColumnsTable[groupLength][endCase][groupMember - i];
           lineList[groupMember].column = column;
@@ -408,7 +408,7 @@ export class Accidental extends Modifier {
       const modifiedPitches: string[] = [];
 
       const processNote = (t: Tickable) => {
-        // Only StaveNote implements .addAccidental(), which is used below.
+        // Only StaveNote implements .addModifier(), which is used below.
         if (!isStaveNote(t) || t.isRest() || t.shouldIgnoreTicks()) {
           return;
         }
@@ -434,11 +434,7 @@ export class Accidental extends Modifier {
 
           // Remove accidentals
           staveNote.getModifiers().forEach((modifier, index) => {
-            if (
-              isCategory(modifier, Accidental) &&
-              modifier.type == accidentalString &&
-              modifier.getIndex() == keyIndex
-            ) {
+            if (isAccidental(modifier) && modifier.type == accidentalString && modifier.getIndex() == keyIndex) {
               staveNote.getModifiers().splice(index, 1);
             }
           });
@@ -453,7 +449,7 @@ export class Accidental extends Modifier {
             const accidental = new Accidental(accidentalString);
 
             // Attach the accidental to the StaveNote
-            staveNote.addAccidental(keyIndex, accidental);
+            staveNote.addModifier(accidental, keyIndex);
 
             // Add the pitch to list of pitches that modified accidentals
             modifiedPitches.push(keyString);
@@ -488,9 +484,6 @@ export class Accidental extends Modifier {
     this.render_options = {
       // Font size for glyphs
       font_scale: 38,
-
-      // Length of stroke across heads above or below the stave.
-      stroke_px: 3,
 
       // Padding between accidental and parentheses on each side
       parenLeftPadding: 2,

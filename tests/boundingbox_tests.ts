@@ -1,9 +1,10 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 //
 // Bounding Box Tests
 
-import { BoundingBox } from 'boundingbox';
+import { BoundingBox } from '../src/index';
+import { VexFlowTests } from './vexflow_test_helpers';
 
 const BoundingBoxTests = {
   Start(): void {
@@ -60,4 +61,5 @@ function merging(): void {
   });
 }
 
+VexFlowTests.register(BoundingBoxTests);
 export { BoundingBoxTests };

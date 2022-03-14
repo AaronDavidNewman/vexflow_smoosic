@@ -1,13 +1,9 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 //
 // Bach Demo
 
-import { Factory } from 'factory';
-import { Registry } from 'registry';
-import { BarlineType } from 'stavebarline';
-import { StaveNote } from 'stavenote';
-
+import { BarlineType, Factory, Registry, StaveNote } from '../src/index';
 import { concat, TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
 const BachDemoTests = {
@@ -21,7 +17,7 @@ function minuet1(options: TestOptions): void {
   const registry = new Registry();
   Registry.enableDefaultRegistry(registry);
 
-  // Retrieve the element from the registry and cast to StaveNote, so we can call .addModifier() later.
+  // Retrieve the element from the registry and cast to StaveNote, so we can call .addModifier( ) later.
   const id = (id: string) => registry.getElementById(id) as StaveNote;
 
   const f: Factory = VexFlowTests.makeFactory(options, 1100, 900);
@@ -434,4 +430,5 @@ function minuet1(options: TestOptions): void {
   ok(true, 'Bach Minuet 1');
 }
 
+VexFlowTests.register(BachDemoTests);
 export { BachDemoTests };

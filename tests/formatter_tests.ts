@@ -1,21 +1,30 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 //
 // Formatter Tests
 
-import { Annotation } from 'annotation';
-import { Beam } from 'beam';
-import { Bend } from 'bend';
-import { Flow } from 'flow';
-import { FontGlyph } from 'font';
-import { Formatter } from 'formatter';
-import { Note } from 'note';
-import { Registry } from 'registry';
-import { Stave } from 'stave';
-import { StaveConnector } from 'staveconnector';
-import { StaveNote } from 'stavenote';
-import { Voice, VoiceTime } from 'voice';
-
+import { Accidental } from '../src/accidental';
+import { Annotation, AnnotationVerticalJustify } from '../src/annotation';
+import { Articulation } from '../src/articulation';
+import { Beam } from '../src/beam';
+import { Bend } from '../src/bend';
+import { Dot } from '../src/dot';
+import { Flow } from '../src/flow';
+import { Font, FontGlyph, FontWeight } from '../src/font';
+import { Formatter } from '../src/formatter';
+import { FretHandFinger } from '../src/frethandfinger';
+import { ModifierPosition } from '../src/modifier';
+import { Note } from '../src/note';
+import { Registry } from '../src/registry';
+import { Stave } from '../src/stave';
+import { StaveConnector } from '../src/staveconnector';
+import { StaveNote } from '../src/stavenote';
+import { Stem } from '../src/stem';
+import { StemmableNote } from '../src/stemmablenote';
+import { StringNumber } from '../src/stringnumber';
+import { Tables } from '../src/tables';
+import { Tuplet } from '../src/tuplet';
+import { Voice, VoiceTime } from '../src/voice';
 import { MockTickable } from './mocks';
 import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
@@ -32,6 +41,7 @@ const FormatterTests = {
     run('Vertical alignment - few unaligned beats', unalignedNoteDurations1);
     run('Vertical alignment - many unaligned beats', unalignedNoteDurations2, { globalSoftmax: false });
     run('Vertical alignment - many unaligned beats (global softmax)', unalignedNoteDurations2, { globalSoftmax: true });
+    run('Vertical alignment - many mixed elements', alignedMixedElements, { globalSoftmax: true });
     run('StaveNote - Justification', justifyStaveNotes);
     run('Notes with Tab', notesWithTab);
     run('Multiple Staves - Justified', multiStaves, { debug: true });
@@ -45,6 +55,21 @@ const FormatterTests = {
     run('Proportional Formatting (20 iterations)', proportional, { debug: true, iterations: 20, alpha: 0.5 });
   },
 };
+
+/** Calculate the glyph's width in the current music font. */
+// How is this different from Glyph.getWidth()? The numbers don't match up.
+function getGlyphWidth(glyphName: string): number {
+  // `38` seems to be the `font_scale` specified in many classes, such as
+  // Accidental, Articulation, Ornament, Strokes. Does this mean `38pt`???
+  //
+  // However, tables.ts specifies:
+  //   NOTATION_FONT_SCALE: 39,
+  //   TABLATURE_FONT_SCALE: 39,
+  const musicFont = Tables.currentMusicFont();
+  const glyph: FontGlyph = musicFont.getGlyphs()[glyphName];
+  const widthInEm = (glyph.x_max - glyph.x_min) / musicFont.getResolution();
+  return widthInEm * 38 * Font.scaleToPxFrom.pt;
+}
 
 function buildTickContexts(): void {
   function createTickable(beat: number) {
@@ -91,31 +116,33 @@ function buildTickContexts(): void {
     'Second note of voice 2 is to the right of the second note of voice 1'
   );
 }
+
 function rightJustify(options: TestOptions): void {
   const f = VexFlowTests.makeFactory(options, 1200, 300);
-  const getTickables = (time: VoiceTime, n: number, duration: string): Voice => {
+  const getTickables = (time: VoiceTime, n: number, duration: string, duration2: string): Voice => {
     const tickar: StaveNote[] = [];
     let i = 0;
     for (i = 0; i < n; ++i) {
-      tickar.push(new StaveNote({ keys: ['f/4'], duration }));
+      const dd = i === n - 1 ? duration2 : duration;
+      tickar.push(new StaveNote({ keys: ['f/4'], duration: dd }));
     }
     return new Voice(time).addTickables(tickar);
   };
-  const renderTest = (time: VoiceTime, n: number, duration: string, x: number, width: number) => {
+  const renderTest = (time: VoiceTime, n: number, duration: string, duration2: string, x: number, width: number) => {
     const formatter = f.Formatter();
 
     const stave = f.Stave({ x, y: 40, width });
     // stave.addClef('treble').addTimeSignature('4/4');
 
-    const voice = getTickables(time, n, duration);
+    const voice = getTickables(time, n, duration, duration2);
     formatter.joinVoices([voice]).formatToStave([voice], stave);
     stave.draw();
     voice.draw(f.getContext(), stave);
   };
-  renderTest({ num_beats: 4, beat_value: 4, resolution: 4 * 4096 }, 2, '2', 10, 300);
-  renderTest({ num_beats: 4, beat_value: 4, resolution: 4 * 4096 }, 1, 'w', 310, 300);
-  renderTest({ num_beats: 3, beat_value: 4, resolution: 4 * 4096 }, 3, '4', 610, 300);
-  renderTest({ num_beats: 3, beat_value: 4, resolution: 4 * 4096 }, 6, '8', 910, 300);
+  renderTest({ num_beats: 4, beat_value: 4, resolution: 4 * 4096 }, 3, '4', '2', 10, 300);
+  renderTest({ num_beats: 4, beat_value: 4, resolution: 4 * 4096 }, 1, 'w', 'w', 310, 300);
+  renderTest({ num_beats: 3, beat_value: 4, resolution: 4 * 4096 }, 3, '4', '4', 610, 300);
+  renderTest({ num_beats: 3, beat_value: 4, resolution: 4 * 4096 }, 6, '8', '8', 910, 300);
   ok(true);
 }
 
@@ -218,8 +245,9 @@ function unalignedNoteDurations1(options: TestOptions): void {
   const notes21 = [
     new StaveNote({ keys: ['a/4'], duration: '16' }),
     new StaveNote({ keys: ['b/4.'], duration: '4' }),
-    new StaveNote({ keys: ['a/4'], duration: '8d' }).addDotToAll(),
+    new StaveNote({ keys: ['a/4'], duration: '8d' }),
   ];
+  Dot.buildAndAttach([notes21[2]], { all: true });
 
   const ctx = f.getContext();
   const voice11 = score.voice(notes11, { time: '2/4' }).setMode(Voice.Mode.SOFT);
@@ -295,15 +323,76 @@ function unalignedNoteDurations2(options: TestOptions): void {
   ok(voice1.getTickables()[1].getX() > voice2.getTickables()[1].getX());
 }
 
-function justifyStaveNotes(options: TestOptions): void {
-  function glyphPixels(): number {
-    return 96 * (38 / (Flow.DEFAULT_FONT_STACK[0].getResolution() * 72));
-  }
+function alignedMixedElements(options: TestOptions): void {
+  const f = VexFlowTests.makeFactory(options, 800, 500);
+  const context = f.getContext();
+  const stave = new Stave(10, 200, 400);
+  const stave2 = new Stave(410, 200, 400);
+  const notes = [
+    new StaveNote({ keys: ['c/5'], duration: '8' })
+      .addModifier(new Accidental('##'), 0)
+      .addModifier(new FretHandFinger('4').setPosition(ModifierPosition.BELOW), 0)
+      .addModifier(new StringNumber('3').setPosition(ModifierPosition.BELOW), 0)
+      .addModifier(new Articulation('a.').setPosition(ModifierPosition.BELOW), 0)
+      .addModifier(new Articulation('a>').setPosition(ModifierPosition.BELOW), 0)
+      .addModifier(new Articulation('a^').setPosition(ModifierPosition.BELOW), 0)
+      .addModifier(new Articulation('am').setPosition(ModifierPosition.BELOW), 0)
+      .addModifier(new Articulation('a@u').setPosition(ModifierPosition.BELOW), 0)
+      .addModifier(new Annotation('yyyy').setVerticalJustification(AnnotationVerticalJustify.BOTTOM), 0)
+      .addModifier(
+        new Annotation('xxxx').setVerticalJustification(AnnotationVerticalJustify.BOTTOM).setFont('sans-serif', 20),
+        0
+      )
+      .addModifier(
+        new Annotation('ttt').setVerticalJustification(AnnotationVerticalJustify.BOTTOM).setFont('sans-serif', 20),
+        0
+      ),
+    new StaveNote({ keys: ['c/5'], duration: '8', stem_direction: Stem.DOWN })
+      .addModifier(new StringNumber('3').setPosition(ModifierPosition.BELOW), 0)
+      .addModifier(new Articulation('a.').setPosition(ModifierPosition.BELOW), 0)
+      .addModifier(new Articulation('a>').setPosition(ModifierPosition.BELOW), 0),
 
-  function glyphWidth(vexGlyph: string): number {
-    const glyph: FontGlyph = Flow.DEFAULT_FONT_STACK[0].getGlyphs()[vexGlyph];
-    return (glyph.x_max - glyph.x_min) * glyphPixels();
-  }
+    new StaveNote({ keys: ['c/5'], duration: '8' }),
+  ];
+  const notes2 = [
+    new StaveNote({ keys: ['c/5'], duration: '8' })
+      .addModifier(new StringNumber('3').setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(new Articulation('a.').setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(new Annotation('yyyy').setVerticalJustification(AnnotationVerticalJustify.TOP), 0),
+    new StaveNote({ keys: ['c/5'], duration: '8', stem_direction: Stem.DOWN })
+      .addModifier(new FretHandFinger('4').setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(new StringNumber('3').setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(new Articulation('a.').setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(new Articulation('a>').setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(new Articulation('a^').setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(new Articulation('am').setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(new Articulation('a@u').setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(new Annotation('yyyy').setVerticalJustification(AnnotationVerticalJustify.TOP), 0)
+      .addModifier(
+        new Annotation('xxxx').setVerticalJustification(AnnotationVerticalJustify.TOP).setFont('sans-serif', 20),
+        0
+      )
+      .addModifier(
+        new Annotation('ttt').setVerticalJustification(AnnotationVerticalJustify.TOP).setFont('sans-serif', 20),
+        0
+      ),
+    new StaveNote({ keys: ['c/5'], duration: '8' }),
+  ];
+
+  const tuplet = new Tuplet(notes).setTupletLocation(-1);
+  const tuplet2 = new Tuplet(notes2).setTupletLocation(1);
+
+  Formatter.FormatAndDraw(context, stave, notes);
+  Formatter.FormatAndDraw(context, stave2, notes2);
+  stave.setContext(context).draw();
+  stave2.setContext(context).draw();
+  tuplet.setContext(context).draw();
+  tuplet2.setContext(context).draw();
+
+  ok(true);
+}
+
+function justifyStaveNotes(options: TestOptions): void {
   const f = VexFlowTests.makeFactory(options, 520, 280);
   const ctx = f.getContext();
   const score = f.EasyScore();
@@ -319,7 +408,7 @@ function justifyStaveNotes(options: TestOptions): void {
 
     f.Formatter()
       .joinVoices(voices)
-      .format(voices, width - (Stave.defaultPadding + glyphWidth('gClef')));
+      .format(voices, width - (Stave.defaultPadding + getGlyphWidth('gClef')));
 
     // Show the the width of notes via a horizontal line with red, green, yellow, blue, gray indicators.
     voices[0].getTickables().forEach((note) => Note.plotMetrics(ctx, note, y + 140)); // Bottom line.
@@ -385,16 +474,6 @@ function notesWithTab(options: TestOptions): void {
 }
 
 function multiStaves(options: TestOptions): void {
-  // Two helper functions to calculate the glyph's width.
-  // Should these be static methods in Glyph or Font?
-  function glyphPixels(): number {
-    return 96 * (38 / (Flow.DEFAULT_FONT_STACK[0].getResolution() * 72));
-  }
-  function glyphWidth(vexGlyph: string): number {
-    const glyph: FontGlyph = Flow.DEFAULT_FONT_STACK[0].getGlyphs()[vexGlyph];
-    return (glyph.x_max - glyph.x_min) * glyphPixels();
-  }
-
   const f = VexFlowTests.makeFactory(options, 600, 400);
   const ctx = f.getContext();
   const score = f.EasyScore();
@@ -423,7 +502,7 @@ function multiStaves(options: TestOptions): void {
   ];
 
   const staveYs = [20, 130, 250];
-  let staveWidth = width + glyphWidth('gClef') + glyphWidth('timeSig8') + Stave.defaultPadding;
+  let staveWidth = width + getGlyphWidth('gClef') + getGlyphWidth('timeSig8') + Stave.defaultPadding;
   let staves = [
     f.Stave({ y: staveYs[0], width: staveWidth }).addClef('treble').addTimeSignature('6/8'),
     f.Stave({ y: staveYs[1], width: staveWidth }).addClef('treble').addTimeSignature('6/8'),
@@ -502,7 +581,7 @@ function proportional(options: TestOptions): void {
     score.tuplet(score.notes('a4/32, a4, a4, a4, a4, a4, a4'), { notes_occupied: 8 }),
   ];
 
-  const createVoice = (notes: StaveNote[]) => score.voice(notes, { time: '1/4' });
+  const createVoice = (notes: StemmableNote[]) => score.voice(notes, { time: '1/4' });
   const createStave = (voice: Voice) =>
     system
       .addStave({ voices: [voice], debugNoteMetrics: debug })
@@ -706,14 +785,13 @@ function annotations(options: TestOptions): void {
     durations.forEach((dd) => {
       const note = new StaveNote({ keys: ['b/4'], duration: dd });
       if (dd.indexOf('d') >= 0) {
-        note.addDotToAll();
+        Dot.buildAndAttach([note], { all: true });
       }
       if (sm.lyrics.length > iii) {
-        note.addAnnotation(
-          0,
+        note.addModifier(
           new Annotation(sm.lyrics[iii])
             .setVerticalJustification(Annotation.VerticalJustify.BOTTOM)
-            .setFont('Times', 12, 'normal')
+            .setFont(Font.SERIF, 12, FontWeight.NORMAL)
         );
       }
       notes.push(note);
@@ -722,7 +800,7 @@ function annotations(options: TestOptions): void {
 
     notes.forEach((note) => {
       if (note.getDuration().indexOf('d') >= 0) {
-        note.addDotToAll();
+        Dot.buildAndAttach([note], { all: true });
       }
     });
 
@@ -754,4 +832,5 @@ function annotations(options: TestOptions): void {
   ok(true);
 }
 
+VexFlowTests.register(FormatterTests);
 export { FormatterTests };

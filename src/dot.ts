@@ -6,16 +6,42 @@
 import { Modifier } from './modifier';
 import { ModifierContextState } from './modifiercontext';
 import { Note } from './note';
-import { isGraceNote, isStaveNote, isTabNote } from './typeguard';
+import { Category, isGraceNote, isStaveNote, isTabNote } from './typeguard';
 import { RuntimeError } from './util';
 
 export class Dot extends Modifier {
   static get CATEGORY(): string {
-    return 'Dot';
+    return Category.Dot;
   }
 
   protected radius: number;
   protected dot_shiftY: number;
+
+  /** Returns the dots associated to a Note. */
+  static getDots(note: Note): Dot[] {
+    return note.getModifiersByType(Dot.CATEGORY) as Dot[];
+  }
+
+  /** Add a dot on the specified keys to the notes. */
+  static buildAndAttach(notes: Note[], options?: { index?: number; all?: boolean }): void {
+    for (const note of notes) {
+      if (options?.all) {
+        for (let i = 0; i < note.keys.length; i++) {
+          const dot = new Dot();
+          dot.setDotShiftY(note.glyph.dot_shiftY);
+          note.addModifier(dot, i);
+        }
+      } else if (options?.index != undefined) {
+        const dot = new Dot();
+        dot.setDotShiftY(note.glyph.dot_shiftY);
+        note.addModifier(dot, options?.index);
+      } else {
+        const dot = new Dot();
+        dot.setDotShiftY(note.glyph.dot_shiftY);
+        note.addModifier(dot, 0);
+      }
+    }
+  }
 
   // Arrange dots inside a ModifierContext.
   static format(dots: Dot[], state: ModifierContextState): boolean {
@@ -36,10 +62,11 @@ export class Dot extends Modifier {
       if (isStaveNote(note)) {
         const index = dot.checkIndex();
         props = note.getKeyProps()[index];
-        shift = note.getRightDisplacedHeadPx();
+        // consider right displaced head with no previous modifier
+        shift = note.getFirstDotPx();
       } else if (isTabNote(note)) {
         props = { line: 0.5 }; // Shim key props for dot placement
-        shift = 0;
+        shift = right_shift;
       } else {
         // note object is not StaveNote or TabNote.
         throw new RuntimeError('Internal', 'Unexpected instance.');
@@ -140,6 +167,7 @@ export class Dot extends Modifier {
     const start = note.getModifierStartXY(this.position, this.index, { forceFlagRight: true });
 
     // Set the starting y coordinate to the base of the stem for TabNotes.
+
     if (isTabNote(note)) {
       start.y = note.getStemExtents().baseY;
     }

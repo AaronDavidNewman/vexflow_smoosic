@@ -1,4 +1,4 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Cyril Silverman
 //
 // ## Description
@@ -10,11 +10,12 @@ import { Glyph } from './glyph';
 import { Stave } from './stave';
 import { StaveModifier, StaveModifierPosition } from './stavemodifier';
 import { Tables } from './tables';
+import { Category } from './typeguard';
 import { defined } from './util';
 
 export class KeySignature extends StaveModifier {
   static get CATEGORY(): string {
-    return 'KeySignature';
+    return Category.KeySignature;
   }
 
   protected glyphFontScale: number;

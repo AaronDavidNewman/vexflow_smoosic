@@ -1,4 +1,4 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Taehoon Moon 2016
 //
 // ## Description
@@ -13,11 +13,12 @@ import { ModifierContextState } from './modifiercontext';
 import { Note } from './note';
 import { RenderContext } from './rendercontext';
 import { Tables } from './tables';
+import { Category } from './typeguard';
 import { Voice } from './voice';
 
 export class NoteSubGroup extends Modifier {
   static get CATEGORY(): string {
-    return 'NoteSubGroup';
+    return Category.NoteSubGroup;
   }
 
   // Arrange groups inside a `ModifierContext`

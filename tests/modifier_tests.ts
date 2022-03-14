@@ -1,10 +1,10 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 //
 // ModifierContext Tests
 
-import { Modifier } from 'modifier';
-import { ModifierContext } from 'modifiercontext';
+import { Modifier, ModifierContext } from '../src/index';
+import { VexFlowTests } from './vexflow_test_helpers';
 
 const ModifierContextTests = {
   Start(): void {
@@ -31,4 +31,5 @@ function management(): void {
   equal(modifiers.length, 2, 'Added two modifiers');
 }
 
+VexFlowTests.register(ModifierContextTests);
 export { ModifierContextTests };

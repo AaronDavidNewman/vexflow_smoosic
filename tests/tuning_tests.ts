@@ -1,9 +1,10 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 //
 // Tuning Tests
 
-import { Tuning } from 'tuning';
+import { Tuning } from '../src/tuning';
+import { VexFlowTests } from './vexflow_test_helpers';
 
 const TuningTests = {
   Start(): void {
@@ -80,4 +81,5 @@ function noteForFret(): void {
   equal(tuning.getNoteForFret(0, 6), 'E/3', 'Low E string');
 }
 
+VexFlowTests.register(TuningTests);
 export { TuningTests };

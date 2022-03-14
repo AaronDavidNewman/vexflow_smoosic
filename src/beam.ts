@@ -1,7 +1,5 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
-
-import { isStaveNote, isTabNote } from 'typeguard';
 
 import { Element } from './element';
 import { Fraction } from './fraction';
@@ -10,7 +8,8 @@ import { RenderContext } from './rendercontext';
 import { Stem } from './stem';
 import { StemmableNote } from './stemmablenote';
 import { Tables } from './tables';
-import { Tuplet } from './tuplet';
+import { Tuplet, TupletLocation } from './tuplet';
+import { Category, isStaveNote, isTabNote } from './typeguard';
 import { RuntimeError } from './util';
 import { Voice } from './voice';
 
@@ -45,7 +44,7 @@ const BEAM_BOTH = 'B';
 /** `Beams` span over a set of `StemmableNotes`. */
 export class Beam extends Element {
   static get CATEGORY(): string {
-    return 'Beam';
+    return Category.Beam;
   }
 
   public render_options: {
@@ -420,7 +419,7 @@ export class Beam extends Element {
     allTuplets.forEach((tuplet) => {
       // Set the tuplet location based on the stem direction
       const direction =
-        (tuplet.notes[0] as StemmableNote).stem_direction === Stem.DOWN ? Tuplet.LOCATION_BOTTOM : Tuplet.LOCATION_TOP;
+        (tuplet.notes[0] as StemmableNote).stem_direction === Stem.DOWN ? TupletLocation.BOTTOM : TupletLocation.TOP;
       tuplet.setTupletLocation(direction);
 
       // If any of the notes in the tuplet are not beamed, draw a bracket.
@@ -556,18 +555,20 @@ export class Beam extends Element {
       // iterate through notes, calculating y shift and stem extension
       for (let i = 1; i < notes.length; ++i) {
         const note = notes[i];
-        const adjustedStemTipY =
-          this.getSlopeY(note.getStemX(), firstNote.getStemX(), firstNote.getStemExtents().topY, slope) + yShiftTemp;
+        if (note.hasStem() || note.isRest()) {
+          const adjustedStemTipY =
+            this.getSlopeY(note.getStemX(), firstNote.getStemX(), firstNote.getStemExtents().topY, slope) + yShiftTemp;
 
-        const stemTipY = note.getStemExtents().topY;
-        // beam needs to be shifted up to accommodate note
-        if (stemTipY * stemDirection < adjustedStemTipY * stemDirection) {
-          const diff = Math.abs(stemTipY - adjustedStemTipY);
-          yShiftTemp += diff * -stemDirection;
-          totalStemExtension += diff * i;
-        } else {
-          // beam overshoots note, account for the difference
-          totalStemExtension += (stemTipY - adjustedStemTipY) * stemDirection;
+          const stemTipY = note.getStemExtents().topY;
+          // beam needs to be shifted up to accommodate note
+          if (stemTipY * stemDirection < adjustedStemTipY * stemDirection) {
+            const diff = Math.abs(stemTipY - adjustedStemTipY);
+            yShiftTemp += diff * -stemDirection;
+            totalStemExtension += diff * i;
+          } else {
+            // beam overshoots note, account for the difference
+            totalStemExtension += (stemTipY - adjustedStemTipY) * stemDirection;
+          }
         }
       }
 
@@ -706,8 +707,6 @@ export class Beam extends Element {
           const totalBeamWidth = (beam_count - 1) * beamWidth * 1.5 + beamWidth;
           stem.setVisibility(true).setStemlet(true, totalBeamWidth + stemlet_extension);
         }
-      } else {
-        throw new RuntimeError('NoStem', 'stem undefined.');
       }
     }
   }
@@ -852,7 +851,9 @@ export class Beam extends Element {
     this.notes.forEach((note) => {
       const stem = note.getStem();
       if (stem) {
+        ctx.openGroup('stem', note.getAttribute('id') + '-stem');
         stem.setContext(ctx).draw();
+        ctx.closeGroup();
       }
     }, this);
   }
@@ -880,6 +881,7 @@ export class Beam extends Element {
         if (lastBeamX) {
           const lastBeamY = this.getSlopeY(lastBeamX, firstStemX, beamY, this.slope);
 
+          this.setAttribute('el', ctx.openGroup('beam'));
           ctx.beginPath();
           ctx.moveTo(startBeamX, startBeamY);
           ctx.lineTo(startBeamX, startBeamY + beamThickness);
@@ -887,6 +889,7 @@ export class Beam extends Element {
           ctx.lineTo(lastBeamX + 1, lastBeamY);
           ctx.closePath();
           ctx.fill();
+          ctx.closeGroup();
         } else {
           throw new RuntimeError('NoLastBeamX', 'lastBeamX undefined.');
         }

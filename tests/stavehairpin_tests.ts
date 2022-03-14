@@ -1,4 +1,4 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 // Author: Raffaele Viglianti, 2012
 //
@@ -6,10 +6,9 @@
 
 // TODO: Incorrect property names in the options object: vo, left_ho, right_ho.
 
-import { RenderContext } from 'rendercontext';
-import { StaveHairpin, StaveHairpinRenderOptions } from 'stavehairpin';
-import { StaveNote } from 'stavenote';
-
+import { RenderContext } from '../src/rendercontext';
+import { StaveHairpin, StaveHairpinRenderOptions } from '../src/stavehairpin';
+import { StaveNote } from '../src/stavenote';
 import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
 const StaveHairpinTests = {
@@ -57,8 +56,8 @@ function createTest(drawTwoHairpins: (ctx: RenderContext, notes: StaveNote[]) =>
     const notes = [
       factory
         .StaveNote({ keys: ['c/4', 'e/4', 'a/4'], stem_direction: 1, duration: '4' })
-        .addAccidental(0, factory.Accidental({ type: 'b' }))
-        .addAccidental(1, factory.Accidental({ type: '#' })),
+        .addModifier(factory.Accidental({ type: 'b' }), 0)
+        .addModifier(factory.Accidental({ type: '#' }), 1),
       factory.StaveNote({ keys: ['d/4'], stem_direction: 1, duration: '4' }),
       factory.StaveNote({ keys: ['e/4'], stem_direction: 1, duration: '4' }),
       factory.StaveNote({ keys: ['f/4'], stem_direction: 1, duration: '4' }),
@@ -129,4 +128,5 @@ const height = createTest((ctx, notes) => {
   });
 });
 
+VexFlowTests.register(StaveHairpinTests);
 export { StaveHairpinTests };

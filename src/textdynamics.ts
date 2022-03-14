@@ -1,9 +1,10 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 
 import { Glyph } from './glyph';
 import { Note } from './note';
 import { TextNoteStruct } from './textnote';
+import { Category } from './typeguard';
 import { defined, log, RuntimeError } from './util';
 
 // eslint-disable-next-line
@@ -20,10 +21,10 @@ function L(...args: any[]) {
  */
 export class TextDynamics extends Note {
   /** To enable logging for this class. Set `Vex.Flow.TextDynamics.DEBUG` to `true`. */
-  static DEBUG: boolean;
+  static DEBUG: boolean = false;
 
   static get CATEGORY(): string {
-    return 'TextDynamics';
+    return Category.TextDynamics;
   }
 
   protected sequence: string;
@@ -112,7 +113,7 @@ export class TextDynamics extends Note {
 
     // Store the width of the text
     this.setWidth(total_width);
-    this.setPreFormatted(true);
+    this.preFormatted = true;
     return this;
   }
 

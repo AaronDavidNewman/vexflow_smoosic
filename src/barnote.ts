@@ -1,9 +1,10 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 
 import { ModifierContext } from './modifiercontext';
 import { Note } from './note';
 import { Barline, BarlineType } from './stavebarline';
+import { Category } from './typeguard';
 import { log } from './util';
 
 // eslint-disable-next-line
@@ -20,10 +21,10 @@ function L(...args: any[]) {
  */
 export class BarNote extends Note {
   /** To enable logging for this class. Set `Vex.Flow.BarNote.DEBUG` to `true`. */
-  static DEBUG: boolean;
+  static DEBUG: boolean = false;
 
   static get CATEGORY(): string {
-    return 'BarNote';
+    return Category.BarNote;
   }
 
   protected metrics: { widths: Record<string, number> };
@@ -76,7 +77,7 @@ export class BarNote extends Note {
 
   /** Overridden to ignore. */
   preFormat(): this {
-    this.setPreFormatted(true);
+    this.preFormatted = true;
     return this;
   }
 

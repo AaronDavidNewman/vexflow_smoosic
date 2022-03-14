@@ -4,16 +4,26 @@
 // Class to draws string numbers into the notation.
 
 import { Builder } from './easyscore';
-import { Modifier } from './modifier';
+import { Font, FontInfo, FontStyle, FontWeight } from './font';
+import { Modifier, ModifierPosition } from './modifier';
 import { ModifierContextState } from './modifiercontext';
-import { StaveNote } from './stavenote';
-import { FontInfo } from './types/common';
+import { StemmableNote } from './stemmablenote';
+import { Tables } from './tables';
+import { TextFormatter } from './textformatter';
+import { Category } from './typeguard';
 import { RuntimeError } from './util';
 
 export class FretHandFinger extends Modifier {
   static get CATEGORY(): string {
-    return 'FretHandFinger';
+    return Category.FretHandFinger;
   }
+
+  static TEXT_FONT: Required<FontInfo> = {
+    family: Font.SANS_SERIF,
+    size: 9,
+    weight: FontWeight.BOLD,
+    style: FontStyle.NORMAL,
+  };
 
   // Arrange fingerings inside a ModifierContext.
   static format(nums: FretHandFinger[], state: ModifierContextState): boolean {
@@ -33,6 +43,15 @@ export class FretHandFinger extends Modifier {
       const pos = num.getPosition();
       const index = num.checkIndex();
       const props = note.getKeyProps()[index];
+      const textFormatter = TextFormatter.create(num.textFont);
+      const textHeight = textFormatter.maxHeight;
+      if (num.position === ModifierPosition.ABOVE) {
+        state.top_text_line += textHeight / Tables.STAVE_LINE_DISTANCE + 0.5;
+      }
+      if (num.position === ModifierPosition.BELOW) {
+        state.text_line += textHeight / Tables.STAVE_LINE_DISTANCE + 0.5;
+      }
+
       if (note !== prev_note) {
         for (let n = 0; n < note.keys.length; ++n) {
           if (left_shift === 0) {
@@ -95,7 +114,7 @@ export class FretHandFinger extends Modifier {
     return true;
   }
 
-  static easyScoreHook({ fingerings }: { fingerings?: string } = {}, note: StaveNote, builder: Builder): void {
+  static easyScoreHook({ fingerings }: { fingerings?: string } = {}, note: StemmableNote, builder: Builder): void {
     fingerings
       ?.split(',')
       .map((fingeringString: string) => {
@@ -110,7 +129,6 @@ export class FretHandFinger extends Modifier {
   protected finger: string;
   protected x_offset: number;
   protected y_offset: number;
-  protected font: FontInfo;
 
   constructor(finger: string) {
     super();
@@ -122,11 +140,7 @@ export class FretHandFinger extends Modifier {
     this.y_shift = 0;
     this.x_offset = 0; // Horizontal offset from default
     this.y_offset = 0; // Vertical offset from default
-    this.font = {
-      family: 'sans-serif',
-      size: 9,
-      weight: 'bold',
-    };
+    this.resetFont();
   }
 
   setFretHandFinger(finger: string): this {
@@ -177,7 +191,7 @@ export class FretHandFinger extends Modifier {
     }
 
     ctx.save();
-    ctx.setFont(this.font.family, this.font.size, this.font.weight);
+    ctx.setFont(this.textFont);
     ctx.fillText('' + this.finger, dot_x, dot_y);
     ctx.restore();
   }

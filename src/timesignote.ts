@@ -1,13 +1,14 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Taehoon Moon 2014
 
 import { ModifierContext } from './modifiercontext';
 import { Note } from './note';
 import { TimeSignature, TimeSignatureInfo } from './timesignature';
+import { Category } from './typeguard';
 
 export class TimeSigNote extends Note {
   static get CATEGORY(): string {
-    return 'TimeSigNote';
+    return Category.TimeSigNote;
   }
 
   protected timeSigInfo: TimeSignatureInfo;
@@ -31,7 +32,7 @@ export class TimeSigNote extends Note {
   }
 
   preFormat(): this {
-    this.setPreFormatted(true);
+    this.preFormatted = true;
     return this;
   }
 

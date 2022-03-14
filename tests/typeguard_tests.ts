@@ -1,4 +1,4 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Ron B. Yeh
 // MIT License
 //
@@ -7,10 +7,12 @@
 // eslint-disable-next-line
 // @ts-nocheck to support ES5 style class declaration in the fakeES5() test case.
 
-import { StaveNote } from 'stavenote';
-import { StemmableNote } from 'stemmablenote';
-import { TabNote } from 'tabnote';
-import { isCategory, isNote, isStaveNote, isStemmableNote, isTabNote } from 'typeguard';
+import { CanvasContext } from '../src/canvascontext';
+import { StaveNote } from '../src/stavenote';
+import { StemmableNote } from '../src/stemmablenote';
+import { TabNote } from '../src/tabnote';
+import { isCategory, isNote, isRenderContext, isStaveNote, isStemmableNote, isTabNote } from '../src/typeguard';
+import { VexFlowTests } from './vexflow_test_helpers';
 
 const TypeGuardTests = {
   Start(): void {
@@ -18,7 +20,6 @@ const TypeGuardTests = {
     test('Real VexFlow Types', real);
     test('Fake VexFlow Types in ES5', fakeES5);
     test('Fake VexFlow Types in ES6', fakeES6);
-    test('instanceof', fallbackToInstanceOf);
     test('Edge Case ES5/ES6', edgeCaseES5vsES6);
   },
 };
@@ -26,7 +27,7 @@ const TypeGuardTests = {
 function real(): void {
   const s = new StaveNote({ keys: ['c/4'], duration: 'w' });
   ok(isStaveNote(s), 'isStaveNote helper function');
-  ok(isCategory(s, StaveNote), 'Use isCategory(s, StaveNote) directly');
+  ok(isCategory(s, 'StaveNote'), 'Use isCategory(s, "StaveNote") directly');
   notOk(isTabNote(s), 'isTabNote helper function. s is NOT a TabNote.');
 
   const t = new TabNote({ positions: [{ str: 2, fret: 1 }], duration: '1' });
@@ -36,6 +37,12 @@ function real(): void {
   ok(isNote(s), 'StaveNote extends StemmableNote which extends Note, so s is a Note');
   ok(isStemmableNote(t), 'TabNote extends StemmableNote');
   ok(isNote(t), 'TabNote extends StemmableNote which extends Note, so t is a Note');
+
+  const canvas = document.createElement('canvas');
+  canvas.width = 800;
+  canvas.height = 400;
+  const ctx = new CanvasContext(canvas.getContext('2d') as CanvasRenderingContext2D);
+  ok(isRenderContext(ctx), 'ctx is a RenderContext');
 }
 
 /**
@@ -45,9 +52,9 @@ function checkFakeObjects(fakeStemmableNote: unknown, fakeStaveNote: unknown): v
   ok(isStemmableNote(fakeStemmableNote), 'Fake StemmableNote is a StemmableNote.');
   notOk(isNote(fakeStemmableNote), 'Fake StemmableNote is not a Note (no ancestors with the correct CATEGORY).');
 
-  ok(isCategory(fakeStaveNote, StaveNote), 'Fake StaveNote is a StaveNote.');
+  ok(isCategory(fakeStaveNote, 'StaveNote'), 'Fake StaveNote is a StaveNote.');
   ok(isStaveNote(fakeStaveNote), 'Fake StaveNote is a StaveNote (via helper function).');
-  ok(isCategory(fakeStaveNote, StemmableNote), 'Fake StaveNote is also a StemmableNote (via inheritance).');
+  ok(isCategory(fakeStaveNote, 'StemmableNote'), 'Fake StaveNote is also a StemmableNote (via inheritance).');
   notOk(isNote(fakeStaveNote), 'Fake StaveNote is not a Note. CATEGORY does not match.');
 }
 
@@ -91,31 +98,6 @@ function fakeES6(): void {
 }
 
 /**
- * In this test, isCategory() should work just like instanceof,
- * because the classes do not have a .CATEGORY property.
- */
-function fallbackToInstanceOf(): void {
-  class A {}
-  class B extends A {}
-  class C extends B {}
-
-  class X {}
-  class Y extends X {}
-
-  const cInstance = new C();
-  const yInstance = new Y();
-
-  ok(isCategory(cInstance, C), 'isCategory works just like instanceof for regular JS class hierarchies');
-  ok(isCategory(cInstance, B));
-  ok(isCategory(cInstance, A));
-  ok(isCategory(cInstance, Object));
-
-  ok(isCategory(yInstance, Y));
-  ok(isCategory(yInstance, X));
-  notOk(isCategory(yInstance, B));
-}
-
-/**
  * The tsconfig.json target is ES6 (as of August 18, 2021), so isCategory() works even when the root class "extends Object".
  */
 function edgeCaseES5vsES6(): void {
@@ -127,11 +109,11 @@ function edgeCaseES5vsES6(): void {
 
   ok(xInstance instanceof Object, 'es5 & es6: x IS an instanceof Object');
 
-  // If targeting es5, these four assertions only pass if we remove "extends Object" from the class Z definition.
-  ok(isCategory(zInstance, Z), 'es6: z IS the same category as Z');
+  // If targeting es5, these three assertions only pass if we remove "extends Object" from the class Z definition.
   ok(zInstance instanceof Z, 'es6: z IS an instanceof Z');
   ok(xInstance instanceof Y, 'es6: x IS an instanceof Y');
   ok(xInstance instanceof Z, 'es6: x IS an instanceof Z');
 }
 
+VexFlowTests.register(TypeGuardTests);
 export { TypeGuardTests };

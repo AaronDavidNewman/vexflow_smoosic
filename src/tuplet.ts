@@ -1,4 +1,4 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 
 /**
  * ## Description
@@ -50,6 +50,8 @@ import { Glyph } from './glyph';
 import { Note } from './note';
 import { Stem } from './stem';
 import { StemmableNote } from './stemmablenote';
+import { Tables } from './tables';
+import { Category } from './typeguard';
 import { defined, RuntimeError } from './util';
 
 export interface TupletOptions {
@@ -62,9 +64,14 @@ export interface TupletOptions {
   y_offset?: number;
 }
 
+export const enum TupletLocation {
+  BOTTOM = -1,
+  TOP = +1,
+}
+
 export class Tuplet extends Element {
   static get CATEGORY(): string {
-    return 'Tuplet';
+    return Category.Tuplet;
   }
 
   notes: Note[];
@@ -87,13 +94,18 @@ export class Tuplet extends Element {
   protected denom_glyphs: Glyph[] = [];
 
   static get LOCATION_TOP(): number {
-    return 1;
+    return TupletLocation.TOP;
   }
   static get LOCATION_BOTTOM(): number {
-    return -1;
+    return TupletLocation.BOTTOM;
   }
   static get NESTING_OFFSET(): number {
     return 15;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  static get metrics(): any {
+    return Tables.currentMusicFont().getMetrics().glyphs.tuplet;
   }
 
   constructor(notes: Note[], options: TupletOptions = {}) {
@@ -120,7 +132,7 @@ export class Tuplet extends Element {
 
     this.ratioed =
       this.options.ratioed != undefined ? this.options.ratioed : Math.abs(this.notes_occupied - this.num_notes) > 1;
-    this.point = this.musicFont.lookupMetric('digits.tupletPoint');
+    this.point = Tables.currentMusicFont().lookupMetric('digits.tupletPoint');
     this.y_pos = 16;
     this.x_pos = 100;
     this.width = 200;
@@ -188,7 +200,8 @@ export class Tuplet extends Element {
     // eslint-disable-next-line
     console.warn(
       'beats_occupied has been deprecated as an option for tuplets. Please use notes_occupied instead.',
-      'Calls to getBeatsOccupied / setBeatsOccupied should now be routed to getNotesOccupied / setNotesOccupied.'
+      'Calls to getBeatsOccupied / setBeatsOccupied should now be routed to getNotesOccupied / setNotesOccupied.',
+      'The old methods will be removed in VexFlow 5.0.'
     );
   }
 
@@ -267,29 +280,48 @@ export class Tuplet extends Element {
     const first_note = this.notes[0];
     let y_pos;
     if (this.location === Tuplet.LOCATION_TOP) {
-      y_pos = first_note.checkStave().getYForLine(0) - 15;
-      // y_pos = first_note.getStemExtents().topY - 10;
+      y_pos = first_note.checkStave().getYForLine(0) - Tuplet.metrics.topModifierOffset;
 
+      // check modifiers above note to see if they will collide with tuplet beam
       for (let i = 0; i < this.notes.length; ++i) {
-        const top_y =
-          this.notes[i].getStemDirection() === Stem.UP
-            ? this.notes[i].getStemExtents().topY - 10
-            : this.notes[i].getStemExtents().baseY - 20;
-
-        if (top_y < y_pos) {
-          y_pos = top_y;
+        const note = this.notes[i];
+        let modLines = 0;
+        const mc = note.getModifierContext();
+        if (mc) {
+          modLines = Math.max(modLines, mc.getState().top_text_line);
+        }
+        const modY = note.getYForTopText(modLines) - Tuplet.metrics.noteHeadOffset;
+        if (note.hasStem() || note.isRest()) {
+          const top_y =
+            note.getStemDirection() === Stem.UP
+              ? note.getStemExtents().topY - Tuplet.metrics.stemOffset
+              : note.getStemExtents().baseY - Tuplet.metrics.noteHeadOffset;
+          y_pos = Math.min(top_y, y_pos);
+          if (modLines > 0) {
+            y_pos = Math.min(modY, y_pos);
+          }
         }
       }
     } else {
-      y_pos = first_note.checkStave().getYForLine(4) + 20;
+      let lineCheck = Tuplet.metrics.bottomLine; // tuplet default on line 4
+      // check modifiers below note to see if they will collide with tuplet beam
+      this.notes.forEach((nn) => {
+        const mc = nn.getModifierContext();
+        if (mc) {
+          lineCheck = Math.max(lineCheck, mc.getState().text_line + 1);
+        }
+      });
+      y_pos = first_note.checkStave().getYForLine(lineCheck) + Tuplet.metrics.noteHeadOffset;
 
       for (let i = 0; i < this.notes.length; ++i) {
-        const bottom_y =
-          this.notes[i].getStemDirection() === Stem.UP
-            ? this.notes[i].getStemExtents().baseY + 20
-            : this.notes[i].getStemExtents().topY + 10;
-        if (bottom_y > y_pos) {
-          y_pos = bottom_y;
+        if (this.notes[i].hasStem() || this.notes[i].isRest()) {
+          const bottom_y =
+            this.notes[i].getStemDirection() === Stem.UP
+              ? this.notes[i].getStemExtents().baseY + Tuplet.metrics.noteHeadOffset
+              : this.notes[i].getStemExtents().topY + Tuplet.metrics.stemOffset;
+          if (bottom_y > y_pos) {
+            y_pos = bottom_y;
+          }
         }
       }
     }
@@ -352,7 +384,7 @@ export class Tuplet extends Element {
     }
 
     // draw numerator glyphs
-    const shiftY = this.musicFont.lookupMetric('digits.shiftY', 0);
+    const shiftY = Tables.currentMusicFont().lookupMetric('digits.shiftY', 0);
 
     let x_offset = 0;
     this.numerator_glyphs.forEach((glyph) => {
