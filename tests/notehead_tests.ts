@@ -8,26 +8,17 @@
 //       The SVGContext operates differently. It just sets the sx and sy as the new scale, instead of multiplying it.
 //       See: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/scale
 
-import { Flow } from '../src/flow';
-import { Formatter } from '../src/formatter';
-import { NoteHead } from '../src/notehead';
-import { RenderContext } from '../src/rendercontext';
-import { ContextBuilder } from '../src/renderer';
-import { Stave } from '../src/stave';
-import { StaveNote, StaveNoteStruct } from '../src/stavenote';
-import { TickContext } from '../src/tickcontext';
-import { Voice } from '../src/voice';
 import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
-import { Flow } from '../src/flow';
-import { Formatter } from '../src/formatter';
-import { NoteHead } from '../src/notehead';
-import { RenderContext } from '../src/rendercontext';
-import { ContextBuilder } from '../src/renderer';
-import { Stave } from '../src/stave';
-import { StaveNote, StaveNoteStruct } from '../src/stavenote';
-import { TickContext } from '../src/tickcontext';
-import { Voice } from '../src/voice';
+import { Flow, Flow } from '../src/flow';
+import { Formatter, Formatter } from '../src/formatter';
+import { NoteHead, NoteHead } from '../src/notehead';
+import { RenderContext, RenderContext } from '../src/rendercontext';
+import { ContextBuilder, ContextBuilder } from '../src/renderer';
+import { Stave, Stave } from '../src/stave';
+import { StaveNote, StaveNote, StaveNoteStruct, StaveNoteStruct } from '../src/stavenote';
+import { TickContext, TickContext } from '../src/tickcontext';
+import { Voice, Voice } from '../src/voice';
 
 const NoteHeadTests = {
   Start(): void {

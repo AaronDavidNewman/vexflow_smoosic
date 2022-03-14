@@ -6,8 +6,8 @@
 import { loadBravura } from './load_bravura';
 import { loadCustom } from './load_custom';
 import { loadGonville } from './load_gonville';
-import { loadPetaluma } from './load_petaluma';
 import { loadLeland } from './load_leland';
+import { loadPetaluma } from './load_petaluma';
 // ADD_MUSIC_FONT
 // import { loadXXX } from './load_xxx';
 
