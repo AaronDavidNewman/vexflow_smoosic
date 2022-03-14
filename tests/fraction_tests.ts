@@ -3,8 +3,9 @@
 //
 // Fraction Tests
 
-import { Fraction } from '../src/fraction';
 import { VexFlowTests } from './vexflow_test_helpers';
+
+import { Fraction } from '../src/fraction';
 
 const FractionTests = {
   Start(): void {

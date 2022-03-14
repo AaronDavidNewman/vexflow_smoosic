@@ -6,6 +6,8 @@
 
 // TODO: Type 'Tickable[]' is not assignable to type 'StemmableNote[]'.
 
+import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
+
 import {
   ContextBuilder,
   Dot,
@@ -21,7 +23,6 @@ import {
   TickContext,
   Tremolo,
 } from '../src/index';
-import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
 const PercussionTests = {
   Start(): void {

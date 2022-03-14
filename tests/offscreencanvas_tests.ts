@@ -3,13 +3,14 @@
 //
 // OffscreenCanvas Tests
 
+import { VexFlowTests } from './vexflow_test_helpers';
+
 import { CanvasContext } from '../src/canvascontext';
 import { Formatter } from '../src/formatter';
 import { Stave } from '../src/stave';
 import { BarlineType } from '../src/stavebarline';
 import { StaveNote } from '../src/stavenote';
 import { globalObject } from '../src/util';
-import { VexFlowTests } from './vexflow_test_helpers';
 
 const OffscreenCanvasTests = {
   Start(): void {

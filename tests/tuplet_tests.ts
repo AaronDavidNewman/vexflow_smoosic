@@ -3,11 +3,12 @@
 //
 // Tuplet Tests
 
+import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
+
 import { Dot } from '../src/dot';
 import { Formatter } from '../src/formatter';
 import { Stem } from '../src/stem';
 import { Tuplet } from '../src/tuplet';
-import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
 const TupletTests = {
   Start(): void {

@@ -4,11 +4,12 @@
 // vexflow-bravura.ts is the entry point for vexflow-bravura.js.
 // This version bundles the Bravura music engraving font.
 
+import { Vex } from '../src/vex';
+
 import { Flow } from '../src/flow';
 import { loadBravura } from '../src/fonts/load_bravura';
 import { loadCustom } from '../src/fonts/load_custom';
 import { loadTextFonts } from '../src/fonts/textfonts';
-import { Vex } from '../src/vex';
 
 loadBravura();
 loadCustom();

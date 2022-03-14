@@ -3,8 +3,9 @@
 //
 // Tuning Tests
 
-import { Tuning } from '../src/tuning';
 import { VexFlowTests } from './vexflow_test_helpers';
+
+import { Tuning } from '../src/tuning';
 
 const TuningTests = {
   Start(): void {

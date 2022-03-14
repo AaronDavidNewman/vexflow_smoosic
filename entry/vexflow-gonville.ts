@@ -4,11 +4,12 @@
 // vexflow-gonville.ts is the entry point for vexflow-gonville.js.
 // This version bundles the Gonville music engraving font.
 
+import { Vex } from '../src/vex';
+
 import { Flow } from '../src/flow';
 import { loadCustom } from '../src/fonts/load_custom';
 import { loadGonville } from '../src/fonts/load_gonville';
 import { loadTextFonts } from '../src/fonts/textfonts';
-import { Vex } from '../src/vex';
 
 loadGonville();
 loadCustom();

@@ -3,6 +3,8 @@
 //
 // Dot Tests
 
+import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
+
 import { Beam } from '../src/beam';
 import { Dot } from '../src/dot';
 import { Formatter } from '../src/formatter';
@@ -14,7 +16,6 @@ import { Stave } from '../src/stave';
 import { StaveNote } from '../src/stavenote';
 import { TickContext } from '../src/tickcontext';
 import { Voice } from '../src/voice';
-import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
 const DotTests = {
   Start(): void {

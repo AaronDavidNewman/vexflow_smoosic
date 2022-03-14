@@ -3,8 +3,9 @@
 //
 // Vibrato Tests
 
-import { Bend, ContextBuilder, Font, Formatter, TabNote, TabNoteStruct, TabStave, Vibrato } from '../src/index';
 import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
+
+import { Bend, ContextBuilder, Font, Formatter, TabNote, TabNoteStruct, TabStave, Vibrato } from '../src/index';
 
 const VibratoTests = {
   Start(): void {

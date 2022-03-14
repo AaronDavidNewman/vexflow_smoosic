@@ -9,11 +9,12 @@
 // All music fonts will be loaded dynamically via: `Flow.fetchMusicFont(fontName)`
 // Remember to call `Flow.setMusicFont(fontName)` after fetching the font module.
 
+import { Vex } from '../src/vex';
+
 import { Flow } from '../src/flow';
 import { Font, FontModule } from '../src/font';
 import { loadTextFonts } from '../src/fonts/textfonts';
 import { globalObject, RuntimeError } from '../src/util';
-import { Vex } from '../src/vex';
 
 const fontModules: Record<string, string> = {
   Bravura: './vexflow-font-bravura.js',

@@ -3,10 +3,11 @@
 //
 // TickContext Tests
 
+import { VexFlowTests } from './vexflow_test_helpers';
+
 import { Flow } from '../src/flow';
 import { TickContext } from '../src/tickcontext';
 import { MockTickable } from './mocks';
-import { VexFlowTests } from './vexflow_test_helpers';
 
 const TickContextTests = {
   Start(): void {

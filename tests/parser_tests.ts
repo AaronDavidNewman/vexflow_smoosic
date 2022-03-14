@@ -3,8 +3,9 @@
 //
 // Parser Tests
 
-import { Grammar, Parser, Result, RuleFunction } from '../src/parser';
 import { VexFlowTests } from './vexflow_test_helpers';
+
+import { Grammar, Parser, Result, RuleFunction } from '../src/parser';
 
 const ParserTests = {
   Start(): void {

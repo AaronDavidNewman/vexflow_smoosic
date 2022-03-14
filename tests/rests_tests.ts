@@ -3,6 +3,8 @@
 //
 // Rests Tests
 
+import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
+
 import { Beam } from '../src/beam';
 import { Dot } from '../src/dot';
 import { Flow } from '../src/flow';
@@ -13,7 +15,6 @@ import { Stave } from '../src/stave';
 import { StaveNote, StaveNoteStruct } from '../src/stavenote';
 import { Tuplet } from '../src/tuplet';
 import { Voice } from '../src/voice';
-import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
 const RestsTests = {
   Start(): void {

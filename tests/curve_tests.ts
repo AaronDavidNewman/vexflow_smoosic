@@ -3,11 +3,12 @@
 //
 // Curve Tests
 
+import { concat, TestOptions, VexFlowTests } from './vexflow_test_helpers';
+
 import { CurvePosition } from '../src/curve';
 import { BuilderOptions } from '../src/easyscore';
 import { Factory } from '../src/factory';
 import { StemmableNote } from '../src/stemmablenote';
-import { concat, TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
 const CurveTests = {
   Start(): void {

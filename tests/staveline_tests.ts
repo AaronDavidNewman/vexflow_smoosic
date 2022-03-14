@@ -7,6 +7,9 @@ import { Dot } from '../src/dot';
 import { Font, FontStyle } from '../src/font';
 import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
+import { Dot } from '../src/dot';
+import { Font, FontStyle } from '../src/font';
+
 const StaveLineTests = {
   Start(): void {
     QUnit.module('StaveLine');

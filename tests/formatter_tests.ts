@@ -3,6 +3,8 @@
 //
 // Formatter Tests
 
+import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
+
 import { Accidental } from '../src/accidental';
 import { Annotation, AnnotationVerticalJustify } from '../src/annotation';
 import { Articulation } from '../src/articulation';
@@ -26,7 +28,6 @@ import { Tables } from '../src/tables';
 import { Tuplet } from '../src/tuplet';
 import { Voice, VoiceTime } from '../src/voice';
 import { MockTickable } from './mocks';
-import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
 const FormatterTests = {
   Start(): void {
@@ -119,30 +120,29 @@ function buildTickContexts(): void {
 
 function rightJustify(options: TestOptions): void {
   const f = VexFlowTests.makeFactory(options, 1200, 300);
-  const getTickables = (time: VoiceTime, n: number, duration: string, duration2: string): Voice => {
+  const getTickables = (time: VoiceTime, n: number, duration: string): Voice => {
     const tickar: StaveNote[] = [];
     let i = 0;
     for (i = 0; i < n; ++i) {
-      const dd = i === n - 1 ? duration2 : duration;
-      tickar.push(new StaveNote({ keys: ['f/4'], duration: dd }));
+      tickar.push(new StaveNote({ keys: ['f/4'], duration }));
     }
     return new Voice(time).addTickables(tickar);
   };
-  const renderTest = (time: VoiceTime, n: number, duration: string, duration2: string, x: number, width: number) => {
+  const renderTest = (time: VoiceTime, n: number, duration: string, x: number, width: number) => {
     const formatter = f.Formatter();
 
     const stave = f.Stave({ x, y: 40, width });
     // stave.addClef('treble').addTimeSignature('4/4');
 
-    const voice = getTickables(time, n, duration, duration2);
+    const voice = getTickables(time, n, duration);
     formatter.joinVoices([voice]).formatToStave([voice], stave);
     stave.draw();
     voice.draw(f.getContext(), stave);
   };
-  renderTest({ num_beats: 4, beat_value: 4, resolution: 4 * 4096 }, 3, '4', '2', 10, 300);
-  renderTest({ num_beats: 4, beat_value: 4, resolution: 4 * 4096 }, 1, 'w', 'w', 310, 300);
-  renderTest({ num_beats: 3, beat_value: 4, resolution: 4 * 4096 }, 3, '4', '4', 610, 300);
-  renderTest({ num_beats: 3, beat_value: 4, resolution: 4 * 4096 }, 6, '8', '8', 910, 300);
+  renderTest({ num_beats: 4, beat_value: 4, resolution: 4 * 4096 }, 2, '2', 10, 300);
+  renderTest({ num_beats: 4, beat_value: 4, resolution: 4 * 4096 }, 1, 'w', 310, 300);
+  renderTest({ num_beats: 4, beat_value: 4, resolution: 4 * 4096 }, 4, '4', 610, 300);
+  renderTest({ num_beats: 4, beat_value: 4, resolution: 4 * 4096 }, 8, '8', 910, 300);
   ok(true);
 }
 

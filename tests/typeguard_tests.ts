@@ -7,12 +7,13 @@
 // eslint-disable-next-line
 // @ts-nocheck to support ES5 style class declaration in the fakeES5() test case.
 
+import { VexFlowTests } from './vexflow_test_helpers';
+
 import { CanvasContext } from '../src/canvascontext';
 import { StaveNote } from '../src/stavenote';
 import { StemmableNote } from '../src/stemmablenote';
 import { TabNote } from '../src/tabnote';
 import { isCategory, isNote, isRenderContext, isStaveNote, isStemmableNote, isTabNote } from '../src/typeguard';
-import { VexFlowTests } from './vexflow_test_helpers';
 
 const TypeGuardTests = {
   Start(): void {

@@ -3,8 +3,9 @@
 //
 // Strokes Tests
 
-import { Barline, Beam, Bend, GraceNote, GraceNoteStruct, Stroke } from '../src/index';
 import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
+
+import { Barline, Beam, Bend, GraceNote, GraceNoteStruct, Stroke } from '../src/index';
 
 const StrokesTests = {
   Start(): void {

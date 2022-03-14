@@ -5,6 +5,8 @@
 //
 // VexFlow classes are available under the global Vex.Flow.* namespace.
 
+import { VexFlowTests } from './vexflow_test_helpers';
+
 import {
   Accidental,
   Annotation,
@@ -84,7 +86,6 @@ import {
   Voice,
   Volta,
 } from '../src/index';
-import { VexFlowTests } from './vexflow_test_helpers';
 
 // Tell TypeScript that we want very flexible typing,
 // so we can use the Vex.Flow.* API in unusual ways without warnings.

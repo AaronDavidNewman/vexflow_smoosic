@@ -3,8 +3,9 @@
 //
 // TextFormatter Tests
 
-import { TextFormatter } from '../src/textformatter';
 import { VexFlowTests } from './vexflow_test_helpers';
+
+import { TextFormatter } from '../src/textformatter';
 
 const TextFormatterTests = {
   Start(): void {

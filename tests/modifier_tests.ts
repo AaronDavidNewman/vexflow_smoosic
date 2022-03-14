@@ -3,8 +3,9 @@
 //
 // ModifierContext Tests
 
-import { Modifier, ModifierContext } from '../src/index';
 import { VexFlowTests } from './vexflow_test_helpers';
+
+import { Modifier, ModifierContext } from '../src/index';
 
 const ModifierContextTests = {
   Start(): void {

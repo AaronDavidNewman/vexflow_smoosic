@@ -3,9 +3,10 @@
 //
 // Music Tests
 
+import { VexFlowTests } from './vexflow_test_helpers';
+
 import { KeyManager } from '../src/keymanager';
 import { Music } from '../src/music';
-import { VexFlowTests } from './vexflow_test_helpers';
 
 const MusicTests = {
   Start(): void {

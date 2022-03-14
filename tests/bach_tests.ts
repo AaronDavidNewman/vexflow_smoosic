@@ -3,8 +3,9 @@
 //
 // Bach Demo
 
-import { BarlineType, Factory, Registry, StaveNote } from '../src/index';
 import { concat, TestOptions, VexFlowTests } from './vexflow_test_helpers';
+
+import { BarlineType, Factory, Registry, StaveNote } from '../src/index';
 
 const BachDemoTests = {
   Start(): void {
