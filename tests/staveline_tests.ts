@@ -5,8 +5,8 @@
 
 import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
 
-import { Dot, Dot } from '../src/dot';
-import { Font, Font, FontStyle, FontStyle } from '../src/font';
+import { Dot } from '../src/dot';
+import { Font, FontStyle } from '../src/font';
 
 const StaveLineTests = {
   Start(): void {
