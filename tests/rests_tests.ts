@@ -1,19 +1,20 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 //
 // Rests Tests
 
-import { Beam } from 'beam';
-import { Flow } from 'flow';
-import { Formatter } from 'formatter';
-import { RenderContext } from 'rendercontext';
-import { ContextBuilder } from 'renderer';
-import { Stave } from 'stave';
-import { StaveNote, StaveNoteStruct } from 'stavenote';
-import { Tuplet } from 'tuplet';
-import { Voice } from 'voice';
-
 import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
+
+import { Beam } from '../src/beam';
+import { Dot } from '../src/dot';
+import { Flow } from '../src/flow';
+import { Formatter } from '../src/formatter';
+import { RenderContext } from '../src/rendercontext';
+import { ContextBuilder } from '../src/renderer';
+import { Stave } from '../src/stave';
+import { StaveNote, StaveNoteStruct } from '../src/stavenote';
+import { Tuplet } from '../src/tuplet';
+import { Voice } from '../src/voice';
 
 const RestsTests = {
   Start(): void {
@@ -67,15 +68,16 @@ function basic(options: TestOptions, contextBuilder: ContextBuilder): void {
   const { context, stave } = setupContext(options, contextBuilder, 700);
 
   const notes = [
-    new StaveNote({ keys: ['b/4'], stem_direction: 1, duration: 'wr' }).addDotToAll(),
-    new StaveNote({ keys: ['b/4'], stem_direction: 1, duration: 'hr' }).addDotToAll(),
-    new StaveNote({ keys: ['b/4'], stem_direction: 1, duration: '4r' }).addDotToAll(),
-    new StaveNote({ keys: ['b/4'], stem_direction: 1, duration: '8r' }).addDotToAll(),
-    new StaveNote({ keys: ['b/4'], stem_direction: 1, duration: '16r' }).addDotToAll(),
-    new StaveNote({ keys: ['b/4'], stem_direction: 1, duration: '32r' }).addDotToAll(),
-    new StaveNote({ keys: ['b/4'], stem_direction: 1, duration: '64r' }).addDotToAll(),
-    new StaveNote({ keys: ['b/4'], stem_direction: 1, duration: '128r' }).addDotToAll(),
+    new StaveNote({ keys: ['b/4'], stem_direction: 1, duration: 'wr' }),
+    new StaveNote({ keys: ['b/4'], stem_direction: 1, duration: 'hr' }),
+    new StaveNote({ keys: ['b/4'], stem_direction: 1, duration: '4r' }),
+    new StaveNote({ keys: ['b/4'], stem_direction: 1, duration: '8r' }),
+    new StaveNote({ keys: ['b/4'], stem_direction: 1, duration: '16r' }),
+    new StaveNote({ keys: ['b/4'], stem_direction: 1, duration: '32r' }),
+    new StaveNote({ keys: ['b/4'], stem_direction: 1, duration: '64r' }),
+    new StaveNote({ keys: ['b/4'], stem_direction: 1, duration: '128r' }),
   ];
+  Dot.buildAndAttach(notes, { all: true });
 
   Formatter.FormatAndDraw(context, stave, notes);
 
@@ -377,4 +379,5 @@ function multiVoice(options: TestOptions, contextBuilder: ContextBuilder): void 
   ok(true, 'Strokes Test Multi Voice');
 }
 
+VexFlowTests.register(RestsTests);
 export { RestsTests };

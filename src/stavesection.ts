@@ -1,19 +1,26 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Larry Kuhns 2011
 
+import { Font, FontInfo, FontStyle, FontWeight } from './font';
 import { Stave } from './stave';
 import { StaveModifier } from './stavemodifier';
-import { FontInfo } from './types/common';
+import { Category } from './typeguard';
 
 export class StaveSection extends StaveModifier {
   static get CATEGORY(): string {
-    return 'StaveSection';
+    return Category.StaveSection;
   }
+
+  static TEXT_FONT: Required<FontInfo> = {
+    family: Font.SANS_SERIF,
+    size: 10,
+    weight: FontWeight.BOLD,
+    style: FontStyle.NORMAL,
+  };
 
   protected section: string;
   protected shift_x: number;
   protected shift_y: number;
-  protected font: FontInfo;
 
   constructor(section: string, x: number, shift_y: number) {
     super();
@@ -23,11 +30,7 @@ export class StaveSection extends StaveModifier {
     this.x = x;
     this.shift_x = 0;
     this.shift_y = shift_y;
-    this.font = {
-      family: 'sans-serif',
-      size: 12,
-      weight: 'bold',
-    };
+    this.resetFont();
   }
 
   setStaveSection(section: string): this {
@@ -51,20 +54,25 @@ export class StaveSection extends StaveModifier {
 
     ctx.save();
     ctx.setLineWidth(2);
-    ctx.setFont(this.font.family, this.font.size, this.font.weight);
-    const text_width = ctx.measureText('' + this.section).width;
-    let width = text_width + 6; // add left & right padding
-    if (width < 18) width = 18;
-    const height = 20;
+    ctx.setFont(this.textFont);
+
+    const paddingX = 2;
+    const paddingY = 2;
+    const rectWidth = 2;
+    const textMeasurements = ctx.measureText(this.section);
+    const textWidth = textMeasurements.width;
+    const textHeight = textMeasurements.height;
+    const width = textWidth + 2 * paddingX; // add left & right padding
+    const height = textHeight + 2 * paddingY; // add top & bottom padding
+
     //  Seems to be a good default y
-    const y = stave.getYForTopText(3) + this.shift_y;
-    let x = this.x + shift_x;
+    const y = stave.getYForTopText(2) + this.shift_y;
+    const x = this.x + shift_x;
     ctx.beginPath();
-    ctx.setLineWidth(2);
-    ctx.rect(x, y, width, height);
+    ctx.setLineWidth(rectWidth);
+    ctx.rect(x, y + textMeasurements.y - paddingY, width, height);
     ctx.stroke();
-    x += (width - text_width) / 2;
-    ctx.fillText('' + this.section, x, y + 16);
+    ctx.fillText(this.section, x + paddingX, y);
     ctx.restore();
     return this;
   }

@@ -1,11 +1,9 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 //
 // This file implements `GraceNoteGroup` which is used to format and
 // render grace notes.
-
-import { isStaveNote } from 'typeguard';
 
 import { Beam } from './beam';
 import { Formatter } from './formatter';
@@ -17,6 +15,7 @@ import { StaveTie } from './stavetie';
 import { StemmableNote } from './stemmablenote';
 import { Tables } from './tables';
 import { TabTie } from './tabtie';
+import { Category, isStaveNote } from './typeguard';
 import { log } from './util';
 import { Voice } from './voice';
 
@@ -28,10 +27,10 @@ function L(...args: any) {
 
 /** GraceNoteGroup is used to format and render grace notes. */
 export class GraceNoteGroup extends Modifier {
-  static DEBUG: boolean;
+  static DEBUG: boolean = false;
 
   static get CATEGORY(): string {
-    return 'GraceNoteGroup';
+    return Category.GraceNoteGroup;
   }
 
   protected readonly voice: Voice;
@@ -39,7 +38,7 @@ export class GraceNoteGroup extends Modifier {
   protected readonly show_slur?: boolean;
 
   protected preFormatted: boolean = false;
-  protected formatter: Formatter;
+  protected formatter?: Formatter;
   public render_options: { slur_y_shift: number };
   protected slur?: StaveTie | TabTie;
   protected beams: Beam[];
@@ -103,7 +102,6 @@ export class GraceNoteGroup extends Modifier {
     this.show_slur = show_slur;
     this.slur = undefined;
 
-    this.formatter = new Formatter();
     this.voice = new Voice({
       num_beats: 4,
       beat_value: 4,
@@ -124,6 +122,9 @@ export class GraceNoteGroup extends Modifier {
   preFormat(): void {
     if (this.preFormatted) return;
 
+    if (!this.formatter) {
+      this.formatter = new Formatter();
+    }
     this.formatter.joinVoices([this.voice]).format([this.voice], 0, {});
     this.setWidth(this.formatter.getMinTotalWidth());
     this.preFormatted = true;

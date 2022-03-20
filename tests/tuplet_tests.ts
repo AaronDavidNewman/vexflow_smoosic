@@ -1,13 +1,14 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 //
 // Tuplet Tests
 
-import { Formatter } from 'formatter';
-import { Stem } from 'stem';
-import { Tuplet } from 'tuplet';
-
 import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
+
+import { Dot } from '../src/dot';
+import { Formatter } from '../src/formatter';
+import { Stem } from '../src/stem';
+import { Tuplet } from '../src/tuplet';
 
 const TupletTests = {
   Start(): void {
@@ -315,7 +316,7 @@ function complex(options: TestOptions): void {
     .map(setStemUp)
     .map(f.StaveNote.bind(f));
 
-  notes1[0].addDotToAll();
+  Dot.buildAndAttach([notes1[0]], { all: true });
 
   const notes2 = [{ keys: ['c/4'] }, { keys: ['c/4'] }, { keys: ['c/4'] }, { keys: ['c/4'] }]
     .map(setDurationToQuarterNote)
@@ -570,4 +571,5 @@ function single(options: TestOptions): void {
   ok(true, 'Nested Tuplets');
 }
 
+VexFlowTests.register(TupletTests);
 export { TupletTests };

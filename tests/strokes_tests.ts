@@ -1,15 +1,11 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 //
 // Strokes Tests
 
-import { Beam } from 'beam';
-import { Bend } from 'bend';
-import { GraceNote, GraceNoteStruct } from 'gracenote';
-import { Barline } from 'stavebarline';
-import { Stroke } from 'strokes';
-
 import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
+
+import { Barline, Beam, Bend, GraceNote, GraceNoteStruct, Stroke } from '../src/index';
 
 const StrokesTests = {
   Start(): void {
@@ -37,9 +33,9 @@ function brushRollRasquedo(options: TestOptions): void {
   notes1[0].addStroke(0, new Stroke(1));
   notes1[1]
     .addStroke(0, new Stroke(2))
-    .addAccidental(1, f.Accidental({ type: '#' }))
-    .addAccidental(2, f.Accidental({ type: '#' }))
-    .addAccidental(0, f.Accidental({ type: '#' }));
+    .addModifier(f.Accidental({ type: '#' }), 1)
+    .addModifier(f.Accidental({ type: '#' }), 2)
+    .addModifier(f.Accidental({ type: '#' }), 0);
   notes1[2].addStroke(0, new Stroke(1));
   notes1[3].addStroke(0, new Stroke(2));
 
@@ -59,9 +55,9 @@ function brushRollRasquedo(options: TestOptions): void {
   notes2[2].addStroke(0, new Stroke(5));
   notes2[3]
     .addStroke(0, new Stroke(6))
-    .addAccidental(0, f.Accidental({ type: 'bb' }))
-    .addAccidental(1, f.Accidental({ type: 'bb' }))
-    .addAccidental(2, f.Accidental({ type: 'bb' }));
+    .addModifier(f.Accidental({ type: 'bb' }), 0)
+    .addModifier(f.Accidental({ type: 'bb' }), 1)
+    .addModifier(f.Accidental({ type: 'bb' }), 2);
 
   const voice2 = score.voice(notes2);
 
@@ -94,13 +90,13 @@ function arpeggioDirectionless(options: TestOptions): void {
   notes1[0].addStroke(0, new Stroke(7));
   notes1[1]
     .addStroke(0, new Stroke(7))
-    .addAccidental(0, f.Accidental({ type: '#' }))
-    .addAccidental(1, f.Accidental({ type: '#' }))
-    .addAccidental(2, f.Accidental({ type: '#' }))
-    .addAccidental(3, f.Accidental({ type: '#' }));
+    .addModifier(f.Accidental({ type: '#' }), 0)
+    .addModifier(f.Accidental({ type: '#' }), 1)
+    .addModifier(f.Accidental({ type: '#' }), 2)
+    .addModifier(f.Accidental({ type: '#' }), 3);
   notes1[2]
     .addStroke(0, new Stroke(7))
-    .addAccidental(1, f.Accidental({ type: 'b' }))
+    .addModifier(f.Accidental({ type: 'b' }), 1)
     .addModifier(graceNoteGroup, 0);
   notes1[3].addStroke(0, new Stroke(7)).addModifier(
     f.NoteSubGroup({
@@ -128,8 +124,8 @@ function multiVoice(options: TestOptions): void {
   notes1[0].addStroke(0, new Stroke(5));
   notes1[1]
     .addStroke(0, new Stroke(6))
-    .addAccidental(0, f.Accidental({ type: '#' }))
-    .addAccidental(2, f.Accidental({ type: '#' }));
+    .addModifier(f.Accidental({ type: '#' }), 0)
+    .addModifier(f.Accidental({ type: '#' }), 2);
   notes1[2].addStroke(0, new Stroke(2));
   notes1[3].addStroke(0, new Stroke(1));
 
@@ -319,18 +315,18 @@ function notesWithTab(options: TestOptions): void {
   const notes = [
     f
       .StaveNote({ keys: ['b/4', 'd/5', 'g/5'], stem_direction: -1, duration: '4' })
-      .addAccidental(1, f.Accidental({ type: 'b' }))
-      .addAccidental(0, f.Accidental({ type: 'b' })),
+      .addModifier(f.Accidental({ type: 'b' }), 1)
+      .addModifier(f.Accidental({ type: 'b' }), 0),
     f.StaveNote({ keys: ['c/5', 'd/5'], stem_direction: -1, duration: '4' }),
     f.StaveNote({ keys: ['b/3', 'e/4', 'a/4', 'd/5'], stem_direction: 1, duration: '8' }),
     f
       .StaveNote({ keys: ['a/3', 'e/4', 'a/4', 'c/5', 'e/5', 'a/5'], stem_direction: 1, duration: '8' })
-      .addAccidental(3, f.Accidental({ type: '#' })),
+      .addModifier(f.Accidental({ type: '#' }), 3),
     f.StaveNote({ keys: ['b/3', 'e/4', 'a/4', 'd/5'], stem_direction: 1, duration: '8' }),
     f
       .StaveNote({ keys: ['a/3', 'e/4', 'a/4', 'c/5', 'f/5', 'a/5'], stem_direction: 1, duration: '8' })
-      .addAccidental(3, f.Accidental({ type: '#' }))
-      .addAccidental(4, f.Accidental({ type: '#' })),
+      .addModifier(f.Accidental({ type: '#' }), 3)
+      .addModifier(f.Accidental({ type: '#' }), 4),
   ];
 
   const tabstave = f
@@ -441,4 +437,5 @@ function notesWithTab(options: TestOptions): void {
   ok(true);
 }
 
+VexFlowTests.register(StrokesTests);
 export { StrokesTests };

@@ -1,4 +1,4 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 // A base class for stave modifiers (e.g. clefs, key signatures)
@@ -6,6 +6,7 @@
 import { Element } from './element';
 import { Glyph } from './glyph';
 import { Stave } from './stave';
+import { Category } from './typeguard';
 import { defined } from './util';
 
 export interface LayoutMetrics {
@@ -27,7 +28,7 @@ export enum StaveModifierPosition {
 
 export class StaveModifier extends Element {
   static get CATEGORY(): string {
-    return 'StaveModifier';
+    return Category.StaveModifier;
   }
 
   static get Position(): typeof StaveModifierPosition {
@@ -112,7 +113,7 @@ export class StaveModifier extends Element {
   }
 
   // eslint-disable-next-line
-  draw(element?: Element, x_shift?: number): void {
+  draw(...args: any[]): void {
     // DO NOTHING.
   }
 }

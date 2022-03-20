@@ -1,19 +1,19 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Taehoon Moon 2014
 // MIT License
 
 import { BoundingBox } from './boundingbox';
-import { Clef } from './clef';
-import { ClefType } from './clef';
+import { Clef, ClefType } from './clef';
 import { Glyph } from './glyph';
 import { ModifierContext } from './modifiercontext';
 import { Note } from './note';
 import { RenderContext } from './rendercontext';
+import { Category } from './typeguard';
 
 /** ClefNote implements clef annotations in measures. */
 export class ClefNote extends Note {
   static get CATEGORY(): string {
-    return 'ClefNote';
+    return Category.ClefNote;
   }
 
   protected clef_obj: Clef;
@@ -67,9 +67,8 @@ export class ClefNote extends Note {
     return this;
   }
 
-  /** Set preformatted. */
   preFormat(): this {
-    this.setPreFormatted(true);
+    this.preFormatted = true;
     return this;
   }
 

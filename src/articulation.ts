@@ -1,4 +1,4 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Larry Kuhns.
 // MIT License
 
@@ -7,10 +7,11 @@ import { Glyph } from './glyph';
 import { Modifier } from './modifier';
 import { ModifierContextState } from './modifiercontext';
 import { Note } from './note';
-import { StaveNote } from './stavenote';
+import { Stave } from './stave';
 import { Stem } from './stem';
+import { StemmableNote } from './stemmablenote';
 import { Tables } from './tables';
-import { isGraceNote, isStaveNote, isTabNote } from './typeguard';
+import { Category, isGraceNote, isStaveNote, isStemmableNote, isTabNote } from './typeguard';
 import { defined, log, RuntimeError } from './util';
 
 export interface ArticulationStruct {
@@ -164,11 +165,11 @@ function getInitialOffset(note: Note, position: number): number {
  */
 export class Articulation extends Modifier {
   /** To enable logging for this class. Set `Vex.Flow.Articulation.DEBUG` to `true`. */
-  static DEBUG: boolean;
+  static DEBUG: boolean = false;
 
   /** Articulations category string. */
   static get CATEGORY(): string {
-    return 'Articulation';
+    return Category.Articulation;
   }
 
   protected static readonly INITIAL_OFFSET: number = -0.5;
@@ -203,35 +204,76 @@ export class Articulation extends Modifier {
   static format(articulations: Articulation[], state: ModifierContextState): boolean {
     if (!articulations || articulations.length === 0) return false;
 
-    const isAbove = (artic: Articulation) => artic.getPosition() === ABOVE;
-    const isBelow = (artic: Articulation) => artic.getPosition() === BELOW;
     const margin = 0.5;
+    let maxGlyphWidth = 0;
+
     const getIncrement = (articulation: Articulation, line: number, position: number) =>
       roundToNearestHalf(
         getRoundingFunction(line, position),
         defined(articulation.glyph.getMetrics().height) / 10 + margin
       );
 
-    articulations.filter(isAbove).forEach((articulation) => {
-      articulation.setTextLine(state.top_text_line);
-      state.top_text_line += getIncrement(articulation, state.top_text_line, ABOVE);
-    });
+    articulations.forEach((articulation) => {
+      const note = articulation.checkAttachedNote();
+      maxGlyphWidth = Math.max(note.getGlyph().getWidth(), maxGlyphWidth);
+      let lines = 5;
+      const stemDirection = note.hasStem() ? note.getStemDirection() : Stem.UP;
+      let stemHeight = 0;
+      // Decide if we need to consider beam direction in placement.
 
-    articulations.filter(isBelow).forEach((articulation) => {
-      articulation.setTextLine(state.text_line);
-      state.text_line += getIncrement(articulation, state.text_line, BELOW);
+      if (isStemmableNote(note)) {
+        const stem = note.getStem();
+        if (stem) {
+          stemHeight = Math.abs(stem.getHeight()) / Tables.STAVE_LINE_DISTANCE;
+        }
+      }
+      const stave: Stave | undefined = note.getStave();
+      if (stave) {
+        lines = stave.getNumLines();
+      }
+      if (articulation.getPosition() === ABOVE) {
+        let noteLine = note.getLineNumber(true);
+        if (stemDirection === Stem.UP) {
+          noteLine += stemHeight;
+        }
+        let increment = getIncrement(articulation, state.top_text_line, ABOVE);
+        const curTop = noteLine + state.top_text_line + 0.5;
+        // If articulation must be above stave, add lines between note and stave top
+        if (!articulation.articulation.between_lines && curTop < lines) {
+          increment += lines - curTop;
+        }
+        articulation.setTextLine(state.top_text_line);
+        state.top_text_line += increment;
+      } else if (articulation.getPosition() === BELOW) {
+        let noteLine = Math.max(lines - note.getLineNumber(), 0);
+        if (stemDirection === Stem.DOWN) {
+          noteLine += stemHeight;
+        }
+        let increment = getIncrement(articulation, state.text_line, BELOW);
+        const curBottom = noteLine + state.text_line + 0.5;
+        // if articulation must be below stave, add lines from note to stave bottom
+        if (!articulation.articulation.between_lines && curBottom < lines) {
+          increment += lines - curBottom;
+        }
+        articulation.setTextLine(state.text_line);
+        state.text_line += increment;
+      }
     });
 
     const width = articulations
       .map((articulation) => articulation.getWidth())
       .reduce((maxWidth, articWidth) => Math.max(articWidth, maxWidth));
+    const overlap = Math.min(
+      Math.max(width - maxGlyphWidth, 0),
+      Math.max(width - (state.left_shift + state.right_shift), 0)
+    );
 
-    state.left_shift += width / 2;
-    state.right_shift += width / 2;
+    state.left_shift += overlap / 2;
+    state.right_shift += overlap / 2;
     return true;
   }
 
-  static easyScoreHook({ articulations }: { articulations: string }, note: StaveNote, builder: Builder): void {
+  static easyScoreHook({ articulations }: { articulations: string }, note: StemmableNote, builder: Builder): void {
     if (!articulations) return;
 
     const articNameToCode: Record<string, string> = {
@@ -296,7 +338,7 @@ export class Articulation extends Modifier {
 
     const initialOffset = getInitialOffset(note, position);
 
-    const padding = this.musicFont.lookupMetric(`articulation.${glyph.getCode()}.padding`, 0);
+    const padding = Tables.currentMusicFont().lookupMetric(`articulation.${glyph.getCode()}.padding`, 0);
 
     let y = (
       {

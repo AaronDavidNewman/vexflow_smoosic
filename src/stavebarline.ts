@@ -1,10 +1,11 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // Author Larry Kuhns 2011
 
 import { Stave } from './stave';
 import { LayoutMetrics, StaveModifier, StaveModifierPosition } from './stavemodifier';
 import { Tables } from './tables';
+import { Category } from './typeguard';
 
 export enum BarlineType {
   SINGLE = 1,
@@ -18,7 +19,7 @@ export enum BarlineType {
 
 export class Barline extends StaveModifier {
   static get CATEGORY(): string {
-    return 'Barline';
+    return Category.Barline;
   }
 
   protected widths: Record<string, number>;

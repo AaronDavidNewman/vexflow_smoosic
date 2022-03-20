@@ -1,4 +1,4 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 
 import { BoundingBox } from './boundingbox';
@@ -8,6 +8,7 @@ import { RenderContext } from './rendercontext';
 import { Stave } from './stave';
 import { Tables } from './tables';
 import { Tickable } from './tickable';
+import { Category } from './typeguard';
 import { defined, RuntimeError } from './util';
 
 export interface VoiceTime {
@@ -28,7 +29,7 @@ export enum VoiceMode {
  */
 export class Voice extends Element {
   static get CATEGORY(): string {
-    return 'Voice';
+    return Category.Voice;
   }
 
   /**
@@ -46,7 +47,7 @@ export class Voice extends Element {
   protected stave?: Stave;
   protected mode: VoiceMode = VoiceMode.STRICT;
   protected expTicksUsed?: number;
-  protected preFormatted?: boolean;
+  protected preFormatted: boolean = false;
   protected options: { softmaxFactor: number };
 
   protected readonly totalTicks: Fraction;

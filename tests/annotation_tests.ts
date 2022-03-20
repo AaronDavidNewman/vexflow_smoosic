@@ -1,4 +1,4 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 //
 // Annotation Tests
@@ -7,29 +7,36 @@
 //       Did a previous version of the API accept a number as the fourth argument?
 //       We removed the fourth argument from all of our test cases.
 
-import { Annotation } from 'annotation';
-import { Beam } from 'beam';
-import { Bend } from 'bend';
-import { Flow } from 'flow';
-import { Formatter } from 'formatter';
-import { Registry } from 'registry';
-import { ContextBuilder } from 'renderer';
-import { Stave } from 'stave';
-import { StaveNote, StaveNoteStruct } from 'stavenote';
-import { TabNote, TabNoteStruct } from 'tabnote';
-import { TabStave } from 'tabstave';
-import { Tickable } from 'tickable';
-import { Vibrato } from 'vibrato';
-import { Voice } from 'voice';
-
 import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
+
+import { Annotation, AnnotationVerticalJustify } from '../src/annotation';
+import { Articulation } from '../src/articulation';
+import { Beam } from '../src/beam';
+import { Bend } from '../src/bend';
+import { ElementStyle } from '../src/element';
+import { Flow } from '../src/flow';
+import { Font, FontStyle, FontWeight } from '../src/font';
+import { Formatter } from '../src/formatter';
+import { ModifierPosition } from '../src/modifier';
+import { Registry } from '../src/registry';
+import { ContextBuilder } from '../src/renderer';
+import { Stave } from '../src/stave';
+import { StaveNote, StaveNoteStruct } from '../src/stavenote';
+import { Stem } from '../src/stem';
+import { TabNote, TabNoteStruct } from '../src/tabnote';
+import { TabStave } from '../src/tabstave';
+import { Tickable } from '../src/tickable';
+import { Vibrato } from '../src/vibrato';
+import { Voice } from '../src/voice';
 
 const AnnotationTests = {
   Start(): void {
     QUnit.module('Annotation');
     const run = VexFlowTests.runTests;
     run('Lyrics', lyrics);
+    run('Placement', placement);
     run('Simple Annotation', simple);
+    run('Styled Annotation', styling);
     run('Standard Notation Annotation', standard);
     run('Harmonics', harmonic);
     run('Fingerpicking', picking);
@@ -67,17 +74,19 @@ function lyrics(options: TestOptions): void {
     system.addStave({
       voices: [
         score.voice(
-          score.notes('(C4 F4)/2[id="n0"]').concat(score.beam(score.notes('(C4 A4)/8[id="n1"], (C#4 A4)/8[id="n2"]')))
+          score.notes('(C4 F4)/2[id="n0"]').concat(score.beam(score.notes('(C4 A4)/8[id="n1"], (C4 A4)/8[id="n2"]')))
         ),
       ],
     });
 
     // Add lyrics under the first row.
-    ['hand,', 'and', 'me', 'pears', 'lead', 'the'].forEach((text, ix) => {
+    ['hand,', 'lead', 'the', 'pears', 'lead', 'the'].forEach((text, ix) => {
       const verse = Math.floor(ix / 3);
       const noteGroupID = 'n' + (ix % 3);
       const noteGroup = registry.getElementById(noteGroupID) as Tickable;
-      noteGroup.addModifier(f.Annotation({ text }).setFont('Roboto Slab', fontSize, 'normal'), verse);
+      const lyricsAnnotation = f.Annotation({ text }).setFont('Roboto Slab', fontSize);
+      lyricsAnnotation.setPosition(ModifierPosition.BELOW);
+      noteGroup.addModifier(lyricsAnnotation, verse);
     });
 
     // Second row doesn't have any lyrics.
@@ -99,7 +108,7 @@ function simple(options: TestOptions, contextBuilder: ContextBuilder): void {
   ctx.scale(1.5, 1.5);
   ctx.fillStyle = '#221';
   ctx.strokeStyle = '#221';
-  ctx.font = ' 10pt Arial';
+  ctx.font = '10pt Arial, sans-serif';
   const stave = new TabStave(10, 10, 450).addTabGlyph().setContext(ctx).draw();
 
   const notes = [
@@ -113,9 +122,7 @@ function simple(options: TestOptions, contextBuilder: ContextBuilder): void {
     tabNote({
       positions: [{ str: 2, fret: 10 }],
       duration: 'h',
-    })
-      .addModifier(new Annotation('T'), 0)
-      .addModifier(new Bend('Full'), 0),
+    }).addModifier(new Bend('Full').setTap('T'), 0),
   ];
 
   Formatter.FormatAndDraw(ctx, stave, notes);
@@ -129,11 +136,31 @@ function standard(options: TestOptions, contextBuilder: ContextBuilder): void {
   ctx.strokeStyle = '#221';
   const stave = new Stave(10, 10, 450).addClef('treble').setContext(ctx).draw();
 
-  const annotation = (text: string) => new Annotation(text).setFont('Times', FONT_SIZE, 'italic');
+  const annotation = (text: string) => new Annotation(text).setFont(Font.SERIF, FONT_SIZE, 'normal', 'italic');
 
   const notes = [
-    staveNote({ keys: ['c/4', 'e/4'], duration: 'h' }).addAnnotation(0, annotation('quiet')),
-    staveNote({ keys: ['c/4', 'e/4', 'c/5'], duration: 'h' }).addAnnotation(2, annotation('Allegro')),
+    staveNote({ keys: ['c/4', 'e/4'], duration: 'h' }).addModifier(annotation('quiet'), 0),
+    staveNote({ keys: ['c/4', 'e/4', 'c/5'], duration: 'h' }).addModifier(annotation('Allegro'), 2),
+  ];
+
+  Formatter.FormatAndDraw(ctx, stave, notes);
+  ok(true, 'Standard Notation Annotation');
+}
+
+function styling(options: TestOptions, contextBuilder: ContextBuilder): void {
+  const ctx = contextBuilder(options.elementId, 500, 240);
+  ctx.scale(1.5, 1.5);
+  const stave = new Stave(10, 10, 450).addClef('treble').setContext(ctx).draw();
+
+  const annotation = (text: string, style: ElementStyle) =>
+    new Annotation(text).setFont(Font.SERIF, FONT_SIZE, 'normal', 'italic').setStyle(style);
+
+  const notes = [
+    staveNote({ keys: ['c/4', 'e/4'], duration: 'h' }).addModifier(annotation('quiet', { fillStyle: '#0F0' }), 0),
+    staveNote({ keys: ['c/4', 'e/4', 'c/5'], duration: 'h' }).addModifier(
+      annotation('Allegro', { fillStyle: '#00F' }),
+      2
+    ),
   ];
 
   Formatter.FormatAndDraw(ctx, stave, notes);
@@ -145,7 +172,7 @@ function harmonic(options: TestOptions, contextBuilder: ContextBuilder): void {
   ctx.scale(1.5, 1.5);
   ctx.fillStyle = '#221';
   ctx.strokeStyle = '#221';
-  ctx.font = ' 10pt Arial';
+  ctx.font = '10pt Arial';
   const stave = new TabStave(10, 10, 450).addTabGlyph().setContext(ctx).draw();
 
   const notes = [
@@ -160,7 +187,7 @@ function harmonic(options: TestOptions, contextBuilder: ContextBuilder): void {
       positions: [{ str: 2, fret: 9 }],
       duration: 'h',
     })
-      .addModifier(new Annotation('(8va)').setFont('Times', FONT_SIZE, 'italic'), 0)
+      .addModifier(new Annotation('(8va)').setFont(Font.SERIF, FONT_SIZE, FontWeight.NORMAL, FontStyle.ITALIC), 0)
       .addModifier(new Annotation('A.H.'), 0),
   ];
 
@@ -170,13 +197,13 @@ function harmonic(options: TestOptions, contextBuilder: ContextBuilder): void {
 
 function picking(options: TestOptions, contextBuilder: ContextBuilder): void {
   const ctx = contextBuilder(options.elementId, 500, 240);
-  ctx.scale(1.5, 1.5);
   ctx.setFillStyle('#221');
   ctx.setStrokeStyle('#221');
-  ctx.setFont('Arial', FONT_SIZE, '');
+  ctx.setFont(Font.SANS_SERIF, FONT_SIZE);
   const stave = new TabStave(10, 10, 450).addTabGlyph().setContext(ctx).draw();
 
-  const annotation = (text: string) => new Annotation(text).setFont('Times', FONT_SIZE, 'italic');
+  const annotation = (text: string) =>
+    new Annotation(text).setFont(Font.SERIF, FONT_SIZE, FontWeight.NORMAL, FontStyle.ITALIC);
 
   const notes = [
     tabNote({
@@ -188,27 +215,90 @@ function picking(options: TestOptions, contextBuilder: ContextBuilder): void {
         { str: 5, fret: 0 },
       ],
       duration: 'h',
-    }).addModifier(new Vibrato().setVibratoWidth(40)),
+    }).addModifier(new Vibrato().setVibratoWidth(40), 0),
     tabNote({
       positions: [{ str: 6, fret: 9 }],
       duration: '8',
-    }).addModifier(annotation('p'), 0),
+    }).addModifier(annotation('p').setVerticalJustification(AnnotationVerticalJustify.TOP), 0),
     tabNote({
       positions: [{ str: 3, fret: 9 }],
       duration: '8',
-    }).addModifier(annotation('i'), 0),
+    }).addModifier(annotation('i').setVerticalJustification(AnnotationVerticalJustify.TOP), 0),
     tabNote({
       positions: [{ str: 2, fret: 9 }],
       duration: '8',
-    }).addModifier(annotation('m'), 0),
+    }).addModifier(annotation('m').setVerticalJustification(AnnotationVerticalJustify.TOP), 0),
     tabNote({
       positions: [{ str: 1, fret: 9 }],
       duration: '8',
-    }).addModifier(annotation('a'), 0),
+    }).addModifier(annotation('a').setVerticalJustification(AnnotationVerticalJustify.TOP), 0),
   ];
 
   Formatter.FormatAndDraw(ctx, stave, notes);
   ok(true, 'Fingerpicking');
+}
+function placement(options: TestOptions, contextBuilder: ContextBuilder): void {
+  const ctx = contextBuilder(options.elementId, 750, 300);
+  ctx.fillStyle = '#221';
+  ctx.strokeStyle = '#221';
+  const stave = new Stave(10, 50, 750).addClef('treble').setContext(ctx).draw();
+
+  const annotation = (text: string, fontSize: number, vj: number) =>
+    new Annotation(text).setFont(Font.SERIF, fontSize).setVerticalJustification(vj);
+
+  const notes = [
+    staveNote({ keys: ['e/4'], duration: 'q', stem_direction: Stem.DOWN })
+      .addModifier(new Articulation('a.').setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(new Articulation('a-').setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(annotation('v1', 10, AnnotationVerticalJustify.TOP), 0)
+      .addModifier(annotation('v2', 10, AnnotationVerticalJustify.TOP), 0),
+    staveNote({ keys: ['b/4'], duration: 'q', stem_direction: Stem.DOWN })
+      .addModifier(new Articulation('a.').setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(new Articulation('a-').setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(annotation('v1', 10, AnnotationVerticalJustify.TOP), 0)
+      .addModifier(annotation('v2', 10, AnnotationVerticalJustify.TOP), 0),
+    staveNote({ keys: ['c/5'], duration: 'q', stem_direction: Stem.DOWN })
+      .addModifier(new Articulation('a.').setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(new Articulation('a-').setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(annotation('v1', 10, AnnotationVerticalJustify.TOP), 0)
+      .addModifier(annotation('v2', 10, AnnotationVerticalJustify.TOP), 0),
+    staveNote({ keys: ['f/4'], duration: 'q' })
+      .addModifier(annotation('v1', 14, AnnotationVerticalJustify.TOP), 0)
+      .addModifier(annotation('v2', 14, AnnotationVerticalJustify.TOP), 0),
+    staveNote({ keys: ['f/4'], duration: 'q', stem_direction: Stem.DOWN })
+      .addModifier(new Articulation('am').setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(new Articulation('a.').setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(new Articulation('a-').setPosition(ModifierPosition.ABOVE), 0)
+      .addModifier(annotation('v1', 10, AnnotationVerticalJustify.TOP), 0)
+      .addModifier(annotation('v2', 20, AnnotationVerticalJustify.TOP), 0),
+    staveNote({ keys: ['f/5'], duration: 'q' })
+      .addModifier(annotation('v1', 11, AnnotationVerticalJustify.TOP), 0)
+      .addModifier(annotation('v2', 11, AnnotationVerticalJustify.TOP), 0),
+    staveNote({ keys: ['f/5'], duration: 'q' })
+      .addModifier(annotation('v1', 11, AnnotationVerticalJustify.TOP), 0)
+      .addModifier(annotation('v2', 20, AnnotationVerticalJustify.TOP), 0),
+    staveNote({ keys: ['f/4'], duration: 'q' })
+      .addModifier(annotation('v1', 12, AnnotationVerticalJustify.BOTTOM), 0)
+      .addModifier(annotation('v2', 12, AnnotationVerticalJustify.BOTTOM), 0),
+    staveNote({ keys: ['f/5'], duration: 'q' })
+      .addModifier(new Articulation('a.').setPosition(ModifierPosition.BELOW), 0)
+      .addModifier(annotation('v1', 11, AnnotationVerticalJustify.BOTTOM), 0)
+      .addModifier(annotation('v2', 20, AnnotationVerticalJustify.BOTTOM), 0),
+    staveNote({ keys: ['f/5'], duration: 'q', stem_direction: Stem.DOWN })
+      .addModifier(new Articulation('am').setPosition(ModifierPosition.BELOW), 0)
+      .addModifier(annotation('v1', 10, AnnotationVerticalJustify.BOTTOM), 0)
+      .addModifier(annotation('v2', 20, AnnotationVerticalJustify.BOTTOM), 0),
+    staveNote({ keys: ['f/4'], duration: 'q', stem_direction: Stem.DOWN })
+      .addModifier(annotation('v1', 10, AnnotationVerticalJustify.BOTTOM), 0)
+      .addModifier(annotation('v2', 20, AnnotationVerticalJustify.BOTTOM), 0),
+    staveNote({ keys: ['f/5'], duration: 'w' })
+      .addModifier(new Articulation('a@u').setPosition(ModifierPosition.BELOW), 0)
+      .addModifier(annotation('v1', 11, AnnotationVerticalJustify.BOTTOM), 0)
+      .addModifier(annotation('v2', 16, AnnotationVerticalJustify.BOTTOM), 0),
+  ];
+
+  Formatter.FormatAndDraw(ctx, stave, notes);
+  ok(true, ' Annotation Placement');
 }
 
 function bottom(options: TestOptions, contextBuilder: ContextBuilder): void {
@@ -219,13 +309,13 @@ function bottom(options: TestOptions, contextBuilder: ContextBuilder): void {
   const stave = new Stave(10, 10, 300).addClef('treble').setContext(ctx).draw();
 
   const annotation = (text: string) =>
-    new Annotation(text).setFont('Times', FONT_SIZE).setVerticalJustification(Annotation.VerticalJustify.BOTTOM);
+    new Annotation(text).setFont(Font.SERIF, FONT_SIZE).setVerticalJustification(Annotation.VerticalJustify.BOTTOM);
 
   const notes = [
-    staveNote({ keys: ['f/4'], duration: 'w' }).addAnnotation(0, annotation('F')),
-    staveNote({ keys: ['a/4'], duration: 'w' }).addAnnotation(0, annotation('A')),
-    staveNote({ keys: ['c/5'], duration: 'w' }).addAnnotation(0, annotation('C')),
-    staveNote({ keys: ['e/5'], duration: 'w' }).addAnnotation(0, annotation('E')),
+    staveNote({ keys: ['f/4'], duration: 'w' }).addModifier(annotation('F'), 0),
+    staveNote({ keys: ['a/4'], duration: 'w' }).addModifier(annotation('A'), 0),
+    staveNote({ keys: ['c/5'], duration: 'w' }).addModifier(annotation('C'), 0),
+    staveNote({ keys: ['e/5'], duration: 'w' }).addModifier(annotation('E'), 0),
   ];
 
   Formatter.FormatAndDraw(ctx, stave, notes);
@@ -241,20 +331,16 @@ function bottomWithBeam(options: TestOptions, contextBuilder: ContextBuilder): v
 
   const notes = [
     new StaveNote({ keys: ['a/3'], duration: '8' }).addModifier(
-      new Annotation('good').setVerticalJustification(Annotation.VerticalJustify.BOTTOM),
-      0
+      new Annotation('good').setVerticalJustification(Annotation.VerticalJustify.BOTTOM)
     ),
     new StaveNote({ keys: ['g/3'], duration: '8' }).addModifier(
-      new Annotation('even').setVerticalJustification(Annotation.VerticalJustify.BOTTOM),
-      0
+      new Annotation('even').setVerticalJustification(Annotation.VerticalJustify.BOTTOM)
     ),
     new StaveNote({ keys: ['c/4'], duration: '8' }).addModifier(
-      new Annotation('under').setVerticalJustification(Annotation.VerticalJustify.BOTTOM),
-      0
+      new Annotation('under').setVerticalJustification(Annotation.VerticalJustify.BOTTOM)
     ),
     new StaveNote({ keys: ['d/4'], duration: '8' }).addModifier(
-      new Annotation('beam').setVerticalJustification(Annotation.VerticalJustify.BOTTOM),
-      0
+      new Annotation('beam').setVerticalJustification(Annotation.VerticalJustify.BOTTOM)
     ),
   ];
 
@@ -273,7 +359,7 @@ function justificationStemUp(options: TestOptions, contextBuilder: ContextBuilde
 
   const annotation = (text: string, hJustification: number, vJustification: number) =>
     new Annotation(text)
-      .setFont('Arial', FONT_SIZE)
+      .setFont(Font.SANS_SERIF, FONT_SIZE)
       .setJustification(hJustification)
       .setVerticalJustification(vJustification);
 
@@ -281,10 +367,10 @@ function justificationStemUp(options: TestOptions, contextBuilder: ContextBuilde
     const stave = new Stave(10, (v - 1) * 150 + 40, 400).addClef('treble').setContext(ctx).draw();
 
     const notes = [
-      staveNote({ keys: ['c/3'], duration: 'q' }).addAnnotation(0, annotation('Text', 1, v)),
-      staveNote({ keys: ['c/4'], duration: 'q' }).addAnnotation(0, annotation('Text', 2, v)),
-      staveNote({ keys: ['c/5'], duration: 'q' }).addAnnotation(0, annotation('Text', 3, v)),
-      staveNote({ keys: ['c/6'], duration: 'q' }).addAnnotation(0, annotation('Text', 4, v)),
+      staveNote({ keys: ['c/3'], duration: 'q' }).addModifier(annotation('Text', 1, v), 0),
+      staveNote({ keys: ['c/4'], duration: 'q' }).addModifier(annotation('Text', 2, v), 0),
+      staveNote({ keys: ['c/5'], duration: 'q' }).addModifier(annotation('Text', 3, v), 0),
+      staveNote({ keys: ['c/6'], duration: 'q' }).addModifier(annotation('Text', 4, v), 0),
     ];
 
     Formatter.FormatAndDraw(ctx, stave, notes);
@@ -301,17 +387,17 @@ function justificationStemDown(options: TestOptions, contextBuilder: ContextBuil
 
   const annotation = (text: string, hJustification: number, vJustification: number) =>
     new Annotation(text)
-      .setFont('Arial', FONT_SIZE)
+      .setFont(Font.SANS_SERIF, FONT_SIZE)
       .setJustification(hJustification)
       .setVerticalJustification(vJustification);
 
   for (let v = 1; v <= 4; ++v) {
     const stave = new Stave(10, (v - 1) * 150 + 40, 400).addClef('treble').setContext(ctx).draw();
     const notes = [
-      staveNote({ keys: ['c/3'], duration: 'q', stem_direction: -1 }).addAnnotation(0, annotation('Text', 1, v)),
-      staveNote({ keys: ['c/4'], duration: 'q', stem_direction: -1 }).addAnnotation(0, annotation('Text', 2, v)),
-      staveNote({ keys: ['c/5'], duration: 'q', stem_direction: -1 }).addAnnotation(0, annotation('Text', 3, v)),
-      staveNote({ keys: ['c/6'], duration: 'q', stem_direction: -1 }).addAnnotation(0, annotation('Text', 4, v)),
+      staveNote({ keys: ['c/3'], duration: 'q', stem_direction: -1 }).addModifier(annotation('Text', 1, v), 0),
+      staveNote({ keys: ['c/4'], duration: 'q', stem_direction: -1 }).addModifier(annotation('Text', 2, v), 0),
+      staveNote({ keys: ['c/5'], duration: 'q', stem_direction: -1 }).addModifier(annotation('Text', 3, v), 0),
+      staveNote({ keys: ['c/6'], duration: 'q', stem_direction: -1 }).addModifier(annotation('Text', 4, v), 0),
     ];
     Formatter.FormatAndDraw(ctx, stave, notes);
   }
@@ -321,7 +407,7 @@ function justificationStemDown(options: TestOptions, contextBuilder: ContextBuil
 
 function tabNotes(options: TestOptions, contextBuilder: ContextBuilder): void {
   const ctx = contextBuilder(options.elementId, 600, 200);
-  ctx.font = '10pt Arial';
+  ctx.font = '10pt Arial, sans-serif';
   const stave = new TabStave(10, 10, 550);
   stave.setContext(ctx);
   stave.draw();
@@ -372,20 +458,20 @@ function tabNotes(options: TestOptions, contextBuilder: ContextBuilder): void {
 
   const notes3 = specs.map((noteSpec) => new TabNote(noteSpec));
 
-  notes1[0].addModifier(new Annotation('Text').setJustification(1).setVerticalJustification(1), 0); // U
-  notes1[1].addModifier(new Annotation('Text').setJustification(2).setVerticalJustification(2), 0); // D
-  notes1[2].addModifier(new Annotation('Text').setJustification(3).setVerticalJustification(3), 0); // U
-  notes1[3].addModifier(new Annotation('Text').setJustification(4).setVerticalJustification(4), 0); // D
+  notes1[0].addModifier(new Annotation('Text').setJustification(1).setVerticalJustification(1)); // U
+  notes1[1].addModifier(new Annotation('Text').setJustification(2).setVerticalJustification(2)); // D
+  notes1[2].addModifier(new Annotation('Text').setJustification(3).setVerticalJustification(3)); // U
+  notes1[3].addModifier(new Annotation('Text').setJustification(4).setVerticalJustification(4)); // D
 
-  notes2[0].addModifier(new Annotation('Text').setJustification(3).setVerticalJustification(1), 0); // U
-  notes2[1].addModifier(new Annotation('Text').setJustification(3).setVerticalJustification(2), 0); // D
-  notes2[2].addModifier(new Annotation('Text').setJustification(3).setVerticalJustification(3), 0); // U
-  notes2[3].addModifier(new Annotation('Text').setJustification(3).setVerticalJustification(4), 0); // D
+  notes2[0].addModifier(new Annotation('Text').setJustification(3).setVerticalJustification(1)); // U
+  notes2[1].addModifier(new Annotation('Text').setJustification(3).setVerticalJustification(2)); // D
+  notes2[2].addModifier(new Annotation('Text').setJustification(3).setVerticalJustification(3)); // U
+  notes2[3].addModifier(new Annotation('Text').setJustification(3).setVerticalJustification(4)); // D
 
-  notes3[0].addModifier(new Annotation('Text').setVerticalJustification(1), 0); // U
-  notes3[1].addModifier(new Annotation('Text').setVerticalJustification(2), 0); // D
-  notes3[2].addModifier(new Annotation('Text').setVerticalJustification(3), 0); // U
-  notes3[3].addModifier(new Annotation('Text').setVerticalJustification(4), 0); // D
+  notes3[0].addModifier(new Annotation('Text').setVerticalJustification(1)); // U
+  notes3[1].addModifier(new Annotation('Text').setVerticalJustification(2)); // D
+  notes3[2].addModifier(new Annotation('Text').setVerticalJustification(3)); // U
+  notes3[3].addModifier(new Annotation('Text').setVerticalJustification(4)); // D
 
   const voice = new Voice(Flow.TIME4_4).setMode(Voice.Mode.SOFT);
 
@@ -395,11 +481,12 @@ function tabNotes(options: TestOptions, contextBuilder: ContextBuilder): void {
   // Alternatively, you could add all the notes in one big array with spread syntax.
   // voice.addTickables([...notes1, ...notes2, ...notes3]);
 
-  new Formatter().joinVoices([voice]).formatToStave([voice], stave);
+  new Formatter().joinVoices([voice]).formatToStave([voice], stave, { stave });
 
   voice.draw(ctx, stave);
 
   ok(true, 'TabNotes successfully drawn');
 }
 
+VexFlowTests.register(AnnotationTests);
 export { AnnotationTests };

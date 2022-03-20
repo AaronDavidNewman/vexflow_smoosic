@@ -1,26 +1,27 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 //
 // Accidental Tests
 
-import { Accidental } from 'accidental';
-import { Beam } from 'beam';
-import { Factory } from 'factory';
-import { Flow } from 'flow';
-import { Formatter } from 'formatter';
-import { Modifier } from 'modifier';
-import { ModifierContext } from 'modifiercontext';
-import { Note } from 'note';
-import { RenderContext } from 'rendercontext';
-import { Stave } from 'stave';
-import { StaveNote, StaveNoteStruct } from 'stavenote';
-import { Stem } from 'stem';
-import { TickContext } from 'tickcontext';
-import { TimeSigNote } from 'timesignote';
-import { isCategory } from 'typeguard';
-import { Voice } from 'voice';
-
 import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
+
+import { Accidental } from '../src/accidental';
+import { Beam } from '../src/beam';
+import { Dot } from '../src/dot';
+import { Factory } from '../src/factory';
+import { Flow } from '../src/flow';
+import { Formatter } from '../src/formatter';
+import { Modifier } from '../src/modifier';
+import { ModifierContext } from '../src/modifiercontext';
+import { Note } from '../src/note';
+import { RenderContext } from '../src/rendercontext';
+import { Stave } from '../src/stave';
+import { StaveNote, StaveNoteStruct } from '../src/stavenote';
+import { Stem } from '../src/stem';
+import { TickContext } from '../src/tickcontext';
+import { TimeSigNote } from '../src/timesignote';
+import { isAccidental } from '../src/typeguard';
+import { Voice } from '../src/voice';
 
 const AccidentalTests = {
   Start(): void {
@@ -52,7 +53,7 @@ const AccidentalTests = {
 
 // Check that at least one of the note's modifiers is an Accidental.
 function hasAccidental(note: StaveNote) {
-  return note.getModifiers().some((modifier) => isCategory(modifier, Accidental));
+  return note.getModifiers().some((modifier) => isAccidental(modifier));
 }
 
 // Return a convenience function for building accidentals from a string.
@@ -160,13 +161,11 @@ function formatAccidentalSpaces(options: TestOptions): void {
     new StaveNote({
       keys: ['e##/5'],
       duration: '8d',
-    })
-      .addAccidental(0, new Accidental('##'))
-      .addDotToAll(),
+    }).addModifier(new Accidental('##'), 0),
     new StaveNote({
       keys: ['b/4'],
       duration: '16',
-    }).addAccidental(0, new Accidental('b')),
+    }).addModifier(new Accidental('b'), 0),
     new StaveNote({
       keys: ['f/3'],
       duration: '8',
@@ -179,8 +178,8 @@ function formatAccidentalSpaces(options: TestOptions): void {
       keys: ['e/4', 'g/4'],
       duration: '16',
     })
-      .addAccidental(0, new Accidental('bb'))
-      .addAccidental(1, new Accidental('bb')),
+      .addModifier(new Accidental('bb'), 0)
+      .addModifier(new Accidental('bb'), 1),
     new StaveNote({
       keys: ['d/4'],
       duration: '16',
@@ -189,8 +188,8 @@ function formatAccidentalSpaces(options: TestOptions): void {
       keys: ['e/4', 'g/4'],
       duration: '16',
     })
-      .addAccidental(0, new Accidental('#'))
-      .addAccidental(1, new Accidental('#')),
+      .addModifier(new Accidental('#'), 0)
+      .addModifier(new Accidental('#'), 1),
     new StaveNote({
       keys: ['g/4'],
       duration: '32',
@@ -208,6 +207,7 @@ function formatAccidentalSpaces(options: TestOptions): void {
       duration: 'q',
     }),
   ];
+  Dot.buildAndAttach([notes[0]], { all: true });
   const beams = Beam.generateBeams(notes);
   const voice = new Voice({
     num_beats: 4,
@@ -236,45 +236,45 @@ function basic(options: TestOptions): void {
   const notes = [
     f
       .StaveNote({ keys: ['c/4', 'e/4', 'a/4'], duration: '1' })
-      .addAccidental(0, accid('b'))
-      .addAccidental(1, accid('#')),
+      .addModifier(accid('b'), 0)
+      .addModifier(accid('#'), 1),
 
     f
       .StaveNote({ keys: ['d/4', 'e/4', 'f/4', 'a/4', 'c/5', 'e/5', 'g/5'], duration: '2' })
-      .addAccidental(0, accid('##'))
-      .addAccidental(1, accid('n'))
-      .addAccidental(2, accid('bb'))
-      .addAccidental(3, accid('b'))
-      .addAccidental(4, accid('#'))
-      .addAccidental(5, accid('n'))
-      .addAccidental(6, accid('bb')),
+      .addModifier(accid('##'), 0)
+      .addModifier(accid('n'), 1)
+      .addModifier(accid('bb'), 2)
+      .addModifier(accid('b'), 3)
+      .addModifier(accid('#'), 4)
+      .addModifier(accid('n'), 5)
+      .addModifier(accid('bb'), 6),
 
     f
       .StaveNote({ keys: ['f/4', 'g/4', 'a/4', 'b/4', 'c/5', 'e/5', 'g/5'], duration: '16' })
-      .addAccidental(0, accid('n'))
-      .addAccidental(1, accid('#'))
-      .addAccidental(2, accid('#'))
-      .addAccidental(3, accid('b'))
-      .addAccidental(4, accid('bb'))
-      .addAccidental(5, accid('##'))
-      .addAccidental(6, accid('#')),
+      .addModifier(accid('n'), 0)
+      .addModifier(accid('#'), 1)
+      .addModifier(accid('#'), 2)
+      .addModifier(accid('b'), 3)
+      .addModifier(accid('bb'), 4)
+      .addModifier(accid('##'), 5)
+      .addModifier(accid('#'), 6),
 
     f
       .StaveNote({ keys: ['a/3', 'c/4', 'e/4', 'b/4', 'd/5', 'g/5'], duration: '1' })
-      .addAccidental(0, accid('#'))
-      .addAccidental(1, accid('##').setAsCautionary())
-      .addAccidental(2, accid('#').setAsCautionary())
-      .addAccidental(3, accid('b'))
-      .addAccidental(4, accid('bb').setAsCautionary())
-      .addAccidental(5, accid('b').setAsCautionary()),
+      .addModifier(accid('#'), 0)
+      .addModifier(accid('##').setAsCautionary(), 1)
+      .addModifier(accid('#').setAsCautionary(), 2)
+      .addModifier(accid('b'), 3)
+      .addModifier(accid('bb').setAsCautionary(), 4)
+      .addModifier(accid('b').setAsCautionary(), 5),
   ];
 
   Formatter.SimpleFormat(notes, 10, { paddingBetween: 45 });
 
   notes.forEach((note, index) => {
     Note.plotMetrics(f.getContext(), note, 140);
-    ok(note.getAccidentals().length > 0, 'Note ' + index + ' has accidentals');
-    note.getAccidentals().forEach((accid: Modifier, index: number) => {
+    ok(note.getModifiersByType('Accidental').length > 0, 'Note ' + index + ' has accidentals');
+    note.getModifiersByType('Accidental').forEach((accid: Modifier, index: number) => {
       ok(accid.getWidth() > 0, 'Accidental ' + index + ' has set width');
     });
   });
@@ -307,7 +307,7 @@ function cautionary(options: TestOptions): void {
     const notes = rowMap.map((accidType: string) =>
       f
         .StaveNote({ keys: ['a/4'], duration: '4', stem_direction: Stem.UP })
-        .addAccidental(0, f.Accidental({ type: accidType }))
+        .addModifier(f.Accidental({ type: accidType }), 0)
     );
     const voice = score.voice(notes, { time: rowMap.length + '/4' });
     voice.getTickables().forEach((tickable) => {
@@ -330,48 +330,48 @@ function specialCases(options: TestOptions): void {
   const notes = [
     f
       .StaveNote({ keys: ['f/4', 'd/5'], duration: '1' })
-      .addAccidental(0, accid('#'))
-      .addAccidental(1, accid('b')),
+      .addModifier(accid('#'), 0)
+      .addModifier(accid('b'), 1),
 
     f
       .StaveNote({ keys: ['c/4', 'g/4'], duration: '2' })
-      .addAccidental(0, accid('##'))
-      .addAccidental(1, accid('##')),
+      .addModifier(accid('##'), 0)
+      .addModifier(accid('##'), 1),
 
     f
       .StaveNote({ keys: ['b/3', 'd/4', 'f/4'], duration: '16' })
-      .addAccidental(0, accid('#'))
-      .addAccidental(1, accid('#'))
-      .addAccidental(2, accid('##')),
+      .addModifier(accid('#'), 0)
+      .addModifier(accid('#'), 1)
+      .addModifier(accid('##'), 2),
 
     f
       .StaveNote({ keys: ['g/4', 'a/4', 'c/5', 'e/5'], duration: '16' })
-      .addAccidental(0, accid('b'))
-      .addAccidental(1, accid('b'))
-      .addAccidental(3, accid('n')),
+      .addModifier(accid('b'), 0)
+      .addModifier(accid('b'), 1)
+      .addModifier(accid('n'), 3),
 
     f
       .StaveNote({ keys: ['e/4', 'g/4', 'b/4', 'c/5'], duration: '4' })
-      .addAccidental(0, accid('b').setAsCautionary())
-      .addAccidental(1, accid('b').setAsCautionary())
-      .addAccidental(2, accid('bb'))
-      .addAccidental(3, accid('b')),
+      .addModifier(accid('b').setAsCautionary(), 0)
+      .addModifier(accid('b').setAsCautionary(), 1)
+      .addModifier(accid('bb'), 2)
+      .addModifier(accid('b'), 3),
 
     f
       .StaveNote({ keys: ['b/3', 'e/4', 'a/4', 'd/5', 'g/5'], duration: '8' })
-      .addAccidental(0, accid('bb'))
-      .addAccidental(1, accid('b').setAsCautionary())
-      .addAccidental(2, accid('n').setAsCautionary())
-      .addAccidental(3, accid('#'))
-      .addAccidental(4, accid('n').setAsCautionary()),
+      .addModifier(accid('bb'), 0)
+      .addModifier(accid('b').setAsCautionary(), 1)
+      .addModifier(accid('n').setAsCautionary(), 2)
+      .addModifier(accid('#'), 3)
+      .addModifier(accid('n').setAsCautionary(), 4),
   ];
 
   Formatter.SimpleFormat(notes, 0, { paddingBetween: 20 });
 
   notes.forEach((note, index) => {
     Note.plotMetrics(f.getContext(), note, 140);
-    ok(note.getAccidentals().length > 0, 'Note ' + index + ' has accidentals');
-    note.getAccidentals().forEach((accid, index) => {
+    ok(note.getModifiersByType('Accidental').length > 0, 'Note ' + index + ' has accidentals');
+    note.getModifiersByType('Accidental').forEach((accid, index) => {
       ok(accid.getWidth() > 0, 'Accidental ' + index + ' has set width');
     });
   });
@@ -391,36 +391,36 @@ function basicStemDown(options: TestOptions): void {
   const notes = [
     f
       .StaveNote({ keys: ['c/4', 'e/4', 'a/4'], duration: 'w', stem_direction: -1 })
-      .addAccidental(0, accid('b'))
-      .addAccidental(1, accid('#')),
+      .addModifier(accid('b'), 0)
+      .addModifier(accid('#'), 1),
 
     f
       .StaveNote({ keys: ['d/4', 'e/4', 'f/4', 'a/4', 'c/5', 'e/5', 'g/5'], duration: '2', stem_direction: -1 })
-      .addAccidental(0, accid('##'))
-      .addAccidental(1, accid('n'))
-      .addAccidental(2, accid('bb'))
-      .addAccidental(3, accid('b'))
-      .addAccidental(4, accid('#'))
-      .addAccidental(5, accid('n'))
-      .addAccidental(6, accid('bb')),
+      .addModifier(accid('##'), 0)
+      .addModifier(accid('n'), 1)
+      .addModifier(accid('bb'), 2)
+      .addModifier(accid('b'), 3)
+      .addModifier(accid('#'), 4)
+      .addModifier(accid('n'), 5)
+      .addModifier(accid('bb'), 6),
 
     f
       .StaveNote({ keys: ['f/4', 'g/4', 'a/4', 'b/4', 'c/5', 'e/5', 'g/5'], duration: '16', stem_direction: -1 })
-      .addAccidental(0, accid('n'))
-      .addAccidental(1, accid('#'))
-      .addAccidental(2, accid('#'))
-      .addAccidental(3, accid('b'))
-      .addAccidental(4, accid('bb'))
-      .addAccidental(5, accid('##'))
-      .addAccidental(6, accid('#')),
+      .addModifier(accid('n'), 0)
+      .addModifier(accid('#'), 1)
+      .addModifier(accid('#'), 2)
+      .addModifier(accid('b'), 3)
+      .addModifier(accid('bb'), 4)
+      .addModifier(accid('##'), 5)
+      .addModifier(accid('#'), 6),
   ];
 
   Formatter.SimpleFormat(notes, 0, { paddingBetween: 30 });
 
   notes.forEach((note, noteIndex) => {
     Note.plotMetrics(f.getContext(), note, 140);
-    ok(note.getAccidentals().length > 0, 'Note ' + noteIndex + ' has accidentals');
-    note.getAccidentals().forEach((accid, accidIndex) => {
+    ok(note.getModifiersByType('Accidental').length > 0, 'Note ' + noteIndex + ' has accidentals');
+    note.getModifiersByType('Accidental').forEach((accid, accidIndex) => {
       ok(accid.getWidth() > 0, 'Accidental ' + accidIndex + ' has set width');
     });
   });
@@ -457,44 +457,44 @@ function multiVoice(options: TestOptions): void {
 
   let note1 = f
     .StaveNote({ keys: ['c/4', 'e/4', 'a/4'], duration: '2', stem_direction: -1 })
-    .addAccidental(0, accid('b'))
-    .addAccidental(1, accid('n'))
-    .addAccidental(2, accid('#'))
+    .addModifier(accid('b'), 0)
+    .addModifier(accid('n'), 1)
+    .addModifier(accid('#'), 2)
     .setStave(stave);
 
   let note2 = f
     .StaveNote({ keys: ['d/5', 'a/5', 'b/5'], duration: '2', stem_direction: 1 })
-    .addAccidental(0, accid('b'))
-    .addAccidental(1, accid('bb'))
-    .addAccidental(2, accid('##'))
+    .addModifier(accid('b'), 0)
+    .addModifier(accid('bb'), 1)
+    .addModifier(accid('##'), 2)
     .setStave(stave);
 
   showNotes(note1, note2, stave, ctx, 60);
 
   note1 = f
     .StaveNote({ keys: ['c/4', 'e/4', 'c/5'], duration: '2', stem_direction: -1 })
-    .addAccidental(0, accid('b'))
-    .addAccidental(1, accid('n'))
-    .addAccidental(2, accid('#'))
+    .addModifier(accid('b'), 0)
+    .addModifier(accid('n'), 1)
+    .addModifier(accid('#'), 2)
     .setStave(stave);
 
   note2 = f
     .StaveNote({ keys: ['d/5', 'a/5', 'b/5'], duration: '4', stem_direction: 1 })
-    .addAccidental(0, accid('b'))
+    .addModifier(accid('b'), 0)
     .setStave(stave);
 
   showNotes(note1, note2, stave, ctx, 150);
 
   note1 = f
     .StaveNote({ keys: ['d/4', 'c/5', 'd/5'], duration: '2', stem_direction: -1 })
-    .addAccidental(0, accid('b'))
-    .addAccidental(1, accid('n'))
-    .addAccidental(2, accid('#'))
+    .addModifier(accid('b'), 0)
+    .addModifier(accid('n'), 1)
+    .addModifier(accid('#'), 2)
     .setStave(stave);
 
   note2 = f
     .StaveNote({ keys: ['d/5', 'a/5', 'b/5'], duration: '4', stem_direction: 1 })
-    .addAccidental(0, accid('b'))
+    .addModifier(accid('b'), 0)
     .setStave(stave);
 
   showNotes(note1, note2, stave, ctx, 250);
@@ -512,54 +512,54 @@ function microtonal(options: TestOptions): void {
   const notes = [
     f
       .StaveNote({ keys: ['c/4', 'e/4', 'a/4'], duration: '1' })
-      .addAccidental(0, accid('db'))
-      .addAccidental(1, accid('d')),
+      .addModifier(accid('db'), 0)
+      .addModifier(accid('d'), 1),
 
     f
       .StaveNote({ keys: ['d/4', 'e/4', 'f/4', 'a/4', 'c/5', 'e/5', 'g/5'], duration: '2' })
-      .addAccidental(0, accid('bbs'))
-      .addAccidental(1, accid('++'))
-      .addAccidental(2, accid('+'))
-      .addAccidental(3, accid('d'))
-      .addAccidental(4, accid('db'))
-      .addAccidental(5, accid('+'))
-      .addAccidental(6, accid('##')),
+      .addModifier(accid('bbs'), 0)
+      .addModifier(accid('++'), 1)
+      .addModifier(accid('+'), 2)
+      .addModifier(accid('d'), 3)
+      .addModifier(accid('db'), 4)
+      .addModifier(accid('+'), 5)
+      .addModifier(accid('##'), 6),
 
     f
       .StaveNote({ keys: ['f/4', 'g/4', 'a/4', 'b/4', 'c/5', 'e/5', 'g/5'], duration: '16' })
-      .addAccidental(0, accid('++'))
-      .addAccidental(1, accid('bbs'))
-      .addAccidental(2, accid('+'))
-      .addAccidental(3, accid('b'))
-      .addAccidental(4, accid('db'))
-      .addAccidental(5, accid('##'))
-      .addAccidental(6, accid('#')),
+      .addModifier(accid('++'), 0)
+      .addModifier(accid('bbs'), 1)
+      .addModifier(accid('+'), 2)
+      .addModifier(accid('b'), 3)
+      .addModifier(accid('db'), 4)
+      .addModifier(accid('##'), 5)
+      .addModifier(accid('#'), 6),
 
     f
       .StaveNote({ keys: ['a/3', 'c/4', 'e/4', 'b/4', 'd/5', 'g/5'], duration: '1' })
-      .addAccidental(0, accid('#'))
-      .addAccidental(1, accid('db').setAsCautionary())
-      .addAccidental(2, accid('bbs').setAsCautionary())
-      .addAccidental(3, accid('b'))
-      .addAccidental(4, accid('++').setAsCautionary())
-      .addAccidental(5, accid('d').setAsCautionary()),
+      .addModifier(accid('#'), 0)
+      .addModifier(accid('db').setAsCautionary(), 1)
+      .addModifier(accid('bbs').setAsCautionary(), 2)
+      .addModifier(accid('b'), 3)
+      .addModifier(accid('++').setAsCautionary(), 4)
+      .addModifier(accid('d').setAsCautionary(), 5),
 
     f
       .StaveNote({ keys: ['f/4', 'g/4', 'a/4', 'b/4', 'd/5', 'g/5'], duration: '16' })
-      .addAccidental(0, accid('++-'))
-      .addAccidental(1, accid('+-'))
-      .addAccidental(2, accid('bs'))
-      .addAccidental(3, accid('bss'))
-      .addAccidental(4, accid('afhf'))
-      .addAccidental(5, accid('ashs')),
+      .addModifier(accid('++-'), 0)
+      .addModifier(accid('+-'), 1)
+      .addModifier(accid('bs'), 2)
+      .addModifier(accid('bss'), 3)
+      .addModifier(accid('afhf'), 4)
+      .addModifier(accid('ashs'), 5),
   ];
 
   Formatter.SimpleFormat(notes, 0, { paddingBetween: 35 });
 
   notes.forEach((note, index) => {
     Note.plotMetrics(f.getContext(), note, 140);
-    ok(note.getAccidentals().length > 0, 'Note ' + index + ' has accidentals');
-    note.getAccidentals().forEach((accid: Accidental, index: number) => {
+    ok(note.getModifiersByType('Accidental').length > 0, 'Note ' + index + ' has accidentals');
+    note.getModifiersByType('Accidental').forEach((accid: Modifier, index: number) => {
       ok(accid.getWidth() > 0, 'Accidental ' + index + ' has set width');
     });
   });
@@ -579,51 +579,51 @@ function microtonal_iranian(options: TestOptions): void {
   const notes = [
     f
       .StaveNote({ keys: ['c/4', 'e/4', 'a/4'], duration: '1' })
-      .addAccidental(0, accid('k'))
-      .addAccidental(1, accid('o')),
+      .addModifier(accid('k'), 0)
+      .addModifier(accid('o'), 1),
 
     f
       .StaveNote({ keys: ['d/4', 'e/4', 'f/4', 'a/4', 'c/5', 'e/5', 'g/5'], duration: '2' })
-      .addAccidental(0, accid('b'))
-      .addAccidental(1, accid('k'))
-      .addAccidental(2, accid('n'))
-      .addAccidental(3, accid('o'))
-      .addAccidental(4, accid('#'))
-      .addAccidental(5, accid('bb'))
-      .addAccidental(6, accid('##')),
+      .addModifier(accid('b'), 0)
+      .addModifier(accid('k'), 1)
+      .addModifier(accid('n'), 2)
+      .addModifier(accid('o'), 3)
+      .addModifier(accid('#'), 4)
+      .addModifier(accid('bb'), 5)
+      .addModifier(accid('##'), 6),
 
     f
       .StaveNote({ keys: ['f/4', 'g/4', 'a/4', 'b/4', 'c/5', 'e/5', 'g/5'], duration: '16' })
-      .addAccidental(0, accid('o'))
-      .addAccidental(1, accid('k'))
-      .addAccidental(2, accid('n'))
-      .addAccidental(3, accid('b'))
-      .addAccidental(4, accid('bb'))
-      .addAccidental(5, accid('##'))
-      .addAccidental(6, accid('#')),
+      .addModifier(accid('o'), 0)
+      .addModifier(accid('k'), 1)
+      .addModifier(accid('n'), 2)
+      .addModifier(accid('b'), 3)
+      .addModifier(accid('bb'), 4)
+      .addModifier(accid('##'), 5)
+      .addModifier(accid('#'), 6),
 
     f
       .StaveNote({ keys: ['a/3', 'c/4', 'e/4', 'b/4', 'd/5', 'g/5'], duration: '1' })
-      .addAccidental(0, accid('#'))
-      .addAccidental(1, accid('o').setAsCautionary())
-      .addAccidental(2, accid('n').setAsCautionary())
-      .addAccidental(3, accid('b'))
-      .addAccidental(4, accid('k').setAsCautionary()),
+      .addModifier(accid('#'), 0)
+      .addModifier(accid('o').setAsCautionary(), 1)
+      .addModifier(accid('n').setAsCautionary(), 2)
+      .addModifier(accid('b'), 3)
+      .addModifier(accid('k').setAsCautionary(), 4),
 
     f
       .StaveNote({ keys: ['f/4', 'g/4', 'a/4', 'b/4'], duration: '16' })
-      .addAccidental(0, accid('k'))
-      .addAccidental(1, accid('k'))
-      .addAccidental(2, accid('k'))
-      .addAccidental(3, accid('k')),
+      .addModifier(accid('k'), 0)
+      .addModifier(accid('k'), 1)
+      .addModifier(accid('k'), 2)
+      .addModifier(accid('k'), 3),
   ];
 
   Formatter.SimpleFormat(notes, 0, { paddingBetween: 35 });
 
   notes.forEach((note, index) => {
     Note.plotMetrics(f.getContext(), note, 140);
-    ok(note.getAccidentals().length > 0, 'Note ' + index + ' has accidentals');
-    note.getAccidentals().forEach((accid: Accidental, index: number) => {
+    ok(note.getModifiersByType('Accidental').length > 0, 'Note ' + index + ' has accidentals');
+    note.getModifiersByType('Accidental').forEach((accid: Modifier, index: number) => {
       ok(accid.getWidth() > 0, 'Accidental ' + index + ' has set width');
     });
   });
@@ -643,39 +643,39 @@ function sagittal(options: TestOptions): void {
   const notes = [
     f
       .StaveNote({ keys: ['d/4', 'f/4', 'b/4', 'b/4'], duration: '4' })
-      .addAccidental(1, accid('accSagittal11MediumDiesisUp'))
-      .addAccidental(2, accid('accSagittal5CommaDown'))
-      .addAccidental(3, accid('b'))
-      .addAccidental(3, accid('accSagittal7CommaDown')),
+      .addModifier(accid('accSagittal11MediumDiesisUp'), 1)
+      .addModifier(accid('accSagittal5CommaDown'), 2)
+      .addModifier(accid('b'), 3)
+      .addModifier(accid('accSagittal7CommaDown'), 3),
 
     f
       .StaveNote({ keys: ['d/4', 'f/4', 'a/4', 'b/4'], duration: '4' })
-      .addAccidental(2, accid('accSagittal35LargeDiesisDown')),
+      .addModifier(accid('accSagittal35LargeDiesisDown'), 2),
 
-    f.StaveNote({ keys: ['c/4', 'e/4', 'g/4', 'c/5'], duration: '8' }).addAccidental(1, accid('accSagittal5CommaDown')),
+    f.StaveNote({ keys: ['c/4', 'e/4', 'g/4', 'c/5'], duration: '8' }).addModifier(accid('accSagittal5CommaDown'), 1),
 
     f
       .StaveNote({ keys: ['c/4', 'e/4', 'g/4', 'b/4'], duration: '8' })
-      .addAccidental(1, accid('b'))
-      .addAccidental(1, accid('accSagittal7CommaDown'))
-      .addAccidental(3, accid('accSagittal11LargeDiesisDown')),
+      .addModifier(accid('b'), 1)
+      .addModifier(accid('accSagittal7CommaDown'), 1)
+      .addModifier(accid('accSagittal11LargeDiesisDown'), 3),
 
     f
       .StaveNote({ keys: ['d/4', 'f/4', 'b/4', 'b/4'], duration: '4' })
-      .addAccidental(1, accid('accSagittal11MediumDiesisUp'))
-      .addAccidental(2, accid('accSagittal5CommaDown'))
-      .addAccidental(3, accid('accSagittalFlat7CDown')),
+      .addModifier(accid('accSagittal11MediumDiesisUp'), 1)
+      .addModifier(accid('accSagittal5CommaDown'), 2)
+      .addModifier(accid('accSagittalFlat7CDown'), 3),
 
     f
       .StaveNote({ keys: ['d/4', 'f/4', 'a/4', 'b/4'], duration: '4' })
-      .addAccidental(2, accid('accSagittal35LargeDiesisDown')),
+      .addModifier(accid('accSagittal35LargeDiesisDown'), 2),
 
-    f.StaveNote({ keys: ['c/4', 'e/4', 'g/4', 'c/5'], duration: '8' }).addAccidental(1, accid('accSagittal5CommaDown')),
+    f.StaveNote({ keys: ['c/4', 'e/4', 'g/4', 'c/5'], duration: '8' }).addModifier(accid('accSagittal5CommaDown'), 1),
 
     f
       .StaveNote({ keys: ['c/4', 'e/4', 'g/4', 'b/4'], duration: '8' })
-      .addAccidental(1, accid('accSagittalFlat7CDown'))
-      .addAccidental(3, accid('accSagittal11LargeDiesisDown')),
+      .addModifier(accid('accSagittalFlat7CDown'), 1)
+      .addModifier(accid('accSagittal11LargeDiesisDown'), 3),
   ];
 
   f.StaveTie({
@@ -719,8 +719,8 @@ function sagittal(options: TestOptions): void {
 
   notes.forEach((note, index) => {
     Note.plotMetrics(f.getContext(), note, 140);
-    ok(note.getAccidentals().length > 0, 'Note ' + index + ' has accidentals');
-    note.getAccidentals().forEach((accid: Accidental, index: number) => {
+    ok(note.getModifiersByType('Accidental').length > 0, 'Note ' + index + ' has accidentals');
+    note.getModifiersByType('Accidental').forEach((accid: Modifier, index: number) => {
       ok(accid.getWidth() > 0, 'Accidental ' + index + ' has set width');
     });
   });
@@ -1149,44 +1149,44 @@ function factoryAPI(options: TestOptions): void {
   const notes = [
     f
       .StaveNote({ keys: ['c/4', 'e/4', 'a/4'], duration: 'w' })
-      .addAccidental(0, accid('b'))
-      .addAccidental(1, accid('#')),
+      .addModifier(accid('b'), 0)
+      .addModifier(accid('#'), 1),
 
     f
       .StaveNote({ keys: ['d/4', 'e/4', 'f/4', 'a/4', 'c/5', 'e/5', 'g/5'], duration: 'h' })
-      .addAccidental(0, accid('##'))
-      .addAccidental(1, accid('n'))
-      .addAccidental(2, accid('bb'))
-      .addAccidental(3, accid('b'))
-      .addAccidental(4, accid('#'))
-      .addAccidental(5, accid('n'))
-      .addAccidental(6, accid('bb')),
+      .addModifier(accid('##'), 0)
+      .addModifier(accid('n'), 1)
+      .addModifier(accid('bb'), 2)
+      .addModifier(accid('b'), 3)
+      .addModifier(accid('#'), 4)
+      .addModifier(accid('n'), 5)
+      .addModifier(accid('bb'), 6),
 
     f
       .StaveNote({ keys: ['f/4', 'g/4', 'a/4', 'b/4', 'c/5', 'e/5', 'g/5'], duration: '16' })
-      .addAccidental(0, accid('n'))
-      .addAccidental(1, accid('#'))
-      .addAccidental(2, accid('#'))
-      .addAccidental(3, accid('b'))
-      .addAccidental(4, accid('bb'))
-      .addAccidental(5, accid('##'))
-      .addAccidental(6, accid('#')),
+      .addModifier(accid('n'), 0)
+      .addModifier(accid('#'), 1)
+      .addModifier(accid('#'), 2)
+      .addModifier(accid('b'), 3)
+      .addModifier(accid('bb'), 4)
+      .addModifier(accid('##'), 5)
+      .addModifier(accid('#'), 6),
 
     f
       .StaveNote({ keys: ['a/3', 'c/4', 'e/4', 'b/4', 'd/5', 'g/5'], duration: 'w' })
-      .addAccidental(0, accid('#'))
-      .addAccidental(1, accid('##').setAsCautionary())
-      .addAccidental(2, accid('#').setAsCautionary())
-      .addAccidental(3, accid('b'))
-      .addAccidental(4, accid('bb').setAsCautionary())
-      .addAccidental(5, accid('b').setAsCautionary()),
+      .addModifier(accid('#'), 0)
+      .addModifier(accid('##').setAsCautionary(), 1)
+      .addModifier(accid('#').setAsCautionary(), 2)
+      .addModifier(accid('b'), 3)
+      .addModifier(accid('bb').setAsCautionary(), 4)
+      .addModifier(accid('b').setAsCautionary(), 5),
   ];
 
   Formatter.SimpleFormat(notes);
 
   notes.forEach((n, i) => {
-    ok(n.getAccidentals().length > 0, 'Note ' + i + ' has accidentals');
-    n.getAccidentals().forEach((accid: Accidental, i: number) => {
+    ok(n.getModifiersByType('Accidental').length > 0, 'Note ' + i + ' has accidentals');
+    n.getModifiersByType('Accidental').forEach((accid: Modifier, i: number) => {
       ok(accid.getWidth() > 0, 'Accidental ' + i + ' has set width');
     });
   });
@@ -1195,4 +1195,5 @@ function factoryAPI(options: TestOptions): void {
   ok(true, 'Factory API');
 }
 
+VexFlowTests.register(AccidentalTests);
 export { AccidentalTests };

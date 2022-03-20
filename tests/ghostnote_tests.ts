@@ -1,14 +1,14 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 //
 // GhostNote Tests
 
-import { EasyScore } from 'easyscore';
-import { Factory } from 'factory';
-import { StaveNote } from 'stavenote';
-import { StemmableNote } from 'stemmablenote';
-
 import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
+
+import { EasyScore } from '../src/easyscore';
+import { Factory } from '../src/factory';
+import { StaveNote } from '../src/stavenote';
+import { StemmableNote } from '../src/stemmablenote';
 
 const GhostNoteTests = {
   Start(): void {
@@ -55,7 +55,7 @@ const basic = createTest((f: Factory, score: EasyScore) => {
       f.GhostNote({ duration: '4' }),
       f.StaveNote({ keys: ['e/4'], stem_direction: -1, duration: '4' }),
       f.GhostNote({ duration: '8' }),
-      f.StaveNote({ keys: ['d/4'], stem_direction: -1, duration: '8' }).addAccidental(0, f.Accidental({ type: '##' })),
+      f.StaveNote({ keys: ['d/4'], stem_direction: -1, duration: '8' }).addModifier(f.Accidental({ type: '##' }), 0),
       f.StaveNote({ keys: ['c/4'], stem_direction: -1, duration: '8' }),
       f.StaveNote({ keys: ['c/4'], stem_direction: -1, duration: '8' }),
     ],
@@ -101,7 +101,7 @@ const dotted = createTest((f: Factory, score: EasyScore) => {
   const notes2 = voice2.getTickables() as StemmableNote[];
 
   const addAccidental = (note: StemmableNote, type: string) =>
-    (note as StaveNote).addAccidental(0, f.Accidental({ type }));
+    (note as StaveNote).addModifier(f.Accidental({ type }), 0);
 
   addAccidental(notes1[1], 'bb');
   addAccidental(notes1[4], '#');
@@ -117,4 +117,5 @@ const dotted = createTest((f: Factory, score: EasyScore) => {
   f.Beam({ notes: notes2.slice(7, 9) });
 });
 
+VexFlowTests.register(GhostNoteTests);
 export { GhostNoteTests };

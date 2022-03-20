@@ -9,23 +9,29 @@
 #
 # Usage:
 #
-#  First generate the PNG images from the tests into build/images.
+#  First generate the PNG images from the tests into build/images/.
 #
-#    $ ./tools/generate_png_images.js
+#    ./tools/generate_images.js build          ./build/images/current
+#    ./tools/generate_images.js reference      ./build/images/reference
+#    ./tools/generate_images.js releases/3.0.9 ./build/images/3.0.9
 #
-#  Run the regression tests against the reference or blessed images in tests/blessed.
+#  Run the visual regression tests against the reference images.
 #
-#    $ ./tools/visual_regression.sh (reference|blessed) [test_prefix]
+#    ./tools/visual_regression.sh ( reference | 3.0.9 | X.Y.Z ) [prefix]
+#
+#  The optional argument allows you to compare a subset of the images
+#  (only those with names starting with the specified prefix).
 #
 #  Check build/images/diff/results.txt for results. This file is sorted
 #  by PHASH difference (most different files on top.) The composite diff
 #  images for failed tests (i.e., PHASH > 1.0) are stored in build/images/diff.
 #
-#  If you are satisfied with the differences, copy *.png from build/images
-#  into tests/blessed, and submit your change.
 
 # PNG viewer on OSX. Switch this to whatever your system uses.
 # VIEWER=open
+
+# use . as decimal separator
+LC_NUMERIC="en_US.UTF-8"
 
 # Check ImageMagick installation
 command -v convert >/dev/null 2>&1 || { echo >&2 "Error: ImageMagick not found."; exit 1; }
@@ -37,29 +43,19 @@ THRESHOLD=0.01
 # Directories. You might want to change BASE, if you're running from a
 # different working directory.
 BASE=.
-if [ "$1" == "reference" ]
-then
-  ADIR=$BASE/build/images/reference
-  ANAME=Reference
-  BDIR=$BASE/build/images/current
-  BNAME=Current
-  DIFF=$BASE/build/images/diff
-elif  [ "$1" == "blessed" ]
-then
-  ADIR=$BASE/build/images/blessed
-  ANAME=Blessed
-  BDIR=$BASE/build/images/current
-  BNAME=Current
-  DIFF=$BASE/build/images/diff
-else
-  echo >&2 "Usage: visual_regression.sh (reference|blessed) [test_prefix]"; exit 1;
-fi
+ADIR=$BASE/build/images/$1
+ANAME=$1
+BDIR=$BASE/build/images/current
+BNAME=current
+DIFF=$BASE/build/images/diff
 
-# All results are stored here.
+
+# All results are stored in the build/images/diff directory
+# The results.txt and warnings.txt contain the output.
+mkdir -p $DIFF
 RESULTS=$DIFF/results.txt
 WARNINGS=$DIFF/warnings.txt
 
-mkdir -p $DIFF
 if [ -e "$RESULTS" ]
 then
   rm $DIFF/*
@@ -89,7 +85,7 @@ totalImagesB=`ls -1 $BDIR/$files | wc -l | xargs` # xargs trims spaces
 if [ $? -ne 0 ] || [ "$totalImagesB" -lt 1 ]
 then
   echo Missing images in $BDIR.
-  echo Please run \"npm run generate\"
+  echo Please run \"grunt generate:current\"
   exit 1
 fi
 
@@ -97,13 +93,13 @@ totalImagesA=`ls -1 $ADIR/$files | wc -l | xargs`
 if [ $? -ne 0 ] || [ "$totalImagesA" -lt 1 ]
 then
   echo Missing images in $ADIR.
-  echo Please run \"npm run generate\"
+  echo Please run \"grunt generate:reference\"
   exit 1
 fi
 # check that #ImagesA == #ImagesB (will continue anyways)
 if [ ! "$totalImagesA" -eq "$totalImagesB" ]
 then
-  echo "Warning: Number of (matching) $BNAME images ($totalImagesB) is not the same as $ANAME images ($totalImagesA). Continuing anyways."
+  echo "Warning: Number of (matching) [$BNAME] images ($totalImagesB) is not the same as [$ANAME] images ($totalImagesA). Continuing anyways."
 fi
 # ----------------- end of sanity checks -----------------
 
@@ -154,7 +150,11 @@ function diff_image() {
   # Calculate the difference metric and store the composite diff image.
   local hash=`compare -metric PHASH -highlight-color '#ff000050' $diff-b.png $diff-a.png $diff-diff.png 2>&1`
 
-  local isGT=`echo "$hash > $THRESHOLD" | bc -l`
+  # Remove scientific notation
+  local hash6=`printf "%.6f" $hash`
+  local THRESHOLD6=`printf "%.6f" $THRESHOLD`
+
+  local isGT=`echo "$hash6 > $THRESHOLD6" | bc -l`
   if [ "$isGT" == "1" ]
   then
     # Add the result to results.text
@@ -200,7 +200,7 @@ wait
 cat $BDIR/*.warn 1>$WARNINGS 2>/dev/null
 rm -f $BDIR/*.warn
 
-## Check for files newly built that are not yet blessed.
+# Check for files newly built that are not in the reference.
 for image in $BDIR/$files
 do
   name=`basename $image .png`
@@ -222,7 +222,10 @@ rm -f  $BDIR/*.fail
 # Sort results by PHASH
 sort -r -n -k 2 $RESULTS.fail >$RESULTS
 sort -r -n -k 2 $BDIR/*.pass 1>>$RESULTS 2>/dev/null
-rm -f $BDIR/*.pass $RESULTS.fail
+
+# The previous cleanup approach (rm -f) triggered the error: Argument list too long.
+find $BDIR -name '*-temp.pass' -type f -delete
+rm -f $RESULTS.fail
 
 echo
 echo Results stored in $DIFF/results.txt

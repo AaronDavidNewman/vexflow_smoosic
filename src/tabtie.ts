@@ -1,14 +1,15 @@
-// / [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// / [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
 // This class implements varies types of ties between contiguous notes. The
 // ties include: regular ties, hammer ons, pull offs, and slides.
 
 import { StaveTie, TieNotes } from './stavetie';
+import { Category } from './typeguard';
 
 export class TabTie extends StaveTie {
   static get CATEGORY(): string {
-    return 'TabTie';
+    return Category.TabTie;
   }
 
   static createHammeron(notes: TieNotes): TabTie {

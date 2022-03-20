@@ -1,13 +1,14 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Mark Meeus 2019
 
 import { KeySignature } from './keysignature';
 import { ModifierContext } from './modifiercontext';
 import { Note } from './note';
+import { Category } from './typeguard';
 
 export class KeySigNote extends Note {
   static get CATEGORY(): string {
-    return 'KeySigNote';
+    return Category.KeySigNote;
   }
 
   protected keySignature: KeySignature;
@@ -29,7 +30,7 @@ export class KeySigNote extends Note {
   }
 
   preFormat(): this {
-    this.setPreFormatted(true);
+    this.preFormatted = true;
     this.keySignature.setStave(this.checkStave());
     this.setWidth(this.keySignature.getWidth());
     return this;

@@ -1,4 +1,4 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // @author Balazs Forian-Szabo
 //
 // ## Description
@@ -8,11 +8,13 @@
 //
 // See `tests/gracetabnote_tests.ts` for usage examples.
 
+import { Font } from './font';
 import { TabNote, TabNoteStruct } from './tabnote';
+import { Category } from './typeguard';
 
 export class GraceTabNote extends TabNote {
   static get CATEGORY(): string {
-    return 'GraceTabNote';
+    return Category.GraceTabNote;
   }
 
   constructor(noteStruct: TabNoteStruct) {
@@ -25,7 +27,7 @@ export class GraceTabNote extends TabNote {
       // grace glyph scale
       scale: 0.6,
       // grace tablature font
-      font: '7.5pt Arial',
+      font: `7.5pt ${Font.SANS_SERIF}`,
     };
 
     this.updateWidth();

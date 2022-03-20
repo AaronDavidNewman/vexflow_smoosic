@@ -1,26 +1,48 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 //
 // GraceNote Tests
 
 // TODO: In the 'stem' test (aka Grace Note Stem › SVG + Petaluma in flow.html), the Petaluma note heads are not scaled down properly.
 
-import { Beam } from 'beam';
-import { Factory } from 'factory';
-import { Formatter } from 'formatter';
-import { GraceNote, GraceNoteStruct } from 'gracenote';
-import { StaveNote, StaveNoteStruct } from 'stavenote';
-
 import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
+
+import { Accidental } from '../src/accidental';
+import { Annotation } from '../src/annotation';
+import { Articulation } from '../src/articulation';
+import { Beam } from '../src/beam';
+import { Dot } from '../src/dot';
+import { Factory } from '../src/factory';
+import { Formatter } from '../src/formatter';
+import { GraceNote, GraceNoteStruct } from '../src/gracenote';
+import { StaveNote, StaveNoteStruct } from '../src/stavenote';
 
 const GraceNoteTests = {
   Start(): void {
     QUnit.module('Grace Notes');
     const run = VexFlowTests.runTests;
     run('Grace Note Basic', basic);
+    run('With Articulation and Annotation on Parent Note', graceNoteModifiers);
     run('Grace Note Basic with Slurs', basicSlurred);
     run('Grace Note Stem', stem);
-    run('Grace Note Stem with Beams', stemWithBeamed);
+    run('Grace Note Stem with Beams 1', stemWithBeamed, {
+      keys1: ['g/4'],
+      stemDirection1: 1,
+      keys2: ['d/5'],
+      stemDirection2: -1,
+    });
+    run('Grace Note Stem with Beams 2', stemWithBeamed, {
+      keys1: ['a/3'],
+      stemDirection1: 1,
+      keys2: ['a/5'],
+      stemDirection2: -1,
+    });
+    run('Grace Note Stem with Beams 3', stemWithBeamed, {
+      keys1: ['c/4'],
+      stemDirection1: 1,
+      keys2: ['c/6'],
+      stemDirection2: -1,
+    });
     run('Grace Note Slash', slash);
     run('Grace Note Slash with Beams', slashWithBeams);
     run('Grace Notes Multiple Voices', multipleVoices);
@@ -57,9 +79,9 @@ function basic(options: TestOptions): void {
     { keys: ['g/4'], duration: '16' },
   ].map(f.GraceNote.bind(f));
 
-  gracenotes[1].addAccidental(0, f.Accidental({ type: '##' }));
-  gracenotes3[3].addAccidental(0, f.Accidental({ type: 'bb' }));
-  gracenotes4[0].addDotToAll();
+  gracenotes[1].addModifier(f.Accidental({ type: '##' }), 0);
+  gracenotes3[3].addModifier(f.Accidental({ type: 'bb' }), 0);
+  Dot.buildAndAttach([gracenotes4[0]], { all: true });
 
   const notes = [
     f
@@ -67,7 +89,7 @@ function basic(options: TestOptions): void {
       .addModifier(f.GraceNoteGroup({ notes: gracenotes }).beamNotes(), 0),
     f
       .StaveNote({ keys: ['c/5'], duration: '4', auto_stem: true })
-      .addAccidental(0, f.Accidental({ type: '#' }))
+      .addModifier(f.Accidental({ type: '#' }), 0)
       .addModifier(f.GraceNoteGroup({ notes: gracenotes1 }).beamNotes(), 0),
     f
       .StaveNote({ keys: ['c/5', 'd/5'], duration: '4', auto_stem: true })
@@ -88,7 +110,51 @@ function basic(options: TestOptions): void {
 
   ok(true, 'GraceNoteBasic');
 }
+function graceNoteModifiers(options: TestOptions): void {
+  const f = VexFlowTests.makeFactory(options, 700, 130);
+  const stave = f.Stave({ x: 10, y: 10, width: 650 });
 
+  const gracenotes = [{ keys: ['b/4'], duration: '8', slash: false }].map(f.GraceNote.bind(f));
+
+  const notes = [
+    f
+      .StaveNote({ keys: ['c/5'], duration: '4', auto_stem: true })
+      .addModifier(f.GraceNoteGroup({ notes: gracenotes }), 0),
+    f
+      .StaveNote({ keys: ['c/5'], duration: '4', auto_stem: true })
+      .addModifier(f.GraceNoteGroup({ notes: gracenotes }), 0)
+      .addModifier(new Articulation('a-').setPosition(3), 0),
+    f
+      .StaveNote({ keys: ['c/5'], duration: '4', auto_stem: true })
+      .addModifier(f.GraceNoteGroup({ notes: gracenotes }), 0)
+      .addModifier(new Articulation('a-').setPosition(3), 0)
+      .addModifier(new Accidental('#')),
+    f
+      .StaveNote({ keys: ['c/5'], duration: '4', auto_stem: true })
+      .addModifier(f.GraceNoteGroup({ notes: gracenotes }), 0)
+      .addModifier(new Articulation('a-').setPosition(3), 0)
+      .addModifier(new Annotation('words')),
+    f
+      .StaveNote({ keys: ['c/5'], duration: '4', auto_stem: true })
+      .addModifier(f.GraceNoteGroup({ notes: gracenotes }), 0)
+      .addModifier(new Articulation('a-').setPosition(3), 0)
+      .addModifier(new Articulation('a>').setPosition(3), 0),
+    f
+      .StaveNote({ keys: ['c/5'], duration: '4', auto_stem: true })
+      .addModifier(f.GraceNoteGroup({ notes: gracenotes }), 0)
+      .addModifier(new Articulation('a-').setPosition(3), 0)
+      .addModifier(new Articulation('a>').setPosition(3), 0)
+      .addModifier(new Articulation('a@a').setPosition(3), 0),
+  ];
+
+  const voice = f.Voice().setStrict(false).addTickables(notes);
+
+  new Formatter().joinVoices([voice]).formatToStave([voice], stave);
+
+  f.draw();
+
+  ok(true, 'GraceNoteModifiers');
+}
 function basicSlurred(options: TestOptions): void {
   const f = VexFlowTests.makeFactory(options, 700, 130);
   const stave = f.Stave({ x: 10, y: 10, width: 650 });
@@ -118,10 +184,10 @@ function basicSlurred(options: TestOptions): void {
     { keys: ['a/4'], duration: '16' },
   ].map(f.GraceNote.bind(f));
 
-  gracenotes0[1].addAccidental(0, f.Accidental({ type: '#' }));
-  gracenotes3[3].addAccidental(0, f.Accidental({ type: 'b' }));
-  gracenotes3[2].addAccidental(0, f.Accidental({ type: 'n' }));
-  gracenotes4[0].addDotToAll();
+  gracenotes0[1].addModifier(f.Accidental({ type: '#' }), 0);
+  gracenotes3[3].addModifier(f.Accidental({ type: 'b' }), 0);
+  gracenotes3[2].addModifier(f.Accidental({ type: 'n' }), 0);
+  Dot.buildAndAttach([gracenotes4[0]], { all: true });
 
   const notes = [
     f
@@ -129,7 +195,7 @@ function basicSlurred(options: TestOptions): void {
       .addModifier(f.GraceNoteGroup({ notes: gracenotes0, slur: true }).beamNotes(), 0),
     f
       .StaveNote({ keys: ['c/5'], duration: '4', auto_stem: true })
-      .addAccidental(0, f.Accidental({ type: '#' }))
+      .addModifier(f.Accidental({ type: '#' }), 0)
       .addModifier(f.GraceNoteGroup({ notes: gracenotes1, slur: true }).beamNotes(), 0),
     f
       .StaveNote({ keys: ['c/5', 'd/5'], duration: '4', auto_stem: true })
@@ -241,8 +307,8 @@ function stemWithBeamed(options: TestOptions): void {
 
   const beams: Beam[] = [];
   const voice = f.Voice().setStrict(false);
-  voice.addTickables(createBeamedNoteBlock(['g/4'], 1, beams));
-  voice.addTickables(createBeamedNoteBlock(['d/5'], -1, beams));
+  voice.addTickables(createBeamedNoteBlock(options.params.keys1, options.params.stemDirection1, beams));
+  voice.addTickables(createBeamedNoteBlock(options.params.keys2, options.params.stemDirection2, beams));
 
   f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
 
@@ -391,7 +457,7 @@ function multipleVoices(options: TestOptions): void {
   ].map(f.GraceNote.bind(f));
 
   gracenotes2[0].setStemDirection(-1);
-  gracenotes2[0].addAccidental(0, f.Accidental({ type: '#' }));
+  gracenotes2[0].addModifier(f.Accidental({ type: '#' }), 0);
 
   notes[1].addModifier(f.GraceNoteGroup({ notes: gracenotes4 }).beamNotes(), 0);
   notes[3].addModifier(f.GraceNoteGroup({ notes: gracenotes1 }), 0);
@@ -456,7 +522,7 @@ function multipleVoicesMultipleDraws(options: TestOptions): void {
   ].map(f.GraceNote.bind(f));
 
   gracenotes2[0].setStemDirection(-1);
-  gracenotes2[0].addAccidental(0, f.Accidental({ type: '#' }));
+  gracenotes2[0].addModifier(f.Accidental({ type: '#' }), 0);
 
   notes[1].addModifier(f.GraceNoteGroup({ notes: gracenotes4 }).beamNotes(), 0);
   notes[3].addModifier(f.GraceNoteGroup({ notes: gracenotes1 }), 0);
@@ -480,4 +546,5 @@ function multipleVoicesMultipleDraws(options: TestOptions): void {
   ok(true, 'Seventeenth Test');
 }
 
+VexFlowTests.register(GraceNoteTests);
 export { GraceNoteTests };

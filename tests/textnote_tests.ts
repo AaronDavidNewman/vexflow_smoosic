@@ -1,20 +1,16 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 //
 // Text Note Tests
 
-/* eslint-disable */
-// @ts-nocheck
-
-// TODO: TextNote needs a setFont() accessor.
-
-import { Crescendo } from 'crescendo';
-import { Flow } from 'flow';
-import { Note } from 'note';
-import { TextNote } from 'textnote';
-import { Stave } from 'stave';
-
 import { TestOptions, VexFlowTests } from './vexflow_test_helpers';
+
+import { Crescendo } from '../src/crescendo';
+import { Flow } from '../src/flow';
+import { Font } from '../src/font';
+import { Note } from '../src/note';
+import { Stave } from '../src/stave';
+import { TextNote } from '../src/textnote';
 
 const TextNoteTests = {
   Start(): void {
@@ -38,13 +34,13 @@ function formatTextNotes(options: TestOptions): void {
   const voice1 = score.voice([
     f
       .StaveNote({ keys: ['c/4', 'e/4', 'a/4'], stem_direction: -1, duration: 'h' })
-      .addAccidental(0, f.Accidental({ type: 'b' }))
-      .addAccidental(1, f.Accidental({ type: '#' })),
+      .addModifier(f.Accidental({ type: 'b' }), 0)
+      .addModifier(f.Accidental({ type: '#' }), 1),
     f.StaveNote({ keys: ['d/4', 'e/4', 'f/4'], stem_direction: -1, duration: 'q' }),
     f
       .StaveNote({ keys: ['c/4', 'f/4', 'a/4'], stem_direction: -1, duration: 'q' })
-      .addAccidental(0, f.Accidental({ type: 'n' }))
-      .addAccidental(1, f.Accidental({ type: '#' })),
+      .addModifier(f.Accidental({ type: 'n' }), 0)
+      .addModifier(f.Accidental({ type: '#' }), 1),
   ]);
 
   const voice2 = score.voice([
@@ -122,13 +118,13 @@ function superscriptAndSubscript(options: TestOptions): void {
   const voice1 = score.voice([
     f
       .StaveNote({ keys: ['c/4', 'e/4', 'a/4'], stem_direction: 1, duration: 'h' })
-      .addAccidental(0, f.Accidental({ type: 'b' }))
-      .addAccidental(1, f.Accidental({ type: '#' })),
+      .addModifier(f.Accidental({ type: 'b' }), 0)
+      .addModifier(f.Accidental({ type: '#' }), 1),
     f.StaveNote({ keys: ['d/4', 'e/4', 'f/4'], stem_direction: 1, duration: 'q' }),
     f
       .StaveNote({ keys: ['c/4', 'f/4', 'a/4'], stem_direction: 1, duration: 'q' })
-      .addAccidental(0, f.Accidental({ type: 'n' }))
-      .addAccidental(1, f.Accidental({ type: '#' })),
+      .addModifier(f.Accidental({ type: 'n' }), 0)
+      .addModifier(f.Accidental({ type: '#' }), 1),
   ]);
 
   const voice2 = score.voice([
@@ -142,7 +138,7 @@ function superscriptAndSubscript(options: TestOptions): void {
 
   voice2.getTickables().forEach((note) => {
     const textNote = note as TextNote;
-    textNote.font = { family: 'Serif', size: 15, weight: '' };
+    textNote.setFont({ family: Font.SERIF, size: 15 });
     textNote.setLine(13);
     textNote.setJustification(TextNote.Justification.LEFT);
   });
@@ -162,8 +158,8 @@ function formatTextGlyphs0(options: TestOptions): void {
   const voice1 = score.voice([
     f
       .StaveNote({ keys: ['c/4', 'e/4', 'a/4'], stem_direction: -1, duration: 'h' })
-      .addAccidental(0, f.Accidental({ type: 'b' }))
-      .addAccidental(1, f.Accidental({ type: '#' })),
+      .addModifier(f.Accidental({ type: 'b' }), 0)
+      .addModifier(f.Accidental({ type: '#' }), 1),
     f.StaveNote({ keys: ['d/4', 'e/4', 'f/4'], stem_direction: -1, duration: '8' }),
     f.StaveNote({ keys: ['c/4', 'f/4', 'a/4'], stem_direction: -1, duration: '8' }),
     f.StaveNote({ keys: ['c/4', 'f/4', 'a/4'], stem_direction: -1, duration: '8' }),
@@ -200,8 +196,8 @@ function formatTextGlyphs1(options: TestOptions): void {
   const voice1 = score.voice([
     f
       .StaveNote({ keys: ['c/4', 'e/4', 'a/4'], stem_direction: -1, duration: 'h' })
-      .addAccidental(0, f.Accidental({ type: 'b' }))
-      .addAccidental(1, f.Accidental({ type: '#' })),
+      .addModifier(f.Accidental({ type: 'b' }), 0)
+      .addModifier(f.Accidental({ type: '#' }), 1),
     f.StaveNote({ keys: ['d/4', 'e/4', 'f/4'], stem_direction: -1, duration: '8' }),
     f.StaveNote({ keys: ['c/4', 'f/4', 'a/4'], stem_direction: -1, duration: '8' }),
     f.StaveNote({ keys: ['c/4', 'f/4', 'a/4'], stem_direction: -1, duration: '8' }),
@@ -280,4 +276,5 @@ function textDynamics(options: TestOptions): void {
   ok(true);
 }
 
+VexFlowTests.register(TextNoteTests);
 export { TextNoteTests };

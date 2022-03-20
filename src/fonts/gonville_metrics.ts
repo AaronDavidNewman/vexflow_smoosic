@@ -5,17 +5,20 @@
 export const GonvilleMetrics = {
   name: 'Gonville',
   smufl: false,
+
   stave: {
     padding: 12,
     endPaddingMax: 10,
     endPaddingMin: 5,
-    unalignedNotePadding: 10
+    unalignedNotePadding: 10,
   },
+
   accidental: {
     noteheadAccidentalPadding: 1,
     leftPadding: 2,
     accidentalSpacing: 3,
   },
+
   clef: {
     default: {
       point: 40,
@@ -81,6 +84,17 @@ export const GonvilleMetrics = {
     },
   },
 
+  parenthesis: {
+    default: {
+      point: 39,
+      width: 7,
+    },
+    gracenote: {
+      point: (39 * 3) / 5,
+      width: 3,
+    },
+  },
+
   pedalMarking: {
     up: {
       point: 40,
@@ -90,30 +104,50 @@ export const GonvilleMetrics = {
     },
   },
 
+  // These are for numeric digits, such as in time signatures
+  digits: {
+    point: 40,
+    tupletPoint: 28,
+  },
+
+  // articulation: {
+  // },
+
   tremolo: {
     default: {
       point: 25,
       spacing: 4,
-      offsetYStemUp: -17,
-      offsetYStemDown: -2,
+      offsetYStemUp: -7,
+      offsetYStemDown: 7,
       offsetXStemUp: 9,
       offsetXStemDown: -0.5,
     },
     grace: {
       point: 15,
       spacing: 4,
-      offsetYStemUp: -17,
-      offsetYStemDown: -2,
+      offsetYStemUp: -7,
+      offsetYStemDown: 7,
       offsetXStemUp: 6.5,
       offsetXStemDown: -0.5,
     },
   },
 
-  // These are for numeric digits, such as in time signatures
-  digits: {
-    point: 40,
-    tupletPoint: 28,
+  staveRepetition: {
+    symbolText: {
+      offsetX: 12,
+      offsetY: 25,
+      spacing: 5,
+    },
+    coda: {
+      offsetY: 25,
+    },
+    segno: {
+      offsetY: 0,
+    },
   },
+
+  // noteHead: {
+  // },
 
   stem: {
     heightAdjustmentForFlag: -3,
@@ -170,13 +204,31 @@ export const GonvilleMetrics = {
       },
       flag32ndDown: {
         shiftX: -0.16,
+        shiftY: 9,
       },
       flag64thDown: {
         shiftX: -0.16,
+        shiftY: 13,
       },
       flag128thDown: {
         shiftX: -0.16,
+        shiftY: 22,
       },
+      flag32ndUp: {
+        shiftY: -9,
+      },
+      flag64thUp: {
+        shiftY: -13,
+      },
+      flag128thUp: {
+        shiftY: -22,
+      },
+    },
+    stringNumber: {
+      verticalPadding: 8,
+      stemPadding: 2,
+      leftPadding: 5,
+      rightPadding: 6,
     },
     textNote: {
       point: 40,
@@ -376,6 +428,20 @@ export const GonvilleMetrics = {
         stemUpYOffset: 0,
         reportedWidth: 5,
       },
+    },
+    tremolo: {
+      default: {
+        shiftY: -10,
+      },
+      grace: {
+        shiftY: -5,
+      },
+    },
+    tuplet: {
+      noteHeadOffset: 20,
+      stemOffset: 10,
+      bottomLine: 4,
+      topModifierOffset: 15,
     },
   },
 };

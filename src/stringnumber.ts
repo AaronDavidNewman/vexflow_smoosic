@@ -1,33 +1,36 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Larry Kuhns
 //
-// ## Description
 // This file implements the `StringNumber` class which renders string
 // number annotations beside notes.
 
-import { Stem } from 'stem';
-
-import { Modifier } from './modifier';
+import { Font, FontInfo, FontStyle, FontWeight } from './font';
+import { Modifier, ModifierPosition } from './modifier';
 import { ModifierContextState } from './modifiercontext';
 import { Note } from './note';
 import { Renderer } from './renderer';
-import { isStaveNote, isStemmableNote } from './typeguard';
-import { FontInfo } from './types/common';
+import { Stem } from './stem';
+import { StemmableNote } from './stemmablenote';
+import { Tables } from './tables';
+import { Category, isStaveNote, isStemmableNote } from './typeguard';
 import { RuntimeError } from './util';
 
 export class StringNumber extends Modifier {
   static get CATEGORY(): string {
-    return 'StringNumber';
+    return Category.StringNumber;
   }
 
-  protected radius: number;
-  protected last_note?: Note;
-  protected string_number: string;
-  protected x_offset: number;
-  protected y_offset: number;
-  protected dashed: boolean;
-  protected leg: number;
-  protected font: FontInfo;
+  static TEXT_FONT: Required<FontInfo> = {
+    family: Font.SANS_SERIF,
+    size: Font.SIZE,
+    weight: FontWeight.BOLD,
+    style: FontStyle.NORMAL,
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  static get metrics(): any {
+    return Tables.currentMusicFont().getMetrics().glyphs.stringNumber;
+  }
 
   // ## Static Methods
   // Arrange string numbers inside a `ModifierContext`
@@ -42,18 +45,29 @@ export class StringNumber extends Modifier {
     let prev_note = null;
     let shift_left = 0;
     let shift_right = 0;
+    const modLines = 0;
 
     for (let i = 0; i < nums.length; ++i) {
       const num = nums[i];
       const note = num.getNote();
       const pos = num.getPosition();
-
       if (!isStaveNote(note)) {
         throw new RuntimeError('NoStaveNote');
       }
-
       const index = num.checkIndex();
       const props = note.getKeyProps()[index];
+      const mc = note.getModifierContext();
+      const verticalSpaceNeeded = (num.radius * 2) / Tables.STAVE_LINE_DISTANCE + 0.5;
+
+      if (mc) {
+        if (pos === ModifierPosition.ABOVE) {
+          num.text_line = mc.getState().top_text_line;
+          state.top_text_line += verticalSpaceNeeded;
+        } else if (pos === ModifierPosition.BELOW) {
+          num.text_line = mc.getState().text_line;
+          state.text_line += verticalSpaceNeeded;
+        }
+      }
 
       if (note !== prev_note) {
         for (let n = 0; n < note.keys.length; ++n) {
@@ -67,11 +81,13 @@ export class StringNumber extends Modifier {
         prev_note = note;
       }
 
+      const glyphLine = modLines === 0 ? props.line : modLines;
+
       nums_list.push({
         pos,
         note,
         num,
-        line: props.line,
+        line: glyphLine,
         shiftL: shift_left,
         shiftR: shift_right,
       });
@@ -92,7 +108,6 @@ export class StringNumber extends Modifier {
       const num = nums_list[i].num;
       const line = nums_list[i].line;
       const shiftR = nums_list[i].shiftR;
-
       // Reset the position of the string number every line.
       if (line !== last_line || note !== last_note) {
         num_shiftR = right_shift + shiftR;
@@ -117,6 +132,16 @@ export class StringNumber extends Modifier {
     return true;
   }
 
+  public radius: number;
+  protected last_note?: Note;
+  protected string_number: string;
+  protected x_offset: number;
+  protected y_offset: number;
+  protected text_line: number;
+  protected stem_offset: number;
+  protected dashed: boolean;
+  protected leg: number;
+
   constructor(number: string) {
     super();
 
@@ -125,16 +150,14 @@ export class StringNumber extends Modifier {
     this.position = Modifier.Position.ABOVE; // Default position above stem or note head
     this.x_shift = 0;
     this.y_shift = 0;
+    this.text_line = 0;
+    this.stem_offset = 0;
     this.x_offset = 0; // Horizontal offset from default
     this.y_offset = 0; // Vertical offset from default
     this.dashed = true; // true - draw dashed extension  false - no extension
     this.leg = Renderer.LineEndType.NONE; // draw upward/downward leg at the of extension line
     this.radius = 8;
-    this.font = {
-      family: 'sans-serif',
-      size: 10,
-      weight: 'bold',
-    };
+    this.resetFont();
   }
 
   setLineEndType(leg: number): this {
@@ -173,40 +196,42 @@ export class StringNumber extends Modifier {
     const ctx = this.checkContext();
     const note = this.checkAttachedNote();
     this.setRendered();
-
-    const line_space = note.checkStave().getSpacingBetweenLines();
-
     const start = note.getModifierStartXY(this.position, this.index);
+    const stemDirection = note.hasStem() ? note.getStemDirection() : Stem.UP;
     let dot_x = start.x + this.x_shift + this.x_offset;
+    let stem_ext: Record<string, number> = {};
+    if (note.hasStem()) {
+      stem_ext = (note as StemmableNote).checkStem().getExtents();
+    }
+
     let dot_y = start.y + this.y_shift + this.y_offset;
 
     switch (this.position) {
       case Modifier.Position.ABOVE:
-      case Modifier.Position.BELOW: {
-        const stem_ext = note.getStemExtents();
-        let top = stem_ext.topY;
-        let bottom = stem_ext.baseY + 2;
-
-        if (note.getStemDirection() === Stem.DOWN) {
-          top = stem_ext.baseY;
-          bottom = stem_ext.topY - 2;
+        {
+          const ys = note.getYs();
+          dot_y = ys.reduce((a, b) => (a < b ? a : b));
+          if (note.hasStem() && stemDirection == Stem.UP) {
+            dot_y = stem_ext.topY + StringNumber.metrics.stemPadding;
+          }
+          dot_y -= this.radius + StringNumber.metrics.verticalPadding + this.text_line * Tables.STAVE_LINE_DISTANCE;
         }
-
-        if (this.position === Modifier.Position.ABOVE) {
-          dot_y = note.hasStem() ? top - line_space * 1.75 : start.y - line_space * 1.75;
-        } else {
-          dot_y = note.hasStem() ? bottom + line_space * 1.5 : start.y + line_space * 1.75;
-        }
-
-        dot_y += this.y_shift + this.y_offset;
-
         break;
-      }
+      case Modifier.Position.BELOW:
+        {
+          const ys: number[] = note.getYs();
+          dot_y = ys.reduce((a, b) => (a > b ? a : b));
+          if (note.hasStem() && stemDirection == Stem.DOWN) {
+            dot_y = stem_ext.topY - StringNumber.metrics.stemPadding;
+          }
+          dot_y += this.radius + StringNumber.metrics.verticalPadding + this.text_line * Tables.STAVE_LINE_DISTANCE;
+        }
+        break;
       case Modifier.Position.LEFT:
-        dot_x -= this.radius / 2 + 5;
+        dot_x -= this.radius / 2 + StringNumber.metrics.leftPadding;
         break;
       case Modifier.Position.RIGHT:
-        dot_x += this.radius / 2 + 6;
+        dot_x += this.radius / 2 + StringNumber.metrics.rightPadding;
         break;
       default:
         throw new RuntimeError('InvalidPosition', `The position ${this.position} is invalid`);
@@ -217,7 +242,7 @@ export class StringNumber extends Modifier {
     ctx.arc(dot_x, dot_y, this.radius, 0, Math.PI * 2, false);
     ctx.setLineWidth(1.5);
     ctx.stroke();
-    ctx.setFont(this.font.family, this.font.size, this.font.weight);
+    ctx.setFont(this.textFont);
     const x = dot_x - ctx.measureText(this.string_number).width / 2;
     ctx.fillText('' + this.string_number, x, dot_y + 4.5);
 

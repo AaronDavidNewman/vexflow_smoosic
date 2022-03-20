@@ -1,7 +1,5 @@
-// [VexFlow](http://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
-
-import { isStaveNote, isTabNote } from 'typeguard';
 
 import { Element } from './element';
 import { Fraction } from './fraction';
@@ -10,7 +8,8 @@ import { RenderContext } from './rendercontext';
 import { Stem } from './stem';
 import { StemmableNote } from './stemmablenote';
 import { Tables } from './tables';
-import { Tuplet } from './tuplet';
+import { Tuplet, TupletLocation } from './tuplet';
+import { Category, isStaveNote, isTabNote } from './typeguard';
 import { RuntimeError } from './util';
 import { Voice } from './voice';
 
@@ -42,10 +41,12 @@ const BEAM_LEFT = 'L';
 const BEAM_RIGHT = 'R';
 const BEAM_BOTH = 'B';
 
+export type PartialBeamDirection = typeof BEAM_LEFT | typeof BEAM_RIGHT | typeof BEAM_BOTH;
+
 /** `Beams` span over a set of `StemmableNotes`. */
 export class Beam extends Element {
   static get CATEGORY(): string {
-    return 'Beam';
+    return Category.Beam;
   }
 
   public render_options: {
@@ -74,6 +75,15 @@ export class Beam extends Element {
   private break_on_indices: number[];
   private beam_count: number;
   private unbeamable?: boolean;
+
+  /**
+   * Overrides to default beam directions for secondary-level beams that do not
+   * connect to any other note. See further explanation at
+   * `setPartialBeamSideAt`
+   */
+  private forcedPartialDirections: {
+    [noteIndex: number]: PartialBeamDirection;
+  } = {};
 
   /** Get the direction of the beam */
   getStemDirection(): number {
@@ -420,7 +430,7 @@ export class Beam extends Element {
     allTuplets.forEach((tuplet) => {
       // Set the tuplet location based on the stem direction
       const direction =
-        (tuplet.notes[0] as StemmableNote).stem_direction === Stem.DOWN ? Tuplet.LOCATION_BOTTOM : Tuplet.LOCATION_TOP;
+        (tuplet.notes[0] as StemmableNote).stem_direction === Stem.DOWN ? TupletLocation.BOTTOM : TupletLocation.TOP;
       tuplet.setTupletLocation(direction);
 
       // If any of the notes in the tuplet are not beamed, draw a bracket.
@@ -528,6 +538,33 @@ export class Beam extends Element {
     return this;
   }
 
+  /**
+   * Forces the direction of a partial beam (a secondary-level beam that exists
+   * on one note only of the beam group). This is useful in rhythms such as 6/8
+   * eighth-sixteenth-eighth-sixteenth, where the direction of the beam on the
+   * first sixteenth note can help imply whether the rhythm is to be felt as
+   * three groups of eighth notes (typical) or as two groups of three-sixteenths
+   * (less common):
+   * ```
+   *  ┌───┬──┬──┐      ┌──┬──┬──┐
+   *  │   ├─ │ ─┤  vs  │ ─┤  │ ─┤
+   *  │   │  │  │      │  │  │  │
+   * ```
+   */
+  setPartialBeamSideAt(noteIndex: number, side: PartialBeamDirection) {
+    this.forcedPartialDirections[noteIndex] = side;
+    return this;
+  }
+
+  /**
+   * Restore the default direction of a partial beam (a secondary-level beam
+   * that does not connect to any other notes).
+   */
+  unsetPartialBeamSideAt(noteIndex: number) {
+    delete this.forcedPartialDirections[noteIndex];
+    return this;
+  }
+
   /** Return the y coordinate for linear function. */
   getSlopeY(x: number, first_x_px: number, first_y_px: number, slope: number): number {
     return first_y_px + (x - first_x_px) * slope;
@@ -556,18 +593,20 @@ export class Beam extends Element {
       // iterate through notes, calculating y shift and stem extension
       for (let i = 1; i < notes.length; ++i) {
         const note = notes[i];
-        const adjustedStemTipY =
-          this.getSlopeY(note.getStemX(), firstNote.getStemX(), firstNote.getStemExtents().topY, slope) + yShiftTemp;
+        if (note.hasStem() || note.isRest()) {
+          const adjustedStemTipY =
+            this.getSlopeY(note.getStemX(), firstNote.getStemX(), firstNote.getStemExtents().topY, slope) + yShiftTemp;
 
-        const stemTipY = note.getStemExtents().topY;
-        // beam needs to be shifted up to accommodate note
-        if (stemTipY * stemDirection < adjustedStemTipY * stemDirection) {
-          const diff = Math.abs(stemTipY - adjustedStemTipY);
-          yShiftTemp += diff * -stemDirection;
-          totalStemExtension += diff * i;
-        } else {
-          // beam overshoots note, account for the difference
-          totalStemExtension += (stemTipY - adjustedStemTipY) * stemDirection;
+          const stemTipY = note.getStemExtents().topY;
+          // beam needs to be shifted up to accommodate note
+          if (stemTipY * stemDirection < adjustedStemTipY * stemDirection) {
+            const diff = Math.abs(stemTipY - adjustedStemTipY);
+            yShiftTemp += diff * -stemDirection;
+            totalStemExtension += diff * i;
+          } else {
+            // beam overshoots note, account for the difference
+            totalStemExtension += (stemTipY - adjustedStemTipY) * stemDirection;
+          }
         }
       }
 
@@ -706,17 +745,24 @@ export class Beam extends Element {
           const totalBeamWidth = (beam_count - 1) * beamWidth * 1.5 + beamWidth;
           stem.setVisibility(true).setStemlet(true, totalBeamWidth + stemlet_extension);
         }
-      } else {
-        throw new RuntimeError('NoStem', 'stem undefined.');
       }
     }
   }
 
   /** Return upper level beam direction. */
-  lookupBeamDirection(duration: string, prev_tick: number, tick: number, next_tick: number): string {
+  lookupBeamDirection(
+    duration: string,
+    prev_tick: number,
+    tick: number,
+    next_tick: number,
+    noteIndex: number
+  ): PartialBeamDirection {
     if (duration === '4') {
       return BEAM_LEFT;
     }
+
+    const forcedBeamDirection = this.forcedPartialDirections[noteIndex];
+    if (forcedBeamDirection) return forcedBeamDirection;
 
     const lookup_duration = `${Tables.durationToNumber(duration) / 2}`;
     const prev_note_gets_beam = prev_tick < Tables.durationToTicks(lookup_duration);
@@ -731,7 +777,7 @@ export class Beam extends Element {
       return BEAM_RIGHT;
     }
 
-    return this.lookupBeamDirection(lookup_duration, prev_tick, tick, next_tick);
+    return this.lookupBeamDirection(lookup_duration, prev_tick, tick, next_tick, noteIndex);
   }
 
   /** Get the x coordinates for the beam lines of specific `duration`. */
@@ -804,7 +850,7 @@ export class Beam extends Element {
             const prev_tick = prev_note.getIntrinsicTicks();
             const next_tick = next_note.getIntrinsicTicks();
             const tick = note.getIntrinsicTicks();
-            const beam_direction = this.lookupBeamDirection(duration, prev_tick, tick, next_tick);
+            const beam_direction = this.lookupBeamDirection(duration, prev_tick, tick, next_tick, i);
 
             if ([BEAM_LEFT, BEAM_BOTH].includes(beam_direction)) {
               current_beam.end = current_beam.start - partial_beam_length;
@@ -852,7 +898,9 @@ export class Beam extends Element {
     this.notes.forEach((note) => {
       const stem = note.getStem();
       if (stem) {
+        ctx.openGroup('stem', note.getAttribute('id') + '-stem');
         stem.setContext(ctx).draw();
+        ctx.closeGroup();
       }
     }, this);
   }
@@ -880,6 +928,7 @@ export class Beam extends Element {
         if (lastBeamX) {
           const lastBeamY = this.getSlopeY(lastBeamX, firstStemX, beamY, this.slope);
 
+          this.setAttribute('el', ctx.openGroup('beam'));
           ctx.beginPath();
           ctx.moveTo(startBeamX, startBeamY);
           ctx.lineTo(startBeamX, startBeamY + beamThickness);
@@ -887,6 +936,7 @@ export class Beam extends Element {
           ctx.lineTo(lastBeamX + 1, lastBeamY);
           ctx.closePath();
           ctx.fill();
+          ctx.closeGroup();
         } else {
           throw new RuntimeError('NoLastBeamX', 'lastBeamX undefined.');
         }

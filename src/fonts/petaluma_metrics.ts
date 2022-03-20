@@ -10,13 +10,15 @@ export const PetalumaMetrics = {
     padding: 15,
     endPaddingMax: 15,
     endPaddingMin: 7,
-    unalignedNotePadding: 12
+    unalignedNotePadding: 12,
   },
+
   accidental: {
     noteheadAccidentalPadding: 1,
     leftPadding: 2,
     accidentalSpacing: 3,
   },
+
   clef: {
     default: {
       point: 32,
@@ -82,6 +84,17 @@ export const PetalumaMetrics = {
     },
   },
 
+  parenthesis: {
+    default: {
+      point: 39,
+      width: 7,
+    },
+    gracenote: {
+      point: (39 * 3) / 5,
+      width: 3,
+    },
+  },
+
   pedalMarking: {
     up: {
       point: 40,
@@ -127,6 +140,20 @@ export const PetalumaMetrics = {
       offsetYStemDown: 5,
       offsetXStemUp: 8,
       offsetXStemDown: 1,
+    },
+  },
+
+  staveRepetition: {
+    symbolText: {
+      offsetX: 12,
+      offsetY: 25,
+      spacing: 5,
+    },
+    coda: {
+      offsetY: 25,
+    },
+    segno: {
+      offsetY: 10,
     },
   },
 
@@ -224,9 +251,6 @@ export const PetalumaMetrics = {
       flag128thDown: {
         shiftX: -1.2,
       },
-      tabStem: {
-        shiftX: -1.75,
-      },
       staveTempo: {
         shiftX: -1,
       },
@@ -247,6 +271,12 @@ export const PetalumaMetrics = {
       ornamentTurnSlash: {
         scale: 1.2,
       },
+    },
+    stringNumber: {
+      verticalPadding: 8,
+      stemPadding: 2,
+      leftPadding: 5,
+      rightPadding: 6,
     },
     stroke: {
       arrowheadBlackDown: {
@@ -302,13 +332,13 @@ export const PetalumaMetrics = {
       minPadding: 2,
       standard: {
         noteheadBlackStemUp: {
-          shiftX: 0.5
+          shiftX: 0.5,
         },
         noteheadHalfStemUp: {
-          shiftX: 0.725
+          shiftX: 0.725,
         },
         noteheadWholeStemUp: {
-          shiftX: 1
+          shiftX: 1,
         },
       },
       custom: {
@@ -529,6 +559,12 @@ export const PetalumaMetrics = {
         stemUpYOffset: 0,
         reportedWidth: 5,
       },
+    },
+    tuplet: {
+      noteHeadOffset: 20,
+      stemOffset: 10,
+      bottomLine: 4,
+      topModifierOffset: 20,
     },
   },
 };
