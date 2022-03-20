@@ -68,7 +68,12 @@ export class Annotation extends Modifier {
     center: AnnotationVerticalJustify.CENTER,
     centerStem: AnnotationVerticalJustify.CENTER_STEM,
   };
-
+  // Use the same padding for annotations as note head so the
+  // words don't run into each other.
+  static get minAnnotationPadding(): number {
+    const musicFont = Tables.currentMusicFont();
+    return musicFont.lookupMetric('glyphs.noteHead.minPadding');
+  }
   /** Arrange annotations within a `ModifierContext` */
   static format(annotations: Annotation[], state: ModifierContextState): boolean {
     if (!annotations || annotations.length === 0) return false;
@@ -87,14 +92,15 @@ export class Annotation extends Modifier {
       const glyphWidth = note.getGlyph().getWidth();
       // Get the text width from the font metrics.
       const textWidth = textFormatter.getWidthForTextInPx(annotation.text);
+      // Add padding on the left side so the annotation text is offset from the previous note
       if (annotation.horizontalJustification === AnnotationHorizontalJustify.LEFT) {
         maxLeftGlyphWidth = Math.max(glyphWidth, maxLeftGlyphWidth);
-        leftWidth = Math.max(leftWidth, textWidth);
+        leftWidth = Math.max(leftWidth, textWidth) + Annotation.minAnnotationPadding;
       } else if (annotation.horizontalJustification === AnnotationHorizontalJustify.RIGHT) {
         maxRightGlyphWidth = Math.max(glyphWidth, maxLeftGlyphWidth);
         rightWidth = Math.max(rightWidth, textWidth);
       } else {
-        leftWidth = Math.max(leftWidth, textWidth / 2);
+        leftWidth = Math.max(leftWidth, textWidth / 2) + Annotation.minAnnotationPadding;
         rightWidth = Math.max(rightWidth, textWidth / 2);
         maxLeftGlyphWidth = Math.max(glyphWidth / 2, maxLeftGlyphWidth);
         maxRightGlyphWidth = Math.max(glyphWidth / 2, maxRightGlyphWidth);
@@ -167,8 +173,8 @@ export class Annotation extends Modifier {
       Math.max(rightWidth - state.right_shift, 0)
     );
     const leftOverlap = Math.min(Math.max(leftWidth - maxLeftGlyphWidth, 0), Math.max(leftWidth - state.left_shift, 0));
-    state.left_shift += leftOverlap / 2;
-    state.right_shift += rightOverlap / 2;
+    state.left_shift += leftOverlap;
+    state.right_shift += rightOverlap;
     return true;
   }
 

@@ -33,8 +33,8 @@ const AnnotationTests = {
   Start(): void {
     QUnit.module('Annotation');
     const run = VexFlowTests.runTests;
-    run('Placement', placement);
     run('Lyrics', lyrics);
+    run('Placement', placement);
     run('Simple Annotation', simple);
     run('Styled Annotation', styling);
     run('Standard Notation Annotation', standard);
@@ -74,13 +74,13 @@ function lyrics(options: TestOptions): void {
     system.addStave({
       voices: [
         score.voice(
-          score.notes('(C4 F4)/2[id="n0"]').concat(score.beam(score.notes('(C4 A4)/8[id="n1"], (C#4 A4)/8[id="n2"]')))
+          score.notes('(C4 F4)/2[id="n0"]').concat(score.beam(score.notes('(C4 A4)/8[id="n1"], (C4 A4)/8[id="n2"]')))
         ),
       ],
     });
 
     // Add lyrics under the first row.
-    ['hand,', 'and', 'me', 'pears', 'lead', 'the'].forEach((text, ix) => {
+    ['hand,', 'lead', 'the', 'pears', 'lead', 'the'].forEach((text, ix) => {
       const verse = Math.floor(ix / 3);
       const noteGroupID = 'n' + (ix % 3);
       const noteGroup = registry.getElementById(noteGroupID) as Tickable;
