@@ -1,3 +1,9 @@
+# vexflow_smoosic
+The only difference between this branch and the [main vexflow repository](https://github.com/AaronDavidNewman/vexflow.git) is:
+
+1. the inclusion of the [Leland](https://github.com/MuseScoreFonts/Leland) font
+2. The release directory, which only contains the version vexflow uses.
+
 # VexFlow
 
 VexFlow is an open-source library for rendering music notation. It is written in TypeScript (compiled to ES6), and outputs scores to HTML
