@@ -775,9 +775,9 @@ export class Formatter {
     let targetWidth = adjustedJustifyWidth;
     const distances = calculateIdealDistances(targetWidth);
     let actualWidth = shiftToIdealDistances(distances);
-    // Calculate right justification by finding max of (configured value, min distance between tickables)
-    // so measures with lots of white space use it evenly, and crowded measures use at least the configured
-    // space.
+
+    // Just one context. Done formatting.
+    if (contextList.length === 1) return 0;
     const calcMinDistance = (targetWidth: number, distances: Distance[]) => {
       let mdCalc = targetWidth / 2;
       if (distances.length > 1) {
@@ -789,6 +789,9 @@ export class Formatter {
     };
     const minDistance = calcMinDistance(targetWidth, distances);
 
+    // right justify to either the configured padding, or the min distance between notes, whichever is greatest.
+    // This * 2 keeps the existing formatting unless there is 'a lot' of extra whitespace, which won't break
+    // existing visual regression tests.
     const paddingMaxCalc = (curTargetWidth: number) => {
       let lastTickablePadding = 0;
       const lastTickable = lastContext && lastContext.getMaxTickable();
@@ -807,14 +810,6 @@ export class Formatter {
     };
     let paddingMax = paddingMaxCalc(targetWidth);
     let paddingMin = paddingMax - (configMaxPadding - configMinPadding);
-    // Just one context. Done formatting.
-    if (contextList.length === 1) return 0;
-
-    // right justify to either the configured padding, or the min distance between notes, whichever is greatest.
-    // This * 2 keeps the existing formatting unless there is 'a lot' of extra whitespace, which won't break
-    // existing visual regression tests.
-    paddingMax = configMaxPadding * 2 < minDistance ? minDistance : configMaxPadding;
-    paddingMin = paddingMax - (configMaxPadding - configMinPadding);
     const maxX = adjustedJustifyWidth - paddingMin;
 
     let iterations = maxIterations;
