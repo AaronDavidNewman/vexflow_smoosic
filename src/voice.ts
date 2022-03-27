@@ -60,7 +60,7 @@ export class Voice extends Element {
     super();
 
     this.options = {
-      softmaxFactor: 100,
+      softmaxFactor: 2,
       ...options,
     };
 

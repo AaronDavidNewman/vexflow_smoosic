@@ -396,7 +396,7 @@ export class Formatter {
   constructor(options?: FormatterOptions) {
     this.formatterOptions = {
       globalSoftmax: false,
-      softmaxFactor: 100,
+      softmaxFactor: 2,
       maxIterations: 5,
       ...options,
     };
