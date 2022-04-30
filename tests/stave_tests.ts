@@ -22,7 +22,7 @@ import { StaveNote } from '../src/stavenote';
 import { Repetition } from '../src/staverepetition';
 import { StaveTempoOptions } from '../src/stavetempo';
 import { VoltaType } from '../src/stavevolta';
-import { Justification } from '../src/textnote';
+import { TextJustification } from '../src/textnote';
 import { TimeSignature } from '../src/timesignature';
 
 const StaveTests = {
@@ -151,7 +151,7 @@ function drawMultipleMeasures(options: TestOptions, contextBuilder: ContextBuild
   const staveBar1 = new Stave(10, 50, 200);
   staveBar1.setBegBarType(BarlineType.REPEAT_BEGIN);
   staveBar1.setEndBarType(BarlineType.DOUBLE);
-  staveBar1.setSection('A', 0, 0, options.params?.fontSize);
+  staveBar1.setSection('A', 0, 0, options.params?.fontSize, false);
   staveBar1.addClef('treble').setContext(ctx).draw();
   const notesBar1 = [
     new StaveNote({ keys: ['c/4'], duration: 'q' }),
@@ -765,8 +765,8 @@ function drawStaveTextMultiLine(options: TestOptions, contextBuilder: ContextBui
   stave.setText('2nd line', Modifier.Position.RIGHT, { shift_y: 10 });
   stave.setText('Above Text', Modifier.Position.ABOVE, { shift_y: -10 });
   stave.setText('2nd line', Modifier.Position.ABOVE, { shift_y: 10 });
-  stave.setText('Left Below Text', Modifier.Position.BELOW, { shift_y: -10, justification: Justification.LEFT });
-  stave.setText('Right Below Text', Modifier.Position.BELOW, { shift_y: 10, justification: Justification.RIGHT });
+  stave.setText('Left Below Text', Modifier.Position.BELOW, { shift_y: -10, justification: TextJustification.LEFT });
+  stave.setText('Right Below Text', Modifier.Position.BELOW, { shift_y: 10, justification: TextJustification.RIGHT });
   stave.setContext(ctx).draw();
 
   ok(true, 'all pass');

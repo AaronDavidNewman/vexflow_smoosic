@@ -25,13 +25,14 @@ import { ModifierContext } from './modifiercontext';
 import { MultiMeasureRest, MultimeasureRestRenderOptions } from './multimeasurerest';
 import { Note, NoteStruct } from './note';
 import { NoteSubGroup } from './notesubgroup';
+import { Ornament } from './ornament';
 import { PedalMarking } from './pedalmarking';
 import { RenderContext } from './rendercontext';
 import { Renderer } from './renderer';
 import { RepeatNote } from './repeatnote';
 import { Stave, StaveOptions } from './stave';
 import { BarlineType } from './stavebarline';
-import { StaveConnector } from './staveconnector';
+import { StaveConnector, StaveConnectorType } from './staveconnector';
 import { StaveLine } from './staveline';
 import { StaveNote, StaveNoteStruct } from './stavenote';
 import { StaveTie } from './stavetie';
@@ -403,6 +404,31 @@ export class Factory {
     return articulation;
   }
 
+  Ornament(
+    type: string,
+    params?: { position?: string | number; upperAccidental?: string; lowerAccidental?: string; delayed?: boolean }
+  ) {
+    const options = {
+      type,
+      position: 0,
+      accidental: '',
+      ...params,
+    };
+    const ornament = new Ornament(type);
+    ornament.setPosition(options.position);
+    if (options.upperAccidental) {
+      ornament.setUpperAccidental(options.upperAccidental);
+    }
+    if (options.lowerAccidental) {
+      ornament.setLowerAccidental(options.lowerAccidental);
+    }
+    if (typeof options.delayed !== 'undefined') {
+      ornament.setDelayed(options.delayed);
+    }
+    ornament.setContext(this.context);
+    return ornament;
+  }
+
   TextDynamics(params?: { text?: string; duration?: string; dots?: number; line?: number }): TextDynamics {
     const p = {
       text: 'p',
@@ -471,7 +497,7 @@ export class Factory {
     return voice;
   }
 
-  StaveConnector(params: { top_stave: Stave; bottom_stave: Stave; type: string }): StaveConnector {
+  StaveConnector(params: { top_stave: Stave; bottom_stave: Stave; type: StaveConnectorType }): StaveConnector {
     const connector = new StaveConnector(params.top_stave, params.bottom_stave);
     connector.setType(params.type).setContext(this.context);
     this.renderQ.push(connector);
