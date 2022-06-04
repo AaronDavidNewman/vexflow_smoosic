@@ -250,6 +250,22 @@ export class Flow {
     return fonts.map((font) => font.getName());
   }
 
+  static get RENDER_PRECISION_PLACES(): number {
+    return Tables.RENDER_PRECISION_PLACES;
+  }
+
+  static set RENDER_PRECISION_PLACES(precision: number) {
+    Tables.RENDER_PRECISION_PLACES = precision;
+  }
+
+  static get SOFTMAX_FACTOR(): number {
+    return Tables.SOFTMAX_FACTOR;
+  }
+
+  static set SOFTMAX_FACTOR(factor: number) {
+    Tables.SOFTMAX_FACTOR = factor;
+  }
+
   static get NOTATION_FONT_SCALE(): number {
     return Tables.NOTATION_FONT_SCALE;
   }
