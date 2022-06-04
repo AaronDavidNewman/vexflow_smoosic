@@ -1,5 +1,5 @@
 /*!
- * VexFlow 4.0.2   2022-04-30T13:47:26.796Z   06fbde2f473dbfa564161fd509f228442e450552
+ * VexFlow 4.0.3   2022-06-04T00:22:25.057Z   6b435502567f03b74dea805b60257f9ce4079c45
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * https://www.vexflow.com   https://github.com/0xfe/vexflow
  */
@@ -29,9 +29,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "ID": () => (/* binding */ ID),
 /* harmony export */   "DATE": () => (/* binding */ DATE)
 /* harmony export */ });
-const VERSION = '4.0.2';
-const ID = '06fbde2f473dbfa564161fd509f228442e450552';
-const DATE = '2022-04-30T13:47:26.796Z';
+const VERSION = '4.0.3';
+const ID = '6b435502567f03b74dea805b60257f9ce4079c45';
+const DATE = '2022-06-04T00:22:25.057Z';
 
 
 /***/ }),
@@ -4827,6 +4827,7 @@ __webpack_require__.r(__webpack_exports__);
 class Element {
     constructor() {
         var _a;
+        this.children = [];
         this.attrs = {
             id: Element.newID(),
             el: undefined,
@@ -4843,7 +4844,10 @@ class Element {
     static newID() {
         return `auto${Element.ID++}`;
     }
-    /** Get element category string. */
+    addChildElement(child) {
+        this.children.push(child);
+        return this;
+    }
     getCategory() {
         return this.constructor.CATEGORY;
     }
@@ -4871,6 +4875,12 @@ class Element {
      */
     setStyle(style) {
         this.style = style;
+        return this;
+    }
+    /** Set the element & associated children style used for rendering. */
+    setGroupStyle(style) {
+        this.style = style;
+        this.children.forEach((child) => child.setGroupStyle(style));
         return this;
     }
     /** Get the element style used for rendering. */
@@ -5540,10 +5550,11 @@ class Factory {
         fingering.setContext(this.context);
         return fingering;
     }
-    StringNumber(params) {
+    StringNumber(params, drawCircle = true) {
         const stringNumber = new _stringnumber__WEBPACK_IMPORTED_MODULE_29__.StringNumber(params.number);
         stringNumber.setPosition(params.position);
         stringNumber.setContext(this.context);
+        stringNumber.setDrawCircle(drawCircle);
         return stringNumber;
     }
     TickContext() {
@@ -5561,7 +5572,7 @@ class Factory {
     }
     Voice(params) {
         const p = Object.assign({ time: '4/4' }, params);
-        const voice = new _voice__WEBPACK_IMPORTED_MODULE_41__.Voice(p.time, p.options);
+        const voice = new _voice__WEBPACK_IMPORTED_MODULE_41__.Voice(p.time);
         this.voices.push(voice);
         return voice;
     }
@@ -5956,6 +5967,18 @@ class Flow {
     static getMusicFont() {
         const fonts = _tables__WEBPACK_IMPORTED_MODULE_63__.Tables.MUSIC_FONT_STACK;
         return fonts.map((font) => font.getName());
+    }
+    static get RENDER_PRECISION_PLACES() {
+        return _tables__WEBPACK_IMPORTED_MODULE_63__.Tables.RENDER_PRECISION_PLACES;
+    }
+    static set RENDER_PRECISION_PLACES(precision) {
+        _tables__WEBPACK_IMPORTED_MODULE_63__.Tables.RENDER_PRECISION_PLACES = precision;
+    }
+    static get SOFTMAX_FACTOR() {
+        return _tables__WEBPACK_IMPORTED_MODULE_63__.Tables.SOFTMAX_FACTOR;
+    }
+    static set SOFTMAX_FACTOR(factor) {
+        _tables__WEBPACK_IMPORTED_MODULE_63__.Tables.SOFTMAX_FACTOR = factor;
     }
     static get NOTATION_FONT_SCALE() {
         return _tables__WEBPACK_IMPORTED_MODULE_63__.Tables.NOTATION_FONT_SCALE;
@@ -7269,6 +7292,54 @@ const BravuraFont = {
             y_max: 0,
             ha: 332,
             o: 'm 435 -323 b 56 -43 138 -323 73 -102 b 52 -30 55 -37 53 -32 b 23 0 43 -10 36 0 b 4 -19 12 0 4 -4 b 6 -35 4 -23 4 -29 b 438 -478 94 -475 392 -478 b 870 -35 480 -478 780 -475 b 871 -20 871 -29 871 -24 b 851 0 871 -6 864 0 b 821 -30 837 0 831 -10 b 818 -40 819 -32 819 -36 b 435 -323 804 -95 742 -323 z m 516 -79 b 436 0 516 -36 480 0 b 359 -79 395 0 359 -36 b 436 -157 359 -121 395 -157 b 516 -79 480 -157 516 -121 z',
+        },
+        fermataLongAbove: {
+            x_min: 0,
+            x_max: 603,
+            y_min: -1,
+            y_max: 333,
+            ha: 334,
+            o: 'm 72 480 b 0 441 32 480 0 462 l 0 19 b 35 0 0 9 16 0 b 71 19 55 0 71 9 l 71 289 b 433 315 71 307 252 315 b 798 289 615 315 798 307 l 798 19 b 832 0 798 9 814 0 b 868 19 852 0 868 9 l 868 441 b 796 480 868 462 837 480 z m 513 78 b 433 156 513 121 478 156 b 356 78 390 156 356 121 b 433 -1 356 35 390 -1 b 513 78 478 -1 513 35 z',
+        },
+        fermataLongBelow: {
+            x_min: 0,
+            x_max: 603,
+            y_min: -333,
+            y_max: 1,
+            ha: 334,
+            o: 'm 513 -78 b 433 1 513 -35 478 1 b 356 -78 390 1 356 -35 b 433 -156 356 -121 390 -156 b 513 -78 478 -156 513 -121 z m 796 -480 b 868 -441 837 -480 868 -462 l 868 -19 b 832 0 868 -9 852 0 b 798 -19 814 0 798 -9 l 798 -289 b 433 -315 798 -307 615 -315 b 71 -289 252 -315 71 -307 l 71 -19 b 35 0 71 -9 55 0 b 0 -19 16 0 0 -9 l 0 -441 b 72 -480 0 -462 32 -480 z',
+        },
+        fermataVeryLongAbove: {
+            x_min: 0,
+            x_max: 715,
+            y_min: 0,
+            y_max: 408,
+            ha: 408,
+            o: 'm 76 588 b 0 546 35 588 0 569 l 0 22 b 37 1 0 10 17 1 b 75 22 59 1 75 10 l 75 431 b 514 458 75 449 294 458 b 955 431 734 458 955 449 l 955 22 b 991 1 955 10 971 1 b 1030 22 1012 1 1030 10 l 1030 546 b 953 588 1030 569 995 588 z m 215 389 b 138 347 171 389 138 370 l 138 22 b 174 1 138 10 154 1 b 213 22 196 1 213 10 l 213 217 b 514 245 213 235 363 245 b 816 217 665 245 816 235 l 816 22 b 854 1 816 10 834 1 b 891 22 876 1 891 10 l 891 347 b 815 389 891 370 858 389 z m 606 84 b 521 167 606 130 569 167 b 439 84 475 167 439 130 b 521 0 439 39 475 0 b 606 84 569 0 606 39 z',
+        },
+        fermataVeryLongBelow: {
+            x_min: 0,
+            x_max: 715,
+            y_min: -408,
+            y_max: 0,
+            ha: 408,
+            o: 'm 606 -84 b 521 0 606 -39 569 0 b 439 -84 475 0 439 -39 b 521 -167 439 -130 475 -167 b 606 -84 569 -167 606 -130 z m 815 -389 b 891 -347 858 -389 891 -370 l 891 -22 b 854 -1 891 -10 876 -1 b 816 -22 834 -1 816 -10 l 816 -217 b 514 -245 816 -235 665 -245 b 213 -217 363 -245 213 -235 l 213 -22 b 174 -1 213 -10 196 -1 b 138 -22 154 -1 138 -10 l 138 -347 b 215 -389 138 -370 171 -389 z m 953 -588 b 1030 -546 995 -588 1030 -569 l 1030 -22 b 991 -1 1030 -10 1012 -1 b 955 -22 971 -1 955 -10 l 955 -431 b 514 -458 955 -449 734 -458 b 75 -431 294 -458 75 -449 l 75 -22 b 37 -1 75 -10 59 -1 b 0 -22 17 -1 0 -10 l 0 -546 b 76 -588 0 -569 35 -588 z',
+        },
+        fermataShortAbove: {
+            x_min: 0,
+            x_max: 604,
+            y_min: 0,
+            y_max: 341,
+            ha: 341,
+            o: 'm 78 0 b 88 6 81 0 82 3 b 435 328 134 45 412 328 b 783 3 458 328 742 39 b 793 0 786 1 793 0 l 865 0 b 870 4 865 0 870 1 b 867 10 870 6 868 9 b 435 491 805 69 474 491 b 3 10 397 491 69 75 b 0 4 1 9 0 6 b 4 0 0 1 4 0 z m 513 94 b 433 171 513 135 477 171 b 354 94 390 171 354 135 b 433 13 354 49 390 13 b 513 94 477 13 513 49 z',
+        },
+        fermataShortBelow: {
+            x_min: 0,
+            x_max: 604,
+            y_min: -341,
+            y_max: 0,
+            ha: 341,
+            o: 'm 4 0 b 0 -4 4 0 0 -1 b 3 -10 0 -6 1 -9 b 435 -491 69 -75 397 -491 b 867 -10 474 -491 805 -69 b 870 -4 868 -9 870 -6 b 865 0 870 -1 865 0 l 793 0 b 783 -3 793 0 786 -1 b 435 -328 742 -39 458 -328 b 88 -6 412 -328 134 -45 b 78 0 82 -3 81 0 z m 513 -94 b 433 -13 513 -49 477 -13 b 354 -94 390 -13 354 -49 b 433 -171 354 -135 390 -171 b 513 -94 477 -171 513 -135 z',
         },
         breathMarkComma: {
             x_min: 1,
@@ -9785,7 +9856,7 @@ const BravuraFont = {
     },
     fontFamily: 'Bravura',
     resolution: 1000,
-    generatedOn: '2021-12-06T21:04:30.234Z',
+    generatedOn: '2022-05-17T21:05:48.796Z',
 };
 
 
@@ -10953,6 +11024,42 @@ const GonvilleFont = {
             x_max: 439.640625,
             ha: 449,
             o: 'm -428 -2 b -421 0 -427 -1 -424 0 b -406 -6 -416 0 -409 -2 b -400 -31 -401 -12 -400 -15 b -1 -352 -392 -215 -215 -352 b 58 -349 19 -352 38 -351 b 398 -31 250 -326 392 -192 b 404 -6 398 -15 400 -12 b 419 -1 408 -2 413 -1 b 439 -13 427 -1 435 -5 b 439 -29 439 -16 439 -22 b 434 -105 439 -48 438 -80 b 0 -489 397 -333 213 -489 b -68 -484 -23 -489 -44 -488 b -441 -36 -280 -452 -436 -263 b -441 -30 -441 -34 -441 -31 b -428 -2 -441 -11 -439 -5 m -13 -9 b -1 -8 -9 -8 -5 -8 b 50 -36 19 -8 39 -19 b 61 -72 57 -47 61 -59 b 50 -106 61 -84 57 -97 b -1 -134 39 -124 19 -134 b -46 -115 -17 -134 -34 -129 b -62 -72 -57 -102 -62 -87 b -13 -9 -62 -44 -44 -16 ',
+        },
+        fermataLongAbove: {
+            x_min: -390.640625,
+            x_max: 389.28125,
+            ha: 397,
+            o: 'm -378 502 l -374 503 l 0 503 l 372 503 l 377 502 b 387 491 381 499 385 496 l 389 488 l 389 251 l 389 15 l 387 12 b 367 0 383 4 375 0 b 348 12 360 0 352 4 l 347 15 l 347 174 l 347 335 l 0 335 l -348 335 l -348 174 l -348 15 l -349 12 b -368 0 -353 4 -362 0 b -389 12 -377 0 -385 4 l -390 15 l -390 251 l -390 488 l -389 491 b -378 502 -386 496 -382 499 m -13 131 b -1 133 -9 133 -5 133 b 50 105 19 133 39 123 b 61 70 57 95 61 83 b 50 34 61 58 57 45 b -1 6 39 16 19 6 b -46 27 -17 6 -34 13 b -62 69 -58 38 -62 55 b -13 131 -62 98 -44 124 ',
+        },
+        fermataLongBelow: {
+            x_min: -390.640625,
+            x_max: 389.28125,
+            ha: 397,
+            o: 'm -378 -2 b -368 -1 -375 -1 -374 -1 b -349 -13 -360 -1 -353 -5 l -348 -16 l -348 -176 l -348 -337 l 0 -337 l 347 -337 l 347 -176 l 347 -16 l 348 -13 b 367 0 352 -5 360 0 b 387 -13 375 0 383 -5 l 389 -16 l 389 -252 l 389 -489 l 387 -492 b 377 -503 385 -498 381 -501 l 372 -505 l 0 -505 l -374 -505 l -378 -503 b -389 -492 -382 -501 -386 -498 l -390 -489 l -390 -252 l -390 -16 l -389 -13 b -378 -2 -386 -8 -382 -4 m -13 -9 b -1 -8 -9 -8 -5 -8 b 50 -36 19 -8 39 -19 b 61 -72 57 -47 61 -59 b 50 -106 61 -84 57 -97 b -1 -134 39 -124 19 -134 b -46 -115 -17 -134 -34 -129 b -62 -72 -58 -102 -62 -87 b -13 -9 -62 -44 -44 -16 ',
+        },
+        fermataVeryLongAbove: {
+            x_min: -390.640625,
+            x_max: 389.28125,
+            ha: 397,
+            o: 'm -378 573 l -374 576 l 0 576 l 372 576 l 377 573 b 387 563 381 571 385 567 l 389 559 l 389 287 l 389 15 l 387 12 b 367 0 383 4 375 0 b 348 12 360 0 352 4 l 347 15 l 347 210 l 347 406 l 0 406 l -348 406 l -348 210 l -348 15 l -349 12 b -368 0 -353 4 -362 0 b -389 12 -377 0 -385 4 l -390 15 l -390 287 l -390 559 l -389 563 b -378 573 -386 567 -382 571 m -274 337 l -270 338 l 0 338 l 269 338 l 273 337 b 284 326 279 334 281 330 l 285 323 l 285 169 l 285 15 l 284 12 b 265 -1 280 4 272 -1 b 245 12 257 -1 249 4 l 245 15 l 243 108 l 243 201 l 0 201 l -245 201 l -245 108 l -245 15 l -246 12 b -266 -1 -250 4 -258 -1 b -285 12 -273 -1 -281 4 l -287 15 l -287 169 l -287 323 l -285 326 b -274 337 -283 330 -280 334 m -13 131 b -1 133 -9 133 -5 133 b 50 105 19 133 39 123 b 61 70 57 95 61 83 b 50 34 61 58 57 45 b -1 6 39 16 19 6 b -46 27 -17 6 -34 13 b -62 69 -58 38 -62 55 b -13 131 -62 98 -44 124 ',
+        },
+        fermataVeryLongBelow: {
+            x_min: -390.640625,
+            x_max: 389.28125,
+            ha: 397,
+            o: 'm -378 -2 b -368 -1 -375 -1 -374 -1 b -349 -13 -360 -1 -353 -5 l -348 -16 l -348 -212 l -348 -408 l 0 -408 l 347 -408 l 347 -212 l 347 -16 l 348 -13 b 367 0 352 -5 360 0 b 387 -13 375 0 383 -5 l 389 -16 l 389 -288 l 389 -560 l 387 -564 b 377 -574 385 -569 381 -573 l 372 -577 l 0 -577 l -374 -577 l -378 -574 b -389 -564 -382 -573 -386 -569 l -390 -560 l -390 -288 l -390 -16 l -389 -13 b -378 -2 -386 -8 -382 -4 m -274 -2 b -266 -1 -272 -1 -270 -1 b -246 -13 -257 -1 -250 -5 l -245 -16 l -245 -109 l -245 -202 l 0 -202 l 243 -202 l 243 -109 l 245 -16 l 245 -13 b 265 0 249 -5 257 0 b 284 -13 272 0 280 -5 l 285 -16 l 285 -170 l 285 -324 l 284 -327 b 273 -338 281 -331 279 -335 l 269 -340 l 0 -340 l -270 -340 l -274 -338 b -285 -327 -280 -335 -283 -331 l -287 -324 l -287 -170 l -287 -16 l -285 -13 b -274 -2 -283 -8 -280 -4 m -13 -9 b -1 -8 -9 -8 -5 -8 b 50 -36 19 -8 39 -19 b 61 -72 57 -47 61 -59 b 50 -106 61 -84 57 -97 b -1 -134 39 -124 19 -134 b -46 -115 -17 -134 -34 -129 b -62 -72 -58 -102 -62 -87 b -13 -9 -62 -44 -44 -16 ',
+        },
+        fermataShortAbove: {
+            x_min: -390.640625,
+            x_max: 389.28125,
+            ha: 397,
+            o: 'm -9 650 b -1 652 -6 650 -4 652 b 19 639 6 652 13 648 l 23 631 b 28 623 24 628 27 626 l 34 614 l 39 606 l 43 598 l 49 588 l 54 580 l 59 571 l 65 563 l 69 555 l 74 546 l 80 537 l 85 528 b 89 520 87 526 89 523 l 95 512 l 100 503 l 106 494 l 111 487 l 115 478 l 121 470 l 126 462 l 130 453 l 136 445 l 141 437 l 147 427 l 151 419 l 156 410 l 161 402 l 167 394 l 172 385 l 176 376 b 182 367 179 374 181 370 l 187 359 l 193 351 l 198 342 l 202 334 l 208 326 l 212 317 l 217 309 l 223 301 l 228 292 l 234 284 l 238 274 l 243 266 l 249 258 l 254 249 l 259 241 l 264 233 l 269 224 b 274 216 270 222 273 217 l 280 206 l 285 198 l 295 180 l 299 174 l 304 165 l 310 156 l 315 148 l 321 140 l 325 131 l 330 123 l 336 113 l 341 105 l 347 97 l 351 88 l 356 80 l 360 72 b 364 66 362 70 363 68 b 370 58 366 65 368 61 l 379 41 b 389 19 386 31 389 24 b 382 4 389 13 386 8 b 347 0 377 0 378 0 b 337 0 344 0 340 0 b 336 0 336 0 336 0 b 287 11 294 0 294 0 l 281 19 l 276 27 l 272 37 l 266 45 l 261 54 l 255 62 l 250 70 l 246 79 l 240 87 l 235 97 l 230 105 l 224 113 l 220 122 l 215 130 l 209 140 l 204 148 l 200 155 l 194 163 b 189 172 193 165 191 169 l 185 180 l 179 188 l 174 198 l 168 206 l 163 215 l 159 223 l 153 231 l 148 240 l 142 249 l 138 258 l 133 266 l 127 274 l 122 283 l 117 292 l 111 301 l 107 308 l 102 316 b 98 324 102 317 99 322 l 92 333 l 87 341 l 81 349 l 77 359 l 72 367 l 66 376 l 61 384 l 55 392 l 51 401 l 46 410 l 40 419 l 35 427 l 31 435 l 24 444 l 20 453 l 14 460 l 10 469 b 5 477 9 470 6 474 l 0 485 l -5 494 l -9 502 l -14 512 b -20 519 -16 513 -19 517 l -24 526 l -28 534 b -31 537 -29 535 -31 537 b -35 533 -32 537 -32 535 l -88 444 l -187 280 l -285 117 l -343 23 b -362 1 -352 6 -356 2 b -368 0 -364 0 -367 0 b -390 20 -381 0 -390 8 l -390 20 b -359 77 -390 27 -390 27 l -80 539 l -25 631 b -9 650 -17 644 -13 648 m -13 133 b -1 134 -9 133 -5 134 b 50 105 19 134 39 123 b 61 70 57 95 61 83 b 50 34 61 58 57 45 b -1 6 39 16 19 6 b -46 27 -17 6 -34 13 b -62 70 -57 40 -62 55 b -13 133 -62 98 -44 126 ',
+        },
+        fermataShortBelow: {
+            x_min: -390.640625,
+            x_max: 389.28125,
+            ha: 397,
+            o: 'm -377 -1 b -368 0 -375 -1 -372 0 b -362 -1 -366 0 -363 -1 b -343 -24 -356 -4 -352 -8 l -285 -119 l -187 -280 l -88 -444 l -35 -533 b -31 -538 -32 -537 -32 -538 b -28 -534 -31 -538 -29 -537 l -23 -526 l -19 -517 l -13 -509 l -8 -501 l -2 -492 l 2 -483 l 6 -476 l 17 -458 l 23 -449 l 32 -433 l 38 -424 l 42 -416 l 47 -408 l 53 -399 l 58 -391 l 63 -381 l 68 -373 l 73 -365 l 78 -356 l 84 -348 l 89 -340 l 93 -330 l 99 -322 l 104 -315 l 114 -297 l 125 -280 l 129 -272 l 134 -263 l 140 -255 l 145 -247 l 151 -238 l 155 -230 l 160 -220 l 166 -212 l 171 -204 l 176 -195 l 181 -187 l 186 -177 l 191 -169 l 196 -162 l 201 -154 l 206 -144 l 217 -127 l 221 -119 l 227 -111 l 232 -102 l 238 -94 l 242 -86 l 247 -77 l 253 -69 l 258 -59 l 262 -51 l 268 -43 l 273 -34 l 279 -26 l 283 -18 b 321 -1 292 -2 292 -1 b 338 -1 326 -1 332 -1 b 382 -6 378 -1 375 -1 b 389 -20 386 -9 389 -15 b 382 -38 389 -26 386 -31 l 378 -47 l 372 -55 l 367 -63 l 362 -72 l 356 -80 l 351 -90 l 347 -98 l 341 -106 l 336 -115 l 330 -123 l 325 -131 l 321 -141 l 315 -149 l 310 -158 l 304 -166 l 299 -174 b 295 -183 298 -177 296 -181 l 289 -191 l 285 -199 l 280 -208 l 274 -216 l 269 -224 l 264 -233 l 259 -242 l 254 -251 l 249 -259 l 243 -267 l 238 -276 l 234 -284 l 228 -292 l 223 -302 l 217 -310 l 213 -319 l 208 -327 b 202 -335 206 -330 204 -334 l 197 -344 l 193 -351 l 187 -360 l 182 -369 l 176 -377 l 172 -385 l 167 -394 l 161 -403 l 156 -412 l 152 -420 l 147 -428 l 141 -437 l 136 -445 l 130 -455 l 126 -463 l 121 -471 l 115 -480 b 110 -488 114 -483 111 -487 l 106 -496 l 100 -503 l 96 -512 l 89 -521 l 85 -530 l 80 -538 l 74 -546 l 69 -555 l 65 -564 l 59 -573 l 54 -581 l 49 -589 l 43 -598 l 39 -606 l 34 -616 l 28 -624 l 23 -632 b 19 -641 21 -635 20 -638 b 0 -653 14 -649 8 -653 b -25 -631 -10 -653 -14 -649 l -80 -541 l -359 -79 b -389 -29 -375 -52 -389 -30 b -390 -22 -389 -26 -390 -24 b -377 -1 -390 -13 -385 -5 m -13 -9 b -1 -8 -9 -8 -5 -8 b 51 -36 19 -8 39 -19 b 61 -72 58 -47 61 -59 b 51 -106 61 -84 58 -97 b -1 -134 39 -124 19 -134 b -46 -115 -17 -134 -34 -127 b -62 -72 -57 -102 -62 -87 b -13 -9 -62 -44 -44 -16 ',
         },
         breathMarkComma: {
             x_min: -1.359375,
@@ -14215,6 +14322,54 @@ const PetalumaFont = {
             ha: 429.08385501634933,
             o: 'm 344 -615 b 500 -543 402 -602 452 -576 b 713 -253 605 -471 661 -364 b 746 -98 737 -204 750 -153 b 727 -59 744 -82 744 -59 b 688 -88 711 -59 694 -68 b 678 -109 687 -96 683 -102 b 562 -314 648 -183 611 -252 b 387 -439 516 -373 458 -416 b 328 -449 367 -446 347 -449 b 180 -386 274 -449 225 -423 b 69 -179 111 -330 69 -262 b 75 -121 69 -160 71 -141 b 84 -58 78 -101 84 -79 b 82 -39 84 -52 84 -45 b 68 -1 79 -26 82 -4 b 26 -32 49 0 33 -12 b 20 -52 24 -39 22 -45 b 0 -223 9 -107 -3 -161 b 141 -553 1 -348 27 -468 b 304 -619 192 -590 243 -619 b 344 -615 317 -619 330 -618 z m 415 -190 b 435 -157 429 -192 435 -184 b 308 -27 435 -86 379 -27 b 271 -46 287 -27 272 -35 b 269 -69 269 -55 269 -62 b 364 -183 269 -128 302 -170 z',
         },
+        fermataLongAbove: {
+            x_min: 0,
+            x_max: 591.4911182523068,
+            y_min: -6,
+            y_max: 337.10134960318186,
+            ha: 343.10134960318186,
+            o: 'm 20 -9 b 36 14 29 -9 35 3 b 49 109 45 45 49 78 b 48 143 49 121 49 131 b 42 312 40 200 45 256 b 63 338 42 331 46 338 b 68 340 65 338 66 338 b 279 333 138 336 209 334 b 760 317 439 330 599 323 b 783 298 775 317 782 315 l 796 161 b 814 17 801 115 802 68 b 851 144 840 45 855 102 b 824 396 842 228 834 312 b 760 468 816 459 812 467 l 55 485 b 1 433 12 487 1 478 l 1 387 b 0 203 1 325 0 264 b 9 17 0 141 3 79 b 20 -9 9 7 6 -9 z m 403 3 b 439 6 413 3 425 4 b 477 42 464 9 474 22 b 478 62 478 49 478 55 l 478 84 b 465 160 478 109 478 135 b 449 173 461 167 459 173 b 354 105 386 179 354 156 b 359 71 354 95 356 84 b 360 65 360 69 360 66 b 403 3 372 14 373 3 z',
+        },
+        fermataLongBelow: {
+            x_min: 0,
+            x_max: 602,
+            y_min: -335,
+            y_max: 7,
+            ha: 342,
+            o: 'm 793 -482 b 851 -444 822 -482 842 -471 b 867 -357 860 -416 867 -387 b 865 -336 867 -350 867 -343 b 851 -189 858 -287 855 -238 b 832 -32 847 -135 840 -84 b 824 -17 832 -26 832 -17 l 822 -17 b 805 -30 816 -19 806 -20 b 798 -88 802 -50 798 -69 b 805 -292 798 -157 801 -225 b 772 -327 806 -318 801 -327 b 360 -324 635 -327 497 -325 b 78 -327 265 -323 171 -327 b 50 -304 59 -327 50 -320 l 50 -297 b 62 -187 55 -261 60 -225 b 71 -60 62 -144 71 -102 b 68 -20 71 -48 71 -33 b 53 10 66 -10 69 10 l 52 10 b 22 -22 37 9 24 -1 b 14 -121 17 -55 16 -89 b 0 -359 10 -200 0 -279 b 6 -452 0 -390 3 -420 b 42 -481 9 -478 20 -481 l 415 -481 l 415 -482 z m 409 -183 b 454 -179 420 -183 435 -181 b 505 -124 487 -176 504 -158 b 505 -89 507 -112 505 -101 b 507 -58 505 -79 507 -68 b 505 -42 507 -52 507 -48 b 485 -10 503 -29 501 -10 b 448 -9 472 -9 461 -9 b 380 -22 425 -9 402 -12 b 363 -46 372 -27 363 -35 l 363 -49 b 364 -114 363 -71 361 -94 b 409 -183 374 -168 377 -183 z',
+        },
+        fermataVeryLongAbove: {
+            x_min: 0,
+            x_max: 715,
+            y_min: -14.096346766617495,
+            y_max: 437,
+            ha: 451.0963467666175,
+            o: 'm 26 -20 b 42 -4 36 -22 39 -12 b 49 53 49 14 49 33 l 49 448 b 69 478 49 467 52 478 l 72 478 b 81 480 75 478 78 478 b 144 477 102 477 122 477 l 207 477 b 943 471 452 477 698 471 b 978 442 966 471 976 467 b 989 99 985 327 985 213 b 999 -19 991 60 995 22 b 1030 62 1028 6 1030 35 b 1021 507 1028 210 1025 359 b 1012 596 1021 537 1017 567 b 976 624 1009 618 998 624 b 507 626 819 624 662 625 b 46 629 353 628 200 629 b 7 590 19 629 7 618 b 0 101 7 428 0 264 b 16 -4 0 65 13 32 b 26 -20 17 -10 22 -19 z m 187 -9 b 207 30 206 -7 204 14 b 207 55 209 37 207 46 b 200 240 210 117 197 179 b 219 262 200 256 203 262 l 223 262 b 456 252 301 258 379 255 l 772 239 b 804 209 792 238 802 235 b 818 69 806 163 809 115 b 834 -4 821 46 816 19 b 857 56 852 13 857 35 b 851 183 857 99 858 141 b 827 360 841 242 841 301 b 786 390 821 383 809 389 b 189 409 588 403 387 402 b 153 377 163 409 153 400 b 173 27 153 259 150 143 b 187 -9 176 13 177 -9 z m 478 3 b 536 10 491 3 510 6 b 582 60 569 14 580 32 l 582 89 l 580 89 b 580 117 580 98 582 107 b 540 171 577 158 572 171 b 521 171 534 171 528 170 b 459 166 500 170 480 168 b 423 132 436 164 423 154 b 428 88 423 118 425 102 b 478 3 438 22 439 4 z',
+        },
+        fermataVeryLongBelow: {
+            x_min: -0.012345679012345682,
+            x_max: 686.4443937550029,
+            y_min: -427,
+            y_max: 30,
+            ha: 457,
+            o: 'm 56 -615 b 282 -612 132 -612 207 -613 b 924 -606 497 -608 710 -606 b 973 -570 953 -606 968 -593 b 988 -455 984 -533 991 -494 b 982 -262 984 -390 982 -327 b 976 -69 982 -197 981 -134 b 976 -14 975 -50 976 -33 b 966 43 976 4 975 23 b 940 20 953 37 943 35 b 933 -76 936 -12 933 -45 b 935 -121 933 -91 933 -107 b 940 -307 940 -183 940 -245 l 940 -435 b 919 -458 940 -451 935 -458 b 894 -459 910 -458 903 -458 b 206 -467 665 -461 435 -467 b 88 -467 167 -467 127 -468 b 45 -425 45 -467 42 -465 b 46 -400 46 -416 46 -408 b 43 -325 46 -376 43 -350 b 42 -59 42 -236 42 -148 b 22 17 42 -32 36 -6 b 0 -27 -1 7 0 -10 b 7 -420 0 -158 7 -289 l 7 -474 b 16 -579 7 -510 7 -544 b 56 -615 22 -603 27 -615 z m 789 -390 b 835 -357 816 -392 829 -380 b 850 -256 844 -324 850 -291 b 848 -230 850 -248 850 -239 b 845 -135 845 -199 845 -167 l 845 -72 b 837 23 845 -40 848 -9 b 809 -27 809 14 809 -7 l 809 -222 b 788 -242 809 -238 805 -242 l 203 -229 b 180 -209 186 -229 180 -223 l 180 -160 b 179 -115 180 -145 180 -131 b 179 -50 177 -94 179 -72 b 163 24 179 -26 176 0 b 137 -6 145 19 140 10 b 134 -39 134 -17 134 -27 b 138 -105 134 -60 137 -82 l 138 -197 b 145 -343 138 -246 138 -294 b 179 -377 148 -364 151 -377 b 789 -390 383 -377 586 -380 z m 480 -164 b 566 -65 549 -164 566 -140 b 527 1 566 -10 564 1 b 436 -71 426 1 436 -9 l 436 -88 l 436 -143 b 454 -163 436 -153 439 -161 b 480 -164 464 -163 472 -164 z',
+        },
+        fermataShortAbove: {
+            x_min: 0,
+            x_max: 545,
+            y_min: -18.08551453529649,
+            y_max: 348,
+            ha: 366.0855145352965,
+            o: 'm 16 -26 b 36 -9 26 -27 30 -16 b 354 340 143 107 249 223 b 369 348 360 346 364 348 b 382 341 373 348 377 346 l 530 199 b 743 0 599 131 672 68 b 753 -7 747 -3 750 -7 b 762 -1 756 -7 759 -6 b 785 84 776 10 785 48 b 768 150 785 112 779 138 l 399 491 b 379 501 392 498 384 501 b 357 488 372 501 364 495 b 27 137 248 370 141 251 b 1 84 12 121 1 105 b 3 69 1 79 1 75 b 0 55 1 65 0 59 b 9 1 0 36 9 20 b 16 -26 10 -7 3 -22 z m 357 24 b 367 27 360 24 363 24 b 431 118 422 42 431 49 b 429 151 431 130 431 141 b 400 193 428 171 429 193 b 333 147 359 193 333 176 b 341 42 333 111 337 78 b 357 24 343 30 346 24 z',
+        },
+        fermataShortBelow: {
+            x_min: 0,
+            x_max: 565,
+            y_min: -335,
+            y_max: 10,
+            ha: 345,
+            o: 'm 386 -482 b 422 -455 395 -482 405 -474 b 732 -117 526 -343 631 -232 b 814 12 765 -79 799 -42 b 752 -22 780 14 768 -7 b 436 -320 645 -120 540 -219 b 419 -328 429 -325 425 -328 b 400 -318 413 -328 408 -325 b 35 0 279 -212 157 -105 b 16 14 29 4 23 14 b 7 12 13 14 10 14 b 0 -3 1 7 0 1 b 7 -23 0 -10 3 -17 b 20 -48 12 -30 14 -39 b 167 -238 60 -117 115 -177 b 351 -455 229 -310 289 -383 b 386 -482 367 -474 377 -482 z m 382 -213 b 406 -207 389 -213 396 -210 b 452 -156 431 -199 446 -180 b 461 -85 456 -132 458 -108 b 448 -32 461 -66 454 -49 b 418 -6 442 -12 431 -6 b 397 -9 410 -6 405 -7 b 348 -50 376 -14 350 -14 b 356 -170 348 -91 354 -130 b 382 -213 357 -199 363 -213 z',
+        },
         breathMarkComma: {
             x_min: 0,
             x_max: 148,
@@ -14826,7 +14981,7 @@ const PetalumaFont = {
     },
     fontFamily: 'Petaluma',
     resolution: 1000,
-    generatedOn: '2021-12-06T21:04:23.441Z',
+    generatedOn: '2022-05-17T21:06:04.502Z',
 };
 
 
@@ -18574,10 +18729,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 /* harmony import */ var _boundingboxcomputation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./boundingboxcomputation */ "./src/boundingboxcomputation.ts");
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./element */ "./src/element.ts");
-/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tables */ "./src/tables.ts");
+/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
+
 
 
 
@@ -18626,19 +18783,21 @@ class GlyphOutline {
         this.originY = originY;
         this.scale = scale;
         this.i = 0;
+        this.precision = 1;
         // Automatically assign private properties: this.outline, this.originX, this.originY, and this.scale.
+        this.precision = Math.pow(10, _tables__WEBPACK_IMPORTED_MODULE_3__.Tables.RENDER_PRECISION_PLACES);
     }
     done() {
         return this.i >= this.outline.length;
     }
     next() {
-        return this.outline[this.i++];
+        return Math.round((this.outline[this.i++] * this.precision) / this.precision);
     }
     nextX() {
-        return this.originX + this.outline[this.i++] * this.scale;
+        return Math.round((this.originX + this.outline[this.i++] * this.scale) * this.precision) / this.precision;
     }
     nextY() {
-        return this.originY - this.outline[this.i++] * this.scale;
+        return Math.round((this.originY - this.outline[this.i++] * this.scale) * this.precision) / this.precision;
     }
     static parse(str) {
         const result = [];
@@ -18693,7 +18852,7 @@ class Glyph extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
     //////////////////////////////////////////////////////////////////////////////////////////////////
     // STATIC MEMBERS
     static get CATEGORY() {
-        return _typeguard__WEBPACK_IMPORTED_MODULE_3__.Category.Glyph;
+        return _typeguard__WEBPACK_IMPORTED_MODULE_4__.Category.Glyph;
     }
     /**
      * Pass a key of the form `glyphs.{category}.{code}.{key}` to Font.lookupMetric(). If the initial lookup fails,
@@ -18714,7 +18873,7 @@ class Glyph extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         return value;
     }
     static lookupGlyph(fontStack, code) {
-        (0,_util__WEBPACK_IMPORTED_MODULE_4__.defined)(fontStack, 'BadFontStack', 'Font stack is misconfigured');
+        (0,_util__WEBPACK_IMPORTED_MODULE_5__.defined)(fontStack, 'BadFontStack', 'Font stack is misconfigured');
         let glyph;
         let font;
         for (let i = 0; i < fontStack.length; i++) {
@@ -18723,12 +18882,12 @@ class Glyph extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
             if (glyph)
                 return { glyph, font };
         }
-        throw new _util__WEBPACK_IMPORTED_MODULE_4__.RuntimeError('BadGlyph', `Glyph ${code} does not exist in font.`);
+        throw new _util__WEBPACK_IMPORTED_MODULE_5__.RuntimeError('BadGlyph', `Glyph ${code} does not exist in font.`);
     }
     static loadMetrics(fontStack, code, category) {
         const { glyph, font } = Glyph.lookupGlyph(fontStack, code);
         if (!glyph.o)
-            throw new _util__WEBPACK_IMPORTED_MODULE_4__.RuntimeError('BadGlyph', `Glyph ${code} has no outline defined.`);
+            throw new _util__WEBPACK_IMPORTED_MODULE_5__.RuntimeError('BadGlyph', `Glyph ${code} has no outline defined.`);
         let x_shift = 0;
         let y_shift = 0;
         let scale = 1;
@@ -18896,7 +19055,7 @@ class Glyph extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         this.bbox = new _boundingbox__WEBPACK_IMPORTED_MODULE_0__.BoundingBox(data.bbox.getX() * this.scale, data.bbox.getY() * this.scale, data.bbox.getW() * this.scale, data.bbox.getH() * this.scale);
     }
     checkMetrics() {
-        return (0,_util__WEBPACK_IMPORTED_MODULE_4__.defined)(this.metrics, 'BadGlyph', `Glyph ${this.code} is not initialized.`);
+        return (0,_util__WEBPACK_IMPORTED_MODULE_5__.defined)(this.metrics, 'BadGlyph', `Glyph ${this.code} is not initialized.`);
     }
     getMetrics() {
         const metrics = this.checkMetrics();
@@ -18942,7 +19101,7 @@ class Glyph extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         this.restoreStyle(ctx);
     }
     checkStave() {
-        return (0,_util__WEBPACK_IMPORTED_MODULE_4__.defined)(this.stave, 'NoStave', 'No stave attached to instance.');
+        return (0,_util__WEBPACK_IMPORTED_MODULE_5__.defined)(this.stave, 'NoStave', 'No stave attached to instance.');
     }
     renderToStave(x) {
         const context = this.checkContext();
@@ -19216,12 +19375,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _beam__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./beam */ "./src/beam.ts");
 /* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
-/* harmony import */ var _stavetie__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
-/* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./tables */ "./src/tables.ts");
-/* harmony import */ var _tabtie__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./tabtie */ "./src/tabtie.ts");
-/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./util */ "./src/util.ts");
-/* harmony import */ var _voice__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./voice */ "./src/voice.ts");
+/* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
+/* harmony import */ var _stavetie__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
+/* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./tables */ "./src/tables.ts");
+/* harmony import */ var _tabtie__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./tabtie */ "./src/tabtie.ts");
+/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _voice__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./voice */ "./src/voice.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 //
 // ## Description
@@ -19237,11 +19397,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 // To enable logging for this class. Set `GraceNoteGroup.DEBUG` to `true`.
 // eslint-disable-next-line
 function L(...args) {
     if (GraceNoteGroup.DEBUG)
-        (0,_util__WEBPACK_IMPORTED_MODULE_7__.log)('Vex.Flow.GraceNoteGroup', args);
+        (0,_util__WEBPACK_IMPORTED_MODULE_8__.log)('Vex.Flow.GraceNoteGroup', args);
 }
 /** GraceNoteGroup is used to format and render grace notes. */
 class GraceNoteGroup extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
@@ -19254,10 +19415,10 @@ class GraceNoteGroup extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
         this.width = 0;
         this.show_slur = show_slur;
         this.slur = undefined;
-        this.voice = new _voice__WEBPACK_IMPORTED_MODULE_8__.Voice({
+        this.voice = new _voice__WEBPACK_IMPORTED_MODULE_9__.Voice({
             num_beats: 4,
             beat_value: 4,
-            resolution: _tables__WEBPACK_IMPORTED_MODULE_4__.Tables.RESOLUTION,
+            resolution: _tables__WEBPACK_IMPORTED_MODULE_5__.Tables.RESOLUTION,
         }).setStrict(false);
         this.render_options = {
             slur_y_shift: 0,
@@ -19267,7 +19428,7 @@ class GraceNoteGroup extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
         return this;
     }
     static get CATEGORY() {
-        return _typeguard__WEBPACK_IMPORTED_MODULE_6__.Category.GraceNoteGroup;
+        return _typeguard__WEBPACK_IMPORTED_MODULE_7__.Category.GraceNoteGroup;
     }
     /** Arranges groups inside a `ModifierContext`. */
     static format(gracenote_groups, state) {
@@ -19281,7 +19442,7 @@ class GraceNoteGroup extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
         for (let i = 0; i < gracenote_groups.length; ++i) {
             const gracenote_group = gracenote_groups[i];
             const note = gracenote_group.getNote();
-            const is_stavenote = (0,_typeguard__WEBPACK_IMPORTED_MODULE_6__.isStaveNote)(note);
+            const is_stavenote = (0,_typeguard__WEBPACK_IMPORTED_MODULE_7__.isStaveNote)(note);
             const spacing = is_stavenote ? group_spacing_stave : group_spacing_tab;
             if (is_stavenote && note !== prev_note) {
                 // Iterate through all notes to get the displaced pixels
@@ -19304,7 +19465,7 @@ class GraceNoteGroup extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
         for (let i = 0; i < group_list.length; ++i) {
             const gracenote_group = group_list[i].gracenote_group;
             formatWidth = gracenote_group.getWidth() + group_list[i].spacing;
-            gracenote_group.setSpacingFromNextModifier(group_shift - Math.min(formatWidth, group_shift));
+            gracenote_group.setSpacingFromNextModifier(group_shift - Math.min(formatWidth, group_shift) + _stavenote__WEBPACK_IMPORTED_MODULE_3__.StaveNote.minNoteheadPadding);
         }
         state.left_shift += group_shift;
         return true;
@@ -19334,7 +19495,7 @@ class GraceNoteGroup extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
         return this;
     }
     getWidth() {
-        return this.width;
+        return this.width + _stavenote__WEBPACK_IMPORTED_MODULE_3__.StaveNote.minNoteheadPadding;
     }
     getGraceNotes() {
         return this.grace_notes;
@@ -19351,8 +19512,8 @@ class GraceNoteGroup extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
         this.beams.forEach((beam) => beam.setContext(ctx).draw());
         if (this.show_slur) {
             // Create and draw slur.
-            const is_stavenote = (0,_typeguard__WEBPACK_IMPORTED_MODULE_6__.isStaveNote)(note);
-            const TieClass = is_stavenote ? _stavetie__WEBPACK_IMPORTED_MODULE_3__.StaveTie : _tabtie__WEBPACK_IMPORTED_MODULE_5__.TabTie;
+            const is_stavenote = (0,_typeguard__WEBPACK_IMPORTED_MODULE_7__.isStaveNote)(note);
+            const TieClass = is_stavenote ? _stavetie__WEBPACK_IMPORTED_MODULE_4__.StaveTie : _tabtie__WEBPACK_IMPORTED_MODULE_6__.TabTie;
             this.slur = new TieClass({
                 last_note: this.grace_notes[0],
                 first_note: note,
@@ -23425,8 +23586,6 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         if (!this.formatted)
             this.format();
         this.start_x = x;
-        const begBarline = this.modifiers[0];
-        begBarline.setX(this.start_x - begBarline.getWidth());
         return this;
     }
     getNoteStartX() {
@@ -23982,6 +24141,49 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         }
         this.options.line_config = lines_configuration;
         return this;
+    }
+    static formatBegModifiers(staves) {
+        let maxX = 0;
+        // align note start
+        staves.forEach((stave) => {
+            if (stave.getNoteStartX() > maxX)
+                maxX = stave.getNoteStartX();
+        });
+        staves.forEach((stave) => {
+            stave.setNoteStartX(maxX);
+        });
+        maxX = 0;
+        // align REPEAT_BEGIN
+        staves.forEach((stave) => {
+            const modifiers = stave.getModifiers(_stavemodifier__WEBPACK_IMPORTED_MODULE_6__.StaveModifierPosition.BEGIN, _typeguard__WEBPACK_IMPORTED_MODULE_14__.Category.Barline);
+            modifiers.forEach((modifier) => {
+                if (modifier.getType() == _stavebarline__WEBPACK_IMPORTED_MODULE_5__.BarlineType.REPEAT_BEGIN)
+                    if (modifier.getX() > maxX)
+                        maxX = modifier.getX();
+            });
+        });
+        staves.forEach((stave) => {
+            const modifiers = stave.getModifiers(_stavemodifier__WEBPACK_IMPORTED_MODULE_6__.StaveModifierPosition.BEGIN, _typeguard__WEBPACK_IMPORTED_MODULE_14__.Category.Barline);
+            modifiers.forEach((modifier) => {
+                if (modifier.getType() == _stavebarline__WEBPACK_IMPORTED_MODULE_5__.BarlineType.REPEAT_BEGIN)
+                    modifier.setX(maxX);
+            });
+        });
+        maxX = 0;
+        // Align time signatures
+        staves.forEach((stave) => {
+            const modifiers = stave.getModifiers(_stavemodifier__WEBPACK_IMPORTED_MODULE_6__.StaveModifierPosition.BEGIN, _typeguard__WEBPACK_IMPORTED_MODULE_14__.Category.TimeSignature);
+            modifiers.forEach((modifier) => {
+                if (modifier.getX() > maxX)
+                    maxX = modifier.getX();
+            });
+        });
+        staves.forEach((stave) => {
+            const modifiers = stave.getModifiers(_stavemodifier__WEBPACK_IMPORTED_MODULE_6__.StaveModifierPosition.BEGIN, _typeguard__WEBPACK_IMPORTED_MODULE_14__.Category.TimeSignature);
+            modifiers.forEach((modifier) => {
+                modifier.setX(maxX);
+            });
+        });
     }
 }
 Stave.TEXT_FONT = {
@@ -25108,6 +25310,8 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNot
         // INSTANCE MEMBERS
         this.minLine = 0;
         this.maxLine = 0;
+        // Sorted variant of keyProps used internally
+        this.sortedKeyProps = [];
         this.ledgerLineStyle = {};
         this.clef = (_a = noteStruct.clef) !== null && _a !== void 0 ? _a : 'treble';
         this.octave_shift = (_b = noteStruct.octave_shift) !== null && _b !== void 0 ? _b : 0;
@@ -25167,9 +25371,10 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNot
             return false;
         const notesList = [];
         for (let i = 0; i < notes.length; i++) {
-            const props = notes[i].getKeyProps();
-            const line = props[0].line;
-            let minL = props[props.length - 1].line;
+            // Formatting uses sortedKeyProps to calculate line and minL.
+            const props = notes[i].sortedKeyProps;
+            const line = props[0].keyProps.line;
+            let minL = props[props.length - 1].keyProps.line;
             const stemDirection = notes[i].getStemDirection();
             const stemMax = notes[i].getStemLength() / 10;
             const stemMin = notes[i].getStemMinimumLength() / 10;
@@ -25179,11 +25384,12 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNot
                 minL = line - notes[i].glyph.line_below;
             }
             else {
-                maxL = stemDirection === 1 ? props[props.length - 1].line + stemMax : props[props.length - 1].line;
-                minL = stemDirection === 1 ? props[0].line : props[0].line - stemMax;
+                maxL =
+                    stemDirection === 1 ? props[props.length - 1].keyProps.line + stemMax : props[props.length - 1].keyProps.line;
+                minL = stemDirection === 1 ? props[0].keyProps.line : props[0].keyProps.line - stemMax;
             }
             notesList.push({
-                line: props[0].line,
+                line: props[0].keyProps.line,
                 maxLine: maxL,
                 minLine: minL,
                 isrest: notes[i].isRest(),
@@ -25479,7 +25685,8 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNot
             step = -1;
         }
         for (let i = start; i !== end; i += step) {
-            const noteProps = this.keyProps[i];
+            // Building noteheads rely on sortedKeNotes in order to calculate the displacements
+            const noteProps = this.sortedKeyProps[i].keyProps;
             const line = noteProps.line;
             // Keep track of last line with a note head, so that consecutive heads
             // are correctly displaced.
@@ -25509,7 +25716,8 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNot
                 stem_down_x_offset: noteProps.stem_down_x_offset,
                 line: noteProps.line,
             });
-            this._noteHeads[i] = notehead;
+            this.addChildElement(notehead);
+            this._noteHeads[this.sortedKeyProps[i].index] = notehead;
         }
     }
     // Automatically sets the stem direction based on the keys in the note
@@ -25518,8 +25726,9 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNot
     }
     calculateOptimalStemDirection() {
         // Figure out optimal stem direction based on given notes
-        this.minLine = this.keyProps[0].line;
-        this.maxLine = this.keyProps[this.keyProps.length - 1].line;
+        // minLine & maxLine rely on sortedKeyProps
+        this.minLine = this.sortedKeyProps[0].keyProps.line;
+        this.maxLine = this.sortedKeyProps[this.keyProps.length - 1].keyProps.line;
         const MIDDLE_LINE = 3;
         const decider = (this.minLine + this.maxLine) / 2;
         const stemDirection = decider < MIDDLE_LINE ? _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.UP : _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.DOWN;
@@ -25567,15 +25776,12 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNot
             lastLine = line;
             this.keyProps.push(props);
         }
-        // Sort the notes from lowest line to highest line
-        lastLine = undefined;
-        this.keyProps.forEach((key) => {
-            if (lastLine && key.line < lastLine) {
-                (0,_util__WEBPACK_IMPORTED_MODULE_7__.warn)('Unsorted keys in note will be sorted. ' + 'See https://github.com/0xfe/vexflow/issues/104 for details.');
-            }
-            lastLine = key.line;
+        // Sort the notes from lowest line to highest line in sortedKeyProps
+        // Warn no longer required as keyProps remains unsorted
+        this.keyProps.forEach((keyProps, index) => {
+            this.sortedKeyProps.push({ keyProps, index });
         });
-        this.keyProps.sort((a, b) => a.line - b.line);
+        this.sortedKeyProps.sort((a, b) => a.keyProps.line - b.keyProps.line);
     }
     // Get the `BoundingBox` for the entire note
     getBoundingBox() {
@@ -25769,11 +25975,7 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNot
     // Sets the style of the complete StaveNote, including all keys
     // and the stem.
     setStyle(style) {
-        super.setStyle(style);
-        this._noteHeads.forEach((notehead) => notehead.setStyle(style));
-        if (this.stem)
-            this.stem.setStyle(style);
-        return this;
+        return super.setGroupStyle(style);
     }
     setStemStyle(style) {
         const stem = this.getStem();
@@ -27143,6 +27345,7 @@ class StemmableNote extends _note__WEBPACK_IMPORTED_MODULE_1__.Note {
     }
     setStem(stem) {
         this.stem = stem;
+        this.addChildElement(stem);
         return this;
     }
     // Builds and sets a new stem
@@ -27373,7 +27576,6 @@ class StringNumber extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
     constructor(number) {
         super();
         this.string_number = number;
-        this.setWidth(20); // ???
         this.position = _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier.Position.ABOVE; // Default position above stem or note head
         this.x_shift = 0;
         this.y_shift = 0;
@@ -27384,6 +27586,8 @@ class StringNumber extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
         this.dashed = true; // true - draw dashed extension  false - no extension
         this.leg = _renderer__WEBPACK_IMPORTED_MODULE_2__.Renderer.LineEndType.NONE; // draw upward/downward leg at the of extension line
         this.radius = 8;
+        this.drawCircle = true;
+        this.setWidth(this.radius * 2 + 4);
         this.resetFont();
     }
     static get CATEGORY() {
@@ -27510,6 +27714,10 @@ class StringNumber extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
         this.dashed = dashed;
         return this;
     }
+    setDrawCircle(drawCircle) {
+        this.drawCircle = drawCircle;
+        return this;
+    }
     draw() {
         const ctx = this.checkContext();
         const note = this.checkAttachedNote();
@@ -27553,10 +27761,12 @@ class StringNumber extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
                 throw new _util__WEBPACK_IMPORTED_MODULE_6__.RuntimeError('InvalidPosition', `The position ${this.position} is invalid`);
         }
         ctx.save();
-        ctx.beginPath();
-        ctx.arc(dot_x, dot_y, this.radius, 0, Math.PI * 2, false);
-        ctx.setLineWidth(1.5);
-        ctx.stroke();
+        if (this.drawCircle) {
+            ctx.beginPath();
+            ctx.arc(dot_x, dot_y, this.radius, 0, Math.PI * 2, false);
+            ctx.setLineWidth(1.5);
+            ctx.stroke();
+        }
         ctx.setFont(this.textFont);
         const x = dot_x - ctx.measureText(this.string_number).width / 2;
         ctx.fillText('' + this.string_number, x, dot_y + 4.5);
@@ -28477,6 +28687,7 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
         let y = this.options.y;
         let startX = 0;
         let allVoices = [];
+        let allStaves = [];
         const debugNoteMetricsYs = [];
         // Join the voices for each stave.
         this.parts.forEach((part) => {
@@ -28490,6 +28701,7 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
                 y += 15;
             }
             allVoices = allVoices.concat(part.voices);
+            allStaves = allStaves.concat(part.stave);
             startX = Math.max(startX, part.stave.getNoteStartX());
         });
         // Update the start position of all staves.
@@ -28513,6 +28725,7 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
         this.debugNoteMetricsYs = debugNoteMetricsYs;
         this.lastY = y;
         this.boundingBox = new _boundingbox__WEBPACK_IMPORTED_MODULE_0__.BoundingBox(this.options.x, this.options.y, this.options.width, this.lastY - this.options.y);
+        _stave__WEBPACK_IMPORTED_MODULE_4__.Stave.formatBegModifiers(allStaves);
     }
     /** Render the system. */
     draw() {
@@ -29034,6 +29247,15 @@ const articulations = {
     'a@': { aboveCode: 'fermataAbove', belowCode: 'fermataBelow', between_lines: false },
     'a@a': { code: 'fermataAbove', between_lines: false },
     'a@u': { code: 'fermataBelow', between_lines: false },
+    'a@s': { aboveCode: 'fermataShortAbove', belowCode: 'fermataShortBelow', between_lines: false },
+    'a@as': { code: 'fermataShortAbove', between_lines: false },
+    'a@us': { code: 'fermataShortBelow', between_lines: false },
+    'a@l': { aboveCode: 'fermataLongAbove', belowCode: 'fermataLongBelow', between_lines: false },
+    'a@al': { code: 'fermataLongAbove', between_lines: false },
+    'a@ul': { code: 'fermataLongBelow', between_lines: false },
+    'a@vl': { aboveCode: 'fermataVeryLongAbove', belowCode: 'fermataVeryLongBelow', between_lines: false },
+    'a@avl': { code: 'fermataVeryLongAbove', between_lines: false },
+    'a@uvl': { code: 'fermataVeryLongBelow', between_lines: false },
     'a|': { code: 'stringsUpBow', between_lines: false },
     am: { code: 'stringsDownBow', between_lines: false },
     'a,': { code: 'pictChokeCymbal', between_lines: false }, // Choked
@@ -29281,9 +29503,11 @@ class Tables {
         return Object.assign(Object.assign(Object.assign({}, code.common), { getWidth: getWidth }), glyphTypeProperties);
     }
 }
+Tables.SOFTMAX_FACTOR = 100;
 Tables.STEM_WIDTH = 1.5;
 Tables.STEM_HEIGHT = 35;
 Tables.STAVE_LINE_THICKNESS = 1;
+Tables.RENDER_PRECISION_PLACES = 3;
 Tables.RESOLUTION = RESOLUTION;
 /**
  * Customize this by calling Flow.setMusicFont(...fontNames);
