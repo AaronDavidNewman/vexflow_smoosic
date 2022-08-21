@@ -1,5 +1,5 @@
 /*!
- * VexFlow 4.0.3   2022-07-02T00:22:17.104Z   ab04d51a4d550996df24f21cf99328958f9300ed
+ * VexFlow 4.0.3   2022-08-21T18:29:28.141Z   c06599a58a3c4ff45eb8e70d3608a93b19935cf0
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * https://www.vexflow.com   https://github.com/0xfe/vexflow
  */
@@ -30,8 +30,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "VERSION": () => (/* binding */ VERSION)
 /* harmony export */ });
 const VERSION = '4.0.3';
-const ID = 'ab04d51a4d550996df24f21cf99328958f9300ed';
-const DATE = '2022-07-02T00:22:17.104Z';
+const ID = 'c06599a58a3c4ff45eb8e70d3608a93b19935cf0';
+const DATE = '2022-08-21T18:29:28.141Z';
 
 
 /***/ }),
@@ -18066,11 +18066,19 @@ const sumArray = (arr) => arr.reduce((a, b) => a + b, 0);
  * total number of ticks in voices.
  */
 function createContexts(voices, makeContext, addToContext) {
-    const resolutionMultiplier = Formatter.getResolutionMultiplier(voices);
+    let resolutionMultiplier = 0;
     // Initialize tick maps.
     const tickToContextMap = {};
     const tickList = [];
     const contexts = [];
+    if (voices.length == 0)
+        return {
+            map: tickToContextMap,
+            array: contexts,
+            list: tickList.sort((a, b) => a - b),
+            resolutionMultiplier,
+        };
+    resolutionMultiplier = Formatter.getResolutionMultiplier(voices);
     // For each voice, extract notes and create a context for every
     // new tick that hasn't been seen before.
     voices.forEach((voice, voiceIndex) => {
@@ -18160,7 +18168,7 @@ class Formatter {
         this.hasMinTotalWidth = false;
         // Arrays of tick and modifier contexts.
         this.tickContexts = undefined;
-        this.modifierContexts = undefined;
+        this.modifierContexts = [];
         // Gaps between contexts, for free movement of notes post
         // formatting.
         this.contextGaps = {
@@ -18446,10 +18454,54 @@ class Formatter {
     }
     /** Create a `ModifierContext` for each tick in `voices`. */
     createModifierContexts(voices) {
-        const fn = (tickable, context) => tickable.addToModifierContext(context);
-        const contexts = createContexts(voices, () => new _modifiercontext__WEBPACK_IMPORTED_MODULE_3__.ModifierContext(), fn);
-        this.modifierContexts = contexts;
-        return contexts;
+        if (voices.length == 0)
+            return;
+        const resolutionMultiplier = Formatter.getResolutionMultiplier(voices);
+        // Initialize tick maps.
+        const tickToContextMap = new Map();
+        const tickList = new Map();
+        const contexts = [];
+        // For each voice, extract notes and create a context for every
+        // new tick that hasn't been seen before.
+        voices.forEach((voice) => {
+            // Use resolution multiplier as denominator so that no additional expansion
+            // of fractional tick values is needed.
+            const ticksUsed = new _fraction__WEBPACK_IMPORTED_MODULE_2__.Fraction(0, resolutionMultiplier);
+            voice.getTickables().forEach((tickable) => {
+                const integerTicks = ticksUsed.numerator;
+                let staveTickToContextMap = tickToContextMap.get(tickable.getStave());
+                let staveTickList = tickList.get(tickable.getStave());
+                // If we have no tick context for this tick, create one.
+                if (!staveTickToContextMap) {
+                    tickToContextMap.set(tickable.getStave(), {});
+                    tickList.set(tickable.getStave(), []);
+                    staveTickToContextMap = tickToContextMap.get(tickable.getStave());
+                    staveTickList = tickList.get(tickable.getStave());
+                }
+                if (!(staveTickToContextMap ? staveTickToContextMap[integerTicks] : undefined)) {
+                    const newContext = new _modifiercontext__WEBPACK_IMPORTED_MODULE_3__.ModifierContext();
+                    contexts.push(newContext);
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    staveTickToContextMap[integerTicks] = newContext;
+                    // Maintain a list of unique integerTicks.
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    staveTickList.push(integerTicks);
+                }
+                // Add this tickable to the TickContext.
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                tickable.addToModifierContext(staveTickToContextMap[integerTicks]);
+                ticksUsed.add(tickable.getTicks());
+            });
+        });
+        tickList.forEach((instance) => {
+            instance.sort((a, b) => a - b);
+        });
+        this.modifierContexts.push({
+            map: tickToContextMap,
+            array: contexts,
+            list: tickList,
+            resolutionMultiplier,
+        });
     }
     /**
      * Create a `TickContext` for each tick in `voices`. Also calculate the
@@ -18812,8 +18864,13 @@ class Formatter {
      */
     postFormat() {
         const postFormatContexts = (contexts) => contexts.list.forEach((tick) => contexts.map[tick].postFormat());
-        if (this.modifierContexts)
-            postFormatContexts(this.modifierContexts);
+        this.modifierContexts.forEach((modifierContexts) => {
+            modifierContexts.list.forEach((ticks, stave) => {
+                const record = modifierContexts.map.get(stave);
+                if (record)
+                    ticks.forEach((tick) => record[tick].postFormat());
+            });
+        });
         if (this.tickContexts)
             postFormatContexts(this.tickContexts);
         return this;
@@ -29265,7 +29322,9 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
     constructor(params = {}) {
         super();
         this.setOptions(params);
-        this.parts = [];
+        this.partStaves = [];
+        this.partStaveInfos = [];
+        this.partVoices = [];
     }
     static get CATEGORY() {
         return _typeguard__WEBPACK_IMPORTED_MODULE_5__.Category.System;
@@ -29281,6 +29340,36 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
             this.options.autoWidth = true;
         }
     }
+    /** Set origin X. */
+    getX() {
+        return this.options.x;
+    }
+    /** Get origin X. */
+    setX(x) {
+        this.options.x = x;
+        this.partStaves.forEach((s) => {
+            s.setX(x);
+        });
+    }
+    /** Set origin y. */
+    getY() {
+        return this.options.y;
+    }
+    /** Get origin y. */
+    setY(y) {
+        this.options.y = y;
+        this.partStaves.forEach((s) => {
+            s.setY(y);
+        });
+    }
+    /** Get associated staves. */
+    getStaves() {
+        return this.partStaves;
+    }
+    /** Get associated voices. */
+    getVoices() {
+        return this.partVoices;
+    }
     /** Set associated context. */
     setContext(context) {
         super.setContext(context);
@@ -29293,8 +29382,8 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
      */
     addConnector(type = 'double') {
         this.connector = this.factory.StaveConnector({
-            top_stave: this.parts[0].stave,
-            bottom_stave: this.parts[this.parts.length - 1].stave,
+            top_stave: this.partStaves[0],
+            bottom_stave: this.partStaves[this.partStaves.length - 1],
             type,
         });
         return this.connector;
@@ -29317,17 +29406,29 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
         var _a;
         const staveOptions = Object.assign({ left_bar: false }, params.options);
         const stave = (_a = params.stave) !== null && _a !== void 0 ? _a : this.factory.Stave({ x: this.options.x, y: this.options.y, width: this.options.width, options: staveOptions });
-        const p = Object.assign(Object.assign({ stave, 
-            /* voices: [], */
-            spaceAbove: 0, spaceBelow: 0, debugNoteMetrics: false, noJustification: false }, params), { options: staveOptions });
+        const p = Object.assign(Object.assign({ spaceAbove: 0, spaceBelow: 0, debugNoteMetrics: false, noJustification: false }, params), { options: staveOptions });
         const ctx = this.getContext();
-        p.voices.forEach((voice) => voice
-            .setContext(ctx)
-            .setStave(stave)
-            .getTickables()
-            .forEach((tickable) => tickable.setStave(stave)));
-        this.parts.push(p);
+        p.voices.forEach((voice) => {
+            voice
+                .setContext(ctx)
+                .setStave(stave)
+                .getTickables()
+                .forEach((tickable) => tickable.setStave(stave));
+            this.partVoices.push(voice);
+        });
+        this.partStaves.push(stave);
+        this.partStaveInfos.push(p);
         return stave;
+    }
+    /**
+     * Add voices to the system with stave already assigned.
+     */
+    addVoices(voices) {
+        const ctx = this.getContext();
+        voices.forEach((voice) => {
+            voice.setContext(ctx);
+            this.partVoices.push(voice);
+        });
     }
     /** Format the system. */
     format() {
@@ -29337,30 +29438,35 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
         this.formatter = formatter;
         let y = this.options.y;
         let startX = 0;
-        let allVoices = [];
-        let allStaves = [];
         const debugNoteMetricsYs = [];
-        // Join the voices for each stave.
-        this.parts.forEach((part) => {
-            y = y + part.stave.space(part.spaceAbove);
-            part.stave.setY(y);
-            formatter.joinVoices(part.voices);
-            y = y + part.stave.space(part.spaceBelow);
-            y = y + part.stave.space(this.options.spaceBetweenStaves);
-            if (part.debugNoteMetrics) {
-                debugNoteMetricsYs.push({ y, voice: part.voices[0] });
+        this.partStaves.forEach((part, index) => {
+            y = y + part.space(this.partStaveInfos[index].spaceAbove);
+            part.setY(y);
+            y = y + part.space(this.partStaveInfos[index].spaceBelow);
+            y = y + part.space(this.options.spaceBetweenStaves);
+            if (this.partStaveInfos[index].debugNoteMetrics) {
+                debugNoteMetricsYs.push({ y, stave: part });
                 y += 15;
             }
-            allVoices = allVoices.concat(part.voices);
-            allStaves = allStaves.concat(part.stave);
-            startX = Math.max(startX, part.stave.getNoteStartX());
+            startX = Math.max(startX, part.getNoteStartX());
         });
+        // Re-assign Stave to update y position
+        this.partVoices.forEach((voice) => {
+            voice.getTickables().forEach((tickable) => {
+                const stave = tickable.getStave();
+                if (stave)
+                    tickable.setStave(stave);
+            });
+        });
+        // Join the voices
+        formatter.joinVoices(this.partVoices);
         // Update the start position of all staves.
-        this.parts.forEach((part) => part.stave.setNoteStartX(startX));
-        if (this.options.autoWidth) {
-            justifyWidth = formatter.preCalculateMinTotalWidth(allVoices);
-            this.parts.forEach((part) => {
-                part.stave.setWidth(justifyWidth + _stave__WEBPACK_IMPORTED_MODULE_4__.Stave.rightPadding + (startX - this.options.x));
+        this.partStaves.forEach((part) => part.setNoteStartX(startX));
+        if (this.options.autoWidth && this.partVoices.length > 0) {
+            justifyWidth = formatter.preCalculateMinTotalWidth(this.partVoices);
+            this.options.width = justifyWidth + _stave__WEBPACK_IMPORTED_MODULE_4__.Stave.rightPadding + (startX - this.options.x);
+            this.partStaves.forEach((part) => {
+                part.setWidth(this.options.width);
             });
         }
         else {
@@ -29368,7 +29474,10 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
                 ? this.options.width - (startX - this.options.x)
                 : this.options.width - (startX - this.options.x) - _stave__WEBPACK_IMPORTED_MODULE_4__.Stave.defaultPadding;
         }
-        formatter.format(allVoices, this.options.noJustification ? 0 : justifyWidth, this.options.formatOptions);
+        if (this.partVoices.length > 0) {
+            formatter.format(this.partVoices, this.options.noJustification ? 0 : justifyWidth, this.options.formatOptions);
+        }
+        formatter.postFormat();
         for (let i = 0; i < this.options.formatIterations; i++) {
             formatter.tune(options_details);
         }
@@ -29376,7 +29485,7 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
         this.debugNoteMetricsYs = debugNoteMetricsYs;
         this.lastY = y;
         this.boundingBox = new _boundingbox__WEBPACK_IMPORTED_MODULE_0__.BoundingBox(this.options.x, this.options.y, this.options.width, this.lastY - this.options.y);
-        _stave__WEBPACK_IMPORTED_MODULE_4__.Stave.formatBegModifiers(allStaves);
+        _stave__WEBPACK_IMPORTED_MODULE_4__.Stave.formatBegModifiers(this.partStaves);
     }
     /** Render the system. */
     draw() {
@@ -29390,7 +29499,12 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
             _formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter.plotDebugging(ctx, this.formatter, this.startX, this.options.y, this.lastY);
         }
         this.debugNoteMetricsYs.forEach((d) => {
-            d.voice.getTickables().forEach((tickable) => _note__WEBPACK_IMPORTED_MODULE_3__.Note.plotMetrics(ctx, tickable, d.y));
+            this.partVoices.forEach((voice) => {
+                voice.getTickables().forEach((tickable) => {
+                    if (tickable.getStave() === d.stave)
+                        _note__WEBPACK_IMPORTED_MODULE_3__.Note.plotMetrics(ctx, tickable, d.y);
+                });
+            });
         });
     }
 }
@@ -34227,7 +34341,8 @@ class Voice extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
             let boundingBox = undefined;
             for (let i = 0; i < this.tickables.length; ++i) {
                 const tickable = this.tickables[i];
-                tickable.setStave(stave);
+                if (!tickable.getStave())
+                    tickable.setStave(stave);
                 const bb = tickable.getBoundingBox();
                 if (bb) {
                     boundingBox = boundingBox ? boundingBox.mergeWith(bb) : bb;
@@ -37370,6 +37485,7 @@ const BeamTests = {
         run('TabNote Beams Auto Stem', tabBeamsAutoStem);
         run('Complex Beams with Annotations', complexWithAnnotation);
         run('Complex Beams with Articulations', complexWithArticulation);
+        run('Complex Beams with Articulations two Staves', complexWithArticulation2);
     },
 };
 function simple(options) {
@@ -37961,6 +38077,42 @@ function complexWithArticulation(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave, { stave: stave });
     f.draw();
     ok(true, 'Complex beam articulations');
+}
+function complexWithArticulation2(options) {
+    const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 500, 200);
+    const system = f.System();
+    const s1 = [
+        { keys: ['e/4'], duration: '128', stem_direction: 1 },
+        { keys: ['d/4'], duration: '16', stem_direction: 1 },
+        { keys: ['e/4'], duration: '8', stem_direction: 1 },
+        { keys: ['c/4', 'g/4'], duration: '32', stem_direction: 1 },
+        { keys: ['c/4'], duration: '32', stem_direction: 1 },
+        { keys: ['c/4'], duration: '32', stem_direction: 1 },
+        { keys: ['c/4'], duration: '32', stem_direction: 1 },
+    ];
+    const s2 = [
+        { keys: ['e/5'], duration: '128', stem_direction: -1 },
+        { keys: ['d/5'], duration: '16', stem_direction: -1 },
+        { keys: ['e/5'], duration: '8', stem_direction: -1 },
+        { keys: ['c/5', 'g/5'], duration: '32', stem_direction: -1 },
+        { keys: ['c/5'], duration: '32', stem_direction: -1 },
+        { keys: ['c/5'], duration: '32', stem_direction: -1 },
+        { keys: ['c/5'], duration: '32', stem_direction: -1 },
+    ];
+    const notes1 = s1.map((struct) => f.StaveNote(struct).addModifier(f.Articulation({ type: 'am', position: 'above' }), 0));
+    const notes2 = s2.map((struct) => f.StaveNote(struct).addModifier(f.Articulation({ type: 'a>', position: 'below' }), 0));
+    const notes3 = s1.map((struct) => f.StaveNote(struct).addModifier(f.Articulation({ type: 'am', position: 'above' }), 0));
+    const notes4 = s2.map((struct) => f.StaveNote(struct).addModifier(f.Articulation({ type: 'a>', position: 'below' }), 0));
+    f.Beam({ notes: notes1 });
+    f.Beam({ notes: notes2 });
+    f.Beam({ notes: notes3 });
+    f.Beam({ notes: notes4 });
+    const voice1 = f.Voice().setMode(_src_index__WEBPACK_IMPORTED_MODULE_1__.Voice.Mode.SOFT).addTickables(notes1).addTickables(notes2);
+    const voice2 = f.Voice().setMode(_src_index__WEBPACK_IMPORTED_MODULE_1__.Voice.Mode.SOFT).addTickables(notes3).addTickables(notes4);
+    system.addStave({ voices: [voice1] });
+    system.addStave({ voices: [voice2] });
+    f.draw();
+    ok(true, 'Complex beam articulations two staves');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(BeamTests);
 
@@ -40271,6 +40423,90 @@ const FormatterTests = {
         run('Vertical alignment - many unaligned beats', unalignedNoteDurations2, { globalSoftmax: false });
         run('Vertical alignment - many unaligned beats (global softmax)', unalignedNoteDurations2, { globalSoftmax: true });
         run('Vertical alignment - many mixed elements', alignedMixedElements, { globalSoftmax: true });
+        run('Vertical alignment - cross stave (beam up1)', crossStave, {
+            notes0: 'C#5/q, B4/q',
+            notes1: 'A4/8, E4/8',
+            notes2: 'C4/8, D4/8',
+            stem1: 'up',
+            stem2: 'up',
+        });
+        run('Vertical alignment - cross stave (beam up2)', crossStave, {
+            notes0: 'C#5/q, C5/16, B4/q',
+            notes1: 'A4/8, E4/16',
+            notes2: 'C4/8, D4/8',
+            stem1: 'up',
+            stem2: 'up',
+        });
+        run('Vertical alignment - cross stave (beam up3)', crossStave, {
+            notes0: 'C#5/q, C5/16, B4/q',
+            notes1: 'A4/8, E4/8',
+            notes2: 'C4/16, D4/8',
+            stem1: 'up',
+            stem2: 'up',
+        });
+        run('Vertical alignment - cross stave (beam up4)', crossStave, {
+            notes0: 'C#5/q, C5/8, B4/q',
+            notes1: 'A4/8, E4/16',
+            notes2: 'C4/16, D4/8',
+            stem1: 'up',
+            stem2: 'up',
+        });
+        run('Vertical alignment - cross stave (beam down1)', crossStave, {
+            notes0: 'C#5/q, B4/q',
+            notes1: 'A4/8, E4/8',
+            notes2: 'C4/8, D4/8',
+            stem1: 'down',
+            stem2: 'down',
+        });
+        run('Vertical alignment - cross stave (beam down2)', crossStave, {
+            notes0: 'C#5/q, C5/16, B4/q',
+            notes1: 'A4/8, E4/16',
+            notes2: 'C4/8, D4/8',
+            stem1: 'down',
+            stem2: 'down',
+        });
+        run('Vertical alignment - cross stave (beam down3)', crossStave, {
+            notes0: 'C#5/q, C5/16, B4/q',
+            notes1: 'A4/8, E4/8',
+            notes2: 'C4/16, D4/8',
+            stem1: 'down',
+            stem2: 'down',
+        });
+        run('Vertical alignment - cross stave (beam down4)', crossStave, {
+            notes0: 'C#5/q, C5/8, B4/q',
+            notes1: 'A4/8, E4/16',
+            notes2: 'C4/16, D4/8',
+            stem1: 'down',
+            stem2: 'down',
+        });
+        run('Vertical alignment - cross stave (beam middle1)', crossStave, {
+            notes0: 'C#5/q, B4/q',
+            notes1: 'A4/8, E4/8',
+            notes2: 'C4/8, D4/8',
+            stem1: 'down',
+            stem2: 'up',
+        });
+        run('Vertical alignment - cross stave (beam middle2)', crossStave, {
+            notes0: 'C#5/q, C5/16, B4/q',
+            notes1: 'A4/8, E4/16',
+            notes2: 'C4/8, D4/8',
+            stem1: 'down',
+            stem2: 'up',
+        });
+        run('Vertical alignment - cross stave (beam middle3)', crossStave, {
+            notes0: 'C#5/q, C5/16, B4/q',
+            notes1: 'A4/8, E4/8',
+            notes2: 'C4/16, D4/8',
+            stem1: 'down',
+            stem2: 'up',
+        });
+        run('Vertical alignment - cross stave (beam middle4)', crossStave, {
+            notes0: 'C#5/q, C5/8, B4/q',
+            notes1: 'A4/8, E4/16',
+            notes2: 'C4/16, D4/8',
+            stem1: 'down',
+            stem2: 'up',
+        });
         run('StaveNote - Justification', justifyStaveNotes);
         run('Notes with Tab', notesWithTab);
         run('Multiple Staves - Justified', multiStaves, { debug: true });
@@ -40831,6 +41067,32 @@ function mixTime(options) {
     })
         .addClef('treble')
         .addTimeSignature('4/4');
+    f.draw();
+    ok(true);
+}
+function crossStave(options) {
+    const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 400 + _src_stave__WEBPACK_IMPORTED_MODULE_14__.Stave.defaultPadding, 250);
+    f.getContext().scale(0.8, 0.8);
+    const score = f.EasyScore();
+    const system = f.System({
+        details: { softmaxFactor: 100 },
+        autoWidth: true,
+        debugFormatter: true,
+    });
+    const stave1 = system.addStave({ voices: [] }).addClef('treble').addTimeSignature('4/4');
+    const stave2 = system.addStave({ voices: [] }).addClef('treble').addTimeSignature('4/4');
+    const voice = score.voice(score
+        .notes(options.params.notes0)
+        .concat(score.beam(score
+        .notes(options.params.notes1, { stem: options.params.stem1 })
+        .concat(score.notes(options.params.notes2, { stem: options.params.stem2 })))));
+    for (let i = 0; i < voice.getTickables().length; i++) {
+        if (i < options.params.notes0.split(',').length + options.params.notes1.split(',').length)
+            voice.getTickables()[i].setStave(stave1);
+        else
+            voice.getTickables()[i].setStave(stave2);
+    }
+    system.addVoices([voice]);
     f.draw();
     ok(true);
 }
