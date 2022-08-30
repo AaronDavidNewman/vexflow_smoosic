@@ -1,6 +1,6 @@
 {
   "name": "vexflow",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "A JavaScript library for rendering music notation and guitar tablature.",
   "exports": {
     ".": {
@@ -17,6 +17,11 @@
       "types": "./build/types/entry/vexflow-gonville.d.ts",
       "require": "./build/cjs/vexflow-gonville.js",
       "import": "./build/esm/entry/vexflow-gonville.js"
+    },
+    "./leland": {
+      "types": "./build/types/entry/vexflow-leland.d.ts",
+      "require": "./build/cjs/vexflow-leland.js",
+      "import": "./build/esm/entry/vexflow-leland.js"
     },
     "./petaluma": {
       "types": "./build/types/entry/vexflow-petaluma.d.ts",

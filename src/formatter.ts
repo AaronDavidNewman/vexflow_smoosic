@@ -396,7 +396,7 @@ export class Formatter {
   constructor(options?: FormatterOptions) {
     this.formatterOptions = {
       globalSoftmax: false,
-      softmaxFactor: 100,
+      softmaxFactor: Tables.SOFTMAX_FACTOR,
       maxIterations: 5,
       ...options,
     };
@@ -454,6 +454,8 @@ export class Formatter {
    * room than the proportional formatting gives them.  A measure of all same duration
    * and width will need no extra padding, and all these quantities will be
    * zero in that case.
+   *
+   * Note: joinVoices has to be called before calling preCalculateMinTotalWidth.
    *
    * @param voices the voices that contain the notes
    * @returns the estimated width in pixels
