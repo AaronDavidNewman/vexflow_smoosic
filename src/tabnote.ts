@@ -455,20 +455,20 @@ export class TabNote extends StemmableNote {
     this.setRendered();
     const render_stem = this.beam == undefined && this.render_options.draw_stem;
 
-    this.setAttribute('el', ctx.openGroup('tabnote', this.getAttribute('id'), { pointerBBox: true }));
+    this.applyStyle();
+    ctx.openGroup('tabnote', this.getAttribute('id'), { pointerBBox: true });
     this.drawPositions();
     this.drawStemThrough();
 
     if (this.stem && render_stem) {
       const stem_x = this.getStemX();
       this.stem.setNoteHeadXBounds(stem_x, stem_x);
-      ctx.openGroup('stem', undefined, { pointerBBox: true });
       this.stem.setContext(ctx).draw();
-      ctx.closeGroup();
     }
 
     this.drawFlag();
     this.drawModifiers();
     ctx.closeGroup();
+    this.restoreStyle();
   }
 }

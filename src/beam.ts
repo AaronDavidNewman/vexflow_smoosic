@@ -469,15 +469,7 @@ export class Beam extends Element {
     let i; // shared iterator
     let note;
 
-    this.stem_direction = Stem.UP;
-
-    for (i = 0; i < notes.length; ++i) {
-      note = notes[i];
-      if (note.hasStem()) {
-        this.stem_direction = note.getStemDirection();
-        break;
-      }
-    }
+    this.stem_direction = notes[0].getStemDirection();
 
     let stem_direction = this.stem_direction;
     // Figure out optimal stem direction based on given notes
@@ -718,7 +710,6 @@ export class Beam extends Element {
       notes,
       slope,
       y_shift,
-      stem_direction,
       beam_count,
       render_options: { show_stemlets, stemlet_extension, beam_width },
     } = this;
@@ -735,9 +726,24 @@ export class Beam extends Element {
         const { topY: stemTipY } = note.getStemExtents();
         const beamedStemTipY = this.getSlopeY(stemX, firstStemX, firstStemTipY, slope) + y_shift;
         const preBeamExtension = stem.getExtension();
-        const beamExtension = stem_direction === Stem.UP ? stemTipY - beamedStemTipY : beamedStemTipY - stemTipY;
+        const beamExtension =
+          note.getStemDirection() === Stem.UP ? stemTipY - beamedStemTipY : beamedStemTipY - stemTipY;
+        // Determine necessary extension for cross-stave notes in the beam group
+        let crossStemExtension = 0;
+        if (note.getStemDirection() !== this.stem_direction) {
+          const beamCount = note.getGlyph().beam_count;
+          crossStemExtension = (1 + (beamCount - 1) * 1.5) * this.render_options.beam_width;
 
-        stem.setExtension(preBeamExtension + beamExtension);
+          /* This will be required if the partial beams are moved to the note side.
+          if (i > 0 && note.getGlyph().beam_count > 1) {
+            const prevBeamCount = this.notes[i - 1].getGlyph().beam_count;
+            const beamDiff = Math.abs(prevBeamCount - beamCount);
+            if (beamDiff > 0) crossStemExtension -= beamDiff * (this.render_options.beam_width * 1.5);
+          }
+          */
+        }
+
+        stem.setExtension(preBeamExtension + beamExtension + crossStemExtension);
         stem.adjustHeightForBeam();
 
         if (note.isRest() && show_stemlets) {
@@ -900,9 +906,7 @@ export class Beam extends Element {
       if (stem) {
         const stem_x = note.getStemX();
         stem.setNoteHeadXBounds(stem_x, stem_x);
-        ctx.openGroup('stem', note.getAttribute('id') + '-stem');
         stem.setContext(ctx).draw();
-        ctx.closeGroup();
       }
     }, this);
   }
@@ -930,7 +934,6 @@ export class Beam extends Element {
         if (lastBeamX) {
           const lastBeamY = this.getSlopeY(lastBeamX, firstStemX, beamY, this.slope);
 
-          this.setAttribute('el', ctx.openGroup('beam'));
           ctx.beginPath();
           ctx.moveTo(startBeamX, startBeamY);
           ctx.lineTo(startBeamX, startBeamY + beamThickness);
@@ -938,7 +941,6 @@ export class Beam extends Element {
           ctx.lineTo(lastBeamX + 1, lastBeamY);
           ctx.closePath();
           ctx.fill();
-          ctx.closeGroup();
         } else {
           throw new RuntimeError('NoLastBeamX', 'lastBeamX undefined.');
         }
@@ -984,7 +986,9 @@ export class Beam extends Element {
 
     this.drawStems(ctx);
     this.applyStyle();
+    ctx.openGroup('beam', this.getAttribute('id'));
     this.drawBeamLines(ctx);
+    ctx.closeGroup();
     this.restoreStyle();
   }
 }

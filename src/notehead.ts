@@ -146,7 +146,7 @@ export class NoteHead extends Note {
       this.stem_down_x_offset = noteStruct.stem_down_x_offset || 0;
     }
 
-    this.style = noteStruct.style;
+    this.setStyle(noteStruct.style);
     this.slashed = noteStruct.slashed || false;
 
     this.render_options = {
@@ -275,10 +275,6 @@ export class NoteHead extends Note {
     const stem_direction = this.stem_direction;
     const glyph_font_scale = this.render_options.glyph_font_scale;
 
-    if (this.style) {
-      this.applyStyle(ctx);
-    }
-
     const categorySuffix = `${this.glyph_code}Stem${stem_direction === Stem.UP ? 'Up' : 'Down'}`;
     if (this.noteType === 's') {
       const staveSpace = this.checkStave().getSpacingBetweenLines();
@@ -287,10 +283,6 @@ export class NoteHead extends Note {
       Glyph.renderGlyph(ctx, head_x, y, glyph_font_scale, this.glyph_code, {
         category: this.custom_glyph ? `noteHead.custom.${categorySuffix}` : `noteHead.standard.${categorySuffix}`,
       });
-    }
-
-    if (this.style) {
-      this.restoreStyle(ctx);
     }
   }
 }
