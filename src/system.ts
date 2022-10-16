@@ -1,7 +1,7 @@
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 
-import { BoundingBox } from './boundingbox';
+// import { BoundingBox } from './boundingbox';
 import { Element } from './element';
 import { Factory } from './factory';
 import { FormatParams, Formatter, FormatterOptions } from './formatter';
@@ -9,6 +9,7 @@ import { Note } from './note';
 import { RenderContext } from './rendercontext';
 import { Stave, StaveOptions } from './stave';
 import { StaveConnector, StaveConnectorType } from './staveconnector';
+import { Tickable } from './tickable';
 import { Category } from './typeguard';
 import { RuntimeError } from './util';
 import { Voice } from './voice';
@@ -27,13 +28,13 @@ export interface SystemStave {
   debugNoteMetrics?: boolean;
 }
 
-interface StaveInfo {
+/* interface StaveInfo {
   noJustification: boolean;
   options: StaveOptions;
   spaceAbove: number;
   spaceBelow: number;
   debugNoteMetrics: boolean;
-}
+}*/
 
 /**
  * Formatting for systems created/drawn from factory:
@@ -76,18 +77,20 @@ export class System extends Element {
   protected formatter?: Formatter;
   protected startX?: number;
   protected lastY?: number;
-  protected partStaves: Stave[];
+  protected parts: Required<SystemStave>[];
+  /* protected partStaves: Stave[];
   protected partStaveInfos: StaveInfo[];
-  protected partVoices: Voice[];
+  protected partVoices: Voice[]; */
   protected connector?: StaveConnector;
-  protected debugNoteMetricsYs?: { y: number; stave: Stave }[];
+  protected debugNoteMetricsYs?: { y: number; voice: Voice }[];
 
   constructor(params: SystemOptions = {}) {
     super();
     this.setOptions(params);
-    this.partStaves = [];
+    this.parts = [];
+    /* this.partStaves = [];
     this.partStaveInfos = [];
-    this.partVoices = [];
+    this.partVoices = []; */
   }
 
   /** Set formatting options. */
@@ -122,42 +125,6 @@ export class System extends Element {
     }
   }
 
-  /** Set origin X. */
-  getX(): number {
-    return this.options.x;
-  }
-
-  /** Get origin X. */
-  setX(x: number) {
-    this.options.x = x;
-    this.partStaves.forEach((s) => {
-      s.setX(x);
-    });
-  }
-
-  /** Set origin y. */
-  getY(): number {
-    return this.options.y;
-  }
-
-  /** Get origin y. */
-  setY(y: number) {
-    this.options.y = y;
-    this.partStaves.forEach((s) => {
-      s.setY(y);
-    });
-  }
-
-  /** Get associated staves. */
-  getStaves(): Stave[] {
-    return this.partStaves;
-  }
-
-  /** Get associated voices. */
-  getVoices(): Voice[] {
-    return this.partVoices;
-  }
-
   /** Set associated context. */
   setContext(context: RenderContext): this {
     super.setContext(context);
@@ -171,8 +138,8 @@ export class System extends Element {
    */
   addConnector(type: StaveConnectorType = 'double'): StaveConnector {
     this.connector = this.factory.StaveConnector({
-      top_stave: this.partStaves[0],
-      bottom_stave: this.partStaves[this.partStaves.length - 1],
+      top_stave: this.parts[0].stave,
+      bottom_stave: this.parts[this.parts.length - 1].stave,
       type,
     });
     return this.connector;
@@ -200,6 +167,7 @@ export class System extends Element {
       this.factory.Stave({ x: this.options.x, y: this.options.y, width: this.options.width, options: staveOptions });
 
     const p = {
+      stave,
       spaceAbove: 0, // stave spaces
       spaceBelow: 0, // stave spaces
       debugNoteMetrics: false,
@@ -209,81 +177,90 @@ export class System extends Element {
     };
 
     const ctx = this.getContext();
-    p.voices.forEach((voice) => {
+    p.voices.forEach((voice) =>
       voice
         .setContext(ctx)
         .setStave(stave)
         .getTickables()
-        .forEach((tickable) => tickable.setStave(stave));
-      this.partVoices.push(voice);
-    });
+        .forEach((tickable) => tickable.setStave(stave))
+    );
 
-    this.partStaves.push(stave);
-    this.partStaveInfos.push(p);
+    if (p.stave) {
+      this.parts.push(p);
+    }
     return stave;
   }
 
   /**
    * Add voices to the system with stave already assigned.
    */
-  addVoices(voices: Voice[]) {
+  addVoiceToPart(voices: Voice[], part: number) {
     const ctx = this.getContext();
     voices.forEach((voice) => {
       voice.setContext(ctx);
-      this.partVoices.push(voice);
     });
+    this.parts[part].voices = this.parts[part].voices.concat(voices);
+  }
+  getStaveForTickable(part: Required<SystemStave>, tickable: Tickable) {
+    return tickable.getStave() ?? part.stave;
   }
 
   /** Format the system. */
   format(): void {
     const options_details = this.options.details;
     let justifyWidth = 0;
+    // let totalWidth = 0;
     const formatter = new Formatter(options_details);
     this.formatter = formatter;
 
     let y = this.options.y;
     let startX = 0;
-    const debugNoteMetricsYs: { y: number; stave: Stave }[] = [];
+    let allVoices: Voice[] = [];
+    let allStaves: Stave[] = [];
+    const debugNoteMetricsYs: { y: number; voice: Voice }[] = [];
 
-    this.partStaves.forEach((part, index) => {
-      y = y + part.space(this.partStaveInfos[index].spaceAbove);
-      part.setY(y);
-      y = y + part.space(this.partStaveInfos[index].spaceBelow);
-      y = y + part.space(this.options.spaceBetweenStaves);
-      if (this.partStaveInfos[index].debugNoteMetrics) {
-        debugNoteMetricsYs.push({ y, stave: part });
+    this.parts.forEach((part) => {
+      y = y + part.stave.space(part.spaceAbove);
+      part.stave.setY(y);
+      y = y + part.stave.space(part.spaceBelow);
+      y = y + part.stave.space(this.options.spaceBetweenStaves);
+      if (part.debugNoteMetrics) {
+        debugNoteMetricsYs.push({ y, voice: part.voices[0] });
         y += 15;
       }
-      startX = Math.max(startX, part.getNoteStartX());
+      formatter.joinVoices(part.voices);
+      allVoices = allVoices.concat(part.voices);
+      allStaves = allStaves.concat(part.stave);
+      startX = Math.max(startX, part.stave.getNoteStartX());
     });
 
     // Re-assign Stave to update y position
-    this.partVoices.forEach((voice) => {
-      voice.getTickables().forEach((tickable) => {
-        const stave = tickable.getStave();
-        if (stave) tickable.setStave(stave);
+    this.parts.forEach((part) => {
+      part.voices.forEach((voice) => {
+        voice.getTickables().forEach((tickable) => {
+          const stave = tickable.getStave();
+          if (stave) tickable.setStave(stave);
+        });
       });
     });
-
     // Join the voices
-    formatter.joinVoices(this.partVoices);
 
     // Update the start position of all staves.
-    this.partStaves.forEach((part) => part.setNoteStartX(startX));
-    if (this.options.autoWidth && this.partVoices.length > 0) {
-      justifyWidth = formatter.preCalculateMinTotalWidth(this.partVoices);
-      this.options.width = justifyWidth + Stave.rightPadding + (startX - this.options.x);
-      this.partStaves.forEach((part) => {
-        part.setWidth(this.options.width);
+    // formatter.joinVoices(allVoices);
+    this.parts.forEach((part) => part.stave.setNoteStartX(startX));
+    if (this.options.autoWidth) {
+      justifyWidth = formatter.preCalculateMinTotalWidth(allVoices);
+      const totalWidth = justifyWidth + Stave.defaultPadding + (startX - this.options.x);
+      this.parts.forEach((part) => {
+        part.stave.setWidth(totalWidth);
       });
     } else {
+      // totalWidth = this.options.width;
       justifyWidth = this.options.noPadding
         ? this.options.width - (startX - this.options.x)
         : this.options.width - (startX - this.options.x) - Stave.defaultPadding;
     }
-    if (this.partVoices.length > 0) {
-      formatter.format(this.partVoices, this.options.noJustification ? 0 : justifyWidth, this.options.formatOptions);
-    }
+    formatter.format(allVoices, this.options.noJustification ? 0 : justifyWidth, this.options.formatOptions);
     formatter.postFormat();
 
     for (let i = 0; i < this.options.formatIterations; i++) {
@@ -293,8 +270,8 @@ export class System extends Element {
     this.startX = startX;
     this.debugNoteMetricsYs = debugNoteMetricsYs;
     this.lastY = y;
-    this.boundingBox = new BoundingBox(this.options.x, this.options.y, this.options.width, this.lastY - this.options.y);
-    Stave.formatBegModifiers(this.partStaves);
+    // this.boundingBox = new BoundingBox(this.startX, this.lastY, justifyWidth, this.lastY - this.options.y);
+    Stave.formatBegModifiers(allStaves);
   }
 
   /** Render the system. */
@@ -311,11 +288,7 @@ export class System extends Element {
     }
 
     this.debugNoteMetricsYs.forEach((d) => {
-      this.partVoices.forEach((voice) => {
-        voice.getTickables().forEach((tickable) => {
-          if (tickable.getStave() === d.stave) Note.plotMetrics(ctx, tickable, d.y);
-        });
-      });
+      d.voice.getTickables().forEach((tickable) => Note.plotMetrics(ctx, tickable, d.y));
     });
   }
 }

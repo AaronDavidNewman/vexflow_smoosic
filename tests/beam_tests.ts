@@ -25,6 +25,7 @@ const BeamTests = {
   Start(): void {
     QUnit.module('Beam');
     const run = VexFlowTests.runTests;
+    run('Complex Beams with Articulations two Staves', complexWithArticulation2);
     run('Simple Beam', simple);
     run('Multi Beam', multi);
     run('Sixteenth Beam', sixteenth);
@@ -46,7 +47,6 @@ const BeamTests = {
     run('TabNote Beams Auto Stem', tabBeamsAutoStem);
     run('Complex Beams with Annotations', complexWithAnnotation);
     run('Complex Beams with Articulations', complexWithArticulation);
-    run('Complex Beams with Articulations two Staves', complexWithArticulation2);
   },
 };
 
@@ -845,7 +845,7 @@ function complexWithArticulation(options: TestOptions): void {
 }
 
 function complexWithArticulation2(options: TestOptions): void {
-  const f = VexFlowTests.makeFactory(options, 500, 200);
+  const f = VexFlowTests.makeFactory(options, 500, 300);
   const system = f.System();
 
   const s1: StaveNoteStruct[] = [

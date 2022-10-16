@@ -165,7 +165,7 @@ function getInitialOffset(note: Note, position: number): number {
  */
 export class Articulation extends Modifier {
   /** To enable logging for this class. Set `Vex.Flow.Articulation.DEBUG` to `true`. */
-  static DEBUG: boolean = false;
+  static DEBUG: boolean = true;
 
   /** Articulations category string. */
   static get CATEGORY(): string {
@@ -215,6 +215,9 @@ export class Articulation extends Modifier {
 
     articulations.forEach((articulation) => {
       const note = articulation.checkAttachedNote();
+      const logStr = JSON.stringify(note.keys[0], null, ' ');
+      L('note ' + logStr + ' line ' + state.text_line + ' bottomLine ' + state.top_text_line);
+
       maxGlyphWidth = Math.max(note.getGlyph().getWidth(), maxGlyphWidth);
       let lines = 5;
       const stemDirection = note.hasStem() ? note.getStemDirection() : Stem.UP;
@@ -230,6 +233,7 @@ export class Articulation extends Modifier {
       const stave: Stave | undefined = note.getStave();
       if (stave) {
         lines = stave.getNumLines();
+        L('stave is ' + stave.getAttribute('id'));
       }
       if (articulation.getPosition() === ABOVE) {
         let noteLine = note.getLineNumber(true);
@@ -244,6 +248,7 @@ export class Articulation extends Modifier {
         }
         articulation.setTextLine(state.top_text_line);
         state.top_text_line += increment;
+        L('note line above ' + noteLine);
       } else if (articulation.getPosition() === BELOW) {
         let noteLine = Math.max(lines - note.getLineNumber(), 0);
         if (stemDirection === Stem.DOWN) {
@@ -257,6 +262,7 @@ export class Articulation extends Modifier {
         }
         articulation.setTextLine(state.text_line);
         state.text_line += increment;
+        L('note line below ' + noteLine);
       }
     });
 
@@ -339,6 +345,9 @@ export class Articulation extends Modifier {
     const initialOffset = getInitialOffset(note, position);
 
     const padding = Tables.currentMusicFont().lookupMetric(`articulation.${glyph.getCode()}.padding`, 0);
+    L(
+      `staffSpace: ${staffSpace} x: ${x} textLine ${textLine} initialOffset ${initialOffset} shouldSitOutsideStaff ${shouldSitOutsideStaff} padding ${padding}`
+    );
 
     let y = (
       {
@@ -366,8 +375,8 @@ export class Articulation extends Modifier {
 
       y += Math.abs(snappedLine - articLine) * staffSpace * offsetDirection + padding * offsetDirection;
     }
-
-    L(`Rendering articulation at (x: ${x}, y: ${y})`);
+    const staffId = stave.getAttribute('id');
+    L(`Rendering articulation ${this.type} stave ${staffId} at (x: ${x}, y: ${y})`);
 
     glyph.render(ctx, x, y);
   }
