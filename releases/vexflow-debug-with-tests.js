@@ -1,5 +1,5 @@
 /*!
- * VexFlow 4.0.3   2022-08-21T18:29:28.141Z   c06599a58a3c4ff45eb8e70d3608a93b19935cf0
+ * VexFlow 4.0.3   2022-10-16T23:34:07.142Z   79d6eaf7c31735cd10663e5f4f9d7638d488a7d6
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * https://www.vexflow.com   https://github.com/0xfe/vexflow
  */
@@ -30,8 +30,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "VERSION": () => (/* binding */ VERSION)
 /* harmony export */ });
 const VERSION = '4.0.3';
-const ID = 'c06599a58a3c4ff45eb8e70d3608a93b19935cf0';
-const DATE = '2022-08-21T18:29:28.141Z';
+const ID = '79d6eaf7c31735cd10663e5f4f9d7638d488a7d6';
+const DATE = '2022-10-16T23:34:07.142Z';
 
 
 /***/ }),
@@ -1057,6 +1057,8 @@ class Articulation extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
         const getIncrement = (articulation, line, position) => roundToNearestHalf(getRoundingFunction(line, position), (0,_util__WEBPACK_IMPORTED_MODULE_5__.defined)(articulation.glyph.getMetrics().height) / 10 + margin);
         articulations.forEach((articulation) => {
             const note = articulation.checkAttachedNote();
+            const logStr = JSON.stringify(note.keys[0], null, ' ');
+            L('note ' + logStr + ' line ' + state.text_line + ' bottomLine ' + state.top_text_line);
             maxGlyphWidth = Math.max(note.getGlyph().getWidth(), maxGlyphWidth);
             let lines = 5;
             const stemDirection = note.hasStem() ? note.getStemDirection() : _stem__WEBPACK_IMPORTED_MODULE_2__.Stem.UP;
@@ -1071,6 +1073,7 @@ class Articulation extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
             const stave = note.getStave();
             if (stave) {
                 lines = stave.getNumLines();
+                L('stave is ' + stave.getAttribute('id'));
             }
             if (articulation.getPosition() === ABOVE) {
                 let noteLine = note.getLineNumber(true);
@@ -1085,6 +1088,7 @@ class Articulation extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
                 }
                 articulation.setTextLine(state.top_text_line);
                 state.top_text_line += increment;
+                L('note line above ' + noteLine);
             }
             else if (articulation.getPosition() === BELOW) {
                 let noteLine = Math.max(lines - note.getLineNumber(), 0);
@@ -1099,6 +1103,7 @@ class Articulation extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
                 }
                 articulation.setTextLine(state.text_line);
                 state.text_line += increment;
+                L('note line below ' + noteLine);
             }
         });
         const width = articulations
@@ -1151,6 +1156,7 @@ class Articulation extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
         const shouldSitOutsideStaff = !canSitBetweenLines || isTab;
         const initialOffset = getInitialOffset(note, position);
         const padding = _tables__WEBPACK_IMPORTED_MODULE_3__.Tables.currentMusicFont().lookupMetric(`articulation.${glyph.getCode()}.padding`, 0);
+        L(`staffSpace: ${staffSpace} x: ${x} textLine ${textLine} initialOffset ${initialOffset} shouldSitOutsideStaff ${shouldSitOutsideStaff} padding ${padding}`);
         let y = {
             [ABOVE]: () => {
                 glyph.setOrigin(0.5, 1);
@@ -1173,12 +1179,13 @@ class Articulation extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
                 glyph.setOrigin(0.5, 0.5);
             y += Math.abs(snappedLine - articLine) * staffSpace * offsetDirection + padding * offsetDirection;
         }
-        L(`Rendering articulation at (x: ${x}, y: ${y})`);
+        const staffId = stave.getAttribute('id');
+        L(`Rendering articulation ${this.type} stave ${staffId} at (x: ${x}, y: ${y})`);
         glyph.render(ctx, x, y);
     }
 }
 /** To enable logging for this class. Set `Vex.Flow.Articulation.DEBUG` to `true`. */
-Articulation.DEBUG = false;
+Articulation.DEBUG = true;
 Articulation.INITIAL_OFFSET = -0.5;
 
 
@@ -18066,7 +18073,7 @@ const sumArray = (arr) => arr.reduce((a, b) => a + b, 0);
  * total number of ticks in voices.
  */
 function createContexts(voices, makeContext, addToContext) {
-    let resolutionMultiplier = 0;
+    const resolutionMultiplier = Formatter.getResolutionMultiplier(voices);
     // Initialize tick maps.
     const tickToContextMap = {};
     const tickList = [];
@@ -18078,7 +18085,6 @@ function createContexts(voices, makeContext, addToContext) {
             list: tickList.sort((a, b) => a - b),
             resolutionMultiplier,
         };
-    resolutionMultiplier = Formatter.getResolutionMultiplier(voices);
     // For each voice, extract notes and create a context for every
     // new tick that hasn't been seen before.
     voices.forEach((voice, voiceIndex) => {
@@ -18157,6 +18163,9 @@ function getRestLineForNextNoteGroup(notes, currRestLine, currNoteIndex, compare
  */
 class Formatter {
     constructor(options) {
+        this.tickToContextMap = {};
+        this.tickToStaveContextMap = {};
+        this.tickList = [];
         this.formatterOptions = Object.assign({ globalSoftmax: false, softmaxFactor: 2, maxIterations: 5 }, options);
         this.justifyWidth = 0;
         this.totalCost = 0;
@@ -18168,7 +18177,6 @@ class Formatter {
         this.hasMinTotalWidth = false;
         // Arrays of tick and modifier contexts.
         this.tickContexts = undefined;
-        this.modifierContexts = [];
         // Gaps between contexts, for free movement of notes post
         // formatting.
         this.contextGaps = {
@@ -18454,13 +18462,12 @@ class Formatter {
     }
     /** Create a `ModifierContext` for each tick in `voices`. */
     createModifierContexts(voices) {
-        if (voices.length == 0)
-            return;
         const resolutionMultiplier = Formatter.getResolutionMultiplier(voices);
         // Initialize tick maps.
-        const tickToContextMap = new Map();
-        const tickList = new Map();
-        const contexts = [];
+        const getKey = (tickable, tick) => {
+            const stave = tickable.getStave();
+            return stave ? stave.getAttribute('id') + '-' + tick.toString() : tick.toString();
+        };
         // For each voice, extract notes and create a context for every
         // new tick that hasn't been seen before.
         voices.forEach((voice) => {
@@ -18469,38 +18476,20 @@ class Formatter {
             const ticksUsed = new _fraction__WEBPACK_IMPORTED_MODULE_2__.Fraction(0, resolutionMultiplier);
             voice.getTickables().forEach((tickable) => {
                 const integerTicks = ticksUsed.numerator;
-                let staveTickToContextMap = tickToContextMap.get(tickable.getStave());
-                let staveTickList = tickList.get(tickable.getStave());
-                // If we have no tick context for this tick, create one.
-                if (!staveTickToContextMap) {
-                    tickToContextMap.set(tickable.getStave(), {});
-                    tickList.set(tickable.getStave(), []);
-                    staveTickToContextMap = tickToContextMap.get(tickable.getStave());
-                    staveTickList = tickList.get(tickable.getStave());
-                }
-                if (!(staveTickToContextMap ? staveTickToContextMap[integerTicks] : undefined)) {
+                const key = getKey(tickable, integerTicks);
+                if (!this.tickToStaveContextMap[key]) {
                     const newContext = new _modifiercontext__WEBPACK_IMPORTED_MODULE_3__.ModifierContext();
-                    contexts.push(newContext);
-                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    staveTickToContextMap[integerTicks] = newContext;
-                    // Maintain a list of unique integerTicks.
-                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    staveTickList.push(integerTicks);
+                    this.tickToStaveContextMap[key] = newContext;
+                    if (!this.tickToContextMap[integerTicks]) {
+                        this.tickToContextMap[integerTicks] = [];
+                        this.tickList.push(integerTicks);
+                    }
+                    this.tickToContextMap[integerTicks].push(newContext);
                 }
                 // Add this tickable to the TickContext.
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                tickable.addToModifierContext(staveTickToContextMap[integerTicks]);
+                tickable.addToModifierContext(this.tickToStaveContextMap[key]);
                 ticksUsed.add(tickable.getTicks());
             });
-        });
-        tickList.forEach((instance) => {
-            instance.sort((a, b) => a - b);
-        });
-        this.modifierContexts.push({
-            map: tickToContextMap,
-            array: contexts,
-            list: tickList,
-            resolutionMultiplier,
         });
     }
     /**
@@ -18864,15 +18853,15 @@ class Formatter {
      */
     postFormat() {
         const postFormatContexts = (contexts) => contexts.list.forEach((tick) => contexts.map[tick].postFormat());
-        this.modifierContexts.forEach((modifierContexts) => {
-            modifierContexts.list.forEach((ticks, stave) => {
-                const record = modifierContexts.map.get(stave);
-                if (record)
-                    ticks.forEach((tick) => record[tick].postFormat());
+        this.tickList.sort((a, b) => a - b);
+        this.tickList.forEach((tick) => {
+            this.tickToContextMap[tick].forEach((mc) => {
+                mc.postFormat();
             });
         });
-        if (this.tickContexts)
+        if (this.tickContexts) {
             postFormatContexts(this.tickContexts);
+        }
         return this;
     }
     /**
@@ -18880,6 +18869,9 @@ class Formatter {
      * the formatters that the voices belong on a single stave.
      */
     joinVoices(voices) {
+        if (voices.length < 1) {
+            return this;
+        }
         this.createModifierContexts(voices);
         this.hasMinTotalWidth = false;
         return this;
@@ -27335,9 +27327,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 /* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tables */ "./src/tables.ts");
-/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
+/* harmony import */ var _textformatter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./textformatter */ "./src/textformatter.ts");
+/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Radosaw Eichler 2012
+
 
 
 
@@ -27356,7 +27350,7 @@ class StaveTempo extends _stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveModifi
         this.resetFont();
     }
     static get CATEGORY() {
-        return _typeguard__WEBPACK_IMPORTED_MODULE_4__.Category.StaveTempo;
+        return _typeguard__WEBPACK_IMPORTED_MODULE_5__.Category.StaveTempo;
     }
     setTempo(tempo) {
         this.tempo = tempo;
@@ -27384,18 +27378,20 @@ class StaveTempo extends _stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveModifi
         let x = this.x + this.shift_x + shift_x;
         const y = stave.getYForTopText(1) + this.shift_y;
         ctx.save();
+        const textFormatter = _textformatter__WEBPACK_IMPORTED_MODULE_4__.TextFormatter.create(this.textFont);
+        // const spacingWidth = textFormatter.getWidthForTextInPx('@');
         if (name) {
             ctx.setFont(this.textFont);
             ctx.fillText(name, x, y);
-            x += ctx.measureText(name).width;
+            x += textFormatter.getWidthForTextInPx(name);
         }
         if (duration && bpm) {
             // Override the weight and style.
             ctx.setFont(Object.assign(Object.assign({}, this.textFont), { weight: 'normal', style: 'normal' }));
             if (name) {
-                x += ctx.measureText(' ').width;
+                x += textFormatter.getWidthForTextInPx('(');
                 ctx.fillText('(', x, y);
-                x += ctx.measureText('(').width;
+                x += textFormatter.getWidthForTextInPx(')');
             }
             const code = _tables__WEBPACK_IMPORTED_MODULE_3__.Tables.getGlyphProps(duration);
             x += 3 * scale;
@@ -29297,16 +29293,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "System": () => (/* binding */ System)
 /* harmony export */ });
-/* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
-/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./element */ "./src/element.ts");
-/* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
-/* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./note */ "./src/note.ts");
-/* harmony import */ var _stave__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stave */ "./src/stave.ts");
-/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
+/* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
+/* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./note */ "./src/note.ts");
+/* harmony import */ var _stave__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./stave */ "./src/stave.ts");
+/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
-
+// import { BoundingBox } from './boundingbox';
 
 
 
@@ -29318,57 +29313,28 @@ __webpack_require__.r(__webpack_exports__);
  * each which can have one or more voices. All voices across all staves in
  * the system are formatted together.
  */
-class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
+class System extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
     constructor(params = {}) {
         super();
         this.setOptions(params);
-        this.partStaves = [];
+        this.parts = [];
+        /* this.partStaves = [];
         this.partStaveInfos = [];
-        this.partVoices = [];
+        this.partVoices = []; */
     }
     static get CATEGORY() {
-        return _typeguard__WEBPACK_IMPORTED_MODULE_5__.Category.System;
+        return _typeguard__WEBPACK_IMPORTED_MODULE_4__.Category.System;
     }
     /** Set formatting options. */
     setOptions(options = {}) {
         if (!options.factory) {
-            throw new _util__WEBPACK_IMPORTED_MODULE_6__.RuntimeError('NoFactory', 'System.setOptions(options) requires a factory.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_5__.RuntimeError('NoFactory', 'System.setOptions(options) requires a factory.');
         }
         this.factory = options.factory;
         this.options = Object.assign(Object.assign({ factory: this.factory, x: 10, y: 10, width: 500, spaceBetweenStaves: 12, autoWidth: false, noJustification: false, debugFormatter: false, formatIterations: 0, noPadding: false }, options), { details: Object.assign({ alpha: 0.5 }, options.details), formatOptions: Object.assign({}, options.formatOptions) });
         if (this.options.noJustification === false && typeof options.width === 'undefined') {
             this.options.autoWidth = true;
         }
-    }
-    /** Set origin X. */
-    getX() {
-        return this.options.x;
-    }
-    /** Get origin X. */
-    setX(x) {
-        this.options.x = x;
-        this.partStaves.forEach((s) => {
-            s.setX(x);
-        });
-    }
-    /** Set origin y. */
-    getY() {
-        return this.options.y;
-    }
-    /** Get origin y. */
-    setY(y) {
-        this.options.y = y;
-        this.partStaves.forEach((s) => {
-            s.setY(y);
-        });
-    }
-    /** Get associated staves. */
-    getStaves() {
-        return this.partStaves;
-    }
-    /** Get associated voices. */
-    getVoices() {
-        return this.partVoices;
     }
     /** Set associated context. */
     setContext(context) {
@@ -29382,8 +29348,8 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
      */
     addConnector(type = 'double') {
         this.connector = this.factory.StaveConnector({
-            top_stave: this.partStaves[0],
-            bottom_stave: this.partStaves[this.partStaves.length - 1],
+            top_stave: this.parts[0].stave,
+            bottom_stave: this.parts[this.parts.length - 1].stave,
             type,
         });
         return this.connector;
@@ -29406,77 +29372,86 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
         var _a;
         const staveOptions = Object.assign({ left_bar: false }, params.options);
         const stave = (_a = params.stave) !== null && _a !== void 0 ? _a : this.factory.Stave({ x: this.options.x, y: this.options.y, width: this.options.width, options: staveOptions });
-        const p = Object.assign(Object.assign({ spaceAbove: 0, spaceBelow: 0, debugNoteMetrics: false, noJustification: false }, params), { options: staveOptions });
+        const p = Object.assign(Object.assign({ stave, spaceAbove: 0, spaceBelow: 0, debugNoteMetrics: false, noJustification: false }, params), { options: staveOptions });
         const ctx = this.getContext();
-        p.voices.forEach((voice) => {
-            voice
-                .setContext(ctx)
-                .setStave(stave)
-                .getTickables()
-                .forEach((tickable) => tickable.setStave(stave));
-            this.partVoices.push(voice);
-        });
-        this.partStaves.push(stave);
-        this.partStaveInfos.push(p);
+        p.voices.forEach((voice) => voice
+            .setContext(ctx)
+            .setStave(stave)
+            .getTickables()
+            .forEach((tickable) => tickable.setStave(stave)));
+        if (p.stave) {
+            this.parts.push(p);
+        }
         return stave;
     }
     /**
      * Add voices to the system with stave already assigned.
      */
-    addVoices(voices) {
+    addVoiceToPart(voices, part) {
         const ctx = this.getContext();
         voices.forEach((voice) => {
             voice.setContext(ctx);
-            this.partVoices.push(voice);
         });
+        this.parts[part].voices = this.parts[part].voices.concat(voices);
+    }
+    getStaveForTickable(part, tickable) {
+        var _a;
+        return (_a = tickable.getStave()) !== null && _a !== void 0 ? _a : part.stave;
     }
     /** Format the system. */
     format() {
         const options_details = this.options.details;
         let justifyWidth = 0;
-        const formatter = new _formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter(options_details);
+        // let totalWidth = 0;
+        const formatter = new _formatter__WEBPACK_IMPORTED_MODULE_1__.Formatter(options_details);
         this.formatter = formatter;
         let y = this.options.y;
         let startX = 0;
+        let allVoices = [];
+        let allStaves = [];
         const debugNoteMetricsYs = [];
-        this.partStaves.forEach((part, index) => {
-            y = y + part.space(this.partStaveInfos[index].spaceAbove);
-            part.setY(y);
-            y = y + part.space(this.partStaveInfos[index].spaceBelow);
-            y = y + part.space(this.options.spaceBetweenStaves);
-            if (this.partStaveInfos[index].debugNoteMetrics) {
-                debugNoteMetricsYs.push({ y, stave: part });
+        this.parts.forEach((part) => {
+            y = y + part.stave.space(part.spaceAbove);
+            part.stave.setY(y);
+            y = y + part.stave.space(part.spaceBelow);
+            y = y + part.stave.space(this.options.spaceBetweenStaves);
+            if (part.debugNoteMetrics) {
+                debugNoteMetricsYs.push({ y, voice: part.voices[0] });
                 y += 15;
             }
-            startX = Math.max(startX, part.getNoteStartX());
+            formatter.joinVoices(part.voices);
+            allVoices = allVoices.concat(part.voices);
+            allStaves = allStaves.concat(part.stave);
+            startX = Math.max(startX, part.stave.getNoteStartX());
         });
         // Re-assign Stave to update y position
-        this.partVoices.forEach((voice) => {
-            voice.getTickables().forEach((tickable) => {
-                const stave = tickable.getStave();
-                if (stave)
-                    tickable.setStave(stave);
+        this.parts.forEach((part) => {
+            part.voices.forEach((voice) => {
+                voice.getTickables().forEach((tickable) => {
+                    const stave = tickable.getStave();
+                    if (stave)
+                        tickable.setStave(stave);
+                });
             });
         });
         // Join the voices
-        formatter.joinVoices(this.partVoices);
         // Update the start position of all staves.
-        this.partStaves.forEach((part) => part.setNoteStartX(startX));
-        if (this.options.autoWidth && this.partVoices.length > 0) {
-            justifyWidth = formatter.preCalculateMinTotalWidth(this.partVoices);
-            this.options.width = justifyWidth + _stave__WEBPACK_IMPORTED_MODULE_4__.Stave.rightPadding + (startX - this.options.x);
-            this.partStaves.forEach((part) => {
-                part.setWidth(this.options.width);
+        // formatter.joinVoices(allVoices);
+        this.parts.forEach((part) => part.stave.setNoteStartX(startX));
+        if (this.options.autoWidth) {
+            justifyWidth = formatter.preCalculateMinTotalWidth(allVoices);
+            const totalWidth = justifyWidth + _stave__WEBPACK_IMPORTED_MODULE_3__.Stave.defaultPadding + (startX - this.options.x);
+            this.parts.forEach((part) => {
+                part.stave.setWidth(totalWidth);
             });
         }
         else {
+            // totalWidth = this.options.width;
             justifyWidth = this.options.noPadding
                 ? this.options.width - (startX - this.options.x)
-                : this.options.width - (startX - this.options.x) - _stave__WEBPACK_IMPORTED_MODULE_4__.Stave.defaultPadding;
+                : this.options.width - (startX - this.options.x) - _stave__WEBPACK_IMPORTED_MODULE_3__.Stave.defaultPadding;
         }
-        if (this.partVoices.length > 0) {
-            formatter.format(this.partVoices, this.options.noJustification ? 0 : justifyWidth, this.options.formatOptions);
-        }
+        formatter.format(allVoices, this.options.noJustification ? 0 : justifyWidth, this.options.formatOptions);
         formatter.postFormat();
         for (let i = 0; i < this.options.formatIterations; i++) {
             formatter.tune(options_details);
@@ -29484,27 +29459,22 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
         this.startX = startX;
         this.debugNoteMetricsYs = debugNoteMetricsYs;
         this.lastY = y;
-        this.boundingBox = new _boundingbox__WEBPACK_IMPORTED_MODULE_0__.BoundingBox(this.options.x, this.options.y, this.options.width, this.lastY - this.options.y);
-        _stave__WEBPACK_IMPORTED_MODULE_4__.Stave.formatBegModifiers(this.partStaves);
+        // this.boundingBox = new BoundingBox(this.startX, this.lastY, justifyWidth, this.lastY - this.options.y);
+        _stave__WEBPACK_IMPORTED_MODULE_3__.Stave.formatBegModifiers(allStaves);
     }
     /** Render the system. */
     draw() {
         // Render debugging information, if requested.
         const ctx = this.checkContext();
         if (!this.formatter || !this.startX || !this.lastY || !this.debugNoteMetricsYs) {
-            throw new _util__WEBPACK_IMPORTED_MODULE_6__.RuntimeError('NoFormatter', 'format() must be called before draw()');
+            throw new _util__WEBPACK_IMPORTED_MODULE_5__.RuntimeError('NoFormatter', 'format() must be called before draw()');
         }
         this.setRendered();
         if (this.options.debugFormatter) {
-            _formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter.plotDebugging(ctx, this.formatter, this.startX, this.options.y, this.lastY);
+            _formatter__WEBPACK_IMPORTED_MODULE_1__.Formatter.plotDebugging(ctx, this.formatter, this.startX, this.options.y, this.lastY);
         }
         this.debugNoteMetricsYs.forEach((d) => {
-            this.partVoices.forEach((voice) => {
-                voice.getTickables().forEach((tickable) => {
-                    if (tickable.getStave() === d.stave)
-                        _note__WEBPACK_IMPORTED_MODULE_3__.Note.plotMetrics(ctx, tickable, d.y);
-                });
-            });
+            d.voice.getTickables().forEach((tickable) => _note__WEBPACK_IMPORTED_MODULE_2__.Note.plotMetrics(ctx, tickable, d.y));
         });
     }
 }
@@ -31279,7 +31249,8 @@ class TabNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNote 
         }
         this.setRendered();
         const render_stem = this.beam == undefined && this.render_options.draw_stem;
-        ctx.openGroup('tabnote', undefined, { pointerBBox: true });
+        // ctx.openGroup('tabnote', undefined, { pointerBBox: true });
+        this.setAttribute('el', ctx.openGroup('tabnote', this.getAttribute('id'), { pointerBBox: true }));
         this.drawPositions();
         this.drawStemThrough();
         if (this.stem && render_stem) {
@@ -37464,6 +37435,7 @@ const BeamTests = {
     Start() {
         QUnit.module('Beam');
         const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
+        run('Complex Beams with Articulations two Staves', complexWithArticulation2);
         run('Simple Beam', simple);
         run('Multi Beam', multi);
         run('Sixteenth Beam', sixteenth);
@@ -37485,7 +37457,6 @@ const BeamTests = {
         run('TabNote Beams Auto Stem', tabBeamsAutoStem);
         run('Complex Beams with Annotations', complexWithAnnotation);
         run('Complex Beams with Articulations', complexWithArticulation);
-        run('Complex Beams with Articulations two Staves', complexWithArticulation2);
     },
 };
 function simple(options) {
@@ -38079,7 +38050,7 @@ function complexWithArticulation(options) {
     ok(true, 'Complex beam articulations');
 }
 function complexWithArticulation2(options) {
-    const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 500, 200);
+    const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 500, 300);
     const system = f.System();
     const s1 = [
         { keys: ['e/4'], duration: '128', stem_direction: 1 },
@@ -39267,6 +39238,332 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(ClefTes
 
 /***/ }),
 
+/***/ "./tests/crossbeam_tests.ts":
+/*!**********************************!*\
+  !*** ./tests/crossbeam_tests.ts ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "CrossBeamTests": () => (/* binding */ CrossBeamTests)
+/* harmony export */ });
+/* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
+/* harmony import */ var _src_stave__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/stave */ "./src/stave.ts");
+// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+// MIT License
+//
+// Formatter Tests
+
+
+const CrossBeamTests = {
+    Start() {
+        QUnit.module('CrossBeam');
+        const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
+        const crossStaveTests = [];
+        crossStaveTests.push({
+            title: 'Mixed clef voice middle',
+            time: '2/4',
+            voices: [
+                {
+                    notes: [{ notestring: 'e#5/4, b4/16/r, b4/16, d5/16., c5/32 ', clef: 'treble' }],
+                    stavemask: [0, 0, 0, 0, 0],
+                    beammask: [0, 0, 1, 1, 1],
+                    clef: 'treble',
+                },
+                {
+                    notes: [
+                        { notestring: 'C3/16, B3/16, C4/16', clef: 'bass' },
+                        { notestring: 'E#4/16', clef: 'treble' },
+                        { notestring: 'C4/4', clef: 'bass' },
+                    ],
+                    stavemask: [1, 1, 1, 0, 1],
+                    beammask: [1, 1, 1, -1, 0],
+                    clef: 'bass',
+                },
+            ],
+        });
+        crossStaveTests.push({
+            title: 'Single clef mixed 1',
+            time: '3/4',
+            voices: [
+                {
+                    notes: [{ notestring: 'g3/16, f3/16, a6/16, g6/16, b4/4/r, g6/8, g4/8 ', clef: 'treble' }],
+                    stavemask: [0, 0, 0, 0, 0, 0, 0],
+                    beammask: [1, 1, -1, -1, 0, -1, 1],
+                    clef: 'treble',
+                },
+            ],
+        });
+        crossStaveTests.push({
+            title: 'Single clef mixed 2',
+            time: '3/4',
+            voices: [
+                {
+                    notes: [{ notestring: 'g3/16, f6/16, a3/16, g6/16, b4/4/r, g6/8, g3/8 ', clef: 'treble' }],
+                    stavemask: [0, 0, 0, 0, 0, 0, 0],
+                    beammask: [1, -1, 1, -1, 0, -1, 1],
+                    clef: 'treble',
+                },
+            ],
+        });
+        crossStaveTests.push({
+            title: 'Vertical alignment - cross stave (beam up1)',
+            time: '4/4',
+            voices: [
+                {
+                    notes: [
+                        { notestring: 'C#5/q, B4/q, A4/8, E4/8', clef: 'treble' },
+                        { notestring: 'C4/8, D4/8', clef: 'bass' },
+                    ],
+                    beammask: [0, 0, 1, 1, 1, 1],
+                    stavemask: [0, 0, 0, 0, 1, 1],
+                    clef: 'treble',
+                },
+                { notes: [{ notestring: '', clef: 'bass' }], beammask: [], stavemask: [], clef: 'bass' },
+            ],
+        });
+        crossStaveTests.push({
+            title: 'Vertical alignment - cross stave (beam up2)',
+            time: '4/4',
+            voices: [
+                {
+                    notes: [
+                        { notestring: 'C#5/q, C5/16, B4/q, A4/8, E4/16', clef: 'treble' },
+                        { notestring: 'C4/8, D4/8', clef: 'bass' },
+                    ],
+                    beammask: [0, 0, 0, 1, 1, 1, 1],
+                    stavemask: [0, 0, 0, 0, 0, 1, 1],
+                    clef: 'treble',
+                },
+                { notes: [{ notestring: '', clef: 'bass' }], beammask: [], stavemask: [], clef: 'bass' },
+            ],
+        });
+        crossStaveTests.push({
+            title: 'Vertical alignment - cross stave (beam up3)',
+            time: '4/4',
+            voices: [
+                {
+                    notes: [
+                        { notestring: 'C#5/q, C5/16, B4/q, A4/8, E4/8', clef: 'treble' },
+                        { notestring: 'C4/16, D4/8', clef: 'bass' },
+                    ],
+                    beammask: [0, 0, 0, 1, 1, 1, 1],
+                    stavemask: [0, 0, 0, 0, 0, 1, 1],
+                    clef: 'treble',
+                },
+                { notes: [{ notestring: '', clef: 'bass' }], beammask: [], stavemask: [], clef: 'bass' },
+            ],
+        });
+        crossStaveTests.push({
+            title: 'Vertical alignment - cross stave (beam up4)',
+            time: '4/4',
+            voices: [
+                {
+                    notes: [
+                        { notestring: 'C#5/q, C5/8, B4/q, A4/8, E4/16', clef: 'treble' },
+                        { notestring: 'C4/16, D4/8', clef: 'bass' },
+                    ],
+                    beammask: [0, 0, 0, 1, 1, 1, 1],
+                    stavemask: [0, 0, 0, 0, 0, 1, 1],
+                    clef: 'treble',
+                },
+                { notes: [{ notestring: '', clef: 'bass' }], beammask: [], stavemask: [], clef: 'bass' },
+            ],
+        });
+        crossStaveTests.push({
+            title: 'Vertical alignment - cross stave (beam down1)',
+            time: '4/4',
+            voices: [
+                {
+                    notes: [
+                        { notestring: 'C#5/q, B4/q, A4/8, E4/8', clef: 'treble' },
+                        { notestring: 'C4/8, D4/8', clef: 'bass' },
+                    ],
+                    beammask: [0, 0, -1, -1, -1, -1],
+                    stavemask: [0, 0, 0, 0, 1, 1],
+                    clef: 'treble',
+                },
+                { notes: [{ notestring: '', clef: 'bass' }], beammask: [], stavemask: [], clef: 'bass' },
+            ],
+        });
+        crossStaveTests.push({
+            title: 'Vertical alignment - cross stave (beam down2)',
+            time: '4/4',
+            voices: [
+                {
+                    notes: [
+                        { notestring: 'C#5/q, C5/16, B4/q, A4/8, E4/16', clef: 'treble' },
+                        { notestring: 'C4/8, D4/8', clef: 'bass' },
+                    ],
+                    beammask: [0, 0, 0, -1, -1, -1, -1],
+                    stavemask: [0, 0, 0, 0, 0, 1, 1],
+                    clef: 'treble',
+                },
+                { notes: [{ notestring: '', clef: 'bass' }], beammask: [], stavemask: [], clef: 'bass' },
+            ],
+        });
+        crossStaveTests.push({
+            title: 'Vertical alignment - cross stave (beam down3)',
+            time: '4/4',
+            voices: [
+                {
+                    notes: [
+                        { notestring: 'C#5/q, C5/16, B4/q, A4/8, E4/8', clef: 'treble' },
+                        { notestring: 'C4/16, D4/8', clef: 'bass' },
+                    ],
+                    beammask: [0, 0, 0, -1, -1, -1, -1],
+                    stavemask: [0, 0, 0, 0, 0, 1, 1],
+                    clef: 'treble',
+                },
+                { notes: [{ notestring: '', clef: 'bass' }], beammask: [], stavemask: [], clef: 'bass' },
+            ],
+        });
+        crossStaveTests.push({
+            title: 'Vertical alignment - cross stave (beam down4)',
+            time: '4/4',
+            voices: [
+                {
+                    notes: [
+                        { notestring: 'C#5/q, C5/8, B4/q, A4/8, E4/16', clef: 'treble' },
+                        { notestring: 'C4/16, D4/8', clef: 'bass' },
+                    ],
+                    beammask: [0, 0, 0, -1, -1, -1, -1],
+                    stavemask: [0, 0, 0, 0, 0, 1, 1],
+                    clef: 'treble',
+                },
+                { notes: [{ notestring: '', clef: 'bass' }], beammask: [], stavemask: [], clef: 'bass' },
+            ],
+        });
+        crossStaveTests.push({
+            title: 'Vertical alignment - cross stave (beam middle1)',
+            time: '4/4',
+            voices: [
+                {
+                    notes: [
+                        { notestring: 'C#5/q, B4/q, A4/8, E4/8', clef: 'treble' },
+                        { notestring: 'C4/8, D4/8', clef: 'bass' },
+                    ],
+                    beammask: [0, 0, -1, -1, 1, 1],
+                    stavemask: [0, 0, 0, 0, 1, 1],
+                    clef: 'treble',
+                },
+                { notes: [{ notestring: '', clef: 'bass' }], beammask: [], stavemask: [], clef: 'bass' },
+            ],
+        });
+        crossStaveTests.push({
+            title: 'Vertical alignment - cross stave (beam middle2)',
+            time: '4/4',
+            voices: [
+                {
+                    notes: [
+                        { notestring: 'C#5/q, C5/16, B4/q, A4/8, E4/16', clef: 'treble' },
+                        { notestring: 'C4/8, D4/8', clef: 'bass' },
+                    ],
+                    beammask: [0, 0, 0, -1, -1, 1, 1],
+                    stavemask: [0, 0, 0, 0, 0, 1, 1],
+                    clef: 'treble',
+                },
+                { notes: [{ notestring: '', clef: 'bass' }], beammask: [], stavemask: [], clef: 'bass' },
+            ],
+        });
+        crossStaveTests.push({
+            title: 'Vertical alignment - cross stave (beam middle3)',
+            time: '4/4',
+            voices: [
+                {
+                    notes: [
+                        { notestring: 'C#5/q, C5/16, B4/q, A4/8, E4/8', clef: 'treble' },
+                        { notestring: 'C4/16, D4/8', clef: 'bass' },
+                    ],
+                    beammask: [0, 0, 0, -1, -1, 1, 1],
+                    stavemask: [0, 0, 0, 0, 0, 1, 1],
+                    clef: 'treble',
+                },
+                { notes: [{ notestring: '', clef: 'bass' }], beammask: [], stavemask: [], clef: 'bass' },
+            ],
+        });
+        crossStaveTests.push({
+            title: 'Vertical alignment - cross stave (beam middle4)',
+            time: '4/4',
+            voices: [
+                {
+                    notes: [
+                        { notestring: 'C#5/q, C5/8, B4/q, A4/8, E4/16', clef: 'treble' },
+                        { notestring: 'C4/16, D4/8', clef: 'bass' },
+                    ],
+                    beammask: [0, 0, 0, -1, -1, 1, 1],
+                    stavemask: [0, 0, 0, 0, 0, 1, 1],
+                    clef: 'treble',
+                },
+                { notes: [{ notestring: '', clef: 'bass' }], beammask: [], stavemask: [], clef: 'bass' },
+            ],
+        });
+        crossStaveTests.forEach((cst) => {
+            run(cst.title, crossClef, cst);
+        });
+    },
+};
+function crossClef(options) {
+    const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 400 + _src_stave__WEBPACK_IMPORTED_MODULE_1__.Stave.defaultPadding, 250);
+    f.getContext().scale(0.8, 0.8);
+    const score = f.EasyScore();
+    const system = f.System({
+        details: { softmaxFactor: 100 },
+        autoWidth: true,
+        debugFormatter: false,
+    });
+    const testdata = options.params;
+    const voicedata = testdata.voices;
+    const stavemap = [];
+    for (let i = 0; i < voicedata.length; ++i) {
+        const clef = voicedata[i].clef;
+        stavemap.push(system.addStave({ voices: [] }).addClef(clef).addTimeSignature(testdata.time));
+    }
+    for (let i = 0; i < voicedata.length; ++i) {
+        const stavemask = voicedata[i].stavemask;
+        let scoreNotes = [];
+        const voicenotes = voicedata[i].notes;
+        for (let k = 0; k < voicenotes.length; ++k) {
+            scoreNotes = scoreNotes.concat(score.notes(voicenotes[k].notestring, { clef: voicenotes[k].clef }));
+        }
+        const beammask = voicedata[i].beammask;
+        let curGroup = [];
+        const beamGroups = [];
+        for (let j = 0; j < scoreNotes.length; ++j) {
+            const note = scoreNotes[j];
+            note.setStave(stavemap[stavemask[j]]);
+            if (beammask[j] !== 0) {
+                note.setStemDirection(beammask[j]);
+                curGroup.push(note);
+            }
+            else {
+                if (curGroup.length) {
+                    beamGroups.push(curGroup);
+                    curGroup = [];
+                }
+            }
+        }
+        if (curGroup.length) {
+            beamGroups.push(curGroup);
+        }
+        beamGroups.forEach((bg) => {
+            score.beam(bg);
+        });
+        if (scoreNotes.length > 0) {
+            const voice = score.voice(scoreNotes, { time: testdata.time });
+            system.addVoiceToPart([voice], i);
+        }
+    }
+    f.draw();
+    ok(true);
+}
+_vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(CrossBeamTests);
+
+
+
+/***/ }),
+
 /***/ "./tests/curve_tests.ts":
 /*!******************************!*\
   !*** ./tests/curve_tests.ts ***!
@@ -40414,6 +40711,7 @@ const FormatterTests = {
         QUnit.module('Formatter');
         test('TickContext Building', buildTickContexts);
         const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
+        run('Softmax', softMax);
         run('Penultimate Note Padding', penultimateNote);
         run('Whitespace and justify', rightJustify);
         run('Notehead padding', noteHeadPadding);
@@ -40423,94 +40721,9 @@ const FormatterTests = {
         run('Vertical alignment - many unaligned beats', unalignedNoteDurations2, { globalSoftmax: false });
         run('Vertical alignment - many unaligned beats (global softmax)', unalignedNoteDurations2, { globalSoftmax: true });
         run('Vertical alignment - many mixed elements', alignedMixedElements, { globalSoftmax: true });
-        run('Vertical alignment - cross stave (beam up1)', crossStave, {
-            notes0: 'C#5/q, B4/q',
-            notes1: 'A4/8, E4/8',
-            notes2: 'C4/8, D4/8',
-            stem1: 'up',
-            stem2: 'up',
-        });
-        run('Vertical alignment - cross stave (beam up2)', crossStave, {
-            notes0: 'C#5/q, C5/16, B4/q',
-            notes1: 'A4/8, E4/16',
-            notes2: 'C4/8, D4/8',
-            stem1: 'up',
-            stem2: 'up',
-        });
-        run('Vertical alignment - cross stave (beam up3)', crossStave, {
-            notes0: 'C#5/q, C5/16, B4/q',
-            notes1: 'A4/8, E4/8',
-            notes2: 'C4/16, D4/8',
-            stem1: 'up',
-            stem2: 'up',
-        });
-        run('Vertical alignment - cross stave (beam up4)', crossStave, {
-            notes0: 'C#5/q, C5/8, B4/q',
-            notes1: 'A4/8, E4/16',
-            notes2: 'C4/16, D4/8',
-            stem1: 'up',
-            stem2: 'up',
-        });
-        run('Vertical alignment - cross stave (beam down1)', crossStave, {
-            notes0: 'C#5/q, B4/q',
-            notes1: 'A4/8, E4/8',
-            notes2: 'C4/8, D4/8',
-            stem1: 'down',
-            stem2: 'down',
-        });
-        run('Vertical alignment - cross stave (beam down2)', crossStave, {
-            notes0: 'C#5/q, C5/16, B4/q',
-            notes1: 'A4/8, E4/16',
-            notes2: 'C4/8, D4/8',
-            stem1: 'down',
-            stem2: 'down',
-        });
-        run('Vertical alignment - cross stave (beam down3)', crossStave, {
-            notes0: 'C#5/q, C5/16, B4/q',
-            notes1: 'A4/8, E4/8',
-            notes2: 'C4/16, D4/8',
-            stem1: 'down',
-            stem2: 'down',
-        });
-        run('Vertical alignment - cross stave (beam down4)', crossStave, {
-            notes0: 'C#5/q, C5/8, B4/q',
-            notes1: 'A4/8, E4/16',
-            notes2: 'C4/16, D4/8',
-            stem1: 'down',
-            stem2: 'down',
-        });
-        run('Vertical alignment - cross stave (beam middle1)', crossStave, {
-            notes0: 'C#5/q, B4/q',
-            notes1: 'A4/8, E4/8',
-            notes2: 'C4/8, D4/8',
-            stem1: 'down',
-            stem2: 'up',
-        });
-        run('Vertical alignment - cross stave (beam middle2)', crossStave, {
-            notes0: 'C#5/q, C5/16, B4/q',
-            notes1: 'A4/8, E4/16',
-            notes2: 'C4/8, D4/8',
-            stem1: 'down',
-            stem2: 'up',
-        });
-        run('Vertical alignment - cross stave (beam middle3)', crossStave, {
-            notes0: 'C#5/q, C5/16, B4/q',
-            notes1: 'A4/8, E4/8',
-            notes2: 'C4/16, D4/8',
-            stem1: 'down',
-            stem2: 'up',
-        });
-        run('Vertical alignment - cross stave (beam middle4)', crossStave, {
-            notes0: 'C#5/q, C5/8, B4/q',
-            notes1: 'A4/8, E4/16',
-            notes2: 'C4/16, D4/8',
-            stem1: 'down',
-            stem2: 'up',
-        });
         run('StaveNote - Justification', justifyStaveNotes);
         run('Notes with Tab', notesWithTab);
         run('Multiple Staves - Justified', multiStaves, { debug: true });
-        run('Softmax', softMax);
         run('Mixtime', mixTime);
         run('Tight', tightNotes1);
         run('Tight 2', tightNotes2);
@@ -41067,32 +41280,6 @@ function mixTime(options) {
     })
         .addClef('treble')
         .addTimeSignature('4/4');
-    f.draw();
-    ok(true);
-}
-function crossStave(options) {
-    const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 400 + _src_stave__WEBPACK_IMPORTED_MODULE_14__.Stave.defaultPadding, 250);
-    f.getContext().scale(0.8, 0.8);
-    const score = f.EasyScore();
-    const system = f.System({
-        details: { softmaxFactor: 100 },
-        autoWidth: true,
-        debugFormatter: true,
-    });
-    const stave1 = system.addStave({ voices: [] }).addClef('treble').addTimeSignature('4/4');
-    const stave2 = system.addStave({ voices: [] }).addClef('treble').addTimeSignature('4/4');
-    const voice = score.voice(score
-        .notes(options.params.notes0)
-        .concat(score.beam(score
-        .notes(options.params.notes1, { stem: options.params.stem1 })
-        .concat(score.notes(options.params.notes2, { stem: options.params.stem2 })))));
-    for (let i = 0; i < voice.getTickables().length; i++) {
-        if (i < options.params.notes0.split(',').length + options.params.notes1.split(',').length)
-            voice.getTickables()[i].setStave(stave1);
-        else
-            voice.getTickables()[i].setStave(stave2);
-    }
-    system.addVoices([voice]);
     f.draw();
     ok(true);
 }
@@ -42154,63 +42341,64 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "BoundingBoxComputationTests": () => (/* reexport safe */ _boundingboxcomputation_tests__WEBPACK_IMPORTED_MODULE_9__.BoundingBoxComputationTests),
 /* harmony export */   "BoundingBoxTests": () => (/* reexport safe */ _boundingbox_tests__WEBPACK_IMPORTED_MODULE_8__.BoundingBoxTests),
 /* harmony export */   "ChordSymbolTests": () => (/* reexport safe */ _chordsymbol_tests__WEBPACK_IMPORTED_MODULE_10__.ChordSymbolTests),
-/* harmony export */   "ClefKeySignatureTests": () => (/* reexport safe */ _key_clef_tests__WEBPACK_IMPORTED_MODULE_23__.ClefKeySignatureTests),
+/* harmony export */   "ClefKeySignatureTests": () => (/* reexport safe */ _key_clef_tests__WEBPACK_IMPORTED_MODULE_24__.ClefKeySignatureTests),
 /* harmony export */   "ClefTests": () => (/* reexport safe */ _clef_tests__WEBPACK_IMPORTED_MODULE_11__.ClefTests),
-/* harmony export */   "CurveTests": () => (/* reexport safe */ _curve_tests__WEBPACK_IMPORTED_MODULE_12__.CurveTests),
-/* harmony export */   "DotTests": () => (/* reexport safe */ _dot_tests__WEBPACK_IMPORTED_MODULE_13__.DotTests),
-/* harmony export */   "EasyScoreTests": () => (/* reexport safe */ _easyscore_tests__WEBPACK_IMPORTED_MODULE_14__.EasyScoreTests),
-/* harmony export */   "FactoryTests": () => (/* reexport safe */ _factory_tests__WEBPACK_IMPORTED_MODULE_15__.FactoryTests),
-/* harmony export */   "FontTests": () => (/* reexport safe */ _font_tests__WEBPACK_IMPORTED_MODULE_16__.FontTests),
-/* harmony export */   "FormatterTests": () => (/* reexport safe */ _formatter_tests__WEBPACK_IMPORTED_MODULE_17__.FormatterTests),
-/* harmony export */   "FractionTests": () => (/* reexport safe */ _fraction_tests__WEBPACK_IMPORTED_MODULE_18__.FractionTests),
-/* harmony export */   "GhostNoteTests": () => (/* reexport safe */ _ghostnote_tests__WEBPACK_IMPORTED_MODULE_19__.GhostNoteTests),
-/* harmony export */   "GlyphNoteTests": () => (/* reexport safe */ _glyphnote_tests__WEBPACK_IMPORTED_MODULE_20__.GlyphNoteTests),
-/* harmony export */   "GraceNoteTests": () => (/* reexport safe */ _gracenote_tests__WEBPACK_IMPORTED_MODULE_21__.GraceNoteTests),
-/* harmony export */   "GraceTabNoteTests": () => (/* reexport safe */ _gracetabnote_tests__WEBPACK_IMPORTED_MODULE_22__.GraceTabNoteTests),
-/* harmony export */   "KeyManagerTests": () => (/* reexport safe */ _keymanager_tests__WEBPACK_IMPORTED_MODULE_24__.KeyManagerTests),
-/* harmony export */   "KeySignatureTests": () => (/* reexport safe */ _keysignature_tests__WEBPACK_IMPORTED_MODULE_25__.KeySignatureTests),
-/* harmony export */   "ModifierContextTests": () => (/* reexport safe */ _modifier_tests__WEBPACK_IMPORTED_MODULE_26__.ModifierContextTests),
-/* harmony export */   "MultiMeasureRestTests": () => (/* reexport safe */ _multimeasurerest_tests__WEBPACK_IMPORTED_MODULE_27__.MultiMeasureRestTests),
-/* harmony export */   "MusicTests": () => (/* reexport safe */ _music_tests__WEBPACK_IMPORTED_MODULE_28__.MusicTests),
-/* harmony export */   "NoteHeadTests": () => (/* reexport safe */ _notehead_tests__WEBPACK_IMPORTED_MODULE_29__.NoteHeadTests),
-/* harmony export */   "NoteSubGroupTests": () => (/* reexport safe */ _notesubgroup_tests__WEBPACK_IMPORTED_MODULE_30__.NoteSubGroupTests),
-/* harmony export */   "OffscreenCanvasTests": () => (/* reexport safe */ _offscreencanvas_tests__WEBPACK_IMPORTED_MODULE_31__.OffscreenCanvasTests),
-/* harmony export */   "OrnamentTests": () => (/* reexport safe */ _ornament_tests__WEBPACK_IMPORTED_MODULE_32__.OrnamentTests),
-/* harmony export */   "ParserTests": () => (/* reexport safe */ _parser_tests__WEBPACK_IMPORTED_MODULE_33__.ParserTests),
-/* harmony export */   "PedalMarkingTests": () => (/* reexport safe */ _pedalmarking_tests__WEBPACK_IMPORTED_MODULE_34__.PedalMarkingTests),
-/* harmony export */   "PercussionTests": () => (/* reexport safe */ _percussion_tests__WEBPACK_IMPORTED_MODULE_35__.PercussionTests),
-/* harmony export */   "RegistryTests": () => (/* reexport safe */ _registry_tests__WEBPACK_IMPORTED_MODULE_36__.RegistryTests),
-/* harmony export */   "RendererTests": () => (/* reexport safe */ _renderer_tests__WEBPACK_IMPORTED_MODULE_37__.RendererTests),
-/* harmony export */   "RestsTests": () => (/* reexport safe */ _rests_tests__WEBPACK_IMPORTED_MODULE_38__.RestsTests),
-/* harmony export */   "RhythmTests": () => (/* reexport safe */ _rhythm_tests__WEBPACK_IMPORTED_MODULE_39__.RhythmTests),
-/* harmony export */   "StaveConnectorTests": () => (/* reexport safe */ _staveconnector_tests__WEBPACK_IMPORTED_MODULE_41__.StaveConnectorTests),
-/* harmony export */   "StaveHairpinTests": () => (/* reexport safe */ _stavehairpin_tests__WEBPACK_IMPORTED_MODULE_42__.StaveHairpinTests),
-/* harmony export */   "StaveLineTests": () => (/* reexport safe */ _staveline_tests__WEBPACK_IMPORTED_MODULE_43__.StaveLineTests),
-/* harmony export */   "StaveModifierTests": () => (/* reexport safe */ _stavemodifier_tests__WEBPACK_IMPORTED_MODULE_44__.StaveModifierTests),
-/* harmony export */   "StaveNoteTests": () => (/* reexport safe */ _stavenote_tests__WEBPACK_IMPORTED_MODULE_45__.StaveNoteTests),
-/* harmony export */   "StaveTests": () => (/* reexport safe */ _stave_tests__WEBPACK_IMPORTED_MODULE_40__.StaveTests),
-/* harmony export */   "StaveTieTests": () => (/* reexport safe */ _stavetie_tests__WEBPACK_IMPORTED_MODULE_46__.StaveTieTests),
-/* harmony export */   "StringNumberTests": () => (/* reexport safe */ _stringnumber_tests__WEBPACK_IMPORTED_MODULE_47__.StringNumberTests),
-/* harmony export */   "StrokesTests": () => (/* reexport safe */ _strokes_tests__WEBPACK_IMPORTED_MODULE_48__.StrokesTests),
-/* harmony export */   "StyleTests": () => (/* reexport safe */ _style_tests__WEBPACK_IMPORTED_MODULE_49__.StyleTests),
-/* harmony export */   "TabNoteTests": () => (/* reexport safe */ _tabnote_tests__WEBPACK_IMPORTED_MODULE_50__.TabNoteTests),
-/* harmony export */   "TabSlideTests": () => (/* reexport safe */ _tabslide_tests__WEBPACK_IMPORTED_MODULE_51__.TabSlideTests),
-/* harmony export */   "TabStaveTests": () => (/* reexport safe */ _tabstave_tests__WEBPACK_IMPORTED_MODULE_52__.TabStaveTests),
-/* harmony export */   "TabTieTests": () => (/* reexport safe */ _tabtie_tests__WEBPACK_IMPORTED_MODULE_53__.TabTieTests),
-/* harmony export */   "TextBracketTests": () => (/* reexport safe */ _textbracket_tests__WEBPACK_IMPORTED_MODULE_54__.TextBracketTests),
-/* harmony export */   "TextFormatterTests": () => (/* reexport safe */ _textformatter_tests__WEBPACK_IMPORTED_MODULE_55__.TextFormatterTests),
-/* harmony export */   "TextNoteTests": () => (/* reexport safe */ _textnote_tests__WEBPACK_IMPORTED_MODULE_56__.TextNoteTests),
-/* harmony export */   "ThreeVoicesTests": () => (/* reexport safe */ _threevoice_tests__WEBPACK_IMPORTED_MODULE_57__.ThreeVoicesTests),
-/* harmony export */   "TickContextTests": () => (/* reexport safe */ _tickcontext_tests__WEBPACK_IMPORTED_MODULE_58__.TickContextTests),
-/* harmony export */   "TimeSignatureTests": () => (/* reexport safe */ _timesignature_tests__WEBPACK_IMPORTED_MODULE_59__.TimeSignatureTests),
-/* harmony export */   "TremoloTests": () => (/* reexport safe */ _tremolo_tests__WEBPACK_IMPORTED_MODULE_60__.TremoloTests),
-/* harmony export */   "TuningTests": () => (/* reexport safe */ _tuning_tests__WEBPACK_IMPORTED_MODULE_61__.TuningTests),
-/* harmony export */   "TupletTests": () => (/* reexport safe */ _tuplet_tests__WEBPACK_IMPORTED_MODULE_62__.TupletTests),
-/* harmony export */   "TypeGuardTests": () => (/* reexport safe */ _typeguard_tests__WEBPACK_IMPORTED_MODULE_63__.TypeGuardTests),
-/* harmony export */   "VFPrefixTests": () => (/* reexport safe */ _vf_prefix_tests__WEBPACK_IMPORTED_MODULE_64__.VFPrefixTests),
-/* harmony export */   "VibratoBracketTests": () => (/* reexport safe */ _vibratobracket_tests__WEBPACK_IMPORTED_MODULE_66__.VibratoBracketTests),
-/* harmony export */   "VibratoTests": () => (/* reexport safe */ _vibrato_tests__WEBPACK_IMPORTED_MODULE_65__.VibratoTests),
-/* harmony export */   "VoiceTests": () => (/* reexport safe */ _voice_tests__WEBPACK_IMPORTED_MODULE_67__.VoiceTests)
+/* harmony export */   "CrossBeamTests": () => (/* reexport safe */ _crossbeam_tests__WEBPACK_IMPORTED_MODULE_12__.CrossBeamTests),
+/* harmony export */   "CurveTests": () => (/* reexport safe */ _curve_tests__WEBPACK_IMPORTED_MODULE_13__.CurveTests),
+/* harmony export */   "DotTests": () => (/* reexport safe */ _dot_tests__WEBPACK_IMPORTED_MODULE_14__.DotTests),
+/* harmony export */   "EasyScoreTests": () => (/* reexport safe */ _easyscore_tests__WEBPACK_IMPORTED_MODULE_15__.EasyScoreTests),
+/* harmony export */   "FactoryTests": () => (/* reexport safe */ _factory_tests__WEBPACK_IMPORTED_MODULE_16__.FactoryTests),
+/* harmony export */   "FontTests": () => (/* reexport safe */ _font_tests__WEBPACK_IMPORTED_MODULE_17__.FontTests),
+/* harmony export */   "FormatterTests": () => (/* reexport safe */ _formatter_tests__WEBPACK_IMPORTED_MODULE_18__.FormatterTests),
+/* harmony export */   "FractionTests": () => (/* reexport safe */ _fraction_tests__WEBPACK_IMPORTED_MODULE_19__.FractionTests),
+/* harmony export */   "GhostNoteTests": () => (/* reexport safe */ _ghostnote_tests__WEBPACK_IMPORTED_MODULE_20__.GhostNoteTests),
+/* harmony export */   "GlyphNoteTests": () => (/* reexport safe */ _glyphnote_tests__WEBPACK_IMPORTED_MODULE_21__.GlyphNoteTests),
+/* harmony export */   "GraceNoteTests": () => (/* reexport safe */ _gracenote_tests__WEBPACK_IMPORTED_MODULE_22__.GraceNoteTests),
+/* harmony export */   "GraceTabNoteTests": () => (/* reexport safe */ _gracetabnote_tests__WEBPACK_IMPORTED_MODULE_23__.GraceTabNoteTests),
+/* harmony export */   "KeyManagerTests": () => (/* reexport safe */ _keymanager_tests__WEBPACK_IMPORTED_MODULE_25__.KeyManagerTests),
+/* harmony export */   "KeySignatureTests": () => (/* reexport safe */ _keysignature_tests__WEBPACK_IMPORTED_MODULE_26__.KeySignatureTests),
+/* harmony export */   "ModifierContextTests": () => (/* reexport safe */ _modifier_tests__WEBPACK_IMPORTED_MODULE_27__.ModifierContextTests),
+/* harmony export */   "MultiMeasureRestTests": () => (/* reexport safe */ _multimeasurerest_tests__WEBPACK_IMPORTED_MODULE_28__.MultiMeasureRestTests),
+/* harmony export */   "MusicTests": () => (/* reexport safe */ _music_tests__WEBPACK_IMPORTED_MODULE_29__.MusicTests),
+/* harmony export */   "NoteHeadTests": () => (/* reexport safe */ _notehead_tests__WEBPACK_IMPORTED_MODULE_30__.NoteHeadTests),
+/* harmony export */   "NoteSubGroupTests": () => (/* reexport safe */ _notesubgroup_tests__WEBPACK_IMPORTED_MODULE_31__.NoteSubGroupTests),
+/* harmony export */   "OffscreenCanvasTests": () => (/* reexport safe */ _offscreencanvas_tests__WEBPACK_IMPORTED_MODULE_32__.OffscreenCanvasTests),
+/* harmony export */   "OrnamentTests": () => (/* reexport safe */ _ornament_tests__WEBPACK_IMPORTED_MODULE_33__.OrnamentTests),
+/* harmony export */   "ParserTests": () => (/* reexport safe */ _parser_tests__WEBPACK_IMPORTED_MODULE_34__.ParserTests),
+/* harmony export */   "PedalMarkingTests": () => (/* reexport safe */ _pedalmarking_tests__WEBPACK_IMPORTED_MODULE_35__.PedalMarkingTests),
+/* harmony export */   "PercussionTests": () => (/* reexport safe */ _percussion_tests__WEBPACK_IMPORTED_MODULE_36__.PercussionTests),
+/* harmony export */   "RegistryTests": () => (/* reexport safe */ _registry_tests__WEBPACK_IMPORTED_MODULE_37__.RegistryTests),
+/* harmony export */   "RendererTests": () => (/* reexport safe */ _renderer_tests__WEBPACK_IMPORTED_MODULE_38__.RendererTests),
+/* harmony export */   "RestsTests": () => (/* reexport safe */ _rests_tests__WEBPACK_IMPORTED_MODULE_39__.RestsTests),
+/* harmony export */   "RhythmTests": () => (/* reexport safe */ _rhythm_tests__WEBPACK_IMPORTED_MODULE_40__.RhythmTests),
+/* harmony export */   "StaveConnectorTests": () => (/* reexport safe */ _staveconnector_tests__WEBPACK_IMPORTED_MODULE_42__.StaveConnectorTests),
+/* harmony export */   "StaveHairpinTests": () => (/* reexport safe */ _stavehairpin_tests__WEBPACK_IMPORTED_MODULE_43__.StaveHairpinTests),
+/* harmony export */   "StaveLineTests": () => (/* reexport safe */ _staveline_tests__WEBPACK_IMPORTED_MODULE_44__.StaveLineTests),
+/* harmony export */   "StaveModifierTests": () => (/* reexport safe */ _stavemodifier_tests__WEBPACK_IMPORTED_MODULE_45__.StaveModifierTests),
+/* harmony export */   "StaveNoteTests": () => (/* reexport safe */ _stavenote_tests__WEBPACK_IMPORTED_MODULE_46__.StaveNoteTests),
+/* harmony export */   "StaveTests": () => (/* reexport safe */ _stave_tests__WEBPACK_IMPORTED_MODULE_41__.StaveTests),
+/* harmony export */   "StaveTieTests": () => (/* reexport safe */ _stavetie_tests__WEBPACK_IMPORTED_MODULE_47__.StaveTieTests),
+/* harmony export */   "StringNumberTests": () => (/* reexport safe */ _stringnumber_tests__WEBPACK_IMPORTED_MODULE_48__.StringNumberTests),
+/* harmony export */   "StrokesTests": () => (/* reexport safe */ _strokes_tests__WEBPACK_IMPORTED_MODULE_49__.StrokesTests),
+/* harmony export */   "StyleTests": () => (/* reexport safe */ _style_tests__WEBPACK_IMPORTED_MODULE_50__.StyleTests),
+/* harmony export */   "TabNoteTests": () => (/* reexport safe */ _tabnote_tests__WEBPACK_IMPORTED_MODULE_51__.TabNoteTests),
+/* harmony export */   "TabSlideTests": () => (/* reexport safe */ _tabslide_tests__WEBPACK_IMPORTED_MODULE_52__.TabSlideTests),
+/* harmony export */   "TabStaveTests": () => (/* reexport safe */ _tabstave_tests__WEBPACK_IMPORTED_MODULE_53__.TabStaveTests),
+/* harmony export */   "TabTieTests": () => (/* reexport safe */ _tabtie_tests__WEBPACK_IMPORTED_MODULE_54__.TabTieTests),
+/* harmony export */   "TextBracketTests": () => (/* reexport safe */ _textbracket_tests__WEBPACK_IMPORTED_MODULE_55__.TextBracketTests),
+/* harmony export */   "TextFormatterTests": () => (/* reexport safe */ _textformatter_tests__WEBPACK_IMPORTED_MODULE_56__.TextFormatterTests),
+/* harmony export */   "TextNoteTests": () => (/* reexport safe */ _textnote_tests__WEBPACK_IMPORTED_MODULE_57__.TextNoteTests),
+/* harmony export */   "ThreeVoicesTests": () => (/* reexport safe */ _threevoice_tests__WEBPACK_IMPORTED_MODULE_58__.ThreeVoicesTests),
+/* harmony export */   "TickContextTests": () => (/* reexport safe */ _tickcontext_tests__WEBPACK_IMPORTED_MODULE_59__.TickContextTests),
+/* harmony export */   "TimeSignatureTests": () => (/* reexport safe */ _timesignature_tests__WEBPACK_IMPORTED_MODULE_60__.TimeSignatureTests),
+/* harmony export */   "TremoloTests": () => (/* reexport safe */ _tremolo_tests__WEBPACK_IMPORTED_MODULE_61__.TremoloTests),
+/* harmony export */   "TuningTests": () => (/* reexport safe */ _tuning_tests__WEBPACK_IMPORTED_MODULE_62__.TuningTests),
+/* harmony export */   "TupletTests": () => (/* reexport safe */ _tuplet_tests__WEBPACK_IMPORTED_MODULE_63__.TupletTests),
+/* harmony export */   "TypeGuardTests": () => (/* reexport safe */ _typeguard_tests__WEBPACK_IMPORTED_MODULE_64__.TypeGuardTests),
+/* harmony export */   "VFPrefixTests": () => (/* reexport safe */ _vf_prefix_tests__WEBPACK_IMPORTED_MODULE_65__.VFPrefixTests),
+/* harmony export */   "VibratoBracketTests": () => (/* reexport safe */ _vibratobracket_tests__WEBPACK_IMPORTED_MODULE_67__.VibratoBracketTests),
+/* harmony export */   "VibratoTests": () => (/* reexport safe */ _vibrato_tests__WEBPACK_IMPORTED_MODULE_66__.VibratoTests),
+/* harmony export */   "VoiceTests": () => (/* reexport safe */ _voice_tests__WEBPACK_IMPORTED_MODULE_68__.VoiceTests)
 /* harmony export */ });
 /* harmony import */ var _accidental_tests__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./accidental_tests */ "./tests/accidental_tests.ts");
 /* harmony import */ var _annotation_tests__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./annotation_tests */ "./tests/annotation_tests.ts");
@@ -42224,62 +42412,63 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _boundingboxcomputation_tests__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./boundingboxcomputation_tests */ "./tests/boundingboxcomputation_tests.ts");
 /* harmony import */ var _chordsymbol_tests__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./chordsymbol_tests */ "./tests/chordsymbol_tests.ts");
 /* harmony import */ var _clef_tests__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./clef_tests */ "./tests/clef_tests.ts");
-/* harmony import */ var _curve_tests__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./curve_tests */ "./tests/curve_tests.ts");
-/* harmony import */ var _dot_tests__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./dot_tests */ "./tests/dot_tests.ts");
-/* harmony import */ var _easyscore_tests__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./easyscore_tests */ "./tests/easyscore_tests.ts");
-/* harmony import */ var _factory_tests__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./factory_tests */ "./tests/factory_tests.ts");
-/* harmony import */ var _font_tests__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./font_tests */ "./tests/font_tests.ts");
-/* harmony import */ var _formatter_tests__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./formatter_tests */ "./tests/formatter_tests.ts");
-/* harmony import */ var _fraction_tests__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./fraction_tests */ "./tests/fraction_tests.ts");
-/* harmony import */ var _ghostnote_tests__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./ghostnote_tests */ "./tests/ghostnote_tests.ts");
-/* harmony import */ var _glyphnote_tests__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./glyphnote_tests */ "./tests/glyphnote_tests.ts");
-/* harmony import */ var _gracenote_tests__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./gracenote_tests */ "./tests/gracenote_tests.ts");
-/* harmony import */ var _gracetabnote_tests__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./gracetabnote_tests */ "./tests/gracetabnote_tests.ts");
-/* harmony import */ var _key_clef_tests__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./key_clef_tests */ "./tests/key_clef_tests.ts");
-/* harmony import */ var _keymanager_tests__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./keymanager_tests */ "./tests/keymanager_tests.ts");
-/* harmony import */ var _keysignature_tests__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./keysignature_tests */ "./tests/keysignature_tests.ts");
-/* harmony import */ var _modifier_tests__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./modifier_tests */ "./tests/modifier_tests.ts");
-/* harmony import */ var _multimeasurerest_tests__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./multimeasurerest_tests */ "./tests/multimeasurerest_tests.ts");
-/* harmony import */ var _music_tests__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./music_tests */ "./tests/music_tests.ts");
-/* harmony import */ var _notehead_tests__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./notehead_tests */ "./tests/notehead_tests.ts");
-/* harmony import */ var _notesubgroup_tests__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./notesubgroup_tests */ "./tests/notesubgroup_tests.ts");
-/* harmony import */ var _offscreencanvas_tests__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./offscreencanvas_tests */ "./tests/offscreencanvas_tests.ts");
-/* harmony import */ var _ornament_tests__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./ornament_tests */ "./tests/ornament_tests.ts");
-/* harmony import */ var _parser_tests__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./parser_tests */ "./tests/parser_tests.ts");
-/* harmony import */ var _pedalmarking_tests__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./pedalmarking_tests */ "./tests/pedalmarking_tests.ts");
-/* harmony import */ var _percussion_tests__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./percussion_tests */ "./tests/percussion_tests.ts");
-/* harmony import */ var _registry_tests__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./registry_tests */ "./tests/registry_tests.ts");
-/* harmony import */ var _renderer_tests__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./renderer_tests */ "./tests/renderer_tests.ts");
-/* harmony import */ var _rests_tests__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./rests_tests */ "./tests/rests_tests.ts");
-/* harmony import */ var _rhythm_tests__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./rhythm_tests */ "./tests/rhythm_tests.ts");
-/* harmony import */ var _stave_tests__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./stave_tests */ "./tests/stave_tests.ts");
-/* harmony import */ var _staveconnector_tests__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./staveconnector_tests */ "./tests/staveconnector_tests.ts");
-/* harmony import */ var _stavehairpin_tests__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./stavehairpin_tests */ "./tests/stavehairpin_tests.ts");
-/* harmony import */ var _staveline_tests__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./staveline_tests */ "./tests/staveline_tests.ts");
-/* harmony import */ var _stavemodifier_tests__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./stavemodifier_tests */ "./tests/stavemodifier_tests.ts");
-/* harmony import */ var _stavenote_tests__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./stavenote_tests */ "./tests/stavenote_tests.ts");
-/* harmony import */ var _stavetie_tests__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./stavetie_tests */ "./tests/stavetie_tests.ts");
-/* harmony import */ var _stringnumber_tests__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./stringnumber_tests */ "./tests/stringnumber_tests.ts");
-/* harmony import */ var _strokes_tests__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./strokes_tests */ "./tests/strokes_tests.ts");
-/* harmony import */ var _style_tests__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./style_tests */ "./tests/style_tests.ts");
-/* harmony import */ var _tabnote_tests__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./tabnote_tests */ "./tests/tabnote_tests.ts");
-/* harmony import */ var _tabslide_tests__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./tabslide_tests */ "./tests/tabslide_tests.ts");
-/* harmony import */ var _tabstave_tests__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./tabstave_tests */ "./tests/tabstave_tests.ts");
-/* harmony import */ var _tabtie_tests__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./tabtie_tests */ "./tests/tabtie_tests.ts");
-/* harmony import */ var _textbracket_tests__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./textbracket_tests */ "./tests/textbracket_tests.ts");
-/* harmony import */ var _textformatter_tests__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./textformatter_tests */ "./tests/textformatter_tests.ts");
-/* harmony import */ var _textnote_tests__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./textnote_tests */ "./tests/textnote_tests.ts");
-/* harmony import */ var _threevoice_tests__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./threevoice_tests */ "./tests/threevoice_tests.ts");
-/* harmony import */ var _tickcontext_tests__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./tickcontext_tests */ "./tests/tickcontext_tests.ts");
-/* harmony import */ var _timesignature_tests__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./timesignature_tests */ "./tests/timesignature_tests.ts");
-/* harmony import */ var _tremolo_tests__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./tremolo_tests */ "./tests/tremolo_tests.ts");
-/* harmony import */ var _tuning_tests__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./tuning_tests */ "./tests/tuning_tests.ts");
-/* harmony import */ var _tuplet_tests__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./tuplet_tests */ "./tests/tuplet_tests.ts");
-/* harmony import */ var _typeguard_tests__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./typeguard_tests */ "./tests/typeguard_tests.ts");
-/* harmony import */ var _vf_prefix_tests__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./vf_prefix_tests */ "./tests/vf_prefix_tests.ts");
-/* harmony import */ var _vibrato_tests__WEBPACK_IMPORTED_MODULE_65__ = __webpack_require__(/*! ./vibrato_tests */ "./tests/vibrato_tests.ts");
-/* harmony import */ var _vibratobracket_tests__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./vibratobracket_tests */ "./tests/vibratobracket_tests.ts");
-/* harmony import */ var _voice_tests__WEBPACK_IMPORTED_MODULE_67__ = __webpack_require__(/*! ./voice_tests */ "./tests/voice_tests.ts");
+/* harmony import */ var _crossbeam_tests__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./crossbeam_tests */ "./tests/crossbeam_tests.ts");
+/* harmony import */ var _curve_tests__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./curve_tests */ "./tests/curve_tests.ts");
+/* harmony import */ var _dot_tests__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./dot_tests */ "./tests/dot_tests.ts");
+/* harmony import */ var _easyscore_tests__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./easyscore_tests */ "./tests/easyscore_tests.ts");
+/* harmony import */ var _factory_tests__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./factory_tests */ "./tests/factory_tests.ts");
+/* harmony import */ var _font_tests__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./font_tests */ "./tests/font_tests.ts");
+/* harmony import */ var _formatter_tests__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./formatter_tests */ "./tests/formatter_tests.ts");
+/* harmony import */ var _fraction_tests__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./fraction_tests */ "./tests/fraction_tests.ts");
+/* harmony import */ var _ghostnote_tests__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./ghostnote_tests */ "./tests/ghostnote_tests.ts");
+/* harmony import */ var _glyphnote_tests__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./glyphnote_tests */ "./tests/glyphnote_tests.ts");
+/* harmony import */ var _gracenote_tests__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./gracenote_tests */ "./tests/gracenote_tests.ts");
+/* harmony import */ var _gracetabnote_tests__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./gracetabnote_tests */ "./tests/gracetabnote_tests.ts");
+/* harmony import */ var _key_clef_tests__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./key_clef_tests */ "./tests/key_clef_tests.ts");
+/* harmony import */ var _keymanager_tests__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./keymanager_tests */ "./tests/keymanager_tests.ts");
+/* harmony import */ var _keysignature_tests__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./keysignature_tests */ "./tests/keysignature_tests.ts");
+/* harmony import */ var _modifier_tests__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./modifier_tests */ "./tests/modifier_tests.ts");
+/* harmony import */ var _multimeasurerest_tests__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./multimeasurerest_tests */ "./tests/multimeasurerest_tests.ts");
+/* harmony import */ var _music_tests__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./music_tests */ "./tests/music_tests.ts");
+/* harmony import */ var _notehead_tests__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./notehead_tests */ "./tests/notehead_tests.ts");
+/* harmony import */ var _notesubgroup_tests__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./notesubgroup_tests */ "./tests/notesubgroup_tests.ts");
+/* harmony import */ var _offscreencanvas_tests__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./offscreencanvas_tests */ "./tests/offscreencanvas_tests.ts");
+/* harmony import */ var _ornament_tests__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./ornament_tests */ "./tests/ornament_tests.ts");
+/* harmony import */ var _parser_tests__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./parser_tests */ "./tests/parser_tests.ts");
+/* harmony import */ var _pedalmarking_tests__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./pedalmarking_tests */ "./tests/pedalmarking_tests.ts");
+/* harmony import */ var _percussion_tests__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./percussion_tests */ "./tests/percussion_tests.ts");
+/* harmony import */ var _registry_tests__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./registry_tests */ "./tests/registry_tests.ts");
+/* harmony import */ var _renderer_tests__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./renderer_tests */ "./tests/renderer_tests.ts");
+/* harmony import */ var _rests_tests__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./rests_tests */ "./tests/rests_tests.ts");
+/* harmony import */ var _rhythm_tests__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./rhythm_tests */ "./tests/rhythm_tests.ts");
+/* harmony import */ var _stave_tests__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./stave_tests */ "./tests/stave_tests.ts");
+/* harmony import */ var _staveconnector_tests__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./staveconnector_tests */ "./tests/staveconnector_tests.ts");
+/* harmony import */ var _stavehairpin_tests__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./stavehairpin_tests */ "./tests/stavehairpin_tests.ts");
+/* harmony import */ var _staveline_tests__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./staveline_tests */ "./tests/staveline_tests.ts");
+/* harmony import */ var _stavemodifier_tests__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./stavemodifier_tests */ "./tests/stavemodifier_tests.ts");
+/* harmony import */ var _stavenote_tests__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./stavenote_tests */ "./tests/stavenote_tests.ts");
+/* harmony import */ var _stavetie_tests__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./stavetie_tests */ "./tests/stavetie_tests.ts");
+/* harmony import */ var _stringnumber_tests__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./stringnumber_tests */ "./tests/stringnumber_tests.ts");
+/* harmony import */ var _strokes_tests__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./strokes_tests */ "./tests/strokes_tests.ts");
+/* harmony import */ var _style_tests__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./style_tests */ "./tests/style_tests.ts");
+/* harmony import */ var _tabnote_tests__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./tabnote_tests */ "./tests/tabnote_tests.ts");
+/* harmony import */ var _tabslide_tests__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./tabslide_tests */ "./tests/tabslide_tests.ts");
+/* harmony import */ var _tabstave_tests__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./tabstave_tests */ "./tests/tabstave_tests.ts");
+/* harmony import */ var _tabtie_tests__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./tabtie_tests */ "./tests/tabtie_tests.ts");
+/* harmony import */ var _textbracket_tests__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./textbracket_tests */ "./tests/textbracket_tests.ts");
+/* harmony import */ var _textformatter_tests__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./textformatter_tests */ "./tests/textformatter_tests.ts");
+/* harmony import */ var _textnote_tests__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./textnote_tests */ "./tests/textnote_tests.ts");
+/* harmony import */ var _threevoice_tests__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./threevoice_tests */ "./tests/threevoice_tests.ts");
+/* harmony import */ var _tickcontext_tests__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./tickcontext_tests */ "./tests/tickcontext_tests.ts");
+/* harmony import */ var _timesignature_tests__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./timesignature_tests */ "./tests/timesignature_tests.ts");
+/* harmony import */ var _tremolo_tests__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./tremolo_tests */ "./tests/tremolo_tests.ts");
+/* harmony import */ var _tuning_tests__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./tuning_tests */ "./tests/tuning_tests.ts");
+/* harmony import */ var _tuplet_tests__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./tuplet_tests */ "./tests/tuplet_tests.ts");
+/* harmony import */ var _typeguard_tests__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./typeguard_tests */ "./tests/typeguard_tests.ts");
+/* harmony import */ var _vf_prefix_tests__WEBPACK_IMPORTED_MODULE_65__ = __webpack_require__(/*! ./vf_prefix_tests */ "./tests/vf_prefix_tests.ts");
+/* harmony import */ var _vibrato_tests__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./vibrato_tests */ "./tests/vibrato_tests.ts");
+/* harmony import */ var _vibratobracket_tests__WEBPACK_IMPORTED_MODULE_67__ = __webpack_require__(/*! ./vibratobracket_tests */ "./tests/vibratobracket_tests.ts");
+/* harmony import */ var _voice_tests__WEBPACK_IMPORTED_MODULE_68__ = __webpack_require__(/*! ./voice_tests */ "./tests/voice_tests.ts");
 // vexflow-debug-with-tests.ts includes this module via:
 //   export * from '../../tests';
 //
@@ -42296,6 +42485,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 // To iterate faster during development, you can comment out most of this file
 // and focus on just testing the module(s) you are currently working on.
+
 
 
 
@@ -52629,6 +52819,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "ClefNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.ClefNote),
 /* harmony export */   "ClefTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.ClefTests),
 /* harmony export */   "Crescendo": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Crescendo),
+/* harmony export */   "CrossBeamTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.CrossBeamTests),
 /* harmony export */   "Curve": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Curve),
 /* harmony export */   "CurvePosition": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.CurvePosition),
 /* harmony export */   "CurveTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.CurveTests),
