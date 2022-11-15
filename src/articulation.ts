@@ -165,7 +165,7 @@ function getInitialOffset(note: Note, position: number): number {
  */
 export class Articulation extends Modifier {
   /** To enable logging for this class. Set `Vex.Flow.Articulation.DEBUG` to `true`. */
-  static DEBUG: boolean = true;
+  static DEBUG: boolean = false;
 
   /** Articulations category string. */
   static get CATEGORY(): string {

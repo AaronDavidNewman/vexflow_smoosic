@@ -1,5 +1,5 @@
 /*!
- * VexFlow 4.0.3   2022-10-16T23:34:07.142Z   79d6eaf7c31735cd10663e5f4f9d7638d488a7d6
+ * VexFlow 4.0.3   2022-11-15T04:54:26.731Z   4b3c05cf5cb355ed5a8fb3d0c0e1bcf14f28428e
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * https://www.vexflow.com   https://github.com/0xfe/vexflow
  */
@@ -30,8 +30,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "VERSION": () => (/* binding */ VERSION)
 /* harmony export */ });
 const VERSION = '4.0.3';
-const ID = '79d6eaf7c31735cd10663e5f4f9d7638d488a7d6';
-const DATE = '2022-10-16T23:34:07.142Z';
+const ID = '4b3c05cf5cb355ed5a8fb3d0c0e1bcf14f28428e';
+const DATE = '2022-11-15T04:54:26.731Z';
 
 
 /***/ }),
@@ -1185,7 +1185,7 @@ class Articulation extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
     }
 }
 /** To enable logging for this class. Set `Vex.Flow.Articulation.DEBUG` to `true`. */
-Articulation.DEBUG = true;
+Articulation.DEBUG = false;
 Articulation.INITIAL_OFFSET = -0.5;
 
 
