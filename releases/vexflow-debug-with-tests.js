@@ -1,5 +1,5 @@
 /*!
- * VexFlow 4.0.3   2022-11-15T04:54:26.731Z   4b3c05cf5cb355ed5a8fb3d0c0e1bcf14f28428e
+ * VexFlow 4.1.0-alpha.0   2022-11-15T05:17:01.247Z   77643936d21ebbd4a00a1d154e2e5d06031a8bcd
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * https://www.vexflow.com   https://github.com/0xfe/vexflow
  */
@@ -29,9 +29,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "ID": () => (/* binding */ ID),
 /* harmony export */   "VERSION": () => (/* binding */ VERSION)
 /* harmony export */ });
-const VERSION = '4.0.3';
-const ID = '4b3c05cf5cb355ed5a8fb3d0c0e1bcf14f28428e';
-const DATE = '2022-11-15T04:54:26.731Z';
+const VERSION = '4.1.0-alpha.0';
+const ID = '77643936d21ebbd4a00a1d154e2e5d06031a8bcd';
+const DATE = '2022-11-15T05:17:01.247Z';
 
 
 /***/ }),
@@ -626,7 +626,7 @@ class Annotation extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
             const annotation = annotations[i];
             const textFormatter = _textformatter__WEBPACK_IMPORTED_MODULE_4__.TextFormatter.create(annotation.textFont);
             // Text height is expressed in fractional stave spaces.
-            const textLines = (5 + textFormatter.maxHeight) / _tables__WEBPACK_IMPORTED_MODULE_3__.Tables.STAVE_LINE_DISTANCE;
+            const textLines = (2 + textFormatter.getYForStringInPx(annotation.text).height) / _tables__WEBPACK_IMPORTED_MODULE_3__.Tables.STAVE_LINE_DISTANCE;
             let verticalSpaceNeeded = textLines;
             const note = annotation.checkAttachedNote();
             const glyphWidth = note.getGlyph().getWidth();
@@ -755,11 +755,10 @@ class Annotation extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
         // still need to save context state just before this, since we will be
         // changing ctx parameters below.
         this.applyStyle();
-        const classString = Object.keys(this.getAttribute('classes')).join(' ');
-        ctx.openGroup(classString, this.getAttribute('id'));
+        ctx.openGroup('annotation', this.getAttribute('id'));
         ctx.setFont(this.textFont);
-        const text_width = ctx.measureText(this.text).width;
-        const text_height = textFormatter.maxHeight + 2;
+        const text_width = textFormatter.getWidthForTextInPx(this.text);
+        const text_height = textFormatter.getYForStringInPx(this.text).height;
         let x;
         let y;
         if (this.horizontalJustification === AnnotationHorizontalJustify.LEFT) {
@@ -1272,13 +1271,11 @@ class BarNote extends _note__WEBPACK_IMPORTED_MODULE_0__.Note {
     draw() {
         const ctx = this.checkContext();
         L('Rendering bar line at: ', this.getAbsoluteX());
-        if (this.style)
-            this.applyStyle(ctx);
+        this.applyStyle(ctx);
         const barline = new _stavebarline__WEBPACK_IMPORTED_MODULE_1__.Barline(this.type);
         barline.setX(this.getAbsoluteX());
         barline.draw(this.checkStave());
-        if (this.style)
-            this.restoreStyle(ctx);
+        this.restoreStyle(ctx);
         this.setRendered();
     }
 }
@@ -1366,14 +1363,7 @@ class Beam extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
         }
         let i; // shared iterator
         let note;
-        this.stem_direction = _stem__WEBPACK_IMPORTED_MODULE_2__.Stem.UP;
-        for (i = 0; i < notes.length; ++i) {
-            note = notes[i];
-            if (note.hasStem()) {
-                this.stem_direction = note.getStemDirection();
-                break;
-            }
-        }
+        this.stem_direction = notes[0].getStemDirection();
         let stem_direction = this.stem_direction;
         // Figure out optimal stem direction based on given notes
         if (auto_stem && (0,_typeguard__WEBPACK_IMPORTED_MODULE_5__.isStaveNote)(notes[0])) {
@@ -1891,7 +1881,7 @@ class Beam extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
      * extends into the beams.
      */
     applyStemExtensions() {
-        const { notes, slope, y_shift, stem_direction, beam_count, render_options: { show_stemlets, stemlet_extension, beam_width }, } = this;
+        const { notes, slope, y_shift, beam_count, render_options: { show_stemlets, stemlet_extension, beam_width }, } = this;
         const firstNote = notes[0];
         const firstStemTipY = this.getBeamYToDraw();
         const firstStemX = firstNote.getStemX();
@@ -1903,8 +1893,21 @@ class Beam extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
                 const { topY: stemTipY } = note.getStemExtents();
                 const beamedStemTipY = this.getSlopeY(stemX, firstStemX, firstStemTipY, slope) + y_shift;
                 const preBeamExtension = stem.getExtension();
-                const beamExtension = stem_direction === _stem__WEBPACK_IMPORTED_MODULE_2__.Stem.UP ? stemTipY - beamedStemTipY : beamedStemTipY - stemTipY;
-                stem.setExtension(preBeamExtension + beamExtension);
+                const beamExtension = note.getStemDirection() === _stem__WEBPACK_IMPORTED_MODULE_2__.Stem.UP ? stemTipY - beamedStemTipY : beamedStemTipY - stemTipY;
+                // Determine necessary extension for cross-stave notes in the beam group
+                let crossStemExtension = 0;
+                if (note.getStemDirection() !== this.stem_direction) {
+                    const beamCount = note.getGlyph().beam_count;
+                    crossStemExtension = (1 + (beamCount - 1) * 1.5) * this.render_options.beam_width;
+                    /* This will be required if the partial beams are moved to the note side.
+                    if (i > 0 && note.getGlyph().beam_count > 1) {
+                      const prevBeamCount = this.notes[i - 1].getGlyph().beam_count;
+                      const beamDiff = Math.abs(prevBeamCount - beamCount);
+                      if (beamDiff > 0) crossStemExtension -= beamDiff * (this.render_options.beam_width * 1.5);
+                    }
+                    */
+                }
+                stem.setExtension(preBeamExtension + beamExtension + crossStemExtension);
                 stem.adjustHeightForBeam();
                 if (note.isRest() && show_stemlets) {
                     const beamWidth = beam_width;
@@ -2050,9 +2053,7 @@ class Beam extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
             if (stem) {
                 const stem_x = note.getStemX();
                 stem.setNoteHeadXBounds(stem_x, stem_x);
-                ctx.openGroup('stem', note.getAttribute('id') + '-stem');
                 stem.setContext(ctx).draw();
-                ctx.closeGroup();
             }
         }, this);
     }
@@ -2074,7 +2075,6 @@ class Beam extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
                 const lastBeamX = beam_line.end;
                 if (lastBeamX) {
                     const lastBeamY = this.getSlopeY(lastBeamX, firstStemX, beamY, this.slope);
-                    this.setAttribute('el', ctx.openGroup('beam'));
                     ctx.beginPath();
                     ctx.moveTo(startBeamX, startBeamY);
                     ctx.lineTo(startBeamX, startBeamY + beamThickness);
@@ -2082,7 +2082,6 @@ class Beam extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
                     ctx.lineTo(lastBeamX + 1, lastBeamY);
                     ctx.closePath();
                     ctx.fill();
-                    ctx.closeGroup();
                 }
                 else {
                     throw new _util__WEBPACK_IMPORTED_MODULE_6__.RuntimeError('NoLastBeamX', 'lastBeamX undefined.');
@@ -2124,7 +2123,9 @@ class Beam extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
         }
         this.drawStems(ctx);
         this.applyStyle();
+        ctx.openGroup('beam', this.getAttribute('id'));
         this.drawBeamLines(ctx);
+        ctx.closeGroup();
         this.restoreStyle();
     }
 }
@@ -3445,8 +3446,8 @@ class ChordSymbol extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
         this.setRendered();
         // We're changing context parameters. Save current state.
         ctx.save();
-        const classString = Object.keys(this.getAttribute('classes')).join(' ');
-        ctx.openGroup(classString, this.getAttribute('id'));
+        this.applyStyle();
+        ctx.openGroup('chordsymbol', this.getAttribute('id'));
         const start = note.getModifierStartXY(_modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier.Position.ABOVE, this.index);
         ctx.setFont(this.textFont);
         let y;
@@ -3539,6 +3540,7 @@ class ChordSymbol extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
             }
         });
         ctx.closeGroup();
+        this.restoreStyle();
         ctx.restore();
     }
 }
@@ -3804,6 +3806,7 @@ class Clef extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier {
         const stave = this.checkStave();
         const ctx = stave.checkContext();
         this.setRendered();
+        this.applyStyle(ctx);
         ctx.openGroup('clef', this.getAttribute('id'));
         glyph.setStave(stave);
         glyph.setContext(ctx);
@@ -3818,6 +3821,7 @@ class Clef extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier {
             this.attachment.renderToStave(this.x);
         }
         ctx.closeGroup();
+        this.restoreStyle(ctx);
     }
 }
 /** To enable logging for this class, set `Vex.Flow.Clef.DEBUG` to `true`. */
@@ -4837,9 +4841,8 @@ class Element {
         this.children = [];
         this.attrs = {
             id: Element.newID(),
-            el: undefined,
             type: this.getCategory(),
-            classes: {},
+            class: '',
         };
         this.rendered = false;
         // If a default registry exist, then register with it right away.
@@ -4934,12 +4937,20 @@ class Element {
     }
     /** Check if it has a class label (An element can have multiple class labels).  */
     hasClass(className) {
-        return this.attrs.classes[className] === true;
+        var _a;
+        if (!this.attrs.class)
+            return false;
+        return ((_a = this.attrs.class) === null || _a === void 0 ? void 0 : _a.split(' ').indexOf(className)) != -1;
     }
     /** Add a class label (An element can have multiple class labels).  */
     addClass(className) {
         var _a;
-        this.attrs.classes[className] = true;
+        if (this.hasClass(className))
+            return this;
+        if (!this.attrs.class)
+            this.attrs.class = `${className}`;
+        else
+            this.attrs.class = `${this.attrs.class} ${className}`;
         (_a = this.registry) === null || _a === void 0 ? void 0 : _a.onUpdate({
             id: this.attrs.id,
             name: 'class',
@@ -4950,9 +4961,15 @@ class Element {
     }
     /** Remove a class label (An element can have multiple class labels).  */
     removeClass(className) {
-        var _a;
-        delete this.attrs.classes[className];
-        (_a = this.registry) === null || _a === void 0 ? void 0 : _a.onUpdate({
+        var _a, _b;
+        if (!this.hasClass(className))
+            return this;
+        const arr = (_a = this.attrs.class) === null || _a === void 0 ? void 0 : _a.split(' ');
+        if (arr) {
+            arr.splice(arr.indexOf(className));
+            this.attrs.class = arr.join(' ');
+        }
+        (_b = this.registry) === null || _b === void 0 ? void 0 : _b.onUpdate({
             id: this.attrs.id,
             name: 'class',
             value: undefined,
@@ -4983,8 +5000,14 @@ class Element {
     getAttribute(name) {
         return this.attrs[name];
     }
+    /** Return associated SVGElement. */
+    getSVGElement(suffix = '') {
+        const id = (0,_util__WEBPACK_IMPORTED_MODULE_3__.prefix)(this.attrs.id + suffix);
+        const element = document.getElementById(id);
+        if (element)
+            return element;
+    }
     /** Set an attribute. */
-    // eslint-disable-next-line
     setAttribute(name, value) {
         var _a;
         const oldID = this.attrs.id;
@@ -10993,6 +11016,12 @@ const GonvilleFont = {
             x_max: 406.96875,
             ha: 415,
             o: 'm 21 183 b 28 183 24 183 25 183 b 42 181 34 183 39 183 b 127 108 47 179 47 179 b 202 41 168 72 202 41 b 279 108 204 41 238 72 b 357 177 321 145 356 176 b 375 183 363 181 370 183 b 406 151 392 183 406 169 b 404 137 406 147 405 141 b 322 62 401 131 398 129 b 251 0 284 27 251 0 b 322 -63 251 -1 284 -29 b 404 -138 398 -130 401 -133 b 406 -152 405 -142 406 -148 b 375 -184 406 -170 392 -184 b 357 -179 370 -184 363 -183 b 279 -109 356 -177 321 -147 b 202 -43 238 -73 204 -43 b 127 -109 202 -43 168 -73 b 49 -179 85 -147 50 -177 b 31 -184 43 -183 36 -184 b 0 -152 13 -184 0 -170 b 2 -138 0 -148 0 -142 b 83 -63 5 -133 8 -130 b 155 0 122 -29 155 -1 b 83 62 155 0 122 27 b 8 129 43 97 10 127 b 0 151 2 136 0 144 b 21 183 0 165 8 177 ',
+        },
+        noteheadCircleX: {
+            x_min: 0,
+            x_max: 484.5625,
+            ha: 494,
+            o: 'm 228 245 b 239 247 234 247 239 247 b 243 247 240 247 242 247 b 303 238 257 247 287 242 b 484 -2 417 208 484 104 b 412 -177 484 -65 461 -127 b 243 -248 363 -226 303 -248 b 6 -63 138 -248 36 -180 b 0 -1 1 -41 0 -20 b 228 245 0 127 98 240 m 255 181 b 240 183 247 183 245 183 b 232 181 238 183 235 183 b 142 152 200 180 168 170 l 138 149 l 190 97 l 242 44 l 294 97 l 345 149 l 340 152 b 255 181 315 169 284 180 m 147 -54 l 197 -1 l 147 51 l 95 104 l 91 99 b 62 -1 72 70 62 34 b 66 -43 62 -15 63 -29 b 91 -101 72 -63 80 -84 l 95 -106 l 147 -54 m 393 99 b 389 104 390 102 389 104 b 337 51 389 104 366 80 l 285 -1 l 337 -54 l 389 -106 l 393 -101 b 421 -1 412 -72 421 -36 b 393 99 421 34 412 69 m 294 -98 b 242 -45 265 -69 242 -45 b 190 -98 242 -45 219 -69 l 138 -151 l 142 -154 b 242 -184 172 -174 206 -184 b 340 -154 276 -184 311 -174 l 345 -151 l 294 -98 ',
         },
         noteheadTriangleUpWhole: {
             x_min: 0,
@@ -17962,6 +17991,2650 @@ const RobotoSlabFont = {
 
 /***/ }),
 
+/***/ "./src/fonts/sans_bold_text_metrics.ts":
+/*!*********************************************!*\
+  !*** ./src/fonts/sans_bold_text_metrics.ts ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "SansFontBold": () => (/* binding */ SansFontBold)
+/* harmony export */ });
+const SansFontBold = {
+    glyphs: {
+        '0': {
+            x_min: 86,
+            x_max: 1038,
+            y_min: -25,
+            y_max: 1472,
+            ha: 1497,
+            leftSideBearing: 86,
+            advanceWidth: 1139,
+        },
+        '1': {
+            x_min: 162,
+            x_max: 806,
+            y_min: 0,
+            y_max: 1472,
+            ha: 1472,
+            leftSideBearing: 162,
+            advanceWidth: 1139,
+        },
+        '2': {
+            x_min: 51,
+            x_max: 1036,
+            y_min: 0,
+            y_max: 1472,
+            ha: 1472,
+            leftSideBearing: 51,
+            advanceWidth: 1139,
+        },
+        '3': {
+            x_min: 77,
+            x_max: 1051,
+            y_min: -25,
+            y_max: 1472,
+            ha: 1497,
+            leftSideBearing: 77,
+            advanceWidth: 1139,
+        },
+        '4': {
+            x_min: 38,
+            x_max: 1092,
+            y_min: 0,
+            y_max: 1472,
+            ha: 1472,
+            leftSideBearing: 38,
+            advanceWidth: 1139,
+        },
+        '5': {
+            x_min: 91,
+            x_max: 1077,
+            y_min: -25,
+            y_max: 1446,
+            ha: 1471,
+            leftSideBearing: 91,
+            advanceWidth: 1139,
+        },
+        '6': {
+            x_min: 87,
+            x_max: 1066,
+            y_min: -25,
+            y_max: 1472,
+            ha: 1497,
+            leftSideBearing: 87,
+            advanceWidth: 1139,
+        },
+        '7': {
+            x_min: 87,
+            x_max: 1048,
+            y_min: 0,
+            y_max: 1446,
+            ha: 1446,
+            leftSideBearing: 87,
+            advanceWidth: 1139,
+        },
+        '8': {
+            x_min: 83,
+            x_max: 1047,
+            y_min: -26,
+            y_max: 1472,
+            ha: 1498,
+            leftSideBearing: 83,
+            advanceWidth: 1139,
+        },
+        '9': {
+            x_min: 65,
+            x_max: 1044,
+            y_min: -26,
+            y_max: 1472,
+            ha: 1498,
+            leftSideBearing: 65,
+            advanceWidth: 1139,
+        },
+        ' ': {
+            x_min: 0,
+            x_max: 0,
+            y_min: 0,
+            y_max: 0,
+            ha: 0,
+            leftSideBearing: 0,
+            advanceWidth: 569,
+        },
+        '!': {
+            x_min: 184,
+            x_max: 488,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: 184,
+            advanceWidth: 682,
+        },
+        '"': {
+            x_min: 112,
+            x_max: 869,
+            y_min: 945,
+            y_max: 1466,
+            ha: 521,
+            leftSideBearing: 112,
+            advanceWidth: 971,
+        },
+        '#': {
+            x_min: 18,
+            x_max: 1115,
+            y_min: -25,
+            y_max: 1491,
+            ha: 1516,
+            leftSideBearing: 18,
+            advanceWidth: 1139,
+        },
+        $: {
+            x_min: 70,
+            x_max: 1048,
+            y_min: -205,
+            y_max: 1584,
+            ha: 1789,
+            leftSideBearing: 70,
+            advanceWidth: 1139,
+        },
+        '%': {
+            x_min: 89,
+            x_max: 1725,
+            y_min: -59,
+            y_max: 1491,
+            ha: 1550,
+            leftSideBearing: 89,
+            advanceWidth: 1821,
+        },
+        '&': {
+            x_min: 90,
+            x_max: 1446,
+            y_min: -38,
+            y_max: 1491,
+            ha: 1529,
+            leftSideBearing: 90,
+            advanceWidth: 1479,
+        },
+        "'": {
+            x_min: 92,
+            x_max: 398,
+            y_min: 945,
+            y_max: 1466,
+            ha: 521,
+            leftSideBearing: 92,
+            advanceWidth: 487,
+        },
+        '(': {
+            x_min: 107,
+            x_max: 616,
+            y_min: -431,
+            y_max: 1491,
+            ha: 1922,
+            leftSideBearing: 107,
+            advanceWidth: 682,
+        },
+        ')': {
+            x_min: 67,
+            x_max: 576,
+            y_min: -431,
+            y_max: 1491,
+            ha: 1922,
+            leftSideBearing: 67,
+            advanceWidth: 682,
+        },
+        '*': {
+            x_min: 28,
+            x_max: 753,
+            y_min: 792,
+            y_max: 1491,
+            ha: 699,
+            leftSideBearing: 28,
+            advanceWidth: 797,
+        },
+        '+': {
+            x_min: 85,
+            x_max: 1110,
+            y_min: 211,
+            y_max: 1236,
+            ha: 1025,
+            leftSideBearing: 85,
+            advanceWidth: 1196,
+        },
+        ',': {
+            x_min: 117,
+            x_max: 421,
+            y_min: -327,
+            y_max: 281,
+            ha: 608,
+            leftSideBearing: 117,
+            advanceWidth: 569,
+        },
+        '-': {
+            x_min: 115,
+            x_max: 667,
+            y_min: 391,
+            y_max: 672,
+            ha: 281,
+            leftSideBearing: 115,
+            advanceWidth: 682,
+        },
+        '.': {
+            x_min: 147,
+            x_max: 428,
+            y_min: 0,
+            y_max: 281,
+            ha: 281,
+            leftSideBearing: 147,
+            advanceWidth: 569,
+        },
+        '/': {
+            x_min: -3,
+            x_max: 571,
+            y_min: -25,
+            y_max: 1491,
+            ha: 1516,
+            leftSideBearing: -3,
+            advanceWidth: 569,
+        },
+        ':': {
+            x_min: 201,
+            x_max: 482,
+            y_min: 0,
+            y_max: 1062,
+            ha: 1062,
+            leftSideBearing: 201,
+            advanceWidth: 682,
+        },
+        ';': {
+            x_min: 170,
+            x_max: 474,
+            y_min: -327,
+            y_max: 1062,
+            ha: 1389,
+            leftSideBearing: 170,
+            advanceWidth: 682,
+        },
+        '<': {
+            x_min: 95,
+            x_max: 1100,
+            y_min: 167,
+            y_max: 1281,
+            ha: 1114,
+            leftSideBearing: 95,
+            advanceWidth: 1196,
+        },
+        '=': {
+            x_min: 85,
+            x_max: 1110,
+            y_min: 372,
+            y_max: 1074,
+            ha: 702,
+            leftSideBearing: 85,
+            advanceWidth: 1196,
+        },
+        '>': {
+            x_min: 95,
+            x_max: 1101,
+            y_min: 166,
+            y_max: 1279,
+            ha: 1113,
+            leftSideBearing: 95,
+            advanceWidth: 1196,
+        },
+        '?': {
+            x_min: 106,
+            x_max: 1158,
+            y_min: 0,
+            y_max: 1481,
+            ha: 1481,
+            leftSideBearing: 106,
+            advanceWidth: 1251,
+        },
+        '@': {
+            x_min: 61,
+            x_max: 1990,
+            y_min: -431,
+            y_max: 1492,
+            ha: 1923,
+            leftSideBearing: 61,
+            advanceWidth: 1997,
+        },
+        A: {
+            x_min: 0,
+            x_max: 1471,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: 0,
+            advanceWidth: 1479,
+        },
+        B: {
+            x_min: 150,
+            x_max: 1378,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: 150,
+            advanceWidth: 1479,
+        },
+        C: {
+            x_min: 97,
+            x_max: 1374,
+            y_min: -25,
+            y_max: 1491,
+            ha: 1516,
+            leftSideBearing: 97,
+            advanceWidth: 1479,
+        },
+        D: {
+            x_min: 148,
+            x_max: 1377,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: 148,
+            advanceWidth: 1479,
+        },
+        E: {
+            x_min: 149,
+            x_max: 1264,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: 149,
+            advanceWidth: 1366,
+        },
+        F: {
+            x_min: 151,
+            x_max: 1156,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: 151,
+            advanceWidth: 1251,
+        },
+        G: {
+            x_min: 98,
+            x_max: 1469,
+            y_min: -25,
+            y_max: 1491,
+            ha: 1516,
+            leftSideBearing: 98,
+            advanceWidth: 1593,
+        },
+        H: {
+            x_min: 150,
+            x_max: 1322,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: 150,
+            advanceWidth: 1479,
+        },
+        I: {
+            x_min: 140,
+            x_max: 436,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: 140,
+            advanceWidth: 569,
+        },
+        J: {
+            x_min: 35,
+            x_max: 973,
+            y_min: -25,
+            y_max: 1466,
+            ha: 1491,
+            leftSideBearing: 35,
+            advanceWidth: 1139,
+        },
+        K: {
+            x_min: 153,
+            x_max: 1475,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: 153,
+            advanceWidth: 1479,
+        },
+        L: {
+            x_min: 157,
+            x_max: 1189,
+            y_min: 0,
+            y_max: 1454,
+            ha: 1454,
+            leftSideBearing: 157,
+            advanceWidth: 1251,
+        },
+        M: {
+            x_min: 145,
+            x_max: 1561,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: 145,
+            advanceWidth: 1706,
+        },
+        N: {
+            x_min: 152,
+            x_max: 1315,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: 152,
+            advanceWidth: 1479,
+        },
+        O: {
+            x_min: 89,
+            x_max: 1511,
+            y_min: -25,
+            y_max: 1491,
+            ha: 1516,
+            leftSideBearing: 89,
+            advanceWidth: 1593,
+        },
+        P: {
+            x_min: 149,
+            x_max: 1272,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: 149,
+            advanceWidth: 1366,
+        },
+        Q: {
+            x_min: 89,
+            x_max: 1566,
+            y_min: -147,
+            y_max: 1491,
+            ha: 1638,
+            leftSideBearing: 89,
+            advanceWidth: 1593,
+        },
+        R: {
+            x_min: 150,
+            x_max: 1468,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: 150,
+            advanceWidth: 1479,
+        },
+        S: {
+            x_min: 74,
+            x_max: 1266,
+            y_min: -26,
+            y_max: 1491,
+            ha: 1517,
+            leftSideBearing: 74,
+            advanceWidth: 1366,
+        },
+        T: {
+            x_min: 44,
+            x_max: 1209,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: 44,
+            advanceWidth: 1251,
+        },
+        U: {
+            x_min: 147,
+            x_max: 1316,
+            y_min: -25,
+            y_max: 1466,
+            ha: 1491,
+            leftSideBearing: 147,
+            advanceWidth: 1479,
+        },
+        V: {
+            x_min: -1,
+            x_max: 1364,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: -1,
+            advanceWidth: 1366,
+        },
+        W: {
+            x_min: 7,
+            x_max: 1931,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: 7,
+            advanceWidth: 1933,
+        },
+        X: {
+            x_min: 0,
+            x_max: 1363,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: 0,
+            advanceWidth: 1366,
+        },
+        Y: {
+            x_min: -3,
+            x_max: 1368,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: -3,
+            advanceWidth: 1366,
+        },
+        Z: {
+            x_min: 22,
+            x_max: 1213,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: 22,
+            advanceWidth: 1251,
+        },
+        '[': {
+            x_min: 146,
+            x_max: 644,
+            y_min: -413,
+            y_max: 1466,
+            ha: 1879,
+            leftSideBearing: 146,
+            advanceWidth: 682,
+        },
+        '\\': {
+            x_min: -3,
+            x_max: 571,
+            y_min: -25,
+            y_max: 1491,
+            ha: 1516,
+            leftSideBearing: -3,
+            advanceWidth: 569,
+        },
+        ']': {
+            x_min: 38,
+            x_max: 536,
+            y_min: -413,
+            y_max: 1466,
+            ha: 1879,
+            leftSideBearing: 38,
+            advanceWidth: 682,
+        },
+        '^': {
+            x_min: 115,
+            x_max: 1080,
+            y_min: 692,
+            y_max: 1491,
+            ha: 799,
+            leftSideBearing: 115,
+            advanceWidth: 1196,
+        },
+        _: {
+            x_min: -19,
+            x_max: 1149,
+            y_min: -405,
+            y_max: -223,
+            ha: 182,
+            leftSideBearing: -19,
+            advanceWidth: 1139,
+        },
+        '`': {
+            x_min: 42,
+            x_max: 495,
+            y_min: 1192,
+            y_max: 1491,
+            ha: 299,
+            leftSideBearing: 42,
+            advanceWidth: 682,
+        },
+        a: {
+            x_min: 73,
+            x_max: 1070,
+            y_min: -24,
+            y_max: 1086,
+            ha: 1110,
+            leftSideBearing: 73,
+            advanceWidth: 1139,
+        },
+        b: {
+            x_min: 135,
+            x_max: 1172,
+            y_min: -24,
+            y_max: 1466,
+            ha: 1490,
+            leftSideBearing: 135,
+            advanceWidth: 1251,
+        },
+        c: {
+            x_min: 85,
+            x_max: 1087,
+            y_min: -24,
+            y_max: 1086,
+            ha: 1110,
+            leftSideBearing: 85,
+            advanceWidth: 1139,
+        },
+        d: {
+            x_min: 84,
+            x_max: 1121,
+            y_min: -24,
+            y_max: 1466,
+            ha: 1490,
+            leftSideBearing: 84,
+            advanceWidth: 1251,
+        },
+        e: {
+            x_min: 65,
+            x_max: 1057.2517482517483,
+            y_min: -24,
+            y_max: 1086,
+            ha: 1110,
+            leftSideBearing: 65,
+            advanceWidth: 1139,
+        },
+        f: {
+            x_min: 24,
+            x_max: 742,
+            y_min: 0,
+            y_max: 1491,
+            ha: 1491,
+            leftSideBearing: 24,
+            advanceWidth: 682,
+        },
+        g: {
+            x_min: 84,
+            x_max: 1120,
+            y_min: -431,
+            y_max: 1086,
+            ha: 1517,
+            leftSideBearing: 84,
+            advanceWidth: 1251,
+        },
+        h: {
+            x_min: 146,
+            x_max: 1113,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: 146,
+            advanceWidth: 1251,
+        },
+        i: {
+            x_min: 147,
+            x_max: 428,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: 147,
+            advanceWidth: 569,
+        },
+        j: {
+            x_min: -94,
+            x_max: 422,
+            y_min: -431,
+            y_max: 1466,
+            ha: 1897,
+            leftSideBearing: -94,
+            advanceWidth: 569,
+        },
+        k: {
+            x_min: 137,
+            x_max: 1119,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: 137,
+            advanceWidth: 1139,
+        },
+        l: {
+            x_min: 147,
+            x_max: 428,
+            y_min: 0,
+            y_max: 1466,
+            ha: 1466,
+            leftSideBearing: 147,
+            advanceWidth: 569,
+        },
+        m: {
+            x_min: 126,
+            x_max: 1688,
+            y_min: 0,
+            y_max: 1086,
+            ha: 1086,
+            leftSideBearing: 126,
+            advanceWidth: 1821,
+        },
+        n: {
+            x_min: 145,
+            x_max: 1113,
+            y_min: 0,
+            y_max: 1086,
+            ha: 1086,
+            leftSideBearing: 145,
+            advanceWidth: 1251,
+        },
+        o: {
+            x_min: 82,
+            x_max: 1178,
+            y_min: -24,
+            y_max: 1086,
+            ha: 1110,
+            leftSideBearing: 82,
+            advanceWidth: 1251,
+        },
+        p: {
+            x_min: 139,
+            x_max: 1175,
+            y_min: -404,
+            y_max: 1086,
+            ha: 1490,
+            leftSideBearing: 139,
+            advanceWidth: 1251,
+        },
+        q: {
+            x_min: 91,
+            x_max: 1122,
+            y_min: -404,
+            y_max: 1086,
+            ha: 1490,
+            leftSideBearing: 91,
+            advanceWidth: 1251,
+        },
+        r: {
+            x_min: 135,
+            x_max: 823,
+            y_min: 0,
+            y_max: 1086,
+            ha: 1086,
+            leftSideBearing: 135,
+            advanceWidth: 797,
+        },
+        s: {
+            x_min: 48,
+            x_max: 1040,
+            y_min: -24,
+            y_max: 1086,
+            ha: 1110,
+            leftSideBearing: 48,
+            advanceWidth: 1139,
+        },
+        t: {
+            x_min: 31,
+            x_max: 657,
+            y_min: -24,
+            y_max: 1437,
+            ha: 1461,
+            leftSideBearing: 31,
+            advanceWidth: 682,
+        },
+        u: {
+            x_min: 141,
+            x_max: 1107,
+            y_min: -24,
+            y_max: 1062,
+            ha: 1086,
+            leftSideBearing: 141,
+            advanceWidth: 1251,
+        },
+        v: {
+            x_min: 11,
+            x_max: 1114,
+            y_min: 0,
+            y_max: 1062,
+            ha: 1062,
+            leftSideBearing: 11,
+            advanceWidth: 1139,
+        },
+        w: {
+            x_min: 9,
+            x_max: 1592,
+            y_min: 0,
+            y_max: 1062,
+            ha: 1062,
+            leftSideBearing: 9,
+            advanceWidth: 1593,
+        },
+        x: {
+            x_min: 12,
+            x_max: 1120,
+            y_min: 0,
+            y_max: 1062,
+            ha: 1062,
+            leftSideBearing: 12,
+            advanceWidth: 1139,
+        },
+        y: {
+            x_min: 14,
+            x_max: 1106,
+            y_min: -431,
+            y_max: 1062,
+            ha: 1493,
+            leftSideBearing: 14,
+            advanceWidth: 1139,
+        },
+        z: {
+            x_min: 34,
+            x_max: 982,
+            y_min: 0,
+            y_max: 1062,
+            ha: 1062,
+            leftSideBearing: 34,
+            advanceWidth: 1024,
+        },
+        '{': {
+            x_min: 60,
+            x_max: 744,
+            y_min: -431,
+            y_max: 1491,
+            ha: 1922,
+            leftSideBearing: 60,
+            advanceWidth: 797,
+        },
+        '|': {
+            x_min: 176,
+            x_max: 399,
+            y_min: -431,
+            y_max: 1491,
+            ha: 1922,
+            leftSideBearing: 176,
+            advanceWidth: 573,
+        },
+        '}': {
+            x_min: 45,
+            x_max: 729,
+            y_min: -431,
+            y_max: 1491,
+            ha: 1922,
+            leftSideBearing: 45,
+            advanceWidth: 797,
+        },
+        '~': {
+            x_min: 67,
+            x_max: 1129,
+            y_min: 519,
+            y_max: 924,
+            ha: 405,
+            leftSideBearing: 67,
+            advanceWidth: 1196,
+        },
+    },
+    fontFamily: 'Arial',
+    resolution: 2048,
+    generatedOn: '2022-11-04T20:05:21.000Z',
+};
+
+
+/***/ }),
+
+/***/ "./src/fonts/sans_text_metrics.js":
+/*!****************************************!*\
+  !*** ./src/fonts/sans_text_metrics.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "SansFont": () => (/* binding */ SansFont)
+/* harmony export */ });
+const SansFont = {
+    smufl: false,
+    name: "SANS",
+    spacing: 50,
+    Description: 'Built-in sans-serif font',
+    bold: true,
+    italic: true,
+    monospaced: false,
+    serifs: false,
+    "glyphs": {
+        "0": {
+            "x_min": 85,
+            "x_max": 1041,
+            "y_min": -25,
+            "y_max": 1472,
+            "ha": 1497,
+            "leftSideBearing": 85,
+            "advanceWidth": 1139
+        },
+        "1": {
+            "x_min": 223,
+            "x_max": 763,
+            "y_min": 0,
+            "y_max": 1472,
+            "ha": 1472,
+            "leftSideBearing": 223,
+            "advanceWidth": 1139
+        },
+        "2": {
+            "x_min": 61.840001123045234,
+            "x_max": 1031,
+            "y_min": 0,
+            "y_max": 1472,
+            "ha": 1472,
+            "leftSideBearing": 61,
+            "advanceWidth": 1139
+        },
+        "3": {
+            "x_min": 86,
+            "x_max": 1046,
+            "y_min": -26,
+            "y_max": 1472,
+            "ha": 1498,
+            "leftSideBearing": 86,
+            "advanceWidth": 1139
+        },
+        "4": {
+            "x_min": 26,
+            "x_max": 1040,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 26,
+            "advanceWidth": 1139
+        },
+        "5": {
+            "x_min": 85,
+            "x_max": 1057,
+            "y_min": -25,
+            "y_max": 1446,
+            "ha": 1471,
+            "leftSideBearing": 85,
+            "advanceWidth": 1139
+        },
+        "6": {
+            "x_min": 77,
+            "x_max": 1045,
+            "y_min": -25,
+            "y_max": 1472,
+            "ha": 1497,
+            "leftSideBearing": 77,
+            "advanceWidth": 1139
+        },
+        "7": {
+            "x_min": 97,
+            "x_max": 1046,
+            "y_min": 0,
+            "y_max": 1447,
+            "ha": 1447,
+            "leftSideBearing": 97,
+            "advanceWidth": 1139
+        },
+        "8": {
+            "x_min": 83,
+            "x_max": 1049,
+            "y_min": -25,
+            "y_max": 1472,
+            "ha": 1497,
+            "leftSideBearing": 83,
+            "advanceWidth": 1139
+        },
+        "9": {
+            "x_min": 85,
+            "x_max": 1049,
+            "y_min": -25,
+            "y_max": 1472,
+            "ha": 1497,
+            "leftSideBearing": 85,
+            "advanceWidth": 1139
+        },
+        " ": {
+            "x_min": 0,
+            "x_max": 0,
+            "y_min": 0,
+            "y_max": 0,
+            "ha": 0,
+            "leftSideBearing": 0,
+            "advanceWidth": 569
+        },
+        "!": {
+            "x_min": 176,
+            "x_max": 399,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 176,
+            "advanceWidth": 569
+        },
+        "\"": {
+            "x_min": 94,
+            "x_max": 631,
+            "y_min": 947,
+            "y_max": 1466,
+            "ha": 519,
+            "leftSideBearing": 94,
+            "advanceWidth": 727
+        },
+        "#": {
+            "x_min": 21,
+            "x_max": 1113,
+            "y_min": -25,
+            "y_max": 1491,
+            "ha": 1516,
+            "leftSideBearing": 21,
+            "advanceWidth": 1139
+        },
+        "$": {
+            "x_min": 73,
+            "x_max": 1043,
+            "y_min": -211,
+            "y_max": 1601,
+            "ha": 1812,
+            "leftSideBearing": 73,
+            "advanceWidth": 1139
+        },
+        "%": {
+            "x_min": 119,
+            "x_max": 1695,
+            "y_min": -54,
+            "y_max": 1491,
+            "ha": 1545,
+            "leftSideBearing": 119,
+            "advanceWidth": 1821
+        },
+        "&": {
+            "x_min": 88,
+            "x_max": 1319,
+            "y_min": -34,
+            "y_max": 1491,
+            "ha": 1525,
+            "leftSideBearing": 88,
+            "advanceWidth": 1366
+        },
+        "'": {
+            "x_min": 90,
+            "x_max": 295,
+            "y_min": 947,
+            "y_max": 1466,
+            "ha": 519,
+            "leftSideBearing": 90,
+            "advanceWidth": 391
+        },
+        "(": {
+            "x_min": 124,
+            "x_max": 608,
+            "y_min": -431,
+            "y_max": 1491,
+            "ha": 1922,
+            "leftSideBearing": 124,
+            "advanceWidth": 682
+        },
+        ")": {
+            "x_min": 124,
+            "x_max": 608,
+            "y_min": -431,
+            "y_max": 1491,
+            "ha": 1922,
+            "leftSideBearing": 124,
+            "advanceWidth": 682
+        },
+        "*": {
+            "x_min": 64,
+            "x_max": 725,
+            "y_min": 867,
+            "y_max": 1491,
+            "ha": 624,
+            "leftSideBearing": 64,
+            "advanceWidth": 797
+        },
+        "+": {
+            "x_min": 114,
+            "x_max": 1082,
+            "y_min": 237,
+            "y_max": 1206,
+            "ha": 969,
+            "leftSideBearing": 114,
+            "advanceWidth": 1196
+        },
+        ",": {
+            "x_min": 170,
+            "x_max": 387,
+            "y_min": -290,
+            "y_max": 205,
+            "ha": 495,
+            "leftSideBearing": 170,
+            "advanceWidth": 569
+        },
+        "-": {
+            "x_min": 65,
+            "x_max": 618,
+            "y_min": 440,
+            "y_max": 621,
+            "ha": 181,
+            "leftSideBearing": 65,
+            "advanceWidth": 682
+        },
+        ".": {
+            "x_min": 186,
+            "x_max": 391,
+            "y_min": 0,
+            "y_max": 205,
+            "ha": 205,
+            "leftSideBearing": 186,
+            "advanceWidth": 569
+        },
+        "/": {
+            "x_min": 0,
+            "x_max": 569,
+            "y_min": -25,
+            "y_max": 1491,
+            "ha": 1516,
+            "leftSideBearing": 0,
+            "advanceWidth": 569
+        },
+        ":": {
+            "x_min": 185,
+            "x_max": 390,
+            "y_min": 0,
+            "y_max": 1062,
+            "ha": 1062,
+            "leftSideBearing": 185,
+            "advanceWidth": 569
+        },
+        ";": {
+            "x_min": 170,
+            "x_max": 387,
+            "y_min": -290,
+            "y_max": 1062,
+            "ha": 1352,
+            "leftSideBearing": 170,
+            "advanceWidth": 569
+        },
+        "<": {
+            "x_min": 112,
+            "x_max": 1083,
+            "y_min": 226,
+            "y_max": 1219,
+            "ha": 993,
+            "leftSideBearing": 112,
+            "advanceWidth": 1196
+        },
+        "=": {
+            "x_min": 114,
+            "x_max": 1082,
+            "y_min": 417,
+            "y_max": 1030,
+            "ha": 613,
+            "leftSideBearing": 114,
+            "advanceWidth": 1196
+        },
+        ">": {
+            "x_min": 112,
+            "x_max": 1083,
+            "y_min": 226,
+            "y_max": 1219,
+            "ha": 993,
+            "leftSideBearing": 112,
+            "advanceWidth": 1196
+        },
+        "?": {
+            "x_min": 90,
+            "x_max": 1036,
+            "y_min": 0,
+            "y_max": 1491,
+            "ha": 1491,
+            "leftSideBearing": 90,
+            "advanceWidth": 1139
+        },
+        "@": {
+            "x_min": 111,
+            "x_max": 2005,
+            "y_min": -431,
+            "y_max": 1493,
+            "ha": 1924,
+            "leftSideBearing": 111,
+            "advanceWidth": 2079
+        },
+        "A": {
+            "x_min": -3,
+            "x_max": 1369,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": -3,
+            "advanceWidth": 1366
+        },
+        "B": {
+            "x_min": 150,
+            "x_max": 1257,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 150,
+            "advanceWidth": 1366
+        },
+        "C": {
+            "x_min": 102,
+            "x_max": 1398,
+            "y_min": -25,
+            "y_max": 1491,
+            "ha": 1516,
+            "leftSideBearing": 102,
+            "advanceWidth": 1479
+        },
+        "D": {
+            "x_min": 158,
+            "x_max": 1370,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 158,
+            "advanceWidth": 1479
+        },
+        "E": {
+            "x_min": 162,
+            "x_max": 1256,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 162,
+            "advanceWidth": 1366
+        },
+        "F": {
+            "x_min": 168,
+            "x_max": 1157,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 168,
+            "advanceWidth": 1251
+        },
+        "G": {
+            "x_min": 109,
+            "x_max": 1465,
+            "y_min": -25,
+            "y_max": 1491,
+            "ha": 1516,
+            "leftSideBearing": 109,
+            "advanceWidth": 1593
+        },
+        "H": {
+            "x_min": 164,
+            "x_max": 1314,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 164,
+            "advanceWidth": 1479
+        },
+        "I": {
+            "x_min": 191,
+            "x_max": 385,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 191,
+            "advanceWidth": 569
+        },
+        "J": {
+            "x_min": 58.84976474807333,
+            "x_max": 865,
+            "y_min": -25,
+            "y_max": 1466,
+            "ha": 1491,
+            "leftSideBearing": 58,
+            "advanceWidth": 1024
+        },
+        "K": {
+            "x_min": 150,
+            "x_max": 1362,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 150,
+            "advanceWidth": 1366
+        },
+        "L": {
+            "x_min": 150,
+            "x_max": 1066,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 150,
+            "advanceWidth": 1139
+        },
+        "M": {
+            "x_min": 152,
+            "x_max": 1551,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 152,
+            "advanceWidth": 1706
+        },
+        "N": {
+            "x_min": 156,
+            "x_max": 1311,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 156,
+            "advanceWidth": 1479
+        },
+        "O": {
+            "x_min": 99,
+            "x_max": 1501,
+            "y_min": -25,
+            "y_max": 1492,
+            "ha": 1517,
+            "leftSideBearing": 99,
+            "advanceWidth": 1593
+        },
+        "P": {
+            "x_min": 158,
+            "x_max": 1277,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 158,
+            "advanceWidth": 1366
+        },
+        "Q": {
+            "x_min": 88,
+            "x_max": 1518,
+            "y_min": -114,
+            "y_max": 1492,
+            "ha": 1606,
+            "leftSideBearing": 88,
+            "advanceWidth": 1593
+        },
+        "R": {
+            "x_min": 161,
+            "x_max": 1453,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 161,
+            "advanceWidth": 1479
+        },
+        "S": {
+            "x_min": 92,
+            "x_max": 1259,
+            "y_min": -25,
+            "y_max": 1491,
+            "ha": 1516,
+            "leftSideBearing": 92,
+            "advanceWidth": 1366
+        },
+        "T": {
+            "x_min": 48,
+            "x_max": 1210,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 48,
+            "advanceWidth": 1251
+        },
+        "U": {
+            "x_min": 161,
+            "x_max": 1314,
+            "y_min": -25,
+            "y_max": 1466,
+            "ha": 1491,
+            "leftSideBearing": 161,
+            "advanceWidth": 1479
+        },
+        "V": {
+            "x_min": 9,
+            "x_max": 1350,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 9,
+            "advanceWidth": 1366
+        },
+        "W": {
+            "x_min": 25,
+            "x_max": 1910,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 25,
+            "advanceWidth": 1933
+        },
+        "X": {
+            "x_min": 9,
+            "x_max": 1353,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 9,
+            "advanceWidth": 1366
+        },
+        "Y": {
+            "x_min": 6,
+            "x_max": 1350,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 6,
+            "advanceWidth": 1366
+        },
+        "Z": {
+            "x_min": 41,
+            "x_max": 1200,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 41,
+            "advanceWidth": 1251
+        },
+        "[": {
+            "x_min": 139,
+            "x_max": 536,
+            "y_min": -407,
+            "y_max": 1466,
+            "ha": 1873,
+            "leftSideBearing": 139,
+            "advanceWidth": 569
+        },
+        "\\": {
+            "x_min": 0,
+            "x_max": 569,
+            "y_min": -25,
+            "y_max": 1491,
+            "ha": 1516,
+            "leftSideBearing": 0,
+            "advanceWidth": 569
+        },
+        "]": {
+            "x_min": 39,
+            "x_max": 436,
+            "y_min": -407,
+            "y_max": 1466,
+            "ha": 1873,
+            "leftSideBearing": 39,
+            "advanceWidth": 569
+        },
+        "^": {
+            "x_min": 54,
+            "x_max": 907,
+            "y_min": 690,
+            "y_max": 1491,
+            "ha": 801,
+            "leftSideBearing": 54,
+            "advanceWidth": 961
+        },
+        "_": {
+            "x_min": -31,
+            "x_max": 1162,
+            "y_min": -407,
+            "y_max": -277,
+            "ha": 130,
+            "leftSideBearing": -31,
+            "advanceWidth": 1139
+        },
+        "`": {
+            "x_min": 89,
+            "x_max": 465,
+            "y_min": 1194,
+            "y_max": 1474,
+            "ha": 280,
+            "leftSideBearing": 89,
+            "advanceWidth": 682
+        },
+        "a": {
+            "x_min": 74,
+            "x_max": 1052,
+            "y_min": -24,
+            "y_max": 1086,
+            "ha": 1110,
+            "leftSideBearing": 74,
+            "advanceWidth": 1139
+        },
+        "b": {
+            "x_min": 134,
+            "x_max": 1055,
+            "y_min": -24,
+            "y_max": 1466,
+            "ha": 1490,
+            "leftSideBearing": 134,
+            "advanceWidth": 1139
+        },
+        "c": {
+            "x_min": 80,
+            "x_max": 1005,
+            "y_min": -24,
+            "y_max": 1086,
+            "ha": 1110,
+            "leftSideBearing": 80,
+            "advanceWidth": 1024
+        },
+        "d": {
+            "x_min": 70,
+            "x_max": 991,
+            "y_min": -24,
+            "y_max": 1466,
+            "ha": 1490,
+            "leftSideBearing": 70,
+            "advanceWidth": 1139
+        },
+        "e": {
+            "x_min": 75,
+            "x_max": 1054,
+            "y_min": -24,
+            "y_max": 1086,
+            "ha": 1110,
+            "leftSideBearing": 75,
+            "advanceWidth": 1139
+        },
+        "f": {
+            "x_min": 19,
+            "x_max": 640,
+            "y_min": 0,
+            "y_max": 1491,
+            "ha": 1491,
+            "leftSideBearing": 19,
+            "advanceWidth": 569
+        },
+        "g": {
+            "x_min": 66,
+            "x_max": 1002,
+            "y_min": -431,
+            "y_max": 1086,
+            "ha": 1517,
+            "leftSideBearing": 66,
+            "advanceWidth": 1139
+        },
+        "h": {
+            "x_min": 135,
+            "x_max": 1000,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 135,
+            "advanceWidth": 1139
+        },
+        "i": {
+            "x_min": 136,
+            "x_max": 316,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 136,
+            "advanceWidth": 455
+        },
+        "j": {
+            "x_min": -94,
+            "x_max": 314,
+            "y_min": -431,
+            "y_max": 1466,
+            "ha": 1897,
+            "leftSideBearing": -94,
+            "advanceWidth": 455
+        },
+        "k": {
+            "x_min": 136,
+            "x_max": 1016,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 136,
+            "advanceWidth": 1024
+        },
+        "l": {
+            "x_min": 131,
+            "x_max": 311,
+            "y_min": 0,
+            "y_max": 1466,
+            "ha": 1466,
+            "leftSideBearing": 131,
+            "advanceWidth": 455
+        },
+        "m": {
+            "x_min": 135,
+            "x_max": 1574,
+            "y_min": 0,
+            "y_max": 1086,
+            "ha": 1086,
+            "leftSideBearing": 135,
+            "advanceWidth": 1706
+        },
+        "n": {
+            "x_min": 135,
+            "x_max": 998,
+            "y_min": 0,
+            "y_max": 1086,
+            "ha": 1086,
+            "leftSideBearing": 135,
+            "advanceWidth": 1139
+        },
+        "o": {
+            "x_min": 68,
+            "x_max": 1063,
+            "y_min": -24,
+            "y_max": 1086,
+            "ha": 1110,
+            "leftSideBearing": 68,
+            "advanceWidth": 1139
+        },
+        "p": {
+            "x_min": 135,
+            "x_max": 1057,
+            "y_min": -407,
+            "y_max": 1086,
+            "ha": 1493,
+            "leftSideBearing": 135,
+            "advanceWidth": 1139
+        },
+        "q": {
+            "x_min": 72,
+            "x_max": 992,
+            "y_min": -407,
+            "y_max": 1086,
+            "ha": 1493,
+            "leftSideBearing": 72,
+            "advanceWidth": 1139
+        },
+        "r": {
+            "x_min": 133,
+            "x_max": 710,
+            "y_min": 0,
+            "y_max": 1086,
+            "ha": 1086,
+            "leftSideBearing": 133,
+            "advanceWidth": 682
+        },
+        "s": {
+            "x_min": 63,
+            "x_max": 945,
+            "y_min": -24,
+            "y_max": 1086,
+            "ha": 1110,
+            "leftSideBearing": 63,
+            "advanceWidth": 1024
+        },
+        "t": {
+            "x_min": 36,
+            "x_max": 554,
+            "y_min": -14,
+            "y_max": 1433,
+            "ha": 1447,
+            "leftSideBearing": 36,
+            "advanceWidth": 569
+        },
+        "u": {
+            "x_min": 131,
+            "x_max": 992,
+            "y_min": -24,
+            "y_max": 1062,
+            "ha": 1086,
+            "leftSideBearing": 131,
+            "advanceWidth": 1139
+        },
+        "v": {
+            "x_min": 26,
+            "x_max": 1000,
+            "y_min": 0,
+            "y_max": 1062,
+            "ha": 1062,
+            "leftSideBearing": 26,
+            "advanceWidth": 1024
+        },
+        "w": {
+            "x_min": 6,
+            "x_max": 1463,
+            "y_min": 0,
+            "y_max": 1062,
+            "ha": 1062,
+            "leftSideBearing": 6,
+            "advanceWidth": 1479
+        },
+        "x": {
+            "x_min": 15,
+            "x_max": 1009,
+            "y_min": 0,
+            "y_max": 1062,
+            "ha": 1062,
+            "leftSideBearing": 15,
+            "advanceWidth": 1024
+        },
+        "y": {
+            "x_min": 33,
+            "x_max": 1006,
+            "y_min": -431,
+            "y_max": 1062,
+            "ha": 1493,
+            "leftSideBearing": 33,
+            "advanceWidth": 1024
+        },
+        "z": {
+            "x_min": 40,
+            "x_max": 980,
+            "y_min": 0,
+            "y_max": 1062,
+            "ha": 1062,
+            "leftSideBearing": 40,
+            "advanceWidth": 1024
+        },
+        "{": {
+            "x_min": 57,
+            "x_max": 636,
+            "y_min": -431,
+            "y_max": 1491,
+            "ha": 1922,
+            "leftSideBearing": 57,
+            "advanceWidth": 684
+        },
+        "|": {
+            "x_min": 188,
+            "x_max": 345,
+            "y_min": -431,
+            "y_max": 1491,
+            "ha": 1922,
+            "leftSideBearing": 188,
+            "advanceWidth": 532
+        },
+        "}": {
+            "x_min": 47,
+            "x_max": 626,
+            "y_min": -431,
+            "y_max": 1491,
+            "ha": 1922,
+            "leftSideBearing": 47,
+            "advanceWidth": 684
+        },
+        "~": {
+            "x_min": 87,
+            "x_max": 1110,
+            "y_min": 557,
+            "y_max": 885,
+            "ha": 328,
+            "leftSideBearing": 87,
+            "advanceWidth": 1196
+        }
+    },
+    "fontFamily": "sans-serif",
+    "resolution": 2048,
+    "generatedOn": "2020-10-18T18:48:11.823Z"
+};
+
+
+/***/ }),
+
+/***/ "./src/fonts/serif_text_metrics.js":
+/*!*****************************************!*\
+  !*** ./src/fonts/serif_text_metrics.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "SerifFont": () => (/* binding */ SerifFont)
+/* harmony export */ });
+const SerifFont = {
+    smufl: false,
+    name: "SERIF",
+    spacing: 50,
+    Description: 'Built-in serif font',
+    bold: true,
+    italic: true,
+    monospaced: false,
+    serifs: true,
+    "glyphs": {
+        "0": {
+            "x_min": 49,
+            "x_max": 975,
+            "y_min": -27,
+            "y_max": 1383,
+            "ha": 1410,
+            "leftSideBearing": 49,
+            "advanceWidth": 1024
+        },
+        "1": {
+            "x_min": 227,
+            "x_max": 811,
+            "y_min": 0,
+            "y_max": 1383,
+            "ha": 1383,
+            "leftSideBearing": 227,
+            "advanceWidth": 1024
+        },
+        "2": {
+            "x_min": 61,
+            "x_max": 965,
+            "y_min": 0,
+            "y_max": 1383,
+            "ha": 1383,
+            "leftSideBearing": 61,
+            "advanceWidth": 1024
+        },
+        "3": {
+            "x_min": 88,
+            "x_max": 883,
+            "y_min": -27,
+            "y_max": 1383,
+            "ha": 1410,
+            "leftSideBearing": 88,
+            "advanceWidth": 1024
+        },
+        "4": {
+            "x_min": 25,
+            "x_max": 967,
+            "y_min": 0,
+            "y_max": 1384,
+            "ha": 1384,
+            "leftSideBearing": 25,
+            "advanceWidth": 1024
+        },
+        "5": {
+            "x_min": 66,
+            "x_max": 898,
+            "y_min": -27,
+            "y_max": 1409,
+            "ha": 1436,
+            "leftSideBearing": 66,
+            "advanceWidth": 1024
+        },
+        "6": {
+            "x_min": 70,
+            "x_max": 958,
+            "y_min": -27,
+            "y_max": 1401,
+            "ha": 1428,
+            "leftSideBearing": 70,
+            "advanceWidth": 1024
+        },
+        "7": {
+            "x_min": 41,
+            "x_max": 920,
+            "y_min": -16,
+            "y_max": 1356,
+            "ha": 1372,
+            "leftSideBearing": 41,
+            "advanceWidth": 1024
+        },
+        "8": {
+            "x_min": 115,
+            "x_max": 911,
+            "y_min": -27,
+            "y_max": 1383,
+            "ha": 1410,
+            "leftSideBearing": 115,
+            "advanceWidth": 1024
+        },
+        "9": {
+            "x_min": 61,
+            "x_max": 940,
+            "y_min": -41,
+            "y_max": 1383,
+            "ha": 1424,
+            "leftSideBearing": 61,
+            "advanceWidth": 1024
+        },
+        " ": {
+            "x_min": 0,
+            "x_max": 0,
+            "y_min": 0,
+            "y_max": 0,
+            "ha": 0,
+            "leftSideBearing": 0,
+            "advanceWidth": 512
+        },
+        "!": {
+            "x_min": 266,
+            "x_max": 488,
+            "y_min": -22,
+            "y_max": 1383,
+            "ha": 1405,
+            "leftSideBearing": 266,
+            "advanceWidth": 682
+        },
+        "\"": {
+            "x_min": 157.2000021972655,
+            "x_max": 678.2500021457677,
+            "y_min": 881,
+            "y_max": 1385,
+            "ha": 504,
+            "leftSideBearing": 157,
+            "advanceWidth": 836
+        },
+        "#": {
+            "x_min": 10,
+            "x_max": 1016,
+            "y_min": -1,
+            "y_max": 1356,
+            "ha": 1357,
+            "leftSideBearing": 10,
+            "advanceWidth": 1024
+        },
+        "$": {
+            "x_min": 90,
+            "x_max": 936,
+            "y_min": -180,
+            "y_max": 1492,
+            "ha": 1672,
+            "leftSideBearing": 90,
+            "advanceWidth": 1024
+        },
+        "%": {
+            "x_min": 125,
+            "x_max": 1581,
+            "y_min": -30,
+            "y_max": 1388,
+            "ha": 1418,
+            "leftSideBearing": 125,
+            "advanceWidth": 1706
+        },
+        "&": {
+            "x_min": 86,
+            "x_max": 1536,
+            "y_min": -28,
+            "y_max": 1383,
+            "ha": 1411,
+            "leftSideBearing": 86,
+            "advanceWidth": 1593
+        },
+        "'": {
+            "x_min": 97.20000219726548,
+            "x_max": 273.2500021457677,
+            "y_min": 881,
+            "y_max": 1385,
+            "ha": 504,
+            "leftSideBearing": 97,
+            "advanceWidth": 369
+        },
+        "(": {
+            "x_min": 98,
+            "x_max": 623,
+            "y_min": -363,
+            "y_max": 1383,
+            "ha": 1746,
+            "leftSideBearing": 98,
+            "advanceWidth": 682
+        },
+        ")": {
+            "x_min": 59,
+            "x_max": 584,
+            "y_min": -363,
+            "y_max": 1383,
+            "ha": 1746,
+            "leftSideBearing": 59,
+            "advanceWidth": 682
+        },
+        "*": {
+            "x_min": 137.96078522291893,
+            "x_max": 886.039214777081,
+            "y_min": 543,
+            "y_max": 1383,
+            "ha": 840,
+            "leftSideBearing": 137,
+            "advanceWidth": 1024
+        },
+        "+": {
+            "x_min": 61,
+            "x_max": 1093,
+            "y_min": 2,
+            "y_max": 1034,
+            "ha": 1032,
+            "leftSideBearing": 61,
+            "advanceWidth": 1155
+        },
+        ",": {
+            "x_min": 115,
+            "x_max": 399,
+            "y_min": -291,
+            "y_max": 208,
+            "ha": 499,
+            "leftSideBearing": 115,
+            "advanceWidth": 512
+        },
+        "-": {
+            "x_min": 80,
+            "x_max": 584,
+            "y_min": 396,
+            "y_max": 525,
+            "ha": 129,
+            "leftSideBearing": 80,
+            "advanceWidth": 682
+        },
+        ".": {
+            "x_min": 143,
+            "x_max": 371,
+            "y_min": -22,
+            "y_max": 205,
+            "ha": 227,
+            "leftSideBearing": 143,
+            "advanceWidth": 512
+        },
+        "/": {
+            "x_min": -17,
+            "x_max": 586,
+            "y_min": -27,
+            "y_max": 1383,
+            "ha": 1410,
+            "leftSideBearing": -17,
+            "advanceWidth": 569
+        },
+        ":": {
+            "x_min": 166,
+            "x_max": 394,
+            "y_min": -22,
+            "y_max": 943,
+            "ha": 965,
+            "leftSideBearing": 166,
+            "advanceWidth": 569
+        },
+        ";": {
+            "x_min": 164,
+            "x_max": 448,
+            "y_min": -290,
+            "y_max": 943,
+            "ha": 1233,
+            "leftSideBearing": 164,
+            "advanceWidth": 569
+        },
+        "<": {
+            "x_min": 57,
+            "x_max": 1098,
+            "y_min": -15,
+            "y_max": 1051,
+            "ha": 1066,
+            "leftSideBearing": 57,
+            "advanceWidth": 1155
+        },
+        "=": {
+            "x_min": 61,
+            "x_max": 1093,
+            "y_min": 246,
+            "y_max": 791,
+            "ha": 545,
+            "leftSideBearing": 61,
+            "advanceWidth": 1155
+        },
+        ">": {
+            "x_min": 57,
+            "x_max": 1098,
+            "y_min": -15,
+            "y_max": 1051,
+            "ha": 1066,
+            "leftSideBearing": 57,
+            "advanceWidth": 1155
+        },
+        "?": {
+            "x_min": 139,
+            "x_max": 848,
+            "y_min": -15,
+            "y_max": 1383,
+            "ha": 1398,
+            "leftSideBearing": 139,
+            "advanceWidth": 909
+        },
+        "@": {
+            "x_min": 238,
+            "x_max": 1657,
+            "y_min": -29,
+            "y_max": 1386,
+            "ha": 1415,
+            "leftSideBearing": 238,
+            "advanceWidth": 1886
+        },
+        "A": {
+            "x_min": 31,
+            "x_max": 1445,
+            "y_min": 0,
+            "y_max": 1380,
+            "ha": 1380,
+            "leftSideBearing": 31,
+            "advanceWidth": 1479
+        },
+        "B": {
+            "x_min": 35,
+            "x_max": 1214,
+            "y_min": 0,
+            "y_max": 1356,
+            "ha": 1356,
+            "leftSideBearing": 35,
+            "advanceWidth": 1366
+        },
+        "C": {
+            "x_min": 57,
+            "x_max": 1296,
+            "y_min": -28,
+            "y_max": 1383,
+            "ha": 1411,
+            "leftSideBearing": 57,
+            "advanceWidth": 1366
+        },
+        "D": {
+            "x_min": 33,
+            "x_max": 1403,
+            "y_min": 0,
+            "y_max": 1356,
+            "ha": 1356,
+            "leftSideBearing": 33,
+            "advanceWidth": 1479
+        },
+        "E": {
+            "x_min": 25,
+            "x_max": 1222,
+            "y_min": 0,
+            "y_max": 1356,
+            "ha": 1356,
+            "leftSideBearing": 25,
+            "advanceWidth": 1251
+        },
+        "F": {
+            "x_min": 25,
+            "x_max": 1119,
+            "y_min": 0,
+            "y_max": 1356,
+            "ha": 1356,
+            "leftSideBearing": 25,
+            "advanceWidth": 1139
+        },
+        "G": {
+            "x_min": 66,
+            "x_max": 1452,
+            "y_min": -28,
+            "y_max": 1383,
+            "ha": 1411,
+            "leftSideBearing": 66,
+            "advanceWidth": 1479
+        },
+        "H": {
+            "x_min": 39,
+            "x_max": 1438,
+            "y_min": 0,
+            "y_max": 1356,
+            "ha": 1356,
+            "leftSideBearing": 39,
+            "advanceWidth": 1479
+        },
+        "I": {
+            "x_min": 37,
+            "x_max": 642,
+            "y_min": 0,
+            "y_max": 1356,
+            "ha": 1356,
+            "leftSideBearing": 37,
+            "advanceWidth": 682
+        },
+        "J": {
+            "x_min": 20,
+            "x_max": 758,
+            "y_min": -28,
+            "y_max": 1356,
+            "ha": 1384,
+            "leftSideBearing": 20,
+            "advanceWidth": 797
+        },
+        "K": {
+            "x_min": 70,
+            "x_max": 1479,
+            "y_min": 0,
+            "y_max": 1356,
+            "ha": 1356,
+            "leftSideBearing": 70,
+            "advanceWidth": 1479
+        },
+        "L": {
+            "x_min": 25,
+            "x_max": 1224,
+            "y_min": 0,
+            "y_max": 1356,
+            "ha": 1356,
+            "leftSideBearing": 25,
+            "advanceWidth": 1251
+        },
+        "M": {
+            "x_min": 25,
+            "x_max": 1768,
+            "y_min": 0,
+            "y_max": 1356,
+            "ha": 1356,
+            "leftSideBearing": 25,
+            "advanceWidth": 1821
+        },
+        "N": {
+            "x_min": 25,
+            "x_max": 1450,
+            "y_min": -22,
+            "y_max": 1356,
+            "ha": 1378,
+            "leftSideBearing": 25,
+            "advanceWidth": 1479
+        },
+        "O": {
+            "x_min": 70,
+            "x_max": 1409,
+            "y_min": -28,
+            "y_max": 1383,
+            "ha": 1411,
+            "leftSideBearing": 70,
+            "advanceWidth": 1479
+        },
+        "P": {
+            "x_min": 33,
+            "x_max": 1110,
+            "y_min": 0,
+            "y_max": 1356,
+            "ha": 1356,
+            "leftSideBearing": 33,
+            "advanceWidth": 1139
+        },
+        "Q": {
+            "x_min": 70,
+            "x_max": 1435,
+            "y_min": -364.28571588721996,
+            "y_max": 1383,
+            "ha": 1747.28571588722,
+            "leftSideBearing": 70,
+            "advanceWidth": 1479
+        },
+        "R": {
+            "x_min": 35,
+            "x_max": 1347,
+            "y_min": 0,
+            "y_max": 1356,
+            "ha": 1356,
+            "leftSideBearing": 35,
+            "advanceWidth": 1366
+        },
+        "S": {
+            "x_min": 86,
+            "x_max": 1006,
+            "y_min": -28,
+            "y_max": 1383,
+            "ha": 1411,
+            "leftSideBearing": 86,
+            "advanceWidth": 1139
+        },
+        "T": {
+            "x_min": 35,
+            "x_max": 1214,
+            "y_min": 0,
+            "y_max": 1356,
+            "ha": 1356,
+            "leftSideBearing": 35,
+            "advanceWidth": 1251
+        },
+        "U": {
+            "x_min": 29,
+            "x_max": 1444,
+            "y_min": -28,
+            "y_max": 1356,
+            "ha": 1384,
+            "leftSideBearing": 29,
+            "advanceWidth": 1479
+        },
+        "V": {
+            "x_min": 33,
+            "x_max": 1428,
+            "y_min": -22,
+            "y_max": 1356,
+            "ha": 1378,
+            "leftSideBearing": 33,
+            "advanceWidth": 1479
+        },
+        "W": {
+            "x_min": 10,
+            "x_max": 1906,
+            "y_min": -22,
+            "y_max": 1356,
+            "ha": 1378,
+            "leftSideBearing": 10,
+            "advanceWidth": 1933
+        },
+        "X": {
+            "x_min": 20,
+            "x_max": 1449,
+            "y_min": 0,
+            "y_max": 1356,
+            "ha": 1356,
+            "leftSideBearing": 20,
+            "advanceWidth": 1479
+        },
+        "Y": {
+            "x_min": 45,
+            "x_max": 1441,
+            "y_min": 0,
+            "y_max": 1356,
+            "ha": 1356,
+            "leftSideBearing": 45,
+            "advanceWidth": 1479
+        },
+        "Z": {
+            "x_min": 18,
+            "x_max": 1222,
+            "y_min": 0,
+            "y_max": 1356,
+            "ha": 1356,
+            "leftSideBearing": 18,
+            "advanceWidth": 1251
+        },
+        "[": {
+            "x_min": 180,
+            "x_max": 612,
+            "y_min": -319,
+            "y_max": 1355,
+            "ha": 1674,
+            "leftSideBearing": 180,
+            "advanceWidth": 682
+        },
+        "\\": {
+            "x_min": -17,
+            "x_max": 586,
+            "y_min": -27,
+            "y_max": 1383,
+            "ha": 1410,
+            "leftSideBearing": -17,
+            "advanceWidth": 569
+        },
+        "]": {
+            "x_min": 70,
+            "x_max": 502,
+            "y_min": -319,
+            "y_max": 1355,
+            "ha": 1674,
+            "leftSideBearing": 70,
+            "advanceWidth": 682
+        },
+        "^": {
+            "x_min": 49,
+            "x_max": 914,
+            "y_min": 608,
+            "y_max": 1355,
+            "ha": 747,
+            "leftSideBearing": 49,
+            "advanceWidth": 961
+        },
+        "_": {
+            "x_min": 0,
+            "x_max": 1024,
+            "y_min": -255,
+            "y_max": -153,
+            "ha": 102,
+            "leftSideBearing": 0,
+            "advanceWidth": 1024
+        },
+        "`": {
+            "x_min": 39,
+            "x_max": 499,
+            "y_min": 1037,
+            "y_max": 1392.509803639748,
+            "ha": 355.50980363974804,
+            "leftSideBearing": 39,
+            "advanceWidth": 682
+        },
+        "a": {
+            "x_min": 76,
+            "x_max": 905,
+            "y_min": -20,
+            "y_max": 942,
+            "ha": 962,
+            "leftSideBearing": 76,
+            "advanceWidth": 909
+        },
+        "b": {
+            "x_min": 6,
+            "x_max": 958,
+            "y_min": -20,
+            "y_max": 1399,
+            "ha": 1419,
+            "leftSideBearing": 6,
+            "advanceWidth": 1024
+        },
+        "c": {
+            "x_min": 51,
+            "x_max": 843,
+            "y_min": -20,
+            "y_max": 942,
+            "ha": 962,
+            "leftSideBearing": 51,
+            "advanceWidth": 909
+        },
+        "d": {
+            "x_min": 55,
+            "x_max": 1006,
+            "y_min": -20,
+            "y_max": 1399,
+            "ha": 1419,
+            "leftSideBearing": 55,
+            "advanceWidth": 1024
+        },
+        "e": {
+            "x_min": 51,
+            "x_max": 868,
+            "y_min": -20,
+            "y_max": 942,
+            "ha": 962,
+            "leftSideBearing": 51,
+            "advanceWidth": 909
+        },
+        "f": {
+            "x_min": 41,
+            "x_max": 783,
+            "y_min": 0,
+            "y_max": 1399,
+            "ha": 1399,
+            "leftSideBearing": 41,
+            "advanceWidth": 682
+        },
+        "g": {
+            "x_min": 57,
+            "x_max": 963,
+            "y_min": -446,
+            "y_max": 942,
+            "ha": 1388,
+            "leftSideBearing": 57,
+            "advanceWidth": 1024
+        },
+        "h": {
+            "x_min": 18,
+            "x_max": 997,
+            "y_min": 0,
+            "y_max": 1399,
+            "ha": 1399,
+            "leftSideBearing": 18,
+            "advanceWidth": 1024
+        },
+        "i": {
+            "x_min": 33,
+            "x_max": 516,
+            "y_min": 0,
+            "y_max": 1399,
+            "ha": 1399,
+            "leftSideBearing": 33,
+            "advanceWidth": 569
+        },
+        "j": {
+            "x_min": -142,
+            "x_max": 397,
+            "y_min": -446,
+            "y_max": 1399,
+            "ha": 1845,
+            "leftSideBearing": -142,
+            "advanceWidth": 569
+        },
+        "k": {
+            "x_min": 14,
+            "x_max": 1029,
+            "y_min": 0,
+            "y_max": 1399,
+            "ha": 1399,
+            "leftSideBearing": 14,
+            "advanceWidth": 1024
+        },
+        "l": {
+            "x_min": 39,
+            "x_max": 523,
+            "y_min": 0,
+            "y_max": 1399,
+            "ha": 1399,
+            "leftSideBearing": 39,
+            "advanceWidth": 569
+        },
+        "m": {
+            "x_min": 33,
+            "x_max": 1587,
+            "y_min": 0,
+            "y_max": 944,
+            "ha": 944,
+            "leftSideBearing": 33,
+            "advanceWidth": 1593
+        },
+        "n": {
+            "x_min": 33,
+            "x_max": 993,
+            "y_min": 0,
+            "y_max": 944,
+            "ha": 944,
+            "leftSideBearing": 33,
+            "advanceWidth": 1024
+        },
+        "o": {
+            "x_min": 59,
+            "x_max": 963,
+            "y_min": -20,
+            "y_max": 942,
+            "ha": 962,
+            "leftSideBearing": 59,
+            "advanceWidth": 1024
+        },
+        "p": {
+            "x_min": 10,
+            "x_max": 964,
+            "y_min": -443,
+            "y_max": 944,
+            "ha": 1387,
+            "leftSideBearing": 10,
+            "advanceWidth": 1024
+        },
+        "q": {
+            "x_min": 49,
+            "x_max": 999,
+            "y_min": -443,
+            "y_max": 942.0135137169275,
+            "ha": 1385.0135137169275,
+            "leftSideBearing": 49,
+            "advanceWidth": 1024
+        },
+        "r": {
+            "x_min": 10,
+            "x_max": 685,
+            "y_min": 0,
+            "y_max": 944,
+            "ha": 944,
+            "leftSideBearing": 10,
+            "advanceWidth": 682
+        },
+        "s": {
+            "x_min": 104,
+            "x_max": 713,
+            "y_min": -20,
+            "y_max": 942.0263161804552,
+            "ha": 962.0263161804552,
+            "leftSideBearing": 104,
+            "advanceWidth": 797
+        },
+        "t": {
+            "x_min": 27,
+            "x_max": 572,
+            "y_min": -18,
+            "y_max": 1186,
+            "ha": 1204,
+            "leftSideBearing": 27,
+            "advanceWidth": 569
+        },
+        "u": {
+            "x_min": 18,
+            "x_max": 981,
+            "y_min": -21,
+            "y_max": 921,
+            "ha": 942,
+            "leftSideBearing": 18,
+            "advanceWidth": 1024
+        },
+        "v": {
+            "x_min": 39,
+            "x_max": 976,
+            "y_min": -28,
+            "y_max": 921,
+            "ha": 949,
+            "leftSideBearing": 39,
+            "advanceWidth": 1024
+        },
+        "w": {
+            "x_min": 43,
+            "x_max": 1423,
+            "y_min": -28,
+            "y_max": 921,
+            "ha": 949,
+            "leftSideBearing": 43,
+            "advanceWidth": 1479
+        },
+        "x": {
+            "x_min": 35,
+            "x_max": 989,
+            "y_min": 0,
+            "y_max": 921,
+            "ha": 921,
+            "leftSideBearing": 35,
+            "advanceWidth": 1024
+        },
+        "y": {
+            "x_min": 29,
+            "x_max": 976,
+            "y_min": -445,
+            "y_max": 921,
+            "ha": 1366,
+            "leftSideBearing": 29,
+            "advanceWidth": 1024
+        },
+        "z": {
+            "x_min": 55,
+            "x_max": 855,
+            "y_min": 0,
+            "y_max": 921,
+            "ha": 921,
+            "leftSideBearing": 55,
+            "advanceWidth": 909
+        },
+        "{": {
+            "x_min": 205,
+            "x_max": 717,
+            "y_min": -377,
+            "y_max": 1397,
+            "ha": 1774,
+            "leftSideBearing": 205,
+            "advanceWidth": 983
+        },
+        "|": {
+            "x_min": 137,
+            "x_max": 273,
+            "y_min": -512,
+            "y_max": 1535,
+            "ha": 2047,
+            "leftSideBearing": 137,
+            "advanceWidth": 410
+        },
+        "}": {
+            "x_min": 266,
+            "x_max": 778,
+            "y_min": -377,
+            "y_max": 1397,
+            "ha": 1774,
+            "leftSideBearing": 266,
+            "advanceWidth": 983
+        },
+        "~": {
+            "x_min": 82,
+            "x_max": 1028,
+            "y_min": 380,
+            "y_max": 666,
+            "ha": 286,
+            "leftSideBearing": 82,
+            "advanceWidth": 1108
+        }
+    },
+    "fontFamily": "serif",
+    "resolution": 2048,
+    "generatedOn": "2020-10-18T19:03:12.514Z"
+};
+
+
+/***/ }),
+
 /***/ "./src/fonts/textfonts.ts":
 /*!********************************!*\
   !*** ./src/fonts/textfonts.ts ***!
@@ -17976,13 +20649,85 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _textformatter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../textformatter */ "./src/textformatter.ts");
 /* harmony import */ var _petalumascript_glyphs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./petalumascript_glyphs */ "./src/fonts/petalumascript_glyphs.ts");
 /* harmony import */ var _robotoslab_glyphs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./robotoslab_glyphs */ "./src/fonts/robotoslab_glyphs.ts");
+/* harmony import */ var _sans_bold_text_metrics__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./sans_bold_text_metrics */ "./src/fonts/sans_bold_text_metrics.ts");
+/* harmony import */ var _sans_text_metrics__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./sans_text_metrics */ "./src/fonts/sans_text_metrics.js");
+/* harmony import */ var _serif_text_metrics__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./serif_text_metrics */ "./src/fonts/serif_text_metrics.js");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 
 
 
 
+
+
+
 function loadTextFonts() {
+    // Sans-serif fallback font, very close to Arial
+    {
+        const fontData = _sans_bold_text_metrics__WEBPACK_IMPORTED_MODULE_4__.SansFontBold;
+        const { fontFamily, resolution, glyphs } = fontData;
+        _font__WEBPACK_IMPORTED_MODULE_0__.Font.load(fontFamily, fontData);
+        // Usually @ is the tallest and widest character, although not the
+        // highest since it starts below the baseline.
+        const maxSizeGlyph = '@';
+        _textformatter__WEBPACK_IMPORTED_MODULE_1__.TextFormatter.registerInfo({
+            family: fontFamily,
+            resolution,
+            glyphs,
+            maxSizeGlyph,
+            monospaced: false,
+            bold: true,
+            italic: false,
+            superscriptOffset: 0.66,
+            subscriptOffset: 0.66,
+            serifs: false,
+            description: 'Generic SANS font',
+        });
+    }
+    // Sans-serif fallback font, very close to Arial
+    {
+        const fontData = _sans_text_metrics__WEBPACK_IMPORTED_MODULE_5__.SansFont;
+        const { fontFamily, resolution, glyphs } = fontData;
+        _font__WEBPACK_IMPORTED_MODULE_0__.Font.load(fontFamily, fontData);
+        // Usually @ is the tallest and widest character, although not the
+        // highest since it starts below the baseline.
+        const maxSizeGlyph = '@';
+        _textformatter__WEBPACK_IMPORTED_MODULE_1__.TextFormatter.registerInfo({
+            family: fontFamily,
+            resolution,
+            glyphs,
+            maxSizeGlyph,
+            monospaced: false,
+            bold: false,
+            italic: false,
+            superscriptOffset: 0.66,
+            subscriptOffset: 0.66,
+            serifs: false,
+            description: 'Generic SANS font',
+        });
+    }
+    // Serif fallback font, very close to Times
+    {
+        const fontData = _serif_text_metrics__WEBPACK_IMPORTED_MODULE_6__.SerifFont;
+        const { fontFamily, resolution, glyphs } = fontData;
+        _font__WEBPACK_IMPORTED_MODULE_0__.Font.load(fontFamily, fontData);
+        // M is wider, but H is taller. :-)
+        // Lowercase b is also taller in this font.
+        const maxSizeGlyph = '@';
+        _textformatter__WEBPACK_IMPORTED_MODULE_1__.TextFormatter.registerInfo({
+            family: fontFamily,
+            resolution,
+            glyphs,
+            maxSizeGlyph,
+            monospaced: false,
+            bold: false,
+            italic: false,
+            superscriptOffset: 0.66,
+            subscriptOffset: 0.66,
+            serifs: true,
+            description: 'Generic SERIF font',
+        });
+    }
     // Roboto Slab
     {
         const fontData = _robotoslab_glyphs__WEBPACK_IMPORTED_MODULE_3__.RobotoSlabFont;
@@ -18073,18 +20818,18 @@ const sumArray = (arr) => arr.reduce((a, b) => a + b, 0);
  * total number of ticks in voices.
  */
 function createContexts(voices, makeContext, addToContext) {
-    const resolutionMultiplier = Formatter.getResolutionMultiplier(voices);
+    if (voices.length == 0)
+        return {
+            map: {},
+            array: [],
+            list: [],
+            resolutionMultiplier: 0,
+        };
     // Initialize tick maps.
     const tickToContextMap = {};
     const tickList = [];
     const contexts = [];
-    if (voices.length == 0)
-        return {
-            map: tickToContextMap,
-            array: contexts,
-            list: tickList.sort((a, b) => a - b),
-            resolutionMultiplier,
-        };
+    const resolutionMultiplier = Formatter.getResolutionMultiplier(voices);
     // For each voice, extract notes and create a context for every
     // new tick that hasn't been seen before.
     voices.forEach((voice, voiceIndex) => {
@@ -18176,7 +20921,13 @@ class Formatter {
         // This is set to `true` after `minTotalWidth` is calculated.
         this.hasMinTotalWidth = false;
         // Arrays of tick and modifier contexts.
-        this.tickContexts = undefined;
+        this.tickContexts = {
+            map: {},
+            array: [],
+            list: [],
+            resolutionMultiplier: 0,
+        };
+        this.modifierContexts = [];
         // Gaps between contexts, for free movement of notes post
         // formatting.
         this.contextGaps = {
@@ -18390,13 +21141,11 @@ class Formatter {
         // Cache results.
         if (this.hasMinTotalWidth)
             return this.minTotalWidth;
-        // Create tick contexts if not already created.
-        if (!this.tickContexts) {
-            if (!voices) {
-                throw new _util__WEBPACK_IMPORTED_MODULE_9__.RuntimeError('BadArgument', "'voices' required to run preCalculateMinTotalWidth");
-            }
-            this.createTickContexts(voices);
+        // Create tick contexts.
+        if (!voices) {
+            throw new _util__WEBPACK_IMPORTED_MODULE_9__.RuntimeError('BadArgument', "'voices' required to run preCalculateMinTotalWidth");
         }
+        this.createTickContexts(voices);
         // eslint-disable-next-line
         const { list: contextList, map: contextMap } = this.tickContexts;
         this.minTotalWidth = 0;
@@ -18462,12 +21211,12 @@ class Formatter {
     }
     /** Create a `ModifierContext` for each tick in `voices`. */
     createModifierContexts(voices) {
+        if (voices.length == 0)
+            return;
         const resolutionMultiplier = Formatter.getResolutionMultiplier(voices);
         // Initialize tick maps.
-        const getKey = (tickable, tick) => {
-            const stave = tickable.getStave();
-            return stave ? stave.getAttribute('id') + '-' + tick.toString() : tick.toString();
-        };
+        const tickToContextMap = new Map();
+        const contexts = [];
         // For each voice, extract notes and create a context for every
         // new tick that hasn't been seen before.
         voices.forEach((voice) => {
@@ -18476,20 +21225,28 @@ class Formatter {
             const ticksUsed = new _fraction__WEBPACK_IMPORTED_MODULE_2__.Fraction(0, resolutionMultiplier);
             voice.getTickables().forEach((tickable) => {
                 const integerTicks = ticksUsed.numerator;
-                const key = getKey(tickable, integerTicks);
-                if (!this.tickToStaveContextMap[key]) {
+                let staveTickToContextMap = tickToContextMap.get(tickable.getStave());
+                // If we have no tick context for this tick, create one.
+                if (!staveTickToContextMap) {
+                    tickToContextMap.set(tickable.getStave(), {});
+                    staveTickToContextMap = tickToContextMap.get(tickable.getStave());
+                }
+                if (!(staveTickToContextMap ? staveTickToContextMap[integerTicks] : undefined)) {
                     const newContext = new _modifiercontext__WEBPACK_IMPORTED_MODULE_3__.ModifierContext();
-                    this.tickToStaveContextMap[key] = newContext;
-                    if (!this.tickToContextMap[integerTicks]) {
-                        this.tickToContextMap[integerTicks] = [];
-                        this.tickList.push(integerTicks);
-                    }
-                    this.tickToContextMap[integerTicks].push(newContext);
+                    contexts.push(newContext);
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    staveTickToContextMap[integerTicks] = newContext;
                 }
                 // Add this tickable to the TickContext.
-                tickable.addToModifierContext(this.tickToStaveContextMap[key]);
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                tickable.addToModifierContext(staveTickToContextMap[integerTicks]);
                 ticksUsed.add(tickable.getTicks());
             });
+        });
+        this.modifierContexts.push({
+            map: tickToContextMap,
+            array: contexts,
+            resolutionMultiplier,
         });
     }
     /**
@@ -18507,9 +21264,16 @@ class Formatter {
         return contexts;
     }
     /**
+     * Get the AlignmentContexts of TickContexts that were created by createTickContexts.
+     * Returns undefined if createTickContexts has not yet been run.
+     */
+    getTickContexts() {
+        return this.tickContexts;
+    }
+    /**
      * This is the core formatter logic. Format voices and justify them
      * to `justifyWidth` pixels. `renderingContext` is required to justify elements
-     * that can't retreive widths without a canvas. This method sets the `x` positions
+     * that can't retrieve widths without a canvas. This method sets the `x` positions
      * of all the tickables/notes in the formatter.
      */
     preFormat(justifyWidth = 0, renderingContext, voicesParam, stave) {
@@ -18715,8 +21479,6 @@ class Formatter {
     }
     /** Calculate the total cost of this formatting decision. */
     evaluate() {
-        if (!this.tickContexts)
-            return 0;
         const contexts = this.tickContexts;
         const justifyWidth = this.justifyWidth;
         // Calculate available slack per tick context. This works out how much freedom
@@ -18801,7 +21563,7 @@ class Formatter {
      * the overall "loss" (or cost) of this layout, and repositions tickcontexts in an
      * attempt to reduce the cost. You can call this method multiple times until it finds
      * and oscillates around a global minimum.
-     * @param alpha the "learning rate" for the formatter. It determines how much of a shift
+     * @param options[alpha] the "learning rate" for the formatter. It determines how much of a shift
      * the formatter should make based on its cost function.
      */
     tune(options) {
@@ -18852,16 +21614,12 @@ class Formatter {
      * in the voices.
      */
     postFormat() {
-        const postFormatContexts = (contexts) => contexts.list.forEach((tick) => contexts.map[tick].postFormat());
-        this.tickList.sort((a, b) => a - b);
-        this.tickList.forEach((tick) => {
-            this.tickToContextMap[tick].forEach((mc) => {
-                mc.postFormat();
-            });
+        this.modifierContexts.forEach((modifierContexts) => {
+            modifierContexts.array.forEach((mc) => mc.postFormat());
         });
-        if (this.tickContexts) {
-            postFormatContexts(this.tickContexts);
-        }
+        this.tickContexts.list.forEach((tick) => {
+            this.tickContexts.map[tick].postFormat();
+        });
         return this;
     }
     /**
@@ -19425,12 +22183,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 /* harmony import */ var _boundingboxcomputation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./boundingboxcomputation */ "./src/boundingboxcomputation.ts");
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./element */ "./src/element.ts");
-/* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tables */ "./src/tables.ts");
-/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
-
 
 
 
@@ -19479,21 +22235,19 @@ class GlyphOutline {
         this.originY = originY;
         this.scale = scale;
         this.i = 0;
-        this.precision = 1;
         // Automatically assign private properties: this.outline, this.originX, this.originY, and this.scale.
-        this.precision = Math.pow(10, _tables__WEBPACK_IMPORTED_MODULE_3__.Tables.RENDER_PRECISION_PLACES);
     }
     done() {
         return this.i >= this.outline.length;
     }
     next() {
-        return Math.round((this.outline[this.i++] * this.precision) / this.precision);
+        return this.outline[this.i++];
     }
     nextX() {
-        return Math.round((this.originX + this.outline[this.i++] * this.scale) * this.precision) / this.precision;
+        return this.originX + this.outline[this.i++] * this.scale;
     }
     nextY() {
-        return Math.round((this.originY - this.outline[this.i++] * this.scale) * this.precision) / this.precision;
+        return this.originY - this.outline[this.i++] * this.scale;
     }
     static parse(str) {
         const result = [];
@@ -19548,7 +22302,7 @@ class Glyph extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
     //////////////////////////////////////////////////////////////////////////////////////////////////
     // STATIC MEMBERS
     static get CATEGORY() {
-        return _typeguard__WEBPACK_IMPORTED_MODULE_4__.Category.Glyph;
+        return _typeguard__WEBPACK_IMPORTED_MODULE_3__.Category.Glyph;
     }
     /**
      * Pass a key of the form `glyphs.{category}.{code}.{key}` to Font.lookupMetric(). If the initial lookup fails,
@@ -19569,7 +22323,7 @@ class Glyph extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         return value;
     }
     static lookupGlyph(fontStack, code) {
-        (0,_util__WEBPACK_IMPORTED_MODULE_5__.defined)(fontStack, 'BadFontStack', 'Font stack is misconfigured');
+        (0,_util__WEBPACK_IMPORTED_MODULE_4__.defined)(fontStack, 'BadFontStack', 'Font stack is misconfigured');
         let glyph;
         let font;
         for (let i = 0; i < fontStack.length; i++) {
@@ -19578,12 +22332,12 @@ class Glyph extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
             if (glyph)
                 return { glyph, font };
         }
-        throw new _util__WEBPACK_IMPORTED_MODULE_5__.RuntimeError('BadGlyph', `Glyph ${code} does not exist in font.`);
+        throw new _util__WEBPACK_IMPORTED_MODULE_4__.RuntimeError('BadGlyph', `Glyph ${code} does not exist in font.`);
     }
     static loadMetrics(fontStack, code, category) {
         const { glyph, font } = Glyph.lookupGlyph(fontStack, code);
         if (!glyph.o)
-            throw new _util__WEBPACK_IMPORTED_MODULE_5__.RuntimeError('BadGlyph', `Glyph ${code} has no outline defined.`);
+            throw new _util__WEBPACK_IMPORTED_MODULE_4__.RuntimeError('BadGlyph', `Glyph ${code} has no outline defined.`);
         let x_shift = 0;
         let y_shift = 0;
         let scale = 1;
@@ -19751,7 +22505,7 @@ class Glyph extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         this.bbox = new _boundingbox__WEBPACK_IMPORTED_MODULE_0__.BoundingBox(data.bbox.getX() * this.scale, data.bbox.getY() * this.scale, data.bbox.getW() * this.scale, data.bbox.getH() * this.scale);
     }
     checkMetrics() {
-        return (0,_util__WEBPACK_IMPORTED_MODULE_5__.defined)(this.metrics, 'BadGlyph', `Glyph ${this.code} is not initialized.`);
+        return (0,_util__WEBPACK_IMPORTED_MODULE_4__.defined)(this.metrics, 'BadGlyph', `Glyph ${this.code} is not initialized.`);
     }
     getMetrics() {
         const metrics = this.checkMetrics();
@@ -19797,7 +22551,7 @@ class Glyph extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         this.restoreStyle(ctx);
     }
     checkStave() {
-        return (0,_util__WEBPACK_IMPORTED_MODULE_5__.defined)(this.stave, 'NoStave', 'No stave attached to instance.');
+        return (0,_util__WEBPACK_IMPORTED_MODULE_4__.defined)(this.stave, 'NoStave', 'No stave attached to instance.');
     }
     renderToStave(x) {
         const context = this.checkContext();
@@ -19870,18 +22624,17 @@ class GlyphNote extends _note__WEBPACK_IMPORTED_MODULE_0__.Note {
     }
     drawModifiers() {
         const ctx = this.checkContext();
-        ctx.openGroup('modifiers');
         for (let i = 0; i < this.modifiers.length; i++) {
             const modifier = this.modifiers[i];
             modifier.setContext(ctx);
             modifier.drawWithStyle();
         }
-        ctx.closeGroup();
     }
     draw() {
         const stave = this.checkStave();
         const ctx = stave.checkContext();
         this.setRendered();
+        this.applyStyle(ctx);
         ctx.openGroup('glyphNote', this.getAttribute('id'));
         // Context is set when setStave is called on Note
         const glyph = this.glyph;
@@ -19894,6 +22647,7 @@ class GlyphNote extends _note__WEBPACK_IMPORTED_MODULE_0__.Note {
         glyph.renderToStave(x);
         this.drawModifiers();
         ctx.closeGroup();
+        this.restoreStyle(ctx);
     }
 }
 
@@ -20951,12 +23705,21 @@ class KeySignature extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModi
         }
         this.formatted = true;
     }
+    /**
+     * Return the Glyph objects making up this KeySignature.
+     */
+    getGlyphs() {
+        if (!this.formatted)
+            this.format();
+        return this.glyphs;
+    }
     draw() {
         const stave = this.checkStave();
         const ctx = stave.checkContext();
         if (!this.formatted)
             this.format();
         this.setRendered();
+        this.applyStyle(ctx);
         ctx.openGroup('keysignature', this.getAttribute('id'));
         for (let i = 0; i < this.glyphs.length; i++) {
             const glyph = this.glyphs[i];
@@ -20966,6 +23729,7 @@ class KeySignature extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModi
             glyph.renderToStave(x);
         }
         ctx.closeGroup();
+        this.restoreStyle(ctx);
     }
 }
 // Space between natural and following accidental depending
@@ -22674,7 +25438,7 @@ class NoteHead extends _note__WEBPACK_IMPORTED_MODULE_2__.Note {
             this.stem_up_x_offset = noteStruct.stem_up_x_offset || 0;
             this.stem_down_x_offset = noteStruct.stem_down_x_offset || 0;
         }
-        this.style = noteStruct.style;
+        this.setStyle(noteStruct.style);
         this.slashed = noteStruct.slashed || false;
         this.render_options = Object.assign(Object.assign({}, this.render_options), { 
             // font size for note heads
@@ -22778,9 +25542,6 @@ class NoteHead extends _note__WEBPACK_IMPORTED_MODULE_2__.Note {
         // Begin and end positions for head.
         const stem_direction = this.stem_direction;
         const glyph_font_scale = this.render_options.glyph_font_scale;
-        if (this.style) {
-            this.applyStyle(ctx);
-        }
         const categorySuffix = `${this.glyph_code}Stem${stem_direction === _stem__WEBPACK_IMPORTED_MODULE_3__.Stem.UP ? 'Up' : 'Down'}`;
         if (this.noteType === 's') {
             const staveSpace = this.checkStave().getSpacingBetweenLines();
@@ -22790,9 +25551,6 @@ class NoteHead extends _note__WEBPACK_IMPORTED_MODULE_2__.Note {
             _glyph__WEBPACK_IMPORTED_MODULE_1__.Glyph.renderGlyph(ctx, head_x, y, glyph_font_scale, this.glyph_code, {
                 category: this.custom_glyph ? `noteHead.custom.${categorySuffix}` : `noteHead.standard.${categorySuffix}`,
             });
-        }
-        if (this.style) {
-            this.restoreStyle(ctx);
         }
     }
 }
@@ -23106,8 +25864,8 @@ class Ornament extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
         this.setRendered();
         const stemDir = note.getStemDirection();
         const stave = note.checkStave();
-        const classString = Object.keys(this.getAttribute('classes')).join(' ');
-        ctx.openGroup(classString, this.getAttribute('id'));
+        this.applyStyle();
+        ctx.openGroup('ornament', this.getAttribute('id'));
         // Get stem extents
         const stemExtents = note.checkStem().getExtents();
         let y = stemDir === _stem__WEBPACK_IMPORTED_MODULE_2__.Stem.DOWN ? stemExtents.baseY : stemExtents.topY;
@@ -23179,6 +25937,7 @@ class Ornament extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
             this.accidentalUpper.render(ctx, glyphX, glyphY);
         }
         ctx.closeGroup();
+        this.restoreStyle();
     }
 }
 /** To enable logging for this class. Set `Vex.Flow.Ornament.DEBUG` to `true`. */
@@ -23965,7 +26724,7 @@ function drawDot(ctx, x, y, color = '#F55') {
     ctx.setFillStyle(color);
     // draw a circle
     ctx.beginPath();
-    ctx.arc(x, y, 3, 0, Math.PI * 2, true);
+    ctx.arc(x, y, 3, 0, Math.PI * 2, false);
     ctx.closePath();
     ctx.fill();
     ctx.restore();
@@ -24041,7 +26800,7 @@ class Renderer {
                 if (!(0,_web__WEBPACK_IMPORTED_MODULE_4__.isHTMLCanvas)(element)) {
                     throw new _util__WEBPACK_IMPORTED_MODULE_3__.RuntimeError('BadElement', 'CANVAS context requires an HTMLCanvasElement.');
                 }
-                const context = element.getContext('2d');
+                const context = element.getContext('2d', { willReadFrequently: true });
                 if (!context) {
                     throw new _util__WEBPACK_IMPORTED_MODULE_3__.RuntimeError('BadElement', "Can't get canvas context");
                 }
@@ -24352,11 +27111,20 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         return this.width;
     }
     getStyle() {
-        return Object.assign({ fillStyle: this.options.fill_style, strokeStyle: this.options.fill_style, lineWidth: _tables__WEBPACK_IMPORTED_MODULE_12__.Tables.STAVE_LINE_THICKNESS }, this.style);
+        return Object.assign({ fillStyle: this.options.fill_style, strokeStyle: this.options.fill_style, lineWidth: _tables__WEBPACK_IMPORTED_MODULE_12__.Tables.STAVE_LINE_THICKNESS }, super.getStyle());
     }
+    /**
+     * Set the measure number of this Stave.
+     */
     setMeasure(measure) {
         this.measure = measure;
         return this;
+    }
+    /**
+     * Return the measure number of this Stave.
+     */
+    getMeasure() {
+        return this.measure;
     }
     /**
      * Gets the pixels to shift from the beginning of the stave
@@ -24745,6 +27513,7 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
     draw() {
         const ctx = this.checkContext();
         this.setRendered();
+        this.applyStyle();
         ctx.openGroup('stave', this.getAttribute('id'));
         if (!this.formatted)
             this.format();
@@ -24755,15 +27524,15 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
         // Render lines
         for (let line = 0; line < num_lines; line++) {
             y = this.getYForLine(line);
-            this.applyStyle();
             if (this.options.line_config[line].visible) {
                 ctx.beginPath();
                 ctx.moveTo(x, y);
                 ctx.lineTo(x + width, y);
                 ctx.stroke();
             }
-            this.restoreStyle();
         }
+        ctx.closeGroup();
+        this.restoreStyle();
         // Draw the modifiers (bar lines, coda, segno, repeat brackets, etc.)
         for (let i = 0; i < this.modifiers.length; i++) {
             const modifier = this.modifiers[i];
@@ -24783,7 +27552,6 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
             ctx.fillText('' + this.measure, this.x - textWidth / 2, y);
             ctx.restore();
         }
-        ctx.closeGroup();
         return this;
     }
     getVerticalBarWidth() {
@@ -25022,8 +27790,10 @@ class Barline extends _stavemodifier__WEBPACK_IMPORTED_MODULE_0__.StaveModifier 
     }
     // Draw barlines
     draw(stave) {
-        stave.checkContext();
+        const ctx = stave.checkContext();
         this.setRendered();
+        this.applyStyle(ctx);
+        ctx.openGroup('stavebarline', this.getAttribute('id'));
         switch (this.type) {
             case BarlineType.SINGLE:
                 this.drawVerticalBar(stave, this.x, false);
@@ -25053,6 +27823,8 @@ class Barline extends _stavemodifier__WEBPACK_IMPORTED_MODULE_0__.StaveModifier 
                 // Default is NONE, so nothing to draw
                 break;
         }
+        ctx.closeGroup();
+        this.restoreStyle(ctx);
     }
     drawVerticalBar(stave, x, double_bar) {
         const staveCtx = stave.checkContext();
@@ -26694,10 +29466,12 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNot
         return this.ledgerLineStyle;
     }
     setFlagStyle(style) {
-        this.flagStyle = style;
+        var _a;
+        (_a = this.flag) === null || _a === void 0 ? void 0 : _a.setStyle(style);
     }
     getFlagStyle() {
-        return this.flagStyle;
+        var _a;
+        return (_a = this.flag) === null || _a === void 0 ? void 0 : _a.getStyle();
     }
     // Sets the notehead at `index` to the provided coloring `style`.
     //
@@ -26718,7 +29492,7 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNot
     // Get the width of the note if it is displaced. Used for `Voice`
     // formatting
     getVoiceShiftWidth() {
-        // TODO: may need to accomodate for dot here.
+        // TODO: may need to accommodate for dot here.
         return this.getGlyphWidth() * (this.displaced ? 2 : 1);
     }
     // Calculates and sets the extra pixels to the left or right
@@ -26882,20 +29656,20 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNot
         this.restoreStyle(ctx, style);
     }
     // Draw all key modifiers
-    drawModifiers() {
+    drawModifiers(noteheadParam) {
         const ctx = this.checkContext();
-        ctx.openGroup('modifiers');
         for (let i = 0; i < this.modifiers.length; i++) {
             const modifier = this.modifiers[i];
             const index = modifier.checkIndex();
             const notehead = this._noteHeads[index];
-            const noteheadStyle = notehead.getStyle();
-            notehead.applyStyle(ctx, noteheadStyle);
-            modifier.setContext(ctx);
-            modifier.drawWithStyle();
-            notehead.restoreStyle(ctx, noteheadStyle);
+            if (notehead == noteheadParam) {
+                const noteheadStyle = notehead.getStyle();
+                notehead.applyStyle(ctx, noteheadStyle);
+                modifier.setContext(ctx);
+                modifier.drawWithStyle();
+                notehead.restoreStyle(ctx, noteheadStyle);
+            }
         }
-        ctx.closeGroup();
     }
     shouldDrawFlag() {
         const hasStem = this.stem !== undefined;
@@ -26933,20 +29707,19 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNot
                         (this.glyph ? this.glyph.stem_up_extension : 0) * this.getStaveNoteScale() -
                         ((_d = (_c = this.flag) === null || _c === void 0 ? void 0 : _c.getMetrics().y_shift) !== null && _d !== void 0 ? _d : 0) * (1 - this.getStaveNoteScale());
             // Draw the Flag
-            ctx.openGroup('flag', undefined, { pointerBBox: true });
-            this.applyStyle(ctx, this.getFlagStyle());
             (_e = this.flag) === null || _e === void 0 ? void 0 : _e.render(ctx, flagX, flagY);
-            this.restoreStyle(ctx, this.getFlagStyle());
-            ctx.closeGroup();
         }
     }
     // Draw the NoteHeads
     drawNoteHeads() {
         const ctx = this.checkContext();
         this._noteHeads.forEach((notehead) => {
-            ctx.openGroup('notehead', undefined, { pointerBBox: true });
+            notehead.applyStyle(ctx);
+            ctx.openGroup('notehead', notehead.getAttribute('id'), { pointerBBox: true });
             notehead.setContext(ctx).draw();
+            this.drawModifiers(notehead);
             ctx.closeGroup();
+            notehead.restoreStyle(ctx);
         });
     }
     drawStem(stemOptions) {
@@ -26963,9 +29736,7 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNot
             this.stem.adjustHeightForFlag();
         }
         if (this.stem) {
-            ctx.openGroup('stem', undefined, { pointerBBox: true });
             this.stem.setContext(ctx).draw();
-            ctx.closeGroup();
         }
     }
     /** Primarily used as the scaling factor for grace notes, GraceNote will return the required scale. */
@@ -27031,15 +29802,12 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNot
         L('Rendering ', this.isChord() ? 'chord :' : 'note :', this.keys);
         // Apply the overall style -- may be contradicted by local settings:
         this.applyStyle();
-        this.setAttribute('el', ctx.openGroup('stavenote', this.getAttribute('id')));
+        ctx.openGroup('stavenote', this.getAttribute('id'));
         this.drawLedgerLines();
-        ctx.openGroup('note', undefined, { pointerBBox: true });
         if (shouldRenderStem)
             this.drawStem();
         this.drawNoteHeads();
         this.drawFlag();
-        ctx.closeGroup();
-        this.drawModifiers();
         ctx.closeGroup();
         this.restoreStyle();
         this.setRendered();
@@ -27243,9 +30011,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
-/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
+/* harmony import */ var _textformatter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./textformatter */ "./src/textformatter.ts");
+/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author Larry Kuhns 2011
+
 
 
 
@@ -27261,7 +30031,7 @@ class StaveSection extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModi
         this.resetFont();
     }
     static get CATEGORY() {
-        return _typeguard__WEBPACK_IMPORTED_MODULE_2__.Category.StaveSection;
+        return _typeguard__WEBPACK_IMPORTED_MODULE_3__.Category.StaveSection;
     }
     setStaveSection(section) {
         this.section = section;
@@ -27276,29 +30046,29 @@ class StaveSection extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModi
         return this;
     }
     draw(stave, shift_x) {
+        const borderWidth = 2;
+        const padding = 2;
         const ctx = stave.checkContext();
         this.setRendered();
         ctx.save();
-        ctx.setLineWidth(2);
+        ctx.setLineWidth(borderWidth);
         ctx.setFont(this.textFont);
-        const paddingX = 2;
-        const paddingY = 2;
-        const rectWidth = 2;
-        const textMeasurements = ctx.measureText(this.section);
-        const textWidth = textMeasurements.width;
-        const textHeight = textMeasurements.height;
-        const width = textWidth + 2 * paddingX; // add left & right padding
-        const height = textHeight + 2 * paddingY; // add top & bottom padding
+        const textFormatter = _textformatter__WEBPACK_IMPORTED_MODULE_2__.TextFormatter.create(this.textFont);
+        const textWidth = textFormatter.getWidthForTextInPx(this.section);
+        const textY = textFormatter.getYForStringInPx(this.section);
+        const textHeight = textY.height;
+        const headroom = -1 * textY.yMin;
+        const width = textWidth + 2 * padding; // add left & right padding
+        const height = textHeight + 2 * padding; // add top & bottom padding
         //  Seems to be a good default y
         const y = stave.getYForTopText(1.5) + this.shift_y;
         const x = this.x + shift_x;
         if (this.drawRect) {
             ctx.beginPath();
-            ctx.setLineWidth(rectWidth);
-            ctx.rect(x, y + textMeasurements.y - paddingY, width, height);
+            ctx.rect(x, y - height + headroom, width, height);
             ctx.stroke();
         }
-        ctx.fillText(this.section, x + paddingX, y);
+        ctx.fillText(this.section, x + padding, y - padding);
         ctx.restore();
         return this;
     }
@@ -27379,7 +30149,6 @@ class StaveTempo extends _stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveModifi
         const y = stave.getYForTopText(1) + this.shift_y;
         ctx.save();
         const textFormatter = _textformatter__WEBPACK_IMPORTED_MODULE_4__.TextFormatter.create(this.textFont);
-        // const spacingWidth = textFormatter.getWidthForTextInPx('@');
         if (name) {
             ctx.setFont(this.textFont);
             ctx.fillText(name, x, y);
@@ -27387,11 +30156,13 @@ class StaveTempo extends _stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveModifi
         }
         if (duration && bpm) {
             // Override the weight and style.
-            ctx.setFont(Object.assign(Object.assign({}, this.textFont), { weight: 'normal', style: 'normal' }));
+            const noteTextFont = Object.assign(Object.assign({}, this.textFont), { weight: 'normal', style: 'normal' });
+            ctx.setFont(noteTextFont);
+            const noteTextFormatter = _textformatter__WEBPACK_IMPORTED_MODULE_4__.TextFormatter.create(noteTextFont);
             if (name) {
-                x += textFormatter.getWidthForTextInPx('(');
+                x += noteTextFormatter.getWidthForTextInPx('|');
                 ctx.fillText('(', x, y);
-                x += textFormatter.getWidthForTextInPx(')');
+                x += noteTextFormatter.getWidthForTextInPx('(');
             }
             const code = _tables__WEBPACK_IMPORTED_MODULE_3__.Tables.getGlyphProps(duration);
             x += 3 * scale;
@@ -27406,11 +30177,10 @@ class StaveTempo extends _stavemodifier__WEBPACK_IMPORTED_MODULE_2__.StaveModifi
                 const y_top = y - stem_height;
                 ctx.fillRect(x - scale, y_top, scale, stem_height);
                 if (code.flag) {
-                    _glyph__WEBPACK_IMPORTED_MODULE_1__.Glyph.renderGlyph(ctx, x, y_top, options.glyph_font_scale, code.code_flag_upstem, {
+                    const flagMetrics = _glyph__WEBPACK_IMPORTED_MODULE_1__.Glyph.renderGlyph(ctx, x, y_top, options.glyph_font_scale, code.code_flag_upstem, {
                         category: 'flag.staveTempo',
                     });
-                    if (!dots)
-                        x += 6 * scale;
+                    x += (flagMetrics.width * _tables__WEBPACK_IMPORTED_MODULE_3__.Tables.NOTATION_FONT_SCALE) / flagMetrics.font.getData().resolution;
                 }
             }
             // Draw dot
@@ -27642,6 +30412,8 @@ class StaveTie extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
         const first_indices = this.notes.first_indices;
         // eslint-disable-next-line
         const last_indices = this.notes.last_indices;
+        this.applyStyle();
+        ctx.openGroup('stavetie', this.getAttribute('id'));
         for (let i = 0; i < first_indices.length; ++i) {
             const cp_x = (params.last_x_px + last_x_shift + (params.first_x_px + first_x_shift)) / 2;
             const first_y_px = params.first_ys[first_indices[i]] + y_shift;
@@ -27651,21 +30423,15 @@ class StaveTie extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
             }
             const top_cp_y = (first_y_px + last_y_px) / 2 + cp1 * params.direction;
             const bottom_cp_y = (first_y_px + last_y_px) / 2 + cp2 * params.direction;
-            // id probably unnecessary if we save the group to 'el' via setAttribute
-            // let id: string = "";
-            // if (this.notes.first_note) {
-            //   id = this.notes.first_note.getAttribute('id') + '-tie';
-            // }
-            // this.setAttribute('el', ctx.openGroup('stavetie', id));
-            this.setAttribute('el', ctx.openGroup('stavetie'));
             ctx.beginPath();
             ctx.moveTo(params.first_x_px + first_x_shift, first_y_px);
             ctx.quadraticCurveTo(cp_x, top_cp_y, params.last_x_px + last_x_shift, last_y_px);
             ctx.quadraticCurveTo(cp_x, bottom_cp_y, params.first_x_px + first_x_shift, first_y_px);
             ctx.closePath();
             ctx.fill();
-            ctx.closeGroup();
         }
+        ctx.closeGroup();
+        this.restoreStyle();
     }
     renderText(first_x_px, last_x_px) {
         var _a, _b, _c;
@@ -27681,6 +30447,12 @@ class StaveTie extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
             ctx.fillText(this.text, center_x + this.render_options.text_shift_x, stave.getYForTopText() - 1);
             ctx.restore();
         }
+    }
+    /**
+     * Returns the TieNotes structure of the first and last note this tie connects.
+     */
+    getNotes() {
+        return this.notes;
     }
     draw() {
         this.checkContext();
@@ -27987,13 +30759,15 @@ class Stem extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
         const stemletYOffset = this.isStemlet ? stemHeight - this.stemletHeight * this.stem_direction : 0;
         // Draw the stem
         ctx.save();
-        this.applyStyle(ctx);
+        this.applyStyle();
+        ctx.openGroup('stem', this.getAttribute('id'), { pointerBBox: true });
         ctx.beginPath();
         ctx.setLineWidth(Stem.WIDTH);
         ctx.moveTo(stem_x, stem_y - stemletYOffset + y_base_offset);
         ctx.lineTo(stem_x, stem_y - stemHeight - this.renderHeightAdjustment * stem_direction);
         ctx.stroke();
-        this.restoreStyle(ctx);
+        ctx.closeGroup();
+        this.restoreStyle();
         ctx.restore();
     }
 }
@@ -28764,10 +31538,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _rendercontext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./rendercontext */ "./src/rendercontext.ts");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tables */ "./src/tables.ts");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 // @author Gregory Ristow (2015)
+
 
 
 
@@ -28830,10 +31606,14 @@ class MeasureTextCache {
             this.txt = txt;
         }
         txt.textContent = text;
-        txt.setAttributeNS(null, 'font-family', attributes['font-family']);
-        txt.setAttributeNS(null, 'font-size', attributes['font-size']);
-        txt.setAttributeNS(null, 'font-style', attributes['font-style']);
-        txt.setAttributeNS(null, 'font-weight', attributes['font-weight']);
+        if (attributes['font-family'])
+            txt.setAttributeNS(null, 'font-family', attributes['font-family']);
+        if (attributes['font-size'])
+            txt.setAttributeNS(null, 'font-size', `${attributes['font-size']}`);
+        if (attributes['font-style'])
+            txt.setAttributeNS(null, 'font-style', attributes['font-style']);
+        if (attributes['font-weight'])
+            txt.setAttributeNS(null, 'font-weight', `${attributes['font-weight']}`);
         svg.appendChild(txt);
         const bbox = txt.getBBox();
         svg.removeChild(txt);
@@ -28848,10 +31628,12 @@ class SVGContext extends _rendercontext__WEBPACK_IMPORTED_MODULE_1__.RenderConte
         super();
         this.width = 0;
         this.height = 0;
+        this.precision = 1;
         this.backgroundFillStyle = 'white';
         /** Formatted as CSS font shorthand (e.g., 'italic bold 12pt Arial') */
         this.fontCSSString = '';
         this.element = element;
+        this.precision = Math.pow(10, _tables__WEBPACK_IMPORTED_MODULE_2__.Tables.RENDER_PRECISION_PLACES);
         // Create a SVG element and add it to the container element.
         const svg = this.create('svg');
         this.element.appendChild(svg);
@@ -28867,13 +31649,19 @@ class SVGContext extends _rendercontext__WEBPACK_IMPORTED_MODULE_1__.RenderConte
             'font-weight': _font__WEBPACK_IMPORTED_MODULE_0__.FontWeight.NORMAL,
             'font-style': _font__WEBPACK_IMPORTED_MODULE_0__.FontStyle.NORMAL,
         };
-        this.state = Object.assign({ scale: { x: 1, y: 1 } }, defaultFontAttributes);
+        this.state = Object.assign({ scaleX: 1, scaleY: 1 }, defaultFontAttributes);
         this.attributes = Object.assign({ 'stroke-width': 0.3, 'stroke-dasharray': 'none', fill: 'black', stroke: 'black' }, defaultFontAttributes);
+        this.groupAttributes = [];
+        this.applyAttributes(svg, this.attributes);
+        this.groupAttributes.push(Object.assign({}, this.attributes));
         this.shadow_attributes = {
             width: 0,
             color: 'black',
         };
         this.state_stack = [];
+    }
+    round(n) {
+        return Math.round(n * this.precision) / this.precision;
     }
     create(svgElementType) {
         return document.createElementNS(SVG_NS, svgElementType);
@@ -28885,16 +31673,19 @@ class SVGContext extends _rendercontext__WEBPACK_IMPORTED_MODULE_1__.RenderConte
         this.parent.appendChild(group);
         this.parent = group;
         if (cls)
-            group.setAttribute('class', (0,_util__WEBPACK_IMPORTED_MODULE_2__.prefix)(cls));
+            group.setAttribute('class', (0,_util__WEBPACK_IMPORTED_MODULE_3__.prefix)(cls));
         if (id)
-            group.setAttribute('id', (0,_util__WEBPACK_IMPORTED_MODULE_2__.prefix)(id));
+            group.setAttribute('id', (0,_util__WEBPACK_IMPORTED_MODULE_3__.prefix)(id));
         if (attrs && attrs.pointerBBox) {
             group.setAttribute('pointer-events', 'bounding-box');
         }
+        this.applyAttributes(group, this.attributes);
+        this.groupAttributes.push(Object.assign(Object.assign({}, this.groupAttributes[this.groupAttributes.length - 1]), this.attributes));
         return group;
     }
     closeGroup() {
         this.groups.pop();
+        this.groupAttributes.pop();
         this.parent = this.groups[this.groups.length - 1];
     }
     add(elem) {
@@ -28950,7 +31741,7 @@ class SVGContext extends _rendercontext__WEBPACK_IMPORTED_MODULE_1__.RenderConte
             return this;
         }
         else {
-            throw new _util__WEBPACK_IMPORTED_MODULE_2__.RuntimeError('ArgumentError', 'lineDash must be an array of integers.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_3__.RuntimeError('ArgumentError', 'lineDash must be an array of integers.');
         }
     }
     /**
@@ -28977,7 +31768,7 @@ class SVGContext extends _rendercontext__WEBPACK_IMPORTED_MODULE_1__.RenderConte
             height,
         };
         this.applyAttributes(this.svg, attributes);
-        this.scale(this.state.scale.x, this.state.scale.y);
+        this.scale(this.state.scaleX, this.state.scaleY);
         return this;
     }
     scale(x, y) {
@@ -28992,7 +31783,8 @@ class SVGContext extends _rendercontext__WEBPACK_IMPORTED_MODULE_1__.RenderConte
         // I've left as is for now, but in using the viewBox to
         // handle internal scaling, am trying to make it possible
         // for us to eventually move in that direction.
-        this.state.scale = { x, y };
+        this.state.scaleX = x;
+        this.state.scaleY = y;
         const visibleWidth = this.width / x;
         const visibleHeight = this.height / y;
         this.setViewBox(0, 0, visibleWidth, visibleHeight);
@@ -29018,7 +31810,10 @@ class SVGContext extends _rendercontext__WEBPACK_IMPORTED_MODULE_1__.RenderConte
             if (attrNamesToIgnore && attrNamesToIgnore[attrName]) {
                 continue;
             }
-            element.setAttributeNS(null, attrName, attributes[attrName]);
+            if (attributes[attrName] &&
+                (this.groupAttributes.length == 0 ||
+                    attributes[attrName] != this.groupAttributes[this.groupAttributes.length - 1][attrName]))
+                element.setAttributeNS(null, attrName, attributes[attrName]);
         }
         return element;
     }
@@ -29036,7 +31831,7 @@ class SVGContext extends _rendercontext__WEBPACK_IMPORTED_MODULE_1__.RenderConte
             this.svg.removeChild(this.svg.lastChild);
         }
         // Replace the viewbox attribute we just removed.
-        this.scale(this.state.scale.x, this.state.scale.y);
+        this.scale(this.state.scaleX, this.state.scaleY);
     }
     // ## Rectangles:
     rect(x, y, width, height, attributes) {
@@ -29047,12 +31842,16 @@ class SVGContext extends _rendercontext__WEBPACK_IMPORTED_MODULE_1__.RenderConte
         }
         const rectangle = this.create('rect');
         attributes = attributes !== null && attributes !== void 0 ? attributes : { fill: 'none', 'stroke-width': this.lineWidth, stroke: 'black' };
+        x = this.round(x);
+        y = this.round(y);
+        width = this.round(width);
+        height = this.round(height);
         this.applyAttributes(rectangle, Object.assign({ x, y, width, height }, attributes));
         this.add(rectangle);
         return this;
     }
     fillRect(x, y, width, height) {
-        const attributes = { fill: this.attributes.fill };
+        const attributes = { fill: this.attributes.fill, stroke: 'none' };
         this.rect(x, y, width, height, attributes);
         return this;
     }
@@ -29063,7 +31862,7 @@ class SVGContext extends _rendercontext__WEBPACK_IMPORTED_MODULE_1__.RenderConte
         // Since tabNote seems to be the only module that makes use of this
         // it may be worth creating a separate tabStave that would
         // draw lines around locations of tablature fingering.
-        this.rect(x, y, width, height, { 'stroke-width': 0, fill: this.backgroundFillStyle });
+        this.rect(x, y, width, height, { fill: this.backgroundFillStyle, stroke: 'none' });
         return this;
     }
     // ## Paths:
@@ -29074,51 +31873,72 @@ class SVGContext extends _rendercontext__WEBPACK_IMPORTED_MODULE_1__.RenderConte
         return this;
     }
     moveTo(x, y) {
+        x = this.round(x);
+        y = this.round(y);
         this.path += 'M' + x + ' ' + y;
         this.pen.x = x;
         this.pen.y = y;
         return this;
     }
     lineTo(x, y) {
+        x = this.round(x);
+        y = this.round(y);
         this.path += 'L' + x + ' ' + y;
         this.pen.x = x;
         this.pen.y = y;
         return this;
     }
     bezierCurveTo(x1, y1, x2, y2, x, y) {
+        x = this.round(x);
+        y = this.round(y);
+        x1 = this.round(x1);
+        y1 = this.round(y1);
+        x2 = this.round(x2);
+        y2 = this.round(y2);
         this.path += 'C' + x1 + ' ' + y1 + ',' + x2 + ' ' + y2 + ',' + x + ' ' + y;
         this.pen.x = x;
         this.pen.y = y;
         return this;
     }
     quadraticCurveTo(x1, y1, x, y) {
+        x = this.round(x);
+        y = this.round(y);
+        x1 = this.round(x1);
+        y1 = this.round(y1);
         this.path += 'Q' + x1 + ' ' + y1 + ',' + x + ' ' + y;
         this.pen.x = x;
         this.pen.y = y;
         return this;
     }
     arc(x, y, radius, startAngle, endAngle, counterclockwise) {
-        const x0 = x + radius * Math.cos(startAngle);
-        const y0 = y + radius * Math.sin(startAngle);
-        // Handle the edge case where arc length is greater than or equal to
-        // the circle's circumference:
-        //   https://html.spec.whatwg.org/multipage/canvas.html#ellipse-method-steps
+        let x0 = x + radius * Math.cos(startAngle);
+        let y0 = y + radius * Math.sin(startAngle);
+        x0 = this.round(x0);
+        y0 = this.round(y0);
+        // svg behavior different from canvas.  Don't normalize angles if
+        // we are drawing a circle because they both normalize to 0
+        const tmpStartTest = (0,_util__WEBPACK_IMPORTED_MODULE_3__.normalizeAngle)(startAngle);
+        const tmpEndTest = (0,_util__WEBPACK_IMPORTED_MODULE_3__.normalizeAngle)(endAngle);
         if ((!counterclockwise && endAngle - startAngle >= TWO_PI) ||
-            (counterclockwise && startAngle - endAngle >= TWO_PI)) {
-            const x1 = x + radius * Math.cos(startAngle + Math.PI);
-            const y1 = y + radius * Math.sin(startAngle + Math.PI);
+            (counterclockwise && startAngle - endAngle >= TWO_PI) ||
+            tmpStartTest === tmpEndTest) {
+            let x1 = x + radius * Math.cos(startAngle + Math.PI);
+            let y1 = y + radius * Math.sin(startAngle + Math.PI);
             // There's no way to specify a completely circular arc in SVG so we have to
             // use two semi-circular arcs.
+            x1 = this.round(x1);
+            y1 = this.round(y1);
+            radius = this.round(radius);
             this.path += `M${x0} ${y0} A${radius} ${radius} 0 0 0 ${x1} ${y1} `;
             this.path += `A${radius} ${radius} 0 0 0 ${x0} ${y0}`;
             this.pen.x = x0;
             this.pen.y = y0;
         }
         else {
-            const x1 = x + radius * Math.cos(endAngle);
-            const y1 = y + radius * Math.sin(endAngle);
-            startAngle = (0,_util__WEBPACK_IMPORTED_MODULE_2__.normalizeAngle)(startAngle);
-            endAngle = (0,_util__WEBPACK_IMPORTED_MODULE_2__.normalizeAngle)(endAngle);
+            let x1 = x + radius * Math.cos(endAngle);
+            let y1 = y + radius * Math.sin(endAngle);
+            startAngle = tmpStartTest;
+            endAngle = tmpEndTest;
             let large;
             if (Math.abs(endAngle - startAngle) < Math.PI) {
                 large = counterclockwise;
@@ -29130,6 +31950,9 @@ class SVGContext extends _rendercontext__WEBPACK_IMPORTED_MODULE_1__.RenderConte
                 large = !large;
             }
             const sweep = !counterclockwise;
+            x1 = this.round(x1);
+            y1 = this.round(y1);
+            radius = this.round(radius);
             this.path += `M${x0} ${y0} A${radius} ${radius} 0 ${+large} ${+sweep} ${x1} ${y1}`;
             this.pen.x = x1;
             this.pen.y = y1;
@@ -29178,6 +32001,8 @@ class SVGContext extends _rendercontext__WEBPACK_IMPORTED_MODULE_1__.RenderConte
         if (!text || text.length <= 0) {
             return this;
         }
+        x = this.round(x);
+        y = this.round(y);
         const attributes = Object.assign(Object.assign({}, this.attributes), { stroke: 'none', x,
             y });
         const txt = this.create('text');
@@ -29293,15 +32118,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "System": () => (/* binding */ System)
 /* harmony export */ });
-/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
-/* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
-/* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./note */ "./src/note.ts");
-/* harmony import */ var _stave__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./stave */ "./src/stave.ts");
-/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./util */ "./src/util.ts");
+/* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
+/* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./element */ "./src/element.ts");
+/* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
+/* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./note */ "./src/note.ts");
+/* harmony import */ var _stave__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stave */ "./src/stave.ts");
+/* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 // import { BoundingBox } from './boundingbox';
+
 
 
 
@@ -29313,28 +32140,57 @@ __webpack_require__.r(__webpack_exports__);
  * each which can have one or more voices. All voices across all staves in
  * the system are formatted together.
  */
-class System extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
+class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
     constructor(params = {}) {
         super();
         this.setOptions(params);
-        this.parts = [];
-        /* this.partStaves = [];
+        this.partStaves = [];
         this.partStaveInfos = [];
-        this.partVoices = []; */
+        this.partVoices = [];
     }
     static get CATEGORY() {
-        return _typeguard__WEBPACK_IMPORTED_MODULE_4__.Category.System;
+        return _typeguard__WEBPACK_IMPORTED_MODULE_5__.Category.System;
     }
     /** Set formatting options. */
     setOptions(options = {}) {
         if (!options.factory) {
-            throw new _util__WEBPACK_IMPORTED_MODULE_5__.RuntimeError('NoFactory', 'System.setOptions(options) requires a factory.');
+            throw new _util__WEBPACK_IMPORTED_MODULE_6__.RuntimeError('NoFactory', 'System.setOptions(options) requires a factory.');
         }
         this.factory = options.factory;
         this.options = Object.assign(Object.assign({ factory: this.factory, x: 10, y: 10, width: 500, spaceBetweenStaves: 12, autoWidth: false, noJustification: false, debugFormatter: false, formatIterations: 0, noPadding: false }, options), { details: Object.assign({ alpha: 0.5 }, options.details), formatOptions: Object.assign({}, options.formatOptions) });
         if (this.options.noJustification === false && typeof options.width === 'undefined') {
             this.options.autoWidth = true;
         }
+    }
+    /** Get origin X. */
+    getX() {
+        return this.options.x;
+    }
+    /** Set origin X. */
+    setX(x) {
+        this.options.x = x;
+        this.partStaves.forEach((s) => {
+            s.setX(x);
+        });
+    }
+    /** Get origin y. */
+    getY() {
+        return this.options.y;
+    }
+    /** Set origin y. */
+    setY(y) {
+        this.options.y = y;
+        this.partStaves.forEach((s) => {
+            s.setY(y);
+        });
+    }
+    /** Get associated staves. */
+    getStaves() {
+        return this.partStaves;
+    }
+    /** Get associated voices. */
+    getVoices() {
+        return this.partVoices;
     }
     /** Set associated context. */
     setContext(context) {
@@ -29348,8 +32204,8 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
      */
     addConnector(type = 'double') {
         this.connector = this.factory.StaveConnector({
-            top_stave: this.parts[0].stave,
-            bottom_stave: this.parts[this.parts.length - 1].stave,
+            top_stave: this.partStaves[0],
+            bottom_stave: this.partStaves[this.partStaves.length - 1],
             type,
         });
         return this.connector;
@@ -29372,86 +32228,79 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
         var _a;
         const staveOptions = Object.assign({ left_bar: false }, params.options);
         const stave = (_a = params.stave) !== null && _a !== void 0 ? _a : this.factory.Stave({ x: this.options.x, y: this.options.y, width: this.options.width, options: staveOptions });
-        const p = Object.assign(Object.assign({ stave, spaceAbove: 0, spaceBelow: 0, debugNoteMetrics: false, noJustification: false }, params), { options: staveOptions });
+        const p = Object.assign(Object.assign({ spaceAbove: 0, spaceBelow: 0, debugNoteMetrics: false, noJustification: false }, params), { options: staveOptions });
         const ctx = this.getContext();
-        p.voices.forEach((voice) => voice
-            .setContext(ctx)
-            .setStave(stave)
-            .getTickables()
-            .forEach((tickable) => tickable.setStave(stave)));
-        if (p.stave) {
-            this.parts.push(p);
-        }
+        p.voices.forEach((voice) => {
+            voice
+                .setContext(ctx)
+                .setStave(stave)
+                .getTickables()
+                .forEach((tickable) => tickable.setStave(stave));
+            this.partVoices.push(voice);
+        });
+        this.partStaves.push(stave);
+        this.partStaveInfos.push(p);
         return stave;
     }
     /**
      * Add voices to the system with stave already assigned.
      */
-    addVoiceToPart(voices, part) {
+    addVoices(voices) {
         const ctx = this.getContext();
         voices.forEach((voice) => {
             voice.setContext(ctx);
+            this.partVoices.push(voice);
         });
-        this.parts[part].voices = this.parts[part].voices.concat(voices);
-    }
-    getStaveForTickable(part, tickable) {
-        var _a;
-        return (_a = tickable.getStave()) !== null && _a !== void 0 ? _a : part.stave;
     }
     /** Format the system. */
     format() {
         const options_details = this.options.details;
         let justifyWidth = 0;
         // let totalWidth = 0;
-        const formatter = new _formatter__WEBPACK_IMPORTED_MODULE_1__.Formatter(options_details);
+        const formatter = new _formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter(options_details);
         this.formatter = formatter;
         let y = this.options.y;
         let startX = 0;
-        let allVoices = [];
-        let allStaves = [];
         const debugNoteMetricsYs = [];
-        this.parts.forEach((part) => {
-            y = y + part.stave.space(part.spaceAbove);
-            part.stave.setY(y);
-            y = y + part.stave.space(part.spaceBelow);
-            y = y + part.stave.space(this.options.spaceBetweenStaves);
-            if (part.debugNoteMetrics) {
-                debugNoteMetricsYs.push({ y, voice: part.voices[0] });
+        this.partStaves.forEach((part, index) => {
+            y = y + part.space(this.partStaveInfos[index].spaceAbove);
+            part.setY(y);
+            y = y + part.space(this.partStaveInfos[index].spaceBelow);
+            y = y + part.space(this.options.spaceBetweenStaves);
+            if (this.partStaveInfos[index].debugNoteMetrics) {
+                debugNoteMetricsYs.push({ y, stave: part });
                 y += 15;
             }
-            formatter.joinVoices(part.voices);
-            allVoices = allVoices.concat(part.voices);
-            allStaves = allStaves.concat(part.stave);
-            startX = Math.max(startX, part.stave.getNoteStartX());
+            startX = Math.max(startX, part.getNoteStartX());
         });
         // Re-assign Stave to update y position
-        this.parts.forEach((part) => {
-            part.voices.forEach((voice) => {
-                voice.getTickables().forEach((tickable) => {
-                    const stave = tickable.getStave();
-                    if (stave)
-                        tickable.setStave(stave);
-                });
+        this.partVoices.forEach((voice) => {
+            voice.getTickables().forEach((tickable) => {
+                const stave = tickable.getStave();
+                if (stave)
+                    tickable.setStave(stave);
             });
         });
         // Join the voices
+        formatter.joinVoices(this.partVoices);
         // Update the start position of all staves.
-        // formatter.joinVoices(allVoices);
-        this.parts.forEach((part) => part.stave.setNoteStartX(startX));
-        if (this.options.autoWidth) {
-            justifyWidth = formatter.preCalculateMinTotalWidth(allVoices);
-            const totalWidth = justifyWidth + _stave__WEBPACK_IMPORTED_MODULE_3__.Stave.defaultPadding + (startX - this.options.x);
-            this.parts.forEach((part) => {
-                part.stave.setWidth(totalWidth);
+        this.partStaves.forEach((part) => part.setNoteStartX(startX));
+        if (this.options.autoWidth && this.partVoices.length > 0) {
+            justifyWidth = formatter.preCalculateMinTotalWidth(this.partVoices);
+            this.options.width = justifyWidth + _stave__WEBPACK_IMPORTED_MODULE_4__.Stave.rightPadding + (startX - this.options.x);
+            this.partStaves.forEach((part) => {
+                part.setWidth(this.options.width);
             });
         }
         else {
             // totalWidth = this.options.width;
             justifyWidth = this.options.noPadding
                 ? this.options.width - (startX - this.options.x)
-                : this.options.width - (startX - this.options.x) - _stave__WEBPACK_IMPORTED_MODULE_3__.Stave.defaultPadding;
+                : this.options.width - (startX - this.options.x) - _stave__WEBPACK_IMPORTED_MODULE_4__.Stave.defaultPadding;
         }
-        formatter.format(allVoices, this.options.noJustification ? 0 : justifyWidth, this.options.formatOptions);
+        if (this.partVoices.length > 0) {
+            formatter.format(this.partVoices, this.options.noJustification ? 0 : justifyWidth, this.options.formatOptions);
+        }
         formatter.postFormat();
         for (let i = 0; i < this.options.formatIterations; i++) {
             formatter.tune(options_details);
@@ -29459,22 +32308,27 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
         this.startX = startX;
         this.debugNoteMetricsYs = debugNoteMetricsYs;
         this.lastY = y;
-        // this.boundingBox = new BoundingBox(this.startX, this.lastY, justifyWidth, this.lastY - this.options.y);
-        _stave__WEBPACK_IMPORTED_MODULE_3__.Stave.formatBegModifiers(allStaves);
+        this.boundingBox = new _boundingbox__WEBPACK_IMPORTED_MODULE_0__.BoundingBox(this.options.x, this.options.y, this.options.width, this.lastY - this.options.y);
+        _stave__WEBPACK_IMPORTED_MODULE_4__.Stave.formatBegModifiers(this.partStaves);
     }
     /** Render the system. */
     draw() {
         // Render debugging information, if requested.
         const ctx = this.checkContext();
         if (!this.formatter || !this.startX || !this.lastY || !this.debugNoteMetricsYs) {
-            throw new _util__WEBPACK_IMPORTED_MODULE_5__.RuntimeError('NoFormatter', 'format() must be called before draw()');
+            throw new _util__WEBPACK_IMPORTED_MODULE_6__.RuntimeError('NoFormatter', 'format() must be called before draw()');
         }
         this.setRendered();
         if (this.options.debugFormatter) {
-            _formatter__WEBPACK_IMPORTED_MODULE_1__.Formatter.plotDebugging(ctx, this.formatter, this.startX, this.options.y, this.lastY);
+            _formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter.plotDebugging(ctx, this.formatter, this.startX, this.options.y, this.lastY);
         }
         this.debugNoteMetricsYs.forEach((d) => {
-            d.voice.getTickables().forEach((tickable) => _note__WEBPACK_IMPORTED_MODULE_2__.Note.plotMetrics(ctx, tickable, d.y));
+            this.partVoices.forEach((voice) => {
+                voice.getTickables().forEach((tickable) => {
+                    if (tickable.getStave() === d.stave)
+                        _note__WEBPACK_IMPORTED_MODULE_3__.Note.plotMetrics(ctx, tickable, d.y);
+                });
+            });
         });
     }
 }
@@ -31249,20 +34103,19 @@ class TabNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNote 
         }
         this.setRendered();
         const render_stem = this.beam == undefined && this.render_options.draw_stem;
-        // ctx.openGroup('tabnote', undefined, { pointerBBox: true });
-        this.setAttribute('el', ctx.openGroup('tabnote', this.getAttribute('id'), { pointerBBox: true }));
+        this.applyStyle();
+        ctx.openGroup('tabnote', this.getAttribute('id'), { pointerBBox: true });
         this.drawPositions();
         this.drawStemThrough();
         if (this.stem && render_stem) {
             const stem_x = this.getStemX();
             this.stem.setNoteHeadXBounds(stem_x, stem_x);
-            ctx.openGroup('stem', undefined, { pointerBBox: true });
             this.stem.setContext(ctx).draw();
-            ctx.closeGroup();
         }
         this.drawFlag();
         this.drawModifiers();
         ctx.closeGroup();
+        this.restoreStyle();
     }
 }
 
@@ -31845,6 +34698,7 @@ function L(...args) {
  *   textWidth == textWidthCache[cacheKey][textToMeasure]
  */
 const textWidthCache = {};
+const textHeightCache = {};
 /**
  * Applications may register additional fonts via `TextFormatter.registerInfo(info)`.
  * The metrics for those fonts will be made available to the application.
@@ -31884,7 +34738,7 @@ class TextFormatter {
         this.bold = false;
         this.superscriptOffset = 0;
         this.subscriptOffset = 0;
-        this.maxSizeGlyph = 'H';
+        this.maxSizeGlyph = '@';
         // This is an internal key used to index the `textWidthCache`.
         this.cacheKey = '';
         this.updateParams(formatterInfo);
@@ -31986,6 +34840,13 @@ class TextFormatter {
             registry[fontFamily] = info;
         }
     }
+    get localHeightCache() {
+        var _a;
+        if (textHeightCache[this.cacheKey] === undefined) {
+            textHeightCache[this.cacheKey] = {};
+        }
+        return (_a = textHeightCache[this.cacheKey]) !== null && _a !== void 0 ? _a : {};
+    }
     updateParams(params) {
         if (params.family)
             this.family = params.family;
@@ -32051,6 +34912,42 @@ class TextFormatter {
             const advanceWidth = (_a = metrics.advanceWidth) !== null && _a !== void 0 ? _a : 0;
             return advanceWidth / this.resolution;
         }
+    }
+    /**
+     * Retrieve the character's y bounds (ymin, ymax) and height.
+     */
+    getYForCharacterInPx(c) {
+        const metrics = this.getGlyphMetrics(c);
+        const rv = { yMin: 0, yMax: this.maxHeight, height: this.maxHeight };
+        if (!metrics) {
+            return rv;
+        }
+        else {
+            if (typeof metrics.y_min === 'number') {
+                rv.yMin = (metrics.y_min / this.resolution) * this.fontSizeInPixels;
+            }
+            if (typeof metrics.y_max === 'number') {
+                rv.yMax = (metrics.y_max / this.resolution) * this.fontSizeInPixels;
+            }
+            rv.height = rv.yMax - rv.yMin;
+            return rv;
+        }
+    }
+    getYForStringInPx(str) {
+        const entry = this.localHeightCache;
+        const extent = { yMin: 0, yMax: this.maxHeight, height: this.maxHeight };
+        const cache = entry[str];
+        if (cache !== undefined) {
+            return cache;
+        }
+        for (let i = 0; i < str.length; ++i) {
+            const curY = this.getYForCharacterInPx(str[i]);
+            extent.yMin = Math.min(extent.yMin, curY.yMin);
+            extent.yMax = Math.max(extent.yMax, curY.yMax);
+            extent.height = extent.yMax - extent.yMin;
+        }
+        entry[str] = extent;
+        return extent;
     }
     /**
      * Retrieve the total width of `text` in `em` units.
@@ -32235,6 +35132,14 @@ class TextNote extends _note__WEBPACK_IMPORTED_MODULE_2__.Note {
     setLine(line) {
         this.line = line;
         return this;
+    }
+    /** Return the Stave line on which the TextNote is placed. */
+    getLine() {
+        return this.line;
+    }
+    /** Return the unformatted text of this TextNote. */
+    getText() {
+        return this.text;
     }
     /** Pre-render formatting. */
     preFormat() {
@@ -33051,12 +35956,14 @@ class TimeSignature extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveMod
         const stave = this.checkStave();
         const ctx = stave.checkContext();
         this.setRendered();
+        this.applyStyle(ctx);
         ctx.openGroup('timesignature', this.getAttribute('id'));
         this.info.glyph.setStave(stave);
         this.info.glyph.setContext(ctx);
         this.placeGlyphOnLine(this.info.glyph, stave, this.info.line);
         this.info.glyph.renderToStave(this.x);
         ctx.closeGroup();
+        this.restoreStyle(ctx);
     }
 }
 
@@ -33609,11 +36516,11 @@ class Tuplet extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
             const colon_x = notation_start_x + x_offset + this.point * 0.16;
             const colon_radius = this.point * 0.06;
             ctx.beginPath();
-            ctx.arc(colon_x, this.y_pos - this.point * 0.08, colon_radius, 0, Math.PI * 2, true);
+            ctx.arc(colon_x, this.y_pos - this.point * 0.08, colon_radius, 0, Math.PI * 2, false);
             ctx.closePath();
             ctx.fill();
             ctx.beginPath();
-            ctx.arc(colon_x, this.y_pos + this.point * 0.12, colon_radius, 0, Math.PI * 2, true);
+            ctx.arc(colon_x, this.y_pos + this.point * 0.12, colon_radius, 0, Math.PI * 2, false);
             ctx.closePath();
             ctx.fill();
             x_offset += this.point * 0.32;
@@ -35637,8 +38544,6 @@ function lyrics(options) {
 function simple(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
     ctx.scale(1.5, 1.5);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     ctx.font = '10pt Arial, sans-serif';
     const stave = new _src_tabstave__WEBPACK_IMPORTED_MODULE_14__.TabStave(10, 10, 450).addTabGlyph().setContext(ctx).draw();
     const notes = [
@@ -35660,8 +38565,6 @@ function simple(options, contextBuilder) {
 function standard(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
     ctx.scale(1.5, 1.5);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_10__.Stave(10, 10, 450).addClef('treble').setContext(ctx).draw();
     const annotation = (text) => new _src_annotation__WEBPACK_IMPORTED_MODULE_1__.Annotation(text).setFont(_src_font__WEBPACK_IMPORTED_MODULE_6__.Font.SERIF, FONT_SIZE, 'normal', 'italic');
     const notes = [
@@ -35686,8 +38589,6 @@ function styling(options, contextBuilder) {
 function harmonic(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
     ctx.scale(1.5, 1.5);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     ctx.font = '10pt Arial';
     const stave = new _src_tabstave__WEBPACK_IMPORTED_MODULE_14__.TabStave(10, 10, 450).addTabGlyph().setContext(ctx).draw();
     const notes = [
@@ -35710,8 +38611,6 @@ function harmonic(options, contextBuilder) {
 }
 function picking(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
-    ctx.setFillStyle('#221');
-    ctx.setStrokeStyle('#221');
     ctx.setFont(_src_font__WEBPACK_IMPORTED_MODULE_6__.Font.SANS_SERIF, FONT_SIZE);
     const stave = new _src_tabstave__WEBPACK_IMPORTED_MODULE_14__.TabStave(10, 10, 450).addTabGlyph().setContext(ctx).draw();
     const annotation = (text) => new _src_annotation__WEBPACK_IMPORTED_MODULE_1__.Annotation(text).setFont(_src_font__WEBPACK_IMPORTED_MODULE_6__.Font.SERIF, FONT_SIZE, _src_font__WEBPACK_IMPORTED_MODULE_6__.FontWeight.NORMAL, _src_font__WEBPACK_IMPORTED_MODULE_6__.FontStyle.ITALIC);
@@ -35748,8 +38647,6 @@ function picking(options, contextBuilder) {
 }
 function placement(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 750, 300);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_10__.Stave(10, 50, 750).addClef('treble').setContext(ctx).draw();
     const annotation = (text, fontSize, vj) => new _src_annotation__WEBPACK_IMPORTED_MODULE_1__.Annotation(text).setFont(_src_font__WEBPACK_IMPORTED_MODULE_6__.Font.SERIF, fontSize).setVerticalJustification(vj);
     const notes = [
@@ -35808,8 +38705,6 @@ function placement(options, contextBuilder) {
 function bottom(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
     ctx.scale(1.5, 1.5);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_10__.Stave(10, 10, 300).addClef('treble').setContext(ctx).draw();
     const annotation = (text) => new _src_annotation__WEBPACK_IMPORTED_MODULE_1__.Annotation(text).setFont(_src_font__WEBPACK_IMPORTED_MODULE_6__.Font.SERIF, FONT_SIZE).setVerticalJustification(_src_annotation__WEBPACK_IMPORTED_MODULE_1__.Annotation.VerticalJustify.BOTTOM);
     const notes = [
@@ -35824,8 +38719,6 @@ function bottom(options, contextBuilder) {
 function bottomWithBeam(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
     ctx.scale(1.5, 1.5);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_10__.Stave(10, 10, 300).addClef('treble').setContext(ctx).draw();
     const notes = [
         new _src_stavenote__WEBPACK_IMPORTED_MODULE_11__.StaveNote({ keys: ['a/3'], duration: '8' }).addModifier(new _src_annotation__WEBPACK_IMPORTED_MODULE_1__.Annotation('good').setVerticalJustification(_src_annotation__WEBPACK_IMPORTED_MODULE_1__.Annotation.VerticalJustify.BOTTOM)),
@@ -35841,8 +38734,6 @@ function bottomWithBeam(options, contextBuilder) {
 function justificationStemUp(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 650, 950);
     ctx.scale(1.5, 1.5);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     const annotation = (text, hJustification, vJustification) => new _src_annotation__WEBPACK_IMPORTED_MODULE_1__.Annotation(text)
         .setFont(_src_font__WEBPACK_IMPORTED_MODULE_6__.Font.SANS_SERIF, FONT_SIZE)
         .setJustification(hJustification)
@@ -35862,8 +38753,6 @@ function justificationStemUp(options, contextBuilder) {
 function justificationStemDown(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 650, 1000);
     ctx.scale(1.5, 1.5);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     const annotation = (text, hJustification, vJustification) => new _src_annotation__WEBPACK_IMPORTED_MODULE_1__.Annotation(text)
         .setFont(_src_font__WEBPACK_IMPORTED_MODULE_6__.Font.SANS_SERIF, FONT_SIZE)
         .setJustification(hJustification)
@@ -36145,8 +39034,6 @@ function drawFermata(options) {
 }
 function verticalPlacement(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 750, 300);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     const staveNote = (noteStruct) => new _src_stavenote__WEBPACK_IMPORTED_MODULE_9__.StaveNote(noteStruct);
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_7__.Stave(10, 50, 750).addClef('treble').setContext(ctx).draw();
     const notes = [
@@ -37457,6 +40344,7 @@ const BeamTests = {
         run('TabNote Beams Auto Stem', tabBeamsAutoStem);
         run('Complex Beams with Annotations', complexWithAnnotation);
         run('Complex Beams with Articulations', complexWithArticulation);
+        run('Complex Beams with Articulations two Staves', complexWithArticulation2);
     },
 };
 function simple(options) {
@@ -38145,8 +41033,6 @@ const bendWithPhrase = (phrase) => new _src_bend__WEBPACK_IMPORTED_MODULE_1__.Be
 function doubleBends(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
     ctx.scale(1.5, 1.5);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     ctx.font = '10pt Arial';
     const stave = new _src_tabstave__WEBPACK_IMPORTED_MODULE_7__.TabStave(10, 10, 450).addTabGlyph().setContext(ctx).draw();
     const notes = [
@@ -38226,8 +41112,6 @@ function doubleBendsWithRelease(options, contextBuilder) {
 function reverseBends(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
     ctx.scale(1.5, 1.5);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     ctx.setFont('10pt Arial');
     const stave = new _src_tabstave__WEBPACK_IMPORTED_MODULE_7__.TabStave(10, 10, 450).addTabGlyph().setContext(ctx).draw();
     const notes = [
@@ -38271,8 +41155,6 @@ function reverseBends(options, contextBuilder) {
 function bendPhrase(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
     ctx.scale(1.5, 1.5);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     ctx.font = _src_font__WEBPACK_IMPORTED_MODULE_2__.Font.SIZE + 'pt ' + _src_font__WEBPACK_IMPORTED_MODULE_2__.Font.SANS_SERIF; // Optionally use constants defined in Font.
     const stave = new _src_tabstave__WEBPACK_IMPORTED_MODULE_7__.TabStave(10, 10, 450).addTabGlyph().setContext(ctx).draw();
     const phrase1 = [
@@ -38716,8 +41598,6 @@ function withModifiers(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 750, 580);
     const ctx = f.getContext();
     ctx.scale(1.5, 1.5);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     function draw(chords, y) {
         const notes = [
             note(f, ['c/4'], 'q', chords[0]).addModifier(new _src_ornament__WEBPACK_IMPORTED_MODULE_5__.Ornament('doit')),
@@ -38788,8 +41668,6 @@ function fontSize(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 750, 580);
     const ctx = f.getContext();
     ctx.scale(1.5, 1.5);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     function draw(chords, y) {
         const stave = f.Stave({ x: 10, y, width: 450 }).addClef('treble');
         const notes = [
@@ -38864,8 +41742,6 @@ function kern(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 650 * 1.5, 650);
     const ctx = f.getContext();
     ctx.scale(1.5, 1.5);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     function draw(chords, y) {
         const stave = f.Stave({ x: 10, y, width: 450 }).addClef('treble').setContext(ctx).draw();
         const notes = [
@@ -38913,8 +41789,6 @@ function top(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 650 * 1.5, 650);
     const ctx = f.getContext();
     ctx.scale(1.5, 1.5);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     function draw(c1, c2, y) {
         const stave = f.Stave({ x: 10, y, width: 450 }).addClef('treble').setContext(ctx).draw();
         const notes = [
@@ -38959,8 +41833,6 @@ function topJustify(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 500 * 1.5, 680);
     const ctx = f.getContext();
     ctx.scale(1.5, 1.5);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     function draw(chord1, chord2, y) {
         const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_6__.Stave(10, y, 450).addClef('treble').setContext(ctx).draw();
         const notes = [
@@ -39001,8 +41873,6 @@ function bottom(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600 * 1.5, 230);
     const ctx = f.getContext();
     ctx.scale(1.5, 1.5);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     function draw(chords, y) {
         const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_6__.Stave(10, y, 400).addClef('treble').setContext(ctx).draw();
         const notes = [
@@ -39026,8 +41896,6 @@ function bottomStemDown(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600 * 1.5, 330);
     const ctx = f.getContext();
     ctx.scale(1.5, 1.5);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     function draw(chords, y) {
         // Helper function to create a StaveNote with a ChordSymbol and the stem pointing down.
         const note = (keys, duration, chordSymbol) => new _src_stavenote__WEBPACK_IMPORTED_MODULE_7__.StaveNote({ keys, duration, stem_direction: -1 }).addModifier(chordSymbol, 0);
@@ -39053,8 +41921,6 @@ function doubleBottom(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600 * 1.5, 260);
     const ctx = f.getContext();
     ctx.scale(1.5, 1.5);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     function draw(chords, chords2, y) {
         // Helper function to create a StaveNote with two ChordSymbols attached.
         const note = (keys, duration, chordSymbol1, chordSymbol2) => new _src_stavenote__WEBPACK_IMPORTED_MODULE_7__.StaveNote({ keys, duration }).addModifier(chordSymbol1, 0).addModifier(chordSymbol2, 0);
@@ -39262,6 +42128,30 @@ const CrossBeamTests = {
         const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
         const crossStaveTests = [];
         crossStaveTests.push({
+            title: 'Single clef mixed 1',
+            time: '3/4',
+            voices: [
+                {
+                    notes: [{ notestring: 'g4/16, f4/16, a6/16, g6/16, b4/4/r, g6/8, g4/8 ', clef: 'treble' }],
+                    stavemask: [0, 0, 0, 0, 0, 0, 0],
+                    beammask: [1, 1, -1, -1, 0, -1, 1],
+                    clef: 'treble',
+                },
+            ],
+        });
+        crossStaveTests.push({
+            title: 'Single clef mixed 2',
+            time: '3/4',
+            voices: [
+                {
+                    notes: [{ notestring: 'g4/16, f6/16, a4/16, g6/16, b4/4/r, g6/8, g4/8 ', clef: 'treble' }],
+                    stavemask: [0, 0, 0, 0, 0, 0, 0],
+                    beammask: [1, -1, 1, -1, 0, -1, 1],
+                    clef: 'treble',
+                },
+            ],
+        });
+        crossStaveTests.push({
             title: 'Mixed clef voice middle',
             time: '2/4',
             voices: [
@@ -39280,30 +42170,6 @@ const CrossBeamTests = {
                     stavemask: [1, 1, 1, 0, 1],
                     beammask: [1, 1, 1, -1, 0],
                     clef: 'bass',
-                },
-            ],
-        });
-        crossStaveTests.push({
-            title: 'Single clef mixed 1',
-            time: '3/4',
-            voices: [
-                {
-                    notes: [{ notestring: 'g3/16, f3/16, a6/16, g6/16, b4/4/r, g6/8, g4/8 ', clef: 'treble' }],
-                    stavemask: [0, 0, 0, 0, 0, 0, 0],
-                    beammask: [1, 1, -1, -1, 0, -1, 1],
-                    clef: 'treble',
-                },
-            ],
-        });
-        crossStaveTests.push({
-            title: 'Single clef mixed 2',
-            time: '3/4',
-            voices: [
-                {
-                    notes: [{ notestring: 'g3/16, f6/16, a3/16, g6/16, b4/4/r, g6/8, g3/8 ', clef: 'treble' }],
-                    stavemask: [0, 0, 0, 0, 0, 0, 0],
-                    beammask: [1, -1, 1, -1, 0, -1, 1],
-                    clef: 'treble',
                 },
             ],
         });
@@ -39552,7 +42418,7 @@ function crossClef(options) {
         });
         if (scoreNotes.length > 0) {
             const voice = score.voice(scoreNotes, { time: testdata.time });
-            system.addVoiceToPart([voice], i);
+            system.addVoices([voice]);
         }
     }
     f.draw();
@@ -39770,8 +42636,6 @@ function showOneNote(note1, stave, ctx, x) {
 }
 function basic(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 1000, 240);
-    ctx.setFillStyle('#221');
-    ctx.setStrokeStyle('#221');
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_6__.Stave(10, 10, 975);
     stave.setContext(ctx);
     stave.draw();
@@ -39824,8 +42688,6 @@ function basic(options, contextBuilder) {
 }
 function multiVoice(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 750, 300);
-    ctx.setFillStyle('#221');
-    ctx.setStrokeStyle('#221');
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_6__.Stave(30, 45, 700).setContext(ctx).draw();
     const notes1 = [
         new _src_stavenote__WEBPACK_IMPORTED_MODULE_7__.StaveNote({ keys: ['c/4', 'e/4', 'a/4'], duration: '2', stem_direction: -1 }),
@@ -43667,8 +46529,6 @@ function setContextStyle(ctx) {
     // ctx.scale(0.9, 0.9);
     // ctx.scale(2.0, 2.0);
     ctx.scale(1.8, 1.8);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     ctx.font = '10pt Arial';
 }
 function basic(options, contextBuilder) {
@@ -44394,8 +47254,6 @@ function jazzOrnaments(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 950, 400);
     const ctx = f.getContext();
     ctx.scale(1, 1);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     const xStart = 10;
     const width = 300;
     const yStart = 50;
@@ -45270,8 +48128,6 @@ function setupContext(options, contextBuilder, width = 350, height = 150) {
     // context is SVGContext or CanvasRenderingContext2D (native) or CanvasContext (only if Renderer.USE_CANVAS_PROXY is true).
     const context = contextBuilder(options.elementId, width, height);
     context.scale(0.9, 0.9);
-    context.fillStyle = '#221';
-    context.strokeStyle = '#221';
     context.font = '10pt Arial';
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_5__.Stave(10, 30, width).addClef('treble').addTimeSignature('4/4').setContext(context).draw();
     return { context, stave };
@@ -47764,9 +50620,11 @@ function drawBasic(options, contextBuilder) {
         const note = draw(staveNote(noteStructs[i]), stave, ctx, (i + 1) * 25);
         // If this is an interactivity test (ui: true), then attach mouseover & mouseout handlers to the notes.
         if (options.params.ui) {
-            const item = note.getAttribute('el');
-            item.addEventListener('mouseover', colorDescendants(item, 'green'), false);
-            item.addEventListener('mouseout', colorDescendants(item, 'black'), false);
+            const item = note.getSVGElement();
+            if (item) {
+                item.addEventListener('mouseover', colorDescendants(item, 'green'), false);
+                item.addEventListener('mouseout', colorDescendants(item, 'black'), false);
+            }
         }
         ok(note.getX() > 0, 'Note ' + i + ' has X value');
         ok(note.getYs().length > 0, 'Note ' + i + ' has Y values');
@@ -47863,8 +50721,6 @@ function drawBass(options, contextBuilder) {
 function displacements(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 700, 155);
     ctx.scale(0.9, 0.9);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_12__.Stave(10, 10, 675);
     stave.setContext(ctx);
     stave.draw();
@@ -48138,8 +50994,6 @@ function drawBeamStyles(options, contextBuilder) {
 function dotsAndFlagsStemUp(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 800, 150);
     ctx.scale(1.0, 1.0);
-    ctx.setFillStyle('#221');
-    ctx.setStrokeStyle('#221');
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_12__.Stave(10, 10, 975);
     const notes = [
         staveNote({ keys: ['f/4'], duration: '4', stem_direction: _src_stem__WEBPACK_IMPORTED_MODULE_14__.Stem.UP }),
@@ -48166,8 +51020,6 @@ function dotsAndFlagsStemUp(options, contextBuilder) {
 function dotsAndFlagsStemDown(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 800, 160);
     ctx.scale(1.0, 1.0);
-    ctx.setFillStyle('#221');
-    ctx.setStrokeStyle('#221');
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_12__.Stave(10, 10, 975);
     const staveNotes = [
         staveNote({ keys: ['e/5'], duration: '4', stem_direction: _src_stem__WEBPACK_IMPORTED_MODULE_14__.Stem.DOWN }),
@@ -48193,8 +51045,6 @@ function dotsAndFlagsStemDown(options, contextBuilder) {
 function dotsAndBeamsUp(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 800, 150);
     ctx.scale(1.0, 1.0);
-    ctx.setFillStyle('#221');
-    ctx.setStrokeStyle('#221');
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_12__.Stave(10, 10, 975);
     const staveNotes = [
         staveNote({ keys: ['f/4'], duration: '8', stem_direction: _src_stem__WEBPACK_IMPORTED_MODULE_14__.Stem.UP }),
@@ -48221,8 +51071,6 @@ function dotsAndBeamsUp(options, contextBuilder) {
 function dotsAndBeamsDown(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 800, 160);
     ctx.scale(1.0, 1.0);
-    ctx.setFillStyle('#221');
-    ctx.setStrokeStyle('#221');
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_12__.Stave(10, 10, 975);
     const staveNotes = [
         staveNote({ keys: ['e/5'], duration: '8', stem_direction: _src_stem__WEBPACK_IMPORTED_MODULE_14__.Stem.DOWN }),
@@ -49362,8 +52210,6 @@ function stave(options) {
  */
 function tab(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 140);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     ctx.font = '10pt Arial';
     const stave = new _src_tabstave__WEBPACK_IMPORTED_MODULE_11__.TabStave(10, 10, 450).addTabGlyph();
     stave.getModifiers()[2].setStyle(FS('blue'));
@@ -49954,8 +52800,6 @@ function setupContext(options, width) {
     // eslint-disable-next-line
     const context = options.contextBuilder(options.elementId, 350, 140);
     context.scale(0.9, 0.9);
-    context.fillStyle = '#221';
-    context.strokeStyle = '#221';
     context.font = '10pt Arial';
     const stave = new _src_tabstave__WEBPACK_IMPORTED_MODULE_5__.TabStave(10, 10, width || 350).addTabGlyph().setContext(context).draw();
     return { context, stave };
@@ -50161,8 +53005,6 @@ const tabNote = (noteStruct) => new _src_tabnote__WEBPACK_IMPORTED_MODULE_4__.Ta
 function setupContext(options, w = 0, h = 0) {
     // eslint-disable-next-line
     const context = options.contextBuilder(options.elementId, w || 350, h || 160);
-    context.fillStyle = '#221';
-    context.strokeStyle = '#221';
     context.setFont('Arial', _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.Font.size);
     const stave = new _src_tabstave__WEBPACK_IMPORTED_MODULE_5__.TabStave(10, 10, w || 350).addTabGlyph().setContext(context).draw();
     return { context, stave };
@@ -50456,38 +53298,149 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "TextFormatterTests": () => (/* binding */ TextFormatterTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
-/* harmony import */ var _src_textformatter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/textformatter */ "./src/textformatter.ts");
+/* harmony import */ var _src_font__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/font */ "./src/font.ts");
+/* harmony import */ var _src_textformatter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../src/textformatter */ "./src/textformatter.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 //
 // TextFormatter Tests
 
 
+
 const TextFormatterTests = {
     Start() {
         QUnit.module('TextFormatter');
         test('Basic', basic);
+        const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTextTests;
+        run('Accuracy', accuracy);
+        run('Box Text', textBoxAccuracy);
     },
 };
 function basic() {
     var _a;
     // See: src/fonts/textfonts.ts > loadTextFonts()
-    const registeredFamilies = _src_textformatter__WEBPACK_IMPORTED_MODULE_1__.TextFormatter.getFontFamilies();
-    equal(registeredFamilies.length, 2, `There are two registered font families: 'Roboto Slab' & 'PetalumaScript'`);
+    const registeredFamilies = _src_textformatter__WEBPACK_IMPORTED_MODULE_2__.TextFormatter.getFontFamilies();
+    equal(registeredFamilies.length, 5, `There are five registered font families: 'Roboto Slab' & 'PetalumaScript' and default 'Serif', 'Serif-Bold' and 'Sans'`);
     // Verify the advanceWidth and other metrics by opening the font file with a glyph inspector:
     // https://fontdrop.info/
     // https://opentype.js.org/glyph-inspector.html
-    const petalumaFormatterInfo = _src_textformatter__WEBPACK_IMPORTED_MODULE_1__.TextFormatter.getInfo('PetalumaScript');
+    const petalumaFormatterInfo = _src_textformatter__WEBPACK_IMPORTED_MODULE_2__.TextFormatter.getInfo('PetalumaScript');
     equal((_a = petalumaFormatterInfo === null || petalumaFormatterInfo === void 0 ? void 0 : petalumaFormatterInfo.glyphs) === null || _a === void 0 ? void 0 : _a.C.advanceWidth, 623, 'PetalumaScript advanceWidth of C character is 623.');
-    const formatterForPetalumaScript = _src_textformatter__WEBPACK_IMPORTED_MODULE_1__.TextFormatter.create({ family: 'PetalumaScript', size: '100px' });
+    const formatterForPetalumaScript = _src_textformatter__WEBPACK_IMPORTED_MODULE_2__.TextFormatter.create({ family: 'PetalumaScript', size: '100px' });
     const metricsPetalumaScriptH = formatterForPetalumaScript.getGlyphMetrics('H');
     equal(metricsPetalumaScriptH.leftSideBearing, 37);
-    const formatterForRobotoSlab = _src_textformatter__WEBPACK_IMPORTED_MODULE_1__.TextFormatter.create({ family: 'Roboto Slab', size: '100px', style: 'italic' });
+    const formatterForRobotoSlab = _src_textformatter__WEBPACK_IMPORTED_MODULE_2__.TextFormatter.create({ family: 'Roboto Slab', size: '100px', style: 'italic' });
     const metricsRobotoSlabH = formatterForRobotoSlab.getGlyphMetrics('H');
     equal(metricsRobotoSlabH.advanceWidth, 1578);
     // eslint-disable-next-line
     // @ts-ignore direct access to protected variable .cacheKey
     equal(formatterForRobotoSlab.cacheKey, 'Roboto_Slab%75%normal%normal');
+}
+function accuracy(options, contextBuilder) {
+    const ctx = contextBuilder(options.elementId, 600, 500);
+    const lineHeight = 30;
+    const startX = 50;
+    const fonts = [
+        {
+            family: _src_font__WEBPACK_IMPORTED_MODULE_1__.Font.SERIF,
+            size: 14,
+            weight: _src_font__WEBPACK_IMPORTED_MODULE_1__.FontWeight.NORMAL,
+            style: _src_font__WEBPACK_IMPORTED_MODULE_1__.FontStyle.NORMAL,
+        },
+        {
+            family: 'Roboto Slab',
+            size: 14,
+            weight: _src_font__WEBPACK_IMPORTED_MODULE_1__.FontWeight.NORMAL,
+            style: _src_font__WEBPACK_IMPORTED_MODULE_1__.FontStyle.NORMAL,
+        },
+        {
+            family: _src_font__WEBPACK_IMPORTED_MODULE_1__.Font.SANS_SERIF,
+            size: 14,
+            weight: _src_font__WEBPACK_IMPORTED_MODULE_1__.FontWeight.BOLD,
+            style: _src_font__WEBPACK_IMPORTED_MODULE_1__.FontStyle.NORMAL,
+        },
+    ];
+    let startY = 20;
+    for (let j = 0; j < fonts.length; ++j) {
+        const font = fonts[j];
+        const textFormatter = _src_textformatter__WEBPACK_IMPORTED_MODULE_2__.TextFormatter.create(font);
+        ctx.setFont(font);
+        const texts = ['AVo(i)a', 'bghjIVex1/2', '@@@@@@@@', 'a very long String with Mixed Case Text,(0123456789)'];
+        for (let i = 0; i < texts.length; i++) {
+            ctx.setFillStyle('black');
+            ctx.fillText(texts[i], startX, startY);
+            startY += 5;
+            ctx.setFillStyle('#3a2');
+            ctx.fillRect(startX, startY, textFormatter.getWidthForTextInPx(texts[i]), 2);
+            ctx.setFillStyle('#32a');
+            startY += 5;
+            ctx.fillRect(startX, startY, ctx.measureText(texts[i]).width, 2);
+            startY += lineHeight;
+        }
+    }
+    ok(true, 'all pass');
+}
+function textBoxAccuracy(options, contextBuilder) {
+    const ctx = contextBuilder(options.elementId, 600, 800);
+    let startY = 35;
+    const boxBorder = 2;
+    const boxPadding = 3;
+    const startX = 50;
+    const fonts = [
+        {
+            family: _src_font__WEBPACK_IMPORTED_MODULE_1__.Font.SERIF,
+            size: 14,
+            weight: _src_font__WEBPACK_IMPORTED_MODULE_1__.FontWeight.NORMAL,
+            style: _src_font__WEBPACK_IMPORTED_MODULE_1__.FontStyle.NORMAL,
+        },
+        {
+            family: 'Roboto Slab',
+            size: 14,
+            weight: _src_font__WEBPACK_IMPORTED_MODULE_1__.FontWeight.NORMAL,
+            style: _src_font__WEBPACK_IMPORTED_MODULE_1__.FontStyle.NORMAL,
+        },
+        {
+            family: _src_font__WEBPACK_IMPORTED_MODULE_1__.Font.SANS_SERIF,
+            size: 14,
+            weight: _src_font__WEBPACK_IMPORTED_MODULE_1__.FontWeight.NORMAL,
+            style: _src_font__WEBPACK_IMPORTED_MODULE_1__.FontStyle.NORMAL,
+        },
+    ];
+    const texts = ['AVID', 'bghjIVex1/2', '@@@@@@@@'];
+    for (let j = 0; j < fonts.length; ++j) {
+        const font = fonts[j];
+        const textFormatter = _src_textformatter__WEBPACK_IMPORTED_MODULE_2__.TextFormatter.create(font);
+        ctx.save();
+        ctx.setFont(font);
+        for (let i = 0; i < texts.length; i++) {
+            const textY = textFormatter.getYForStringInPx(texts[i]);
+            const height = textY.height + 2 * boxPadding;
+            const headroom = -1 * textY.yMin;
+            const width = textFormatter.getWidthForTextInPx(texts[i]) + 2 * boxPadding;
+            ctx.setFillStyle('black');
+            ctx.fillText(texts[i], startX + boxPadding, startY - boxPadding);
+            ctx.setLineWidth(boxBorder);
+            ctx.setStrokeStyle('#3a2');
+            ctx.setFillStyle('#3a2');
+            ctx.beginPath();
+            ctx.rect(startX, startY - height + headroom, width, height);
+            ctx.stroke();
+            startY += height * 1.5 + boxBorder * 3;
+            const measureBox = ctx.measureText(texts[i]);
+            const mwidth = measureBox.width + boxBorder * 2;
+            const mheight = measureBox.height + boxBorder * 2;
+            ctx.setFillStyle('black');
+            ctx.fillText(texts[i], startX + boxPadding, startY - boxPadding);
+            ctx.setStrokeStyle('#32a');
+            ctx.setFillStyle('#32a');
+            ctx.beginPath();
+            ctx.rect(startX, startY - mheight, mwidth, mheight);
+            ctx.stroke();
+            startY += mheight * 1.5 + boxBorder * 3;
+        }
+        ctx.restore();
+    }
+    ok(true, 'all pass');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TextFormatterTests);
 
@@ -50615,14 +53568,16 @@ function superscriptAndSubscript(options) {
             .addModifier(f.Accidental({ type: 'n' }), 0)
             .addModifier(f.Accidental({ type: '#' }), 1),
     ]);
-    const voice2 = score.voice([
+    const notes2 = [
         f.TextNote({ text: _src_flow__WEBPACK_IMPORTED_MODULE_2__.Flow.unicode.flat + 'I', superscript: '+5', duration: '8' }),
         f.TextNote({ text: 'D' + _src_flow__WEBPACK_IMPORTED_MODULE_2__.Flow.unicode.sharp + '/F', duration: '4d', superscript: 'sus2' }),
         f.TextNote({ text: 'ii', superscript: '6', subscript: '4', duration: '8' }),
         f.TextNote({ text: 'C', superscript: _src_flow__WEBPACK_IMPORTED_MODULE_2__.Flow.unicode.triangle + '7', subscript: '', duration: '8' }),
         f.TextNote({ text: 'vii', superscript: _src_flow__WEBPACK_IMPORTED_MODULE_2__.Flow.unicode["o-with-slash"] + '7', duration: '8' }),
         f.TextNote({ text: 'V', superscript: '7', duration: '8' }),
-    ]);
+    ];
+    equal(notes2[0].getText(), _src_flow__WEBPACK_IMPORTED_MODULE_2__.Flow.unicode.flat + 'I', 'TextNote.getText() return .text');
+    const voice2 = score.voice(notes2);
     voice2.getTickables().forEach((note) => {
         const textNote = note;
         textNote.setFont({ family: _src_font__WEBPACK_IMPORTED_MODULE_3__.Font.SERIF, size: 15 });
@@ -52015,11 +54970,23 @@ const CANVAS_TEST_CONFIG = {
     testType: 'Canvas',
     fontStacks: ['Bravura'],
 };
+const CANVAS_TEXT_CONFIG = {
+    backend: _src_index__WEBPACK_IMPORTED_MODULE_0__.Renderer.Backends.CANVAS,
+    tagName: 'canvas',
+    testType: 'Canvas',
+    fontStacks: ['Bravura'],
+};
 const SVG_TEST_CONFIG = {
     backend: _src_index__WEBPACK_IMPORTED_MODULE_0__.Renderer.Backends.SVG,
     tagName: 'div',
     testType: 'SVG',
     fontStacks: ['Bravura', 'Gonville', 'Petaluma', 'Leland'],
+};
+const SVG_TEXT_CONFIG = {
+    backend: _src_index__WEBPACK_IMPORTED_MODULE_0__.Renderer.Backends.SVG,
+    tagName: 'div',
+    testType: 'SVG',
+    fontStacks: ['Bravura'],
 };
 const NODE_TEST_CONFIG = {
     backend: _src_index__WEBPACK_IMPORTED_MODULE_0__.Renderer.Backends.CANVAS,
@@ -52081,6 +55048,11 @@ class VexFlowTests {
         VexFlowTests.runSVGTest(name, testFunc, params);
         VexFlowTests.runNodeTest(name, testFunc, params);
     }
+    // eslint-disable-next-line
+    static runTextTests(name, testFunc, params) {
+        VexFlowTests.runCanvasText(name, testFunc, params);
+        VexFlowTests.runSVGText(name, testFunc, params);
+    }
     /**
      * Append a <div/> which contains the test case title and rendered output.
      * See flow.html and flow.css.
@@ -52108,10 +55080,24 @@ class VexFlowTests {
         }
     }
     // eslint-disable-next-line
+    static runCanvasText(name, testFunc, params) {
+        if (VexFlowTests.RUN_CANVAS_TESTS) {
+            const helper = null;
+            VexFlowTests.runWithParams(Object.assign(Object.assign({}, CANVAS_TEXT_CONFIG), { name, testFunc, params, helper }));
+        }
+    }
+    // eslint-disable-next-line
     static runSVGTest(name, testFunc, params) {
         if (VexFlowTests.RUN_SVG_TESTS) {
             const helper = null;
             VexFlowTests.runWithParams(Object.assign(Object.assign({}, SVG_TEST_CONFIG), { name, testFunc, params, helper }));
+        }
+    }
+    // eslint-disable-next-line
+    static runSVGText(name, testFunc, params) {
+        if (VexFlowTests.RUN_SVG_TESTS) {
+            const helper = null;
+            VexFlowTests.runWithParams(Object.assign(Object.assign({}, SVG_TEXT_CONFIG), { name, testFunc, params, helper }));
         }
     }
     // eslint-disable-next-line
@@ -52455,8 +55441,6 @@ const tabNote = (noteStruct) => new _src_index__WEBPACK_IMPORTED_MODULE_1__.TabN
 function simple(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
     ctx.scale(1.5, 1.5);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     ctx.font = '10pt Arial';
     const stave = new _src_index__WEBPACK_IMPORTED_MODULE_1__.TabStave(10, 10, 450).addTabGlyph().setContext(ctx).draw();
     const notes = [
@@ -52483,8 +55467,6 @@ function simple(options, contextBuilder) {
 function harsh(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
     ctx.scale(1.5, 1.5);
-    ctx.fillStyle = '#221';
-    ctx.strokeStyle = '#221';
     ctx.font = '10pt Arial';
     const stave = new _src_index__WEBPACK_IMPORTED_MODULE_1__.TabStave(10, 10, 450).addTabGlyph().setContext(ctx).draw();
     const notes = [
@@ -52506,8 +55488,6 @@ function harsh(options, contextBuilder) {
 function withBend(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
     ctx.scale(1.3, 1.3);
-    ctx.setFillStyle('#221');
-    ctx.setStrokeStyle('#221');
     ctx.setFont(_src_index__WEBPACK_IMPORTED_MODULE_1__.Font.SANS_SERIF, _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.Font.size);
     const stave = new _src_index__WEBPACK_IMPORTED_MODULE_1__.TabStave(10, 10, 450).addTabGlyph().setContext(ctx).draw();
     const notes = [
