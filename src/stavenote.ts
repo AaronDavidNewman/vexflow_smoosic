@@ -405,7 +405,6 @@ export class StaveNote extends StemmableNote {
   protected dot_shiftY: number;
   protected use_default_head_x: boolean;
   protected ledgerLineStyle: ElementStyle;
-  protected flagStyle?: ElementStyle;
   private _noteHeads: NoteHead[];
   // Sorted variant of keyProps used internally
   private sortedKeyProps: { keyProps: KeyProps; index: number }[] = [];
@@ -868,10 +867,10 @@ export class StaveNote extends StemmableNote {
   }
 
   setFlagStyle(style: ElementStyle): void {
-    this.flagStyle = style;
+    this.flag?.setStyle(style);
   }
   getFlagStyle(): ElementStyle | undefined {
-    return this.flagStyle;
+    return this.flag?.getStyle();
   }
 
   // Sets the notehead at `index` to the provided coloring `style`.
@@ -896,7 +895,7 @@ export class StaveNote extends StemmableNote {
   // Get the width of the note if it is displaced. Used for `Voice`
   // formatting
   getVoiceShiftWidth(): number {
-    // TODO: may need to accomodate for dot here.
+    // TODO: may need to accommodate for dot here.
     return this.getGlyphWidth() * (this.displaced ? 2 : 1);
   }
 
@@ -1100,20 +1099,20 @@ export class StaveNote extends StemmableNote {
   }
 
   // Draw all key modifiers
-  drawModifiers(): void {
+  drawModifiers(noteheadParam: NoteHead): void {
     const ctx = this.checkContext();
-    ctx.openGroup('modifiers');
     for (let i = 0; i < this.modifiers.length; i++) {
       const modifier = this.modifiers[i];
       const index = modifier.checkIndex();
       const notehead = this._noteHeads[index];
-      const noteheadStyle = notehead.getStyle();
-      notehead.applyStyle(ctx, noteheadStyle);
-      modifier.setContext(ctx);
-      modifier.drawWithStyle();
-      notehead.restoreStyle(ctx, noteheadStyle);
+      if (notehead == noteheadParam) {
+        const noteheadStyle = notehead.getStyle();
+        notehead.applyStyle(ctx, noteheadStyle);
+        modifier.setContext(ctx);
+        modifier.drawWithStyle();
+        notehead.restoreStyle(ctx, noteheadStyle);
+      }
     }
-    ctx.closeGroup();
   }
 
   shouldDrawFlag(): boolean {
@@ -1155,11 +1154,7 @@ export class StaveNote extends StemmableNote {
             (this.flag?.getMetrics().y_shift ?? 0) * (1 - this.getStaveNoteScale());
 
       // Draw the Flag
-      ctx.openGroup('flag', undefined, { pointerBBox: true });
-      this.applyStyle(ctx, this.getFlagStyle());
       this.flag?.render(ctx, flagX, flagY);
-      this.restoreStyle(ctx, this.getFlagStyle());
-      ctx.closeGroup();
     }
   }
 
@@ -1167,9 +1162,12 @@ export class StaveNote extends StemmableNote {
   drawNoteHeads(): void {
     const ctx = this.checkContext();
     this._noteHeads.forEach((notehead) => {
-      ctx.openGroup('notehead', undefined, { pointerBBox: true });
+      notehead.applyStyle(ctx);
+      ctx.openGroup('notehead', notehead.getAttribute('id'), { pointerBBox: true });
       notehead.setContext(ctx).draw();
+      this.drawModifiers(notehead);
       ctx.closeGroup();
+      notehead.restoreStyle(ctx);
     });
   }
 
@@ -1190,9 +1188,7 @@ export class StaveNote extends StemmableNote {
     }
 
     if (this.stem) {
-      ctx.openGroup('stem', undefined, { pointerBBox: true });
       this.stem.setContext(ctx).draw();
-      ctx.closeGroup();
     }
   }
 
@@ -1267,14 +1263,11 @@ export class StaveNote extends StemmableNote {
 
     // Apply the overall style -- may be contradicted by local settings:
     this.applyStyle();
-    this.setAttribute('el', ctx.openGroup('stavenote', this.getAttribute('id')));
+    ctx.openGroup('stavenote', this.getAttribute('id'));
     this.drawLedgerLines();
-    ctx.openGroup('note', undefined, { pointerBBox: true });
     if (shouldRenderStem) this.drawStem();
     this.drawNoteHeads();
     this.drawFlag();
-    ctx.closeGroup();
-    this.drawModifiers();
     ctx.closeGroup();
     this.restoreStyle();
     this.setRendered();

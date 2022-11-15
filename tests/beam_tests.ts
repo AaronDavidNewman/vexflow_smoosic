@@ -47,6 +47,7 @@ const BeamTests = {
     run('TabNote Beams Auto Stem', tabBeamsAutoStem);
     run('Complex Beams with Annotations', complexWithAnnotation);
     run('Complex Beams with Articulations', complexWithArticulation);
+    run('Complex Beams with Articulations two Staves', complexWithArticulation2);
   },
 };
 

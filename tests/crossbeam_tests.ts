@@ -30,6 +30,31 @@ const CrossBeamTests = {
     const run = VexFlowTests.runTests;
     const crossStaveTests: crossStaveBeamTest[] = [];
     crossStaveTests.push({
+      title: 'Single clef mixed 1',
+      time: '3/4',
+      voices: [
+        {
+          notes: [{ notestring: 'g4/16, f4/16, a6/16, g6/16, b4/4/r, g6/8, g4/8 ', clef: 'treble' }],
+          stavemask: [0, 0, 0, 0, 0, 0, 0],
+          beammask: [1, 1, -1, -1, 0, -1, 1],
+          clef: 'treble',
+        },
+      ],
+    });
+    crossStaveTests.push({
+      title: 'Single clef mixed 2',
+      time: '3/4',
+      voices: [
+        {
+          notes: [{ notestring: 'g4/16, f6/16, a4/16, g6/16, b4/4/r, g6/8, g4/8 ', clef: 'treble' }],
+          stavemask: [0, 0, 0, 0, 0, 0, 0],
+          beammask: [1, -1, 1, -1, 0, -1, 1],
+          clef: 'treble',
+        },
+      ],
+    });
+
+    crossStaveTests.push({
       title: 'Mixed clef voice middle',
       time: '2/4',
       voices: [
@@ -48,31 +73,6 @@ const CrossBeamTests = {
           stavemask: [1, 1, 1, 0, 1],
           beammask: [1, 1, 1, -1, 0],
           clef: 'bass',
-        },
-      ],
-    });
-
-    crossStaveTests.push({
-      title: 'Single clef mixed 1',
-      time: '3/4',
-      voices: [
-        {
-          notes: [{ notestring: 'g3/16, f3/16, a6/16, g6/16, b4/4/r, g6/8, g4/8 ', clef: 'treble' }],
-          stavemask: [0, 0, 0, 0, 0, 0, 0],
-          beammask: [1, 1, -1, -1, 0, -1, 1],
-          clef: 'treble',
-        },
-      ],
-    });
-    crossStaveTests.push({
-      title: 'Single clef mixed 2',
-      time: '3/4',
-      voices: [
-        {
-          notes: [{ notestring: 'g3/16, f6/16, a3/16, g6/16, b4/4/r, g6/8, g3/8 ', clef: 'treble' }],
-          stavemask: [0, 0, 0, 0, 0, 0, 0],
-          beammask: [1, -1, 1, -1, 0, -1, 1],
-          clef: 'treble',
         },
       ],
     });
@@ -330,7 +330,7 @@ function crossClef(options: TestOptions): void {
     });
     if (scoreNotes.length > 0) {
       const voice = score.voice(scoreNotes, { time: testdata.time });
-      system.addVoiceToPart([voice], i);
+      system.addVoices([voice]);
     }
   }
   f.draw();

@@ -53,7 +53,6 @@ export interface AlignmentContexts<T> {
 }
 
 export interface AlignmentModifierContexts {
-  list: Map<Stave | undefined, number[]>;
   map: Map<Stave | undefined, Record<number, ModifierContext>>;
   array: ModifierContext[];
   resolutionMultiplier: number;
@@ -74,20 +73,19 @@ function createContexts<T>(
   makeContext: makeContextFn<T>,
   addToContext: addToContextFn<T>
 ): AlignmentContexts<T> {
-  const resolutionMultiplier = Formatter.getResolutionMultiplier(voices);
+  if (voices.length == 0)
+    return {
+      map: {},
+      array: [],
+      list: [],
+      resolutionMultiplier: 0,
+    };
 
   // Initialize tick maps.
   const tickToContextMap: Record<number, T> = {};
   const tickList: number[] = [];
   const contexts: T[] = [];
-
-  if (voices.length == 0)
-    return {
-      map: tickToContextMap,
-      array: contexts,
-      list: tickList.sort((a, b) => a - b),
-      resolutionMultiplier,
-    };
+  const resolutionMultiplier = Formatter.getResolutionMultiplier(voices);
   // For each voice, extract notes and create a context for every
   // new tick that hasn't been seen before.
   voices.forEach((voice, voiceIndex) => {
@@ -189,8 +187,9 @@ export class Formatter {
   protected justifyWidth: number;
   protected totalCost: number;
   protected totalShift: number;
-  protected tickContexts?: AlignmentContexts<TickContext>;
+  protected tickContexts: AlignmentContexts<TickContext>;
   protected formatterOptions: Required<FormatterOptions>;
+  protected modifierContexts: AlignmentModifierContexts[];
   protected voices: Voice[];
   protected lossHistory: number[];
   protected durationStats: Record<string, { mean: number; count: number }>;
@@ -428,7 +427,14 @@ export class Formatter {
     this.hasMinTotalWidth = false;
 
     // Arrays of tick and modifier contexts.
-    this.tickContexts = undefined;
+    this.tickContexts = {
+      map: {},
+      array: [],
+      list: [],
+      resolutionMultiplier: 0,
+    };
+
+    this.modifierContexts = [];
 
     // Gaps between contexts, for free movement of notes post
     // formatting.
@@ -488,14 +494,12 @@ export class Formatter {
     // Cache results.
     if (this.hasMinTotalWidth) return this.minTotalWidth;
 
-    // Create tick contexts if not already created.
-    if (!this.tickContexts) {
-      if (!voices) {
-        throw new RuntimeError('BadArgument', "'voices' required to run preCalculateMinTotalWidth");
-      }
-
-      this.createTickContexts(voices);
+    // Create tick contexts.
+    if (!voices) {
+      throw new RuntimeError('BadArgument', "'voices' required to run preCalculateMinTotalWidth");
     }
+
+    this.createTickContexts(voices);
 
     // eslint-disable-next-line
     const { list: contextList, map: contextMap } = this.tickContexts!;
@@ -576,13 +580,12 @@ export class Formatter {
 
   /** Create a `ModifierContext` for each tick in `voices`. */
   createModifierContexts(voices: Voice[]) {
+    if (voices.length == 0) return;
     const resolutionMultiplier = Formatter.getResolutionMultiplier(voices);
 
     // Initialize tick maps.
-    const getKey = (tickable: Tickable, tick: number) => {
-      const stave = tickable.getStave();
-      return stave ? stave.getAttribute('id') + '-' + tick.toString() : tick.toString();
-    };
+    const tickToContextMap: Map<Stave | undefined, Record<number, ModifierContext>> = new Map();
+    const contexts: ModifierContext[] = [];
 
     // For each voice, extract notes and create a context for every
     // new tick that hasn't been seen before.
@@ -593,20 +596,31 @@ export class Formatter {
 
       voice.getTickables().forEach((tickable) => {
         const integerTicks = ticksUsed.numerator;
-        const key = getKey(tickable, integerTicks);
-        if (!this.tickToStaveContextMap[key]) {
-          const newContext = new ModifierContext();
-          this.tickToStaveContextMap[key] = newContext;
-          if (!this.tickToContextMap[integerTicks]) {
-            this.tickToContextMap[integerTicks] = [];
-            this.tickList.push(integerTicks);
-          }
-          this.tickToContextMap[integerTicks].push(newContext);
+        let staveTickToContextMap = tickToContextMap.get(tickable.getStave());
+
+        // If we have no tick context for this tick, create one.
+        if (!staveTickToContextMap) {
+          tickToContextMap.set(tickable.getStave(), {});
+          staveTickToContextMap = tickToContextMap.get(tickable.getStave());
         }
+        if (!(staveTickToContextMap ? staveTickToContextMap[integerTicks] : undefined)) {
+          const newContext = new ModifierContext();
+          contexts.push(newContext);
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          staveTickToContextMap![integerTicks] = newContext;
+        }
+
         // Add this tickable to the TickContext.
-        tickable.addToModifierContext(this.tickToStaveContextMap[key]);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        tickable.addToModifierContext(staveTickToContextMap![integerTicks]);
         ticksUsed.add(tickable.getTicks());
       });
+    });
+
+    this.modifierContexts.push({
+      map: tickToContextMap,
+      array: contexts,
+      resolutionMultiplier,
     });
   }
 
@@ -628,9 +642,17 @@ export class Formatter {
   }
 
   /**
+   * Get the AlignmentContexts of TickContexts that were created by createTickContexts.
+   * Returns undefined if createTickContexts has not yet been run.
+   */
+  getTickContexts(): AlignmentContexts<TickContext> | undefined {
+    return this.tickContexts;
+  }
+
+  /**
    * This is the core formatter logic. Format voices and justify them
    * to `justifyWidth` pixels. `renderingContext` is required to justify elements
-   * that can't retreive widths without a canvas. This method sets the `x` positions
+   * that can't retrieve widths without a canvas. This method sets the `x` positions
    * of all the tickables/notes in the formatter.
    */
   preFormat(justifyWidth = 0, renderingContext?: RenderContext, voicesParam?: Voice[], stave?: Stave): number {
@@ -873,7 +895,6 @@ export class Formatter {
 
   /** Calculate the total cost of this formatting decision. */
   evaluate(): number {
-    if (!this.tickContexts) return 0;
     const contexts = this.tickContexts;
     const justifyWidth = this.justifyWidth;
     // Calculate available slack per tick context. This works out how much freedom
@@ -968,7 +989,7 @@ export class Formatter {
    * the overall "loss" (or cost) of this layout, and repositions tickcontexts in an
    * attempt to reduce the cost. You can call this method multiple times until it finds
    * and oscillates around a global minimum.
-   * @param alpha the "learning rate" for the formatter. It determines how much of a shift
+   * @param options[alpha] the "learning rate" for the formatter. It determines how much of a shift
    * the formatter should make based on its cost function.
    */
   tune(options?: { alpha?: number }): number {
@@ -1024,19 +1045,13 @@ export class Formatter {
    * in the voices.
    */
   postFormat(): this {
-    const postFormatContexts = (contexts: AlignmentContexts<ModifierContext> | AlignmentContexts<TickContext>) =>
-      contexts.list.forEach((tick) => contexts.map[tick].postFormat());
-
-    this.tickList.sort((a, b) => a - b);
-    this.tickList.forEach((tick) => {
-      this.tickToContextMap[tick].forEach((mc) => {
-        mc.postFormat();
-      });
+    this.modifierContexts.forEach((modifierContexts) => {
+      modifierContexts.array.forEach((mc) => mc.postFormat());
     });
 
-    if (this.tickContexts) {
-      postFormatContexts(this.tickContexts);
-    }
+    this.tickContexts.list.forEach((tick) => {
+      this.tickContexts.map[tick].postFormat();
+    });
 
     return this;
   }

@@ -85,7 +85,7 @@ export class Annotation extends Modifier {
       const annotation = annotations[i];
       const textFormatter = TextFormatter.create(annotation.textFont);
       // Text height is expressed in fractional stave spaces.
-      const textLines = (5 + textFormatter.maxHeight) / Tables.STAVE_LINE_DISTANCE;
+      const textLines = (2 + textFormatter.getYForStringInPx(annotation.text).height) / Tables.STAVE_LINE_DISTANCE;
       let verticalSpaceNeeded = textLines;
 
       const note = annotation.checkAttachedNote();
@@ -241,12 +241,11 @@ export class Annotation extends Modifier {
     // still need to save context state just before this, since we will be
     // changing ctx parameters below.
     this.applyStyle();
-    const classString = Object.keys(this.getAttribute('classes')).join(' ');
-    ctx.openGroup(classString, this.getAttribute('id'));
+    ctx.openGroup('annotation', this.getAttribute('id'));
     ctx.setFont(this.textFont);
 
-    const text_width = ctx.measureText(this.text).width;
-    const text_height = textFormatter.maxHeight + 2;
+    const text_width = textFormatter.getWidthForTextInPx(this.text);
+    const text_height = textFormatter.getYForStringInPx(this.text).height;
     let x;
     let y;
 

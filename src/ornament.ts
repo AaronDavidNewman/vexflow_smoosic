@@ -249,8 +249,8 @@ export class Ornament extends Modifier {
     const stemDir = note.getStemDirection();
     const stave = note.checkStave();
 
-    const classString = Object.keys(this.getAttribute('classes')).join(' ');
-    ctx.openGroup(classString, this.getAttribute('id'));
+    this.applyStyle();
+    ctx.openGroup('ornament', this.getAttribute('id'));
 
     // Get stem extents
     const stemExtents = note.checkStem().getExtents();
@@ -332,5 +332,6 @@ export class Ornament extends Modifier {
       this.accidentalUpper.render(ctx, glyphX, glyphY);
     }
     ctx.closeGroup();
+    this.restoreStyle();
   }
 }
