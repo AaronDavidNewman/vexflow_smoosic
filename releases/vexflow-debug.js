@@ -1,5 +1,5 @@
 /*!
- * VexFlow 4.1.0-alpha.0   2022-11-15T20:56:49.804Z   1634ef2f07b9c60ab1570b86e53722fd3db8d1ae
+ * VexFlow 4.1.0-alpha.0   2023-01-11T01:01:24.581Z   4cd5164f7589370f383579457a037aed929e74d3
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * https://www.vexflow.com   https://github.com/0xfe/vexflow
  */
@@ -30,8 +30,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "VERSION": () => (/* binding */ VERSION)
 /* harmony export */ });
 const VERSION = '4.1.0-alpha.0';
-const ID = '1634ef2f07b9c60ab1570b86e53722fd3db8d1ae';
-const DATE = '2022-11-15T20:56:49.804Z';
+const ID = '4cd5164f7589370f383579457a037aed929e74d3';
+const DATE = '2023-01-11T01:01:24.581Z';
 
 
 /***/ }),
@@ -21444,6 +21444,8 @@ class Formatter {
             return mdCalc;
         };
         const minDistance = calcMinDistance(targetWidth, distances);
+        let scaledMaxPadding = configMaxPadding;
+        let scaledMinPadding = configMinPadding;
         // right justify to either the configured padding, or the min distance between notes, whichever is greatest.
         // This * 2 keeps the existing formatting unless there is 'a lot' of extra whitespace, which won't break
         // existing visual regression tests.
@@ -21455,24 +21457,26 @@ class Formatter {
                 // If the number of actual ticks in the measure <> configured ticks, right-justify
                 // because the softmax won't yield the correct value
                 if (voice.getTicksUsed().value() > voice.getTotalTicks().value()) {
-                    return configMaxPadding * 2 < minDistance ? minDistance : configMaxPadding;
+                    return scaledMaxPadding * 2 < minDistance ? minDistance : scaledMaxPadding;
                 }
                 const tickWidth = lastTickable.getWidth();
                 lastTickablePadding =
                     voice.softmax(lastContext.getMaxTicks().value()) * curTargetWidth - (tickWidth + leftPadding);
             }
-            return configMaxPadding * 2 < lastTickablePadding ? lastTickablePadding : configMaxPadding;
+            return scaledMaxPadding * 2 < lastTickablePadding ? lastTickablePadding : scaledMaxPadding;
         };
         let paddingMax = paddingMaxCalc(targetWidth);
-        let paddingMin = paddingMax - (configMaxPadding - configMinPadding);
+        let paddingMin = paddingMax - (scaledMaxPadding - scaledMinPadding);
         const maxX = adjustedJustifyWidth - paddingMin;
         let iterations = maxIterations;
         // Adjust justification width until the right margin is as close as possible to the calculated padding,
         // without going over
         while ((actualWidth > maxX && iterations > 0) || (actualWidth + paddingMax < maxX && iterations > 1)) {
             targetWidth -= actualWidth - maxX;
+            scaledMaxPadding = scaledMaxPadding * (actualWidth / targetWidth);
+            scaledMinPadding = scaledMinPadding * (actualWidth / targetWidth);
             paddingMax = paddingMaxCalc(targetWidth);
-            paddingMin = paddingMax - (configMaxPadding - configMinPadding);
+            paddingMin = paddingMax - (scaledMaxPadding - scaledMinPadding);
             actualWidth = shiftToIdealDistances(calculateIdealDistances(targetWidth));
             iterations--;
         }

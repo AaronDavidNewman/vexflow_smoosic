@@ -854,6 +854,8 @@ export class Formatter {
       return mdCalc;
     };
     const minDistance = calcMinDistance(targetWidth, distances);
+    let scaledMaxPadding = configMaxPadding;
+    let scaledMinPadding = configMinPadding;
 
     // right justify to either the configured padding, or the min distance between notes, whichever is greatest.
     // This * 2 keeps the existing formatting unless there is 'a lot' of extra whitespace, which won't break
@@ -866,16 +868,16 @@ export class Formatter {
         // If the number of actual ticks in the measure <> configured ticks, right-justify
         // because the softmax won't yield the correct value
         if (voice.getTicksUsed().value() > voice.getTotalTicks().value()) {
-          return configMaxPadding * 2 < minDistance ? minDistance : configMaxPadding;
+          return scaledMaxPadding * 2 < minDistance ? minDistance : scaledMaxPadding;
         }
         const tickWidth = lastTickable.getWidth();
         lastTickablePadding =
           voice.softmax(lastContext.getMaxTicks().value()) * curTargetWidth - (tickWidth + leftPadding);
       }
-      return configMaxPadding * 2 < lastTickablePadding ? lastTickablePadding : configMaxPadding;
+      return scaledMaxPadding * 2 < lastTickablePadding ? lastTickablePadding : scaledMaxPadding;
     };
     let paddingMax = paddingMaxCalc(targetWidth);
-    let paddingMin = paddingMax - (configMaxPadding - configMinPadding);
+    let paddingMin = paddingMax - (scaledMaxPadding - scaledMinPadding);
     const maxX = adjustedJustifyWidth - paddingMin;
 
     let iterations = maxIterations;
@@ -883,8 +885,10 @@ export class Formatter {
     // without going over
     while ((actualWidth > maxX && iterations > 0) || (actualWidth + paddingMax < maxX && iterations > 1)) {
       targetWidth -= actualWidth - maxX;
+      scaledMaxPadding = scaledMaxPadding * (actualWidth / targetWidth);
+      scaledMinPadding = scaledMinPadding * (actualWidth / targetWidth);
       paddingMax = paddingMaxCalc(targetWidth);
-      paddingMin = paddingMax - (configMaxPadding - configMinPadding);
+      paddingMin = paddingMax - (scaledMaxPadding - scaledMinPadding);
       actualWidth = shiftToIdealDistances(calculateIdealDistances(targetWidth));
       iterations--;
     }
