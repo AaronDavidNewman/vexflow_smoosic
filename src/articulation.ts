@@ -215,10 +215,7 @@ export class Articulation extends Modifier {
 
     articulations.forEach((articulation) => {
       const note = articulation.checkAttachedNote();
-      const logStr = JSON.stringify(note.keys[0], null, ' ');
-      L('note ' + logStr + ' line ' + state.text_line + ' bottomLine ' + state.top_text_line);
-
-      maxGlyphWidth = Math.max(note.getGlyph().getWidth(), maxGlyphWidth);
+      maxGlyphWidth = Math.max(note.getGlyphProps().getWidth(), maxGlyphWidth);
       let lines = 5;
       const stemDirection = note.hasStem() ? note.getStemDirection() : Stem.UP;
       let stemHeight = 0;
@@ -233,7 +230,6 @@ export class Articulation extends Modifier {
       const stave: Stave | undefined = note.getStave();
       if (stave) {
         lines = stave.getNumLines();
-        L('stave is ' + stave.getAttribute('id'));
       }
       if (articulation.getPosition() === ABOVE) {
         let noteLine = note.getLineNumber(true);
@@ -248,7 +244,6 @@ export class Articulation extends Modifier {
         }
         articulation.setTextLine(state.top_text_line);
         state.top_text_line += increment;
-        L('note line above ' + noteLine);
       } else if (articulation.getPosition() === BELOW) {
         let noteLine = Math.max(lines - note.getLineNumber(), 0);
         if (stemDirection === Stem.DOWN) {
@@ -262,7 +257,6 @@ export class Articulation extends Modifier {
         }
         articulation.setTextLine(state.text_line);
         state.text_line += increment;
-        L('note line below ' + noteLine);
       }
     });
 
@@ -301,15 +295,19 @@ export class Articulation extends Modifier {
 
   /**
    * Create a new articulation.
-   * @param type entry in `Vex.Flow.articulationCodes` in `tables.ts`
+   * @param type entry in `Vex.Flow.articulationCodes` in `tables.ts` or Glyph code.
+   *
+   * Notes (by default):
+   * - Glyph codes ending with 'Above' will be positioned ABOVE
+   * - Glyph codes ending with 'Below' will be positioned BELOW
    */
   constructor(type: string) {
     super();
 
     this.type = type;
-    this.position = BELOW;
+    this.position = ABOVE;
     this.render_options = {
-      font_scale: 38,
+      font_scale: Tables.NOTATION_FONT_SCALE,
     };
 
     this.reset();
@@ -317,11 +315,24 @@ export class Articulation extends Modifier {
 
   protected reset(): void {
     this.articulation = Tables.articulationCodes(this.type);
-    const articulation = defined(this.articulation, 'ArgumentError', `Articulation not found: ${this.type}`);
-    const code = (this.position === ABOVE ? articulation.aboveCode : articulation.belowCode) || articulation.code;
+    // Use type as glyph code, if not defined as articulation code
+    if (!this.articulation) {
+      this.articulation = { code: this.type, between_lines: false };
+      if (this.type.endsWith('Above')) this.position = ABOVE;
+      if (this.type.endsWith('Below')) this.position = BELOW;
+    }
+    const code =
+      (this.position === ABOVE ? this.articulation.aboveCode : this.articulation.belowCode) || this.articulation.code;
     this.glyph = new Glyph(code ?? '', this.render_options.font_scale);
+    defined(this.glyph, 'ArgumentError', `Articulation not found: ${this.type}`);
 
     this.setWidth(defined(this.glyph.getMetrics().width));
+  }
+
+  /** Set if articulation should be rendered between lines. */
+  setBetweenLines(betweenLines = true): this {
+    this.articulation.between_lines = betweenLines;
+    return this;
   }
 
   /** Render articulation in position next to note. */
@@ -345,9 +356,6 @@ export class Articulation extends Modifier {
     const initialOffset = getInitialOffset(note, position);
 
     const padding = Tables.currentMusicFont().lookupMetric(`articulation.${glyph.getCode()}.padding`, 0);
-    L(
-      `staffSpace: ${staffSpace} x: ${x} textLine ${textLine} initialOffset ${initialOffset} shouldSitOutsideStaff ${shouldSitOutsideStaff} padding ${padding}`
-    );
 
     let y = (
       {
@@ -375,8 +383,8 @@ export class Articulation extends Modifier {
 
       y += Math.abs(snappedLine - articLine) * staffSpace * offsetDirection + padding * offsetDirection;
     }
-    const staffId = stave.getAttribute('id');
-    L(`Rendering articulation ${this.type} stave ${staffId} at (x: ${x}, y: ${y})`);
+
+    L(`Rendering articulation at (x: ${x}, y: ${y})`);
 
     glyph.render(ctx, x, y);
   }

@@ -80,7 +80,7 @@ function lyrics(options: TestOptions): void {
     });
 
     // Add lyrics under the first row.
-    ['hand,', 'lead', 'the', 'pears', 'lead', 'the'].forEach((text, ix) => {
+    ['hand,', 'and', 'me', 'pears', 'lead', 'the'].forEach((text, ix) => {
       const verse = Math.floor(ix / 3);
       const noteGroupID = 'n' + (ix % 3);
       const noteGroup = registry.getElementById(noteGroupID) as Tickable;

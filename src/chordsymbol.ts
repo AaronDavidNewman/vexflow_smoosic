@@ -18,7 +18,7 @@ import { StemmableNote } from './stemmablenote';
 import { Tables } from './tables';
 import { TextFormatter } from './textformatter';
 import { Category, isStemmableNote } from './typeguard';
-import { log } from './util';
+import { log, RuntimeError } from './util';
 
 // To enable logging for this class. Set `Vex.Flow.ChordSymbol.DEBUG` to `true`.
 // eslint-disable-next-line
@@ -35,6 +35,26 @@ export interface ChordSymbolBlock {
   vAlign: boolean;
   width: number;
   glyph?: Glyph;
+}
+
+export interface ChordSymbolGlyphMetrics {
+  scale: number;
+  leftSideBearing: number;
+  advanceWidth: number;
+  yOffset: number;
+}
+
+export interface ChordSymbolMetrics {
+  global: {
+    superscriptOffset: number;
+    subscriptOffset: number;
+    kerningOffset: number;
+    lowerKerningText: string[];
+    upperKerningText: string[];
+    spacing: number;
+    superSubRatio: number;
+  };
+  glyphs: Record<string, ChordSymbolGlyphMetrics>;
 }
 
 export enum ChordSymbolHorizontalJustify {
@@ -104,10 +124,9 @@ export class ChordSymbol extends Modifier {
     return ChordSymbol.noFormat;
   }
 
-  // eslint-disable-next-line
-  static getMetricForGlyph(glyphCode: string): any {
-    if (ChordSymbol.metrics[glyphCode]) {
-      return ChordSymbol.metrics[glyphCode];
+  static getMetricForGlyph(glyphCode: string): ChordSymbolGlyphMetrics | undefined {
+    if (ChordSymbol.metrics.glyphs[glyphCode]) {
+      return ChordSymbol.metrics.glyphs[glyphCode];
     }
     return undefined;
   }
@@ -224,9 +243,11 @@ export class ChordSymbol extends Modifier {
 
   static readonly symbolModifiers = SymbolModifiers;
 
-  // eslint-disable-next-line
-  static get metrics(): any {
-    return Tables.currentMusicFont().getMetrics().glyphs.chordSymbol;
+  static get metrics(): ChordSymbolMetrics {
+    const chordSymbol = Tables.currentMusicFont().getMetrics().chordSymbol;
+
+    if (!chordSymbol) throw new RuntimeError('BadMetrics', `chordSymbol missing`);
+    return chordSymbol;
   }
 
   static get lowerKerningText(): string[] {
@@ -250,7 +271,7 @@ export class ChordSymbol extends Modifier {
 
   static get minPadding(): number {
     const musicFont = Tables.currentMusicFont();
-    return musicFont.lookupMetric('glyphs.noteHead.minPadding');
+    return musicFont.lookupMetric('noteHead.minPadding');
   }
   /**
    * Estimate the width of the whole chord symbol, based on the sum of the widths of the individual blocks.
@@ -348,7 +369,7 @@ export class ChordSymbol extends Modifier {
         state.text_line += lineSpaces + 1;
       }
       if (symbol.getReportWidth() && isStemmableNote(note)) {
-        const glyphWidth = note.getGlyph().getWidth();
+        const glyphWidth = note.getGlyphProps().getWidth();
         if (symbol.getHorizontal() === ChordSymbolHorizontalJustify.LEFT) {
           maxLeftGlyphWidth = Math.max(glyphWidth, maxLeftGlyphWidth);
           leftWidth = Math.max(leftWidth, symbolWidth) + ChordSymbol.minPadding;

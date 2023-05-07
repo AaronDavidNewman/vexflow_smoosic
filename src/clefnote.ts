@@ -2,12 +2,9 @@
 // Author Taehoon Moon 2014
 // MIT License
 
-import { BoundingBox } from './boundingbox';
-import { Clef, ClefType } from './clef';
+import { Clef, ClefAnnotatiomType, ClefType } from './clef';
 import { Glyph } from './glyph';
-import { ModifierContext } from './modifiercontext';
 import { Note } from './note';
-import { RenderContext } from './rendercontext';
 import { Category } from './typeguard';
 
 /** ClefNote implements clef annotations in measures. */
@@ -16,18 +13,19 @@ export class ClefNote extends Note {
     return Category.ClefNote;
   }
 
-  protected clef_obj: Clef;
-  protected type: string;
   protected clef: ClefType;
+  protected annotation?: ClefAnnotatiomType;
+  protected type: string;
+  protected size: string;
 
   constructor(type: string, size?: string, annotation?: string) {
     super({ duration: 'b' });
-
     this.type = type;
-    this.clef_obj = new Clef(type, size, annotation);
-    this.clef = this.clef_obj.clef;
-    this.glyph = new Glyph(this.clef.code, this.clef.point);
-    this.setWidth(this.glyph.getMetrics().width);
+    const clef = new Clef(type, size, annotation);
+    this.clef = clef.clef;
+    this.annotation = clef.annotation;
+    this.size = size === undefined ? 'default' : size;
+    this.setWidth(Glyph.getWidth(this.clef.code, Clef.getPoint(this.size), `clefNote_${this.size}`));
 
     // Note properties
     this.ignore_ticks = true;
@@ -36,35 +34,17 @@ export class ClefNote extends Note {
   /** Set clef type, size and annotation. */
   setType(type: string, size: string, annotation: string): this {
     this.type = type;
-    this.clef_obj = new Clef(type, size, annotation);
-    this.clef = this.clef_obj.clef;
-    this.glyph = new Glyph(this.clef.code, this.clef.point);
-    this.setWidth(this.glyph.getMetrics().width);
+    this.size = size;
+    const clef = new Clef(type, size, annotation);
+    this.clef = clef.clef;
+    this.annotation = clef.annotation;
+    this.setWidth(Glyph.getWidth(this.clef.code, Clef.getPoint(this.size), `clefNote_${this.size}`));
     return this;
   }
 
   /** Get associated clef. */
   getClef(): ClefType {
     return this.clef;
-  }
-
-  /** Set associated context. */
-  setContext(context: RenderContext): this {
-    super.setContext(context);
-    this.glyph.setContext(this.getContext());
-    return this;
-  }
-
-  /** Get bounding box. */
-  getBoundingBox(): BoundingBox | undefined {
-    return super.getBoundingBox();
-  }
-
-  /* Overridden to ignore */
-  // eslint-disable-next-line
-  addToModifierContext(mc: ModifierContext): this {
-    // DO NOTHING.
-    return this;
   }
 
   preFormat(): this {
@@ -75,26 +55,22 @@ export class ClefNote extends Note {
   /** Render clef note. */
   draw(): void {
     const stave = this.checkStave();
-    if (!this.glyph.getContext()) {
-      this.glyph.setContext(this.getContext());
-    }
+    const ctx = this.checkContext();
 
     this.setRendered();
     const abs_x = this.getAbsoluteX();
 
-    this.glyph.setStave(stave);
-    this.glyph.setYShift(stave.getYForLine(this.clef.line ?? 0) - stave.getYForGlyphs());
-    this.glyph.renderToStave(abs_x);
+    Glyph.renderGlyph(ctx, abs_x, stave.getYForLine(this.clef.line), Clef.getPoint(this.size), this.clef.code, {
+      category: `clefNote_${this.size}`,
+    });
 
     // If the Vex.Flow.Clef has an annotation, such as 8va, draw it.
-    if (this.clef_obj.annotation !== undefined) {
-      const attachment = new Glyph(this.clef_obj.annotation.code, this.clef_obj.annotation.point);
-      if (!attachment.getContext()) {
-        attachment.setContext(this.getContext());
-      }
+    if (this.annotation !== undefined) {
+      const attachment = new Glyph(this.annotation.code, this.annotation.point);
+      attachment.setContext(ctx);
       attachment.setStave(stave);
-      attachment.setYShift(stave.getYForLine(this.clef_obj.annotation.line) - stave.getYForGlyphs());
-      attachment.setXShift(this.clef_obj.annotation.x_shift);
+      attachment.setYShift(stave.getYForLine(this.annotation.line) - stave.getYForGlyphs());
+      attachment.setXShift(this.annotation.x_shift);
       attachment.renderToStave(abs_x);
     }
   }

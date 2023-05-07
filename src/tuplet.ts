@@ -64,6 +64,13 @@ export interface TupletOptions {
   y_offset?: number;
 }
 
+export interface TupletMetrics {
+  noteHeadOffset: number;
+  stemOffset: number;
+  bottomLine: number;
+  topModifierOffset: number;
+}
+
 export const enum TupletLocation {
   BOTTOM = -1,
   TOP = +1,
@@ -103,9 +110,11 @@ export class Tuplet extends Element {
     return 15;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static get metrics(): any {
-    return Tables.currentMusicFont().getMetrics().glyphs.tuplet;
+  static get metrics(): TupletMetrics {
+    const tupletMetrics = Tables.currentMusicFont().getMetrics().tuplet;
+
+    if (!tupletMetrics) throw new RuntimeError('BadMetrics', `tuplet missing`);
+    return tupletMetrics;
   }
 
   constructor(notes: Note[], options: TupletOptions = {}) {
@@ -132,7 +141,7 @@ export class Tuplet extends Element {
 
     this.ratioed =
       this.options.ratioed != undefined ? this.options.ratioed : Math.abs(this.notes_occupied - this.num_notes) > 1;
-    this.point = Tables.currentMusicFont().lookupMetric('digits.tupletPoint');
+    this.point = (Tables.NOTATION_FONT_SCALE * 3) / 5;
     this.y_pos = 16;
     this.x_pos = 100;
     this.width = 200;

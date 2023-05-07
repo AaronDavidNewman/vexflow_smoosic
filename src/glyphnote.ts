@@ -1,4 +1,6 @@
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
+//
+// Any glyph that is set to appear on a Stave and take up musical time and graphical space.
 
 import { BoundingBox } from './boundingbox';
 import { Glyph } from './glyph';
@@ -16,8 +18,9 @@ export class GlyphNote extends Note {
   }
 
   protected options: Required<GlyphNoteOptions>;
+  protected glyph!: Glyph;
 
-  constructor(glyph: Glyph | undefined, noteStruct: NoteStruct, options?: GlyphNoteOptions) {
+  constructor(glyph: Glyph, noteStruct: NoteStruct, options?: GlyphNoteOptions) {
     super(noteStruct);
     this.options = {
       ignoreTicks: false,
@@ -27,10 +30,8 @@ export class GlyphNote extends Note {
 
     // Note properties
     this.ignore_ticks = this.options.ignoreTicks;
-    if (glyph) {
       this.setGlyph(glyph);
     }
-  }
 
   setGlyph(glyph: Glyph): this {
     this.glyph = glyph;
@@ -38,7 +39,7 @@ export class GlyphNote extends Note {
     return this;
   }
 
-  getBoundingBox(): BoundingBox {
+  getBoundingBox(): BoundingBox | undefined {
     return this.glyph.getBoundingBox();
   }
 
@@ -57,6 +58,11 @@ export class GlyphNote extends Note {
       modifier.setContext(ctx);
       modifier.drawWithStyle();
     }
+  }
+
+  /** Get the glyph width. */
+  getGlyphWidth(): number {
+    return this.glyph.getMetrics().width;
   }
 
   draw(): void {

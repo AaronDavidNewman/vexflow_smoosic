@@ -3,20 +3,24 @@
 
 import { BoundingBox } from './boundingbox';
 import { ElementStyle } from './element';
-import { Glyph, GlyphProps } from './glyph';
+import { Glyph } from './glyph';
 import { Note, NoteStruct } from './note';
 import { RenderContext } from './rendercontext';
 import { Stave } from './stave';
 import { Stem } from './stem';
 import { Tables } from './tables';
 import { Category } from './typeguard';
-import { defined, log, RuntimeError } from './util';
+import { defined, log } from './util';
 
 // eslint-disable-next-line
 function L(...args: any[]) {
   if (NoteHead.DEBUG) log('Vex.Flow.NoteHead', args);
 }
 
+export interface NoteHeadMetrics {
+  minPadding?: number;
+  displacedShiftX?: number;
+}
 export interface NoteHeadStruct extends NoteStruct {
   line?: number;
   glyph_font_scale?: number;
@@ -130,14 +134,18 @@ export class NoteHead extends Note {
 
     // Get glyph code based on duration and note type. This could be
     // regular notes, rests, or other custom codes.
-    this.glyph = Tables.getGlyphProps(this.duration, this.noteType);
-    defined(this.glyph, 'BadArguments', `No glyph found for duration '${this.duration}' and type '${this.noteType}'`);
+    this.glyphProps = Tables.getGlyphProps(this.duration, this.noteType);
+    defined(
+      this.glyphProps,
+      'BadArguments',
+      `No glyph found for duration '${this.duration}' and type '${this.noteType}'`
+    );
 
-    // Swap out the glyph with leger lines
-    if ((this.line > 5 || this.line < 0) && this.glyph.leger_code_head) {
-      this.glyph.code_head = this.glyph.leger_code_head;
+    // Swap out the glyph with ledger lines
+    if ((this.line > 5 || this.line < 0) && this.glyphProps.ledger_code_head) {
+      this.glyphProps.code_head = this.glyphProps.ledger_code_head;
     }
-    this.glyph_code = this.glyph.code_head;
+    this.glyph_code = this.glyphProps.code_head;
     this.x_shift = noteStruct.x_shift || 0;
     if (noteStruct.custom_glyph_code) {
       this.custom_glyph = true;
@@ -155,7 +163,13 @@ export class NoteHead extends Note {
       glyph_font_scale: noteStruct.glyph_font_scale || Tables.NOTATION_FONT_SCALE,
     };
 
-    this.setWidth(this.glyph.getWidth(this.render_options.glyph_font_scale));
+    this.setWidth(
+      this.custom_glyph &&
+        !this.glyph_code.startsWith('noteheadSlashed') &&
+        !this.glyph_code.startsWith('noteheadCircled')
+        ? Glyph.getWidth(this.glyph_code, this.render_options.glyph_font_scale)
+        : this.glyphProps.getWidth(this.render_options.glyph_font_scale)
+    );
   }
   /** Get the width of the notehead. */
   getWidth(): number {
@@ -165,11 +179,6 @@ export class NoteHead extends Note {
   /** Determine if the notehead is displaced. */
   isDisplaced(): boolean {
     return this.displaced === true;
-  }
-
-  /** Get the glyph data. */
-  getGlyph(): GlyphProps {
-    return this.glyph;
   }
 
   /** Set the X coordinate. */
@@ -212,7 +221,7 @@ export class NoteHead extends Note {
     const displacementStemAdjustment = Stem.WIDTH / 2;
     const musicFont = Tables.currentMusicFont();
     const fontShift = musicFont.lookupMetric('notehead.shiftX', 0) * this.stem_direction;
-    const displacedFontShift = musicFont.lookupMetric('noteHead.displaced.shiftX', 0) * this.stem_direction;
+    const displacedFontShift = musicFont.lookupMetric('noteHead.displacedShiftX', 0) * this.stem_direction;
 
     return (
       x +
@@ -223,9 +232,6 @@ export class NoteHead extends Note {
 
   /** Get the `BoundingBox` for the `NoteHead`. */
   getBoundingBox(): BoundingBox {
-    if (!this.preFormatted) {
-      throw new RuntimeError('UnformattedNote', "Can't call getBoundingBox on an unformatted note.");
-    }
     const spacing = this.checkStave().getSpacingBetweenLines();
     const half_spacing = spacing / 2;
     const min_y = this.y - half_spacing;
@@ -264,7 +270,11 @@ export class NoteHead extends Note {
     let head_x = this.getAbsoluteX();
     if (this.custom_glyph) {
       // head_x += this.x_shift;
-      head_x += this.stem_direction === Stem.UP ? this.stem_up_x_offset : this.stem_down_x_offset;
+      head_x +=
+        this.stem_direction === Stem.UP
+          ? this.stem_up_x_offset +
+            (this.glyphProps.stem ? this.glyphProps.getWidth(this.render_options.glyph_font_scale) - this.width : 0)
+          : this.stem_down_x_offset;
     }
 
     const y = this.y;
@@ -281,7 +291,7 @@ export class NoteHead extends Note {
       drawSlashNoteHead(ctx, this.duration, head_x, y, stem_direction, staveSpace);
     } else {
       Glyph.renderGlyph(ctx, head_x, y, glyph_font_scale, this.glyph_code, {
-        category: this.custom_glyph ? `noteHead.custom.${categorySuffix}` : `noteHead.standard.${categorySuffix}`,
+        category: `noteHead.${categorySuffix}`,
       });
     }
   }

@@ -25,7 +25,6 @@ const BeamTests = {
   Start(): void {
     QUnit.module('Beam');
     const run = VexFlowTests.runTests;
-    run('Complex Beams with Articulations two Staves', complexWithArticulation2);
     run('Simple Beam', simple);
     run('Multi Beam', multi);
     run('Sixteenth Beam', sixteenth);

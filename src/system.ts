@@ -1,7 +1,6 @@
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
 
-// import { BoundingBox } from './boundingbox';
 import { BoundingBox } from './boundingbox';
 import { Element } from './element';
 import { Factory } from './factory';
@@ -239,7 +238,6 @@ export class System extends Element {
   format(): void {
     const options_details = this.options.details;
     let justifyWidth = 0;
-    // let totalWidth = 0;
     const formatter = new Formatter(options_details);
     this.formatter = formatter;
 
@@ -279,7 +277,6 @@ export class System extends Element {
         part.setWidth(this.options.width);
       });
     } else {
-      // totalWidth = this.options.width;
       justifyWidth = this.options.noPadding
         ? this.options.width - (startX - this.options.x)
         : this.options.width - (startX - this.options.x) - Stave.defaultPadding;

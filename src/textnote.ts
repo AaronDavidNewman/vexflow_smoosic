@@ -4,6 +4,7 @@
 import { Font, FontInfo, FontStyle, FontWeight } from './font';
 import { Glyph } from './glyph';
 import { Note, NoteStruct } from './note';
+import { Tables } from './tables';
 import { Category } from './typeguard';
 import { RuntimeError } from './util';
 
@@ -107,6 +108,7 @@ export class TextNote extends Note {
   }
 
   protected text: string;
+  protected glyph?: Glyph;
   protected superscript?: string;
   protected subscript?: string;
   protected smooth: boolean;
@@ -132,7 +134,7 @@ export class TextNote extends Note {
       const struct = TextNote.GLYPHS[noteStruct.glyph];
       if (!struct) throw new RuntimeError('Invalid glyph type: ' + noteStruct.glyph);
 
-      this.glyph = new Glyph(struct.code, 40, { category: 'textNote' });
+      this.glyph = new Glyph(struct.code, Tables.NOTATION_FONT_SCALE, { category: 'textNote' });
       this.setWidth(this.glyph.getMetrics().width);
     } else {
       this.glyph = undefined;

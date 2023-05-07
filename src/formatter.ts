@@ -16,7 +16,7 @@ import { TabStave } from './tabstave';
 import { Tickable } from './tickable';
 import { TickContext } from './tickcontext';
 import { isNote, isStaveNote } from './typeguard';
-import { defined, log, midLine, RuntimeError } from './util';
+import { defined, log, midLine, RuntimeError, sumArray } from './util';
 import { Voice } from './voice';
 
 interface Distance {
@@ -28,7 +28,7 @@ interface Distance {
 }
 
 export interface FormatterOptions {
-  /** Defaults to 100. */
+  /** Defaults to Tables.SOFTMAX_FACTOR. */
   softmaxFactor?: number;
 
   /** Defaults to `false`. */
@@ -60,9 +60,6 @@ export interface AlignmentModifierContexts {
 
 type addToContextFn<T> = (tickable: Tickable, context: T, voiceIndex: number) => void;
 type makeContextFn<T> = (tick?: { tickID: number }) => T;
-
-// Helper function
-const sumArray = (arr: number[]) => arr.reduce((a, b) => a + b, 0);
 
 /**
  * Create `Alignment`s for each tick in `voices`. Also calculate the
@@ -193,9 +190,6 @@ export class Formatter {
   protected voices: Voice[];
   protected lossHistory: number[];
   protected durationStats: Record<string, { mean: number; count: number }>;
-  protected tickToContextMap: Record<number, ModifierContext[]> = {};
-  protected tickToStaveContextMap: Record<string, ModifierContext> = {};
-  protected tickList: number[] = [];
 
   /**
    * Helper function to layout "notes" one after the other without
@@ -379,7 +373,7 @@ export class Formatter {
         }
 
         // If activated rests not on default can be rendered as specified.
-        const position = currTickable.getGlyph().position.toUpperCase();
+        const position = currTickable.getGlyphProps().position.toUpperCase();
         if (position !== 'R/4' && position !== 'B/4') {
           return;
         }
@@ -411,7 +405,7 @@ export class Formatter {
   constructor(options?: FormatterOptions) {
     this.formatterOptions = {
       globalSoftmax: false,
-      softmaxFactor: 2,
+      softmaxFactor: Tables.SOFTMAX_FACTOR,
       maxIterations: 5,
       ...options,
     };
@@ -854,8 +848,6 @@ export class Formatter {
       return mdCalc;
     };
     const minDistance = calcMinDistance(targetWidth, distances);
-    let scaledMaxPadding = configMaxPadding;
-    let scaledMinPadding = configMinPadding;
 
     // right justify to either the configured padding, or the min distance between notes, whichever is greatest.
     // This * 2 keeps the existing formatting unless there is 'a lot' of extra whitespace, which won't break
@@ -868,16 +860,16 @@ export class Formatter {
         // If the number of actual ticks in the measure <> configured ticks, right-justify
         // because the softmax won't yield the correct value
         if (voice.getTicksUsed().value() > voice.getTotalTicks().value()) {
-          return scaledMaxPadding * 2 < minDistance ? minDistance : scaledMaxPadding;
+          return configMaxPadding * 2 < minDistance ? minDistance : configMaxPadding;
         }
         const tickWidth = lastTickable.getWidth();
         lastTickablePadding =
           voice.softmax(lastContext.getMaxTicks().value()) * curTargetWidth - (tickWidth + leftPadding);
       }
-      return scaledMaxPadding * 2 < lastTickablePadding ? lastTickablePadding : scaledMaxPadding;
+      return configMaxPadding * 2 < lastTickablePadding ? lastTickablePadding : configMaxPadding;
     };
     let paddingMax = paddingMaxCalc(targetWidth);
-    let paddingMin = paddingMax - (scaledMaxPadding - scaledMinPadding);
+    let paddingMin = paddingMax - (configMaxPadding - configMinPadding);
     const maxX = adjustedJustifyWidth - paddingMin;
 
     let iterations = maxIterations;
@@ -885,10 +877,8 @@ export class Formatter {
     // without going over
     while ((actualWidth > maxX && iterations > 0) || (actualWidth + paddingMax < maxX && iterations > 1)) {
       targetWidth -= actualWidth - maxX;
-      scaledMaxPadding = scaledMaxPadding * (actualWidth / targetWidth);
-      scaledMinPadding = scaledMinPadding * (actualWidth / targetWidth);
       paddingMax = paddingMaxCalc(targetWidth);
-      paddingMin = paddingMax - (scaledMaxPadding - scaledMinPadding);
+      paddingMin = paddingMax - (configMaxPadding - configMinPadding);
       actualWidth = shiftToIdealDistances(calculateIdealDistances(targetWidth));
       iterations--;
     }
@@ -1065,9 +1055,6 @@ export class Formatter {
    * the formatters that the voices belong on a single stave.
    */
   joinVoices(voices: Voice[]): this {
-    if (voices.length < 1) {
-      return this;
-    }
     this.createModifierContexts(voices);
     this.hasMinTotalWidth = false;
     return this;

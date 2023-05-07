@@ -2,9 +2,9 @@
 // MIT License
 
 import { Font } from '../font';
-import { GonvilleFont } from './gonville_glyphs';
-import { GonvilleMetrics } from './gonville_metrics';
+import { CommonMetrics } from './common_metrics';
+import { GonvilleSmuflFont } from './gonville_glyphs';
 
 export function loadGonville() {
-  Font.load('Gonville', GonvilleFont, GonvilleMetrics);
+  Font.load('Gonville', GonvilleSmuflFont, CommonMetrics);
 }
