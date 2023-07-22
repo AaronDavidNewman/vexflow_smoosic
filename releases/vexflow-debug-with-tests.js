@@ -1,5 +1,5 @@
 /*!
- * VexFlow 4.2.0-beta.2   2023-05-07T15:16:33.836Z   cc02f7a8343f57cc03165df80e66d6d4f9a2da96
+ * VexFlow 4.2.0-beta.2   2023-07-21T03:23:51.949Z   6478802b18adbf45c507e392748ed4c2a09e9abb
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * https://www.vexflow.com   https://github.com/0xfe/vexflow
  */
@@ -30,8 +30,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "VERSION": () => (/* binding */ VERSION)
 /* harmony export */ });
 const VERSION = '4.2.0-beta.2';
-const ID = 'cc02f7a8343f57cc03165df80e66d6d4f9a2da96';
-const DATE = '2023-05-07T15:16:33.836Z';
+const ID = '6478802b18adbf45c507e392748ed4c2a09e9abb';
+const DATE = '2023-07-21T03:23:51.949Z';
 
 
 /***/ }),
