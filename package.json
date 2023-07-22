@@ -132,6 +132,9 @@
     "test:reference:cache": "grunt test:reference:cache"
   },
   "homepage": "https://vexflow.com/",
+  "publishConfig": {
+    "@AaronDavidNewman:registry": "https://npm.pkg.github.com"
+  },
   "keywords": [
     "music",
     "notation",
