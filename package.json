@@ -1,5 +1,5 @@
 {
-  "name": "vexflow",
+  "name": "vexflow_smoosic",
   "version": "4.2.0-beta.2",
   "description": "A JavaScript library for rendering music notation and guitar tablature.",
   "exports": {
@@ -62,12 +62,11 @@
   "jsdelivr": "./build/cjs/vexflow.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/0xfe/vexflow.git"
+    "url": "https://github.com/AaronDavidNewman/vexflow_smoosic.git"
   },
   "author": {
-    "name": "Mohit Muthanna Cheppudira",
-    "email": "mohit@muthanna.com",
-    "url": "https://muthanna.com/"
+    "name": "Aaron Newman",
+    "email": "aarondnewman@gmail.com"
   },
   "license": "MIT",
   "files": [
@@ -82,7 +81,7 @@
     "AUTHORS.md"
   ],
   "bugs": {
-    "url": "https://github.com/0xfe/vexflow/issues"
+    "url": "https://github.com/AaronDavidNewman/vexflow_smoosic/issues"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",
@@ -131,7 +130,6 @@
     "test:reference": "grunt test:reference",
     "test:reference:cache": "grunt test:reference:cache"
   },
-  "homepage": "https://vexflow.com/",
   "publishConfig": {
     "@AaronDavidNewman:registry": "https://npm.pkg.github.com"
   },
