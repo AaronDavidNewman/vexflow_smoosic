@@ -121,6 +121,7 @@ const versionInfo = require('./tools/version_info');
 // Add a banner to the top of some CJS output files.
 const banner =
   `VexFlow ${versionInfo.VERSION}   ${versionInfo.DATE}   ${versionInfo.ID}\n` +
+  `Vexflow_smoosic, forked from : \n` +
   `Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>\n` +
   `https://www.vexflow.com   https://github.com/0xfe/vexflow`;
 

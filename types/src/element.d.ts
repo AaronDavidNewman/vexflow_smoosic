@@ -59,7 +59,7 @@ export declare abstract class Element {
     static get CATEGORY(): string;
     protected children: Element[];
     protected static ID: number;
-    protected static newID(): string;
+    static newID(): string;
     /**
      * Default font for text. This is not related to music engraving. Instead, see `Flow.setMusicFont(...fontNames)`
      * to customize the font for musical symbols placed on the score.

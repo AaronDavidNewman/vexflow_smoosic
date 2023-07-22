@@ -73,7 +73,7 @@ export abstract class Element {
   // inherit the style of their parents.
   protected children: Element[] = [];
   protected static ID: number = 1000;
-  protected static newID(): string {
+  public static newID(): string {
     return `auto${Element.ID++}`;
   }
 
