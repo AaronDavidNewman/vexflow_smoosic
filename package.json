@@ -1,6 +1,6 @@
 {
   "name": "vexflow_smoosic",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "description": "A JavaScript library for rendering music notation and guitar tablature.",
   "exports": {
     ".": {
@@ -54,12 +54,10 @@
       "import": "./build/esm/entry/vexflow-font-custom.js"
     }
   },
-  "main": "./build/cjs/vexflow.js",
-  "browser": "./build/cjs/vexflow.js",
-  "module": "./build/esm/entry/vexflow.js",
+  "main": "./build/cjs/vexflow-debug.js",
+  "browser": "./build/cjs/vexflow-debug.js",
+  "module": "./build/esm/entry/vexflow-debug.js",
   "types": "./build/types/entry/vexflow.d.ts",
-  "unpkg": "./build/cjs/vexflow.js",
-  "jsdelivr": "./build/cjs/vexflow.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/AaronDavidNewman/vexflow_smoosic.git"
@@ -76,8 +74,7 @@
     "tests/flow.html",
     "tests/flow.css",
     "tests/support",
-    "releases/vexflow-min.js",
-    "releases/vexflow-debug.js",
+    "releases/vexflow.js",
     "AUTHORS.md"
   ],
   "bugs": {
