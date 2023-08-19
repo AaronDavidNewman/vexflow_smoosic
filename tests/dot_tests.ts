@@ -40,7 +40,7 @@ function showOneNote(note1: StaveNote, stave: Stave, ctx: RenderContext, x: numb
 function basic(options: TestOptions, contextBuilder: ContextBuilder): void {
   const ctx = contextBuilder(options.elementId, 1000, 240);
 
-  const stave = new Stave(10, 10, 975);
+  const stave = new Stave(10, 10, 1075);
   stave.setContext(ctx);
   stave.draw();
 
@@ -71,6 +71,8 @@ function basic(options: TestOptions, contextBuilder: ContextBuilder): void {
       duration: '16',
       stem_direction: 1,
     }),
+    new StaveNote({ keys: ['e/4'], duration: '16', stem_direction: 1 }),
+    new StaveNote({ keys: ['f/4'], duration: '16', stem_direction: 1 }),
     new StaveNote({
       keys: ['e/4', 'g/4', 'a/4', 'b/4', 'c/5'],
       duration: '16',
@@ -111,7 +113,7 @@ function multiVoice(options: TestOptions, contextBuilder: ContextBuilder): void 
     new StaveNote({ keys: ['c/4', 'e/4', 'c/5'], duration: '2', stem_direction: -1 }),
     new StaveNote({ keys: ['d/4', 'c/5', 'd/5'], duration: '2', stem_direction: -1 }),
     new StaveNote({ keys: ['d/4', 'c/5', 'd/5'], duration: '8', stem_direction: -1 }),
-    new StaveNote({ keys: ['d/4', 'c/5', 'd/5'], duration: '8', stem_direction: -1 }),
+    new StaveNote({ keys: ['d/4', 'c/5', 'd/5'], duration: '8', stem_direction: -1 })
   ];
   Dot.buildAndAttach([notes1[0], notes1[2], notes1[3], notes1[4]], { all: true });
   Dot.buildAndAttach([notes1[0], notes1[2], notes1[3], notes1[4]], { all: true });

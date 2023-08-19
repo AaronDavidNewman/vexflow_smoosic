@@ -1,5 +1,5 @@
 /*!
- * VexFlow 4.2.2   2023-07-23T19:40:32.108Z   5b91492cef32e1decc8f63505445d1267675dc97
+ * VexFlow 4.2.2   2023-08-06T17:20:41.016Z   ba5db3599f603eedc986776a716e3b36acae4a30
  * Vexflow_smoosic, forked from :
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * https://www.vexflow.com   https://github.com/0xfe/vexflow
@@ -31,8 +31,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "VERSION": () => (/* binding */ VERSION)
 /* harmony export */ });
 const VERSION = '4.2.2';
-const ID = '5b91492cef32e1decc8f63505445d1267675dc97';
-const DATE = '2023-07-23T19:40:32.108Z';
+const ID = 'ba5db3599f603eedc986776a716e3b36acae4a30';
+const DATE = '2023-08-06T17:20:41.016Z';
 
 
 /***/ }),
@@ -41511,7 +41511,7 @@ function showOneNote(note1, stave, ctx, x) {
 }
 function basic(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 1000, 240);
-    const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_6__.Stave(10, 10, 975);
+    const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_6__.Stave(10, 10, 1075);
     stave.setContext(ctx);
     stave.draw();
     const notes = [
@@ -41538,6 +41538,8 @@ function basic(options, contextBuilder) {
             duration: '16',
             stem_direction: 1,
         }),
+        new _src_stavenote__WEBPACK_IMPORTED_MODULE_7__.StaveNote({ keys: ['e/4'], duration: '16', stem_direction: 1 }),
+        new _src_stavenote__WEBPACK_IMPORTED_MODULE_7__.StaveNote({ keys: ['f/4'], duration: '16', stem_direction: 1 }),
         new _src_stavenote__WEBPACK_IMPORTED_MODULE_7__.StaveNote({
             keys: ['e/4', 'g/4', 'a/4', 'b/4', 'c/5'],
             duration: '16',
@@ -41569,7 +41571,7 @@ function multiVoice(options, contextBuilder) {
         new _src_stavenote__WEBPACK_IMPORTED_MODULE_7__.StaveNote({ keys: ['c/4', 'e/4', 'c/5'], duration: '2', stem_direction: -1 }),
         new _src_stavenote__WEBPACK_IMPORTED_MODULE_7__.StaveNote({ keys: ['d/4', 'c/5', 'd/5'], duration: '2', stem_direction: -1 }),
         new _src_stavenote__WEBPACK_IMPORTED_MODULE_7__.StaveNote({ keys: ['d/4', 'c/5', 'd/5'], duration: '8', stem_direction: -1 }),
-        new _src_stavenote__WEBPACK_IMPORTED_MODULE_7__.StaveNote({ keys: ['d/4', 'c/5', 'd/5'], duration: '8', stem_direction: -1 }),
+        new _src_stavenote__WEBPACK_IMPORTED_MODULE_7__.StaveNote({ keys: ['d/4', 'c/5', 'd/5'], duration: '8', stem_direction: -1 })
     ];
     _src_dot__WEBPACK_IMPORTED_MODULE_2__.Dot.buildAndAttach([notes1[0], notes1[2], notes1[3], notes1[4]], { all: true });
     _src_dot__WEBPACK_IMPORTED_MODULE_2__.Dot.buildAndAttach([notes1[0], notes1[2], notes1[3], notes1[4]], { all: true });
