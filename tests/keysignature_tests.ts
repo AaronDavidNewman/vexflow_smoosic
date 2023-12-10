@@ -16,7 +16,7 @@ import { BarlineType } from '../src/stavebarline';
 const KeySignatureTests = {
   Start(): void {
     QUnit.module('KeySignature');
-    test('Key Parser Test', parser);
+    QUnit.test('Key Parser Test', parser);
     const run = VexFlowTests.runTests;
     run('Major Key Test', majorKeys);
     run('Minor Key Test', minorKeys);
@@ -26,6 +26,7 @@ const KeySignatureTests = {
     run('Altered key test', majorKeysAltered);
     run('End key with clef test', endKeyWithClef);
     run('Key Signature Change test', changeKey);
+    run('Key Signature with/without clef symbol', clefKeySignature);
   },
 };
 
@@ -38,11 +39,11 @@ const fontWidths = () => {
   return { sharpWidth, flatWidth, naturalWidth, clefWidth };
 };
 
-function parser(): void {
-  expect(11);
+function parser(assert: Assert): void {
+  assert.expect(11);
 
   function catchError(spec: string): void {
-    throws(() => Flow.keySignature(spec), /BadKeySignature/);
+    assert.throws(() => Flow.keySignature(spec), /BadKeySignature/);
   }
 
   catchError('asdf');
@@ -64,7 +65,7 @@ function parser(): void {
   Flow.keySignature('F#');
   Flow.keySignature('G#m');
 
-  ok(true, 'all pass');
+  assert.ok(true, 'all pass');
 }
 
 function majorKeys(options: TestOptions, contextBuilder: ContextBuilder): void {
@@ -96,7 +97,7 @@ function majorKeys(options: TestOptions, contextBuilder: ContextBuilder): void {
   stave2.setContext(ctx);
   stave2.draw();
 
-  ok(true, 'all pass');
+  options.assert.ok(true, 'all pass');
 }
 
 function majorKeysCanceled(options: TestOptions, contextBuilder: ContextBuilder): void {
@@ -164,7 +165,7 @@ function majorKeysCanceled(options: TestOptions, contextBuilder: ContextBuilder)
   stave4.setContext(ctx);
   stave4.draw();
 
-  ok(true, 'all pass');
+  options.assert.ok(true, 'all pass');
 }
 
 function keysCanceledForEachClef(options: TestOptions, contextBuilder: ContextBuilder): void {
@@ -204,7 +205,7 @@ function keysCanceledForEachClef(options: TestOptions, contextBuilder: ContextBu
     y += 80;
   });
 
-  ok(true, 'all pass');
+  options.assert.ok(true, 'all pass');
 }
 
 function majorKeysAltered(options: TestOptions, contextBuilder: ContextBuilder): void {
@@ -256,7 +257,7 @@ function majorKeysAltered(options: TestOptions, contextBuilder: ContextBuilder):
   stave4.setContext(ctx);
   stave4.draw();
 
-  ok(true, 'all pass');
+  options.assert.ok(true, 'all pass');
 }
 
 function minorKeys(options: TestOptions, contextBuilder: ContextBuilder): void {
@@ -288,7 +289,7 @@ function minorKeys(options: TestOptions, contextBuilder: ContextBuilder): void {
   stave2.setContext(ctx);
   stave2.draw();
 
-  ok(true, 'all pass');
+  options.assert.ok(true, 'all pass');
 }
 
 function endKeyWithClef(options: TestOptions, contextBuilder: ContextBuilder): void {
@@ -308,7 +309,7 @@ function endKeyWithClef(options: TestOptions, contextBuilder: ContextBuilder): v
 
   stave1.setContext(ctx).draw();
   stave2.setContext(ctx).draw();
-  ok(true, 'all pass');
+  options.assert.ok(true, 'all pass');
 }
 
 function staveHelper(options: TestOptions, contextBuilder: ContextBuilder): void {
@@ -337,7 +338,7 @@ function staveHelper(options: TestOptions, contextBuilder: ContextBuilder): void
   stave2.setContext(ctx);
   stave2.draw();
 
-  ok(true, 'all pass');
+  options.assert.ok(true, 'all pass');
 }
 
 function changeKey(options: TestOptions): void {
@@ -367,8 +368,37 @@ function changeKey(options: TestOptions): void {
 
   f.draw();
 
-  ok(true, 'all pass');
+  options.assert.ok(true, 'all pass');
 }
 
+function clefKeySignature(options: TestOptions): void {
+  const f = VexFlowTests.makeFactory(options, 900);
+
+  // The previous code was buggy: f.Stave(10, 10, 800), even though Factory.Stave() only accepts 1 argument.
+  const stave = f.Stave({ x: 10, y: 10, width: 800 }).addClef('bass').addTimeSignature('C|').setClefLines('bass');
+
+  const voice = f
+    .Voice()
+    .setStrict(false)
+    .addTickables([
+      f.KeySigNote({ key: 'Bb' }),
+      f.StaveNote({ keys: ['c/4'], duration: '1', clef: 'bass' }),
+      f.BarNote(),
+      f.KeySigNote({ key: 'D', cancelKey: 'Bb' }),
+      f.StaveNote({ keys: ['c/4'], duration: '1', clef: 'bass'  }),
+      f.BarNote(),
+      f.KeySigNote({ key: 'Bb' }),
+      f.StaveNote({ keys: ['c/4'], duration: '1', clef: 'bass'  }),
+      f.BarNote(),
+      f.KeySigNote({ key: 'D', alterKey: ['b', 'n'] }), // TODO: alterKey needs to be a string[]
+      f.StaveNote({ keys: ['c/4'], duration: '1', clef: 'bass'  }),
+    ]);
+
+  f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
+
+  f.draw();
+
+  options.assert.ok(true, 'all pass');
+}
 VexFlowTests.register(KeySignatureTests);
 export { KeySignatureTests };

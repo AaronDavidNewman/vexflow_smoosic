@@ -388,6 +388,7 @@ module.exports = (grunt) => {
       files: ['tests/flow-headless-browser.html'],
       options: {
         puppeteer: {
+          headless: "new",
           args: ['--no-sandbox', '--disable-setuid-sandbox'],
         },
       },

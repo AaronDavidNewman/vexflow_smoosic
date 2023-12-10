@@ -103,6 +103,11 @@ export declare class Stave extends Element {
     addEndModifier(modifier: StaveModifier): this;
     setBegBarType(type: number | BarlineType): this;
     setEndBarType(type: number | BarlineType): this;
+    /**
+     * treat the stave as if the clef is clefSpec, but don't display the clef
+     * @param clefSpec
+     */
+    setClefLines(clefSpec: string): this;
     setClef(clefSpec: string, size?: string, annotation?: string, position?: number): this;
     getClef(): string;
     setEndClef(clefSpec: string, size?: string, annotation?: string): this;

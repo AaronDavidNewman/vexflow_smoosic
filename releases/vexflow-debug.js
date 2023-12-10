@@ -1,5 +1,6 @@
 /*!
- * VexFlow 4.2.0-beta.2   2023-07-21T03:23:51.949Z   6478802b18adbf45c507e392748ed4c2a09e9abb
+ * VexFlow 4.2.2   2023-12-10T22:46:47.526Z   9996264eda00015f217ab2c7d98c873599d70e18
+ * Vexflow_smoosic, forked from :
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * https://www.vexflow.com   https://github.com/0xfe/vexflow
  */
@@ -25,13 +26,13 @@ return /******/ (() => { // webpackBootstrap
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "DATE": () => (/* binding */ DATE),
-/* harmony export */   "ID": () => (/* binding */ ID),
-/* harmony export */   "VERSION": () => (/* binding */ VERSION)
+/* harmony export */   DATE: () => (/* binding */ DATE),
+/* harmony export */   ID: () => (/* binding */ ID),
+/* harmony export */   VERSION: () => (/* binding */ VERSION)
 /* harmony export */ });
-const VERSION = '4.2.0-beta.2';
-const ID = '6478802b18adbf45c507e392748ed4c2a09e9abb';
-const DATE = '2023-07-21T03:23:51.949Z';
+const VERSION = '4.2.2';
+const ID = '9996264eda00015f217ab2c7d98c873599d70e18';
+const DATE = '2023-12-10T22:46:47.526Z';
 
 
 /***/ }),
@@ -44,7 +45,7 @@ const DATE = '2023-07-21T03:23:51.949Z';
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Accidental": () => (/* binding */ Accidental)
+/* harmony export */   Accidental: () => (/* binding */ Accidental)
 /* harmony export */ });
 /* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -543,9 +544,9 @@ Accidental.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Annotation": () => (/* binding */ Annotation),
-/* harmony export */   "AnnotationHorizontalJustify": () => (/* binding */ AnnotationHorizontalJustify),
-/* harmony export */   "AnnotationVerticalJustify": () => (/* binding */ AnnotationVerticalJustify)
+/* harmony export */   Annotation: () => (/* binding */ Annotation),
+/* harmony export */   AnnotationHorizontalJustify: () => (/* binding */ AnnotationHorizontalJustify),
+/* harmony export */   AnnotationVerticalJustify: () => (/* binding */ AnnotationVerticalJustify)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -851,7 +852,7 @@ Annotation.VerticalJustifyString = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Articulation": () => (/* binding */ Articulation)
+/* harmony export */   Articulation: () => (/* binding */ Articulation)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -1211,7 +1212,7 @@ Articulation.INITIAL_OFFSET = -0.5;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "BarNote": () => (/* binding */ BarNote)
+/* harmony export */   BarNote: () => (/* binding */ BarNote)
 /* harmony export */ });
 /* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./note */ "./src/note.ts");
 /* harmony import */ var _stavebarline__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
@@ -1307,10 +1308,10 @@ BarNote.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "BEAM_BOTH": () => (/* binding */ BEAM_BOTH),
-/* harmony export */   "BEAM_LEFT": () => (/* binding */ BEAM_LEFT),
-/* harmony export */   "BEAM_RIGHT": () => (/* binding */ BEAM_RIGHT),
-/* harmony export */   "Beam": () => (/* binding */ Beam)
+/* harmony export */   BEAM_BOTH: () => (/* binding */ BEAM_BOTH),
+/* harmony export */   BEAM_LEFT: () => (/* binding */ BEAM_LEFT),
+/* harmony export */   BEAM_RIGHT: () => (/* binding */ BEAM_RIGHT),
+/* harmony export */   Beam: () => (/* binding */ Beam)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
@@ -2155,7 +2156,7 @@ class Beam extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Bend": () => (/* binding */ Bend)
+/* harmony export */   Bend: () => (/* binding */ Bend)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -2423,7 +2424,7 @@ Bend.TEXT_FONT = Object.assign({}, _element__WEBPACK_IMPORTED_MODULE_0__.Element
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "BoundingBox": () => (/* binding */ BoundingBox)
+/* harmony export */   BoundingBox: () => (/* binding */ BoundingBox)
 /* harmony export */ });
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
@@ -2515,7 +2516,7 @@ class BoundingBox {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "BoundingBoxComputation": () => (/* binding */ BoundingBoxComputation)
+/* harmony export */   BoundingBoxComputation: () => (/* binding */ BoundingBoxComputation)
 /* harmony export */ });
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
@@ -2657,7 +2658,7 @@ class BoundingBoxComputation {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "CanvasContext": () => (/* binding */ CanvasContext)
+/* harmony export */   CanvasContext: () => (/* binding */ CanvasContext)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _rendercontext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./rendercontext */ "./src/rendercontext.ts");
@@ -2920,11 +2921,11 @@ class CanvasContext extends _rendercontext__WEBPACK_IMPORTED_MODULE_1__.RenderCo
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ChordSymbol": () => (/* binding */ ChordSymbol),
-/* harmony export */   "ChordSymbolHorizontalJustify": () => (/* binding */ ChordSymbolHorizontalJustify),
-/* harmony export */   "ChordSymbolVerticalJustify": () => (/* binding */ ChordSymbolVerticalJustify),
-/* harmony export */   "SymbolModifiers": () => (/* binding */ SymbolModifiers),
-/* harmony export */   "SymbolTypes": () => (/* binding */ SymbolTypes)
+/* harmony export */   ChordSymbol: () => (/* binding */ ChordSymbol),
+/* harmony export */   ChordSymbolHorizontalJustify: () => (/* binding */ ChordSymbolHorizontalJustify),
+/* harmony export */   ChordSymbolVerticalJustify: () => (/* binding */ ChordSymbolVerticalJustify),
+/* harmony export */   SymbolModifiers: () => (/* binding */ SymbolModifiers),
+/* harmony export */   SymbolTypes: () => (/* binding */ SymbolTypes)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -3657,7 +3658,7 @@ ChordSymbol.noFormat = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Clef": () => (/* binding */ Clef)
+/* harmony export */   Clef: () => (/* binding */ Clef)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
@@ -3840,7 +3841,7 @@ Clef.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ClefNote": () => (/* binding */ ClefNote)
+/* harmony export */   ClefNote: () => (/* binding */ ClefNote)
 /* harmony export */ });
 /* harmony import */ var _clef__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./clef */ "./src/clef.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -3919,7 +3920,7 @@ class ClefNote extends _note__WEBPACK_IMPORTED_MODULE_2__.Note {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Crescendo": () => (/* binding */ Crescendo)
+/* harmony export */   Crescendo: () => (/* binding */ Crescendo)
 /* harmony export */ });
 /* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./note */ "./src/note.ts");
 /* harmony import */ var _tickcontext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
@@ -4039,8 +4040,8 @@ Crescendo.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Curve": () => (/* binding */ Curve),
-/* harmony export */   "CurvePosition": () => (/* binding */ CurvePosition)
+/* harmony export */   Curve: () => (/* binding */ Curve),
+/* harmony export */   CurvePosition: () => (/* binding */ CurvePosition)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
@@ -4189,7 +4190,7 @@ class Curve extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Dot": () => (/* binding */ Dot)
+/* harmony export */   Dot: () => (/* binding */ Dot)
 /* harmony export */ });
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
@@ -4361,10 +4362,10 @@ class Dot extends _modifier__WEBPACK_IMPORTED_MODULE_0__.Modifier {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Builder": () => (/* binding */ Builder),
-/* harmony export */   "EasyScore": () => (/* binding */ EasyScore),
-/* harmony export */   "EasyScoreGrammar": () => (/* binding */ EasyScoreGrammar),
-/* harmony export */   "Piece": () => (/* binding */ Piece)
+/* harmony export */   Builder: () => (/* binding */ Builder),
+/* harmony export */   EasyScore: () => (/* binding */ EasyScore),
+/* harmony export */   EasyScoreGrammar: () => (/* binding */ EasyScoreGrammar),
+/* harmony export */   Piece: () => (/* binding */ Piece)
 /* harmony export */ });
 /* harmony import */ var _articulation__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./articulation */ "./src/articulation.ts");
 /* harmony import */ var _dot__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dot */ "./src/dot.ts");
@@ -4803,7 +4804,7 @@ EasyScore.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Element": () => (/* binding */ Element)
+/* harmony export */   Element: () => (/* binding */ Element)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _registry__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./registry */ "./src/registry.ts");
@@ -5211,7 +5212,7 @@ Element.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Factory": () => (/* binding */ Factory)
+/* harmony export */   Factory: () => (/* binding */ Factory)
 /* harmony export */ });
 /* harmony import */ var _accidental__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./accidental */ "./src/accidental.ts");
 /* harmony import */ var _annotation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
@@ -5779,7 +5780,7 @@ Factory.TEXT_FONT = Object.assign({}, _element__WEBPACK_IMPORTED_MODULE_9__.Elem
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Flow": () => (/* binding */ Flow)
+/* harmony export */   Flow: () => (/* binding */ Flow)
 /* harmony export */ });
 /* harmony import */ var _accidental__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./accidental */ "./src/accidental.ts");
 /* harmony import */ var _annotation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
@@ -6215,9 +6216,9 @@ Flow.VoiceMode = _voice__WEBPACK_IMPORTED_MODULE_81__.VoiceMode;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Font": () => (/* binding */ Font),
-/* harmony export */   "FontStyle": () => (/* binding */ FontStyle),
-/* harmony export */   "FontWeight": () => (/* binding */ FontWeight)
+/* harmony export */   Font: () => (/* binding */ Font),
+/* harmony export */   FontStyle: () => (/* binding */ FontStyle),
+/* harmony export */   FontWeight: () => (/* binding */ FontWeight)
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -6616,7 +6617,7 @@ Font.WEB_FONT_FILES = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "BravuraFont": () => (/* binding */ BravuraFont)
+/* harmony export */   BravuraFont: () => (/* binding */ BravuraFont)
 /* harmony export */ });
 const BravuraFont = {
     glyphs: {
@@ -10173,7 +10174,7 @@ const BravuraFont = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "CommonMetrics": () => (/* binding */ CommonMetrics)
+/* harmony export */   CommonMetrics: () => (/* binding */ CommonMetrics)
 /* harmony export */ });
 const CommonMetrics = {
     smufl: true,
@@ -10600,7 +10601,7 @@ const CommonMetrics = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "CustomFont": () => (/* binding */ CustomFont)
+/* harmony export */   CustomFont: () => (/* binding */ CustomFont)
 /* harmony export */ });
 const CustomFont = {
     resolution: 1000,
@@ -10656,7 +10657,7 @@ const CustomFont = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GonvilleSmuflFont": () => (/* binding */ GonvilleSmuflFont)
+/* harmony export */   GonvilleSmuflFont: () => (/* binding */ GonvilleSmuflFont)
 /* harmony export */ });
 const GonvilleSmuflFont = {
     glyphs: {
@@ -11789,7 +11790,7 @@ const GonvilleSmuflFont = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "LelandFont": () => (/* binding */ LelandFont)
+/* harmony export */   LelandFont: () => (/* binding */ LelandFont)
 /* harmony export */ });
 const LelandFont = {
     glyphs: {
@@ -12994,7 +12995,7 @@ const LelandFont = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "loadAllMusicFonts": () => (/* binding */ loadAllMusicFonts)
+/* harmony export */   loadAllMusicFonts: () => (/* binding */ loadAllMusicFonts)
 /* harmony export */ });
 /* harmony import */ var _load_bravura__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./load_bravura */ "./src/fonts/load_bravura.ts");
 /* harmony import */ var _load_custom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./load_custom */ "./src/fonts/load_custom.ts");
@@ -13034,7 +13035,7 @@ function loadAllMusicFonts() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "loadBravura": () => (/* binding */ loadBravura)
+/* harmony export */   loadBravura: () => (/* binding */ loadBravura)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../font */ "./src/font.ts");
 /* harmony import */ var _bravura_glyphs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./bravura_glyphs */ "./src/fonts/bravura_glyphs.ts");
@@ -13067,7 +13068,7 @@ function loadBravura() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "loadCustom": () => (/* binding */ loadCustom)
+/* harmony export */   loadCustom: () => (/* binding */ loadCustom)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../font */ "./src/font.ts");
 /* harmony import */ var _common_metrics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common_metrics */ "./src/fonts/common_metrics.ts");
@@ -13092,7 +13093,7 @@ function loadCustom() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "loadGonville": () => (/* binding */ loadGonville)
+/* harmony export */   loadGonville: () => (/* binding */ loadGonville)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../font */ "./src/font.ts");
 /* harmony import */ var _common_metrics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common_metrics */ "./src/fonts/common_metrics.ts");
@@ -13117,7 +13118,7 @@ function loadGonville() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "loadLeland": () => (/* binding */ loadLeland)
+/* harmony export */   loadLeland: () => (/* binding */ loadLeland)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../font */ "./src/font.ts");
 /* harmony import */ var _common_metrics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common_metrics */ "./src/fonts/common_metrics.ts");
@@ -13142,7 +13143,7 @@ function loadLeland() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "loadPetaluma": () => (/* binding */ loadPetaluma)
+/* harmony export */   loadPetaluma: () => (/* binding */ loadPetaluma)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../font */ "./src/font.ts");
 /* harmony import */ var _common_metrics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common_metrics */ "./src/fonts/common_metrics.ts");
@@ -13258,7 +13259,7 @@ function loadPetaluma() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "PetalumaFont": () => (/* binding */ PetalumaFont)
+/* harmony export */   PetalumaFont: () => (/* binding */ PetalumaFont)
 /* harmony export */ });
 const PetalumaFont = {
     glyphs: {
@@ -14911,7 +14912,7 @@ const PetalumaFont = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "PetalumaScriptFont": () => (/* binding */ PetalumaScriptFont)
+/* harmony export */   PetalumaScriptFont: () => (/* binding */ PetalumaScriptFont)
 /* harmony export */ });
 const PetalumaScriptFont = {
     spacing: 50,
@@ -15788,7 +15789,7 @@ const PetalumaScriptFont = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "RobotoSlabFont": () => (/* binding */ RobotoSlabFont)
+/* harmony export */   RobotoSlabFont: () => (/* binding */ RobotoSlabFont)
 /* harmony export */ });
 const RobotoSlabFont = {
     spacing: 50,
@@ -16665,7 +16666,7 @@ const RobotoSlabFont = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "SansFontBold": () => (/* binding */ SansFontBold)
+/* harmony export */   SansFontBold: () => (/* binding */ SansFontBold)
 /* harmony export */ });
 const SansFontBold = {
     glyphs: {
@@ -17541,7 +17542,7 @@ const SansFontBold = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "SansFont": () => (/* binding */ SansFont)
+/* harmony export */   SansFont: () => (/* binding */ SansFont)
 /* harmony export */ });
 const SansFont = {
     smufl: false,
@@ -18425,7 +18426,7 @@ const SansFont = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "SerifFont": () => (/* binding */ SerifFont)
+/* harmony export */   SerifFont: () => (/* binding */ SerifFont)
 /* harmony export */ });
 const SerifFont = {
     smufl: false,
@@ -19309,7 +19310,7 @@ const SerifFont = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "loadTextFonts": () => (/* binding */ loadTextFonts)
+/* harmony export */   loadTextFonts: () => (/* binding */ loadTextFonts)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../font */ "./src/font.ts");
 /* harmony import */ var _textformatter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../textformatter */ "./src/textformatter.ts");
@@ -19451,7 +19452,7 @@ function loadTextFonts() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Formatter": () => (/* binding */ Formatter)
+/* harmony export */   Formatter: () => (/* binding */ Formatter)
 /* harmony export */ });
 /* harmony import */ var _beam__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./beam */ "./src/beam.ts");
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./font */ "./src/font.ts");
@@ -20345,7 +20346,7 @@ Formatter.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Fraction": () => (/* binding */ Fraction)
+/* harmony export */   Fraction: () => (/* binding */ Fraction)
 /* harmony export */ });
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./src/util.ts");
@@ -20574,7 +20575,7 @@ function getNumeratorAndDenominator(n, d = 1) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "FretHandFinger": () => (/* binding */ FretHandFinger)
+/* harmony export */   FretHandFinger: () => (/* binding */ FretHandFinger)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -20759,7 +20760,7 @@ FretHandFinger.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GhostNote": () => (/* binding */ GhostNote)
+/* harmony export */   GhostNote: () => (/* binding */ GhostNote)
 /* harmony export */ });
 /* harmony import */ var _stemmablenote__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
@@ -20838,8 +20839,8 @@ class GhostNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_0__.StemmableNot
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Glyph": () => (/* binding */ Glyph),
-/* harmony export */   "OutlineCode": () => (/* binding */ OutlineCode)
+/* harmony export */   Glyph: () => (/* binding */ Glyph),
+/* harmony export */   OutlineCode: () => (/* binding */ OutlineCode)
 /* harmony export */ });
 /* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 /* harmony import */ var _boundingboxcomputation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./boundingboxcomputation */ "./src/boundingboxcomputation.ts");
@@ -21253,7 +21254,7 @@ Glyph.MUSIC_FONT_STACK = [];
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GlyphNote": () => (/* binding */ GlyphNote)
+/* harmony export */   GlyphNote: () => (/* binding */ GlyphNote)
 /* harmony export */ });
 /* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./note */ "./src/note.ts");
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
@@ -21332,7 +21333,7 @@ class GlyphNote extends _note__WEBPACK_IMPORTED_MODULE_0__.Note {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GraceNote": () => (/* binding */ GraceNote)
+/* harmony export */   GraceNote: () => (/* binding */ GraceNote)
 /* harmony export */ });
 /* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 /* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stem */ "./src/stem.ts");
@@ -21490,7 +21491,7 @@ class GraceNote extends _stavenote__WEBPACK_IMPORTED_MODULE_0__.StaveNote {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GraceNoteGroup": () => (/* binding */ GraceNoteGroup)
+/* harmony export */   GraceNoteGroup: () => (/* binding */ GraceNoteGroup)
 /* harmony export */ });
 /* harmony import */ var _beam__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./beam */ "./src/beam.ts");
 /* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
@@ -21660,7 +21661,7 @@ GraceNoteGroup.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GraceTabNote": () => (/* binding */ GraceTabNote)
+/* harmony export */   GraceTabNote: () => (/* binding */ GraceTabNote)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _tabnote__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
@@ -21705,143 +21706,143 @@ class GraceTabNote extends _tabnote__WEBPACK_IMPORTED_MODULE_1__.TabNote {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Accidental": () => (/* reexport safe */ _accidental__WEBPACK_IMPORTED_MODULE_0__.Accidental),
-/* harmony export */   "Annotation": () => (/* reexport safe */ _annotation__WEBPACK_IMPORTED_MODULE_1__.Annotation),
-/* harmony export */   "AnnotationHorizontalJustify": () => (/* reexport safe */ _annotation__WEBPACK_IMPORTED_MODULE_1__.AnnotationHorizontalJustify),
-/* harmony export */   "AnnotationVerticalJustify": () => (/* reexport safe */ _annotation__WEBPACK_IMPORTED_MODULE_1__.AnnotationVerticalJustify),
-/* harmony export */   "Articulation": () => (/* reexport safe */ _articulation__WEBPACK_IMPORTED_MODULE_2__.Articulation),
-/* harmony export */   "BEAM_BOTH": () => (/* reexport safe */ _beam__WEBPACK_IMPORTED_MODULE_4__.BEAM_BOTH),
-/* harmony export */   "BEAM_LEFT": () => (/* reexport safe */ _beam__WEBPACK_IMPORTED_MODULE_4__.BEAM_LEFT),
-/* harmony export */   "BEAM_RIGHT": () => (/* reexport safe */ _beam__WEBPACK_IMPORTED_MODULE_4__.BEAM_RIGHT),
-/* harmony export */   "BarNote": () => (/* reexport safe */ _barnote__WEBPACK_IMPORTED_MODULE_3__.BarNote),
-/* harmony export */   "Barline": () => (/* reexport safe */ _stavebarline__WEBPACK_IMPORTED_MODULE_48__.Barline),
-/* harmony export */   "BarlineType": () => (/* reexport safe */ _stavebarline__WEBPACK_IMPORTED_MODULE_48__.BarlineType),
-/* harmony export */   "Beam": () => (/* reexport safe */ _beam__WEBPACK_IMPORTED_MODULE_4__.Beam),
-/* harmony export */   "Bend": () => (/* reexport safe */ _bend__WEBPACK_IMPORTED_MODULE_5__.Bend),
-/* harmony export */   "BoundingBox": () => (/* reexport safe */ _boundingbox__WEBPACK_IMPORTED_MODULE_6__.BoundingBox),
-/* harmony export */   "BoundingBoxComputation": () => (/* reexport safe */ _boundingboxcomputation__WEBPACK_IMPORTED_MODULE_7__.BoundingBoxComputation),
-/* harmony export */   "Builder": () => (/* reexport safe */ _easyscore__WEBPACK_IMPORTED_MODULE_15__.Builder),
-/* harmony export */   "CanvasContext": () => (/* reexport safe */ _canvascontext__WEBPACK_IMPORTED_MODULE_8__.CanvasContext),
-/* harmony export */   "Category": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.Category),
-/* harmony export */   "ChordSymbol": () => (/* reexport safe */ _chordsymbol__WEBPACK_IMPORTED_MODULE_9__.ChordSymbol),
-/* harmony export */   "ChordSymbolHorizontalJustify": () => (/* reexport safe */ _chordsymbol__WEBPACK_IMPORTED_MODULE_9__.ChordSymbolHorizontalJustify),
-/* harmony export */   "ChordSymbolVerticalJustify": () => (/* reexport safe */ _chordsymbol__WEBPACK_IMPORTED_MODULE_9__.ChordSymbolVerticalJustify),
-/* harmony export */   "Clef": () => (/* reexport safe */ _clef__WEBPACK_IMPORTED_MODULE_10__.Clef),
-/* harmony export */   "ClefNote": () => (/* reexport safe */ _clefnote__WEBPACK_IMPORTED_MODULE_11__.ClefNote),
-/* harmony export */   "Crescendo": () => (/* reexport safe */ _crescendo__WEBPACK_IMPORTED_MODULE_12__.Crescendo),
-/* harmony export */   "Curve": () => (/* reexport safe */ _curve__WEBPACK_IMPORTED_MODULE_13__.Curve),
-/* harmony export */   "CurvePosition": () => (/* reexport safe */ _curve__WEBPACK_IMPORTED_MODULE_13__.CurvePosition),
-/* harmony export */   "Dot": () => (/* reexport safe */ _dot__WEBPACK_IMPORTED_MODULE_14__.Dot),
-/* harmony export */   "EasyScore": () => (/* reexport safe */ _easyscore__WEBPACK_IMPORTED_MODULE_15__.EasyScore),
-/* harmony export */   "EasyScoreGrammar": () => (/* reexport safe */ _easyscore__WEBPACK_IMPORTED_MODULE_15__.EasyScoreGrammar),
-/* harmony export */   "Element": () => (/* reexport safe */ _element__WEBPACK_IMPORTED_MODULE_16__.Element),
-/* harmony export */   "Factory": () => (/* reexport safe */ _factory__WEBPACK_IMPORTED_MODULE_17__.Factory),
-/* harmony export */   "Flow": () => (/* reexport safe */ _flow__WEBPACK_IMPORTED_MODULE_18__.Flow),
-/* harmony export */   "Font": () => (/* reexport safe */ _font__WEBPACK_IMPORTED_MODULE_19__.Font),
-/* harmony export */   "FontStyle": () => (/* reexport safe */ _font__WEBPACK_IMPORTED_MODULE_19__.FontStyle),
-/* harmony export */   "FontWeight": () => (/* reexport safe */ _font__WEBPACK_IMPORTED_MODULE_19__.FontWeight),
-/* harmony export */   "Formatter": () => (/* reexport safe */ _formatter__WEBPACK_IMPORTED_MODULE_20__.Formatter),
-/* harmony export */   "Fraction": () => (/* reexport safe */ _fraction__WEBPACK_IMPORTED_MODULE_21__.Fraction),
-/* harmony export */   "FretHandFinger": () => (/* reexport safe */ _frethandfinger__WEBPACK_IMPORTED_MODULE_22__.FretHandFinger),
-/* harmony export */   "GhostNote": () => (/* reexport safe */ _ghostnote__WEBPACK_IMPORTED_MODULE_23__.GhostNote),
-/* harmony export */   "Glyph": () => (/* reexport safe */ _glyph__WEBPACK_IMPORTED_MODULE_24__.Glyph),
-/* harmony export */   "GlyphNote": () => (/* reexport safe */ _glyphnote__WEBPACK_IMPORTED_MODULE_25__.GlyphNote),
-/* harmony export */   "GraceNote": () => (/* reexport safe */ _gracenote__WEBPACK_IMPORTED_MODULE_26__.GraceNote),
-/* harmony export */   "GraceNoteGroup": () => (/* reexport safe */ _gracenotegroup__WEBPACK_IMPORTED_MODULE_27__.GraceNoteGroup),
-/* harmony export */   "GraceTabNote": () => (/* reexport safe */ _gracetabnote__WEBPACK_IMPORTED_MODULE_28__.GraceTabNote),
-/* harmony export */   "KeyManager": () => (/* reexport safe */ _keymanager__WEBPACK_IMPORTED_MODULE_29__.KeyManager),
-/* harmony export */   "KeySigNote": () => (/* reexport safe */ _keysignote__WEBPACK_IMPORTED_MODULE_31__.KeySigNote),
-/* harmony export */   "KeySignature": () => (/* reexport safe */ _keysignature__WEBPACK_IMPORTED_MODULE_30__.KeySignature),
-/* harmony export */   "Modifier": () => (/* reexport safe */ _modifier__WEBPACK_IMPORTED_MODULE_32__.Modifier),
-/* harmony export */   "ModifierContext": () => (/* reexport safe */ _modifiercontext__WEBPACK_IMPORTED_MODULE_33__.ModifierContext),
-/* harmony export */   "ModifierPosition": () => (/* reexport safe */ _modifier__WEBPACK_IMPORTED_MODULE_32__.ModifierPosition),
-/* harmony export */   "MultiMeasureRest": () => (/* reexport safe */ _multimeasurerest__WEBPACK_IMPORTED_MODULE_34__.MultiMeasureRest),
-/* harmony export */   "Music": () => (/* reexport safe */ _music__WEBPACK_IMPORTED_MODULE_35__.Music),
-/* harmony export */   "Note": () => (/* reexport safe */ _note__WEBPACK_IMPORTED_MODULE_36__.Note),
-/* harmony export */   "NoteHead": () => (/* reexport safe */ _notehead__WEBPACK_IMPORTED_MODULE_37__.NoteHead),
-/* harmony export */   "NoteSubGroup": () => (/* reexport safe */ _notesubgroup__WEBPACK_IMPORTED_MODULE_38__.NoteSubGroup),
-/* harmony export */   "Ornament": () => (/* reexport safe */ _ornament__WEBPACK_IMPORTED_MODULE_39__.Ornament),
-/* harmony export */   "OutlineCode": () => (/* reexport safe */ _glyph__WEBPACK_IMPORTED_MODULE_24__.OutlineCode),
-/* harmony export */   "Parenthesis": () => (/* reexport safe */ _parenthesis__WEBPACK_IMPORTED_MODULE_40__.Parenthesis),
-/* harmony export */   "Parser": () => (/* reexport safe */ _parser__WEBPACK_IMPORTED_MODULE_41__.Parser),
-/* harmony export */   "PedalMarking": () => (/* reexport safe */ _pedalmarking__WEBPACK_IMPORTED_MODULE_42__.PedalMarking),
-/* harmony export */   "Piece": () => (/* reexport safe */ _easyscore__WEBPACK_IMPORTED_MODULE_15__.Piece),
-/* harmony export */   "Registry": () => (/* reexport safe */ _registry__WEBPACK_IMPORTED_MODULE_43__.Registry),
-/* harmony export */   "RenderContext": () => (/* reexport safe */ _rendercontext__WEBPACK_IMPORTED_MODULE_44__.RenderContext),
-/* harmony export */   "Renderer": () => (/* reexport safe */ _renderer__WEBPACK_IMPORTED_MODULE_45__.Renderer),
-/* harmony export */   "RendererBackends": () => (/* reexport safe */ _renderer__WEBPACK_IMPORTED_MODULE_45__.RendererBackends),
-/* harmony export */   "RendererLineEndType": () => (/* reexport safe */ _renderer__WEBPACK_IMPORTED_MODULE_45__.RendererLineEndType),
-/* harmony export */   "RepeatNote": () => (/* reexport safe */ _repeatnote__WEBPACK_IMPORTED_MODULE_46__.RepeatNote),
-/* harmony export */   "Repetition": () => (/* reexport safe */ _staverepetition__WEBPACK_IMPORTED_MODULE_54__.Repetition),
-/* harmony export */   "RuntimeError": () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.RuntimeError),
-/* harmony export */   "SVGContext": () => (/* reexport safe */ _svgcontext__WEBPACK_IMPORTED_MODULE_64__.SVGContext),
-/* harmony export */   "Stave": () => (/* reexport safe */ _stave__WEBPACK_IMPORTED_MODULE_47__.Stave),
-/* harmony export */   "StaveConnector": () => (/* reexport safe */ _staveconnector__WEBPACK_IMPORTED_MODULE_49__.StaveConnector),
-/* harmony export */   "StaveHairpin": () => (/* reexport safe */ _stavehairpin__WEBPACK_IMPORTED_MODULE_50__.StaveHairpin),
-/* harmony export */   "StaveLine": () => (/* reexport safe */ _staveline__WEBPACK_IMPORTED_MODULE_51__.StaveLine),
-/* harmony export */   "StaveModifier": () => (/* reexport safe */ _stavemodifier__WEBPACK_IMPORTED_MODULE_52__.StaveModifier),
-/* harmony export */   "StaveModifierPosition": () => (/* reexport safe */ _stavemodifier__WEBPACK_IMPORTED_MODULE_52__.StaveModifierPosition),
-/* harmony export */   "StaveNote": () => (/* reexport safe */ _stavenote__WEBPACK_IMPORTED_MODULE_53__.StaveNote),
-/* harmony export */   "StaveSection": () => (/* reexport safe */ _stavesection__WEBPACK_IMPORTED_MODULE_55__.StaveSection),
-/* harmony export */   "StaveTempo": () => (/* reexport safe */ _stavetempo__WEBPACK_IMPORTED_MODULE_56__.StaveTempo),
-/* harmony export */   "StaveText": () => (/* reexport safe */ _stavetext__WEBPACK_IMPORTED_MODULE_57__.StaveText),
-/* harmony export */   "StaveTie": () => (/* reexport safe */ _stavetie__WEBPACK_IMPORTED_MODULE_58__.StaveTie),
-/* harmony export */   "Stem": () => (/* reexport safe */ _stem__WEBPACK_IMPORTED_MODULE_60__.Stem),
-/* harmony export */   "StemmableNote": () => (/* reexport safe */ _stemmablenote__WEBPACK_IMPORTED_MODULE_61__.StemmableNote),
-/* harmony export */   "StringNumber": () => (/* reexport safe */ _stringnumber__WEBPACK_IMPORTED_MODULE_62__.StringNumber),
-/* harmony export */   "Stroke": () => (/* reexport safe */ _strokes__WEBPACK_IMPORTED_MODULE_63__.Stroke),
-/* harmony export */   "SymbolModifiers": () => (/* reexport safe */ _chordsymbol__WEBPACK_IMPORTED_MODULE_9__.SymbolModifiers),
-/* harmony export */   "SymbolTypes": () => (/* reexport safe */ _chordsymbol__WEBPACK_IMPORTED_MODULE_9__.SymbolTypes),
-/* harmony export */   "System": () => (/* reexport safe */ _system__WEBPACK_IMPORTED_MODULE_65__.System),
-/* harmony export */   "TabNote": () => (/* reexport safe */ _tabnote__WEBPACK_IMPORTED_MODULE_66__.TabNote),
-/* harmony export */   "TabSlide": () => (/* reexport safe */ _tabslide__WEBPACK_IMPORTED_MODULE_67__.TabSlide),
-/* harmony export */   "TabStave": () => (/* reexport safe */ _tabstave__WEBPACK_IMPORTED_MODULE_68__.TabStave),
-/* harmony export */   "TabTie": () => (/* reexport safe */ _tabtie__WEBPACK_IMPORTED_MODULE_69__.TabTie),
-/* harmony export */   "TextBracket": () => (/* reexport safe */ _textbracket__WEBPACK_IMPORTED_MODULE_70__.TextBracket),
-/* harmony export */   "TextBracketPosition": () => (/* reexport safe */ _textbracket__WEBPACK_IMPORTED_MODULE_70__.TextBracketPosition),
-/* harmony export */   "TextDynamics": () => (/* reexport safe */ _textdynamics__WEBPACK_IMPORTED_MODULE_71__.TextDynamics),
-/* harmony export */   "TextFormatter": () => (/* reexport safe */ _textformatter__WEBPACK_IMPORTED_MODULE_72__.TextFormatter),
-/* harmony export */   "TextJustification": () => (/* reexport safe */ _textnote__WEBPACK_IMPORTED_MODULE_73__.TextJustification),
-/* harmony export */   "TextNote": () => (/* reexport safe */ _textnote__WEBPACK_IMPORTED_MODULE_73__.TextNote),
-/* harmony export */   "TickContext": () => (/* reexport safe */ _tickcontext__WEBPACK_IMPORTED_MODULE_75__.TickContext),
-/* harmony export */   "Tickable": () => (/* reexport safe */ _tickable__WEBPACK_IMPORTED_MODULE_74__.Tickable),
-/* harmony export */   "TimeSigNote": () => (/* reexport safe */ _timesignote__WEBPACK_IMPORTED_MODULE_78__.TimeSigNote),
-/* harmony export */   "TimeSignature": () => (/* reexport safe */ _timesignature__WEBPACK_IMPORTED_MODULE_77__.TimeSignature),
-/* harmony export */   "TimeSignatureGlyph": () => (/* reexport safe */ _timesigglyph__WEBPACK_IMPORTED_MODULE_76__.TimeSignatureGlyph),
-/* harmony export */   "Tremolo": () => (/* reexport safe */ _tremolo__WEBPACK_IMPORTED_MODULE_79__.Tremolo),
-/* harmony export */   "Tuning": () => (/* reexport safe */ _tuning__WEBPACK_IMPORTED_MODULE_80__.Tuning),
-/* harmony export */   "Tuplet": () => (/* reexport safe */ _tuplet__WEBPACK_IMPORTED_MODULE_81__.Tuplet),
-/* harmony export */   "TupletLocation": () => (/* reexport safe */ _tuplet__WEBPACK_IMPORTED_MODULE_81__.TupletLocation),
-/* harmony export */   "Vex": () => (/* reexport safe */ _vex__WEBPACK_IMPORTED_MODULE_84__.Vex),
-/* harmony export */   "Vibrato": () => (/* reexport safe */ _vibrato__WEBPACK_IMPORTED_MODULE_85__.Vibrato),
-/* harmony export */   "VibratoBracket": () => (/* reexport safe */ _vibratobracket__WEBPACK_IMPORTED_MODULE_86__.VibratoBracket),
-/* harmony export */   "Voice": () => (/* reexport safe */ _voice__WEBPACK_IMPORTED_MODULE_87__.Voice),
-/* harmony export */   "VoiceMode": () => (/* reexport safe */ _voice__WEBPACK_IMPORTED_MODULE_87__.VoiceMode),
-/* harmony export */   "Volta": () => (/* reexport safe */ _stavevolta__WEBPACK_IMPORTED_MODULE_59__.Volta),
-/* harmony export */   "VoltaType": () => (/* reexport safe */ _stavevolta__WEBPACK_IMPORTED_MODULE_59__.VoltaType),
-/* harmony export */   "defined": () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.defined),
-/* harmony export */   "drawDot": () => (/* reexport safe */ _rendercontext__WEBPACK_IMPORTED_MODULE_44__.drawDot),
-/* harmony export */   "globalObject": () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.globalObject),
-/* harmony export */   "isAccidental": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isAccidental),
-/* harmony export */   "isAnnotation": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isAnnotation),
-/* harmony export */   "isBarline": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isBarline),
-/* harmony export */   "isCategory": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isCategory),
-/* harmony export */   "isDot": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isDot),
-/* harmony export */   "isGraceNote": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isGraceNote),
-/* harmony export */   "isGraceNoteGroup": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isGraceNoteGroup),
-/* harmony export */   "isHTMLCanvas": () => (/* reexport safe */ _web__WEBPACK_IMPORTED_MODULE_88__.isHTMLCanvas),
-/* harmony export */   "isHTMLDiv": () => (/* reexport safe */ _web__WEBPACK_IMPORTED_MODULE_88__.isHTMLDiv),
-/* harmony export */   "isNote": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isNote),
-/* harmony export */   "isRenderContext": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isRenderContext),
-/* harmony export */   "isStaveNote": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isStaveNote),
-/* harmony export */   "isStemmableNote": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isStemmableNote),
-/* harmony export */   "isTabNote": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isTabNote),
-/* harmony export */   "log": () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.log),
-/* harmony export */   "midLine": () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.midLine),
-/* harmony export */   "normalizeAngle": () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.normalizeAngle),
-/* harmony export */   "prefix": () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.prefix),
-/* harmony export */   "sumArray": () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.sumArray),
-/* harmony export */   "warn": () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.warn)
+/* harmony export */   Accidental: () => (/* reexport safe */ _accidental__WEBPACK_IMPORTED_MODULE_0__.Accidental),
+/* harmony export */   Annotation: () => (/* reexport safe */ _annotation__WEBPACK_IMPORTED_MODULE_1__.Annotation),
+/* harmony export */   AnnotationHorizontalJustify: () => (/* reexport safe */ _annotation__WEBPACK_IMPORTED_MODULE_1__.AnnotationHorizontalJustify),
+/* harmony export */   AnnotationVerticalJustify: () => (/* reexport safe */ _annotation__WEBPACK_IMPORTED_MODULE_1__.AnnotationVerticalJustify),
+/* harmony export */   Articulation: () => (/* reexport safe */ _articulation__WEBPACK_IMPORTED_MODULE_2__.Articulation),
+/* harmony export */   BEAM_BOTH: () => (/* reexport safe */ _beam__WEBPACK_IMPORTED_MODULE_4__.BEAM_BOTH),
+/* harmony export */   BEAM_LEFT: () => (/* reexport safe */ _beam__WEBPACK_IMPORTED_MODULE_4__.BEAM_LEFT),
+/* harmony export */   BEAM_RIGHT: () => (/* reexport safe */ _beam__WEBPACK_IMPORTED_MODULE_4__.BEAM_RIGHT),
+/* harmony export */   BarNote: () => (/* reexport safe */ _barnote__WEBPACK_IMPORTED_MODULE_3__.BarNote),
+/* harmony export */   Barline: () => (/* reexport safe */ _stavebarline__WEBPACK_IMPORTED_MODULE_48__.Barline),
+/* harmony export */   BarlineType: () => (/* reexport safe */ _stavebarline__WEBPACK_IMPORTED_MODULE_48__.BarlineType),
+/* harmony export */   Beam: () => (/* reexport safe */ _beam__WEBPACK_IMPORTED_MODULE_4__.Beam),
+/* harmony export */   Bend: () => (/* reexport safe */ _bend__WEBPACK_IMPORTED_MODULE_5__.Bend),
+/* harmony export */   BoundingBox: () => (/* reexport safe */ _boundingbox__WEBPACK_IMPORTED_MODULE_6__.BoundingBox),
+/* harmony export */   BoundingBoxComputation: () => (/* reexport safe */ _boundingboxcomputation__WEBPACK_IMPORTED_MODULE_7__.BoundingBoxComputation),
+/* harmony export */   Builder: () => (/* reexport safe */ _easyscore__WEBPACK_IMPORTED_MODULE_15__.Builder),
+/* harmony export */   CanvasContext: () => (/* reexport safe */ _canvascontext__WEBPACK_IMPORTED_MODULE_8__.CanvasContext),
+/* harmony export */   Category: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.Category),
+/* harmony export */   ChordSymbol: () => (/* reexport safe */ _chordsymbol__WEBPACK_IMPORTED_MODULE_9__.ChordSymbol),
+/* harmony export */   ChordSymbolHorizontalJustify: () => (/* reexport safe */ _chordsymbol__WEBPACK_IMPORTED_MODULE_9__.ChordSymbolHorizontalJustify),
+/* harmony export */   ChordSymbolVerticalJustify: () => (/* reexport safe */ _chordsymbol__WEBPACK_IMPORTED_MODULE_9__.ChordSymbolVerticalJustify),
+/* harmony export */   Clef: () => (/* reexport safe */ _clef__WEBPACK_IMPORTED_MODULE_10__.Clef),
+/* harmony export */   ClefNote: () => (/* reexport safe */ _clefnote__WEBPACK_IMPORTED_MODULE_11__.ClefNote),
+/* harmony export */   Crescendo: () => (/* reexport safe */ _crescendo__WEBPACK_IMPORTED_MODULE_12__.Crescendo),
+/* harmony export */   Curve: () => (/* reexport safe */ _curve__WEBPACK_IMPORTED_MODULE_13__.Curve),
+/* harmony export */   CurvePosition: () => (/* reexport safe */ _curve__WEBPACK_IMPORTED_MODULE_13__.CurvePosition),
+/* harmony export */   Dot: () => (/* reexport safe */ _dot__WEBPACK_IMPORTED_MODULE_14__.Dot),
+/* harmony export */   EasyScore: () => (/* reexport safe */ _easyscore__WEBPACK_IMPORTED_MODULE_15__.EasyScore),
+/* harmony export */   EasyScoreGrammar: () => (/* reexport safe */ _easyscore__WEBPACK_IMPORTED_MODULE_15__.EasyScoreGrammar),
+/* harmony export */   Element: () => (/* reexport safe */ _element__WEBPACK_IMPORTED_MODULE_16__.Element),
+/* harmony export */   Factory: () => (/* reexport safe */ _factory__WEBPACK_IMPORTED_MODULE_17__.Factory),
+/* harmony export */   Flow: () => (/* reexport safe */ _flow__WEBPACK_IMPORTED_MODULE_18__.Flow),
+/* harmony export */   Font: () => (/* reexport safe */ _font__WEBPACK_IMPORTED_MODULE_19__.Font),
+/* harmony export */   FontStyle: () => (/* reexport safe */ _font__WEBPACK_IMPORTED_MODULE_19__.FontStyle),
+/* harmony export */   FontWeight: () => (/* reexport safe */ _font__WEBPACK_IMPORTED_MODULE_19__.FontWeight),
+/* harmony export */   Formatter: () => (/* reexport safe */ _formatter__WEBPACK_IMPORTED_MODULE_20__.Formatter),
+/* harmony export */   Fraction: () => (/* reexport safe */ _fraction__WEBPACK_IMPORTED_MODULE_21__.Fraction),
+/* harmony export */   FretHandFinger: () => (/* reexport safe */ _frethandfinger__WEBPACK_IMPORTED_MODULE_22__.FretHandFinger),
+/* harmony export */   GhostNote: () => (/* reexport safe */ _ghostnote__WEBPACK_IMPORTED_MODULE_23__.GhostNote),
+/* harmony export */   Glyph: () => (/* reexport safe */ _glyph__WEBPACK_IMPORTED_MODULE_24__.Glyph),
+/* harmony export */   GlyphNote: () => (/* reexport safe */ _glyphnote__WEBPACK_IMPORTED_MODULE_25__.GlyphNote),
+/* harmony export */   GraceNote: () => (/* reexport safe */ _gracenote__WEBPACK_IMPORTED_MODULE_26__.GraceNote),
+/* harmony export */   GraceNoteGroup: () => (/* reexport safe */ _gracenotegroup__WEBPACK_IMPORTED_MODULE_27__.GraceNoteGroup),
+/* harmony export */   GraceTabNote: () => (/* reexport safe */ _gracetabnote__WEBPACK_IMPORTED_MODULE_28__.GraceTabNote),
+/* harmony export */   KeyManager: () => (/* reexport safe */ _keymanager__WEBPACK_IMPORTED_MODULE_29__.KeyManager),
+/* harmony export */   KeySigNote: () => (/* reexport safe */ _keysignote__WEBPACK_IMPORTED_MODULE_31__.KeySigNote),
+/* harmony export */   KeySignature: () => (/* reexport safe */ _keysignature__WEBPACK_IMPORTED_MODULE_30__.KeySignature),
+/* harmony export */   Modifier: () => (/* reexport safe */ _modifier__WEBPACK_IMPORTED_MODULE_32__.Modifier),
+/* harmony export */   ModifierContext: () => (/* reexport safe */ _modifiercontext__WEBPACK_IMPORTED_MODULE_33__.ModifierContext),
+/* harmony export */   ModifierPosition: () => (/* reexport safe */ _modifier__WEBPACK_IMPORTED_MODULE_32__.ModifierPosition),
+/* harmony export */   MultiMeasureRest: () => (/* reexport safe */ _multimeasurerest__WEBPACK_IMPORTED_MODULE_34__.MultiMeasureRest),
+/* harmony export */   Music: () => (/* reexport safe */ _music__WEBPACK_IMPORTED_MODULE_35__.Music),
+/* harmony export */   Note: () => (/* reexport safe */ _note__WEBPACK_IMPORTED_MODULE_36__.Note),
+/* harmony export */   NoteHead: () => (/* reexport safe */ _notehead__WEBPACK_IMPORTED_MODULE_37__.NoteHead),
+/* harmony export */   NoteSubGroup: () => (/* reexport safe */ _notesubgroup__WEBPACK_IMPORTED_MODULE_38__.NoteSubGroup),
+/* harmony export */   Ornament: () => (/* reexport safe */ _ornament__WEBPACK_IMPORTED_MODULE_39__.Ornament),
+/* harmony export */   OutlineCode: () => (/* reexport safe */ _glyph__WEBPACK_IMPORTED_MODULE_24__.OutlineCode),
+/* harmony export */   Parenthesis: () => (/* reexport safe */ _parenthesis__WEBPACK_IMPORTED_MODULE_40__.Parenthesis),
+/* harmony export */   Parser: () => (/* reexport safe */ _parser__WEBPACK_IMPORTED_MODULE_41__.Parser),
+/* harmony export */   PedalMarking: () => (/* reexport safe */ _pedalmarking__WEBPACK_IMPORTED_MODULE_42__.PedalMarking),
+/* harmony export */   Piece: () => (/* reexport safe */ _easyscore__WEBPACK_IMPORTED_MODULE_15__.Piece),
+/* harmony export */   Registry: () => (/* reexport safe */ _registry__WEBPACK_IMPORTED_MODULE_43__.Registry),
+/* harmony export */   RenderContext: () => (/* reexport safe */ _rendercontext__WEBPACK_IMPORTED_MODULE_44__.RenderContext),
+/* harmony export */   Renderer: () => (/* reexport safe */ _renderer__WEBPACK_IMPORTED_MODULE_45__.Renderer),
+/* harmony export */   RendererBackends: () => (/* reexport safe */ _renderer__WEBPACK_IMPORTED_MODULE_45__.RendererBackends),
+/* harmony export */   RendererLineEndType: () => (/* reexport safe */ _renderer__WEBPACK_IMPORTED_MODULE_45__.RendererLineEndType),
+/* harmony export */   RepeatNote: () => (/* reexport safe */ _repeatnote__WEBPACK_IMPORTED_MODULE_46__.RepeatNote),
+/* harmony export */   Repetition: () => (/* reexport safe */ _staverepetition__WEBPACK_IMPORTED_MODULE_54__.Repetition),
+/* harmony export */   RuntimeError: () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.RuntimeError),
+/* harmony export */   SVGContext: () => (/* reexport safe */ _svgcontext__WEBPACK_IMPORTED_MODULE_64__.SVGContext),
+/* harmony export */   Stave: () => (/* reexport safe */ _stave__WEBPACK_IMPORTED_MODULE_47__.Stave),
+/* harmony export */   StaveConnector: () => (/* reexport safe */ _staveconnector__WEBPACK_IMPORTED_MODULE_49__.StaveConnector),
+/* harmony export */   StaveHairpin: () => (/* reexport safe */ _stavehairpin__WEBPACK_IMPORTED_MODULE_50__.StaveHairpin),
+/* harmony export */   StaveLine: () => (/* reexport safe */ _staveline__WEBPACK_IMPORTED_MODULE_51__.StaveLine),
+/* harmony export */   StaveModifier: () => (/* reexport safe */ _stavemodifier__WEBPACK_IMPORTED_MODULE_52__.StaveModifier),
+/* harmony export */   StaveModifierPosition: () => (/* reexport safe */ _stavemodifier__WEBPACK_IMPORTED_MODULE_52__.StaveModifierPosition),
+/* harmony export */   StaveNote: () => (/* reexport safe */ _stavenote__WEBPACK_IMPORTED_MODULE_53__.StaveNote),
+/* harmony export */   StaveSection: () => (/* reexport safe */ _stavesection__WEBPACK_IMPORTED_MODULE_55__.StaveSection),
+/* harmony export */   StaveTempo: () => (/* reexport safe */ _stavetempo__WEBPACK_IMPORTED_MODULE_56__.StaveTempo),
+/* harmony export */   StaveText: () => (/* reexport safe */ _stavetext__WEBPACK_IMPORTED_MODULE_57__.StaveText),
+/* harmony export */   StaveTie: () => (/* reexport safe */ _stavetie__WEBPACK_IMPORTED_MODULE_58__.StaveTie),
+/* harmony export */   Stem: () => (/* reexport safe */ _stem__WEBPACK_IMPORTED_MODULE_60__.Stem),
+/* harmony export */   StemmableNote: () => (/* reexport safe */ _stemmablenote__WEBPACK_IMPORTED_MODULE_61__.StemmableNote),
+/* harmony export */   StringNumber: () => (/* reexport safe */ _stringnumber__WEBPACK_IMPORTED_MODULE_62__.StringNumber),
+/* harmony export */   Stroke: () => (/* reexport safe */ _strokes__WEBPACK_IMPORTED_MODULE_63__.Stroke),
+/* harmony export */   SymbolModifiers: () => (/* reexport safe */ _chordsymbol__WEBPACK_IMPORTED_MODULE_9__.SymbolModifiers),
+/* harmony export */   SymbolTypes: () => (/* reexport safe */ _chordsymbol__WEBPACK_IMPORTED_MODULE_9__.SymbolTypes),
+/* harmony export */   System: () => (/* reexport safe */ _system__WEBPACK_IMPORTED_MODULE_65__.System),
+/* harmony export */   TabNote: () => (/* reexport safe */ _tabnote__WEBPACK_IMPORTED_MODULE_66__.TabNote),
+/* harmony export */   TabSlide: () => (/* reexport safe */ _tabslide__WEBPACK_IMPORTED_MODULE_67__.TabSlide),
+/* harmony export */   TabStave: () => (/* reexport safe */ _tabstave__WEBPACK_IMPORTED_MODULE_68__.TabStave),
+/* harmony export */   TabTie: () => (/* reexport safe */ _tabtie__WEBPACK_IMPORTED_MODULE_69__.TabTie),
+/* harmony export */   TextBracket: () => (/* reexport safe */ _textbracket__WEBPACK_IMPORTED_MODULE_70__.TextBracket),
+/* harmony export */   TextBracketPosition: () => (/* reexport safe */ _textbracket__WEBPACK_IMPORTED_MODULE_70__.TextBracketPosition),
+/* harmony export */   TextDynamics: () => (/* reexport safe */ _textdynamics__WEBPACK_IMPORTED_MODULE_71__.TextDynamics),
+/* harmony export */   TextFormatter: () => (/* reexport safe */ _textformatter__WEBPACK_IMPORTED_MODULE_72__.TextFormatter),
+/* harmony export */   TextJustification: () => (/* reexport safe */ _textnote__WEBPACK_IMPORTED_MODULE_73__.TextJustification),
+/* harmony export */   TextNote: () => (/* reexport safe */ _textnote__WEBPACK_IMPORTED_MODULE_73__.TextNote),
+/* harmony export */   TickContext: () => (/* reexport safe */ _tickcontext__WEBPACK_IMPORTED_MODULE_75__.TickContext),
+/* harmony export */   Tickable: () => (/* reexport safe */ _tickable__WEBPACK_IMPORTED_MODULE_74__.Tickable),
+/* harmony export */   TimeSigNote: () => (/* reexport safe */ _timesignote__WEBPACK_IMPORTED_MODULE_78__.TimeSigNote),
+/* harmony export */   TimeSignature: () => (/* reexport safe */ _timesignature__WEBPACK_IMPORTED_MODULE_77__.TimeSignature),
+/* harmony export */   TimeSignatureGlyph: () => (/* reexport safe */ _timesigglyph__WEBPACK_IMPORTED_MODULE_76__.TimeSignatureGlyph),
+/* harmony export */   Tremolo: () => (/* reexport safe */ _tremolo__WEBPACK_IMPORTED_MODULE_79__.Tremolo),
+/* harmony export */   Tuning: () => (/* reexport safe */ _tuning__WEBPACK_IMPORTED_MODULE_80__.Tuning),
+/* harmony export */   Tuplet: () => (/* reexport safe */ _tuplet__WEBPACK_IMPORTED_MODULE_81__.Tuplet),
+/* harmony export */   TupletLocation: () => (/* reexport safe */ _tuplet__WEBPACK_IMPORTED_MODULE_81__.TupletLocation),
+/* harmony export */   Vex: () => (/* reexport safe */ _vex__WEBPACK_IMPORTED_MODULE_84__.Vex),
+/* harmony export */   Vibrato: () => (/* reexport safe */ _vibrato__WEBPACK_IMPORTED_MODULE_85__.Vibrato),
+/* harmony export */   VibratoBracket: () => (/* reexport safe */ _vibratobracket__WEBPACK_IMPORTED_MODULE_86__.VibratoBracket),
+/* harmony export */   Voice: () => (/* reexport safe */ _voice__WEBPACK_IMPORTED_MODULE_87__.Voice),
+/* harmony export */   VoiceMode: () => (/* reexport safe */ _voice__WEBPACK_IMPORTED_MODULE_87__.VoiceMode),
+/* harmony export */   Volta: () => (/* reexport safe */ _stavevolta__WEBPACK_IMPORTED_MODULE_59__.Volta),
+/* harmony export */   VoltaType: () => (/* reexport safe */ _stavevolta__WEBPACK_IMPORTED_MODULE_59__.VoltaType),
+/* harmony export */   defined: () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.defined),
+/* harmony export */   drawDot: () => (/* reexport safe */ _rendercontext__WEBPACK_IMPORTED_MODULE_44__.drawDot),
+/* harmony export */   globalObject: () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.globalObject),
+/* harmony export */   isAccidental: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isAccidental),
+/* harmony export */   isAnnotation: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isAnnotation),
+/* harmony export */   isBarline: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isBarline),
+/* harmony export */   isCategory: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isCategory),
+/* harmony export */   isDot: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isDot),
+/* harmony export */   isGraceNote: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isGraceNote),
+/* harmony export */   isGraceNoteGroup: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isGraceNoteGroup),
+/* harmony export */   isHTMLCanvas: () => (/* reexport safe */ _web__WEBPACK_IMPORTED_MODULE_88__.isHTMLCanvas),
+/* harmony export */   isHTMLDiv: () => (/* reexport safe */ _web__WEBPACK_IMPORTED_MODULE_88__.isHTMLDiv),
+/* harmony export */   isNote: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isNote),
+/* harmony export */   isRenderContext: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isRenderContext),
+/* harmony export */   isStaveNote: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isStaveNote),
+/* harmony export */   isStemmableNote: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isStemmableNote),
+/* harmony export */   isTabNote: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isTabNote),
+/* harmony export */   log: () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.log),
+/* harmony export */   midLine: () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.midLine),
+/* harmony export */   normalizeAngle: () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.normalizeAngle),
+/* harmony export */   prefix: () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.prefix),
+/* harmony export */   sumArray: () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.sumArray),
+/* harmony export */   warn: () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.warn)
 /* harmony export */ });
 /* harmony import */ var _accidental__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./accidental */ "./src/accidental.ts");
 /* harmony import */ var _annotation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
@@ -22038,7 +22039,7 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "KeyManager": () => (/* binding */ KeyManager)
+/* harmony export */   KeyManager: () => (/* binding */ KeyManager)
 /* harmony export */ });
 /* harmony import */ var _music__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./music */ "./src/music.ts");
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./src/util.ts");
@@ -22163,7 +22164,7 @@ class KeyManager {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "KeySignature": () => (/* binding */ KeySignature)
+/* harmony export */   KeySignature: () => (/* binding */ KeySignature)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
@@ -22477,7 +22478,7 @@ KeySignature.accidentalSpacing = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "KeySigNote": () => (/* binding */ KeySigNote)
+/* harmony export */   KeySigNote: () => (/* binding */ KeySigNote)
 /* harmony export */ });
 /* harmony import */ var _keysignature__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./keysignature */ "./src/keysignature.ts");
 /* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./note */ "./src/note.ts");
@@ -22529,8 +22530,8 @@ class KeySigNote extends _note__WEBPACK_IMPORTED_MODULE_1__.Note {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Modifier": () => (/* binding */ Modifier),
-/* harmony export */   "ModifierPosition": () => (/* binding */ ModifierPosition)
+/* harmony export */   Modifier: () => (/* binding */ Modifier),
+/* harmony export */   ModifierPosition: () => (/* binding */ ModifierPosition)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
@@ -22734,7 +22735,7 @@ class Modifier extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ModifierContext": () => (/* binding */ ModifierContext)
+/* harmony export */   ModifierContext: () => (/* binding */ ModifierContext)
 /* harmony export */ });
 /* harmony import */ var _accidental__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./accidental */ "./src/accidental.ts");
 /* harmony import */ var _annotation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
@@ -22908,7 +22909,7 @@ ModifierContext.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "MultiMeasureRest": () => (/* binding */ MultiMeasureRest)
+/* harmony export */   MultiMeasureRest: () => (/* binding */ MultiMeasureRest)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -23121,7 +23122,7 @@ class MultiMeasureRest extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Music": () => (/* binding */ Music)
+/* harmony export */   Music: () => (/* binding */ Music)
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
@@ -23507,7 +23508,7 @@ class Music {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Note": () => (/* binding */ Note)
+/* harmony export */   Note: () => (/* binding */ Note)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _rendercontext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./rendercontext */ "./src/rendercontext.ts");
@@ -24023,7 +24024,7 @@ class Note extends _tickable__WEBPACK_IMPORTED_MODULE_3__.Tickable {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "NoteHead": () => (/* binding */ NoteHead)
+/* harmony export */   NoteHead: () => (/* binding */ NoteHead)
 /* harmony export */ });
 /* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -24256,7 +24257,7 @@ NoteHead.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "NoteSubGroup": () => (/* binding */ NoteSubGroup)
+/* harmony export */   NoteSubGroup: () => (/* binding */ NoteSubGroup)
 /* harmony export */ });
 /* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -24344,7 +24345,7 @@ class NoteSubGroup extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Ornament": () => (/* binding */ Ornament)
+/* harmony export */   Ornament: () => (/* binding */ Ornament)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -24645,7 +24646,7 @@ Ornament.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Parenthesis": () => (/* binding */ Parenthesis)
+/* harmony export */   Parenthesis: () => (/* binding */ Parenthesis)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -24756,7 +24757,7 @@ class Parenthesis extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Parser": () => (/* binding */ Parser)
+/* harmony export */   Parser: () => (/* binding */ Parser)
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
@@ -24984,7 +24985,7 @@ Parser.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "PedalMarking": () => (/* binding */ PedalMarking)
+/* harmony export */   PedalMarking: () => (/* binding */ PedalMarking)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./font */ "./src/font.ts");
@@ -25251,7 +25252,7 @@ PedalMarking.typeString = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Registry": () => (/* binding */ Registry)
+/* harmony export */   Registry: () => (/* binding */ Registry)
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
@@ -25382,8 +25383,8 @@ class Registry {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "RenderContext": () => (/* binding */ RenderContext),
-/* harmony export */   "drawDot": () => (/* binding */ drawDot)
+/* harmony export */   RenderContext: () => (/* binding */ RenderContext),
+/* harmony export */   drawDot: () => (/* binding */ drawDot)
 /* harmony export */ });
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2021.
@@ -25437,9 +25438,9 @@ function drawDot(ctx, x, y, color = '#F55') {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Renderer": () => (/* binding */ Renderer),
-/* harmony export */   "RendererBackends": () => (/* binding */ RendererBackends),
-/* harmony export */   "RendererLineEndType": () => (/* binding */ RendererLineEndType)
+/* harmony export */   Renderer: () => (/* binding */ Renderer),
+/* harmony export */   RendererBackends: () => (/* binding */ RendererBackends),
+/* harmony export */   RendererLineEndType: () => (/* binding */ RendererLineEndType)
 /* harmony export */ });
 /* harmony import */ var _canvascontext__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./canvascontext */ "./src/canvascontext.ts");
 /* harmony import */ var _svgcontext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./svgcontext */ "./src/svgcontext.ts");
@@ -25586,7 +25587,7 @@ Renderer.lastContext = undefined;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "RepeatNote": () => (/* binding */ RepeatNote)
+/* harmony export */   RepeatNote: () => (/* binding */ RepeatNote)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _glyphnote__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.ts");
@@ -25628,7 +25629,7 @@ class RepeatNote extends _glyphnote__WEBPACK_IMPORTED_MODULE_1__.GlyphNote {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Stave": () => (/* binding */ Stave)
+/* harmony export */   Stave: () => (/* binding */ Stave)
 /* harmony export */ });
 /* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 /* harmony import */ var _clef__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./clef */ "./src/clef.ts");
@@ -25957,6 +25958,14 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
             this.modifiers[1].setType(type);
             this.formatted = false;
         }
+        return this;
+    }
+    /**
+     * treat the stave as if the clef is clefSpec, but don't display the clef
+     * @param clefSpec
+     */
+    setClefLines(clefSpec) {
+        this.clef = clefSpec;
         return this;
     }
     setClef(clefSpec, size, annotation, position) {
@@ -26396,8 +26405,8 @@ Stave.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Barline": () => (/* binding */ Barline),
-/* harmony export */   "BarlineType": () => (/* binding */ BarlineType)
+/* harmony export */   Barline: () => (/* binding */ Barline),
+/* harmony export */   BarlineType: () => (/* binding */ BarlineType)
 /* harmony export */ });
 /* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 /* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tables */ "./src/tables.ts");
@@ -26612,7 +26621,7 @@ class Barline extends _stavemodifier__WEBPACK_IMPORTED_MODULE_0__.StaveModifier 
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveConnector": () => (/* binding */ StaveConnector)
+/* harmony export */   StaveConnector: () => (/* binding */ StaveConnector)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./font */ "./src/font.ts");
@@ -26872,7 +26881,7 @@ StaveConnector.typeString = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveHairpin": () => (/* binding */ StaveHairpin)
+/* harmony export */   StaveHairpin: () => (/* binding */ StaveHairpin)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -27051,7 +27060,7 @@ StaveHairpin.type = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveLine": () => (/* binding */ StaveLine)
+/* harmony export */   StaveLine: () => (/* binding */ StaveLine)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tables */ "./src/tables.ts");
@@ -27345,8 +27354,8 @@ StaveLine.TextJustification = _textnote__WEBPACK_IMPORTED_MODULE_2__.TextJustifi
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveModifier": () => (/* binding */ StaveModifier),
-/* harmony export */   "StaveModifierPosition": () => (/* binding */ StaveModifierPosition)
+/* harmony export */   StaveModifier: () => (/* binding */ StaveModifier),
+/* harmony export */   StaveModifierPosition: () => (/* binding */ StaveModifierPosition)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
@@ -27456,7 +27465,7 @@ class StaveModifier extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveNote": () => (/* binding */ StaveNote)
+/* harmony export */   StaveNote: () => (/* binding */ StaveNote)
 /* harmony export */ });
 /* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -28550,7 +28559,7 @@ StaveNote.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Repetition": () => (/* binding */ Repetition)
+/* harmony export */   Repetition: () => (/* binding */ Repetition)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -28732,7 +28741,7 @@ Repetition.type = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveSection": () => (/* binding */ StaveSection)
+/* harmony export */   StaveSection: () => (/* binding */ StaveSection)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
@@ -28817,7 +28826,7 @@ StaveSection.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveTempo": () => (/* binding */ StaveTempo)
+/* harmony export */   StaveTempo: () => (/* binding */ StaveTempo)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -28939,7 +28948,7 @@ StaveTempo.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveText": () => (/* binding */ StaveText)
+/* harmony export */   StaveText: () => (/* binding */ StaveText)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
@@ -29044,7 +29053,7 @@ StaveText.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveTie": () => (/* binding */ StaveTie)
+/* harmony export */   StaveTie: () => (/* binding */ StaveTie)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
@@ -29242,8 +29251,8 @@ StaveTie.TEXT_FONT = Object.assign({}, _element__WEBPACK_IMPORTED_MODULE_0__.Ele
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Volta": () => (/* binding */ Volta),
-/* harmony export */   "VoltaType": () => (/* binding */ VoltaType)
+/* harmony export */   Volta: () => (/* binding */ Volta),
+/* harmony export */   VoltaType: () => (/* binding */ VoltaType)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
@@ -29332,7 +29341,7 @@ Volta.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Stem": () => (/* binding */ Stem)
+/* harmony export */   Stem: () => (/* binding */ Stem)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tables */ "./src/tables.ts");
@@ -29514,7 +29523,7 @@ Stem.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StemmableNote": () => (/* binding */ StemmableNote)
+/* harmony export */   StemmableNote: () => (/* binding */ StemmableNote)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./note */ "./src/note.ts");
@@ -29759,7 +29768,7 @@ class StemmableNote extends _note__WEBPACK_IMPORTED_MODULE_1__.Note {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StringNumber": () => (/* binding */ StringNumber)
+/* harmony export */   StringNumber: () => (/* binding */ StringNumber)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -30035,7 +30044,7 @@ StringNumber.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Stroke": () => (/* binding */ Stroke)
+/* harmony export */   Stroke: () => (/* binding */ Stroke)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -30273,7 +30282,7 @@ Stroke.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "SVGContext": () => (/* binding */ SVGContext)
+/* harmony export */   SVGContext: () => (/* binding */ SVGContext)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _rendercontext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./rendercontext */ "./src/rendercontext.ts");
@@ -30856,7 +30865,7 @@ SVGContext.measureTextCache = new MeasureTextCache();
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "System": () => (/* binding */ System)
+/* harmony export */   System: () => (/* binding */ System)
 /* harmony export */ });
 /* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./element */ "./src/element.ts");
@@ -31081,7 +31090,7 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Tables": () => (/* binding */ Tables)
+/* harmony export */   Tables: () => (/* binding */ Tables)
 /* harmony export */ });
 /* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -32408,7 +32417,7 @@ const durationCodes = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TabNote": () => (/* binding */ TabNote)
+/* harmony export */   TabNote: () => (/* binding */ TabNote)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -32824,7 +32833,7 @@ class TabNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNote 
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TabSlide": () => (/* binding */ TabSlide)
+/* harmony export */   TabSlide: () => (/* binding */ TabSlide)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _tabtie__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tabtie */ "./src/tabtie.ts");
@@ -32944,7 +32953,7 @@ TabSlide.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TabStave": () => (/* binding */ TabStave)
+/* harmony export */   TabStave: () => (/* binding */ TabStave)
 /* harmony export */ });
 /* harmony import */ var _stave__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./stave */ "./src/stave.ts");
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
@@ -32980,7 +32989,7 @@ class TabStave extends _stave__WEBPACK_IMPORTED_MODULE_0__.Stave {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TabTie": () => (/* binding */ TabTie)
+/* harmony export */   TabTie: () => (/* binding */ TabTie)
 /* harmony export */ });
 /* harmony import */ var _stavetie__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
@@ -33032,8 +33041,8 @@ class TabTie extends _stavetie__WEBPACK_IMPORTED_MODULE_0__.StaveTie {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TextBracket": () => (/* binding */ TextBracket),
-/* harmony export */   "TextBracketPosition": () => (/* binding */ TextBracketPosition)
+/* harmony export */   TextBracket: () => (/* binding */ TextBracket),
+/* harmony export */   TextBracketPosition: () => (/* binding */ TextBracketPosition)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./font */ "./src/font.ts");
@@ -33238,7 +33247,7 @@ TextBracket.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TextDynamics": () => (/* binding */ TextDynamics)
+/* harmony export */   TextDynamics: () => (/* binding */ TextDynamics)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./note */ "./src/note.ts");
@@ -33372,7 +33381,7 @@ TextDynamics.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TextFormatter": () => (/* binding */ TextFormatter)
+/* harmony export */   TextFormatter: () => (/* binding */ TextFormatter)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./src/util.ts");
@@ -33706,8 +33715,8 @@ TextFormatter.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TextJustification": () => (/* binding */ TextJustification),
-/* harmony export */   "TextNote": () => (/* binding */ TextNote)
+/* harmony export */   TextJustification: () => (/* binding */ TextJustification),
+/* harmony export */   TextNote: () => (/* binding */ TextNote)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -33938,7 +33947,7 @@ TextNote.Justification = TextJustification;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Tickable": () => (/* binding */ Tickable)
+/* harmony export */   Tickable: () => (/* binding */ Tickable)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
@@ -34246,7 +34255,7 @@ class Tickable extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TickContext": () => (/* binding */ TickContext)
+/* harmony export */   TickContext: () => (/* binding */ TickContext)
 /* harmony export */ });
 /* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./src/util.ts");
@@ -34456,7 +34465,7 @@ class TickContext {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TimeSignatureGlyph": () => (/* binding */ TimeSignatureGlyph)
+/* harmony export */   TimeSignatureGlyph: () => (/* binding */ TimeSignatureGlyph)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./src/util.ts");
@@ -34568,7 +34577,7 @@ class TimeSignatureGlyph extends _glyph__WEBPACK_IMPORTED_MODULE_0__.Glyph {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TimeSignature": () => (/* binding */ TimeSignature)
+/* harmony export */   TimeSignature: () => (/* binding */ TimeSignature)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
@@ -34771,7 +34780,7 @@ class TimeSignature extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveMod
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TimeSigNote": () => (/* binding */ TimeSigNote)
+/* harmony export */   TimeSigNote: () => (/* binding */ TimeSigNote)
 /* harmony export */ });
 /* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./note */ "./src/note.ts");
 /* harmony import */ var _timesignature__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
@@ -34827,7 +34836,7 @@ class TimeSigNote extends _note__WEBPACK_IMPORTED_MODULE_0__.Note {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Tremolo": () => (/* binding */ Tremolo)
+/* harmony export */   Tremolo: () => (/* binding */ Tremolo)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _gracenote__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
@@ -34907,7 +34916,7 @@ class Tremolo extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Tuning": () => (/* binding */ Tuning)
+/* harmony export */   Tuning: () => (/* binding */ Tuning)
 /* harmony export */ });
 /* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./tables */ "./src/tables.ts");
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./src/util.ts");
@@ -34994,8 +35003,8 @@ class Tuning {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Tuplet": () => (/* binding */ Tuplet),
-/* harmony export */   "TupletLocation": () => (/* binding */ TupletLocation)
+/* harmony export */   Tuplet: () => (/* binding */ Tuplet),
+/* harmony export */   TupletLocation: () => (/* binding */ TupletLocation)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
@@ -35342,19 +35351,19 @@ class Tuplet extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Category": () => (/* binding */ Category),
-/* harmony export */   "isAccidental": () => (/* binding */ isAccidental),
-/* harmony export */   "isAnnotation": () => (/* binding */ isAnnotation),
-/* harmony export */   "isBarline": () => (/* binding */ isBarline),
-/* harmony export */   "isCategory": () => (/* binding */ isCategory),
-/* harmony export */   "isDot": () => (/* binding */ isDot),
-/* harmony export */   "isGraceNote": () => (/* binding */ isGraceNote),
-/* harmony export */   "isGraceNoteGroup": () => (/* binding */ isGraceNoteGroup),
-/* harmony export */   "isNote": () => (/* binding */ isNote),
-/* harmony export */   "isRenderContext": () => (/* binding */ isRenderContext),
-/* harmony export */   "isStaveNote": () => (/* binding */ isStaveNote),
-/* harmony export */   "isStemmableNote": () => (/* binding */ isStemmableNote),
-/* harmony export */   "isTabNote": () => (/* binding */ isTabNote)
+/* harmony export */   Category: () => (/* binding */ Category),
+/* harmony export */   isAccidental: () => (/* binding */ isAccidental),
+/* harmony export */   isAnnotation: () => (/* binding */ isAnnotation),
+/* harmony export */   isBarline: () => (/* binding */ isBarline),
+/* harmony export */   isCategory: () => (/* binding */ isCategory),
+/* harmony export */   isDot: () => (/* binding */ isDot),
+/* harmony export */   isGraceNote: () => (/* binding */ isGraceNote),
+/* harmony export */   isGraceNoteGroup: () => (/* binding */ isGraceNoteGroup),
+/* harmony export */   isNote: () => (/* binding */ isNote),
+/* harmony export */   isRenderContext: () => (/* binding */ isRenderContext),
+/* harmony export */   isStaveNote: () => (/* binding */ isStaveNote),
+/* harmony export */   isStemmableNote: () => (/* binding */ isStemmableNote),
+/* harmony export */   isTabNote: () => (/* binding */ isTabNote)
 /* harmony export */ });
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Ron B. Yeh
@@ -35487,15 +35496,15 @@ var Category;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "RuntimeError": () => (/* binding */ RuntimeError),
-/* harmony export */   "defined": () => (/* binding */ defined),
-/* harmony export */   "globalObject": () => (/* binding */ globalObject),
-/* harmony export */   "log": () => (/* binding */ log),
-/* harmony export */   "midLine": () => (/* binding */ midLine),
-/* harmony export */   "normalizeAngle": () => (/* binding */ normalizeAngle),
-/* harmony export */   "prefix": () => (/* binding */ prefix),
-/* harmony export */   "sumArray": () => (/* binding */ sumArray),
-/* harmony export */   "warn": () => (/* binding */ warn)
+/* harmony export */   RuntimeError: () => (/* binding */ RuntimeError),
+/* harmony export */   defined: () => (/* binding */ defined),
+/* harmony export */   globalObject: () => (/* binding */ globalObject),
+/* harmony export */   log: () => (/* binding */ log),
+/* harmony export */   midLine: () => (/* binding */ midLine),
+/* harmony export */   normalizeAngle: () => (/* binding */ normalizeAngle),
+/* harmony export */   prefix: () => (/* binding */ prefix),
+/* harmony export */   sumArray: () => (/* binding */ sumArray),
+/* harmony export */   warn: () => (/* binding */ warn)
 /* harmony export */ });
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
@@ -35596,7 +35605,7 @@ function sumArray(arr) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Vex": () => (/* binding */ Vex)
+/* harmony export */   Vex: () => (/* binding */ Vex)
 /* harmony export */ });
 /* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./src/util.ts");
@@ -35682,7 +35691,7 @@ Vex.Flow = _flow__WEBPACK_IMPORTED_MODULE_0__.Flow;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Vibrato": () => (/* binding */ Vibrato)
+/* harmony export */   Vibrato: () => (/* binding */ Vibrato)
 /* harmony export */ });
 /* harmony import */ var _bend__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bend */ "./src/bend.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -35815,7 +35824,7 @@ class Vibrato extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "VibratoBracket": () => (/* binding */ VibratoBracket)
+/* harmony export */   VibratoBracket: () => (/* binding */ VibratoBracket)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
@@ -35903,8 +35912,8 @@ VibratoBracket.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Voice": () => (/* binding */ Voice),
-/* harmony export */   "VoiceMode": () => (/* binding */ VoiceMode)
+/* harmony export */   Voice: () => (/* binding */ Voice),
+/* harmony export */   VoiceMode: () => (/* binding */ VoiceMode)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
@@ -36179,8 +36188,8 @@ class Voice extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "isHTMLCanvas": () => (/* binding */ isHTMLCanvas),
-/* harmony export */   "isHTMLDiv": () => (/* binding */ isHTMLDiv)
+/* harmony export */   isHTMLCanvas: () => (/* binding */ isHTMLCanvas),
+/* harmony export */   isHTMLDiv: () => (/* binding */ isHTMLDiv)
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
@@ -36293,144 +36302,144 @@ var __webpack_exports__ = {};
   \********************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Accidental": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Accidental),
-/* harmony export */   "Annotation": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Annotation),
-/* harmony export */   "AnnotationHorizontalJustify": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.AnnotationHorizontalJustify),
-/* harmony export */   "AnnotationVerticalJustify": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.AnnotationVerticalJustify),
-/* harmony export */   "Articulation": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Articulation),
-/* harmony export */   "BEAM_BOTH": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.BEAM_BOTH),
-/* harmony export */   "BEAM_LEFT": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.BEAM_LEFT),
-/* harmony export */   "BEAM_RIGHT": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.BEAM_RIGHT),
-/* harmony export */   "BarNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.BarNote),
-/* harmony export */   "Barline": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Barline),
-/* harmony export */   "BarlineType": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.BarlineType),
-/* harmony export */   "Beam": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Beam),
-/* harmony export */   "Bend": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Bend),
-/* harmony export */   "BoundingBox": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.BoundingBox),
-/* harmony export */   "BoundingBoxComputation": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.BoundingBoxComputation),
-/* harmony export */   "Builder": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Builder),
-/* harmony export */   "CanvasContext": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.CanvasContext),
-/* harmony export */   "Category": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Category),
-/* harmony export */   "ChordSymbol": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.ChordSymbol),
-/* harmony export */   "ChordSymbolHorizontalJustify": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.ChordSymbolHorizontalJustify),
-/* harmony export */   "ChordSymbolVerticalJustify": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.ChordSymbolVerticalJustify),
-/* harmony export */   "Clef": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Clef),
-/* harmony export */   "ClefNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.ClefNote),
-/* harmony export */   "Crescendo": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Crescendo),
-/* harmony export */   "Curve": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Curve),
-/* harmony export */   "CurvePosition": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.CurvePosition),
-/* harmony export */   "Dot": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Dot),
-/* harmony export */   "EasyScore": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.EasyScore),
-/* harmony export */   "EasyScoreGrammar": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.EasyScoreGrammar),
-/* harmony export */   "Element": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Element),
-/* harmony export */   "Factory": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Factory),
-/* harmony export */   "Flow": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Flow),
-/* harmony export */   "Font": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Font),
-/* harmony export */   "FontStyle": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.FontStyle),
-/* harmony export */   "FontWeight": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.FontWeight),
-/* harmony export */   "Formatter": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Formatter),
-/* harmony export */   "Fraction": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Fraction),
-/* harmony export */   "FretHandFinger": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.FretHandFinger),
-/* harmony export */   "GhostNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.GhostNote),
-/* harmony export */   "Glyph": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Glyph),
-/* harmony export */   "GlyphNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.GlyphNote),
-/* harmony export */   "GraceNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.GraceNote),
-/* harmony export */   "GraceNoteGroup": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.GraceNoteGroup),
-/* harmony export */   "GraceTabNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.GraceTabNote),
-/* harmony export */   "KeyManager": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.KeyManager),
-/* harmony export */   "KeySigNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.KeySigNote),
-/* harmony export */   "KeySignature": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.KeySignature),
-/* harmony export */   "Modifier": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Modifier),
-/* harmony export */   "ModifierContext": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.ModifierContext),
-/* harmony export */   "ModifierPosition": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.ModifierPosition),
-/* harmony export */   "MultiMeasureRest": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.MultiMeasureRest),
-/* harmony export */   "Music": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Music),
-/* harmony export */   "Note": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Note),
-/* harmony export */   "NoteHead": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.NoteHead),
-/* harmony export */   "NoteSubGroup": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.NoteSubGroup),
-/* harmony export */   "Ornament": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Ornament),
-/* harmony export */   "OutlineCode": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.OutlineCode),
-/* harmony export */   "Parenthesis": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Parenthesis),
-/* harmony export */   "Parser": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Parser),
-/* harmony export */   "PedalMarking": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.PedalMarking),
-/* harmony export */   "Piece": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Piece),
-/* harmony export */   "Registry": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Registry),
-/* harmony export */   "RenderContext": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.RenderContext),
-/* harmony export */   "Renderer": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Renderer),
-/* harmony export */   "RendererBackends": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.RendererBackends),
-/* harmony export */   "RendererLineEndType": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.RendererLineEndType),
-/* harmony export */   "RepeatNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.RepeatNote),
-/* harmony export */   "Repetition": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Repetition),
-/* harmony export */   "RuntimeError": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.RuntimeError),
-/* harmony export */   "SVGContext": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.SVGContext),
-/* harmony export */   "Stave": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Stave),
-/* harmony export */   "StaveConnector": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StaveConnector),
-/* harmony export */   "StaveHairpin": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StaveHairpin),
-/* harmony export */   "StaveLine": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StaveLine),
-/* harmony export */   "StaveModifier": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StaveModifier),
-/* harmony export */   "StaveModifierPosition": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StaveModifierPosition),
-/* harmony export */   "StaveNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StaveNote),
-/* harmony export */   "StaveSection": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StaveSection),
-/* harmony export */   "StaveTempo": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StaveTempo),
-/* harmony export */   "StaveText": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StaveText),
-/* harmony export */   "StaveTie": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StaveTie),
-/* harmony export */   "Stem": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Stem),
-/* harmony export */   "StemmableNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StemmableNote),
-/* harmony export */   "StringNumber": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StringNumber),
-/* harmony export */   "Stroke": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Stroke),
-/* harmony export */   "SymbolModifiers": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.SymbolModifiers),
-/* harmony export */   "SymbolTypes": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.SymbolTypes),
-/* harmony export */   "System": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.System),
-/* harmony export */   "TabNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TabNote),
-/* harmony export */   "TabSlide": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TabSlide),
-/* harmony export */   "TabStave": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TabStave),
-/* harmony export */   "TabTie": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TabTie),
-/* harmony export */   "TextBracket": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TextBracket),
-/* harmony export */   "TextBracketPosition": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TextBracketPosition),
-/* harmony export */   "TextDynamics": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TextDynamics),
-/* harmony export */   "TextFormatter": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TextFormatter),
-/* harmony export */   "TextJustification": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TextJustification),
-/* harmony export */   "TextNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TextNote),
-/* harmony export */   "TickContext": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TickContext),
-/* harmony export */   "Tickable": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Tickable),
-/* harmony export */   "TimeSigNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TimeSigNote),
-/* harmony export */   "TimeSignature": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TimeSignature),
-/* harmony export */   "TimeSignatureGlyph": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TimeSignatureGlyph),
-/* harmony export */   "Tremolo": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Tremolo),
-/* harmony export */   "Tuning": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Tuning),
-/* harmony export */   "Tuplet": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Tuplet),
-/* harmony export */   "TupletLocation": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TupletLocation),
-/* harmony export */   "Vex": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Vex),
-/* harmony export */   "Vibrato": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Vibrato),
-/* harmony export */   "VibratoBracket": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.VibratoBracket),
-/* harmony export */   "Voice": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Voice),
-/* harmony export */   "VoiceMode": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.VoiceMode),
-/* harmony export */   "Volta": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Volta),
-/* harmony export */   "VoltaType": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.VoltaType),
+/* harmony export */   Accidental: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Accidental),
+/* harmony export */   Annotation: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Annotation),
+/* harmony export */   AnnotationHorizontalJustify: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.AnnotationHorizontalJustify),
+/* harmony export */   AnnotationVerticalJustify: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.AnnotationVerticalJustify),
+/* harmony export */   Articulation: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Articulation),
+/* harmony export */   BEAM_BOTH: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.BEAM_BOTH),
+/* harmony export */   BEAM_LEFT: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.BEAM_LEFT),
+/* harmony export */   BEAM_RIGHT: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.BEAM_RIGHT),
+/* harmony export */   BarNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.BarNote),
+/* harmony export */   Barline: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Barline),
+/* harmony export */   BarlineType: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.BarlineType),
+/* harmony export */   Beam: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Beam),
+/* harmony export */   Bend: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Bend),
+/* harmony export */   BoundingBox: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.BoundingBox),
+/* harmony export */   BoundingBoxComputation: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.BoundingBoxComputation),
+/* harmony export */   Builder: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Builder),
+/* harmony export */   CanvasContext: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.CanvasContext),
+/* harmony export */   Category: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Category),
+/* harmony export */   ChordSymbol: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.ChordSymbol),
+/* harmony export */   ChordSymbolHorizontalJustify: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.ChordSymbolHorizontalJustify),
+/* harmony export */   ChordSymbolVerticalJustify: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.ChordSymbolVerticalJustify),
+/* harmony export */   Clef: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Clef),
+/* harmony export */   ClefNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.ClefNote),
+/* harmony export */   Crescendo: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Crescendo),
+/* harmony export */   Curve: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Curve),
+/* harmony export */   CurvePosition: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.CurvePosition),
+/* harmony export */   Dot: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Dot),
+/* harmony export */   EasyScore: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.EasyScore),
+/* harmony export */   EasyScoreGrammar: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.EasyScoreGrammar),
+/* harmony export */   Element: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Element),
+/* harmony export */   Factory: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Factory),
+/* harmony export */   Flow: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Flow),
+/* harmony export */   Font: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Font),
+/* harmony export */   FontStyle: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.FontStyle),
+/* harmony export */   FontWeight: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.FontWeight),
+/* harmony export */   Formatter: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Formatter),
+/* harmony export */   Fraction: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Fraction),
+/* harmony export */   FretHandFinger: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.FretHandFinger),
+/* harmony export */   GhostNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.GhostNote),
+/* harmony export */   Glyph: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Glyph),
+/* harmony export */   GlyphNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.GlyphNote),
+/* harmony export */   GraceNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.GraceNote),
+/* harmony export */   GraceNoteGroup: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.GraceNoteGroup),
+/* harmony export */   GraceTabNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.GraceTabNote),
+/* harmony export */   KeyManager: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.KeyManager),
+/* harmony export */   KeySigNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.KeySigNote),
+/* harmony export */   KeySignature: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.KeySignature),
+/* harmony export */   Modifier: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Modifier),
+/* harmony export */   ModifierContext: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.ModifierContext),
+/* harmony export */   ModifierPosition: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.ModifierPosition),
+/* harmony export */   MultiMeasureRest: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.MultiMeasureRest),
+/* harmony export */   Music: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Music),
+/* harmony export */   Note: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Note),
+/* harmony export */   NoteHead: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.NoteHead),
+/* harmony export */   NoteSubGroup: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.NoteSubGroup),
+/* harmony export */   Ornament: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Ornament),
+/* harmony export */   OutlineCode: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.OutlineCode),
+/* harmony export */   Parenthesis: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Parenthesis),
+/* harmony export */   Parser: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Parser),
+/* harmony export */   PedalMarking: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.PedalMarking),
+/* harmony export */   Piece: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Piece),
+/* harmony export */   Registry: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Registry),
+/* harmony export */   RenderContext: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.RenderContext),
+/* harmony export */   Renderer: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Renderer),
+/* harmony export */   RendererBackends: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.RendererBackends),
+/* harmony export */   RendererLineEndType: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.RendererLineEndType),
+/* harmony export */   RepeatNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.RepeatNote),
+/* harmony export */   Repetition: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Repetition),
+/* harmony export */   RuntimeError: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.RuntimeError),
+/* harmony export */   SVGContext: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.SVGContext),
+/* harmony export */   Stave: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Stave),
+/* harmony export */   StaveConnector: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StaveConnector),
+/* harmony export */   StaveHairpin: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StaveHairpin),
+/* harmony export */   StaveLine: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StaveLine),
+/* harmony export */   StaveModifier: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StaveModifier),
+/* harmony export */   StaveModifierPosition: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StaveModifierPosition),
+/* harmony export */   StaveNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StaveNote),
+/* harmony export */   StaveSection: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StaveSection),
+/* harmony export */   StaveTempo: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StaveTempo),
+/* harmony export */   StaveText: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StaveText),
+/* harmony export */   StaveTie: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StaveTie),
+/* harmony export */   Stem: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Stem),
+/* harmony export */   StemmableNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StemmableNote),
+/* harmony export */   StringNumber: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.StringNumber),
+/* harmony export */   Stroke: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Stroke),
+/* harmony export */   SymbolModifiers: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.SymbolModifiers),
+/* harmony export */   SymbolTypes: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.SymbolTypes),
+/* harmony export */   System: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.System),
+/* harmony export */   TabNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TabNote),
+/* harmony export */   TabSlide: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TabSlide),
+/* harmony export */   TabStave: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TabStave),
+/* harmony export */   TabTie: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TabTie),
+/* harmony export */   TextBracket: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TextBracket),
+/* harmony export */   TextBracketPosition: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TextBracketPosition),
+/* harmony export */   TextDynamics: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TextDynamics),
+/* harmony export */   TextFormatter: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TextFormatter),
+/* harmony export */   TextJustification: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TextJustification),
+/* harmony export */   TextNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TextNote),
+/* harmony export */   TickContext: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TickContext),
+/* harmony export */   Tickable: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Tickable),
+/* harmony export */   TimeSigNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TimeSigNote),
+/* harmony export */   TimeSignature: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TimeSignature),
+/* harmony export */   TimeSignatureGlyph: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TimeSignatureGlyph),
+/* harmony export */   Tremolo: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Tremolo),
+/* harmony export */   Tuning: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Tuning),
+/* harmony export */   Tuplet: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Tuplet),
+/* harmony export */   TupletLocation: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.TupletLocation),
+/* harmony export */   Vex: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Vex),
+/* harmony export */   Vibrato: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Vibrato),
+/* harmony export */   VibratoBracket: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.VibratoBracket),
+/* harmony export */   Voice: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Voice),
+/* harmony export */   VoiceMode: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.VoiceMode),
+/* harmony export */   Volta: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.Volta),
+/* harmony export */   VoltaType: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.VoltaType),
 /* harmony export */   "default": () => (/* reexport module object */ _src_index__WEBPACK_IMPORTED_MODULE_3__),
-/* harmony export */   "defined": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.defined),
-/* harmony export */   "drawDot": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.drawDot),
-/* harmony export */   "globalObject": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.globalObject),
-/* harmony export */   "isAccidental": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isAccidental),
-/* harmony export */   "isAnnotation": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isAnnotation),
-/* harmony export */   "isBarline": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isBarline),
-/* harmony export */   "isCategory": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isCategory),
-/* harmony export */   "isDot": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isDot),
-/* harmony export */   "isGraceNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isGraceNote),
-/* harmony export */   "isGraceNoteGroup": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isGraceNoteGroup),
-/* harmony export */   "isHTMLCanvas": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isHTMLCanvas),
-/* harmony export */   "isHTMLDiv": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isHTMLDiv),
-/* harmony export */   "isNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isNote),
-/* harmony export */   "isRenderContext": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isRenderContext),
-/* harmony export */   "isStaveNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isStaveNote),
-/* harmony export */   "isStemmableNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isStemmableNote),
-/* harmony export */   "isTabNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isTabNote),
-/* harmony export */   "log": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.log),
-/* harmony export */   "midLine": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.midLine),
-/* harmony export */   "normalizeAngle": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.normalizeAngle),
-/* harmony export */   "prefix": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.prefix),
-/* harmony export */   "sumArray": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.sumArray),
-/* harmony export */   "warn": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.warn)
+/* harmony export */   defined: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.defined),
+/* harmony export */   drawDot: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.drawDot),
+/* harmony export */   globalObject: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.globalObject),
+/* harmony export */   isAccidental: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isAccidental),
+/* harmony export */   isAnnotation: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isAnnotation),
+/* harmony export */   isBarline: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isBarline),
+/* harmony export */   isCategory: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isCategory),
+/* harmony export */   isDot: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isDot),
+/* harmony export */   isGraceNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isGraceNote),
+/* harmony export */   isGraceNoteGroup: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isGraceNoteGroup),
+/* harmony export */   isHTMLCanvas: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isHTMLCanvas),
+/* harmony export */   isHTMLDiv: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isHTMLDiv),
+/* harmony export */   isNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isNote),
+/* harmony export */   isRenderContext: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isRenderContext),
+/* harmony export */   isStaveNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isStaveNote),
+/* harmony export */   isStemmableNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isStemmableNote),
+/* harmony export */   isTabNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.isTabNote),
+/* harmony export */   log: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.log),
+/* harmony export */   midLine: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.midLine),
+/* harmony export */   normalizeAngle: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.normalizeAngle),
+/* harmony export */   prefix: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.prefix),
+/* harmony export */   sumArray: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.sumArray),
+/* harmony export */   warn: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_3__.warn)
 /* harmony export */ });
 /* harmony import */ var _src_flow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../src/flow */ "./src/flow.ts");
 /* harmony import */ var _src_fonts_load_all__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/fonts/load_all */ "./src/fonts/load_all.ts");

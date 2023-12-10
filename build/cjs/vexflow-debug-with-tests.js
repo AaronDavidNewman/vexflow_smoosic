@@ -1,5 +1,5 @@
 /*!
- * VexFlow 4.2.2   2023-08-06T17:20:41.016Z   ba5db3599f603eedc986776a716e3b36acae4a30
+ * VexFlow 4.2.2   2023-12-10T22:46:47.526Z   9996264eda00015f217ab2c7d98c873599d70e18
  * Vexflow_smoosic, forked from :
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * https://www.vexflow.com   https://github.com/0xfe/vexflow
@@ -26,13 +26,13 @@ return /******/ (() => { // webpackBootstrap
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "DATE": () => (/* binding */ DATE),
-/* harmony export */   "ID": () => (/* binding */ ID),
-/* harmony export */   "VERSION": () => (/* binding */ VERSION)
+/* harmony export */   DATE: () => (/* binding */ DATE),
+/* harmony export */   ID: () => (/* binding */ ID),
+/* harmony export */   VERSION: () => (/* binding */ VERSION)
 /* harmony export */ });
 const VERSION = '4.2.2';
-const ID = 'ba5db3599f603eedc986776a716e3b36acae4a30';
-const DATE = '2023-08-06T17:20:41.016Z';
+const ID = '9996264eda00015f217ab2c7d98c873599d70e18';
+const DATE = '2023-12-10T22:46:47.526Z';
 
 
 /***/ }),
@@ -45,7 +45,7 @@ const DATE = '2023-08-06T17:20:41.016Z';
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Accidental": () => (/* binding */ Accidental)
+/* harmony export */   Accidental: () => (/* binding */ Accidental)
 /* harmony export */ });
 /* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -544,9 +544,9 @@ Accidental.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Annotation": () => (/* binding */ Annotation),
-/* harmony export */   "AnnotationHorizontalJustify": () => (/* binding */ AnnotationHorizontalJustify),
-/* harmony export */   "AnnotationVerticalJustify": () => (/* binding */ AnnotationVerticalJustify)
+/* harmony export */   Annotation: () => (/* binding */ Annotation),
+/* harmony export */   AnnotationHorizontalJustify: () => (/* binding */ AnnotationHorizontalJustify),
+/* harmony export */   AnnotationVerticalJustify: () => (/* binding */ AnnotationVerticalJustify)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -852,7 +852,7 @@ Annotation.VerticalJustifyString = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Articulation": () => (/* binding */ Articulation)
+/* harmony export */   Articulation: () => (/* binding */ Articulation)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -1212,7 +1212,7 @@ Articulation.INITIAL_OFFSET = -0.5;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "BarNote": () => (/* binding */ BarNote)
+/* harmony export */   BarNote: () => (/* binding */ BarNote)
 /* harmony export */ });
 /* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./note */ "./src/note.ts");
 /* harmony import */ var _stavebarline__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavebarline */ "./src/stavebarline.ts");
@@ -1308,10 +1308,10 @@ BarNote.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "BEAM_BOTH": () => (/* binding */ BEAM_BOTH),
-/* harmony export */   "BEAM_LEFT": () => (/* binding */ BEAM_LEFT),
-/* harmony export */   "BEAM_RIGHT": () => (/* binding */ BEAM_RIGHT),
-/* harmony export */   "Beam": () => (/* binding */ Beam)
+/* harmony export */   BEAM_BOTH: () => (/* binding */ BEAM_BOTH),
+/* harmony export */   BEAM_LEFT: () => (/* binding */ BEAM_LEFT),
+/* harmony export */   BEAM_RIGHT: () => (/* binding */ BEAM_RIGHT),
+/* harmony export */   Beam: () => (/* binding */ Beam)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
@@ -2156,7 +2156,7 @@ class Beam extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Bend": () => (/* binding */ Bend)
+/* harmony export */   Bend: () => (/* binding */ Bend)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -2424,7 +2424,7 @@ Bend.TEXT_FONT = Object.assign({}, _element__WEBPACK_IMPORTED_MODULE_0__.Element
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "BoundingBox": () => (/* binding */ BoundingBox)
+/* harmony export */   BoundingBox: () => (/* binding */ BoundingBox)
 /* harmony export */ });
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
@@ -2516,7 +2516,7 @@ class BoundingBox {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "BoundingBoxComputation": () => (/* binding */ BoundingBoxComputation)
+/* harmony export */   BoundingBoxComputation: () => (/* binding */ BoundingBoxComputation)
 /* harmony export */ });
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
@@ -2658,7 +2658,7 @@ class BoundingBoxComputation {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "CanvasContext": () => (/* binding */ CanvasContext)
+/* harmony export */   CanvasContext: () => (/* binding */ CanvasContext)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _rendercontext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./rendercontext */ "./src/rendercontext.ts");
@@ -2921,11 +2921,11 @@ class CanvasContext extends _rendercontext__WEBPACK_IMPORTED_MODULE_1__.RenderCo
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ChordSymbol": () => (/* binding */ ChordSymbol),
-/* harmony export */   "ChordSymbolHorizontalJustify": () => (/* binding */ ChordSymbolHorizontalJustify),
-/* harmony export */   "ChordSymbolVerticalJustify": () => (/* binding */ ChordSymbolVerticalJustify),
-/* harmony export */   "SymbolModifiers": () => (/* binding */ SymbolModifiers),
-/* harmony export */   "SymbolTypes": () => (/* binding */ SymbolTypes)
+/* harmony export */   ChordSymbol: () => (/* binding */ ChordSymbol),
+/* harmony export */   ChordSymbolHorizontalJustify: () => (/* binding */ ChordSymbolHorizontalJustify),
+/* harmony export */   ChordSymbolVerticalJustify: () => (/* binding */ ChordSymbolVerticalJustify),
+/* harmony export */   SymbolModifiers: () => (/* binding */ SymbolModifiers),
+/* harmony export */   SymbolTypes: () => (/* binding */ SymbolTypes)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -3658,7 +3658,7 @@ ChordSymbol.noFormat = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Clef": () => (/* binding */ Clef)
+/* harmony export */   Clef: () => (/* binding */ Clef)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
@@ -3841,7 +3841,7 @@ Clef.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ClefNote": () => (/* binding */ ClefNote)
+/* harmony export */   ClefNote: () => (/* binding */ ClefNote)
 /* harmony export */ });
 /* harmony import */ var _clef__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./clef */ "./src/clef.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -3920,7 +3920,7 @@ class ClefNote extends _note__WEBPACK_IMPORTED_MODULE_2__.Note {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Crescendo": () => (/* binding */ Crescendo)
+/* harmony export */   Crescendo: () => (/* binding */ Crescendo)
 /* harmony export */ });
 /* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./note */ "./src/note.ts");
 /* harmony import */ var _tickcontext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tickcontext */ "./src/tickcontext.ts");
@@ -4040,8 +4040,8 @@ Crescendo.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Curve": () => (/* binding */ Curve),
-/* harmony export */   "CurvePosition": () => (/* binding */ CurvePosition)
+/* harmony export */   Curve: () => (/* binding */ Curve),
+/* harmony export */   CurvePosition: () => (/* binding */ CurvePosition)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
@@ -4190,7 +4190,7 @@ class Curve extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Dot": () => (/* binding */ Dot)
+/* harmony export */   Dot: () => (/* binding */ Dot)
 /* harmony export */ });
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
@@ -4362,10 +4362,10 @@ class Dot extends _modifier__WEBPACK_IMPORTED_MODULE_0__.Modifier {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Builder": () => (/* binding */ Builder),
-/* harmony export */   "EasyScore": () => (/* binding */ EasyScore),
-/* harmony export */   "EasyScoreGrammar": () => (/* binding */ EasyScoreGrammar),
-/* harmony export */   "Piece": () => (/* binding */ Piece)
+/* harmony export */   Builder: () => (/* binding */ Builder),
+/* harmony export */   EasyScore: () => (/* binding */ EasyScore),
+/* harmony export */   EasyScoreGrammar: () => (/* binding */ EasyScoreGrammar),
+/* harmony export */   Piece: () => (/* binding */ Piece)
 /* harmony export */ });
 /* harmony import */ var _articulation__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./articulation */ "./src/articulation.ts");
 /* harmony import */ var _dot__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dot */ "./src/dot.ts");
@@ -4804,7 +4804,7 @@ EasyScore.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Element": () => (/* binding */ Element)
+/* harmony export */   Element: () => (/* binding */ Element)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _registry__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./registry */ "./src/registry.ts");
@@ -5212,7 +5212,7 @@ Element.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Factory": () => (/* binding */ Factory)
+/* harmony export */   Factory: () => (/* binding */ Factory)
 /* harmony export */ });
 /* harmony import */ var _accidental__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./accidental */ "./src/accidental.ts");
 /* harmony import */ var _annotation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
@@ -5780,7 +5780,7 @@ Factory.TEXT_FONT = Object.assign({}, _element__WEBPACK_IMPORTED_MODULE_9__.Elem
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Flow": () => (/* binding */ Flow)
+/* harmony export */   Flow: () => (/* binding */ Flow)
 /* harmony export */ });
 /* harmony import */ var _accidental__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./accidental */ "./src/accidental.ts");
 /* harmony import */ var _annotation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
@@ -6216,9 +6216,9 @@ Flow.VoiceMode = _voice__WEBPACK_IMPORTED_MODULE_81__.VoiceMode;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Font": () => (/* binding */ Font),
-/* harmony export */   "FontStyle": () => (/* binding */ FontStyle),
-/* harmony export */   "FontWeight": () => (/* binding */ FontWeight)
+/* harmony export */   Font: () => (/* binding */ Font),
+/* harmony export */   FontStyle: () => (/* binding */ FontStyle),
+/* harmony export */   FontWeight: () => (/* binding */ FontWeight)
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -6617,7 +6617,7 @@ Font.WEB_FONT_FILES = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "BravuraFont": () => (/* binding */ BravuraFont)
+/* harmony export */   BravuraFont: () => (/* binding */ BravuraFont)
 /* harmony export */ });
 const BravuraFont = {
     glyphs: {
@@ -10174,7 +10174,7 @@ const BravuraFont = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "CommonMetrics": () => (/* binding */ CommonMetrics)
+/* harmony export */   CommonMetrics: () => (/* binding */ CommonMetrics)
 /* harmony export */ });
 const CommonMetrics = {
     smufl: true,
@@ -10601,7 +10601,7 @@ const CommonMetrics = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "CustomFont": () => (/* binding */ CustomFont)
+/* harmony export */   CustomFont: () => (/* binding */ CustomFont)
 /* harmony export */ });
 const CustomFont = {
     resolution: 1000,
@@ -10657,7 +10657,7 @@ const CustomFont = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GonvilleSmuflFont": () => (/* binding */ GonvilleSmuflFont)
+/* harmony export */   GonvilleSmuflFont: () => (/* binding */ GonvilleSmuflFont)
 /* harmony export */ });
 const GonvilleSmuflFont = {
     glyphs: {
@@ -11790,7 +11790,7 @@ const GonvilleSmuflFont = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "LelandFont": () => (/* binding */ LelandFont)
+/* harmony export */   LelandFont: () => (/* binding */ LelandFont)
 /* harmony export */ });
 const LelandFont = {
     glyphs: {
@@ -12995,7 +12995,7 @@ const LelandFont = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "loadAllMusicFonts": () => (/* binding */ loadAllMusicFonts)
+/* harmony export */   loadAllMusicFonts: () => (/* binding */ loadAllMusicFonts)
 /* harmony export */ });
 /* harmony import */ var _load_bravura__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./load_bravura */ "./src/fonts/load_bravura.ts");
 /* harmony import */ var _load_custom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./load_custom */ "./src/fonts/load_custom.ts");
@@ -13035,7 +13035,7 @@ function loadAllMusicFonts() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "loadBravura": () => (/* binding */ loadBravura)
+/* harmony export */   loadBravura: () => (/* binding */ loadBravura)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../font */ "./src/font.ts");
 /* harmony import */ var _bravura_glyphs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./bravura_glyphs */ "./src/fonts/bravura_glyphs.ts");
@@ -13068,7 +13068,7 @@ function loadBravura() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "loadCustom": () => (/* binding */ loadCustom)
+/* harmony export */   loadCustom: () => (/* binding */ loadCustom)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../font */ "./src/font.ts");
 /* harmony import */ var _common_metrics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common_metrics */ "./src/fonts/common_metrics.ts");
@@ -13093,7 +13093,7 @@ function loadCustom() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "loadGonville": () => (/* binding */ loadGonville)
+/* harmony export */   loadGonville: () => (/* binding */ loadGonville)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../font */ "./src/font.ts");
 /* harmony import */ var _common_metrics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common_metrics */ "./src/fonts/common_metrics.ts");
@@ -13118,7 +13118,7 @@ function loadGonville() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "loadLeland": () => (/* binding */ loadLeland)
+/* harmony export */   loadLeland: () => (/* binding */ loadLeland)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../font */ "./src/font.ts");
 /* harmony import */ var _common_metrics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common_metrics */ "./src/fonts/common_metrics.ts");
@@ -13143,7 +13143,7 @@ function loadLeland() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "loadPetaluma": () => (/* binding */ loadPetaluma)
+/* harmony export */   loadPetaluma: () => (/* binding */ loadPetaluma)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../font */ "./src/font.ts");
 /* harmony import */ var _common_metrics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common_metrics */ "./src/fonts/common_metrics.ts");
@@ -13259,7 +13259,7 @@ function loadPetaluma() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "PetalumaFont": () => (/* binding */ PetalumaFont)
+/* harmony export */   PetalumaFont: () => (/* binding */ PetalumaFont)
 /* harmony export */ });
 const PetalumaFont = {
     glyphs: {
@@ -14912,7 +14912,7 @@ const PetalumaFont = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "PetalumaScriptFont": () => (/* binding */ PetalumaScriptFont)
+/* harmony export */   PetalumaScriptFont: () => (/* binding */ PetalumaScriptFont)
 /* harmony export */ });
 const PetalumaScriptFont = {
     spacing: 50,
@@ -15789,7 +15789,7 @@ const PetalumaScriptFont = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "RobotoSlabFont": () => (/* binding */ RobotoSlabFont)
+/* harmony export */   RobotoSlabFont: () => (/* binding */ RobotoSlabFont)
 /* harmony export */ });
 const RobotoSlabFont = {
     spacing: 50,
@@ -16666,7 +16666,7 @@ const RobotoSlabFont = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "SansFontBold": () => (/* binding */ SansFontBold)
+/* harmony export */   SansFontBold: () => (/* binding */ SansFontBold)
 /* harmony export */ });
 const SansFontBold = {
     glyphs: {
@@ -17542,7 +17542,7 @@ const SansFontBold = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "SansFont": () => (/* binding */ SansFont)
+/* harmony export */   SansFont: () => (/* binding */ SansFont)
 /* harmony export */ });
 const SansFont = {
     smufl: false,
@@ -18426,7 +18426,7 @@ const SansFont = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "SerifFont": () => (/* binding */ SerifFont)
+/* harmony export */   SerifFont: () => (/* binding */ SerifFont)
 /* harmony export */ });
 const SerifFont = {
     smufl: false,
@@ -19310,7 +19310,7 @@ const SerifFont = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "loadTextFonts": () => (/* binding */ loadTextFonts)
+/* harmony export */   loadTextFonts: () => (/* binding */ loadTextFonts)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../font */ "./src/font.ts");
 /* harmony import */ var _textformatter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../textformatter */ "./src/textformatter.ts");
@@ -19452,7 +19452,7 @@ function loadTextFonts() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Formatter": () => (/* binding */ Formatter)
+/* harmony export */   Formatter: () => (/* binding */ Formatter)
 /* harmony export */ });
 /* harmony import */ var _beam__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./beam */ "./src/beam.ts");
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./font */ "./src/font.ts");
@@ -20346,7 +20346,7 @@ Formatter.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Fraction": () => (/* binding */ Fraction)
+/* harmony export */   Fraction: () => (/* binding */ Fraction)
 /* harmony export */ });
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./src/util.ts");
@@ -20575,7 +20575,7 @@ function getNumeratorAndDenominator(n, d = 1) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "FretHandFinger": () => (/* binding */ FretHandFinger)
+/* harmony export */   FretHandFinger: () => (/* binding */ FretHandFinger)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -20760,7 +20760,7 @@ FretHandFinger.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GhostNote": () => (/* binding */ GhostNote)
+/* harmony export */   GhostNote: () => (/* binding */ GhostNote)
 /* harmony export */ });
 /* harmony import */ var _stemmablenote__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./stemmablenote */ "./src/stemmablenote.ts");
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
@@ -20839,8 +20839,8 @@ class GhostNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_0__.StemmableNot
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Glyph": () => (/* binding */ Glyph),
-/* harmony export */   "OutlineCode": () => (/* binding */ OutlineCode)
+/* harmony export */   Glyph: () => (/* binding */ Glyph),
+/* harmony export */   OutlineCode: () => (/* binding */ OutlineCode)
 /* harmony export */ });
 /* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 /* harmony import */ var _boundingboxcomputation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./boundingboxcomputation */ "./src/boundingboxcomputation.ts");
@@ -21254,7 +21254,7 @@ Glyph.MUSIC_FONT_STACK = [];
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GlyphNote": () => (/* binding */ GlyphNote)
+/* harmony export */   GlyphNote: () => (/* binding */ GlyphNote)
 /* harmony export */ });
 /* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./note */ "./src/note.ts");
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
@@ -21333,7 +21333,7 @@ class GlyphNote extends _note__WEBPACK_IMPORTED_MODULE_0__.Note {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GraceNote": () => (/* binding */ GraceNote)
+/* harmony export */   GraceNote: () => (/* binding */ GraceNote)
 /* harmony export */ });
 /* harmony import */ var _stavenote__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./stavenote */ "./src/stavenote.ts");
 /* harmony import */ var _stem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stem */ "./src/stem.ts");
@@ -21491,7 +21491,7 @@ class GraceNote extends _stavenote__WEBPACK_IMPORTED_MODULE_0__.StaveNote {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GraceNoteGroup": () => (/* binding */ GraceNoteGroup)
+/* harmony export */   GraceNoteGroup: () => (/* binding */ GraceNoteGroup)
 /* harmony export */ });
 /* harmony import */ var _beam__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./beam */ "./src/beam.ts");
 /* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
@@ -21661,7 +21661,7 @@ GraceNoteGroup.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GraceTabNote": () => (/* binding */ GraceTabNote)
+/* harmony export */   GraceTabNote: () => (/* binding */ GraceTabNote)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _tabnote__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tabnote */ "./src/tabnote.ts");
@@ -21706,143 +21706,143 @@ class GraceTabNote extends _tabnote__WEBPACK_IMPORTED_MODULE_1__.TabNote {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Accidental": () => (/* reexport safe */ _accidental__WEBPACK_IMPORTED_MODULE_0__.Accidental),
-/* harmony export */   "Annotation": () => (/* reexport safe */ _annotation__WEBPACK_IMPORTED_MODULE_1__.Annotation),
-/* harmony export */   "AnnotationHorizontalJustify": () => (/* reexport safe */ _annotation__WEBPACK_IMPORTED_MODULE_1__.AnnotationHorizontalJustify),
-/* harmony export */   "AnnotationVerticalJustify": () => (/* reexport safe */ _annotation__WEBPACK_IMPORTED_MODULE_1__.AnnotationVerticalJustify),
-/* harmony export */   "Articulation": () => (/* reexport safe */ _articulation__WEBPACK_IMPORTED_MODULE_2__.Articulation),
-/* harmony export */   "BEAM_BOTH": () => (/* reexport safe */ _beam__WEBPACK_IMPORTED_MODULE_4__.BEAM_BOTH),
-/* harmony export */   "BEAM_LEFT": () => (/* reexport safe */ _beam__WEBPACK_IMPORTED_MODULE_4__.BEAM_LEFT),
-/* harmony export */   "BEAM_RIGHT": () => (/* reexport safe */ _beam__WEBPACK_IMPORTED_MODULE_4__.BEAM_RIGHT),
-/* harmony export */   "BarNote": () => (/* reexport safe */ _barnote__WEBPACK_IMPORTED_MODULE_3__.BarNote),
-/* harmony export */   "Barline": () => (/* reexport safe */ _stavebarline__WEBPACK_IMPORTED_MODULE_48__.Barline),
-/* harmony export */   "BarlineType": () => (/* reexport safe */ _stavebarline__WEBPACK_IMPORTED_MODULE_48__.BarlineType),
-/* harmony export */   "Beam": () => (/* reexport safe */ _beam__WEBPACK_IMPORTED_MODULE_4__.Beam),
-/* harmony export */   "Bend": () => (/* reexport safe */ _bend__WEBPACK_IMPORTED_MODULE_5__.Bend),
-/* harmony export */   "BoundingBox": () => (/* reexport safe */ _boundingbox__WEBPACK_IMPORTED_MODULE_6__.BoundingBox),
-/* harmony export */   "BoundingBoxComputation": () => (/* reexport safe */ _boundingboxcomputation__WEBPACK_IMPORTED_MODULE_7__.BoundingBoxComputation),
-/* harmony export */   "Builder": () => (/* reexport safe */ _easyscore__WEBPACK_IMPORTED_MODULE_15__.Builder),
-/* harmony export */   "CanvasContext": () => (/* reexport safe */ _canvascontext__WEBPACK_IMPORTED_MODULE_8__.CanvasContext),
-/* harmony export */   "Category": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.Category),
-/* harmony export */   "ChordSymbol": () => (/* reexport safe */ _chordsymbol__WEBPACK_IMPORTED_MODULE_9__.ChordSymbol),
-/* harmony export */   "ChordSymbolHorizontalJustify": () => (/* reexport safe */ _chordsymbol__WEBPACK_IMPORTED_MODULE_9__.ChordSymbolHorizontalJustify),
-/* harmony export */   "ChordSymbolVerticalJustify": () => (/* reexport safe */ _chordsymbol__WEBPACK_IMPORTED_MODULE_9__.ChordSymbolVerticalJustify),
-/* harmony export */   "Clef": () => (/* reexport safe */ _clef__WEBPACK_IMPORTED_MODULE_10__.Clef),
-/* harmony export */   "ClefNote": () => (/* reexport safe */ _clefnote__WEBPACK_IMPORTED_MODULE_11__.ClefNote),
-/* harmony export */   "Crescendo": () => (/* reexport safe */ _crescendo__WEBPACK_IMPORTED_MODULE_12__.Crescendo),
-/* harmony export */   "Curve": () => (/* reexport safe */ _curve__WEBPACK_IMPORTED_MODULE_13__.Curve),
-/* harmony export */   "CurvePosition": () => (/* reexport safe */ _curve__WEBPACK_IMPORTED_MODULE_13__.CurvePosition),
-/* harmony export */   "Dot": () => (/* reexport safe */ _dot__WEBPACK_IMPORTED_MODULE_14__.Dot),
-/* harmony export */   "EasyScore": () => (/* reexport safe */ _easyscore__WEBPACK_IMPORTED_MODULE_15__.EasyScore),
-/* harmony export */   "EasyScoreGrammar": () => (/* reexport safe */ _easyscore__WEBPACK_IMPORTED_MODULE_15__.EasyScoreGrammar),
-/* harmony export */   "Element": () => (/* reexport safe */ _element__WEBPACK_IMPORTED_MODULE_16__.Element),
-/* harmony export */   "Factory": () => (/* reexport safe */ _factory__WEBPACK_IMPORTED_MODULE_17__.Factory),
-/* harmony export */   "Flow": () => (/* reexport safe */ _flow__WEBPACK_IMPORTED_MODULE_18__.Flow),
-/* harmony export */   "Font": () => (/* reexport safe */ _font__WEBPACK_IMPORTED_MODULE_19__.Font),
-/* harmony export */   "FontStyle": () => (/* reexport safe */ _font__WEBPACK_IMPORTED_MODULE_19__.FontStyle),
-/* harmony export */   "FontWeight": () => (/* reexport safe */ _font__WEBPACK_IMPORTED_MODULE_19__.FontWeight),
-/* harmony export */   "Formatter": () => (/* reexport safe */ _formatter__WEBPACK_IMPORTED_MODULE_20__.Formatter),
-/* harmony export */   "Fraction": () => (/* reexport safe */ _fraction__WEBPACK_IMPORTED_MODULE_21__.Fraction),
-/* harmony export */   "FretHandFinger": () => (/* reexport safe */ _frethandfinger__WEBPACK_IMPORTED_MODULE_22__.FretHandFinger),
-/* harmony export */   "GhostNote": () => (/* reexport safe */ _ghostnote__WEBPACK_IMPORTED_MODULE_23__.GhostNote),
-/* harmony export */   "Glyph": () => (/* reexport safe */ _glyph__WEBPACK_IMPORTED_MODULE_24__.Glyph),
-/* harmony export */   "GlyphNote": () => (/* reexport safe */ _glyphnote__WEBPACK_IMPORTED_MODULE_25__.GlyphNote),
-/* harmony export */   "GraceNote": () => (/* reexport safe */ _gracenote__WEBPACK_IMPORTED_MODULE_26__.GraceNote),
-/* harmony export */   "GraceNoteGroup": () => (/* reexport safe */ _gracenotegroup__WEBPACK_IMPORTED_MODULE_27__.GraceNoteGroup),
-/* harmony export */   "GraceTabNote": () => (/* reexport safe */ _gracetabnote__WEBPACK_IMPORTED_MODULE_28__.GraceTabNote),
-/* harmony export */   "KeyManager": () => (/* reexport safe */ _keymanager__WEBPACK_IMPORTED_MODULE_29__.KeyManager),
-/* harmony export */   "KeySigNote": () => (/* reexport safe */ _keysignote__WEBPACK_IMPORTED_MODULE_31__.KeySigNote),
-/* harmony export */   "KeySignature": () => (/* reexport safe */ _keysignature__WEBPACK_IMPORTED_MODULE_30__.KeySignature),
-/* harmony export */   "Modifier": () => (/* reexport safe */ _modifier__WEBPACK_IMPORTED_MODULE_32__.Modifier),
-/* harmony export */   "ModifierContext": () => (/* reexport safe */ _modifiercontext__WEBPACK_IMPORTED_MODULE_33__.ModifierContext),
-/* harmony export */   "ModifierPosition": () => (/* reexport safe */ _modifier__WEBPACK_IMPORTED_MODULE_32__.ModifierPosition),
-/* harmony export */   "MultiMeasureRest": () => (/* reexport safe */ _multimeasurerest__WEBPACK_IMPORTED_MODULE_34__.MultiMeasureRest),
-/* harmony export */   "Music": () => (/* reexport safe */ _music__WEBPACK_IMPORTED_MODULE_35__.Music),
-/* harmony export */   "Note": () => (/* reexport safe */ _note__WEBPACK_IMPORTED_MODULE_36__.Note),
-/* harmony export */   "NoteHead": () => (/* reexport safe */ _notehead__WEBPACK_IMPORTED_MODULE_37__.NoteHead),
-/* harmony export */   "NoteSubGroup": () => (/* reexport safe */ _notesubgroup__WEBPACK_IMPORTED_MODULE_38__.NoteSubGroup),
-/* harmony export */   "Ornament": () => (/* reexport safe */ _ornament__WEBPACK_IMPORTED_MODULE_39__.Ornament),
-/* harmony export */   "OutlineCode": () => (/* reexport safe */ _glyph__WEBPACK_IMPORTED_MODULE_24__.OutlineCode),
-/* harmony export */   "Parenthesis": () => (/* reexport safe */ _parenthesis__WEBPACK_IMPORTED_MODULE_40__.Parenthesis),
-/* harmony export */   "Parser": () => (/* reexport safe */ _parser__WEBPACK_IMPORTED_MODULE_41__.Parser),
-/* harmony export */   "PedalMarking": () => (/* reexport safe */ _pedalmarking__WEBPACK_IMPORTED_MODULE_42__.PedalMarking),
-/* harmony export */   "Piece": () => (/* reexport safe */ _easyscore__WEBPACK_IMPORTED_MODULE_15__.Piece),
-/* harmony export */   "Registry": () => (/* reexport safe */ _registry__WEBPACK_IMPORTED_MODULE_43__.Registry),
-/* harmony export */   "RenderContext": () => (/* reexport safe */ _rendercontext__WEBPACK_IMPORTED_MODULE_44__.RenderContext),
-/* harmony export */   "Renderer": () => (/* reexport safe */ _renderer__WEBPACK_IMPORTED_MODULE_45__.Renderer),
-/* harmony export */   "RendererBackends": () => (/* reexport safe */ _renderer__WEBPACK_IMPORTED_MODULE_45__.RendererBackends),
-/* harmony export */   "RendererLineEndType": () => (/* reexport safe */ _renderer__WEBPACK_IMPORTED_MODULE_45__.RendererLineEndType),
-/* harmony export */   "RepeatNote": () => (/* reexport safe */ _repeatnote__WEBPACK_IMPORTED_MODULE_46__.RepeatNote),
-/* harmony export */   "Repetition": () => (/* reexport safe */ _staverepetition__WEBPACK_IMPORTED_MODULE_54__.Repetition),
-/* harmony export */   "RuntimeError": () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.RuntimeError),
-/* harmony export */   "SVGContext": () => (/* reexport safe */ _svgcontext__WEBPACK_IMPORTED_MODULE_64__.SVGContext),
-/* harmony export */   "Stave": () => (/* reexport safe */ _stave__WEBPACK_IMPORTED_MODULE_47__.Stave),
-/* harmony export */   "StaveConnector": () => (/* reexport safe */ _staveconnector__WEBPACK_IMPORTED_MODULE_49__.StaveConnector),
-/* harmony export */   "StaveHairpin": () => (/* reexport safe */ _stavehairpin__WEBPACK_IMPORTED_MODULE_50__.StaveHairpin),
-/* harmony export */   "StaveLine": () => (/* reexport safe */ _staveline__WEBPACK_IMPORTED_MODULE_51__.StaveLine),
-/* harmony export */   "StaveModifier": () => (/* reexport safe */ _stavemodifier__WEBPACK_IMPORTED_MODULE_52__.StaveModifier),
-/* harmony export */   "StaveModifierPosition": () => (/* reexport safe */ _stavemodifier__WEBPACK_IMPORTED_MODULE_52__.StaveModifierPosition),
-/* harmony export */   "StaveNote": () => (/* reexport safe */ _stavenote__WEBPACK_IMPORTED_MODULE_53__.StaveNote),
-/* harmony export */   "StaveSection": () => (/* reexport safe */ _stavesection__WEBPACK_IMPORTED_MODULE_55__.StaveSection),
-/* harmony export */   "StaveTempo": () => (/* reexport safe */ _stavetempo__WEBPACK_IMPORTED_MODULE_56__.StaveTempo),
-/* harmony export */   "StaveText": () => (/* reexport safe */ _stavetext__WEBPACK_IMPORTED_MODULE_57__.StaveText),
-/* harmony export */   "StaveTie": () => (/* reexport safe */ _stavetie__WEBPACK_IMPORTED_MODULE_58__.StaveTie),
-/* harmony export */   "Stem": () => (/* reexport safe */ _stem__WEBPACK_IMPORTED_MODULE_60__.Stem),
-/* harmony export */   "StemmableNote": () => (/* reexport safe */ _stemmablenote__WEBPACK_IMPORTED_MODULE_61__.StemmableNote),
-/* harmony export */   "StringNumber": () => (/* reexport safe */ _stringnumber__WEBPACK_IMPORTED_MODULE_62__.StringNumber),
-/* harmony export */   "Stroke": () => (/* reexport safe */ _strokes__WEBPACK_IMPORTED_MODULE_63__.Stroke),
-/* harmony export */   "SymbolModifiers": () => (/* reexport safe */ _chordsymbol__WEBPACK_IMPORTED_MODULE_9__.SymbolModifiers),
-/* harmony export */   "SymbolTypes": () => (/* reexport safe */ _chordsymbol__WEBPACK_IMPORTED_MODULE_9__.SymbolTypes),
-/* harmony export */   "System": () => (/* reexport safe */ _system__WEBPACK_IMPORTED_MODULE_65__.System),
-/* harmony export */   "TabNote": () => (/* reexport safe */ _tabnote__WEBPACK_IMPORTED_MODULE_66__.TabNote),
-/* harmony export */   "TabSlide": () => (/* reexport safe */ _tabslide__WEBPACK_IMPORTED_MODULE_67__.TabSlide),
-/* harmony export */   "TabStave": () => (/* reexport safe */ _tabstave__WEBPACK_IMPORTED_MODULE_68__.TabStave),
-/* harmony export */   "TabTie": () => (/* reexport safe */ _tabtie__WEBPACK_IMPORTED_MODULE_69__.TabTie),
-/* harmony export */   "TextBracket": () => (/* reexport safe */ _textbracket__WEBPACK_IMPORTED_MODULE_70__.TextBracket),
-/* harmony export */   "TextBracketPosition": () => (/* reexport safe */ _textbracket__WEBPACK_IMPORTED_MODULE_70__.TextBracketPosition),
-/* harmony export */   "TextDynamics": () => (/* reexport safe */ _textdynamics__WEBPACK_IMPORTED_MODULE_71__.TextDynamics),
-/* harmony export */   "TextFormatter": () => (/* reexport safe */ _textformatter__WEBPACK_IMPORTED_MODULE_72__.TextFormatter),
-/* harmony export */   "TextJustification": () => (/* reexport safe */ _textnote__WEBPACK_IMPORTED_MODULE_73__.TextJustification),
-/* harmony export */   "TextNote": () => (/* reexport safe */ _textnote__WEBPACK_IMPORTED_MODULE_73__.TextNote),
-/* harmony export */   "TickContext": () => (/* reexport safe */ _tickcontext__WEBPACK_IMPORTED_MODULE_75__.TickContext),
-/* harmony export */   "Tickable": () => (/* reexport safe */ _tickable__WEBPACK_IMPORTED_MODULE_74__.Tickable),
-/* harmony export */   "TimeSigNote": () => (/* reexport safe */ _timesignote__WEBPACK_IMPORTED_MODULE_78__.TimeSigNote),
-/* harmony export */   "TimeSignature": () => (/* reexport safe */ _timesignature__WEBPACK_IMPORTED_MODULE_77__.TimeSignature),
-/* harmony export */   "TimeSignatureGlyph": () => (/* reexport safe */ _timesigglyph__WEBPACK_IMPORTED_MODULE_76__.TimeSignatureGlyph),
-/* harmony export */   "Tremolo": () => (/* reexport safe */ _tremolo__WEBPACK_IMPORTED_MODULE_79__.Tremolo),
-/* harmony export */   "Tuning": () => (/* reexport safe */ _tuning__WEBPACK_IMPORTED_MODULE_80__.Tuning),
-/* harmony export */   "Tuplet": () => (/* reexport safe */ _tuplet__WEBPACK_IMPORTED_MODULE_81__.Tuplet),
-/* harmony export */   "TupletLocation": () => (/* reexport safe */ _tuplet__WEBPACK_IMPORTED_MODULE_81__.TupletLocation),
-/* harmony export */   "Vex": () => (/* reexport safe */ _vex__WEBPACK_IMPORTED_MODULE_84__.Vex),
-/* harmony export */   "Vibrato": () => (/* reexport safe */ _vibrato__WEBPACK_IMPORTED_MODULE_85__.Vibrato),
-/* harmony export */   "VibratoBracket": () => (/* reexport safe */ _vibratobracket__WEBPACK_IMPORTED_MODULE_86__.VibratoBracket),
-/* harmony export */   "Voice": () => (/* reexport safe */ _voice__WEBPACK_IMPORTED_MODULE_87__.Voice),
-/* harmony export */   "VoiceMode": () => (/* reexport safe */ _voice__WEBPACK_IMPORTED_MODULE_87__.VoiceMode),
-/* harmony export */   "Volta": () => (/* reexport safe */ _stavevolta__WEBPACK_IMPORTED_MODULE_59__.Volta),
-/* harmony export */   "VoltaType": () => (/* reexport safe */ _stavevolta__WEBPACK_IMPORTED_MODULE_59__.VoltaType),
-/* harmony export */   "defined": () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.defined),
-/* harmony export */   "drawDot": () => (/* reexport safe */ _rendercontext__WEBPACK_IMPORTED_MODULE_44__.drawDot),
-/* harmony export */   "globalObject": () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.globalObject),
-/* harmony export */   "isAccidental": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isAccidental),
-/* harmony export */   "isAnnotation": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isAnnotation),
-/* harmony export */   "isBarline": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isBarline),
-/* harmony export */   "isCategory": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isCategory),
-/* harmony export */   "isDot": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isDot),
-/* harmony export */   "isGraceNote": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isGraceNote),
-/* harmony export */   "isGraceNoteGroup": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isGraceNoteGroup),
-/* harmony export */   "isHTMLCanvas": () => (/* reexport safe */ _web__WEBPACK_IMPORTED_MODULE_88__.isHTMLCanvas),
-/* harmony export */   "isHTMLDiv": () => (/* reexport safe */ _web__WEBPACK_IMPORTED_MODULE_88__.isHTMLDiv),
-/* harmony export */   "isNote": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isNote),
-/* harmony export */   "isRenderContext": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isRenderContext),
-/* harmony export */   "isStaveNote": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isStaveNote),
-/* harmony export */   "isStemmableNote": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isStemmableNote),
-/* harmony export */   "isTabNote": () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isTabNote),
-/* harmony export */   "log": () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.log),
-/* harmony export */   "midLine": () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.midLine),
-/* harmony export */   "normalizeAngle": () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.normalizeAngle),
-/* harmony export */   "prefix": () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.prefix),
-/* harmony export */   "sumArray": () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.sumArray),
-/* harmony export */   "warn": () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.warn)
+/* harmony export */   Accidental: () => (/* reexport safe */ _accidental__WEBPACK_IMPORTED_MODULE_0__.Accidental),
+/* harmony export */   Annotation: () => (/* reexport safe */ _annotation__WEBPACK_IMPORTED_MODULE_1__.Annotation),
+/* harmony export */   AnnotationHorizontalJustify: () => (/* reexport safe */ _annotation__WEBPACK_IMPORTED_MODULE_1__.AnnotationHorizontalJustify),
+/* harmony export */   AnnotationVerticalJustify: () => (/* reexport safe */ _annotation__WEBPACK_IMPORTED_MODULE_1__.AnnotationVerticalJustify),
+/* harmony export */   Articulation: () => (/* reexport safe */ _articulation__WEBPACK_IMPORTED_MODULE_2__.Articulation),
+/* harmony export */   BEAM_BOTH: () => (/* reexport safe */ _beam__WEBPACK_IMPORTED_MODULE_4__.BEAM_BOTH),
+/* harmony export */   BEAM_LEFT: () => (/* reexport safe */ _beam__WEBPACK_IMPORTED_MODULE_4__.BEAM_LEFT),
+/* harmony export */   BEAM_RIGHT: () => (/* reexport safe */ _beam__WEBPACK_IMPORTED_MODULE_4__.BEAM_RIGHT),
+/* harmony export */   BarNote: () => (/* reexport safe */ _barnote__WEBPACK_IMPORTED_MODULE_3__.BarNote),
+/* harmony export */   Barline: () => (/* reexport safe */ _stavebarline__WEBPACK_IMPORTED_MODULE_48__.Barline),
+/* harmony export */   BarlineType: () => (/* reexport safe */ _stavebarline__WEBPACK_IMPORTED_MODULE_48__.BarlineType),
+/* harmony export */   Beam: () => (/* reexport safe */ _beam__WEBPACK_IMPORTED_MODULE_4__.Beam),
+/* harmony export */   Bend: () => (/* reexport safe */ _bend__WEBPACK_IMPORTED_MODULE_5__.Bend),
+/* harmony export */   BoundingBox: () => (/* reexport safe */ _boundingbox__WEBPACK_IMPORTED_MODULE_6__.BoundingBox),
+/* harmony export */   BoundingBoxComputation: () => (/* reexport safe */ _boundingboxcomputation__WEBPACK_IMPORTED_MODULE_7__.BoundingBoxComputation),
+/* harmony export */   Builder: () => (/* reexport safe */ _easyscore__WEBPACK_IMPORTED_MODULE_15__.Builder),
+/* harmony export */   CanvasContext: () => (/* reexport safe */ _canvascontext__WEBPACK_IMPORTED_MODULE_8__.CanvasContext),
+/* harmony export */   Category: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.Category),
+/* harmony export */   ChordSymbol: () => (/* reexport safe */ _chordsymbol__WEBPACK_IMPORTED_MODULE_9__.ChordSymbol),
+/* harmony export */   ChordSymbolHorizontalJustify: () => (/* reexport safe */ _chordsymbol__WEBPACK_IMPORTED_MODULE_9__.ChordSymbolHorizontalJustify),
+/* harmony export */   ChordSymbolVerticalJustify: () => (/* reexport safe */ _chordsymbol__WEBPACK_IMPORTED_MODULE_9__.ChordSymbolVerticalJustify),
+/* harmony export */   Clef: () => (/* reexport safe */ _clef__WEBPACK_IMPORTED_MODULE_10__.Clef),
+/* harmony export */   ClefNote: () => (/* reexport safe */ _clefnote__WEBPACK_IMPORTED_MODULE_11__.ClefNote),
+/* harmony export */   Crescendo: () => (/* reexport safe */ _crescendo__WEBPACK_IMPORTED_MODULE_12__.Crescendo),
+/* harmony export */   Curve: () => (/* reexport safe */ _curve__WEBPACK_IMPORTED_MODULE_13__.Curve),
+/* harmony export */   CurvePosition: () => (/* reexport safe */ _curve__WEBPACK_IMPORTED_MODULE_13__.CurvePosition),
+/* harmony export */   Dot: () => (/* reexport safe */ _dot__WEBPACK_IMPORTED_MODULE_14__.Dot),
+/* harmony export */   EasyScore: () => (/* reexport safe */ _easyscore__WEBPACK_IMPORTED_MODULE_15__.EasyScore),
+/* harmony export */   EasyScoreGrammar: () => (/* reexport safe */ _easyscore__WEBPACK_IMPORTED_MODULE_15__.EasyScoreGrammar),
+/* harmony export */   Element: () => (/* reexport safe */ _element__WEBPACK_IMPORTED_MODULE_16__.Element),
+/* harmony export */   Factory: () => (/* reexport safe */ _factory__WEBPACK_IMPORTED_MODULE_17__.Factory),
+/* harmony export */   Flow: () => (/* reexport safe */ _flow__WEBPACK_IMPORTED_MODULE_18__.Flow),
+/* harmony export */   Font: () => (/* reexport safe */ _font__WEBPACK_IMPORTED_MODULE_19__.Font),
+/* harmony export */   FontStyle: () => (/* reexport safe */ _font__WEBPACK_IMPORTED_MODULE_19__.FontStyle),
+/* harmony export */   FontWeight: () => (/* reexport safe */ _font__WEBPACK_IMPORTED_MODULE_19__.FontWeight),
+/* harmony export */   Formatter: () => (/* reexport safe */ _formatter__WEBPACK_IMPORTED_MODULE_20__.Formatter),
+/* harmony export */   Fraction: () => (/* reexport safe */ _fraction__WEBPACK_IMPORTED_MODULE_21__.Fraction),
+/* harmony export */   FretHandFinger: () => (/* reexport safe */ _frethandfinger__WEBPACK_IMPORTED_MODULE_22__.FretHandFinger),
+/* harmony export */   GhostNote: () => (/* reexport safe */ _ghostnote__WEBPACK_IMPORTED_MODULE_23__.GhostNote),
+/* harmony export */   Glyph: () => (/* reexport safe */ _glyph__WEBPACK_IMPORTED_MODULE_24__.Glyph),
+/* harmony export */   GlyphNote: () => (/* reexport safe */ _glyphnote__WEBPACK_IMPORTED_MODULE_25__.GlyphNote),
+/* harmony export */   GraceNote: () => (/* reexport safe */ _gracenote__WEBPACK_IMPORTED_MODULE_26__.GraceNote),
+/* harmony export */   GraceNoteGroup: () => (/* reexport safe */ _gracenotegroup__WEBPACK_IMPORTED_MODULE_27__.GraceNoteGroup),
+/* harmony export */   GraceTabNote: () => (/* reexport safe */ _gracetabnote__WEBPACK_IMPORTED_MODULE_28__.GraceTabNote),
+/* harmony export */   KeyManager: () => (/* reexport safe */ _keymanager__WEBPACK_IMPORTED_MODULE_29__.KeyManager),
+/* harmony export */   KeySigNote: () => (/* reexport safe */ _keysignote__WEBPACK_IMPORTED_MODULE_31__.KeySigNote),
+/* harmony export */   KeySignature: () => (/* reexport safe */ _keysignature__WEBPACK_IMPORTED_MODULE_30__.KeySignature),
+/* harmony export */   Modifier: () => (/* reexport safe */ _modifier__WEBPACK_IMPORTED_MODULE_32__.Modifier),
+/* harmony export */   ModifierContext: () => (/* reexport safe */ _modifiercontext__WEBPACK_IMPORTED_MODULE_33__.ModifierContext),
+/* harmony export */   ModifierPosition: () => (/* reexport safe */ _modifier__WEBPACK_IMPORTED_MODULE_32__.ModifierPosition),
+/* harmony export */   MultiMeasureRest: () => (/* reexport safe */ _multimeasurerest__WEBPACK_IMPORTED_MODULE_34__.MultiMeasureRest),
+/* harmony export */   Music: () => (/* reexport safe */ _music__WEBPACK_IMPORTED_MODULE_35__.Music),
+/* harmony export */   Note: () => (/* reexport safe */ _note__WEBPACK_IMPORTED_MODULE_36__.Note),
+/* harmony export */   NoteHead: () => (/* reexport safe */ _notehead__WEBPACK_IMPORTED_MODULE_37__.NoteHead),
+/* harmony export */   NoteSubGroup: () => (/* reexport safe */ _notesubgroup__WEBPACK_IMPORTED_MODULE_38__.NoteSubGroup),
+/* harmony export */   Ornament: () => (/* reexport safe */ _ornament__WEBPACK_IMPORTED_MODULE_39__.Ornament),
+/* harmony export */   OutlineCode: () => (/* reexport safe */ _glyph__WEBPACK_IMPORTED_MODULE_24__.OutlineCode),
+/* harmony export */   Parenthesis: () => (/* reexport safe */ _parenthesis__WEBPACK_IMPORTED_MODULE_40__.Parenthesis),
+/* harmony export */   Parser: () => (/* reexport safe */ _parser__WEBPACK_IMPORTED_MODULE_41__.Parser),
+/* harmony export */   PedalMarking: () => (/* reexport safe */ _pedalmarking__WEBPACK_IMPORTED_MODULE_42__.PedalMarking),
+/* harmony export */   Piece: () => (/* reexport safe */ _easyscore__WEBPACK_IMPORTED_MODULE_15__.Piece),
+/* harmony export */   Registry: () => (/* reexport safe */ _registry__WEBPACK_IMPORTED_MODULE_43__.Registry),
+/* harmony export */   RenderContext: () => (/* reexport safe */ _rendercontext__WEBPACK_IMPORTED_MODULE_44__.RenderContext),
+/* harmony export */   Renderer: () => (/* reexport safe */ _renderer__WEBPACK_IMPORTED_MODULE_45__.Renderer),
+/* harmony export */   RendererBackends: () => (/* reexport safe */ _renderer__WEBPACK_IMPORTED_MODULE_45__.RendererBackends),
+/* harmony export */   RendererLineEndType: () => (/* reexport safe */ _renderer__WEBPACK_IMPORTED_MODULE_45__.RendererLineEndType),
+/* harmony export */   RepeatNote: () => (/* reexport safe */ _repeatnote__WEBPACK_IMPORTED_MODULE_46__.RepeatNote),
+/* harmony export */   Repetition: () => (/* reexport safe */ _staverepetition__WEBPACK_IMPORTED_MODULE_54__.Repetition),
+/* harmony export */   RuntimeError: () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.RuntimeError),
+/* harmony export */   SVGContext: () => (/* reexport safe */ _svgcontext__WEBPACK_IMPORTED_MODULE_64__.SVGContext),
+/* harmony export */   Stave: () => (/* reexport safe */ _stave__WEBPACK_IMPORTED_MODULE_47__.Stave),
+/* harmony export */   StaveConnector: () => (/* reexport safe */ _staveconnector__WEBPACK_IMPORTED_MODULE_49__.StaveConnector),
+/* harmony export */   StaveHairpin: () => (/* reexport safe */ _stavehairpin__WEBPACK_IMPORTED_MODULE_50__.StaveHairpin),
+/* harmony export */   StaveLine: () => (/* reexport safe */ _staveline__WEBPACK_IMPORTED_MODULE_51__.StaveLine),
+/* harmony export */   StaveModifier: () => (/* reexport safe */ _stavemodifier__WEBPACK_IMPORTED_MODULE_52__.StaveModifier),
+/* harmony export */   StaveModifierPosition: () => (/* reexport safe */ _stavemodifier__WEBPACK_IMPORTED_MODULE_52__.StaveModifierPosition),
+/* harmony export */   StaveNote: () => (/* reexport safe */ _stavenote__WEBPACK_IMPORTED_MODULE_53__.StaveNote),
+/* harmony export */   StaveSection: () => (/* reexport safe */ _stavesection__WEBPACK_IMPORTED_MODULE_55__.StaveSection),
+/* harmony export */   StaveTempo: () => (/* reexport safe */ _stavetempo__WEBPACK_IMPORTED_MODULE_56__.StaveTempo),
+/* harmony export */   StaveText: () => (/* reexport safe */ _stavetext__WEBPACK_IMPORTED_MODULE_57__.StaveText),
+/* harmony export */   StaveTie: () => (/* reexport safe */ _stavetie__WEBPACK_IMPORTED_MODULE_58__.StaveTie),
+/* harmony export */   Stem: () => (/* reexport safe */ _stem__WEBPACK_IMPORTED_MODULE_60__.Stem),
+/* harmony export */   StemmableNote: () => (/* reexport safe */ _stemmablenote__WEBPACK_IMPORTED_MODULE_61__.StemmableNote),
+/* harmony export */   StringNumber: () => (/* reexport safe */ _stringnumber__WEBPACK_IMPORTED_MODULE_62__.StringNumber),
+/* harmony export */   Stroke: () => (/* reexport safe */ _strokes__WEBPACK_IMPORTED_MODULE_63__.Stroke),
+/* harmony export */   SymbolModifiers: () => (/* reexport safe */ _chordsymbol__WEBPACK_IMPORTED_MODULE_9__.SymbolModifiers),
+/* harmony export */   SymbolTypes: () => (/* reexport safe */ _chordsymbol__WEBPACK_IMPORTED_MODULE_9__.SymbolTypes),
+/* harmony export */   System: () => (/* reexport safe */ _system__WEBPACK_IMPORTED_MODULE_65__.System),
+/* harmony export */   TabNote: () => (/* reexport safe */ _tabnote__WEBPACK_IMPORTED_MODULE_66__.TabNote),
+/* harmony export */   TabSlide: () => (/* reexport safe */ _tabslide__WEBPACK_IMPORTED_MODULE_67__.TabSlide),
+/* harmony export */   TabStave: () => (/* reexport safe */ _tabstave__WEBPACK_IMPORTED_MODULE_68__.TabStave),
+/* harmony export */   TabTie: () => (/* reexport safe */ _tabtie__WEBPACK_IMPORTED_MODULE_69__.TabTie),
+/* harmony export */   TextBracket: () => (/* reexport safe */ _textbracket__WEBPACK_IMPORTED_MODULE_70__.TextBracket),
+/* harmony export */   TextBracketPosition: () => (/* reexport safe */ _textbracket__WEBPACK_IMPORTED_MODULE_70__.TextBracketPosition),
+/* harmony export */   TextDynamics: () => (/* reexport safe */ _textdynamics__WEBPACK_IMPORTED_MODULE_71__.TextDynamics),
+/* harmony export */   TextFormatter: () => (/* reexport safe */ _textformatter__WEBPACK_IMPORTED_MODULE_72__.TextFormatter),
+/* harmony export */   TextJustification: () => (/* reexport safe */ _textnote__WEBPACK_IMPORTED_MODULE_73__.TextJustification),
+/* harmony export */   TextNote: () => (/* reexport safe */ _textnote__WEBPACK_IMPORTED_MODULE_73__.TextNote),
+/* harmony export */   TickContext: () => (/* reexport safe */ _tickcontext__WEBPACK_IMPORTED_MODULE_75__.TickContext),
+/* harmony export */   Tickable: () => (/* reexport safe */ _tickable__WEBPACK_IMPORTED_MODULE_74__.Tickable),
+/* harmony export */   TimeSigNote: () => (/* reexport safe */ _timesignote__WEBPACK_IMPORTED_MODULE_78__.TimeSigNote),
+/* harmony export */   TimeSignature: () => (/* reexport safe */ _timesignature__WEBPACK_IMPORTED_MODULE_77__.TimeSignature),
+/* harmony export */   TimeSignatureGlyph: () => (/* reexport safe */ _timesigglyph__WEBPACK_IMPORTED_MODULE_76__.TimeSignatureGlyph),
+/* harmony export */   Tremolo: () => (/* reexport safe */ _tremolo__WEBPACK_IMPORTED_MODULE_79__.Tremolo),
+/* harmony export */   Tuning: () => (/* reexport safe */ _tuning__WEBPACK_IMPORTED_MODULE_80__.Tuning),
+/* harmony export */   Tuplet: () => (/* reexport safe */ _tuplet__WEBPACK_IMPORTED_MODULE_81__.Tuplet),
+/* harmony export */   TupletLocation: () => (/* reexport safe */ _tuplet__WEBPACK_IMPORTED_MODULE_81__.TupletLocation),
+/* harmony export */   Vex: () => (/* reexport safe */ _vex__WEBPACK_IMPORTED_MODULE_84__.Vex),
+/* harmony export */   Vibrato: () => (/* reexport safe */ _vibrato__WEBPACK_IMPORTED_MODULE_85__.Vibrato),
+/* harmony export */   VibratoBracket: () => (/* reexport safe */ _vibratobracket__WEBPACK_IMPORTED_MODULE_86__.VibratoBracket),
+/* harmony export */   Voice: () => (/* reexport safe */ _voice__WEBPACK_IMPORTED_MODULE_87__.Voice),
+/* harmony export */   VoiceMode: () => (/* reexport safe */ _voice__WEBPACK_IMPORTED_MODULE_87__.VoiceMode),
+/* harmony export */   Volta: () => (/* reexport safe */ _stavevolta__WEBPACK_IMPORTED_MODULE_59__.Volta),
+/* harmony export */   VoltaType: () => (/* reexport safe */ _stavevolta__WEBPACK_IMPORTED_MODULE_59__.VoltaType),
+/* harmony export */   defined: () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.defined),
+/* harmony export */   drawDot: () => (/* reexport safe */ _rendercontext__WEBPACK_IMPORTED_MODULE_44__.drawDot),
+/* harmony export */   globalObject: () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.globalObject),
+/* harmony export */   isAccidental: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isAccidental),
+/* harmony export */   isAnnotation: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isAnnotation),
+/* harmony export */   isBarline: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isBarline),
+/* harmony export */   isCategory: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isCategory),
+/* harmony export */   isDot: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isDot),
+/* harmony export */   isGraceNote: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isGraceNote),
+/* harmony export */   isGraceNoteGroup: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isGraceNoteGroup),
+/* harmony export */   isHTMLCanvas: () => (/* reexport safe */ _web__WEBPACK_IMPORTED_MODULE_88__.isHTMLCanvas),
+/* harmony export */   isHTMLDiv: () => (/* reexport safe */ _web__WEBPACK_IMPORTED_MODULE_88__.isHTMLDiv),
+/* harmony export */   isNote: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isNote),
+/* harmony export */   isRenderContext: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isRenderContext),
+/* harmony export */   isStaveNote: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isStaveNote),
+/* harmony export */   isStemmableNote: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isStemmableNote),
+/* harmony export */   isTabNote: () => (/* reexport safe */ _typeguard__WEBPACK_IMPORTED_MODULE_82__.isTabNote),
+/* harmony export */   log: () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.log),
+/* harmony export */   midLine: () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.midLine),
+/* harmony export */   normalizeAngle: () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.normalizeAngle),
+/* harmony export */   prefix: () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.prefix),
+/* harmony export */   sumArray: () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.sumArray),
+/* harmony export */   warn: () => (/* reexport safe */ _util__WEBPACK_IMPORTED_MODULE_83__.warn)
 /* harmony export */ });
 /* harmony import */ var _accidental__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./accidental */ "./src/accidental.ts");
 /* harmony import */ var _annotation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
@@ -22039,7 +22039,7 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "KeyManager": () => (/* binding */ KeyManager)
+/* harmony export */   KeyManager: () => (/* binding */ KeyManager)
 /* harmony export */ });
 /* harmony import */ var _music__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./music */ "./src/music.ts");
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./src/util.ts");
@@ -22164,7 +22164,7 @@ class KeyManager {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "KeySignature": () => (/* binding */ KeySignature)
+/* harmony export */   KeySignature: () => (/* binding */ KeySignature)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
@@ -22478,7 +22478,7 @@ KeySignature.accidentalSpacing = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "KeySigNote": () => (/* binding */ KeySigNote)
+/* harmony export */   KeySigNote: () => (/* binding */ KeySigNote)
 /* harmony export */ });
 /* harmony import */ var _keysignature__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./keysignature */ "./src/keysignature.ts");
 /* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./note */ "./src/note.ts");
@@ -22530,8 +22530,8 @@ class KeySigNote extends _note__WEBPACK_IMPORTED_MODULE_1__.Note {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Modifier": () => (/* binding */ Modifier),
-/* harmony export */   "ModifierPosition": () => (/* binding */ ModifierPosition)
+/* harmony export */   Modifier: () => (/* binding */ Modifier),
+/* harmony export */   ModifierPosition: () => (/* binding */ ModifierPosition)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
@@ -22735,7 +22735,7 @@ class Modifier extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ModifierContext": () => (/* binding */ ModifierContext)
+/* harmony export */   ModifierContext: () => (/* binding */ ModifierContext)
 /* harmony export */ });
 /* harmony import */ var _accidental__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./accidental */ "./src/accidental.ts");
 /* harmony import */ var _annotation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./annotation */ "./src/annotation.ts");
@@ -22909,7 +22909,7 @@ ModifierContext.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "MultiMeasureRest": () => (/* binding */ MultiMeasureRest)
+/* harmony export */   MultiMeasureRest: () => (/* binding */ MultiMeasureRest)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -23122,7 +23122,7 @@ class MultiMeasureRest extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Music": () => (/* binding */ Music)
+/* harmony export */   Music: () => (/* binding */ Music)
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
@@ -23508,7 +23508,7 @@ class Music {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Note": () => (/* binding */ Note)
+/* harmony export */   Note: () => (/* binding */ Note)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _rendercontext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./rendercontext */ "./src/rendercontext.ts");
@@ -24024,7 +24024,7 @@ class Note extends _tickable__WEBPACK_IMPORTED_MODULE_3__.Tickable {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "NoteHead": () => (/* binding */ NoteHead)
+/* harmony export */   NoteHead: () => (/* binding */ NoteHead)
 /* harmony export */ });
 /* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -24257,7 +24257,7 @@ NoteHead.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "NoteSubGroup": () => (/* binding */ NoteSubGroup)
+/* harmony export */   NoteSubGroup: () => (/* binding */ NoteSubGroup)
 /* harmony export */ });
 /* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -24345,7 +24345,7 @@ class NoteSubGroup extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Ornament": () => (/* binding */ Ornament)
+/* harmony export */   Ornament: () => (/* binding */ Ornament)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -24646,7 +24646,7 @@ Ornament.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Parenthesis": () => (/* binding */ Parenthesis)
+/* harmony export */   Parenthesis: () => (/* binding */ Parenthesis)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -24757,7 +24757,7 @@ class Parenthesis extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Parser": () => (/* binding */ Parser)
+/* harmony export */   Parser: () => (/* binding */ Parser)
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
@@ -24985,7 +24985,7 @@ Parser.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "PedalMarking": () => (/* binding */ PedalMarking)
+/* harmony export */   PedalMarking: () => (/* binding */ PedalMarking)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./font */ "./src/font.ts");
@@ -25252,7 +25252,7 @@ PedalMarking.typeString = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Registry": () => (/* binding */ Registry)
+/* harmony export */   Registry: () => (/* binding */ Registry)
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
@@ -25383,8 +25383,8 @@ class Registry {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "RenderContext": () => (/* binding */ RenderContext),
-/* harmony export */   "drawDot": () => (/* binding */ drawDot)
+/* harmony export */   RenderContext: () => (/* binding */ RenderContext),
+/* harmony export */   drawDot: () => (/* binding */ drawDot)
 /* harmony export */ });
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2021.
@@ -25438,9 +25438,9 @@ function drawDot(ctx, x, y, color = '#F55') {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Renderer": () => (/* binding */ Renderer),
-/* harmony export */   "RendererBackends": () => (/* binding */ RendererBackends),
-/* harmony export */   "RendererLineEndType": () => (/* binding */ RendererLineEndType)
+/* harmony export */   Renderer: () => (/* binding */ Renderer),
+/* harmony export */   RendererBackends: () => (/* binding */ RendererBackends),
+/* harmony export */   RendererLineEndType: () => (/* binding */ RendererLineEndType)
 /* harmony export */ });
 /* harmony import */ var _canvascontext__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./canvascontext */ "./src/canvascontext.ts");
 /* harmony import */ var _svgcontext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./svgcontext */ "./src/svgcontext.ts");
@@ -25587,7 +25587,7 @@ Renderer.lastContext = undefined;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "RepeatNote": () => (/* binding */ RepeatNote)
+/* harmony export */   RepeatNote: () => (/* binding */ RepeatNote)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _glyphnote__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyphnote */ "./src/glyphnote.ts");
@@ -25629,7 +25629,7 @@ class RepeatNote extends _glyphnote__WEBPACK_IMPORTED_MODULE_1__.GlyphNote {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Stave": () => (/* binding */ Stave)
+/* harmony export */   Stave: () => (/* binding */ Stave)
 /* harmony export */ });
 /* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 /* harmony import */ var _clef__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./clef */ "./src/clef.ts");
@@ -25958,6 +25958,14 @@ class Stave extends _element__WEBPACK_IMPORTED_MODULE_2__.Element {
             this.modifiers[1].setType(type);
             this.formatted = false;
         }
+        return this;
+    }
+    /**
+     * treat the stave as if the clef is clefSpec, but don't display the clef
+     * @param clefSpec
+     */
+    setClefLines(clefSpec) {
+        this.clef = clefSpec;
         return this;
     }
     setClef(clefSpec, size, annotation, position) {
@@ -26397,8 +26405,8 @@ Stave.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Barline": () => (/* binding */ Barline),
-/* harmony export */   "BarlineType": () => (/* binding */ BarlineType)
+/* harmony export */   Barline: () => (/* binding */ Barline),
+/* harmony export */   BarlineType: () => (/* binding */ BarlineType)
 /* harmony export */ });
 /* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
 /* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tables */ "./src/tables.ts");
@@ -26613,7 +26621,7 @@ class Barline extends _stavemodifier__WEBPACK_IMPORTED_MODULE_0__.StaveModifier 
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveConnector": () => (/* binding */ StaveConnector)
+/* harmony export */   StaveConnector: () => (/* binding */ StaveConnector)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./font */ "./src/font.ts");
@@ -26873,7 +26881,7 @@ StaveConnector.typeString = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveHairpin": () => (/* binding */ StaveHairpin)
+/* harmony export */   StaveHairpin: () => (/* binding */ StaveHairpin)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -27052,7 +27060,7 @@ StaveHairpin.type = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveLine": () => (/* binding */ StaveLine)
+/* harmony export */   StaveLine: () => (/* binding */ StaveLine)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tables */ "./src/tables.ts");
@@ -27346,8 +27354,8 @@ StaveLine.TextJustification = _textnote__WEBPACK_IMPORTED_MODULE_2__.TextJustifi
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveModifier": () => (/* binding */ StaveModifier),
-/* harmony export */   "StaveModifierPosition": () => (/* binding */ StaveModifierPosition)
+/* harmony export */   StaveModifier: () => (/* binding */ StaveModifier),
+/* harmony export */   StaveModifierPosition: () => (/* binding */ StaveModifierPosition)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
@@ -27457,7 +27465,7 @@ class StaveModifier extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveNote": () => (/* binding */ StaveNote)
+/* harmony export */   StaveNote: () => (/* binding */ StaveNote)
 /* harmony export */ });
 /* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -28551,7 +28559,7 @@ StaveNote.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Repetition": () => (/* binding */ Repetition)
+/* harmony export */   Repetition: () => (/* binding */ Repetition)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -28733,7 +28741,7 @@ Repetition.type = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveSection": () => (/* binding */ StaveSection)
+/* harmony export */   StaveSection: () => (/* binding */ StaveSection)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
@@ -28818,7 +28826,7 @@ StaveSection.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveTempo": () => (/* binding */ StaveTempo)
+/* harmony export */   StaveTempo: () => (/* binding */ StaveTempo)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -28940,7 +28948,7 @@ StaveTempo.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveText": () => (/* binding */ StaveText)
+/* harmony export */   StaveText: () => (/* binding */ StaveText)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
@@ -29045,7 +29053,7 @@ StaveText.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveTie": () => (/* binding */ StaveTie)
+/* harmony export */   StaveTie: () => (/* binding */ StaveTie)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
@@ -29243,8 +29251,8 @@ StaveTie.TEXT_FONT = Object.assign({}, _element__WEBPACK_IMPORTED_MODULE_0__.Ele
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Volta": () => (/* binding */ Volta),
-/* harmony export */   "VoltaType": () => (/* binding */ VoltaType)
+/* harmony export */   Volta: () => (/* binding */ Volta),
+/* harmony export */   VoltaType: () => (/* binding */ VoltaType)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
@@ -29333,7 +29341,7 @@ Volta.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Stem": () => (/* binding */ Stem)
+/* harmony export */   Stem: () => (/* binding */ Stem)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tables */ "./src/tables.ts");
@@ -29515,7 +29523,7 @@ Stem.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StemmableNote": () => (/* binding */ StemmableNote)
+/* harmony export */   StemmableNote: () => (/* binding */ StemmableNote)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./note */ "./src/note.ts");
@@ -29760,7 +29768,7 @@ class StemmableNote extends _note__WEBPACK_IMPORTED_MODULE_1__.Note {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StringNumber": () => (/* binding */ StringNumber)
+/* harmony export */   StringNumber: () => (/* binding */ StringNumber)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -30036,7 +30044,7 @@ StringNumber.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Stroke": () => (/* binding */ Stroke)
+/* harmony export */   Stroke: () => (/* binding */ Stroke)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -30274,7 +30282,7 @@ Stroke.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "SVGContext": () => (/* binding */ SVGContext)
+/* harmony export */   SVGContext: () => (/* binding */ SVGContext)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _rendercontext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./rendercontext */ "./src/rendercontext.ts");
@@ -30857,7 +30865,7 @@ SVGContext.measureTextCache = new MeasureTextCache();
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "System": () => (/* binding */ System)
+/* harmony export */   System: () => (/* binding */ System)
 /* harmony export */ });
 /* harmony import */ var _boundingbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boundingbox */ "./src/boundingbox.ts");
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./element */ "./src/element.ts");
@@ -31082,7 +31090,7 @@ class System extends _element__WEBPACK_IMPORTED_MODULE_1__.Element {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Tables": () => (/* binding */ Tables)
+/* harmony export */   Tables: () => (/* binding */ Tables)
 /* harmony export */ });
 /* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -32409,7 +32417,7 @@ const durationCodes = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TabNote": () => (/* binding */ TabNote)
+/* harmony export */   TabNote: () => (/* binding */ TabNote)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -32825,7 +32833,7 @@ class TabNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNote 
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TabSlide": () => (/* binding */ TabSlide)
+/* harmony export */   TabSlide: () => (/* binding */ TabSlide)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _tabtie__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tabtie */ "./src/tabtie.ts");
@@ -32945,7 +32953,7 @@ TabSlide.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TabStave": () => (/* binding */ TabStave)
+/* harmony export */   TabStave: () => (/* binding */ TabStave)
 /* harmony export */ });
 /* harmony import */ var _stave__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./stave */ "./src/stave.ts");
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
@@ -32981,7 +32989,7 @@ class TabStave extends _stave__WEBPACK_IMPORTED_MODULE_0__.Stave {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TabTie": () => (/* binding */ TabTie)
+/* harmony export */   TabTie: () => (/* binding */ TabTie)
 /* harmony export */ });
 /* harmony import */ var _stavetie__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./stavetie */ "./src/stavetie.ts");
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
@@ -33033,8 +33041,8 @@ class TabTie extends _stavetie__WEBPACK_IMPORTED_MODULE_0__.StaveTie {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TextBracket": () => (/* binding */ TextBracket),
-/* harmony export */   "TextBracketPosition": () => (/* binding */ TextBracketPosition)
+/* harmony export */   TextBracket: () => (/* binding */ TextBracket),
+/* harmony export */   TextBracketPosition: () => (/* binding */ TextBracketPosition)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./font */ "./src/font.ts");
@@ -33239,7 +33247,7 @@ TextBracket.TEXT_FONT = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TextDynamics": () => (/* binding */ TextDynamics)
+/* harmony export */   TextDynamics: () => (/* binding */ TextDynamics)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./note */ "./src/note.ts");
@@ -33373,7 +33381,7 @@ TextDynamics.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TextFormatter": () => (/* binding */ TextFormatter)
+/* harmony export */   TextFormatter: () => (/* binding */ TextFormatter)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./src/util.ts");
@@ -33707,8 +33715,8 @@ TextFormatter.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TextJustification": () => (/* binding */ TextJustification),
-/* harmony export */   "TextNote": () => (/* binding */ TextNote)
+/* harmony export */   TextJustification: () => (/* binding */ TextJustification),
+/* harmony export */   TextNote: () => (/* binding */ TextNote)
 /* harmony export */ });
 /* harmony import */ var _font__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./font */ "./src/font.ts");
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
@@ -33939,7 +33947,7 @@ TextNote.Justification = TextJustification;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Tickable": () => (/* binding */ Tickable)
+/* harmony export */   Tickable: () => (/* binding */ Tickable)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
@@ -34247,7 +34255,7 @@ class Tickable extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TickContext": () => (/* binding */ TickContext)
+/* harmony export */   TickContext: () => (/* binding */ TickContext)
 /* harmony export */ });
 /* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./src/util.ts");
@@ -34457,7 +34465,7 @@ class TickContext {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TimeSignatureGlyph": () => (/* binding */ TimeSignatureGlyph)
+/* harmony export */   TimeSignatureGlyph: () => (/* binding */ TimeSignatureGlyph)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./src/util.ts");
@@ -34569,7 +34577,7 @@ class TimeSignatureGlyph extends _glyph__WEBPACK_IMPORTED_MODULE_0__.Glyph {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TimeSignature": () => (/* binding */ TimeSignature)
+/* harmony export */   TimeSignature: () => (/* binding */ TimeSignature)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _stavemodifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stavemodifier */ "./src/stavemodifier.ts");
@@ -34772,7 +34780,7 @@ class TimeSignature extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveMod
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TimeSigNote": () => (/* binding */ TimeSigNote)
+/* harmony export */   TimeSigNote: () => (/* binding */ TimeSigNote)
 /* harmony export */ });
 /* harmony import */ var _note__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./note */ "./src/note.ts");
 /* harmony import */ var _timesignature__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./timesignature */ "./src/timesignature.ts");
@@ -34828,7 +34836,7 @@ class TimeSigNote extends _note__WEBPACK_IMPORTED_MODULE_0__.Note {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Tremolo": () => (/* binding */ Tremolo)
+/* harmony export */   Tremolo: () => (/* binding */ Tremolo)
 /* harmony export */ });
 /* harmony import */ var _glyph__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./glyph */ "./src/glyph.ts");
 /* harmony import */ var _gracenote__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./gracenote */ "./src/gracenote.ts");
@@ -34908,7 +34916,7 @@ class Tremolo extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Tuning": () => (/* binding */ Tuning)
+/* harmony export */   Tuning: () => (/* binding */ Tuning)
 /* harmony export */ });
 /* harmony import */ var _tables__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./tables */ "./src/tables.ts");
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./src/util.ts");
@@ -34995,8 +35003,8 @@ class Tuning {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Tuplet": () => (/* binding */ Tuplet),
-/* harmony export */   "TupletLocation": () => (/* binding */ TupletLocation)
+/* harmony export */   Tuplet: () => (/* binding */ Tuplet),
+/* harmony export */   TupletLocation: () => (/* binding */ TupletLocation)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _formatter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./formatter */ "./src/formatter.ts");
@@ -35343,19 +35351,19 @@ class Tuplet extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Category": () => (/* binding */ Category),
-/* harmony export */   "isAccidental": () => (/* binding */ isAccidental),
-/* harmony export */   "isAnnotation": () => (/* binding */ isAnnotation),
-/* harmony export */   "isBarline": () => (/* binding */ isBarline),
-/* harmony export */   "isCategory": () => (/* binding */ isCategory),
-/* harmony export */   "isDot": () => (/* binding */ isDot),
-/* harmony export */   "isGraceNote": () => (/* binding */ isGraceNote),
-/* harmony export */   "isGraceNoteGroup": () => (/* binding */ isGraceNoteGroup),
-/* harmony export */   "isNote": () => (/* binding */ isNote),
-/* harmony export */   "isRenderContext": () => (/* binding */ isRenderContext),
-/* harmony export */   "isStaveNote": () => (/* binding */ isStaveNote),
-/* harmony export */   "isStemmableNote": () => (/* binding */ isStemmableNote),
-/* harmony export */   "isTabNote": () => (/* binding */ isTabNote)
+/* harmony export */   Category: () => (/* binding */ Category),
+/* harmony export */   isAccidental: () => (/* binding */ isAccidental),
+/* harmony export */   isAnnotation: () => (/* binding */ isAnnotation),
+/* harmony export */   isBarline: () => (/* binding */ isBarline),
+/* harmony export */   isCategory: () => (/* binding */ isCategory),
+/* harmony export */   isDot: () => (/* binding */ isDot),
+/* harmony export */   isGraceNote: () => (/* binding */ isGraceNote),
+/* harmony export */   isGraceNoteGroup: () => (/* binding */ isGraceNoteGroup),
+/* harmony export */   isNote: () => (/* binding */ isNote),
+/* harmony export */   isRenderContext: () => (/* binding */ isRenderContext),
+/* harmony export */   isStaveNote: () => (/* binding */ isStaveNote),
+/* harmony export */   isStemmableNote: () => (/* binding */ isStemmableNote),
+/* harmony export */   isTabNote: () => (/* binding */ isTabNote)
 /* harmony export */ });
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // Author: Ron B. Yeh
@@ -35488,15 +35496,15 @@ var Category;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "RuntimeError": () => (/* binding */ RuntimeError),
-/* harmony export */   "defined": () => (/* binding */ defined),
-/* harmony export */   "globalObject": () => (/* binding */ globalObject),
-/* harmony export */   "log": () => (/* binding */ log),
-/* harmony export */   "midLine": () => (/* binding */ midLine),
-/* harmony export */   "normalizeAngle": () => (/* binding */ normalizeAngle),
-/* harmony export */   "prefix": () => (/* binding */ prefix),
-/* harmony export */   "sumArray": () => (/* binding */ sumArray),
-/* harmony export */   "warn": () => (/* binding */ warn)
+/* harmony export */   RuntimeError: () => (/* binding */ RuntimeError),
+/* harmony export */   defined: () => (/* binding */ defined),
+/* harmony export */   globalObject: () => (/* binding */ globalObject),
+/* harmony export */   log: () => (/* binding */ log),
+/* harmony export */   midLine: () => (/* binding */ midLine),
+/* harmony export */   normalizeAngle: () => (/* binding */ normalizeAngle),
+/* harmony export */   prefix: () => (/* binding */ prefix),
+/* harmony export */   sumArray: () => (/* binding */ sumArray),
+/* harmony export */   warn: () => (/* binding */ warn)
 /* harmony export */ });
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
 // MIT License
@@ -35597,7 +35605,7 @@ function sumArray(arr) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Vex": () => (/* binding */ Vex)
+/* harmony export */   Vex: () => (/* binding */ Vex)
 /* harmony export */ });
 /* harmony import */ var _flow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./flow */ "./src/flow.ts");
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./src/util.ts");
@@ -35683,7 +35691,7 @@ Vex.Flow = _flow__WEBPACK_IMPORTED_MODULE_0__.Flow;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Vibrato": () => (/* binding */ Vibrato)
+/* harmony export */   Vibrato: () => (/* binding */ Vibrato)
 /* harmony export */ });
 /* harmony import */ var _bend__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bend */ "./src/bend.ts");
 /* harmony import */ var _modifier__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modifier */ "./src/modifier.ts");
@@ -35816,7 +35824,7 @@ class Vibrato extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "VibratoBracket": () => (/* binding */ VibratoBracket)
+/* harmony export */   VibratoBracket: () => (/* binding */ VibratoBracket)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _typeguard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./typeguard */ "./src/typeguard.ts");
@@ -35904,8 +35912,8 @@ VibratoBracket.DEBUG = false;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Voice": () => (/* binding */ Voice),
-/* harmony export */   "VoiceMode": () => (/* binding */ VoiceMode)
+/* harmony export */   Voice: () => (/* binding */ Voice),
+/* harmony export */   VoiceMode: () => (/* binding */ VoiceMode)
 /* harmony export */ });
 /* harmony import */ var _element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./element */ "./src/element.ts");
 /* harmony import */ var _fraction__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fraction */ "./src/fraction.ts");
@@ -36180,8 +36188,8 @@ class Voice extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "isHTMLCanvas": () => (/* binding */ isHTMLCanvas),
-/* harmony export */   "isHTMLDiv": () => (/* binding */ isHTMLDiv)
+/* harmony export */   isHTMLCanvas: () => (/* binding */ isHTMLCanvas),
+/* harmony export */   isHTMLDiv: () => (/* binding */ isHTMLDiv)
 /* harmony export */ });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
@@ -36226,7 +36234,7 @@ function isHTMLDiv(element) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "AccidentalTests": () => (/* binding */ AccidentalTests)
+/* harmony export */   AccidentalTests: () => (/* binding */ AccidentalTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_accidental__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/accidental */ "./src/accidental.ts");
@@ -36265,7 +36273,7 @@ __webpack_require__.r(__webpack_exports__);
 const AccidentalTests = {
     Start() {
         QUnit.module('Accidental');
-        test('Automatic Accidentals - Simple Tests', autoAccidentalWorking);
+        QUnit.test('Automatic Accidentals - Simple Tests', autoAccidentalWorking);
         const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
         run('Accidental Padding', formatAccidentalSpaces);
         run('Basic', basic);
@@ -36300,7 +36308,7 @@ function makeNewAccid(factory) {
 /**
  *
  */
-function autoAccidentalWorking() {
+function autoAccidentalWorking(assert) {
     const createStaveNote = (noteStruct) => new _src_stavenote__WEBPACK_IMPORTED_MODULE_9__.StaveNote(noteStruct);
     let notes = [
         { keys: ['bb/4'], duration: '4' },
@@ -36315,14 +36323,14 @@ function autoAccidentalWorking() {
     let voice = new _src_voice__WEBPACK_IMPORTED_MODULE_14__.Voice().setMode(_src_voice__WEBPACK_IMPORTED_MODULE_14__.Voice.Mode.SOFT).addTickables(notes);
     // F Major (Bb)
     _src_accidental__WEBPACK_IMPORTED_MODULE_1__.Accidental.applyAccidentals([voice], 'F');
-    equal(hasAccidental(notes[0]), false, 'No flat because of key signature');
-    equal(hasAccidental(notes[1]), false, 'No flat because of key signature');
-    equal(hasAccidental(notes[2]), true, 'Added a sharp');
-    equal(hasAccidental(notes[3]), true, 'Back to natural');
-    equal(hasAccidental(notes[4]), true, 'Back to natural');
-    equal(hasAccidental(notes[5]), false, 'Natural remembered');
-    equal(hasAccidental(notes[6]), true, 'Added sharp');
-    equal(hasAccidental(notes[7]), true, 'Added sharp');
+    assert.equal(hasAccidental(notes[0]), false, 'No flat because of key signature');
+    assert.equal(hasAccidental(notes[1]), false, 'No flat because of key signature');
+    assert.equal(hasAccidental(notes[2]), true, 'Added a sharp');
+    assert.equal(hasAccidental(notes[3]), true, 'Back to natural');
+    assert.equal(hasAccidental(notes[4]), true, 'Back to natural');
+    assert.equal(hasAccidental(notes[5]), false, 'Natural remembered');
+    assert.equal(hasAccidental(notes[6]), true, 'Added sharp');
+    assert.equal(hasAccidental(notes[7]), true, 'Added sharp');
     notes = [
         { keys: ['e#/4'], duration: '4' },
         { keys: ['cb/4'], duration: '4' },
@@ -36336,14 +36344,14 @@ function autoAccidentalWorking() {
     voice = new _src_voice__WEBPACK_IMPORTED_MODULE_14__.Voice().setMode(_src_voice__WEBPACK_IMPORTED_MODULE_14__.Voice.Mode.SOFT).addTickables(notes);
     // A Major (F#,G#,C#)
     _src_accidental__WEBPACK_IMPORTED_MODULE_1__.Accidental.applyAccidentals([voice], 'A');
-    equal(hasAccidental(notes[0]), true, 'Added sharp');
-    equal(hasAccidental(notes[1]), true, 'Added flat');
-    equal(hasAccidental(notes[2]), true, 'Added flat');
-    equal(hasAccidental(notes[3]), true, 'Added sharp');
-    equal(hasAccidental(notes[4]), false, 'Sharp remembered');
-    equal(hasAccidental(notes[5]), true, 'Added flat(different octave)');
-    equal(hasAccidental(notes[6]), true, 'Added flat(different octave)');
-    equal(hasAccidental(notes[7]), false, 'sharp remembered');
+    assert.equal(hasAccidental(notes[0]), true, 'Added sharp');
+    assert.equal(hasAccidental(notes[1]), true, 'Added flat');
+    assert.equal(hasAccidental(notes[2]), true, 'Added flat');
+    assert.equal(hasAccidental(notes[3]), true, 'Added sharp');
+    assert.equal(hasAccidental(notes[4]), false, 'Sharp remembered');
+    assert.equal(hasAccidental(notes[5]), true, 'Added flat(different octave)');
+    assert.equal(hasAccidental(notes[6]), true, 'Added flat(different octave)');
+    assert.equal(hasAccidental(notes[7]), false, 'sharp remembered');
     notes = [
         { keys: ['c/4'], duration: '4' },
         { keys: ['cb/4'], duration: '4' },
@@ -36360,17 +36368,17 @@ function autoAccidentalWorking() {
     voice = new _src_voice__WEBPACK_IMPORTED_MODULE_14__.Voice().setMode(_src_voice__WEBPACK_IMPORTED_MODULE_14__.Voice.Mode.SOFT).addTickables(notes);
     // C Major (no sharps/flats)
     _src_accidental__WEBPACK_IMPORTED_MODULE_1__.Accidental.applyAccidentals([voice], 'C');
-    equal(hasAccidental(notes[0]), false, 'No accidental');
-    equal(hasAccidental(notes[1]), true, 'Added flat');
-    equal(hasAccidental(notes[2]), false, 'Flat remembered');
-    equal(hasAccidental(notes[3]), true, 'Sharp added');
-    equal(hasAccidental(notes[4]), false, 'Sharp remembered');
-    equal(hasAccidental(notes[5]), true, 'Added doubled flat');
-    equal(hasAccidental(notes[6]), false, 'Double flat remembered');
-    equal(hasAccidental(notes[7]), true, 'Added double sharp');
-    equal(hasAccidental(notes[8]), false, 'Double sharp rememberd');
-    equal(hasAccidental(notes[9]), true, 'Added natural');
-    equal(hasAccidental(notes[10]), false, 'Natural remembered');
+    assert.equal(hasAccidental(notes[0]), false, 'No accidental');
+    assert.equal(hasAccidental(notes[1]), true, 'Added flat');
+    assert.equal(hasAccidental(notes[2]), false, 'Flat remembered');
+    assert.equal(hasAccidental(notes[3]), true, 'Sharp added');
+    assert.equal(hasAccidental(notes[4]), false, 'Sharp remembered');
+    assert.equal(hasAccidental(notes[5]), true, 'Added doubled flat');
+    assert.equal(hasAccidental(notes[6]), false, 'Double flat remembered');
+    assert.equal(hasAccidental(notes[7]), true, 'Added double sharp');
+    assert.equal(hasAccidental(notes[8]), false, 'Double sharp rememberd');
+    assert.equal(hasAccidental(notes[9]), true, 'Added natural');
+    assert.equal(hasAccidental(notes[10]), false, 'Natural remembered');
 }
 /**
  *
@@ -36446,7 +36454,7 @@ function formatAccidentalSpaces(options) {
     beams.forEach((b) => b.setContext(context).draw());
     notes.forEach((note) => _src_note__WEBPACK_IMPORTED_MODULE_7__.Note.plotMetrics(context, note, 30));
     _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.plotLegendForNoteWidth(context, 300, 150);
-    ok(true);
+    options.assert.ok(true);
 }
 function basic(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 240);
@@ -36489,14 +36497,14 @@ function basic(options) {
     _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter.SimpleFormat(notes, 10, { paddingBetween: 45 });
     notes.forEach((note, index) => {
         _src_note__WEBPACK_IMPORTED_MODULE_7__.Note.plotMetrics(f.getContext(), note, 140);
-        ok(note.getModifiersByType('Accidental').length > 0, 'Note ' + index + ' has accidentals');
+        options.assert.ok(note.getModifiersByType('Accidental').length > 0, 'Note ' + index + ' has accidentals');
         note.getModifiersByType('Accidental').forEach((accid, index) => {
-            ok(accid.getWidth() > 0, 'Accidental ' + index + ' has set width');
+            options.assert.ok(accid.getWidth() > 0, 'Accidental ' + index + ' has set width');
         });
     });
     f.draw();
     _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.plotLegendForNoteWidth(f.getContext(), 480, 140);
-    ok(true, 'Full Accidental');
+    options.assert.ok(true, 'Full Accidental');
 }
 function cautionary(options) {
     const staveCount = 12;
@@ -36528,7 +36536,7 @@ function cautionary(options) {
         f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
         f.draw();
     }
-    ok(true, 'Must successfully render cautionary accidentals');
+    options.assert.ok(true, 'Must successfully render cautionary accidentals');
 }
 function specialCases(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 240);
@@ -36570,14 +36578,14 @@ function specialCases(options) {
     _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter.SimpleFormat(notes, 0, { paddingBetween: 20 });
     notes.forEach((note, index) => {
         _src_note__WEBPACK_IMPORTED_MODULE_7__.Note.plotMetrics(f.getContext(), note, 140);
-        ok(note.getModifiersByType('Accidental').length > 0, 'Note ' + index + ' has accidentals');
+        options.assert.ok(note.getModifiersByType('Accidental').length > 0, 'Note ' + index + ' has accidentals');
         note.getModifiersByType('Accidental').forEach((accid, index) => {
-            ok(accid.getWidth() > 0, 'Accidental ' + index + ' has set width');
+            options.assert.ok(accid.getWidth() > 0, 'Accidental ' + index + ' has set width');
         });
     });
     f.draw();
     _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.plotLegendForNoteWidth(f.getContext(), 480, 140);
-    ok(true, 'Full Accidental');
+    options.assert.ok(true, 'Full Accidental');
 }
 function basicStemDown(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 240);
@@ -36610,14 +36618,14 @@ function basicStemDown(options) {
     _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter.SimpleFormat(notes, 0, { paddingBetween: 30 });
     notes.forEach((note, noteIndex) => {
         _src_note__WEBPACK_IMPORTED_MODULE_7__.Note.plotMetrics(f.getContext(), note, 140);
-        ok(note.getModifiersByType('Accidental').length > 0, 'Note ' + noteIndex + ' has accidentals');
+        options.assert.ok(note.getModifiersByType('Accidental').length > 0, 'Note ' + noteIndex + ' has accidentals');
         note.getModifiersByType('Accidental').forEach((accid, accidIndex) => {
-            ok(accid.getWidth() > 0, 'Accidental ' + accidIndex + ' has set width');
+            options.assert.ok(accid.getWidth() > 0, 'Accidental ' + accidIndex + ' has set width');
         });
     });
     f.draw();
     _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.plotLegendForNoteWidth(f.getContext(), 480, 140);
-    ok(true, 'Full Accidental');
+    options.assert.ok(true, 'Full Accidental');
 }
 function multiVoice(options) {
     // Helper function for visualizing
@@ -36672,7 +36680,7 @@ function multiVoice(options) {
         .setStave(stave);
     showNotes(note1, note2, stave, ctx, 250);
     _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.plotLegendForNoteWidth(ctx, 350, 150);
-    ok(true, 'Full Accidental');
+    options.assert.ok(true, 'Full Accidental');
 }
 function microtonal(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 240);
@@ -36722,14 +36730,14 @@ function microtonal(options) {
     _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter.SimpleFormat(notes, 0, { paddingBetween: 35 });
     notes.forEach((note, index) => {
         _src_note__WEBPACK_IMPORTED_MODULE_7__.Note.plotMetrics(f.getContext(), note, 140);
-        ok(note.getModifiersByType('Accidental').length > 0, 'Note ' + index + ' has accidentals');
+        options.assert.ok(note.getModifiersByType('Accidental').length > 0, 'Note ' + index + ' has accidentals');
         note.getModifiersByType('Accidental').forEach((accid, index) => {
-            ok(accid.getWidth() > 0, 'Accidental ' + index + ' has set width');
+            options.assert.ok(accid.getWidth() > 0, 'Accidental ' + index + ' has set width');
         });
     });
     f.draw();
     _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.plotLegendForNoteWidth(ctx, 580, 140);
-    ok(true, 'Microtonal Accidental');
+    options.assert.ok(true, 'Microtonal Accidental');
 }
 function microtonal_iranian(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 240);
@@ -36776,14 +36784,14 @@ function microtonal_iranian(options) {
     _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter.SimpleFormat(notes, 0, { paddingBetween: 35 });
     notes.forEach((note, index) => {
         _src_note__WEBPACK_IMPORTED_MODULE_7__.Note.plotMetrics(f.getContext(), note, 140);
-        ok(note.getModifiersByType('Accidental').length > 0, 'Note ' + index + ' has accidentals');
+        options.assert.ok(note.getModifiersByType('Accidental').length > 0, 'Note ' + index + ' has accidentals');
         note.getModifiersByType('Accidental').forEach((accid, index) => {
-            ok(accid.getWidth() > 0, 'Accidental ' + index + ' has set width');
+            options.assert.ok(accid.getWidth() > 0, 'Accidental ' + index + ' has set width');
         });
     });
     f.draw();
     _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.plotLegendForNoteWidth(ctx, 580, 140);
-    ok(true, 'Microtonal Accidental (Iranian)');
+    options.assert.ok(true, 'Microtonal Accidental (Iranian)');
 }
 function sagittal(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 240);
@@ -36855,14 +36863,14 @@ function sagittal(options) {
     _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter.SimpleFormat(notes);
     notes.forEach((note, index) => {
         _src_note__WEBPACK_IMPORTED_MODULE_7__.Note.plotMetrics(f.getContext(), note, 140);
-        ok(note.getModifiersByType('Accidental').length > 0, 'Note ' + index + ' has accidentals');
+        options.assert.ok(note.getModifiersByType('Accidental').length > 0, 'Note ' + index + ' has accidentals');
         note.getModifiersByType('Accidental').forEach((accid, index) => {
-            ok(accid.getWidth() > 0, 'Accidental ' + index + ' has set width');
+            options.assert.ok(accid.getWidth() > 0, 'Accidental ' + index + ' has set width');
         });
     });
     f.draw();
     _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.plotLegendForNoteWidth(ctx, 580, 140);
-    ok(true, 'Sagittal');
+    options.assert.ok(true, 'Sagittal');
 }
 function automaticAccidentals0(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 200);
@@ -36891,7 +36899,7 @@ function automaticAccidentals0(options) {
     _src_accidental__WEBPACK_IMPORTED_MODULE_1__.Accidental.applyAccidentals([voice], 'C');
     new _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function automaticAccidentals1(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 150);
@@ -36910,7 +36918,7 @@ function automaticAccidentals1(options) {
     _src_accidental__WEBPACK_IMPORTED_MODULE_1__.Accidental.applyAccidentals([voice], 'Ab');
     new _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function automaticAccidentals2(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 150);
@@ -36929,7 +36937,7 @@ function automaticAccidentals2(options) {
     _src_accidental__WEBPACK_IMPORTED_MODULE_1__.Accidental.applyAccidentals([voice], 'A');
     new _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function automaticAccidentals3(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 150);
@@ -36941,7 +36949,7 @@ function automaticAccidentals3(options) {
     _src_accidental__WEBPACK_IMPORTED_MODULE_1__.Accidental.applyAccidentals([voice], 'A');
     new _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function automaticAccidentalsMultiVoiceInline(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 150);
@@ -36970,25 +36978,25 @@ function automaticAccidentalsMultiVoiceInline(options) {
     const voice1 = f.Voice().setMode(_src_voice__WEBPACK_IMPORTED_MODULE_14__.Voice.Mode.SOFT).addTickables(notes1);
     // Ab Major
     _src_accidental__WEBPACK_IMPORTED_MODULE_1__.Accidental.applyAccidentals([voice0, voice1], 'Ab');
-    equal(hasAccidental(notes0[0]), false);
-    equal(hasAccidental(notes0[1]), true);
-    equal(hasAccidental(notes0[2]), true);
-    equal(hasAccidental(notes0[3]), false);
-    equal(hasAccidental(notes0[4]), false);
-    equal(hasAccidental(notes0[5]), true);
-    equal(hasAccidental(notes0[6]), true);
-    equal(hasAccidental(notes0[7]), false);
-    equal(hasAccidental(notes1[0]), false);
-    equal(hasAccidental(notes1[1]), true);
-    equal(hasAccidental(notes1[2]), true);
-    equal(hasAccidental(notes1[3]), false);
-    equal(hasAccidental(notes1[4]), false);
-    equal(hasAccidental(notes1[5]), true);
-    equal(hasAccidental(notes1[6]), true);
-    equal(hasAccidental(notes1[7]), false);
+    options.assert.equal(hasAccidental(notes0[0]), false);
+    options.assert.equal(hasAccidental(notes0[1]), true);
+    options.assert.equal(hasAccidental(notes0[2]), true);
+    options.assert.equal(hasAccidental(notes0[3]), false);
+    options.assert.equal(hasAccidental(notes0[4]), false);
+    options.assert.equal(hasAccidental(notes0[5]), true);
+    options.assert.equal(hasAccidental(notes0[6]), true);
+    options.assert.equal(hasAccidental(notes0[7]), false);
+    options.assert.equal(hasAccidental(notes1[0]), false);
+    options.assert.equal(hasAccidental(notes1[1]), true);
+    options.assert.equal(hasAccidental(notes1[2]), true);
+    options.assert.equal(hasAccidental(notes1[3]), false);
+    options.assert.equal(hasAccidental(notes1[4]), false);
+    options.assert.equal(hasAccidental(notes1[5]), true);
+    options.assert.equal(hasAccidental(notes1[6]), true);
+    options.assert.equal(hasAccidental(notes1[7]), false);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter().joinVoices([voice0, voice1]).formatToStave([voice0, voice1], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function automaticAccidentalsMultiVoiceOffset(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 150);
@@ -37018,25 +37026,25 @@ function automaticAccidentalsMultiVoiceOffset(options) {
     const voice1 = f.Voice().setMode(_src_voice__WEBPACK_IMPORTED_MODULE_14__.Voice.Mode.SOFT).addTickables(notes1);
     // Cb Major (All flats)
     _src_accidental__WEBPACK_IMPORTED_MODULE_1__.Accidental.applyAccidentals([voice0, voice1], 'Cb');
-    equal(hasAccidental(notes0[0]), true);
-    equal(hasAccidental(notes0[1]), true);
-    equal(hasAccidental(notes0[2]), true);
-    equal(hasAccidental(notes0[3]), true);
-    equal(hasAccidental(notes0[4]), true);
-    equal(hasAccidental(notes0[5]), true);
-    equal(hasAccidental(notes0[6]), true);
-    equal(hasAccidental(notes0[7]), false, 'Natural Remembered');
-    equal(hasAccidental(notes1[0]), true);
-    equal(hasAccidental(notes1[1]), false);
-    equal(hasAccidental(notes1[2]), true);
-    equal(hasAccidental(notes1[3]), true);
-    equal(hasAccidental(notes1[4]), true);
-    equal(hasAccidental(notes1[5]), true);
-    equal(hasAccidental(notes1[6]), true);
-    equal(hasAccidental(notes1[7]), true);
+    options.assert.equal(hasAccidental(notes0[0]), true);
+    options.assert.equal(hasAccidental(notes0[1]), true);
+    options.assert.equal(hasAccidental(notes0[2]), true);
+    options.assert.equal(hasAccidental(notes0[3]), true);
+    options.assert.equal(hasAccidental(notes0[4]), true);
+    options.assert.equal(hasAccidental(notes0[5]), true);
+    options.assert.equal(hasAccidental(notes0[6]), true);
+    options.assert.equal(hasAccidental(notes0[7]), false, 'Natural Remembered');
+    options.assert.equal(hasAccidental(notes1[0]), true);
+    options.assert.equal(hasAccidental(notes1[1]), false);
+    options.assert.equal(hasAccidental(notes1[2]), true);
+    options.assert.equal(hasAccidental(notes1[3]), true);
+    options.assert.equal(hasAccidental(notes1[4]), true);
+    options.assert.equal(hasAccidental(notes1[5]), true);
+    options.assert.equal(hasAccidental(notes1[6]), true);
+    options.assert.equal(hasAccidental(notes1[7]), true);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter().joinVoices([voice0, voice1]).formatToStave([voice0, voice1], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function automaticAccidentalsCornerCases1(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 150);
@@ -37054,18 +37062,18 @@ function automaticAccidentalsCornerCases1(options) {
     ].map(f.StaveNote.bind(f));
     const voice0 = f.Voice().setMode(_src_voice__WEBPACK_IMPORTED_MODULE_14__.Voice.Mode.SOFT).addTickables(notes0);
     _src_accidental__WEBPACK_IMPORTED_MODULE_1__.Accidental.applyAccidentals([voice0], 'C');
-    equal(hasAccidental(notes0[0]), false);
-    equal(hasAccidental(notes0[1]), true);
-    equal(hasAccidental(notes0[2]), false);
-    equal(hasAccidental(notes0[3]), true);
-    equal(hasAccidental(notes0[4]), false);
-    equal(hasAccidental(notes0[5]), true);
-    equal(hasAccidental(notes0[6]), false);
-    equal(hasAccidental(notes0[7]), true);
-    equal(hasAccidental(notes0[8]), false);
+    options.assert.equal(hasAccidental(notes0[0]), false);
+    options.assert.equal(hasAccidental(notes0[1]), true);
+    options.assert.equal(hasAccidental(notes0[2]), false);
+    options.assert.equal(hasAccidental(notes0[3]), true);
+    options.assert.equal(hasAccidental(notes0[4]), false);
+    options.assert.equal(hasAccidental(notes0[5]), true);
+    options.assert.equal(hasAccidental(notes0[6]), false);
+    options.assert.equal(hasAccidental(notes0[7]), true);
+    options.assert.equal(hasAccidental(notes0[8]), false);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter().joinVoices([voice0]).formatToStave([voice0], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function automaticAccidentalsCornerCases2(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 150);
@@ -37092,27 +37100,27 @@ function automaticAccidentalsCornerCases2(options) {
     ].map(f.StaveNote.bind(f));
     const voice0 = f.Voice().setMode(_src_voice__WEBPACK_IMPORTED_MODULE_14__.Voice.Mode.SOFT).addTickables(notes0);
     _src_accidental__WEBPACK_IMPORTED_MODULE_1__.Accidental.applyAccidentals([voice0], 'C');
-    equal(hasAccidental(notes0[0]), false);
-    equal(hasAccidental(notes0[2]), true);
-    equal(hasAccidental(notes0[4]), false);
-    equal(hasAccidental(notes0[6]), true);
-    equal(hasAccidental(notes0[8]), false);
-    equal(hasAccidental(notes0[10]), true);
-    equal(hasAccidental(notes0[12]), false);
-    equal(hasAccidental(notes0[14]), true);
-    equal(hasAccidental(notes0[16]), false);
-    equal(hasAccidental(notes0[1]), false);
-    equal(hasAccidental(notes0[3]), true);
-    equal(hasAccidental(notes0[5]), false);
-    equal(hasAccidental(notes0[7]), true);
-    equal(hasAccidental(notes0[9]), false);
-    equal(hasAccidental(notes0[11]), true);
-    equal(hasAccidental(notes0[13]), false);
-    equal(hasAccidental(notes0[15]), true);
-    equal(hasAccidental(notes0[17]), false);
+    options.assert.equal(hasAccidental(notes0[0]), false);
+    options.assert.equal(hasAccidental(notes0[2]), true);
+    options.assert.equal(hasAccidental(notes0[4]), false);
+    options.assert.equal(hasAccidental(notes0[6]), true);
+    options.assert.equal(hasAccidental(notes0[8]), false);
+    options.assert.equal(hasAccidental(notes0[10]), true);
+    options.assert.equal(hasAccidental(notes0[12]), false);
+    options.assert.equal(hasAccidental(notes0[14]), true);
+    options.assert.equal(hasAccidental(notes0[16]), false);
+    options.assert.equal(hasAccidental(notes0[1]), false);
+    options.assert.equal(hasAccidental(notes0[3]), true);
+    options.assert.equal(hasAccidental(notes0[5]), false);
+    options.assert.equal(hasAccidental(notes0[7]), true);
+    options.assert.equal(hasAccidental(notes0[9]), false);
+    options.assert.equal(hasAccidental(notes0[11]), true);
+    options.assert.equal(hasAccidental(notes0[13]), false);
+    options.assert.equal(hasAccidental(notes0[15]), true);
+    options.assert.equal(hasAccidental(notes0[17]), false);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter().joinVoices([voice0]).formatToStave([voice0], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function automaticAccidentalsCornerCases3(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 150);
@@ -37130,18 +37138,18 @@ function automaticAccidentalsCornerCases3(options) {
     ].map(f.StaveNote.bind(f));
     const voice0 = f.Voice().setMode(_src_voice__WEBPACK_IMPORTED_MODULE_14__.Voice.Mode.SOFT).addTickables(notes0);
     _src_accidental__WEBPACK_IMPORTED_MODULE_1__.Accidental.applyAccidentals([voice0], 'C#');
-    equal(hasAccidental(notes0[0]), true);
-    equal(hasAccidental(notes0[1]), true);
-    equal(hasAccidental(notes0[2]), false);
-    equal(hasAccidental(notes0[3]), true);
-    equal(hasAccidental(notes0[4]), false);
-    equal(hasAccidental(notes0[5]), true);
-    equal(hasAccidental(notes0[6]), false);
-    equal(hasAccidental(notes0[7]), true);
-    equal(hasAccidental(notes0[8]), false);
+    options.assert.equal(hasAccidental(notes0[0]), true);
+    options.assert.equal(hasAccidental(notes0[1]), true);
+    options.assert.equal(hasAccidental(notes0[2]), false);
+    options.assert.equal(hasAccidental(notes0[3]), true);
+    options.assert.equal(hasAccidental(notes0[4]), false);
+    options.assert.equal(hasAccidental(notes0[5]), true);
+    options.assert.equal(hasAccidental(notes0[6]), false);
+    options.assert.equal(hasAccidental(notes0[7]), true);
+    options.assert.equal(hasAccidental(notes0[8]), false);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter().joinVoices([voice0]).formatToStave([voice0], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function automaticAccidentalsCornerCases4(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 150);
@@ -37168,27 +37176,27 @@ function automaticAccidentalsCornerCases4(options) {
     ].map(f.StaveNote.bind(f));
     const voice0 = f.Voice().setMode(_src_voice__WEBPACK_IMPORTED_MODULE_14__.Voice.Mode.SOFT).addTickables(notes0);
     _src_accidental__WEBPACK_IMPORTED_MODULE_1__.Accidental.applyAccidentals([voice0], 'C#');
-    equal(hasAccidental(notes0[0]), true);
-    equal(hasAccidental(notes0[2]), true);
-    equal(hasAccidental(notes0[4]), false);
-    equal(hasAccidental(notes0[6]), true);
-    equal(hasAccidental(notes0[8]), false);
-    equal(hasAccidental(notes0[10]), true);
-    equal(hasAccidental(notes0[12]), false);
-    equal(hasAccidental(notes0[14]), true);
-    equal(hasAccidental(notes0[16]), false);
-    equal(hasAccidental(notes0[1]), true);
-    equal(hasAccidental(notes0[3]), true);
-    equal(hasAccidental(notes0[5]), false);
-    equal(hasAccidental(notes0[7]), true);
-    equal(hasAccidental(notes0[9]), false);
-    equal(hasAccidental(notes0[11]), true);
-    equal(hasAccidental(notes0[13]), false);
-    equal(hasAccidental(notes0[15]), true);
-    equal(hasAccidental(notes0[17]), false);
+    options.assert.equal(hasAccidental(notes0[0]), true);
+    options.assert.equal(hasAccidental(notes0[2]), true);
+    options.assert.equal(hasAccidental(notes0[4]), false);
+    options.assert.equal(hasAccidental(notes0[6]), true);
+    options.assert.equal(hasAccidental(notes0[8]), false);
+    options.assert.equal(hasAccidental(notes0[10]), true);
+    options.assert.equal(hasAccidental(notes0[12]), false);
+    options.assert.equal(hasAccidental(notes0[14]), true);
+    options.assert.equal(hasAccidental(notes0[16]), false);
+    options.assert.equal(hasAccidental(notes0[1]), true);
+    options.assert.equal(hasAccidental(notes0[3]), true);
+    options.assert.equal(hasAccidental(notes0[5]), false);
+    options.assert.equal(hasAccidental(notes0[7]), true);
+    options.assert.equal(hasAccidental(notes0[9]), false);
+    options.assert.equal(hasAccidental(notes0[11]), true);
+    options.assert.equal(hasAccidental(notes0[13]), false);
+    options.assert.equal(hasAccidental(notes0[15]), true);
+    options.assert.equal(hasAccidental(notes0[17]), false);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter().joinVoices([voice0]).formatToStave([voice0], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function factoryAPI(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 240);
@@ -37228,13 +37236,13 @@ function factoryAPI(options) {
     ];
     _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter.SimpleFormat(notes);
     notes.forEach((n, i) => {
-        ok(n.getModifiersByType('Accidental').length > 0, 'Note ' + i + ' has accidentals');
+        options.assert.ok(n.getModifiersByType('Accidental').length > 0, 'Note ' + i + ' has accidentals');
         n.getModifiersByType('Accidental').forEach((accid, i) => {
-            ok(accid.getWidth() > 0, 'Accidental ' + i + ' has set width');
+            options.assert.ok(accid.getWidth() > 0, 'Accidental ' + i + ' has set width');
         });
     });
     f.draw();
-    ok(true, 'Factory API');
+    options.assert.ok(true, 'Factory API');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(AccidentalTests);
 
@@ -37250,7 +37258,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(Acciden
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "AnnotationTests": () => (/* binding */ AnnotationTests)
+/* harmony export */   AnnotationTests: () => (/* binding */ AnnotationTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_annotation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/annotation */ "./src/annotation.ts");
@@ -37297,8 +37305,8 @@ const AnnotationTests = {
     Start() {
         QUnit.module('Annotation');
         const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
-        run('Lyrics', lyrics);
         run('Placement', placement);
+        run('Lyrics', lyrics);
         run('Simple Annotation', simple);
         run('Styled Annotation', styling);
         run('Standard Notation Annotation', standard);
@@ -37355,7 +37363,7 @@ function lyrics(options) {
         x = x + width;
         fontSize = fontSize + 2;
     }
-    ok(true);
+    options.assert.ok(true);
 }
 function simple(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
@@ -37376,7 +37384,7 @@ function simple(options, contextBuilder) {
         }).addModifier(new _src_bend__WEBPACK_IMPORTED_MODULE_4__.Bend('Full').setTap('T'), 0),
     ];
     _src_formatter__WEBPACK_IMPORTED_MODULE_7__.Formatter.FormatAndDraw(ctx, stave, notes);
-    ok(true, 'Simple Annotation');
+    options.assert.ok(true, 'Simple Annotation');
 }
 function standard(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
@@ -37388,7 +37396,7 @@ function standard(options, contextBuilder) {
         staveNote({ keys: ['c/4', 'e/4', 'c/5'], duration: 'h' }).addModifier(annotation('Allegro'), 2),
     ];
     _src_formatter__WEBPACK_IMPORTED_MODULE_7__.Formatter.FormatAndDraw(ctx, stave, notes);
-    ok(true, 'Standard Notation Annotation');
+    options.assert.ok(true, 'Standard Notation Annotation');
 }
 function styling(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
@@ -37400,7 +37408,7 @@ function styling(options, contextBuilder) {
         staveNote({ keys: ['c/4', 'e/4', 'c/5'], duration: 'h' }).addModifier(annotation('Allegro', { fillStyle: '#00F' }), 2),
     ];
     _src_formatter__WEBPACK_IMPORTED_MODULE_7__.Formatter.FormatAndDraw(ctx, stave, notes);
-    ok(true, 'Standard Notation Annotation');
+    options.assert.ok(true, 'Standard Notation Annotation');
 }
 function harmonic(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
@@ -37423,7 +37431,7 @@ function harmonic(options, contextBuilder) {
             .addModifier(new _src_annotation__WEBPACK_IMPORTED_MODULE_1__.Annotation('A.H.'), 0),
     ];
     _src_formatter__WEBPACK_IMPORTED_MODULE_7__.Formatter.FormatAndDraw(ctx, stave, notes);
-    ok(true, 'Simple Annotation');
+    options.assert.ok(true, 'Simple Annotation');
 }
 function picking(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
@@ -37459,7 +37467,7 @@ function picking(options, contextBuilder) {
         }).addModifier(annotation('a').setVerticalJustification(_src_annotation__WEBPACK_IMPORTED_MODULE_1__.AnnotationVerticalJustify.TOP), 0),
     ];
     _src_formatter__WEBPACK_IMPORTED_MODULE_7__.Formatter.FormatAndDraw(ctx, stave, notes);
-    ok(true, 'Fingerpicking');
+    options.assert.ok(true, 'Fingerpicking');
 }
 function placement(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 750, 300);
@@ -37516,7 +37524,7 @@ function placement(options, contextBuilder) {
             .addModifier(annotation('v2', 16, _src_annotation__WEBPACK_IMPORTED_MODULE_1__.AnnotationVerticalJustify.BOTTOM), 0),
     ];
     _src_formatter__WEBPACK_IMPORTED_MODULE_7__.Formatter.FormatAndDraw(ctx, stave, notes);
-    ok(true, ' Annotation Placement');
+    options.assert.ok(true, ' Annotation Placement');
 }
 function bottom(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
@@ -37530,7 +37538,7 @@ function bottom(options, contextBuilder) {
         staveNote({ keys: ['e/5'], duration: 'w' }).addModifier(annotation('E'), 0),
     ];
     _src_formatter__WEBPACK_IMPORTED_MODULE_7__.Formatter.FormatAndDraw(ctx, stave, notes);
-    ok(true, 'Bottom Annotation');
+    options.assert.ok(true, 'Bottom Annotation');
 }
 function bottomWithBeam(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
@@ -37545,7 +37553,7 @@ function bottomWithBeam(options, contextBuilder) {
     const beam = new _src_beam__WEBPACK_IMPORTED_MODULE_3__.Beam(notes.slice(1));
     _src_formatter__WEBPACK_IMPORTED_MODULE_7__.Formatter.FormatAndDraw(ctx, stave, notes);
     beam.setContext(ctx).draw();
-    ok(true, 'Bottom Annotation with Beams');
+    options.assert.ok(true, 'Bottom Annotation with Beams');
 }
 function justificationStemUp(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 650, 950);
@@ -37564,7 +37572,7 @@ function justificationStemUp(options, contextBuilder) {
         ];
         _src_formatter__WEBPACK_IMPORTED_MODULE_7__.Formatter.FormatAndDraw(ctx, stave, notes);
     }
-    ok(true, 'Test Justification Annotation');
+    options.assert.ok(true, 'Test Justification Annotation');
 }
 function justificationStemDown(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 650, 1000);
@@ -37583,7 +37591,7 @@ function justificationStemDown(options, contextBuilder) {
         ];
         _src_formatter__WEBPACK_IMPORTED_MODULE_7__.Formatter.FormatAndDraw(ctx, stave, notes);
     }
-    ok(true, 'Test Justification Annotation');
+    options.assert.ok(true, 'Test Justification Annotation');
 }
 function tabNotes(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 600, 200);
@@ -37653,7 +37661,7 @@ function tabNotes(options, contextBuilder) {
     // voice.addTickables([...notes1, ...notes2, ...notes3]);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_7__.Formatter().joinVoices([voice]).formatToStave([voice], stave, { stave });
     voice.draw(ctx, stave);
-    ok(true, 'TabNotes successfully drawn');
+    options.assert.ok(true, 'TabNotes successfully drawn');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(AnnotationTests);
 
@@ -37669,7 +37677,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(Annotat
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ArticulationTests": () => (/* binding */ ArticulationTests)
+/* harmony export */   ArticulationTests: () => (/* binding */ ArticulationTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_articulation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/articulation */ "./src/articulation.ts");
@@ -37729,7 +37737,7 @@ function drawArticulations(options) {
     const width = 125 - _src_stave__WEBPACK_IMPORTED_MODULE_7__.Stave.defaultPadding;
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 675, 195);
     const ctx = f.getContext();
-    expect(0);
+    options.assert.expect(0);
     let x = 10;
     const y = 30;
     const score = f.EasyScore();
@@ -37823,7 +37831,7 @@ function drawFermata(options) {
         voices.forEach((voice) => voice.draw(ctx, stave));
         return stave.getWidth();
     };
-    expect(0);
+    options.assert.expect(0);
     const notesBar1 = [
         f.StaveNote({ keys: ['c/4'], duration: 'q', stem_direction: 1 }),
         f.StaveNote({ keys: ['a/4'], duration: 'q', stem_direction: 1 }),
@@ -37904,7 +37912,7 @@ function verticalPlacement(options, contextBuilder) {
             .addModifier(new _src_articulation__WEBPACK_IMPORTED_MODULE_1__.Articulation('a@a').setPosition(_src_modifier__WEBPACK_IMPORTED_MODULE_6__.ModifierPosition.ABOVE), 0),
     ];
     _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter.FormatAndDraw(ctx, stave, notes);
-    ok(true, ' Annotation Placement');
+    options.assert.ok(true, ' Annotation Placement');
 }
 function verticalPlacement2(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 750, 300);
@@ -37961,10 +37969,10 @@ function verticalPlacement2(options, contextBuilder) {
             .addModifier(new _src_articulation__WEBPACK_IMPORTED_MODULE_1__.Articulation('fermataAbove'), 0),
     ];
     _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter.FormatAndDraw(ctx, stave, notes);
-    ok(true, ' Annotation Placement (Glyph codes)');
+    options.assert.ok(true, ' Annotation Placement (Glyph codes)');
 }
 function drawArticulations2(options) {
-    expect(0);
+    options.assert.expect(0);
     const scale = 0.8;
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 1500, 195);
     // Get the rendering context
@@ -38125,7 +38133,7 @@ function tabNotes(options, contextBuilder) {
     voice.addTickables(notes3);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     voice.draw(ctx, stave);
-    ok(true, 'TabNotes successfully drawn');
+    options.assert.ok(true, 'TabNotes successfully drawn');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(ArticulationTests);
 
@@ -38141,7 +38149,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(Articul
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "AutoBeamFormattingTests": () => (/* binding */ AutoBeamFormattingTests)
+/* harmony export */   AutoBeamFormattingTests: () => (/* binding */ AutoBeamFormattingTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_beam__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/beam */ "./src/beam.ts");
@@ -38208,7 +38216,7 @@ function simpleAuto(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beaming Applicator Test');
+    options.assert.ok(true, 'Auto Beaming Applicator Test');
 }
 function simpleAutoWithOverflowGroup(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -38223,7 +38231,7 @@ function simpleAutoWithOverflowGroup(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beaming Applicator Test');
+    options.assert.ok(true, 'Auto Beaming Applicator Test');
 }
 function evenGroupStemDirections(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -38235,13 +38243,13 @@ function evenGroupStemDirections(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    equal(beams[0].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP);
-    equal(beams[1].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP);
-    equal(beams[2].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP);
-    equal(beams[3].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP);
-    equal(beams[4].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.DOWN);
-    equal(beams[5].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.DOWN);
-    ok(true, 'Auto Beaming Applicator Test');
+    options.assert.equal(beams[0].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP);
+    options.assert.equal(beams[1].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP);
+    options.assert.equal(beams[2].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP);
+    options.assert.equal(beams[3].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP);
+    options.assert.equal(beams[4].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.DOWN);
+    options.assert.equal(beams[5].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.DOWN);
+    options.assert.ok(true, 'Auto Beaming Applicator Test');
 }
 function oddGroupStemDirections(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -38252,14 +38260,14 @@ function oddGroupStemDirections(options) {
     });
     const groups = [new _src_fraction__WEBPACK_IMPORTED_MODULE_2__.Fraction(3, 8)];
     const beams = _src_beam__WEBPACK_IMPORTED_MODULE_1__.Beam.applyAndGetBeams(voice, undefined, groups);
-    equal(beams[0].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.DOWN, 'Notes are equidistant from middle line');
-    equal(beams[1].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.DOWN);
-    equal(beams[2].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP);
-    equal(beams[3].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.DOWN, 'Notes are equidistant from middle line');
+    options.assert.equal(beams[0].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.DOWN, 'Notes are equidistant from middle line');
+    options.assert.equal(beams[1].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.DOWN);
+    options.assert.equal(beams[2].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.UP);
+    options.assert.equal(beams[3].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_4__.Stem.DOWN, 'Notes are equidistant from middle line');
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beaming Applicator Test');
+    options.assert.ok(true, 'Auto Beaming Applicator Test');
 }
 function oddBeamGroups(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -38272,7 +38280,7 @@ function oddBeamGroups(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beam Applicator Test');
+    options.assert.ok(true, 'Auto Beam Applicator Test');
 }
 function moreSimple0(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -38283,7 +38291,7 @@ function moreSimple0(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beam Applicator Test');
+    options.assert.ok(true, 'Auto Beam Applicator Test');
 }
 function moreSimple1(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -38294,7 +38302,7 @@ function moreSimple1(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beam Applicator Test');
+    options.assert.ok(true, 'Auto Beam Applicator Test');
 }
 function breakBeamsOnRests(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -38307,7 +38315,7 @@ function breakBeamsOnRests(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beam Applicator Test');
+    options.assert.ok(true, 'Auto Beam Applicator Test');
 }
 function beamAcrossAllRestsWithStemlets(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -38321,7 +38329,7 @@ function beamAcrossAllRestsWithStemlets(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beam Applicator Test');
+    options.assert.ok(true, 'Auto Beam Applicator Test');
 }
 function beamAcrossAllRests(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -38334,7 +38342,7 @@ function beamAcrossAllRests(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beam Applicator Test');
+    options.assert.ok(true, 'Auto Beam Applicator Test');
 }
 function beamAcrossMiddleRests(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -38348,7 +38356,7 @@ function beamAcrossMiddleRests(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beam Applicator Test');
+    options.assert.ok(true, 'Auto Beam Applicator Test');
 }
 function maintainStemDirections(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 450, 200);
@@ -38368,7 +38376,7 @@ function maintainStemDirections(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beam Applicator Test');
+    options.assert.ok(true, 'Auto Beam Applicator Test');
 }
 function maintainStemDirectionsBeamAcrossRests(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 450, 200);
@@ -38387,7 +38395,7 @@ function maintainStemDirectionsBeamAcrossRests(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beam Applicator Test');
+    options.assert.ok(true, 'Auto Beam Applicator Test');
 }
 function groupWithUnbeamableNote(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 450, 200);
@@ -38402,7 +38410,7 @@ function groupWithUnbeamableNote(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beam Applicator Test');
+    options.assert.ok(true, 'Auto Beam Applicator Test');
 }
 function groupWithUnbeamableNote1(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 450, 200);
@@ -38417,7 +38425,7 @@ function groupWithUnbeamableNote1(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beam Applicator Test');
+    options.assert.ok(true, 'Auto Beam Applicator Test');
 }
 function autoOddBeamGroups(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 450, 400);
@@ -38440,7 +38448,7 @@ function autoOddBeamGroups(options) {
     _src_stave__WEBPACK_IMPORTED_MODULE_3__.Stave.formatBegModifiers([stave1, stave2, stave3]);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beam Applicator Test');
+    options.assert.ok(true, 'Auto Beam Applicator Test');
 }
 function customBeamGroups(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 450, 400);
@@ -38465,7 +38473,7 @@ function customBeamGroups(options) {
     _src_stave__WEBPACK_IMPORTED_MODULE_3__.Stave.formatBegModifiers([stave1, stave2, stave3]);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beam Applicator Test');
+    options.assert.ok(true, 'Auto Beam Applicator Test');
 }
 /**
  * Helper function which uses Function.prototype.bind() to create shortcut methods.
@@ -38491,7 +38499,7 @@ function simpleTuplets(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beam Applicator Test');
+    options.assert.ok(true, 'Auto Beam Applicator Test');
 }
 function moreSimpleTuplets(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -38503,7 +38511,7 @@ function moreSimpleTuplets(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beam Applicator Test');
+    options.assert.ok(true, 'Auto Beam Applicator Test');
 }
 function moreBeaming(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -38514,7 +38522,7 @@ function moreBeaming(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beam Applicator Test');
+    options.assert.ok(true, 'Auto Beam Applicator Test');
 }
 function beamingWithSeveralGroups1(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -38525,7 +38533,7 @@ function beamingWithSeveralGroups1(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beam Applicator Test');
+    options.assert.ok(true, 'Auto Beam Applicator Test');
 }
 function beamingWithSeveralGroupsOverflow(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -38536,7 +38544,7 @@ function beamingWithSeveralGroupsOverflow(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beam Applicator Test');
+    options.assert.ok(true, 'Auto Beam Applicator Test');
 }
 function beamingWithSeveralGroupsOverflow2(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -38549,7 +38557,7 @@ function beamingWithSeveralGroupsOverflow2(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beam Applicator Test');
+    options.assert.ok(true, 'Auto Beam Applicator Test');
 }
 function beamingWithSeveralGroupsOverflow3(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -38560,7 +38568,7 @@ function beamingWithSeveralGroupsOverflow3(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Auto Beam Applicator Test');
+    options.assert.ok(true, 'Auto Beam Applicator Test');
 }
 function secondaryBreaks1(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -38576,7 +38584,7 @@ function secondaryBreaks1(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Duration-Based Secondary Breaks Test');
+    options.assert.ok(true, 'Duration-Based Secondary Breaks Test');
 }
 function secondaryBreaks2(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -38596,7 +38604,7 @@ function secondaryBreaks2(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Duration-Based Secondary Breaks Test');
+    options.assert.ok(true, 'Duration-Based Secondary Breaks Test');
 }
 function flatBeamsUp(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -38616,7 +38624,7 @@ function flatBeamsUp(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Flat Beams Up Test');
+    options.assert.ok(true, 'Flat Beams Up Test');
 }
 function flatBeamsDown(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 450, 200);
@@ -38630,7 +38638,7 @@ function flatBeamsDown(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Flat Beams Down Test');
+    options.assert.ok(true, 'Flat Beams Down Test');
 }
 function flatBeamsMixed(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 450, 200);
@@ -38641,7 +38649,7 @@ function flatBeamsMixed(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Flat Beams Mixed Direction Test');
+    options.assert.ok(true, 'Flat Beams Mixed Direction Test');
 }
 function flatBeamsUpUniform(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -38660,7 +38668,7 @@ function flatBeamsUpUniform(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Flat Beams Up (uniform) Test');
+    options.assert.ok(true, 'Flat Beams Up (uniform) Test');
 }
 function flatBeamsDownUniform(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 450, 200);
@@ -38675,7 +38683,7 @@ function flatBeamsDownUniform(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Flat Beams Down (uniform) Test');
+    options.assert.ok(true, 'Flat Beams Down (uniform) Test');
 }
 function flatBeamsUpBounds(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -38694,7 +38702,7 @@ function flatBeamsUpBounds(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Flat Beams Up (uniform) Test');
+    options.assert.ok(true, 'Flat Beams Up (uniform) Test');
 }
 function flatBeamsDownBounds(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 450, 200);
@@ -38714,7 +38722,7 @@ function flatBeamsDownBounds(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'Flat Beams Down (uniform) Test');
+    options.assert.ok(true, 'Flat Beams Down (uniform) Test');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(AutoBeamFormattingTests);
 
@@ -38730,7 +38738,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(AutoBea
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "BachDemoTests": () => (/* binding */ BachDemoTests)
+/* harmony export */   BachDemoTests: () => (/* binding */ BachDemoTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/index */ "./src/index.ts");
@@ -39091,7 +39099,7 @@ function minuet1(options) {
     /* Done */
     f.draw();
     _src_index__WEBPACK_IMPORTED_MODULE_1__.Registry.disableDefaultRegistry();
-    ok(true, 'Bach Minuet 1');
+    options.assert.ok(true, 'Bach Minuet 1');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(BachDemoTests);
 
@@ -39107,7 +39115,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(BachDem
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "BarlineTests": () => (/* binding */ BarlineTests)
+/* harmony export */   BarlineTests: () => (/* binding */ BarlineTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_stavebarline__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/stavebarline */ "./src/stavebarline.ts");
@@ -39120,19 +39128,19 @@ __webpack_require__.r(__webpack_exports__);
 const BarlineTests = {
     Start() {
         QUnit.module('Barline');
-        test('Enums', enums);
+        QUnit.test('Enums', enums);
         const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
         run('Simple BarNotes', simple);
         run('Style BarNotes', style);
     },
 };
-function enums() {
+function enums(assert) {
     // VexFlow 4.0 renamed Barline.type => BarlineType.
     // The old way still works, for backwards compatibility.
-    equal(_src_stavebarline__WEBPACK_IMPORTED_MODULE_1__.Barline.type, _src_stavebarline__WEBPACK_IMPORTED_MODULE_1__.BarlineType);
-    const a = _src_stavebarline__WEBPACK_IMPORTED_MODULE_1__.BarlineType.DOUBLE;
+    assert.equal(_src_stavebarline__WEBPACK_IMPORTED_MODULE_1__.Barline.type, _src_stavebarline__WEBPACK_IMPORTED_MODULE_1__.BarlineType);
+    const a = _src_stavebarline__WEBPACK_IMPORTED_MODULE_1__.BarlineType['DOUBLE'];
     const b = _src_stavebarline__WEBPACK_IMPORTED_MODULE_1__.BarlineType.DOUBLE;
-    equal(a, b);
+    assert.equal(a, b);
 }
 function simple(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 380, 160);
@@ -39148,7 +39156,7 @@ function simple(options) {
     const voice = f.Voice().addTickables(notes);
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'Simple Test');
+    options.assert.ok(true, 'Simple Test');
 }
 function style(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 380, 160);
@@ -39165,7 +39173,7 @@ function style(options) {
     const voice = f.Voice().addTickables(notes);
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'Style');
+    options.assert.ok(true, 'Style');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(BarlineTests);
 
@@ -39181,7 +39189,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(Barline
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "BeamTests": () => (/* binding */ BeamTests)
+/* harmony export */   BeamTests: () => (/* binding */ BeamTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/index */ "./src/index.ts");
@@ -39232,7 +39240,7 @@ function simple(options) {
     ].reduce(_vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.concat), { time: '2/2' });
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'Simple Test');
+    options.assert.ok(true, 'Simple Test');
 }
 function multi(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -39247,7 +39255,7 @@ function multi(options) {
     ];
     f.Formatter().joinVoices(voices).formatToStave(voices, stave);
     f.draw();
-    ok(true, 'Multi Test');
+    options.assert.ok(true, 'Multi Test');
 }
 function sixteenth(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -39270,7 +39278,7 @@ function sixteenth(options) {
     ];
     f.Formatter().joinVoices(voices).formatToStave(voices, stave);
     f.draw();
-    ok(true, 'Sixteenth Test');
+    options.assert.ok(true, 'Sixteenth Test');
 }
 function breakSecondaryBeams(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 200);
@@ -39293,7 +39301,7 @@ function breakSecondaryBeams(options) {
     ];
     f.Formatter().joinVoices(voices).formatToStave(voices, stave);
     f.draw();
-    ok(true, 'Breaking Secondary Beams Test');
+    options.assert.ok(true, 'Breaking Secondary Beams Test');
 }
 function partialBeamDirection(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 200);
@@ -39314,7 +39322,7 @@ function partialBeamDirection(options) {
     ];
     f.Formatter().joinVoices(voices).formatToStave(voices, stave);
     f.draw();
-    ok(true, 'Partial beam direction test');
+    options.assert.ok(true, 'Partial beam direction test');
 }
 function slopey(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 350, 140);
@@ -39328,7 +39336,7 @@ function slopey(options) {
     ].reduce(_vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.concat));
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'Slopey Test');
+    options.assert.ok(true, 'Slopey Test');
 }
 function autoStem(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 350, 140);
@@ -39349,14 +39357,14 @@ function autoStem(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     const UP = _src_index__WEBPACK_IMPORTED_MODULE_1__.Stem.UP;
     const DOWN = _src_index__WEBPACK_IMPORTED_MODULE_1__.Stem.DOWN;
-    equal(beams[0].getStemDirection(), UP);
-    equal(beams[1].getStemDirection(), UP);
-    equal(beams[2].getStemDirection(), UP);
-    equal(beams[3].getStemDirection(), UP);
-    equal(beams[4].getStemDirection(), DOWN);
-    equal(beams[5].getStemDirection(), DOWN);
+    options.assert.equal(beams[0].getStemDirection(), UP);
+    options.assert.equal(beams[1].getStemDirection(), UP);
+    options.assert.equal(beams[2].getStemDirection(), UP);
+    options.assert.equal(beams[3].getStemDirection(), UP);
+    options.assert.equal(beams[4].getStemDirection(), DOWN);
+    options.assert.equal(beams[5].getStemDirection(), DOWN);
     f.draw();
-    ok(true, 'AutoStem Beam Test');
+    options.assert.ok(true, 'AutoStem Beam Test');
 }
 function mixed(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 350, 140);
@@ -39376,7 +39384,7 @@ function mixed(options) {
     ].forEach((range) => f.Beam({ notes: voice2.getTickables().slice(range[0], range[1]) }));
     f.Formatter().joinVoices([voice1, voice2]).formatToStave([voice1, voice2], stave);
     f.draw();
-    ok(true, 'Multi Test');
+    options.assert.ok(true, 'Multi Test');
 }
 function mixed2(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 450, 180);
@@ -39392,7 +39400,7 @@ function mixed2(options) {
     f.Beam({ notes: voice2.getTickables().slice(0, 12) });
     f.Formatter().joinVoices([voice, voice2]).formatToStave([voice, voice2], stave);
     f.draw();
-    ok(true, 'Multi Test');
+    options.assert.ok(true, 'Multi Test');
 }
 function dotted(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -39405,7 +39413,7 @@ function dotted(options) {
     f.Beam({ notes: notes.slice(8, 12) });
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'Dotted Test');
+    options.assert.ok(true, 'Dotted Test');
 }
 function partial(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -39419,7 +39427,7 @@ function partial(options) {
     f.Beam({ notes: notes.slice(13, 17) });
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'Partial Test');
+    options.assert.ok(true, 'Partial Test');
 }
 function tradeoffs(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -39431,7 +39439,7 @@ function tradeoffs(options) {
     f.Beam({ notes: notes.slice(4, 8) });
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'Close Trade-offs Test');
+    options.assert.ok(true, 'Close Trade-offs Test');
 }
 function insane(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 450, 180);
@@ -39443,7 +39451,7 @@ function insane(options) {
     f.Beam({ notes: notes.slice(4, 7) });
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'Insane Test');
+    options.assert.ok(true, 'Insane Test');
 }
 function lenghty(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 450, 180);
@@ -39452,7 +39460,7 @@ function lenghty(options) {
     const voice = score.voice(score.beam(score.notes('g4/8, g4, g4, a4', { stem: 'up' })), { time: '2/4' });
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'Lengthy Test');
+    options.assert.ok(true, 'Lengthy Test');
 }
 function outlier(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 450, 180);
@@ -39467,7 +39475,7 @@ function outlier(options) {
     f.Beam({ notes: notes.slice(4, 8) });
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave, { stave: stave });
     f.draw();
-    ok(true, 'Outlier Test');
+    options.assert.ok(true, 'Outlier Test');
 }
 function tabBeamsUp(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 200);
@@ -39538,7 +39546,7 @@ function tabBeamsUp(options) {
     const voice = f.Voice().setMode(_src_index__WEBPACK_IMPORTED_MODULE_1__.Voice.Mode.SOFT).addTickables(notes);
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'All objects have been drawn');
+    options.assert.ok(true, 'All objects have been drawn');
 }
 function tabBeamsDown(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 250);
@@ -39622,7 +39630,7 @@ function tabBeamsDown(options) {
     const voice = f.Voice().setMode(_src_index__WEBPACK_IMPORTED_MODULE_1__.Voice.Mode.SOFT).addTickables(notes);
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'All objects have been drawn');
+    options.assert.ok(true, 'All objects have been drawn');
 }
 function autoTabBeams(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 200);
@@ -39676,7 +39684,7 @@ function autoTabBeams(options) {
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
     beams.forEach((beam) => beam.setContext(f.getContext()).draw());
-    ok(true, 'All objects have been drawn');
+    options.assert.ok(true, 'All objects have been drawn');
 }
 // This tests makes sure the auto_stem functionality is works.
 // TabNote stems within a beam group should end up normalized
@@ -39738,7 +39746,7 @@ function tabBeamsAutoStem(options) {
     const voice = f.Voice().setMode(_src_index__WEBPACK_IMPORTED_MODULE_1__.Voice.Mode.SOFT).addTickables(notes);
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'All objects have been drawn');
+    options.assert.ok(true, 'All objects have been drawn');
 }
 function complexWithAnnotation(options) {
     const factory = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 500, 200);
@@ -39778,7 +39786,7 @@ function complexWithAnnotation(options) {
     const voice = factory.Voice().setMode(_src_index__WEBPACK_IMPORTED_MODULE_1__.Voice.Mode.SOFT).addTickables(notes1).addTickables(notes2);
     factory.Formatter().joinVoices([voice]).formatToStave([voice], stave, { stave: stave });
     factory.draw();
-    ok(true, 'Complex beam annotations');
+    options.assert.ok(true, 'Complex beam annotations');
 }
 function complexWithArticulation(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 500, 200);
@@ -39808,7 +39816,7 @@ function complexWithArticulation(options) {
     const voice = f.Voice().setMode(_src_index__WEBPACK_IMPORTED_MODULE_1__.Voice.Mode.SOFT).addTickables(notes1).addTickables(notes2);
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave, { stave: stave });
     f.draw();
-    ok(true, 'Complex beam articulations');
+    options.assert.ok(true, 'Complex beam articulations');
 }
 function complexWithArticulation2(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 500, 300);
@@ -39844,7 +39852,7 @@ function complexWithArticulation2(options) {
     system.addStave({ voices: [voice1] });
     system.addStave({ voices: [voice2] });
     f.draw();
-    ok(true, 'Complex beam articulations two staves');
+    options.assert.ok(true, 'Complex beam articulations two staves');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(BeamTests);
 
@@ -39860,7 +39868,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(BeamTes
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "BendTests": () => (/* binding */ BendTests)
+/* harmony export */   BendTests: () => (/* binding */ BendTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_bend__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/bend */ "./src/bend.ts");
@@ -39935,7 +39943,7 @@ function doubleBends(options, contextBuilder) {
     ];
     _src_formatter__WEBPACK_IMPORTED_MODULE_3__.Formatter.FormatAndDraw(ctx, stave, notes);
     notes.forEach((note) => _src_note__WEBPACK_IMPORTED_MODULE_5__.Note.plotMetrics(ctx, note, 140));
-    ok(true, 'Double Bends');
+    options.assert.ok(true, 'Double Bends');
 }
 function doubleBendsWithRelease(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 550, 240);
@@ -39975,7 +39983,7 @@ function doubleBendsWithRelease(options, contextBuilder) {
     ];
     _src_formatter__WEBPACK_IMPORTED_MODULE_3__.Formatter.FormatAndDraw(ctx, stave, notes);
     notes.forEach((note) => _src_note__WEBPACK_IMPORTED_MODULE_5__.Note.plotMetrics(ctx, note, 140));
-    ok(true, 'Bend Release');
+    options.assert.ok(true, 'Bend Release');
 }
 /**
  * Add the bend for note 1 before adding the bend for note 0,
@@ -40022,7 +40030,7 @@ function reverseBends(options, contextBuilder) {
             .setX(75 * i);
         note.setStave(stave).setContext(ctx).draw();
         _src_note__WEBPACK_IMPORTED_MODULE_5__.Note.plotMetrics(ctx, note, 140);
-        ok(true, 'Bend ' + i);
+        options.assert.ok(true, 'Bend ' + i);
     }
 }
 function bendPhrase(options, contextBuilder) {
@@ -40053,7 +40061,7 @@ function bendPhrase(options, contextBuilder) {
             .setX(75 * i);
         note.setStave(stave).setContext(ctx).draw();
         _src_note__WEBPACK_IMPORTED_MODULE_5__.Note.plotMetrics(ctx, note, 140);
-        ok(true, 'Bend ' + i);
+        options.assert.ok(true, 'Bend ' + i);
     }
 }
 function whackoBends(options, contextBuilder) {
@@ -40091,7 +40099,7 @@ function whackoBends(options, contextBuilder) {
     ];
     _src_formatter__WEBPACK_IMPORTED_MODULE_3__.Formatter.FormatAndDraw(ctx, stave, notes);
     _src_note__WEBPACK_IMPORTED_MODULE_5__.Note.plotMetrics(ctx, notes[0], 140);
-    ok(true, 'Whacko Bend & Release');
+    options.assert.ok(true, 'Whacko Bend & Release');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(BendTests);
 
@@ -40107,7 +40115,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(BendTes
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "BoundingBoxTests": () => (/* binding */ BoundingBoxTests)
+/* harmony export */   BoundingBoxTests: () => (/* binding */ BoundingBoxTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/index */ "./src/index.ts");
@@ -40120,20 +40128,20 @@ __webpack_require__.r(__webpack_exports__);
 const BoundingBoxTests = {
     Start() {
         QUnit.module('BoundingBox');
-        test('Initialization Test', initialization);
-        test('Merging Text', merging);
+        QUnit.test('Initialization Test', initialization);
+        QUnit.test('Merging Text', merging);
     },
 };
-function initialization() {
+function initialization(assert) {
     const bb = new _src_index__WEBPACK_IMPORTED_MODULE_1__.BoundingBox(4, 5, 6, 7);
-    equal(bb.getX(), 4, 'Bad X');
-    equal(bb.getY(), 5, 'Bad Y');
-    equal(bb.getW(), 6, 'Bad W');
-    equal(bb.getH(), 7, 'Bad H');
+    assert.equal(bb.getX(), 4, 'Bad X');
+    assert.equal(bb.getY(), 5, 'Bad Y');
+    assert.equal(bb.getW(), 6, 'Bad W');
+    assert.equal(bb.getH(), 7, 'Bad H');
     bb.setX(5);
-    equal(bb.getX(), 5, 'Bad X');
+    assert.equal(bb.getX(), 5, 'Bad X');
 }
-function merging() {
+function merging(assert) {
     const tests = [
         {
             type: 'Intersection',
@@ -40160,243 +40168,13 @@ function merging() {
         const bb2 = test.bb2;
         const merged = test.merged;
         bb1.mergeWith(bb2);
-        equal(bb1.getX(), merged.getX(), type + ' - Bad X');
-        equal(bb1.getY(), merged.getY(), type + ' - Bad Y');
-        equal(bb1.getW(), merged.getW(), type + ' - Bad W');
-        equal(bb1.getH(), merged.getH(), type + ' - Bad H');
+        assert.equal(bb1.getX(), merged.getX(), type + ' - Bad X');
+        assert.equal(bb1.getY(), merged.getY(), type + ' - Bad Y');
+        assert.equal(bb1.getW(), merged.getW(), type + ' - Bad W');
+        assert.equal(bb1.getH(), merged.getH(), type + ' - Bad H');
     });
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(BoundingBoxTests);
-
-
-
-/***/ }),
-
-/***/ "./tests/boundingboxcomputation_tests.ts":
-/*!***********************************************!*\
-  !*** ./tests/boundingboxcomputation_tests.ts ***!
-  \***********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "BoundingBoxComputationTests": () => (/* binding */ BoundingBoxComputationTests)
-/* harmony export */ });
-/* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
-/* harmony import */ var _src_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/index */ "./src/index.ts");
-// [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
-// MIT License
-//
-// BoundingBoxComputation Tests
-
-
-const BoundingBoxComputationTests = {
-    Start() {
-        QUnit.module('BoundingBoxComputation');
-        test('Point Test', point);
-        const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
-        quadraticParams.forEach((params, index) => {
-            run(`Quadratic Test ${index}`, quadratic, params);
-        });
-        cubicParams.forEach((params, index) => {
-            run(`Cubic Test ${index}`, cubic, params);
-        });
-    },
-};
-function point() {
-    const bboxComp = new _src_index__WEBPACK_IMPORTED_MODULE_1__.BoundingBoxComputation();
-    bboxComp.addPoint(2, 3);
-    equal(bboxComp.getX1(), 2, 'Bad X1');
-    equal(bboxComp.getY1(), 3, 'Bad Y1');
-    equal(bboxComp.width(), 0, 'Bad width');
-    equal(bboxComp.height(), 0, 'Bad height');
-    bboxComp.addPoint(-5, 7);
-    equal(bboxComp.getX1(), -5, 'Bad X1');
-    equal(bboxComp.getY1(), 3, 'Bad Y1');
-    equal(bboxComp.width(), 7, 'Bad width');
-    equal(bboxComp.height(), 4, 'Bad height');
-}
-/**
- * Size the context to fit all the points and a small margin.
- */
-function createContext(options) {
-    const points = options.params.points;
-    let w = points[0];
-    let h = points[1];
-    for (let i = 2; i < points.length; i += 2) {
-        w = Math.max(w, points[i]);
-        h = Math.max(h, points[i + 1]);
-    }
-    const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, w + 20, h + 20);
-    const ctx = f.getContext();
-    ctx.setLineCap('square');
-    return ctx;
-}
-/**
- * Draw a rectangle on the RenderContext.
- */
-function rect(ctx, style, lineWidth, x, y, w, h) {
-    ctx.strokeStyle = style;
-    ctx.setLineWidth(lineWidth);
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x + w, y);
-    ctx.lineTo(x + w, y + h);
-    ctx.lineTo(x, y + h);
-    ctx.lineTo(x, y);
-    ctx.stroke();
-}
-// Each test consists of the control points for a single curve and its expected bounding box.
-const quadraticParams = [
-    {
-        points: [10, 10, 100, 20, 110, 110],
-        box: [10, 10, 100, 100],
-    },
-    {
-        points: [110, 10, 60, 110, 10, 20],
-        box: [10, 10, 100, 52.63],
-    },
-    {
-        points: [10, 10, 30, 20, 50, 30],
-        box: [10, 10, 40, 20],
-    },
-    {
-        points: [100, 30, 30, 110, 20, 30],
-        box: [20, 30, 80, 40],
-    },
-];
-/**
- *
- */
-function quadratic(options) {
-    const points = options.params.points;
-    const box = options.params.box;
-    const ctx = createContext(options);
-    const [x0, y0, x1, y1, x2, y2] = points;
-    // Draw expected bounding box.
-    let [bx, by, bw, bh] = box;
-    rect(ctx, '#0f0', 5, bx, by, bw, bh);
-    // Compute the bounding box.
-    const bboxComp = new _src_index__WEBPACK_IMPORTED_MODULE_1__.BoundingBoxComputation();
-    bboxComp.addQuadraticCurve(x0, y0, x1, y1, x2, y2);
-    // Draw computed bounding box.
-    [bx, by, bw, bh] = [bboxComp.getX1(), bboxComp.getY1(), bboxComp.width(), bboxComp.height()];
-    rect(ctx, '#00f', 3, bx, by, bw, bh);
-    // Regression test for a prior bug: compute the bounding box again,
-    // this time using the Glyph.getOutlineBoundingBox code path.
-    const o = [_src_index__WEBPACK_IMPORTED_MODULE_1__.OutlineCode.MOVE, x0, -y0, _src_index__WEBPACK_IMPORTED_MODULE_1__.OutlineCode.QUADRATIC, x2, -y2, x1, -y1];
-    const bbox = _src_index__WEBPACK_IMPORTED_MODULE_1__.Glyph.getOutlineBoundingBox(o, 1, 0, 0);
-    rect(ctx, '#fa0', 1, bbox.getX(), bbox.getY(), bbox.getW(), bbox.getH());
-    // Draw curve.
-    ctx.setLineWidth(1);
-    ctx.fillStyle = '#000';
-    _src_index__WEBPACK_IMPORTED_MODULE_1__.Glyph.renderOutline(ctx, o, 1, 0, 0);
-    // Draw control points.
-    ctx.strokeStyle = '#f00';
-    ctx.beginPath();
-    ctx.moveTo(x0, y0);
-    ctx.lineTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
-    // Check the expected and computed bounding boxes are close enough.
-    ok(Math.abs(bboxComp.getX1() - box[0]) < 0.01, `Bad X1: ${bboxComp.getX1()}`);
-    ok(Math.abs(bboxComp.getY1() - box[1]) < 0.01, `Bad Y1: ${bboxComp.getY1()}`);
-    ok(Math.abs(bboxComp.width() - box[2]) < 0.01, `Bad width: ${bboxComp.width()}`);
-    ok(Math.abs(bboxComp.height() - box[3]) < 0.01, `Bad height: ${bboxComp.height()}`);
-    ok(Math.abs(bbox.getX() - box[0]) < 0.01, `Bad X: ${bbox.getX()}`);
-    ok(Math.abs(bbox.getY() - box[1]) < 0.01, `Bad Y: ${bbox.getY()}`);
-    ok(Math.abs(bbox.getW() - box[2]) < 0.01, `Bad W: ${bbox.getW()}`);
-    ok(Math.abs(bbox.getH() - box[3]) < 0.01, `Bad H: ${bbox.getH()}`);
-}
-// Each test consists of the control points for a single curve and its expected bounding box.
-const cubicParams = [
-    {
-        points: [10, 10, 60, 20, 100, 60, 110, 110],
-        box: [10, 10, 100, 100],
-    },
-    {
-        points: [10, 10, 35, 110, 85, 110, 110, 10],
-        box: [10, 10, 100, 75],
-    },
-    {
-        points: [10, 110, 90, 10, 30, 10, 110, 110],
-        box: [10, 35, 100, 75],
-    },
-    {
-        points: [10, 10, 110, 110, 110, 10, 10, 110],
-        box: [10, 10, 75, 100],
-    },
-    {
-        points: [10, 10, 130, 110, -10, 110, 110, 10],
-        box: [10, 10, 100, 75],
-    },
-    {
-        points: [50, 10, 10, 110, 110, 110, 74, 10],
-        box: [40.38, 10, 41.59, 75],
-    },
-    {
-        points: [10, 30, 35, 60, 110, 110, 60, 10],
-        box: [10, 10, 66.82, 59.37],
-    },
-    {
-        points: [210, 70, 10, 10, 190, 10, 120, 90],
-        box: [112.02, 27.23, 97.98, 62.77],
-    },
-    {
-        points: [20, 10, 210, 90, 10, 90, 100, 38],
-        box: [20, 10, 85.33, 64.06],
-    },
-    {
-        points: [60, 14, 10, 14, 90, 14, 70, 14],
-        box: [43.28, 14, 30.01, 0],
-    },
-    {
-        points: [10, 60, 20, 100, 100, 20, 110, 60],
-        box: [10, 48.45, 100, 23.1],
-    },
-];
-function cubic(options) {
-    const points = options.params.points;
-    const box = options.params.box;
-    const ctx = createContext(options);
-    const [x0, y0, x1, y1, x2, y2, x3, y3] = points;
-    // Draw expected bounding box.
-    let [bx, by, bw, bh] = box;
-    rect(ctx, '#0f0', 5, bx, by, bw, bh);
-    // Compute the bounding box.
-    const bboxComp = new _src_index__WEBPACK_IMPORTED_MODULE_1__.BoundingBoxComputation();
-    bboxComp.addBezierCurve(x0, y0, x1, y1, x2, y2, x3, y3);
-    // Draw computed bounding box.
-    [bx, by, bw, bh] = [bboxComp.getX1(), bboxComp.getY1(), bboxComp.width(), bboxComp.height()];
-    rect(ctx, '#00f', 3, bx, by, bw, bh);
-    // Regression test for a prior bug: compute the bounding box again,
-    // this time using the Glyph.getOutlineBoundingBox code path.
-    const o = [_src_index__WEBPACK_IMPORTED_MODULE_1__.OutlineCode.MOVE, x0, -y0, _src_index__WEBPACK_IMPORTED_MODULE_1__.OutlineCode.BEZIER, x3, -y3, x1, -y1, x2, -y2];
-    const bbox = _src_index__WEBPACK_IMPORTED_MODULE_1__.Glyph.getOutlineBoundingBox(o, 1, 0, 0);
-    rect(ctx, '#fa0', 1, bbox.getX(), bbox.getY(), bbox.getW(), bbox.getH());
-    // Draw curve.
-    ctx.setLineWidth(1);
-    ctx.fillStyle = '#000';
-    _src_index__WEBPACK_IMPORTED_MODULE_1__.Glyph.renderOutline(ctx, o, 1, 0, 0);
-    // Draw control points.
-    ctx.strokeStyle = '#f00';
-    ctx.beginPath();
-    ctx.moveTo(x0, y0);
-    ctx.lineTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.lineTo(x3, y3);
-    ctx.stroke();
-    // Check the expected and computed bounding boxes are close enough.
-    ok(Math.abs(bboxComp.getX1() - box[0]) < 0.01, `Bad X1: ${bboxComp.getX1()}`);
-    ok(Math.abs(bboxComp.getY1() - box[1]) < 0.01, `Bad Y1: ${bboxComp.getY1()}`);
-    ok(Math.abs(bboxComp.width() - box[2]) < 0.01, `Bad width: ${bboxComp.width()}`);
-    ok(Math.abs(bboxComp.height() - box[3]) < 0.01, `Bad height: ${bboxComp.height()}`);
-    ok(Math.abs(bbox.getX() - box[0]) < 0.01, `Bad X: ${bbox.getX()}`);
-    ok(Math.abs(bbox.getY() - box[1]) < 0.01, `Bad Y: ${bbox.getY()}`);
-    ok(Math.abs(bbox.getW() - box[2]) < 0.01, `Bad W: ${bbox.getW()}`);
-    ok(Math.abs(bbox.getH() - box[3]) < 0.01, `Bad H: ${bbox.getH()}`);
-}
-_vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(BoundingBoxComputationTests);
 
 
 
@@ -40410,7 +40188,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(Boundin
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ChordSymbolTests": () => (/* binding */ ChordSymbolTests)
+/* harmony export */   ChordSymbolTests: () => (/* binding */ ChordSymbolTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_accidental__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/accidental */ "./src/accidental.ts");
@@ -40535,7 +40313,7 @@ function withModifiers(options) {
         f.ChordSymbol({ fontSize: 18 }).addGlyphOrText('C#').addGlyphOrText('7(#11b9)', superscript),
     ];
     draw(chords, 240);
-    ok(true, 'Font Size Chord Symbol');
+    options.assert.ok(true, 'Font Size Chord Symbol');
 }
 function fontSize(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 750, 580);
@@ -40609,7 +40387,7 @@ function fontSize(options) {
         f.ChordSymbol({ fontSize: 18 }).addGlyphOrText('C#').addGlyphOrText('7(#11b9)', superscript),
     ];
     draw(chords, 240);
-    ok(true, 'Font Size Chord Symbol');
+    options.assert.ok(true, 'Font Size Chord Symbol');
 }
 function kern(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 650 * 1.5, 650);
@@ -40656,7 +40434,7 @@ function kern(options) {
         f.ChordSymbol().addText('E').addGlyphOrText('(#9)', superscript),
     ];
     draw(chords, 310);
-    ok(true, 'Chord Symbol Kerning Tests');
+    options.assert.ok(true, 'Chord Symbol Kerning Tests');
 }
 function top(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 650 * 1.5, 650);
@@ -40702,7 +40480,7 @@ function top(options) {
         .addGlyphOrText('b9', subscript);
     chord2 = f.ChordSymbol().addText('C').addTextSuperscript('sus4');
     draw(chord1, chord2, 240);
-    ok(true, 'Top Chord Symbol');
+    options.assert.ok(true, 'Top Chord Symbol');
 }
 function topJustify(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 500 * 1.5, 680);
@@ -40742,7 +40520,7 @@ function topJustify(options) {
         .addGlyphOrText('b9', subscript);
     chord2 = f.ChordSymbol({ hJustify: 'centerStem' }).addText('C').addTextSuperscript('Maj.');
     draw(chord1, chord2, 340);
-    ok(true, 'Top Chord Justified');
+    options.assert.ok(true, 'Top Chord Justified');
 }
 function bottom(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600 * 1.5, 230);
@@ -40765,7 +40543,7 @@ function bottom(options) {
         f.ChordSymbol({ vJustify: 'bottom' }).addGlyphOrText('V/V'),
     ];
     draw(chords, 10);
-    ok(true, 'Bottom Chord Symbol');
+    options.assert.ok(true, 'Bottom Chord Symbol');
 }
 function bottomStemDown(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600 * 1.5, 330);
@@ -40790,7 +40568,7 @@ function bottomStemDown(options) {
         f.ChordSymbol({ vJustify: 'bottom' }).addText('A').addGlyphSuperscript('dim'),
     ];
     draw(chords, 10);
-    ok(true, 'Bottom Stem Down Chord Symbol');
+    options.assert.ok(true, 'Bottom Stem Down Chord Symbol');
 }
 function doubleBottom(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600 * 1.5, 260);
@@ -40821,7 +40599,7 @@ function doubleBottom(options) {
         f.ChordSymbol({ vJustify: 'bottom' }).addText('SD'),
     ];
     draw(chords1, chords2, 10);
-    ok(true, '2 Bottom Chord Symbol');
+    options.assert.ok(true, '2 Bottom Chord Symbol');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(ChordSymbolTests);
 
@@ -40837,7 +40615,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(ChordSy
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ClefTests": () => (/* binding */ ClefTests)
+/* harmony export */   ClefTests: () => (/* binding */ ClefTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
@@ -40875,7 +40653,7 @@ function draw(options) {
         .addClef('french')
         .addEndClef('treble');
     f.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function drawEnd(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 800, 120);
@@ -40896,7 +40674,7 @@ function drawEnd(options) {
         .addEndClef('percussion')
         .addEndClef('french');
     f.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function drawSmall(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 800, 120);
@@ -40917,7 +40695,7 @@ function drawSmall(options) {
         .addClef('french', 'small')
         .addEndClef('treble', 'small');
     f.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function drawSmallEnd(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 800, 120);
@@ -40938,7 +40716,7 @@ function drawSmallEnd(options) {
         .addEndClef('percussion', 'small')
         .addEndClef('french', 'small');
     f.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function drawClefChange(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 800, 180);
@@ -40971,7 +40749,7 @@ function drawClefChange(options) {
     const voice = f.Voice({ time: '12/4' }).addTickables(notes);
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(ClefTests);
 
@@ -40987,7 +40765,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(ClefTes
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "CrossBeamTests": () => (/* binding */ CrossBeamTests)
+/* harmony export */   CrossBeamTests: () => (/* binding */ CrossBeamTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_stave__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/stave */ "./src/stave.ts");
@@ -41297,7 +41075,7 @@ function crossClef(options) {
         }
     }
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(CrossBeamTests);
 
@@ -41313,7 +41091,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(CrossBe
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "CurveTests": () => (/* binding */ CurveTests)
+/* harmony export */   CurveTests: () => (/* binding */ CurveTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_curve__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/curve */ "./src/curve.ts");
@@ -41352,7 +41130,7 @@ function createTest(noteGroup1, noteGroup2, setupCurves) {
         const voices = [score.voice(staveNotes, { time: '4/4' })];
         factory.Formatter().joinVoices(voices).formatToStave(voices, stave);
         factory.draw();
-        ok('Simple Curve');
+        options.assert.ok('Simple Curve');
     };
 }
 const simple = createTest(['c4/8, f5, d5, g5', { stem: 'up' }], // beamGroup1
@@ -41465,7 +41243,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(CurveTe
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "DotTests": () => (/* binding */ DotTests)
+/* harmony export */   DotTests: () => (/* binding */ DotTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_beam__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/beam */ "./src/beam.ts");
@@ -41511,7 +41289,7 @@ function showOneNote(note1, stave, ctx, x) {
 }
 function basic(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 1000, 240);
-    const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_6__.Stave(10, 10, 1075);
+    const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_6__.Stave(10, 10, 975);
     stave.setContext(ctx);
     stave.draw();
     const notes = [
@@ -41538,8 +41316,6 @@ function basic(options, contextBuilder) {
             duration: '16',
             stem_direction: 1,
         }),
-        new _src_stavenote__WEBPACK_IMPORTED_MODULE_7__.StaveNote({ keys: ['e/4'], duration: '16', stem_direction: 1 }),
-        new _src_stavenote__WEBPACK_IMPORTED_MODULE_7__.StaveNote({ keys: ['f/4'], duration: '16', stem_direction: 1 }),
         new _src_stavenote__WEBPACK_IMPORTED_MODULE_7__.StaveNote({
             keys: ['e/4', 'g/4', 'a/4', 'b/4', 'c/5'],
             duration: '16',
@@ -41554,14 +41330,14 @@ function basic(options, contextBuilder) {
     for (let i = 0; i < notes.length; i++) {
         showOneNote(notes[i], stave, ctx, 30 + i * 65);
         const dots = notes[i].getModifiersByType('Dot');
-        ok(dots.length > 0, 'Note ' + i + ' has dots');
+        options.assert.ok(dots.length > 0, 'Note ' + i + ' has dots');
         for (let j = 0; j < dots.length; ++j) {
-            ok(dots[j].getWidth() > 0, 'Dot ' + j + ' has width set');
+            options.assert.ok(dots[j].getWidth() > 0, 'Dot ' + j + ' has width set');
         }
     }
     beam.setContext(ctx).draw();
     _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.plotLegendForNoteWidth(ctx, 890, 140);
-    ok(true, 'Full Dot');
+    options.assert.ok(true, 'Full Dot');
 }
 function multiVoice(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 750, 300);
@@ -41571,7 +41347,7 @@ function multiVoice(options, contextBuilder) {
         new _src_stavenote__WEBPACK_IMPORTED_MODULE_7__.StaveNote({ keys: ['c/4', 'e/4', 'c/5'], duration: '2', stem_direction: -1 }),
         new _src_stavenote__WEBPACK_IMPORTED_MODULE_7__.StaveNote({ keys: ['d/4', 'c/5', 'd/5'], duration: '2', stem_direction: -1 }),
         new _src_stavenote__WEBPACK_IMPORTED_MODULE_7__.StaveNote({ keys: ['d/4', 'c/5', 'd/5'], duration: '8', stem_direction: -1 }),
-        new _src_stavenote__WEBPACK_IMPORTED_MODULE_7__.StaveNote({ keys: ['d/4', 'c/5', 'd/5'], duration: '8', stem_direction: -1 })
+        new _src_stavenote__WEBPACK_IMPORTED_MODULE_7__.StaveNote({ keys: ['d/4', 'c/5', 'd/5'], duration: '8', stem_direction: -1 }),
     ];
     _src_dot__WEBPACK_IMPORTED_MODULE_2__.Dot.buildAndAttach([notes1[0], notes1[2], notes1[3], notes1[4]], { all: true });
     _src_dot__WEBPACK_IMPORTED_MODULE_2__.Dot.buildAndAttach([notes1[0], notes1[2], notes1[3], notes1[4]], { all: true });
@@ -41601,7 +41377,7 @@ function multiVoice(options, contextBuilder) {
     notes1.forEach((note) => _src_note__WEBPACK_IMPORTED_MODULE_5__.Note.plotMetrics(ctx, note, 190));
     notes2.forEach((note) => _src_note__WEBPACK_IMPORTED_MODULE_5__.Note.plotMetrics(ctx, note, 20));
     _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.plotLegendForNoteWidth(ctx, 620, 220);
-    ok(true, 'Full Dot');
+    options.assert.ok(true, 'Full Dot');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(DotTests);
 
@@ -41617,7 +41393,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(DotTest
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "EasyScoreTests": () => (/* binding */ EasyScoreTests)
+/* harmony export */   EasyScoreTests: () => (/* binding */ EasyScoreTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_articulation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/articulation */ "./src/articulation.ts");
@@ -41644,13 +41420,13 @@ __webpack_require__.r(__webpack_exports__);
 const EasyScoreTests = {
     Start() {
         QUnit.module('EasyScore');
-        test('Basic', basic);
-        test('Accidentals', accidentals);
-        test('Durations', durations);
-        test('Chords', chords);
-        test('Dots', dots);
-        test('Types', types);
-        test('Options', options);
+        QUnit.test('Basic', basic);
+        QUnit.test('Accidentals', accidentals);
+        QUnit.test('Durations', durations);
+        QUnit.test('Chords', chords);
+        QUnit.test('Dots', dots);
+        QUnit.test('Types', types);
+        QUnit.test('Options', options);
         const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
         run('Draw Basic', drawBasicTest);
         run('Draw Different KeySignature', drawDiffKeysig);
@@ -41686,14 +41462,14 @@ function createShortcuts(score) {
  * - all strings in `mustPass` parse correctly
  * - all strings in `mustFail` fail to parse (i.e., Result.success is `false`).
  */
-function basic() {
+function basic(assert) {
     const score = new _src_easyscore__WEBPACK_IMPORTED_MODULE_2__.EasyScore();
     const mustPass = ['c4', 'c#4', 'c4/r', 'c#5', 'c3/m', 'c3//m', 'c3//h', 'c3/s', 'c3//s', 'c3/g', 'c3//g'];
     const mustFail = ['', '()', '7', '(c#4 e5 g6'];
-    mustPass.forEach((line) => equal(score.parse(line).success, true, line));
-    mustFail.forEach((line) => equal(score.parse(line).success, false, line));
+    mustPass.forEach((line) => assert.equal(score.parse(line).success, true, line));
+    mustFail.forEach((line) => assert.equal(score.parse(line).success, false, line));
 }
-function accidentals() {
+function accidentals(assert) {
     const score = new _src_easyscore__WEBPACK_IMPORTED_MODULE_2__.EasyScore();
     const mustPass = [
         'c3',
@@ -41744,17 +41520,17 @@ function accidentals() {
         'cko7',
         'c#s7',
     ];
-    mustPass.forEach((line) => equal(score.parse(line).success, true, line));
-    mustFail.forEach((line) => equal(score.parse(line).success, false, line));
+    mustPass.forEach((line) => assert.equal(score.parse(line).success, true, line));
+    mustFail.forEach((line) => assert.equal(score.parse(line).success, false, line));
 }
-function durations() {
+function durations(assert) {
     const score = new _src_easyscore__WEBPACK_IMPORTED_MODULE_2__.EasyScore();
     const mustPass = ['c3/4', 'c##3/w, cb3', 'c##3/w, cb3/q', 'c##3/q, cb3/32', '(c##3 cbb3 cn3), cb3'];
     const mustFail = ['Cn3/]', '/', '(cq cbb3 cn3), cb3', '(cdd7 cbb3 cn3), cb3'];
-    mustPass.forEach((line) => equal(score.parse(line).success, true, line));
-    mustFail.forEach((line) => equal(score.parse(line).success, false, line));
+    mustPass.forEach((line) => assert.equal(score.parse(line).success, true, line));
+    mustFail.forEach((line) => assert.equal(score.parse(line).success, false, line));
 }
-function chords() {
+function chords(assert) {
     const score = new _src_easyscore__WEBPACK_IMPORTED_MODULE_2__.EasyScore();
     const mustPass = [
         '(c5)',
@@ -41765,10 +41541,10 @@ function chords() {
         '(c##4 cbb4 cn4)/m, (c#5 cb2 a3)',
     ];
     const mustFail = ['(c)'];
-    mustPass.forEach((line) => equal(score.parse(line).success, true, line));
-    mustFail.forEach((line) => equal(score.parse(line).success, false, line));
+    mustPass.forEach((line) => assert.equal(score.parse(line).success, true, line));
+    mustFail.forEach((line) => assert.equal(score.parse(line).success, false, line));
 }
-function dots() {
+function dots(assert) {
     const score = new _src_easyscore__WEBPACK_IMPORTED_MODULE_2__.EasyScore();
     const mustPass = [
         'c3/4.',
@@ -41780,17 +41556,17 @@ function dots() {
         '(c##4 cbb4 cn4)/w.., (c#5 cb2 a3)/32',
     ];
     const mustFail = ['.', 'c.#', 'c#4./4'];
-    mustPass.forEach((line) => equal(score.parse(line).success, true, line));
-    mustFail.forEach((line) => equal(score.parse(line).success, false, line));
+    mustPass.forEach((line) => assert.equal(score.parse(line).success, true, line));
+    mustFail.forEach((line) => assert.equal(score.parse(line).success, false, line));
 }
-function types() {
+function types(assert) {
     const score = new _src_easyscore__WEBPACK_IMPORTED_MODULE_2__.EasyScore();
     const mustPass = ['c3/4/m.', 'c##3//r.., cb3', 'c##3/m.., cb3', 'c##3/r.., cb3', 'd##3/w/s, cb3/q...', 'Fb4'];
     const mustFail = ['c4/q/U', '(c##4, cbb4 cn4)/w.., (c#5 cb2 a3)/32', 'z#3'];
-    mustPass.forEach((line) => equal(score.parse(line).success, true, line));
-    mustFail.forEach((line) => equal(score.parse(line).success, false, line));
+    mustPass.forEach((line) => assert.equal(score.parse(line).success, true, line));
+    mustFail.forEach((line) => assert.equal(score.parse(line).success, false, line));
 }
-function options() {
+function options(assert) {
     const score = new _src_easyscore__WEBPACK_IMPORTED_MODULE_2__.EasyScore();
     const mustPass = [
         'c3/4.[foo="bar"]',
@@ -41801,8 +41577,8 @@ function options() {
         'c#5[id="foobar"]',
     ];
     const mustFail = ['.[', 'f##3/w[], cb3/q...'];
-    mustPass.forEach((line) => equal(score.parse(line).success, true, line));
-    mustFail.forEach((line) => equal(score.parse(line).success, false, line));
+    mustPass.forEach((line) => assert.equal(score.parse(line).success, true, line));
+    mustFail.forEach((line) => assert.equal(score.parse(line).success, false, line));
 }
 function drawBasicTest(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 350);
@@ -41824,7 +41600,7 @@ function drawBasicTest(options) {
         .addClef('bass');
     system.addConnector().setType(_src_staveconnector__WEBPACK_IMPORTED_MODULE_6__.StaveConnector.type.BRACKET);
     f.draw();
-    expect(0);
+    options.assert.expect(0);
 }
 function drawDiffKeysig(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 350);
@@ -41849,7 +41625,7 @@ function drawDiffKeysig(options) {
         .addTimeSignature('4/4');
     system.addConnector().setType(_src_staveconnector__WEBPACK_IMPORTED_MODULE_6__.StaveConnector.type.BRACKET);
     f.draw();
-    expect(0);
+    options.assert.expect(0);
 }
 function drawBasicMutedTest(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 350);
@@ -41871,7 +41647,7 @@ function drawBasicMutedTest(options) {
         .addClef('bass');
     system.addConnector().setType(_src_staveconnector__WEBPACK_IMPORTED_MODULE_6__.StaveConnector.type.BRACKET);
     f.draw();
-    expect(0);
+    options.assert.expect(0);
 }
 function drawBasicHarmonicTest(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 350);
@@ -41893,7 +41669,7 @@ function drawBasicHarmonicTest(options) {
         .addClef('bass');
     system.addConnector().setType(_src_staveconnector__WEBPACK_IMPORTED_MODULE_6__.StaveConnector.type.BRACKET);
     f.draw();
-    expect(0);
+    options.assert.expect(0);
 }
 function drawBasicSlashTest(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 350);
@@ -41915,7 +41691,7 @@ function drawBasicSlashTest(options) {
         .addClef('bass');
     system.addConnector().setType(_src_staveconnector__WEBPACK_IMPORTED_MODULE_6__.StaveConnector.type.BRACKET);
     f.draw();
-    expect(0);
+    options.assert.expect(0);
 }
 function drawGhostBasicTest(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 550);
@@ -41934,7 +41710,7 @@ function drawGhostBasicTest(options) {
         ],
     });
     f.draw();
-    expect(0);
+    options.assert.expect(0);
 }
 function drawGhostDottedTest(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 550);
@@ -41956,7 +41732,7 @@ function drawGhostDottedTest(options) {
         ],
     });
     f.draw();
-    expect(0);
+    options.assert.expect(0);
 }
 function drawParenthesisedTest(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 350);
@@ -41981,7 +41757,7 @@ function drawParenthesisedTest(options) {
         .addClef('bass');
     system.addConnector().setType(_src_staveconnector__WEBPACK_IMPORTED_MODULE_6__.StaveConnector.type.BRACKET);
     f.draw();
-    expect(0);
+    options.assert.expect(0);
 }
 function drawAccidentalsTest(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 350);
@@ -42003,7 +41779,7 @@ function drawAccidentalsTest(options) {
         .addClef('bass');
     system.addConnector().setType(_src_staveconnector__WEBPACK_IMPORTED_MODULE_6__.StaveConnector.type.BRACKET);
     f.draw();
-    expect(0);
+    options.assert.expect(0);
 }
 function drawBeamsTest(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 250);
@@ -42019,7 +41795,7 @@ function drawBeamsTest(options) {
     })
         .addClef('treble');
     f.draw();
-    expect(0);
+    options.assert.expect(0);
 }
 function drawTupletsTest(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 250);
@@ -42038,7 +41814,7 @@ function drawTupletsTest(options) {
     const v2 = voice([...v2_halfNote, ...v2_tuplet]);
     system.addStave({ voices: [v1, v2] }).addClef('treble');
     f.draw();
-    expect(0);
+    options.assert.expect(0);
 }
 function drawDotsTest(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 250);
@@ -42051,7 +41827,7 @@ function drawDotsTest(options) {
     })
         .addClef('treble');
     f.draw();
-    expect(0);
+    options.assert.expect(0);
 }
 function drawOptionsTest(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 500, 200);
@@ -42065,20 +41841,20 @@ function drawOptionsTest(options) {
     const note0_modifier0 = note0.getModifiers()[0];
     const note0_modifier1 = note0.getModifiers()[1];
     const note1_modifier0 = note1.getModifiers()[0];
-    equal(note0.getAttribute('id'), 'foobar');
-    ok(note0.hasClass('red'));
-    ok(note0.hasClass('bold'));
-    equal(note0_modifier0.getCategory(), _src_articulation__WEBPACK_IMPORTED_MODULE_1__.Articulation.CATEGORY);
-    equal(note0_modifier0.type, 'a.');
-    equal(note0_modifier0.getPosition(), _src_modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.BELOW);
-    equal(note0_modifier1.getCategory(), _src_articulation__WEBPACK_IMPORTED_MODULE_1__.Articulation.CATEGORY);
-    equal(note0_modifier1.type, 'a-');
-    equal(note0_modifier1.getPosition(), _src_modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.ABOVE);
-    equal(note0.getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_7__.Stem.UP);
-    equal(note1_modifier0.getCategory(), _src_articulation__WEBPACK_IMPORTED_MODULE_1__.Articulation.CATEGORY);
-    equal(note1_modifier0.type, 'a>');
-    equal(note1_modifier0.getPosition(), _src_modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.ABOVE);
-    equal(notes[2].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_7__.Stem.DOWN);
+    options.assert.equal(note0.getAttribute('id'), 'foobar');
+    options.assert.ok(note0.hasClass('red'));
+    options.assert.ok(note0.hasClass('bold'));
+    options.assert.equal(note0_modifier0.getCategory(), _src_articulation__WEBPACK_IMPORTED_MODULE_1__.Articulation.CATEGORY);
+    options.assert.equal(note0_modifier0.type, 'a.');
+    options.assert.equal(note0_modifier0.getPosition(), _src_modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.BELOW);
+    options.assert.equal(note0_modifier1.getCategory(), _src_articulation__WEBPACK_IMPORTED_MODULE_1__.Articulation.CATEGORY);
+    options.assert.equal(note0_modifier1.type, 'a-');
+    options.assert.equal(note0_modifier1.getPosition(), _src_modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.ABOVE);
+    options.assert.equal(note0.getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_7__.Stem.UP);
+    options.assert.equal(note1_modifier0.getCategory(), _src_articulation__WEBPACK_IMPORTED_MODULE_1__.Articulation.CATEGORY);
+    options.assert.equal(note1_modifier0.type, 'a>');
+    options.assert.equal(note1_modifier0.getPosition(), _src_modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.ABOVE);
+    options.assert.equal(notes[2].getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_7__.Stem.DOWN);
 }
 function drawFingeringsTest(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 500, 200);
@@ -42088,30 +41864,30 @@ function drawFingeringsTest(options) {
     system.addStave({ voices: [score.voice(notes)] });
     f.draw();
     const note0_modifier0 = notes[0].getModifiers()[0];
-    equal(note0_modifier0.getCategory(), _src_frethandfinger__WEBPACK_IMPORTED_MODULE_3__.FretHandFinger.CATEGORY);
-    equal(note0_modifier0.getFretHandFinger(), '1');
-    equal(note0_modifier0.getPosition(), _src_modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.LEFT);
+    options.assert.equal(note0_modifier0.getCategory(), _src_frethandfinger__WEBPACK_IMPORTED_MODULE_3__.FretHandFinger.CATEGORY);
+    options.assert.equal(note0_modifier0.getFretHandFinger(), '1');
+    options.assert.equal(note0_modifier0.getPosition(), _src_modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.LEFT);
     const note1_modifier0 = notes[1].getModifiers()[0];
-    equal(note1_modifier0.getCategory(), _src_frethandfinger__WEBPACK_IMPORTED_MODULE_3__.FretHandFinger.CATEGORY);
-    equal(note1_modifier0.getFretHandFinger(), '3');
-    equal(note1_modifier0.getPosition(), _src_modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.ABOVE);
+    options.assert.equal(note1_modifier0.getCategory(), _src_frethandfinger__WEBPACK_IMPORTED_MODULE_3__.FretHandFinger.CATEGORY);
+    options.assert.equal(note1_modifier0.getFretHandFinger(), '3');
+    options.assert.equal(note1_modifier0.getPosition(), _src_modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.ABOVE);
     const note2_modifier0 = notes[2].getModifiers()[0];
-    equal(note2_modifier0.getCategory(), _src_frethandfinger__WEBPACK_IMPORTED_MODULE_3__.FretHandFinger.CATEGORY);
-    equal(note2_modifier0.getFretHandFinger(), '5');
-    equal(note2_modifier0.getPosition(), _src_modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.BELOW);
+    options.assert.equal(note2_modifier0.getCategory(), _src_frethandfinger__WEBPACK_IMPORTED_MODULE_3__.FretHandFinger.CATEGORY);
+    options.assert.equal(note2_modifier0.getFretHandFinger(), '5');
+    options.assert.equal(note2_modifier0.getPosition(), _src_modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.BELOW);
     const note3_modifiers = notes[3].getModifiers();
     const note3_modifier0 = note3_modifiers[0];
     const note3_modifier1 = note3_modifiers[1];
     const note3_modifier2 = note3_modifiers[2];
-    equal(note3_modifier0.getCategory(), _src_frethandfinger__WEBPACK_IMPORTED_MODULE_3__.FretHandFinger.CATEGORY);
-    equal(note3_modifier0.getFretHandFinger(), '1');
-    equal(note3_modifier0.getPosition(), _src_modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.LEFT);
-    equal(note3_modifier1.getCategory(), _src_frethandfinger__WEBPACK_IMPORTED_MODULE_3__.FretHandFinger.CATEGORY);
-    equal(note3_modifier1.getFretHandFinger(), '3');
-    equal(note3_modifier1.getPosition(), _src_modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.LEFT);
-    equal(note3_modifier2.getCategory(), _src_frethandfinger__WEBPACK_IMPORTED_MODULE_3__.FretHandFinger.CATEGORY);
-    equal(note3_modifier2.getFretHandFinger(), '5');
-    equal(note3_modifier2.getPosition(), _src_modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.LEFT);
+    options.assert.equal(note3_modifier0.getCategory(), _src_frethandfinger__WEBPACK_IMPORTED_MODULE_3__.FretHandFinger.CATEGORY);
+    options.assert.equal(note3_modifier0.getFretHandFinger(), '1');
+    options.assert.equal(note3_modifier0.getPosition(), _src_modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.LEFT);
+    options.assert.equal(note3_modifier1.getCategory(), _src_frethandfinger__WEBPACK_IMPORTED_MODULE_3__.FretHandFinger.CATEGORY);
+    options.assert.equal(note3_modifier1.getFretHandFinger(), '3');
+    options.assert.equal(note3_modifier1.getPosition(), _src_modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.LEFT);
+    options.assert.equal(note3_modifier2.getCategory(), _src_frethandfinger__WEBPACK_IMPORTED_MODULE_3__.FretHandFinger.CATEGORY);
+    options.assert.equal(note3_modifier2.getFretHandFinger(), '5');
+    options.assert.equal(note3_modifier2.getPosition(), _src_modifier__WEBPACK_IMPORTED_MODULE_4__.Modifier.Position.LEFT);
 }
 function keys(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 200);
@@ -42120,13 +41896,13 @@ function keys(options) {
     const notes = score.notes('c#3/q, c##3, cb3, cbb3, cn3, c3, cbbs3, cbss3, cbs3, cdb3, cd3, c++-3, c++3, c+-3, c+3, co3, ck3', { clef: 'bass' });
     system.addStave({ voices: [f.Voice().setStrict(false).addTickables(notes)] }).addClef('bass');
     f.draw();
-    equal(notes[0].keys, 'c#/3');
-    equal(notes[1].keys, 'c##/3');
-    equal(notes[2].keys, 'cb/3');
-    equal(notes[3].keys, 'cbb/3');
-    equal(notes[4].keys, 'cn/3');
+    options.assert.equal(notes[0].keys, 'c#/3');
+    options.assert.equal(notes[1].keys, 'c##/3');
+    options.assert.equal(notes[2].keys, 'cb/3');
+    options.assert.equal(notes[3].keys, 'cbb/3');
+    options.assert.equal(notes[4].keys, 'cn/3');
     for (let i = 5; i < notes.length; i++) {
-        equal(notes[i].keys, 'c/3');
+        options.assert.equal(notes[i].keys, 'c/3');
     }
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(EasyScoreTests);
@@ -42143,7 +41919,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(EasySco
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "FactoryTests": () => (/* binding */ FactoryTests)
+/* harmony export */   FactoryTests: () => (/* binding */ FactoryTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_factory__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/factory */ "./src/factory.ts");
@@ -42158,31 +41934,31 @@ __webpack_require__.r(__webpack_exports__);
 const FactoryTests = {
     Start() {
         QUnit.module('Factory');
-        test('Defaults', defaults);
+        QUnit.test('Defaults', defaults);
         const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
         run('Draw', draw);
         run('Draw Tab (repeat barlines must be aligned)', drawTab);
     },
 };
-function defaults() {
+function defaults(assert) {
     // Throws RuntimeError: 'HTML DOM element not set in Factory'
-    throws(() => new _src_factory__WEBPACK_IMPORTED_MODULE_1__.Factory({ renderer: { elementId: '', width: 700, height: 500 } }), 'Empty string for elementId throws an exception.');
+    assert.throws(() => new _src_factory__WEBPACK_IMPORTED_MODULE_1__.Factory({ renderer: { elementId: '', width: 700, height: 500 } }), 'Empty string for elementId throws an exception.');
     const factory = new _src_factory__WEBPACK_IMPORTED_MODULE_1__.Factory({
         renderer: { elementId: null, width: 700, height: 500 },
     });
     // eslint-disable-next-line
     // @ts-ignore access a protected member for testing purposes.
     const options = factory.options;
-    equal(options.renderer.width, 700);
-    equal(options.renderer.height, 500);
-    equal(options.renderer.elementId, null);
-    equal(options.stave.space, 10);
+    assert.equal(options.renderer.width, 700);
+    assert.equal(options.renderer.height, 500);
+    assert.equal(options.renderer.elementId, null);
+    assert.equal(options.stave.space, 10);
 }
 function draw(options) {
     const f = _src_factory__WEBPACK_IMPORTED_MODULE_1__.Factory.newFromElementId(options.elementId);
     f.Stave().setClef('treble');
     f.draw();
-    expect(0);
+    options.assert.expect(0);
 }
 function drawTab(options) {
     const factory = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 500, 400);
@@ -42194,8 +41970,8 @@ function drawTab(options) {
     const tabVoices = [factory.Voice().addTickables([factory.GhostNote({ duration: 'w' })])];
     system.addStave({ stave: tabStave, voices: tabVoices });
     factory.draw();
-    equal(stave.getModifiers()[0].getX(), tabStave.getModifiers()[0].getX());
-    expect(1);
+    options.assert.equal(stave.getModifiers()[0].getX(), tabStave.getModifiers()[0].getX());
+    options.assert.expect(1);
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(FactoryTests);
 
@@ -42211,7 +41987,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(Factory
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "FontTests": () => (/* binding */ FontTests)
+/* harmony export */   FontTests: () => (/* binding */ FontTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_accidental__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/accidental */ "./src/accidental.ts");
@@ -42244,9 +42020,9 @@ __webpack_require__.r(__webpack_exports__);
 const FontTests = {
     Start() {
         QUnit.module('Font');
-        test('setFont', setFont);
-        test('Parsing', fontParsing);
-        test('Sizes', fontSizes);
+        QUnit.test('setFont', setFont);
+        QUnit.test('Parsing', fontParsing);
+        QUnit.test('Sizes', fontSizes);
         const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
         run('Set Text Font to Georgia', setTextFontToGeorgia);
         run('Set Music Font to Petaluma', setMusicFontToPetaluma);
@@ -42255,7 +42031,7 @@ const FontTests = {
 /**
  * Test out the setFont method in various classes.
  */
-function setFont() {
+function setFont(assert) {
     // Create a CanvasCntext and call setFont on it.
     const canvas = document.createElement('canvas');
     canvas.width = 800;
@@ -42265,74 +42041,74 @@ function setFont() {
     // https://github.com/0xfe/vexflow/issues/1240#issuecomment-986504088
     const ctx = new _src_canvascontext__WEBPACK_IMPORTED_MODULE_3__.CanvasContext(canvas.getContext('2d'));
     ctx.setFont('PetalumaScript', '100px', 'normal', 'italic');
-    equal(ctx.font, 'italic 100px PetalumaScript');
+    assert.equal(ctx.font, 'italic 100px PetalumaScript');
     const voice = new _src_voice__WEBPACK_IMPORTED_MODULE_11__.Voice();
     // Many elements do not override the default Element.TEXT_FONT.
-    propEqual(voice.fontInfo, _src_element__WEBPACK_IMPORTED_MODULE_4__.Element.TEXT_FONT);
+    assert.propEqual(voice.fontInfo, _src_element__WEBPACK_IMPORTED_MODULE_4__.Element.TEXT_FONT);
     voice.setFont('bold 32pt Arial');
     const fontInfo = voice.fontInfo;
-    equal(fontInfo === null || fontInfo === void 0 ? void 0 : fontInfo.size, '32pt');
+    assert.equal(fontInfo === null || fontInfo === void 0 ? void 0 : fontInfo.size, '32pt');
     const flat = new _src_accidental__WEBPACK_IMPORTED_MODULE_1__.Accidental('b');
     // eslint-disable-next-line
     // @ts-ignore access a protected member for testing purposes.
-    equal(flat.textFont, undefined); // The internal instance variable .textFont is undefined by default.
+    assert.equal(flat.textFont, undefined); // The internal instance variable .textFont is undefined by default.
     // Add italic to the default font as defined in Element.TEXT_FONT (since Accidental does not override TEXT_FONT).
     flat.setFont(undefined, undefined, undefined, _src_font__WEBPACK_IMPORTED_MODULE_6__.FontStyle.ITALIC);
-    equal(flat.getFont(), 'italic 10pt Arial, sans-serif');
+    assert.equal(flat.getFont(), 'italic 10pt Arial, sans-serif');
     // Anything that is not set will be reset to the defaults.
     flat.setFont(undefined, undefined, _src_font__WEBPACK_IMPORTED_MODULE_6__.FontWeight.BOLD, undefined);
-    equal(flat.getFont(), 'bold 10pt Arial, sans-serif');
+    assert.equal(flat.getFont(), 'bold 10pt Arial, sans-serif');
     flat.setFont(undefined, undefined, _src_font__WEBPACK_IMPORTED_MODULE_6__.FontWeight.BOLD, _src_font__WEBPACK_IMPORTED_MODULE_6__.FontStyle.ITALIC);
-    equal(flat.getFont(), 'italic bold 10pt Arial, sans-serif');
+    assert.equal(flat.getFont(), 'italic bold 10pt Arial, sans-serif');
     flat.setFont(undefined, undefined, _src_font__WEBPACK_IMPORTED_MODULE_6__.FontWeight.BOLD, 'oblique');
-    equal(flat.getFont(), 'oblique bold 10pt Arial, sans-serif');
+    assert.equal(flat.getFont(), 'oblique bold 10pt Arial, sans-serif');
     // '' is equivalent to 'normal'. Neither will be included in the CSS font string.
     flat.setFont(undefined, undefined, 'normal', '');
-    equal(flat.getFont(), '10pt Arial, sans-serif');
+    assert.equal(flat.getFont(), '10pt Arial, sans-serif');
 }
-function fontParsing() {
+function fontParsing(assert) {
     const b = new _src_bend__WEBPACK_IMPORTED_MODULE_2__.Bend('1/2', true);
     const bFont = b.fontInfo;
     // Check the default font.
-    equal(bFont === null || bFont === void 0 ? void 0 : bFont.family, _src_font__WEBPACK_IMPORTED_MODULE_6__.Font.SANS_SERIF);
-    equal(bFont === null || bFont === void 0 ? void 0 : bFont.size, _src_font__WEBPACK_IMPORTED_MODULE_6__.Font.SIZE);
-    equal(bFont === null || bFont === void 0 ? void 0 : bFont.weight, _src_font__WEBPACK_IMPORTED_MODULE_6__.FontWeight.NORMAL);
-    equal(bFont === null || bFont === void 0 ? void 0 : bFont.style, _src_font__WEBPACK_IMPORTED_MODULE_6__.FontStyle.NORMAL);
+    assert.equal(bFont === null || bFont === void 0 ? void 0 : bFont.family, _src_font__WEBPACK_IMPORTED_MODULE_6__.Font.SANS_SERIF);
+    assert.equal(bFont === null || bFont === void 0 ? void 0 : bFont.size, _src_font__WEBPACK_IMPORTED_MODULE_6__.Font.SIZE);
+    assert.equal(bFont === null || bFont === void 0 ? void 0 : bFont.weight, _src_font__WEBPACK_IMPORTED_MODULE_6__.FontWeight.NORMAL);
+    assert.equal(bFont === null || bFont === void 0 ? void 0 : bFont.style, _src_font__WEBPACK_IMPORTED_MODULE_6__.FontStyle.NORMAL);
     const f1 = 'Roboto Slab, serif';
     const t = new _src_textnote__WEBPACK_IMPORTED_MODULE_10__.TextNote({ duration: '4', font: { family: f1 } });
-    equal(f1, t.fontInfo.family);
+    assert.equal(f1, t.fontInfo.family);
     const n1 = new _src_stavenote__WEBPACK_IMPORTED_MODULE_8__.StaveNote({ keys: ['e/5'], duration: '4' });
     const n2 = new _src_stavenote__WEBPACK_IMPORTED_MODULE_8__.StaveNote({ keys: ['c/5'], duration: '4' });
     const tb = new _src_textbracket__WEBPACK_IMPORTED_MODULE_9__.TextBracket({ start: n1, stop: n2 });
     const f2 = tb.fontInfo;
-    equal(f2 === null || f2 === void 0 ? void 0 : f2.size, 15);
-    equal(f2 === null || f2 === void 0 ? void 0 : f2.style, _src_font__WEBPACK_IMPORTED_MODULE_6__.FontStyle.ITALIC);
+    assert.equal(f2 === null || f2 === void 0 ? void 0 : f2.size, 15);
+    assert.equal(f2 === null || f2 === void 0 ? void 0 : f2.style, _src_font__WEBPACK_IMPORTED_MODULE_6__.FontStyle.ITALIC);
     // The line-height /3 is currently ignored.
     const f3 = _src_font__WEBPACK_IMPORTED_MODULE_6__.Font.fromCSSString(`bold 1.5em/3 "Lucida Sans Typewriter", "Lucida Console", Consolas, monospace`);
     const f3SizeInPx = _src_font__WEBPACK_IMPORTED_MODULE_6__.Font.convertSizeToPixelValue(f3.size);
-    equal(f3SizeInPx, 24);
+    assert.equal(f3SizeInPx, 24);
 }
-function fontSizes() {
+function fontSizes(assert) {
     {
         const size = '17px';
         const sizeInEm = _src_font__WEBPACK_IMPORTED_MODULE_6__.Font.convertSizeToPixelValue(size) / _src_font__WEBPACK_IMPORTED_MODULE_6__.Font.scaleToPxFrom.em;
-        equal(sizeInEm, 1.0625);
+        assert.equal(sizeInEm, 1.0625);
     }
     {
         const size = '2em';
         const sizeInPx = _src_font__WEBPACK_IMPORTED_MODULE_6__.Font.convertSizeToPixelValue(size);
-        equal(sizeInPx, 32);
+        assert.equal(sizeInPx, 32);
     }
     {
         const pedal = new _src_pedalmarking__WEBPACK_IMPORTED_MODULE_7__.PedalMarking([]);
-        equal(pedal.getFont(), 'italic bold 12pt Times New Roman, serif');
-        equal(pedal.fontSizeInPoints, 12);
-        equal(pedal.fontSizeInPixels, 16);
+        assert.equal(pedal.getFont(), 'italic bold 12pt Times New Roman, serif');
+        assert.equal(pedal.fontSizeInPoints, 12);
+        assert.equal(pedal.fontSizeInPixels, 16);
         const doubledSizePx = pedal.fontSizeInPixels * 2; // Double the font size.
-        equal(doubledSizePx, 32);
+        assert.equal(doubledSizePx, 32);
         const doubledSizePt = _src_font__WEBPACK_IMPORTED_MODULE_6__.Font.scaleSize(pedal.fontSizeInPoints, 2); // Double the font size.
-        equal(doubledSizePt, 24);
-        equal(_src_font__WEBPACK_IMPORTED_MODULE_6__.Font.scaleSize('1.5em', 3), '4.5em');
+        assert.equal(doubledSizePt, 24);
+        assert.equal(_src_font__WEBPACK_IMPORTED_MODULE_6__.Font.scaleSize('1.5em', 3), '4.5em');
     }
 }
 function setTextFontToGeorgia(options) {
@@ -42362,7 +42138,7 @@ function setTextFontToGeorgia(options) {
     factory.draw();
     // Restore the previous default, or else it will affect the rest of the tests.
     _src_textnote__WEBPACK_IMPORTED_MODULE_10__.TextNote.TEXT_FONT = defaultFont;
-    ok(true);
+    options.assert.ok(true);
 }
 function setMusicFontToPetaluma(options) {
     _src_flow__WEBPACK_IMPORTED_MODULE_5__.Flow.setMusicFont('Petaluma');
@@ -42377,7 +42153,7 @@ function setMusicFontToPetaluma(options) {
     const formatter = factory.Formatter();
     formatter.joinVoices([voice]).formatToStave([voice], stave);
     factory.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(FontTests);
 
@@ -42393,7 +42169,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(FontTes
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "FormatterTests": () => (/* binding */ FormatterTests)
+/* harmony export */   FormatterTests: () => (/* binding */ FormatterTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_accidental__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/accidental */ "./src/accidental.ts");
@@ -42448,9 +42224,8 @@ __webpack_require__.r(__webpack_exports__);
 const FormatterTests = {
     Start() {
         QUnit.module('Formatter');
-        test('TickContext Building', buildTickContexts);
+        QUnit.test('TickContext Building', buildTickContexts);
         const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
-        run('Softmax', softMax);
         run('Penultimate Note Padding', penultimateNote);
         run('Whitespace and justify', rightJustify);
         run('Notehead padding', noteHeadPadding);
@@ -42463,6 +42238,7 @@ const FormatterTests = {
         run('StaveNote - Justification', justifyStaveNotes);
         run('Notes with Tab', notesWithTab);
         run('Multiple Staves - Justified', multiStaves, { debug: true });
+        run('Softmax', softMax);
         run('Mixtime', mixTime);
         run('Tight', tightNotes1);
         run('Tight 2', tightNotes2);
@@ -42486,7 +42262,7 @@ function getGlyphWidth(glyphName) {
     const widthInEm = (glyph.x_max - glyph.x_min) / musicFont.getResolution();
     return widthInEm * 38 * _src_font__WEBPACK_IMPORTED_MODULE_8__.Font.scaleToPxFrom.pt;
 }
-function buildTickContexts() {
+function buildTickContexts(assert) {
     function createTickable(beat) {
         return new _mocks__WEBPACK_IMPORTED_MODULE_22__.MockTickable().setTicks(beat);
     }
@@ -42507,15 +42283,15 @@ function buildTickContexts() {
     voice2.addTickables(tickables2);
     const formatter = new _src_formatter__WEBPACK_IMPORTED_MODULE_9__.Formatter();
     const tContexts = formatter.createTickContexts([voice1, voice2]);
-    equal(tContexts.list.length, 4, 'Voices should have four tick contexts');
-    throws(() => formatter.getMinTotalWidth(), /NoMinTotalWidth/, 'Expected to throw exception');
-    ok(formatter.preCalculateMinTotalWidth([voice1, voice2]), 'Successfully runs preCalculateMinTotalWidth');
-    equal(formatter.getMinTotalWidth(), 88, 'Get minimum total width without passing voices');
+    assert.equal(tContexts.list.length, 4, 'Voices should have four tick contexts');
+    assert.throws(() => formatter.getMinTotalWidth(), /NoMinTotalWidth/, 'Expected to throw exception');
+    assert.ok(formatter.preCalculateMinTotalWidth([voice1, voice2]), 'Successfully runs preCalculateMinTotalWidth');
+    assert.equal(formatter.getMinTotalWidth(), 88, 'Get minimum total width without passing voices');
     formatter.preFormat();
-    equal(formatter.getMinTotalWidth(), 88, 'Minimum total width');
-    equal(tickables1[0].getX(), tickables2[0].getX(), 'First notes of both voices have the same X');
-    equal(tickables1[2].getX(), tickables2[2].getX(), 'Last notes of both voices have the same X');
-    ok(tickables1[1].getX() < tickables2[1].getX(), 'Second note of voice 2 is to the right of the second note of voice 1');
+    assert.equal(formatter.getMinTotalWidth(), 88, 'Minimum total width');
+    assert.equal(tickables1[0].getX(), tickables2[0].getX(), 'First notes of both voices have the same X');
+    assert.equal(tickables1[2].getX(), tickables2[2].getX(), 'Last notes of both voices have the same X');
+    assert.ok(tickables1[1].getX() < tickables2[1].getX(), 'Second note of voice 2 is to the right of the second note of voice 1');
 }
 function rightJustify(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 1200, 150);
@@ -42541,7 +42317,7 @@ function rightJustify(options) {
     renderTest({ num_beats: 4, beat_value: 4, resolution: 4 * 4096 }, 1, 'w', 'w', 310, 300);
     renderTest({ num_beats: 3, beat_value: 4, resolution: 4 * 4096 }, 3, '4', '4', 610, 300);
     renderTest({ num_beats: 3, beat_value: 4, resolution: 4 * 4096 }, 6, '8', '8', 910, 300);
-    ok(true);
+    options.assert.ok(true);
 }
 function penultimateNote(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 500, 550);
@@ -42588,8 +42364,8 @@ function penultimateNote(options) {
     draw(10);
     draw(5);
     draw(2);
-    draw(1.5);
-    ok(true);
+    draw(1);
+    options.assert.ok(true);
 }
 function noteHeadPadding(options) {
     const registry = new _src_registry__WEBPACK_IMPORTED_MODULE_13__.Registry();
@@ -42615,7 +42391,7 @@ function noteHeadPadding(options) {
     voice1.draw(f.getContext(), stave1);
     voice2.draw(f.getContext(), stave2);
     beams.forEach((b) => b.setContext(f.getContext()).draw());
-    ok(true);
+    options.assert.ok(true);
 }
 function longMeasureProblems(options) {
     const registry = new _src_registry__WEBPACK_IMPORTED_MODULE_13__.Registry();
@@ -42638,7 +42414,7 @@ function longMeasureProblems(options) {
     stave2.draw();
     voice1.draw(f.getContext(), stave1);
     voice2.draw(f.getContext(), stave2);
-    ok(true);
+    options.assert.ok(true);
 }
 function accidentalJustification(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 300);
@@ -42661,7 +42437,7 @@ function accidentalJustification(options) {
     voice11.draw(ctx, stave11);
     voice21.draw(ctx, stave21);
     beams.forEach((b) => b.setContext(ctx).draw());
-    ok(true);
+    options.assert.ok(true);
 }
 function unalignedNoteDurations1(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 250);
@@ -42695,7 +42471,7 @@ function unalignedNoteDurations1(options) {
     voice21.draw(ctx, stave21);
     beams21.forEach((b) => b.setContext(ctx).draw());
     beams11.forEach((b) => b.setContext(ctx).draw());
-    ok(voice11.getTickables()[1].getX() > voice21.getTickables()[1].getX());
+    options.assert.ok(voice11.getTickables()[1].getX() > voice21.getTickables()[1].getX());
 }
 function unalignedNoteDurations2(options) {
     const notes1 = [
@@ -42739,7 +42515,7 @@ function unalignedNoteDurations2(options) {
     stave2.setContext(context).draw();
     voice1.draw(context, stave1);
     voice2.draw(context, stave2);
-    ok(voice1.getTickables()[1].getX() > voice2.getTickables()[1].getX());
+    options.assert.ok(voice1.getTickables()[1].getX() > voice2.getTickables()[1].getX());
 }
 function alignedMixedElements(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 800, 500);
@@ -42791,7 +42567,7 @@ function alignedMixedElements(options) {
     stave2.setContext(context).draw();
     tuplet.setContext(context).draw();
     tuplet2.setContext(context).draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function justifyStaveNotes(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 520, 280);
@@ -42814,7 +42590,7 @@ function justifyStaveNotes(options) {
     }
     justifyToWidth(520);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function notesWithTab(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 420, 580);
@@ -42852,7 +42628,7 @@ function notesWithTab(options) {
     justifyToWidth(0);
     justifyToWidth(300);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function multiStaves(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 400);
@@ -42928,7 +42704,7 @@ function multiStaves(options) {
         voices[i].getTickables().forEach((note) => _src_note__WEBPACK_IMPORTED_MODULE_12__.Note.plotMetrics(ctx, note, staveYs[i] - 20));
     }
     beams.forEach((beam) => beam.setContext(ctx).draw());
-    ok(true);
+    options.assert.ok(true);
 }
 function proportional(options) {
     const debug = options.params.debug;
@@ -42963,7 +42739,7 @@ function proportional(options) {
     // const table = Object.keys(typeMap).map((typeName) => typeName + ': ' + Object.keys(typeMap[typeName]).length);
     // console.log(table);
     _src_registry__WEBPACK_IMPORTED_MODULE_13__.Registry.disableDefaultRegistry();
-    ok(true);
+    options.assert.ok(true);
 }
 function softMax(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 550, 500);
@@ -42990,7 +42766,7 @@ function softMax(options) {
             .addTimeSignature('5/4');
         f.draw();
         f.getContext().fillText(`softmax: ${factor.toString()}`, textX, y + 50);
-        ok(true);
+        options.assert.ok(true);
     }
     draw(50, 1);
     draw(150, 2);
@@ -43020,7 +42796,7 @@ function mixTime(options) {
         .addClef('treble')
         .addTimeSignature('4/4');
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function tightNotes1(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 440, 250);
@@ -43048,7 +42824,7 @@ function tightNotes1(options) {
         .addClef('treble')
         .addTimeSignature('4/4');
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function tightNotes2(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 440, 250);
@@ -43073,7 +42849,7 @@ function tightNotes2(options) {
         .addClef('treble')
         .addTimeSignature('4/4');
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function annotations(options) {
     const pageWidth = 916;
@@ -43160,7 +42936,7 @@ function annotations(options) {
         voice1.draw(context, stave);
         beams.forEach((b) => b.setContext(context).draw());
     });
-    ok(true);
+    options.assert.ok(true);
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(FormatterTests);
 
@@ -43176,7 +42952,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(Formatt
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "FractionTests": () => (/* binding */ FractionTests)
+/* harmony export */   FractionTests: () => (/* binding */ FractionTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_fraction__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/fraction */ "./src/fraction.ts");
@@ -43189,58 +42965,58 @@ __webpack_require__.r(__webpack_exports__);
 const FractionTests = {
     Start() {
         QUnit.module('Fraction');
-        test('Basic', basic);
-        test('With Other Fractions', withOtherFractions);
+        QUnit.test('Basic', basic);
+        QUnit.test('With Other Fractions', withOtherFractions);
     },
 };
-function basic() {
+function basic(assert) {
     const f_1_2 = new _src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction(1, 2);
-    ok(f_1_2.equals(0.5), 'Fraction: 1/2 equals 0.5');
-    ok(f_1_2.equals(new _src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction(1, 2)), 'Fraction: 1/2 equals 1/2');
-    ok(f_1_2.equals(new _src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction(2, 4)), 'Fraction: 1/2 equals 2/4');
-    notOk(f_1_2.greaterThan(1), 'Fraction: ! 1/2 > 1');
-    ok(f_1_2.greaterThan(0.2), 'Fraction: 1/2 > 0.2');
-    ok(f_1_2.greaterThanEquals(0.2), 'Fraction: 1/2 >= 0.2');
-    ok(f_1_2.greaterThanEquals(0.5), 'Fraction: 1/2 >= 0.5');
-    notOk(f_1_2.greaterThanEquals(1), 'Fraction: ! 1/2 >= 1');
-    notOk(f_1_2.lessThan(0.5), 'Fraction: ! 1/2 < 0.5');
-    ok(f_1_2.lessThan(1), 'Fraction: 1/2 < 1');
-    ok(f_1_2.lessThanEquals(0.6), 'Fraction: 1/2 <= 0.6');
-    ok(f_1_2.lessThanEquals(0.5), 'Fraction: 1/2 <= 0.5');
-    notOk(f_1_2.lessThanEquals(0.4), 'Fraction: ! 1/2 <= 0.4');
+    assert.ok(f_1_2.equals(0.5), 'Fraction: 1/2 equals 0.5');
+    assert.ok(f_1_2.equals(new _src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction(1, 2)), 'Fraction: 1/2 equals 1/2');
+    assert.ok(f_1_2.equals(new _src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction(2, 4)), 'Fraction: 1/2 equals 2/4');
+    assert.notOk(f_1_2.greaterThan(1), 'Fraction: ! 1/2 > 1');
+    assert.ok(f_1_2.greaterThan(0.2), 'Fraction: 1/2 > 0.2');
+    assert.ok(f_1_2.greaterThanEquals(0.2), 'Fraction: 1/2 >= 0.2');
+    assert.ok(f_1_2.greaterThanEquals(0.5), 'Fraction: 1/2 >= 0.5');
+    assert.notOk(f_1_2.greaterThanEquals(1), 'Fraction: ! 1/2 >= 1');
+    assert.notOk(f_1_2.lessThan(0.5), 'Fraction: ! 1/2 < 0.5');
+    assert.ok(f_1_2.lessThan(1), 'Fraction: 1/2 < 1');
+    assert.ok(f_1_2.lessThanEquals(0.6), 'Fraction: 1/2 <= 0.6');
+    assert.ok(f_1_2.lessThanEquals(0.5), 'Fraction: 1/2 <= 0.5');
+    assert.notOk(f_1_2.lessThanEquals(0.4), 'Fraction: ! 1/2 <= 0.4');
     const f_05 = f_1_2.copy(0.5);
-    strictEqual(f_05, f_1_2, 'Fraction: f_05 === f_1_2');
-    strictEqual(f_05.toString(), '0.5/1', 'Fraction: f_05.toString() === "0.5/1"');
-    strictEqual(f_05.toSimplifiedString(), '1/2', 'Fraction: f_05.toSimplifiedString() === "1/2"');
+    assert.strictEqual(f_05, f_1_2, 'Fraction: f_05 === f_1_2');
+    assert.strictEqual(f_05.toString(), '0.5/1', 'Fraction: f_05.toString() === "0.5/1"');
+    assert.strictEqual(f_05.toSimplifiedString(), '1/2', 'Fraction: f_05.toSimplifiedString() === "1/2"');
     const tF_n = f_05.clone();
-    notStrictEqual(tF_n, f_05, 'Fraction: tF_n !== f_05');
-    notEqual(tF_n, f_05, 'Fraction: tF_n != f_05');
-    deepEqual(tF_n, f_05, 'tF_n deepEqual f_05');
-    notDeepEqual(tF_n, {}, 'tF_n notDeepEqual {}');
+    assert.notStrictEqual(tF_n, f_05, 'Fraction: tF_n !== f_05');
+    assert.notEqual(tF_n, f_05, 'Fraction: tF_n != f_05');
+    assert.deepEqual(tF_n, f_05, 'tF_n deepEqual f_05');
+    assert.notDeepEqual(tF_n, {}, 'tF_n notDeepEqual {}');
     tF_n.subtract(-0.5);
-    ok(tF_n.equals(1), 'Fraction: 0.5 -(-0.5) equals 1');
+    assert.ok(tF_n.equals(1), 'Fraction: 0.5 -(-0.5) equals 1');
     tF_n.add(1);
-    ok(tF_n.equals(2), 'Fraction: 1 + 1 equals 2');
+    assert.ok(tF_n.equals(2), 'Fraction: 1 + 1 equals 2');
     tF_n.multiply(2);
-    ok(tF_n.equals(4), 'Fraction: 2 * 2 equals 4');
+    assert.ok(tF_n.equals(4), 'Fraction: 2 * 2 equals 4');
     tF_n.divide(2);
-    ok(tF_n.equals(2), 'Fraction: 4 / 2 equals 2');
+    assert.ok(tF_n.equals(2), 'Fraction: 4 / 2 equals 2');
     // Lowest common multiple.
-    equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.LCMM([]), 0);
-    equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.LCMM([17]), 17);
-    equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.LCMM([2, 5]), 10);
-    equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.LCMM([15, 3, 5]), 15);
-    equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.LCMM([2, 4, 6]), 12);
-    equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.LCMM([2, 3, 4, 5]), 60);
-    equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.LCMM([12, 15, 10, 75]), 300);
+    assert.equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.LCMM([]), 0);
+    assert.equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.LCMM([17]), 17);
+    assert.equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.LCMM([2, 5]), 10);
+    assert.equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.LCMM([15, 3, 5]), 15);
+    assert.equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.LCMM([2, 4, 6]), 12);
+    assert.equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.LCMM([2, 3, 4, 5]), 60);
+    assert.equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.LCMM([12, 15, 10, 75]), 300);
     // Greatest common divisor.
-    equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.GCD(0, 0), 0);
-    equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.GCD(0, 99), 99);
-    equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.GCD(77, 0), 77);
-    equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.GCD(42, 14), 14);
-    equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.GCD(15, 10), 5);
+    assert.equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.GCD(0, 0), 0);
+    assert.equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.GCD(0, 99), 99);
+    assert.equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.GCD(77, 0), 77);
+    assert.equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.GCD(42, 14), 14);
+    assert.equal(_src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction.GCD(15, 10), 5);
 }
-function withOtherFractions() {
+function withOtherFractions(assert) {
     const f_1_2 = new _src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction(1, 2);
     const f_1_4 = new _src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction(1, 4);
     const f_1_8 = new _src_fraction__WEBPACK_IMPORTED_MODULE_1__.Fraction(1, 8);
@@ -43249,15 +43025,15 @@ function withOtherFractions() {
     // They do not return new objects.
     // Use clone() if you don't want to modify the original object.
     const a = f_1_2.clone().multiply(f_1_2);
-    ok(a.equals(f_1_4), '1/2 x 1/2 == 1/4');
+    assert.ok(a.equals(f_1_4), '1/2 x 1/2 == 1/4');
     const b = f_1_2.clone().divide(f_1_4);
-    ok(b.equals(f_2), '1/2 / 1/4 == 2');
+    assert.ok(b.equals(f_2), '1/2 / 1/4 == 2');
     const c = f_2.clone().subtract(f_1_2).subtract(f_1_2).subtract(f_1_4); // 3/4
     const d = f_1_8.clone().add(f_1_8).add(f_1_8).multiply(f_2);
-    ok(c.equals(d), '2-1/2-1/2-1/4 == (1/8+1/8+1/8)*(2/1)');
-    equal(c.value(), 0.75, '3/4 == 0.75');
+    assert.ok(c.equals(d), '2-1/2-1/2-1/4 == (1/8+1/8+1/8)*(2/1)');
+    assert.equal(c.value(), 0.75, '3/4 == 0.75');
     const e = f_1_8.clone().add(f_1_4).add(f_1_8);
-    ok(e.equals(f_1_2), '1/8 + 1/4 + 1/8 == 1/2');
+    assert.ok(e.equals(f_1_2), '1/8 + 1/4 + 1/8 == 1/2');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(FractionTests);
 
@@ -43273,7 +43049,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(Fractio
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GhostNoteTests": () => (/* binding */ GhostNoteTests)
+/* harmony export */   GhostNoteTests: () => (/* binding */ GhostNoteTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
@@ -43301,7 +43077,7 @@ function createTest(addItems) {
         const voices = factory.getVoices();
         factory.Formatter().joinVoices(voices).formatToStave(voices, stave);
         factory.draw();
-        ok(true, 'all pass');
+        options.assert.ok(true, 'all pass');
     };
 }
 const basic = createTest((f, score) => {
@@ -43378,7 +43154,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(GhostNo
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GlyphNoteTests": () => (/* binding */ GlyphNoteTests)
+/* harmony export */   GlyphNoteTests: () => (/* binding */ GlyphNoteTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_chordsymbol__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/chordsymbol */ "./src/chordsymbol.ts");
@@ -43439,7 +43215,7 @@ function chordChanges(options) {
     system.addConnector().setType(_src_staveconnector__WEBPACK_IMPORTED_MODULE_4__.StaveConnector.type.BRACKET);
     f.draw();
     _src_registry__WEBPACK_IMPORTED_MODULE_3__.Registry.disableDefaultRegistry();
-    ok(true);
+    options.assert.ok(true);
 }
 function basic(options) {
     _src_registry__WEBPACK_IMPORTED_MODULE_3__.Registry.enableDefaultRegistry(new _src_registry__WEBPACK_IMPORTED_MODULE_3__.Registry());
@@ -43468,7 +43244,7 @@ function basic(options) {
     system.addConnector().setType(_src_staveconnector__WEBPACK_IMPORTED_MODULE_4__.StaveConnector.type.BRACKET);
     f.draw();
     _src_registry__WEBPACK_IMPORTED_MODULE_3__.Registry.disableDefaultRegistry();
-    ok(true);
+    options.assert.ok(true);
 }
 function repeatNote(options) {
     _src_registry__WEBPACK_IMPORTED_MODULE_3__.Registry.enableDefaultRegistry(new _src_registry__WEBPACK_IMPORTED_MODULE_3__.Registry());
@@ -43498,7 +43274,7 @@ function repeatNote(options) {
     system.addConnector().setType(_src_staveconnector__WEBPACK_IMPORTED_MODULE_4__.StaveConnector.type.BRACKET);
     f.draw();
     _src_registry__WEBPACK_IMPORTED_MODULE_3__.Registry.disableDefaultRegistry();
-    ok(true);
+    options.assert.ok(true);
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(GlyphNoteTests);
 
@@ -43514,7 +43290,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(GlyphNo
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GraceNoteTests": () => (/* binding */ GraceNoteTests)
+/* harmony export */   GraceNoteTests: () => (/* binding */ GraceNoteTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_accidental__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/accidental */ "./src/accidental.ts");
@@ -43612,7 +43388,7 @@ function basic(options) {
     const voice = f.Voice().setStrict(false).addTickables(notes);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'GraceNoteBasic');
+    options.assert.ok(true, 'GraceNoteBasic');
 }
 function graceNoteModifiers(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 130);
@@ -43651,7 +43427,7 @@ function graceNoteModifiers(options) {
     const voice = f.Voice().setStrict(false).addTickables(notes);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'GraceNoteModifiers');
+    options.assert.ok(true, 'GraceNoteModifiers');
 }
 function basicSlurred(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 130);
@@ -43702,7 +43478,7 @@ function basicSlurred(options) {
     const voice = f.Voice().setStrict(false).addTickables(notes);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_5__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'GraceNoteBasic');
+    options.assert.ok(true, 'GraceNoteBasic');
 }
 /**
  * Helper function for three tests below: stem, stemWithBeamed, slash.
@@ -43733,7 +43509,7 @@ function stem(options) {
     voice.addTickables(createNoteBlock(['d/5'], -1));
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'GraceNoteStem');
+    options.assert.ok(true, 'GraceNoteStem');
 }
 function stemWithBeamed(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 130);
@@ -43769,7 +43545,7 @@ function stemWithBeamed(options) {
     voice.addTickables(createBeamedNoteBlock(options.params.keys2, options.params.stemDirection2, beams));
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'GraceNoteStem');
+    options.assert.ok(true, 'GraceNoteStem');
 }
 function slash(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 130);
@@ -43808,7 +43584,7 @@ function slash(options) {
     voice.addTickables(createNoteBlock(['d/4', 'a/4'], -1));
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'GraceNoteSlash');
+    options.assert.ok(true, 'GraceNoteSlash');
 }
 function slashWithBeams(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 800, 130);
@@ -43841,7 +43617,7 @@ function slashWithBeams(options) {
     voice.addTickables(createNoteBlock(['d/4', 'a/4'], -1));
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'GraceNoteSlashWithBeams');
+    options.assert.ok(true, 'GraceNoteSlashWithBeams');
 }
 function multipleVoices(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 450, 140);
@@ -43891,7 +43667,7 @@ function multipleVoices(options) {
     f.Beam({ notes: notes2.slice(4, 8) });
     f.Formatter().joinVoices([voice, voice2]).formatToStave([voice, voice2], stave);
     f.draw();
-    ok(true, 'Sixteenth Test');
+    options.assert.ok(true, 'Sixteenth Test');
 }
 function multipleVoicesMultipleDraws(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 450, 140);
@@ -43942,7 +43718,7 @@ function multipleVoicesMultipleDraws(options) {
     f.Formatter().joinVoices([voice, voice2]).formatToStave([voice, voice2], stave);
     f.draw();
     f.draw();
-    ok(true, 'Seventeenth Test');
+    options.assert.ok(true, 'Seventeenth Test');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(GraceNoteTests);
 
@@ -43958,7 +43734,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(GraceNo
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GraceTabNoteTests": () => (/* binding */ GraceTabNoteTests)
+/* harmony export */   GraceTabNoteTests: () => (/* binding */ GraceTabNoteTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/flow */ "./src/flow.ts");
@@ -44030,7 +43806,7 @@ function simple(options, contextBuilder) {
     voice.addTickables([note0, note1, note2, note3]);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter().joinVoices([voice]).format([voice], 250);
     voice.draw(context, stave);
-    ok(true, 'Simple Test');
+    options.assert.ok(true, 'Simple Test');
 }
 function slurred(options, contextBuilder) {
     const { context, stave } = setupContext(options, contextBuilder);
@@ -44053,7 +43829,7 @@ function slurred(options, contextBuilder) {
     voice.addTickables([note0, note1]);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter().joinVoices([voice]).format([voice], 200);
     voice.draw(context, stave);
-    ok(true, 'Slurred Test');
+    options.assert.ok(true, 'Slurred Test');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(GraceTabNoteTests);
 
@@ -44069,76 +43845,75 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(GraceTa
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "AccidentalTests": () => (/* reexport safe */ _accidental_tests__WEBPACK_IMPORTED_MODULE_0__.AccidentalTests),
-/* harmony export */   "AnnotationTests": () => (/* reexport safe */ _annotation_tests__WEBPACK_IMPORTED_MODULE_1__.AnnotationTests),
-/* harmony export */   "ArticulationTests": () => (/* reexport safe */ _articulation_tests__WEBPACK_IMPORTED_MODULE_2__.ArticulationTests),
-/* harmony export */   "AutoBeamFormattingTests": () => (/* reexport safe */ _auto_beam_formatting_tests__WEBPACK_IMPORTED_MODULE_3__.AutoBeamFormattingTests),
-/* harmony export */   "BachDemoTests": () => (/* reexport safe */ _bach_tests__WEBPACK_IMPORTED_MODULE_4__.BachDemoTests),
-/* harmony export */   "BarlineTests": () => (/* reexport safe */ _barline_tests__WEBPACK_IMPORTED_MODULE_5__.BarlineTests),
-/* harmony export */   "BeamTests": () => (/* reexport safe */ _beam_tests__WEBPACK_IMPORTED_MODULE_6__.BeamTests),
-/* harmony export */   "BendTests": () => (/* reexport safe */ _bend_tests__WEBPACK_IMPORTED_MODULE_7__.BendTests),
-/* harmony export */   "BoundingBoxComputationTests": () => (/* reexport safe */ _boundingboxcomputation_tests__WEBPACK_IMPORTED_MODULE_9__.BoundingBoxComputationTests),
-/* harmony export */   "BoundingBoxTests": () => (/* reexport safe */ _boundingbox_tests__WEBPACK_IMPORTED_MODULE_8__.BoundingBoxTests),
-/* harmony export */   "ChordSymbolTests": () => (/* reexport safe */ _chordsymbol_tests__WEBPACK_IMPORTED_MODULE_10__.ChordSymbolTests),
-/* harmony export */   "ClefKeySignatureTests": () => (/* reexport safe */ _key_clef_tests__WEBPACK_IMPORTED_MODULE_24__.ClefKeySignatureTests),
-/* harmony export */   "ClefTests": () => (/* reexport safe */ _clef_tests__WEBPACK_IMPORTED_MODULE_11__.ClefTests),
-/* harmony export */   "CrossBeamTests": () => (/* reexport safe */ _crossbeam_tests__WEBPACK_IMPORTED_MODULE_12__.CrossBeamTests),
-/* harmony export */   "CurveTests": () => (/* reexport safe */ _curve_tests__WEBPACK_IMPORTED_MODULE_13__.CurveTests),
-/* harmony export */   "DotTests": () => (/* reexport safe */ _dot_tests__WEBPACK_IMPORTED_MODULE_14__.DotTests),
-/* harmony export */   "EasyScoreTests": () => (/* reexport safe */ _easyscore_tests__WEBPACK_IMPORTED_MODULE_15__.EasyScoreTests),
-/* harmony export */   "FactoryTests": () => (/* reexport safe */ _factory_tests__WEBPACK_IMPORTED_MODULE_16__.FactoryTests),
-/* harmony export */   "FontTests": () => (/* reexport safe */ _font_tests__WEBPACK_IMPORTED_MODULE_17__.FontTests),
-/* harmony export */   "FormatterTests": () => (/* reexport safe */ _formatter_tests__WEBPACK_IMPORTED_MODULE_18__.FormatterTests),
-/* harmony export */   "FractionTests": () => (/* reexport safe */ _fraction_tests__WEBPACK_IMPORTED_MODULE_19__.FractionTests),
-/* harmony export */   "GhostNoteTests": () => (/* reexport safe */ _ghostnote_tests__WEBPACK_IMPORTED_MODULE_20__.GhostNoteTests),
-/* harmony export */   "GlyphNoteTests": () => (/* reexport safe */ _glyphnote_tests__WEBPACK_IMPORTED_MODULE_21__.GlyphNoteTests),
-/* harmony export */   "GraceNoteTests": () => (/* reexport safe */ _gracenote_tests__WEBPACK_IMPORTED_MODULE_22__.GraceNoteTests),
-/* harmony export */   "GraceTabNoteTests": () => (/* reexport safe */ _gracetabnote_tests__WEBPACK_IMPORTED_MODULE_23__.GraceTabNoteTests),
-/* harmony export */   "KeyManagerTests": () => (/* reexport safe */ _keymanager_tests__WEBPACK_IMPORTED_MODULE_25__.KeyManagerTests),
-/* harmony export */   "KeySignatureTests": () => (/* reexport safe */ _keysignature_tests__WEBPACK_IMPORTED_MODULE_26__.KeySignatureTests),
-/* harmony export */   "ModifierContextTests": () => (/* reexport safe */ _modifier_tests__WEBPACK_IMPORTED_MODULE_27__.ModifierContextTests),
-/* harmony export */   "MultiMeasureRestTests": () => (/* reexport safe */ _multimeasurerest_tests__WEBPACK_IMPORTED_MODULE_28__.MultiMeasureRestTests),
-/* harmony export */   "MusicTests": () => (/* reexport safe */ _music_tests__WEBPACK_IMPORTED_MODULE_29__.MusicTests),
-/* harmony export */   "NoteHeadTests": () => (/* reexport safe */ _notehead_tests__WEBPACK_IMPORTED_MODULE_30__.NoteHeadTests),
-/* harmony export */   "NoteSubGroupTests": () => (/* reexport safe */ _notesubgroup_tests__WEBPACK_IMPORTED_MODULE_31__.NoteSubGroupTests),
-/* harmony export */   "OffscreenCanvasTests": () => (/* reexport safe */ _offscreencanvas_tests__WEBPACK_IMPORTED_MODULE_32__.OffscreenCanvasTests),
-/* harmony export */   "OrnamentTests": () => (/* reexport safe */ _ornament_tests__WEBPACK_IMPORTED_MODULE_33__.OrnamentTests),
-/* harmony export */   "ParserTests": () => (/* reexport safe */ _parser_tests__WEBPACK_IMPORTED_MODULE_34__.ParserTests),
-/* harmony export */   "PedalMarkingTests": () => (/* reexport safe */ _pedalmarking_tests__WEBPACK_IMPORTED_MODULE_35__.PedalMarkingTests),
-/* harmony export */   "PercussionTests": () => (/* reexport safe */ _percussion_tests__WEBPACK_IMPORTED_MODULE_36__.PercussionTests),
-/* harmony export */   "RegistryTests": () => (/* reexport safe */ _registry_tests__WEBPACK_IMPORTED_MODULE_37__.RegistryTests),
-/* harmony export */   "RendererTests": () => (/* reexport safe */ _renderer_tests__WEBPACK_IMPORTED_MODULE_38__.RendererTests),
-/* harmony export */   "RestsTests": () => (/* reexport safe */ _rests_tests__WEBPACK_IMPORTED_MODULE_39__.RestsTests),
-/* harmony export */   "RhythmTests": () => (/* reexport safe */ _rhythm_tests__WEBPACK_IMPORTED_MODULE_40__.RhythmTests),
-/* harmony export */   "StaveConnectorTests": () => (/* reexport safe */ _staveconnector_tests__WEBPACK_IMPORTED_MODULE_42__.StaveConnectorTests),
-/* harmony export */   "StaveHairpinTests": () => (/* reexport safe */ _stavehairpin_tests__WEBPACK_IMPORTED_MODULE_43__.StaveHairpinTests),
-/* harmony export */   "StaveLineTests": () => (/* reexport safe */ _staveline_tests__WEBPACK_IMPORTED_MODULE_44__.StaveLineTests),
-/* harmony export */   "StaveModifierTests": () => (/* reexport safe */ _stavemodifier_tests__WEBPACK_IMPORTED_MODULE_45__.StaveModifierTests),
-/* harmony export */   "StaveNoteTests": () => (/* reexport safe */ _stavenote_tests__WEBPACK_IMPORTED_MODULE_46__.StaveNoteTests),
-/* harmony export */   "StaveTests": () => (/* reexport safe */ _stave_tests__WEBPACK_IMPORTED_MODULE_41__.StaveTests),
-/* harmony export */   "StaveTieTests": () => (/* reexport safe */ _stavetie_tests__WEBPACK_IMPORTED_MODULE_47__.StaveTieTests),
-/* harmony export */   "StringNumberTests": () => (/* reexport safe */ _stringnumber_tests__WEBPACK_IMPORTED_MODULE_48__.StringNumberTests),
-/* harmony export */   "StrokesTests": () => (/* reexport safe */ _strokes_tests__WEBPACK_IMPORTED_MODULE_49__.StrokesTests),
-/* harmony export */   "StyleTests": () => (/* reexport safe */ _style_tests__WEBPACK_IMPORTED_MODULE_50__.StyleTests),
-/* harmony export */   "TabNoteTests": () => (/* reexport safe */ _tabnote_tests__WEBPACK_IMPORTED_MODULE_51__.TabNoteTests),
-/* harmony export */   "TabSlideTests": () => (/* reexport safe */ _tabslide_tests__WEBPACK_IMPORTED_MODULE_52__.TabSlideTests),
-/* harmony export */   "TabStaveTests": () => (/* reexport safe */ _tabstave_tests__WEBPACK_IMPORTED_MODULE_53__.TabStaveTests),
-/* harmony export */   "TabTieTests": () => (/* reexport safe */ _tabtie_tests__WEBPACK_IMPORTED_MODULE_54__.TabTieTests),
-/* harmony export */   "TextBracketTests": () => (/* reexport safe */ _textbracket_tests__WEBPACK_IMPORTED_MODULE_55__.TextBracketTests),
-/* harmony export */   "TextFormatterTests": () => (/* reexport safe */ _textformatter_tests__WEBPACK_IMPORTED_MODULE_56__.TextFormatterTests),
-/* harmony export */   "TextNoteTests": () => (/* reexport safe */ _textnote_tests__WEBPACK_IMPORTED_MODULE_57__.TextNoteTests),
-/* harmony export */   "ThreeVoicesTests": () => (/* reexport safe */ _threevoice_tests__WEBPACK_IMPORTED_MODULE_58__.ThreeVoicesTests),
-/* harmony export */   "TickContextTests": () => (/* reexport safe */ _tickcontext_tests__WEBPACK_IMPORTED_MODULE_59__.TickContextTests),
-/* harmony export */   "TimeSignatureTests": () => (/* reexport safe */ _timesignature_tests__WEBPACK_IMPORTED_MODULE_60__.TimeSignatureTests),
-/* harmony export */   "TremoloTests": () => (/* reexport safe */ _tremolo_tests__WEBPACK_IMPORTED_MODULE_61__.TremoloTests),
-/* harmony export */   "TuningTests": () => (/* reexport safe */ _tuning_tests__WEBPACK_IMPORTED_MODULE_62__.TuningTests),
-/* harmony export */   "TupletTests": () => (/* reexport safe */ _tuplet_tests__WEBPACK_IMPORTED_MODULE_63__.TupletTests),
-/* harmony export */   "TypeGuardTests": () => (/* reexport safe */ _typeguard_tests__WEBPACK_IMPORTED_MODULE_64__.TypeGuardTests),
-/* harmony export */   "UnisonTests": () => (/* reexport safe */ _unison_tests__WEBPACK_IMPORTED_MODULE_65__.UnisonTests),
-/* harmony export */   "VFPrefixTests": () => (/* reexport safe */ _vf_prefix_tests__WEBPACK_IMPORTED_MODULE_66__.VFPrefixTests),
-/* harmony export */   "VibratoBracketTests": () => (/* reexport safe */ _vibratobracket_tests__WEBPACK_IMPORTED_MODULE_68__.VibratoBracketTests),
-/* harmony export */   "VibratoTests": () => (/* reexport safe */ _vibrato_tests__WEBPACK_IMPORTED_MODULE_67__.VibratoTests),
-/* harmony export */   "VoiceTests": () => (/* reexport safe */ _voice_tests__WEBPACK_IMPORTED_MODULE_69__.VoiceTests)
+/* harmony export */   AccidentalTests: () => (/* reexport safe */ _accidental_tests__WEBPACK_IMPORTED_MODULE_0__.AccidentalTests),
+/* harmony export */   AnnotationTests: () => (/* reexport safe */ _annotation_tests__WEBPACK_IMPORTED_MODULE_1__.AnnotationTests),
+/* harmony export */   ArticulationTests: () => (/* reexport safe */ _articulation_tests__WEBPACK_IMPORTED_MODULE_2__.ArticulationTests),
+/* harmony export */   AutoBeamFormattingTests: () => (/* reexport safe */ _auto_beam_formatting_tests__WEBPACK_IMPORTED_MODULE_3__.AutoBeamFormattingTests),
+/* harmony export */   BachDemoTests: () => (/* reexport safe */ _bach_tests__WEBPACK_IMPORTED_MODULE_4__.BachDemoTests),
+/* harmony export */   BarlineTests: () => (/* reexport safe */ _barline_tests__WEBPACK_IMPORTED_MODULE_5__.BarlineTests),
+/* harmony export */   BeamTests: () => (/* reexport safe */ _beam_tests__WEBPACK_IMPORTED_MODULE_6__.BeamTests),
+/* harmony export */   BendTests: () => (/* reexport safe */ _bend_tests__WEBPACK_IMPORTED_MODULE_7__.BendTests),
+/* harmony export */   BoundingBoxTests: () => (/* reexport safe */ _boundingbox_tests__WEBPACK_IMPORTED_MODULE_8__.BoundingBoxTests),
+/* harmony export */   ChordSymbolTests: () => (/* reexport safe */ _chordsymbol_tests__WEBPACK_IMPORTED_MODULE_9__.ChordSymbolTests),
+/* harmony export */   ClefKeySignatureTests: () => (/* reexport safe */ _key_clef_tests__WEBPACK_IMPORTED_MODULE_23__.ClefKeySignatureTests),
+/* harmony export */   ClefTests: () => (/* reexport safe */ _clef_tests__WEBPACK_IMPORTED_MODULE_10__.ClefTests),
+/* harmony export */   CrossBeamTests: () => (/* reexport safe */ _crossbeam_tests__WEBPACK_IMPORTED_MODULE_11__.CrossBeamTests),
+/* harmony export */   CurveTests: () => (/* reexport safe */ _curve_tests__WEBPACK_IMPORTED_MODULE_12__.CurveTests),
+/* harmony export */   DotTests: () => (/* reexport safe */ _dot_tests__WEBPACK_IMPORTED_MODULE_13__.DotTests),
+/* harmony export */   EasyScoreTests: () => (/* reexport safe */ _easyscore_tests__WEBPACK_IMPORTED_MODULE_14__.EasyScoreTests),
+/* harmony export */   FactoryTests: () => (/* reexport safe */ _factory_tests__WEBPACK_IMPORTED_MODULE_15__.FactoryTests),
+/* harmony export */   FontTests: () => (/* reexport safe */ _font_tests__WEBPACK_IMPORTED_MODULE_16__.FontTests),
+/* harmony export */   FormatterTests: () => (/* reexport safe */ _formatter_tests__WEBPACK_IMPORTED_MODULE_17__.FormatterTests),
+/* harmony export */   FractionTests: () => (/* reexport safe */ _fraction_tests__WEBPACK_IMPORTED_MODULE_18__.FractionTests),
+/* harmony export */   GhostNoteTests: () => (/* reexport safe */ _ghostnote_tests__WEBPACK_IMPORTED_MODULE_19__.GhostNoteTests),
+/* harmony export */   GlyphNoteTests: () => (/* reexport safe */ _glyphnote_tests__WEBPACK_IMPORTED_MODULE_20__.GlyphNoteTests),
+/* harmony export */   GraceNoteTests: () => (/* reexport safe */ _gracenote_tests__WEBPACK_IMPORTED_MODULE_21__.GraceNoteTests),
+/* harmony export */   GraceTabNoteTests: () => (/* reexport safe */ _gracetabnote_tests__WEBPACK_IMPORTED_MODULE_22__.GraceTabNoteTests),
+/* harmony export */   KeyManagerTests: () => (/* reexport safe */ _keymanager_tests__WEBPACK_IMPORTED_MODULE_24__.KeyManagerTests),
+/* harmony export */   KeySignatureTests: () => (/* reexport safe */ _keysignature_tests__WEBPACK_IMPORTED_MODULE_25__.KeySignatureTests),
+/* harmony export */   ModifierContextTests: () => (/* reexport safe */ _modifier_tests__WEBPACK_IMPORTED_MODULE_26__.ModifierContextTests),
+/* harmony export */   MultiMeasureRestTests: () => (/* reexport safe */ _multimeasurerest_tests__WEBPACK_IMPORTED_MODULE_27__.MultiMeasureRestTests),
+/* harmony export */   MusicTests: () => (/* reexport safe */ _music_tests__WEBPACK_IMPORTED_MODULE_28__.MusicTests),
+/* harmony export */   NoteHeadTests: () => (/* reexport safe */ _notehead_tests__WEBPACK_IMPORTED_MODULE_29__.NoteHeadTests),
+/* harmony export */   NoteSubGroupTests: () => (/* reexport safe */ _notesubgroup_tests__WEBPACK_IMPORTED_MODULE_30__.NoteSubGroupTests),
+/* harmony export */   OffscreenCanvasTests: () => (/* reexport safe */ _offscreencanvas_tests__WEBPACK_IMPORTED_MODULE_31__.OffscreenCanvasTests),
+/* harmony export */   OrnamentTests: () => (/* reexport safe */ _ornament_tests__WEBPACK_IMPORTED_MODULE_32__.OrnamentTests),
+/* harmony export */   ParserTests: () => (/* reexport safe */ _parser_tests__WEBPACK_IMPORTED_MODULE_33__.ParserTests),
+/* harmony export */   PedalMarkingTests: () => (/* reexport safe */ _pedalmarking_tests__WEBPACK_IMPORTED_MODULE_34__.PedalMarkingTests),
+/* harmony export */   PercussionTests: () => (/* reexport safe */ _percussion_tests__WEBPACK_IMPORTED_MODULE_35__.PercussionTests),
+/* harmony export */   RegistryTests: () => (/* reexport safe */ _registry_tests__WEBPACK_IMPORTED_MODULE_36__.RegistryTests),
+/* harmony export */   RendererTests: () => (/* reexport safe */ _renderer_tests__WEBPACK_IMPORTED_MODULE_37__.RendererTests),
+/* harmony export */   RestsTests: () => (/* reexport safe */ _rests_tests__WEBPACK_IMPORTED_MODULE_38__.RestsTests),
+/* harmony export */   RhythmTests: () => (/* reexport safe */ _rhythm_tests__WEBPACK_IMPORTED_MODULE_39__.RhythmTests),
+/* harmony export */   StaveConnectorTests: () => (/* reexport safe */ _staveconnector_tests__WEBPACK_IMPORTED_MODULE_41__.StaveConnectorTests),
+/* harmony export */   StaveHairpinTests: () => (/* reexport safe */ _stavehairpin_tests__WEBPACK_IMPORTED_MODULE_42__.StaveHairpinTests),
+/* harmony export */   StaveLineTests: () => (/* reexport safe */ _staveline_tests__WEBPACK_IMPORTED_MODULE_43__.StaveLineTests),
+/* harmony export */   StaveModifierTests: () => (/* reexport safe */ _stavemodifier_tests__WEBPACK_IMPORTED_MODULE_44__.StaveModifierTests),
+/* harmony export */   StaveNoteTests: () => (/* reexport safe */ _stavenote_tests__WEBPACK_IMPORTED_MODULE_45__.StaveNoteTests),
+/* harmony export */   StaveTests: () => (/* reexport safe */ _stave_tests__WEBPACK_IMPORTED_MODULE_40__.StaveTests),
+/* harmony export */   StaveTieTests: () => (/* reexport safe */ _stavetie_tests__WEBPACK_IMPORTED_MODULE_46__.StaveTieTests),
+/* harmony export */   StringNumberTests: () => (/* reexport safe */ _stringnumber_tests__WEBPACK_IMPORTED_MODULE_47__.StringNumberTests),
+/* harmony export */   StrokesTests: () => (/* reexport safe */ _strokes_tests__WEBPACK_IMPORTED_MODULE_48__.StrokesTests),
+/* harmony export */   StyleTests: () => (/* reexport safe */ _style_tests__WEBPACK_IMPORTED_MODULE_49__.StyleTests),
+/* harmony export */   TabNoteTests: () => (/* reexport safe */ _tabnote_tests__WEBPACK_IMPORTED_MODULE_50__.TabNoteTests),
+/* harmony export */   TabSlideTests: () => (/* reexport safe */ _tabslide_tests__WEBPACK_IMPORTED_MODULE_51__.TabSlideTests),
+/* harmony export */   TabStaveTests: () => (/* reexport safe */ _tabstave_tests__WEBPACK_IMPORTED_MODULE_52__.TabStaveTests),
+/* harmony export */   TabTieTests: () => (/* reexport safe */ _tabtie_tests__WEBPACK_IMPORTED_MODULE_53__.TabTieTests),
+/* harmony export */   TextBracketTests: () => (/* reexport safe */ _textbracket_tests__WEBPACK_IMPORTED_MODULE_54__.TextBracketTests),
+/* harmony export */   TextFormatterTests: () => (/* reexport safe */ _textformatter_tests__WEBPACK_IMPORTED_MODULE_55__.TextFormatterTests),
+/* harmony export */   TextNoteTests: () => (/* reexport safe */ _textnote_tests__WEBPACK_IMPORTED_MODULE_56__.TextNoteTests),
+/* harmony export */   ThreeVoicesTests: () => (/* reexport safe */ _threevoice_tests__WEBPACK_IMPORTED_MODULE_57__.ThreeVoicesTests),
+/* harmony export */   TickContextTests: () => (/* reexport safe */ _tickcontext_tests__WEBPACK_IMPORTED_MODULE_58__.TickContextTests),
+/* harmony export */   TimeSignatureTests: () => (/* reexport safe */ _timesignature_tests__WEBPACK_IMPORTED_MODULE_59__.TimeSignatureTests),
+/* harmony export */   TremoloTests: () => (/* reexport safe */ _tremolo_tests__WEBPACK_IMPORTED_MODULE_60__.TremoloTests),
+/* harmony export */   TuningTests: () => (/* reexport safe */ _tuning_tests__WEBPACK_IMPORTED_MODULE_61__.TuningTests),
+/* harmony export */   TupletTests: () => (/* reexport safe */ _tuplet_tests__WEBPACK_IMPORTED_MODULE_62__.TupletTests),
+/* harmony export */   TypeGuardTests: () => (/* reexport safe */ _typeguard_tests__WEBPACK_IMPORTED_MODULE_63__.TypeGuardTests),
+/* harmony export */   UnisonTests: () => (/* reexport safe */ _unison_tests__WEBPACK_IMPORTED_MODULE_64__.UnisonTests),
+/* harmony export */   VFPrefixTests: () => (/* reexport safe */ _vf_prefix_tests__WEBPACK_IMPORTED_MODULE_65__.VFPrefixTests),
+/* harmony export */   VibratoBracketTests: () => (/* reexport safe */ _vibratobracket_tests__WEBPACK_IMPORTED_MODULE_67__.VibratoBracketTests),
+/* harmony export */   VibratoTests: () => (/* reexport safe */ _vibrato_tests__WEBPACK_IMPORTED_MODULE_66__.VibratoTests),
+/* harmony export */   VoiceTests: () => (/* reexport safe */ _voice_tests__WEBPACK_IMPORTED_MODULE_68__.VoiceTests)
 /* harmony export */ });
 /* harmony import */ var _accidental_tests__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./accidental_tests */ "./tests/accidental_tests.ts");
 /* harmony import */ var _annotation_tests__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./annotation_tests */ "./tests/annotation_tests.ts");
@@ -44149,67 +43924,66 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _beam_tests__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./beam_tests */ "./tests/beam_tests.ts");
 /* harmony import */ var _bend_tests__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./bend_tests */ "./tests/bend_tests.ts");
 /* harmony import */ var _boundingbox_tests__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./boundingbox_tests */ "./tests/boundingbox_tests.ts");
-/* harmony import */ var _boundingboxcomputation_tests__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./boundingboxcomputation_tests */ "./tests/boundingboxcomputation_tests.ts");
-/* harmony import */ var _chordsymbol_tests__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./chordsymbol_tests */ "./tests/chordsymbol_tests.ts");
-/* harmony import */ var _clef_tests__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./clef_tests */ "./tests/clef_tests.ts");
-/* harmony import */ var _crossbeam_tests__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./crossbeam_tests */ "./tests/crossbeam_tests.ts");
-/* harmony import */ var _curve_tests__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./curve_tests */ "./tests/curve_tests.ts");
-/* harmony import */ var _dot_tests__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./dot_tests */ "./tests/dot_tests.ts");
-/* harmony import */ var _easyscore_tests__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./easyscore_tests */ "./tests/easyscore_tests.ts");
-/* harmony import */ var _factory_tests__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./factory_tests */ "./tests/factory_tests.ts");
-/* harmony import */ var _font_tests__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./font_tests */ "./tests/font_tests.ts");
-/* harmony import */ var _formatter_tests__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./formatter_tests */ "./tests/formatter_tests.ts");
-/* harmony import */ var _fraction_tests__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./fraction_tests */ "./tests/fraction_tests.ts");
-/* harmony import */ var _ghostnote_tests__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./ghostnote_tests */ "./tests/ghostnote_tests.ts");
-/* harmony import */ var _glyphnote_tests__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./glyphnote_tests */ "./tests/glyphnote_tests.ts");
-/* harmony import */ var _gracenote_tests__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./gracenote_tests */ "./tests/gracenote_tests.ts");
-/* harmony import */ var _gracetabnote_tests__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./gracetabnote_tests */ "./tests/gracetabnote_tests.ts");
-/* harmony import */ var _key_clef_tests__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./key_clef_tests */ "./tests/key_clef_tests.ts");
-/* harmony import */ var _keymanager_tests__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./keymanager_tests */ "./tests/keymanager_tests.ts");
-/* harmony import */ var _keysignature_tests__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./keysignature_tests */ "./tests/keysignature_tests.ts");
-/* harmony import */ var _modifier_tests__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./modifier_tests */ "./tests/modifier_tests.ts");
-/* harmony import */ var _multimeasurerest_tests__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./multimeasurerest_tests */ "./tests/multimeasurerest_tests.ts");
-/* harmony import */ var _music_tests__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./music_tests */ "./tests/music_tests.ts");
-/* harmony import */ var _notehead_tests__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./notehead_tests */ "./tests/notehead_tests.ts");
-/* harmony import */ var _notesubgroup_tests__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./notesubgroup_tests */ "./tests/notesubgroup_tests.ts");
-/* harmony import */ var _offscreencanvas_tests__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./offscreencanvas_tests */ "./tests/offscreencanvas_tests.ts");
-/* harmony import */ var _ornament_tests__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./ornament_tests */ "./tests/ornament_tests.ts");
-/* harmony import */ var _parser_tests__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./parser_tests */ "./tests/parser_tests.ts");
-/* harmony import */ var _pedalmarking_tests__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./pedalmarking_tests */ "./tests/pedalmarking_tests.ts");
-/* harmony import */ var _percussion_tests__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./percussion_tests */ "./tests/percussion_tests.ts");
-/* harmony import */ var _registry_tests__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./registry_tests */ "./tests/registry_tests.ts");
-/* harmony import */ var _renderer_tests__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./renderer_tests */ "./tests/renderer_tests.ts");
-/* harmony import */ var _rests_tests__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./rests_tests */ "./tests/rests_tests.ts");
-/* harmony import */ var _rhythm_tests__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./rhythm_tests */ "./tests/rhythm_tests.ts");
-/* harmony import */ var _stave_tests__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./stave_tests */ "./tests/stave_tests.ts");
-/* harmony import */ var _staveconnector_tests__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./staveconnector_tests */ "./tests/staveconnector_tests.ts");
-/* harmony import */ var _stavehairpin_tests__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./stavehairpin_tests */ "./tests/stavehairpin_tests.ts");
-/* harmony import */ var _staveline_tests__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./staveline_tests */ "./tests/staveline_tests.ts");
-/* harmony import */ var _stavemodifier_tests__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./stavemodifier_tests */ "./tests/stavemodifier_tests.ts");
-/* harmony import */ var _stavenote_tests__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./stavenote_tests */ "./tests/stavenote_tests.ts");
-/* harmony import */ var _stavetie_tests__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./stavetie_tests */ "./tests/stavetie_tests.ts");
-/* harmony import */ var _stringnumber_tests__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./stringnumber_tests */ "./tests/stringnumber_tests.ts");
-/* harmony import */ var _strokes_tests__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./strokes_tests */ "./tests/strokes_tests.ts");
-/* harmony import */ var _style_tests__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./style_tests */ "./tests/style_tests.ts");
-/* harmony import */ var _tabnote_tests__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./tabnote_tests */ "./tests/tabnote_tests.ts");
-/* harmony import */ var _tabslide_tests__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./tabslide_tests */ "./tests/tabslide_tests.ts");
-/* harmony import */ var _tabstave_tests__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./tabstave_tests */ "./tests/tabstave_tests.ts");
-/* harmony import */ var _tabtie_tests__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./tabtie_tests */ "./tests/tabtie_tests.ts");
-/* harmony import */ var _textbracket_tests__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./textbracket_tests */ "./tests/textbracket_tests.ts");
-/* harmony import */ var _textformatter_tests__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./textformatter_tests */ "./tests/textformatter_tests.ts");
-/* harmony import */ var _textnote_tests__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./textnote_tests */ "./tests/textnote_tests.ts");
-/* harmony import */ var _threevoice_tests__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./threevoice_tests */ "./tests/threevoice_tests.ts");
-/* harmony import */ var _tickcontext_tests__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./tickcontext_tests */ "./tests/tickcontext_tests.ts");
-/* harmony import */ var _timesignature_tests__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./timesignature_tests */ "./tests/timesignature_tests.ts");
-/* harmony import */ var _tremolo_tests__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./tremolo_tests */ "./tests/tremolo_tests.ts");
-/* harmony import */ var _tuning_tests__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./tuning_tests */ "./tests/tuning_tests.ts");
-/* harmony import */ var _tuplet_tests__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./tuplet_tests */ "./tests/tuplet_tests.ts");
-/* harmony import */ var _typeguard_tests__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./typeguard_tests */ "./tests/typeguard_tests.ts");
-/* harmony import */ var _unison_tests__WEBPACK_IMPORTED_MODULE_65__ = __webpack_require__(/*! ./unison_tests */ "./tests/unison_tests.ts");
-/* harmony import */ var _vf_prefix_tests__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./vf_prefix_tests */ "./tests/vf_prefix_tests.ts");
-/* harmony import */ var _vibrato_tests__WEBPACK_IMPORTED_MODULE_67__ = __webpack_require__(/*! ./vibrato_tests */ "./tests/vibrato_tests.ts");
-/* harmony import */ var _vibratobracket_tests__WEBPACK_IMPORTED_MODULE_68__ = __webpack_require__(/*! ./vibratobracket_tests */ "./tests/vibratobracket_tests.ts");
-/* harmony import */ var _voice_tests__WEBPACK_IMPORTED_MODULE_69__ = __webpack_require__(/*! ./voice_tests */ "./tests/voice_tests.ts");
+/* harmony import */ var _chordsymbol_tests__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./chordsymbol_tests */ "./tests/chordsymbol_tests.ts");
+/* harmony import */ var _clef_tests__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./clef_tests */ "./tests/clef_tests.ts");
+/* harmony import */ var _crossbeam_tests__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./crossbeam_tests */ "./tests/crossbeam_tests.ts");
+/* harmony import */ var _curve_tests__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./curve_tests */ "./tests/curve_tests.ts");
+/* harmony import */ var _dot_tests__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./dot_tests */ "./tests/dot_tests.ts");
+/* harmony import */ var _easyscore_tests__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./easyscore_tests */ "./tests/easyscore_tests.ts");
+/* harmony import */ var _factory_tests__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./factory_tests */ "./tests/factory_tests.ts");
+/* harmony import */ var _font_tests__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./font_tests */ "./tests/font_tests.ts");
+/* harmony import */ var _formatter_tests__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./formatter_tests */ "./tests/formatter_tests.ts");
+/* harmony import */ var _fraction_tests__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./fraction_tests */ "./tests/fraction_tests.ts");
+/* harmony import */ var _ghostnote_tests__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./ghostnote_tests */ "./tests/ghostnote_tests.ts");
+/* harmony import */ var _glyphnote_tests__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./glyphnote_tests */ "./tests/glyphnote_tests.ts");
+/* harmony import */ var _gracenote_tests__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./gracenote_tests */ "./tests/gracenote_tests.ts");
+/* harmony import */ var _gracetabnote_tests__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./gracetabnote_tests */ "./tests/gracetabnote_tests.ts");
+/* harmony import */ var _key_clef_tests__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./key_clef_tests */ "./tests/key_clef_tests.ts");
+/* harmony import */ var _keymanager_tests__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./keymanager_tests */ "./tests/keymanager_tests.ts");
+/* harmony import */ var _keysignature_tests__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./keysignature_tests */ "./tests/keysignature_tests.ts");
+/* harmony import */ var _modifier_tests__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./modifier_tests */ "./tests/modifier_tests.ts");
+/* harmony import */ var _multimeasurerest_tests__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./multimeasurerest_tests */ "./tests/multimeasurerest_tests.ts");
+/* harmony import */ var _music_tests__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./music_tests */ "./tests/music_tests.ts");
+/* harmony import */ var _notehead_tests__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./notehead_tests */ "./tests/notehead_tests.ts");
+/* harmony import */ var _notesubgroup_tests__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./notesubgroup_tests */ "./tests/notesubgroup_tests.ts");
+/* harmony import */ var _offscreencanvas_tests__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./offscreencanvas_tests */ "./tests/offscreencanvas_tests.ts");
+/* harmony import */ var _ornament_tests__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./ornament_tests */ "./tests/ornament_tests.ts");
+/* harmony import */ var _parser_tests__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./parser_tests */ "./tests/parser_tests.ts");
+/* harmony import */ var _pedalmarking_tests__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./pedalmarking_tests */ "./tests/pedalmarking_tests.ts");
+/* harmony import */ var _percussion_tests__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./percussion_tests */ "./tests/percussion_tests.ts");
+/* harmony import */ var _registry_tests__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./registry_tests */ "./tests/registry_tests.ts");
+/* harmony import */ var _renderer_tests__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./renderer_tests */ "./tests/renderer_tests.ts");
+/* harmony import */ var _rests_tests__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./rests_tests */ "./tests/rests_tests.ts");
+/* harmony import */ var _rhythm_tests__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./rhythm_tests */ "./tests/rhythm_tests.ts");
+/* harmony import */ var _stave_tests__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./stave_tests */ "./tests/stave_tests.ts");
+/* harmony import */ var _staveconnector_tests__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./staveconnector_tests */ "./tests/staveconnector_tests.ts");
+/* harmony import */ var _stavehairpin_tests__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./stavehairpin_tests */ "./tests/stavehairpin_tests.ts");
+/* harmony import */ var _staveline_tests__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./staveline_tests */ "./tests/staveline_tests.ts");
+/* harmony import */ var _stavemodifier_tests__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./stavemodifier_tests */ "./tests/stavemodifier_tests.ts");
+/* harmony import */ var _stavenote_tests__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./stavenote_tests */ "./tests/stavenote_tests.ts");
+/* harmony import */ var _stavetie_tests__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./stavetie_tests */ "./tests/stavetie_tests.ts");
+/* harmony import */ var _stringnumber_tests__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./stringnumber_tests */ "./tests/stringnumber_tests.ts");
+/* harmony import */ var _strokes_tests__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./strokes_tests */ "./tests/strokes_tests.ts");
+/* harmony import */ var _style_tests__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./style_tests */ "./tests/style_tests.ts");
+/* harmony import */ var _tabnote_tests__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./tabnote_tests */ "./tests/tabnote_tests.ts");
+/* harmony import */ var _tabslide_tests__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./tabslide_tests */ "./tests/tabslide_tests.ts");
+/* harmony import */ var _tabstave_tests__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./tabstave_tests */ "./tests/tabstave_tests.ts");
+/* harmony import */ var _tabtie_tests__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./tabtie_tests */ "./tests/tabtie_tests.ts");
+/* harmony import */ var _textbracket_tests__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./textbracket_tests */ "./tests/textbracket_tests.ts");
+/* harmony import */ var _textformatter_tests__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./textformatter_tests */ "./tests/textformatter_tests.ts");
+/* harmony import */ var _textnote_tests__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./textnote_tests */ "./tests/textnote_tests.ts");
+/* harmony import */ var _threevoice_tests__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./threevoice_tests */ "./tests/threevoice_tests.ts");
+/* harmony import */ var _tickcontext_tests__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./tickcontext_tests */ "./tests/tickcontext_tests.ts");
+/* harmony import */ var _timesignature_tests__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./timesignature_tests */ "./tests/timesignature_tests.ts");
+/* harmony import */ var _tremolo_tests__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./tremolo_tests */ "./tests/tremolo_tests.ts");
+/* harmony import */ var _tuning_tests__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./tuning_tests */ "./tests/tuning_tests.ts");
+/* harmony import */ var _tuplet_tests__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./tuplet_tests */ "./tests/tuplet_tests.ts");
+/* harmony import */ var _typeguard_tests__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./typeguard_tests */ "./tests/typeguard_tests.ts");
+/* harmony import */ var _unison_tests__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./unison_tests */ "./tests/unison_tests.ts");
+/* harmony import */ var _vf_prefix_tests__WEBPACK_IMPORTED_MODULE_65__ = __webpack_require__(/*! ./vf_prefix_tests */ "./tests/vf_prefix_tests.ts");
+/* harmony import */ var _vibrato_tests__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./vibrato_tests */ "./tests/vibrato_tests.ts");
+/* harmony import */ var _vibratobracket_tests__WEBPACK_IMPORTED_MODULE_67__ = __webpack_require__(/*! ./vibratobracket_tests */ "./tests/vibratobracket_tests.ts");
+/* harmony import */ var _voice_tests__WEBPACK_IMPORTED_MODULE_68__ = __webpack_require__(/*! ./voice_tests */ "./tests/voice_tests.ts");
 // vexflow-debug-with-tests.ts includes this module via:
 //   export * from '../../tests';
 //
@@ -44297,7 +44071,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 /***/ }),
 
 /***/ "./tests/key_clef_tests.ts":
@@ -44308,7 +44081,7 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ClefKeySignatureTests": () => (/* binding */ ClefKeySignatureTests)
+/* harmony export */   ClefKeySignatureTests: () => (/* binding */ ClefKeySignatureTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/glyph */ "./src/glyph.ts");
@@ -44390,7 +44163,7 @@ function keys(options, contextBuilder) {
         staves[i + clefs.length].setContext(ctx);
         staves[i + clefs.length].draw();
     }
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function staveHelper(options, contextBuilder) {
     const w = fontWidths();
@@ -44423,7 +44196,7 @@ function staveHelper(options, contextBuilder) {
     stave3.draw();
     stave4.setContext(ctx);
     stave4.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(ClefKeySignatureTests);
 
@@ -44439,7 +44212,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(ClefKey
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "KeyManagerTests": () => (/* binding */ KeyManagerTests)
+/* harmony export */   KeyManagerTests: () => (/* binding */ KeyManagerTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/index */ "./src/index.ts");
@@ -44455,68 +44228,68 @@ __webpack_require__.r(__webpack_exports__);
 const KeyManagerTests = {
     Start() {
         QUnit.module('KeyManager');
-        test('Valid Notes', works);
-        test('Select Notes', selectNotes);
+        QUnit.test('Valid Notes', works);
+        QUnit.test('Select Notes', selectNotes);
     },
 };
-function works() {
+function works(assert) {
     const manager = new _src_index__WEBPACK_IMPORTED_MODULE_1__.KeyManager('g');
-    equal(manager.getAccidental('f').accidental, '#');
+    assert.equal(manager.getAccidental('f').accidental, '#');
     manager.setKey('a');
-    equal(manager.getAccidental('c').accidental, '#');
-    equal(manager.getAccidental('a').accidental, null);
-    equal(manager.getAccidental('f').accidental, '#');
+    assert.equal(manager.getAccidental('c').accidental, '#');
+    assert.equal(manager.getAccidental('a').accidental, null);
+    assert.equal(manager.getAccidental('f').accidental, '#');
     manager.setKey('A');
-    equal(manager.getAccidental('c').accidental, '#');
-    equal(manager.getAccidental('a').accidental, null);
-    equal(manager.getAccidental('f').accidental, '#');
+    assert.equal(manager.getAccidental('c').accidental, '#');
+    assert.equal(manager.getAccidental('a').accidental, null);
+    assert.equal(manager.getAccidental('f').accidental, '#');
 }
-function selectNotes() {
+function selectNotes(assert) {
     const manager = new _src_index__WEBPACK_IMPORTED_MODULE_1__.KeyManager('f');
-    equal(manager.selectNote('bb').note, 'bb');
-    equal(manager.selectNote('bb').accidental, 'b');
-    equal(manager.selectNote('g').note, 'g');
-    equal(manager.selectNote('g').accidental, null);
-    equal(manager.selectNote('b').note, 'b');
-    equal(manager.selectNote('b').accidental, null);
-    equal(manager.selectNote('a#').note, 'bb');
-    equal(manager.selectNote('g#').note, 'g#');
+    assert.equal(manager.selectNote('bb').note, 'bb');
+    assert.equal(manager.selectNote('bb').accidental, 'b');
+    assert.equal(manager.selectNote('g').note, 'g');
+    assert.equal(manager.selectNote('g').accidental, null);
+    assert.equal(manager.selectNote('b').note, 'b');
+    assert.equal(manager.selectNote('b').accidental, null);
+    assert.equal(manager.selectNote('a#').note, 'bb');
+    assert.equal(manager.selectNote('g#').note, 'g#');
     // Changes have no effect?
-    equal(manager.selectNote('g#').note, 'g#');
-    equal(manager.selectNote('bb').note, 'bb');
-    equal(manager.selectNote('bb').accidental, 'b');
-    equal(manager.selectNote('g').note, 'g');
-    equal(manager.selectNote('g').accidental, null);
-    equal(manager.selectNote('b').note, 'b');
-    equal(manager.selectNote('b').accidental, null);
-    equal(manager.selectNote('a#').note, 'bb');
-    equal(manager.selectNote('g#').note, 'g#');
+    assert.equal(manager.selectNote('g#').note, 'g#');
+    assert.equal(manager.selectNote('bb').note, 'bb');
+    assert.equal(manager.selectNote('bb').accidental, 'b');
+    assert.equal(manager.selectNote('g').note, 'g');
+    assert.equal(manager.selectNote('g').accidental, null);
+    assert.equal(manager.selectNote('b').note, 'b');
+    assert.equal(manager.selectNote('b').accidental, null);
+    assert.equal(manager.selectNote('a#').note, 'bb');
+    assert.equal(manager.selectNote('g#').note, 'g#');
     // Changes should propagate
     manager.reset();
-    equal(manager.selectNote('g#').change, true);
-    equal(manager.selectNote('g#').change, false);
-    equal(manager.selectNote('g').change, true);
-    equal(manager.selectNote('g').change, false);
-    equal(manager.selectNote('g#').change, true);
+    assert.equal(manager.selectNote('g#').change, true);
+    assert.equal(manager.selectNote('g#').change, false);
+    assert.equal(manager.selectNote('g').change, true);
+    assert.equal(manager.selectNote('g').change, false);
+    assert.equal(manager.selectNote('g#').change, true);
     manager.reset();
     let note = manager.selectNote('bb');
-    equal(note.change, false);
-    equal(note.accidental, 'b');
+    assert.equal(note.change, false);
+    assert.equal(note.accidental, 'b');
     note = manager.selectNote('g');
-    equal(note.change, false);
-    equal(note.accidental, null);
+    assert.equal(note.change, false);
+    assert.equal(note.accidental, null);
     note = manager.selectNote('g#');
-    equal(note.change, true);
-    equal(note.accidental, '#');
+    assert.equal(note.change, true);
+    assert.equal(note.accidental, '#');
     note = manager.selectNote('g');
-    equal(note.change, true);
-    equal(note.accidental, null);
+    assert.equal(note.change, true);
+    assert.equal(note.accidental, null);
     note = manager.selectNote('g');
-    equal(note.change, false);
-    equal(note.accidental, null);
+    assert.equal(note.change, false);
+    assert.equal(note.accidental, null);
     note = manager.selectNote('g#');
-    equal(note.change, true);
-    equal(note.accidental, '#');
+    assert.equal(note.change, true);
+    assert.equal(note.accidental, '#');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(KeyManagerTests);
 
@@ -44532,7 +44305,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(KeyMana
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "KeySignatureTests": () => (/* binding */ KeySignatureTests)
+/* harmony export */   KeySignatureTests: () => (/* binding */ KeySignatureTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/flow */ "./src/flow.ts");
@@ -44554,7 +44327,7 @@ __webpack_require__.r(__webpack_exports__);
 const KeySignatureTests = {
     Start() {
         QUnit.module('KeySignature');
-        test('Key Parser Test', parser);
+        QUnit.test('Key Parser Test', parser);
         const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
         run('Major Key Test', majorKeys);
         run('Minor Key Test', minorKeys);
@@ -44564,6 +44337,7 @@ const KeySignatureTests = {
         run('Altered key test', majorKeysAltered);
         run('End key with clef test', endKeyWithClef);
         run('Key Signature Change test', changeKey);
+        run('Key Signature with/without clef symbol', clefKeySignature);
     },
 };
 const fontWidths = () => {
@@ -44574,10 +44348,10 @@ const fontWidths = () => {
     const clefWidth = _src_glyph__WEBPACK_IMPORTED_MODULE_2__.Glyph.getWidth('gClef', glyphScale) * 2; // widest clef
     return { sharpWidth, flatWidth, naturalWidth, clefWidth };
 };
-function parser() {
-    expect(11);
+function parser(assert) {
+    assert.expect(11);
     function catchError(spec) {
-        throws(() => _src_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.keySignature(spec), /BadKeySignature/);
+        assert.throws(() => _src_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.keySignature(spec), /BadKeySignature/);
     }
     catchError('asdf');
     catchError('D!');
@@ -44596,7 +44370,7 @@ function parser() {
     _src_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.keySignature('Abm');
     _src_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.keySignature('F#');
     _src_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.keySignature('G#m');
-    ok(true, 'all pass');
+    assert.ok(true, 'all pass');
 }
 function majorKeys(options, contextBuilder) {
     const w = fontWidths();
@@ -44622,7 +44396,7 @@ function majorKeys(options, contextBuilder) {
     stave1.draw();
     stave2.setContext(ctx);
     stave2.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function majorKeysCanceled(options, contextBuilder) {
     const scale = 0.9;
@@ -44679,7 +44453,7 @@ function majorKeysCanceled(options, contextBuilder) {
     stave3.draw();
     stave4.setContext(ctx);
     stave4.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function keysCanceledForEachClef(options, contextBuilder) {
     const scale = 0.8;
@@ -44715,7 +44489,7 @@ function keysCanceledForEachClef(options, contextBuilder) {
         tx = x;
         y += 80;
     });
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function majorKeysAltered(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 780, 500);
@@ -44760,7 +44534,7 @@ function majorKeysAltered(options, contextBuilder) {
     stave3.draw();
     stave4.setContext(ctx);
     stave4.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function minorKeys(options, contextBuilder) {
     const accidentalCount = 28; // total number in all the keys
@@ -44786,7 +44560,7 @@ function minorKeys(options, contextBuilder) {
     stave1.draw();
     stave2.setContext(ctx);
     stave2.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function endKeyWithClef(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 200);
@@ -44804,7 +44578,7 @@ function endKeyWithClef(options, contextBuilder) {
     stave2.setKeySignature('Cb').setClef('bass').setEndClef('treble').setEndKeySignature('G');
     stave1.setContext(ctx).draw();
     stave2.setContext(ctx).draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function staveHelper(options, contextBuilder) {
     const w = fontWidths();
@@ -44827,7 +44601,7 @@ function staveHelper(options, contextBuilder) {
     stave1.draw();
     stave2.setContext(ctx);
     stave2.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function changeKey(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 900);
@@ -44851,7 +44625,31 @@ function changeKey(options) {
     ]);
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
+}
+function clefKeySignature(options) {
+    const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 900);
+    // The previous code was buggy: f.Stave(10, 10, 800), even though Factory.Stave() only accepts 1 argument.
+    const stave = f.Stave({ x: 10, y: 10, width: 800 }).addClef('bass').addTimeSignature('C|').setClefLines('bass');
+    const voice = f
+        .Voice()
+        .setStrict(false)
+        .addTickables([
+        f.KeySigNote({ key: 'Bb' }),
+        f.StaveNote({ keys: ['c/4'], duration: '1', clef: 'bass' }),
+        f.BarNote(),
+        f.KeySigNote({ key: 'D', cancelKey: 'Bb' }),
+        f.StaveNote({ keys: ['c/4'], duration: '1', clef: 'bass' }),
+        f.BarNote(),
+        f.KeySigNote({ key: 'Bb' }),
+        f.StaveNote({ keys: ['c/4'], duration: '1', clef: 'bass' }),
+        f.BarNote(),
+        f.KeySigNote({ key: 'D', alterKey: ['b', 'n'] }),
+        f.StaveNote({ keys: ['c/4'], duration: '1', clef: 'bass' }),
+    ]);
+    f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
+    f.draw();
+    options.assert.ok(true, 'all pass');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(KeySignatureTests);
 
@@ -44867,7 +44665,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(KeySign
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "MockTickable": () => (/* binding */ MockTickable)
+/* harmony export */   MockTickable: () => (/* binding */ MockTickable)
 /* harmony export */ });
 /* harmony import */ var _src_fraction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../src/fraction */ "./src/fraction.ts");
 /* harmony import */ var _src_tickable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/tickable */ "./src/tickable.ts");
@@ -44964,7 +44762,7 @@ class MockTickable extends _src_tickable__WEBPACK_IMPORTED_MODULE_1__.Tickable {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ModifierContextTests": () => (/* binding */ ModifierContextTests)
+/* harmony export */   ModifierContextTests: () => (/* binding */ ModifierContextTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/index */ "./src/index.ts");
@@ -44977,22 +44775,22 @@ __webpack_require__.r(__webpack_exports__);
 const ModifierContextTests = {
     Start() {
         QUnit.module('ModifierContext');
-        test('Modifier Width Test', width);
-        test('Modifier Management', management);
+        QUnit.test('Modifier Width Test', width);
+        QUnit.test('Modifier Management', management);
     },
 };
-function width() {
+function width(assert) {
     const mc = new _src_index__WEBPACK_IMPORTED_MODULE_1__.ModifierContext();
-    equal(mc.getWidth(), 0, 'New modifier context has no width');
+    assert.equal(mc.getWidth(), 0, 'New modifier context has no width');
 }
-function management() {
+function management(assert) {
     const mc = new _src_index__WEBPACK_IMPORTED_MODULE_1__.ModifierContext();
     const modifier1 = new _src_index__WEBPACK_IMPORTED_MODULE_1__.Modifier();
     const modifier2 = new _src_index__WEBPACK_IMPORTED_MODULE_1__.Modifier();
     mc.addMember(modifier1);
     mc.addMember(modifier2);
     const modifiers = mc.getMembers(_src_index__WEBPACK_IMPORTED_MODULE_1__.Modifier.CATEGORY);
-    equal(modifiers.length, 2, 'Added two modifiers');
+    assert.equal(modifiers.length, 2, 'Added two modifiers');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(ModifierContextTests);
 
@@ -45008,7 +44806,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(Modifie
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "MultiMeasureRestTests": () => (/* binding */ MultiMeasureRestTests)
+/* harmony export */   MultiMeasureRestTests: () => (/* binding */ MultiMeasureRestTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/flow */ "./src/flow.ts");
@@ -45106,7 +44904,7 @@ function simple(options) {
     const metrics = context.measureText(str);
     context.fillText(str, xs.left + (xs.right - xs.left) * 0.5 - metrics.width * 0.5, strY);
     context.restore();
-    ok(true, 'Simple Test');
+    options.assert.ok(true, 'Simple Test');
 }
 function staveWithModifiers(options) {
     const width = 910;
@@ -45161,7 +44959,7 @@ function staveWithModifiers(options) {
         return f.MultiMeasureRest(mmrestParams).setStave(stave);
     });
     f.draw();
-    ok(true, 'Stave with modifiers Test');
+    options.assert.ok(true, 'Stave with modifiers Test');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(MultiMeasureRestTests);
 
@@ -45177,7 +44975,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(MultiMe
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "MusicTests": () => (/* binding */ MusicTests)
+/* harmony export */   MusicTests: () => (/* binding */ MusicTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_keymanager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/keymanager */ "./src/keymanager.ts");
@@ -45192,167 +44990,167 @@ __webpack_require__.r(__webpack_exports__);
 const MusicTests = {
     Start() {
         QUnit.module('MusicTests');
-        test('Valid Notes', validNotes);
-        test('Valid Keys', validKeys);
-        test('Note Values', noteValue);
-        test('Interval Values', intervalValue);
-        test('Relative Notes', relativeNotes);
-        test('Relative Note Names', relativeNoteNames);
-        test('Canonical Notes', canonicalNotes);
-        test('Canonical Intervals', canonicalIntervals);
-        test('Scale Tones', scaleTones);
-        test('Scale Intervals', scaleIntervals);
+        QUnit.test('Valid Notes', validNotes);
+        QUnit.test('Valid Keys', validKeys);
+        QUnit.test('Note Values', noteValue);
+        QUnit.test('Interval Values', intervalValue);
+        QUnit.test('Relative Notes', relativeNotes);
+        QUnit.test('Relative Note Names', relativeNoteNames);
+        QUnit.test('Canonical Notes', canonicalNotes);
+        QUnit.test('Canonical Intervals', canonicalIntervals);
+        QUnit.test('Scale Tones', scaleTones);
+        QUnit.test('Scale Intervals', scaleIntervals);
     },
 };
-function validNotes() {
-    expect(10);
+function validNotes(assert) {
+    assert.expect(10);
     const music = new _src_music__WEBPACK_IMPORTED_MODULE_2__.Music();
     let parts = music.getNoteParts('c');
-    equal(parts.root, 'c');
-    equal(parts.accidental, null);
+    assert.equal(parts.root, 'c');
+    assert.equal(parts.accidental, null);
     // getNoteParts() converts its argument to lowercase.
     parts = music.getNoteParts('C');
-    equal(parts.root, 'c');
-    equal(parts.accidental, null);
+    assert.equal(parts.root, 'c');
+    assert.equal(parts.accidental, null);
     parts = music.getNoteParts('c#');
-    equal(parts.root, 'c');
-    equal(parts.accidental, '#');
+    assert.equal(parts.root, 'c');
+    assert.equal(parts.accidental, '#');
     parts = music.getNoteParts('c##');
-    equal(parts.root, 'c');
-    equal(parts.accidental, '##');
-    throws(() => music.getNoteParts('r'), /BadArguments/, 'Invalid note: r');
-    throws(() => music.getNoteParts(''), /BadArguments/, "Invalid note: ''");
+    assert.equal(parts.root, 'c');
+    assert.equal(parts.accidental, '##');
+    assert.throws(() => music.getNoteParts('r'), /BadArguments/, 'Invalid note: r');
+    assert.throws(() => music.getNoteParts(''), /BadArguments/, "Invalid note: ''");
 }
-function validKeys() {
-    expect(18);
+function validKeys(assert) {
+    assert.expect(18);
     const music = new _src_music__WEBPACK_IMPORTED_MODULE_2__.Music();
     let parts = music.getKeyParts('c');
-    equal(parts.root, 'c');
-    equal(parts.accidental, null);
-    equal(parts.type, 'M');
+    assert.equal(parts.root, 'c');
+    assert.equal(parts.accidental, null);
+    assert.equal(parts.type, 'M');
     parts = music.getKeyParts('d#');
-    equal(parts.root, 'd');
-    equal(parts.accidental, '#');
-    equal(parts.type, 'M');
+    assert.equal(parts.root, 'd');
+    assert.equal(parts.accidental, '#');
+    assert.equal(parts.type, 'M');
     parts = music.getKeyParts('fbm');
-    equal(parts.root, 'f');
-    equal(parts.accidental, 'b');
-    equal(parts.type, 'm');
+    assert.equal(parts.root, 'f');
+    assert.equal(parts.accidental, 'b');
+    assert.equal(parts.type, 'm');
     parts = music.getKeyParts('c#mel');
-    equal(parts.root, 'c');
-    equal(parts.accidental, '#');
-    equal(parts.type, 'mel');
+    assert.equal(parts.root, 'c');
+    assert.equal(parts.accidental, '#');
+    assert.equal(parts.type, 'mel');
     parts = music.getKeyParts('g#harm');
-    equal(parts.root, 'g');
-    equal(parts.accidental, '#');
-    equal(parts.type, 'harm');
-    throws(() => music.getKeyParts('r'), /BadArguments/, 'Invalid key: r');
-    throws(() => music.getKeyParts(''), /BadArguments/, `Invalid key: ''`);
-    throws(() => music.getKeyParts('#m'), /BadArguments/, 'Invalid key: #m');
+    assert.equal(parts.root, 'g');
+    assert.equal(parts.accidental, '#');
+    assert.equal(parts.type, 'harm');
+    assert.throws(() => music.getKeyParts('r'), /BadArguments/, 'Invalid key: r');
+    assert.throws(() => music.getKeyParts(''), /BadArguments/, `Invalid key: ''`);
+    assert.throws(() => music.getKeyParts('#m'), /BadArguments/, 'Invalid key: #m');
 }
-function noteValue() {
-    expect(3);
+function noteValue(assert) {
+    assert.expect(3);
     const music = new _src_music__WEBPACK_IMPORTED_MODULE_2__.Music();
     let note = music.getNoteValue('c');
-    equal(note, 0);
-    throws(() => music.getNoteValue('r'), /BadArguments/, 'Invalid note name');
+    assert.equal(note, 0);
+    assert.throws(() => music.getNoteValue('r'), /BadArguments/, 'Invalid note name');
     note = music.getNoteValue('f#');
-    equal(note, 6);
+    assert.equal(note, 6);
 }
-function intervalValue() {
-    expect(2);
+function intervalValue(assert) {
+    assert.expect(2);
     const music = new _src_music__WEBPACK_IMPORTED_MODULE_2__.Music();
     const value = music.getIntervalValue('b2');
-    equal(value, 1);
-    throws(() => music.getIntervalValue('7'), /BadArguments/, 'Invalid interval name');
+    assert.equal(value, 1);
+    assert.throws(() => music.getIntervalValue('7'), /BadArguments/, 'Invalid interval name');
 }
-function relativeNotes() {
-    expect(8);
+function relativeNotes(assert) {
+    assert.expect(8);
     const music = new _src_music__WEBPACK_IMPORTED_MODULE_2__.Music();
     let value = music.getRelativeNoteValue(music.getNoteValue('c'), music.getIntervalValue('b5'));
-    equal(value, 6);
-    throws(() => music.getRelativeNoteValue(music.getNoteValue('bc'), music.getIntervalValue('b2')), /BadArguments/, 'Invalid note');
-    throws(() => music.getRelativeNoteValue(music.getNoteValue('b'), music.getIntervalValue('p3')), /BadArguments/, 'Invalid interval');
+    assert.equal(value, 6);
+    assert.throws(() => music.getRelativeNoteValue(music.getNoteValue('bc'), music.getIntervalValue('b2')), /BadArguments/, 'Invalid note');
+    assert.throws(() => music.getRelativeNoteValue(music.getNoteValue('b'), music.getIntervalValue('p3')), /BadArguments/, 'Invalid interval');
     // Direction
     value = music.getRelativeNoteValue(music.getNoteValue('d'), music.getIntervalValue('2'), -1);
-    equal(value, 0);
-    throws(() => music.getRelativeNoteValue(music.getNoteValue('b'), music.getIntervalValue('p4'), 0), /BadArguments/, 'Invalid direction: 0');
+    assert.equal(value, 0);
+    assert.throws(() => music.getRelativeNoteValue(music.getNoteValue('b'), music.getIntervalValue('p4'), 0), /BadArguments/, 'Invalid direction: 0');
     // Rollover
     value = music.getRelativeNoteValue(music.getNoteValue('b'), music.getIntervalValue('b5'));
-    equal(value, 5);
+    assert.equal(value, 5);
     // Reverse rollover
     value = music.getRelativeNoteValue(music.getNoteValue('c'), music.getIntervalValue('b2'), -1);
-    equal(value, 11);
+    assert.equal(value, 11);
     // Practical tests
     value = music.getRelativeNoteValue(music.getNoteValue('g'), music.getIntervalValue('p5'));
-    equal(value, 2);
+    assert.equal(value, 2);
 }
-function relativeNoteNames() {
-    expect(9);
+function relativeNoteNames(assert) {
+    assert.expect(9);
     const music = new _src_music__WEBPACK_IMPORTED_MODULE_2__.Music();
-    equal(music.getRelativeNoteName('b', music.getNoteValue('c#')), 'b##');
-    equal(music.getRelativeNoteName('c', music.getNoteValue('c')), 'c');
-    equal(music.getRelativeNoteName('c', music.getNoteValue('db')), 'c#');
-    equal(music.getRelativeNoteName('c', music.getNoteValue('b')), 'cb');
-    equal(music.getRelativeNoteName('c#', music.getNoteValue('db')), 'c#');
-    equal(music.getRelativeNoteName('e', music.getNoteValue('f#')), 'e##');
-    equal(music.getRelativeNoteName('e', music.getNoteValue('d#')), 'eb');
-    equal(music.getRelativeNoteName('e', music.getNoteValue('fb')), 'e');
-    throws(() => music.getRelativeNoteName('e', music.getNoteValue('g#')), /BadArguments/, 'Too far away. Notes not related.');
+    assert.equal(music.getRelativeNoteName('b', music.getNoteValue('c#')), 'b##');
+    assert.equal(music.getRelativeNoteName('c', music.getNoteValue('c')), 'c');
+    assert.equal(music.getRelativeNoteName('c', music.getNoteValue('db')), 'c#');
+    assert.equal(music.getRelativeNoteName('c', music.getNoteValue('b')), 'cb');
+    assert.equal(music.getRelativeNoteName('c#', music.getNoteValue('db')), 'c#');
+    assert.equal(music.getRelativeNoteName('e', music.getNoteValue('f#')), 'e##');
+    assert.equal(music.getRelativeNoteName('e', music.getNoteValue('d#')), 'eb');
+    assert.equal(music.getRelativeNoteName('e', music.getNoteValue('fb')), 'e');
+    assert.throws(() => music.getRelativeNoteName('e', music.getNoteValue('g#')), /BadArguments/, 'Too far away. Notes not related.');
 }
-function canonicalNotes() {
-    expect(3);
+function canonicalNotes(assert) {
+    assert.expect(3);
     const music = new _src_music__WEBPACK_IMPORTED_MODULE_2__.Music();
-    equal(music.getCanonicalNoteName(0), 'c');
-    equal(music.getCanonicalNoteName(2), 'd');
-    throws(() => music.getCanonicalNoteName(-1), /BadArguments/, 'Invalid note value');
+    assert.equal(music.getCanonicalNoteName(0), 'c');
+    assert.equal(music.getCanonicalNoteName(2), 'd');
+    assert.throws(() => music.getCanonicalNoteName(-1), /BadArguments/, 'Invalid note value');
 }
-function canonicalIntervals() {
-    expect(3);
+function canonicalIntervals(assert) {
+    assert.expect(3);
     const music = new _src_music__WEBPACK_IMPORTED_MODULE_2__.Music();
-    equal(music.getCanonicalIntervalName(0), 'unison');
-    equal(music.getCanonicalIntervalName(2), 'M2');
-    throws(() => music.getCanonicalIntervalName(-1), /BadArguments/, 'Invalid interval value');
+    assert.equal(music.getCanonicalIntervalName(0), 'unison');
+    assert.equal(music.getCanonicalIntervalName(2), 'M2');
+    assert.throws(() => music.getCanonicalIntervalName(-1), /BadArguments/, 'Invalid interval value');
 }
-function scaleTones() {
-    expect(24);
+function scaleTones(assert) {
+    assert.expect(24);
     // C Major
     const music = new _src_music__WEBPACK_IMPORTED_MODULE_2__.Music();
     const manager = new _src_keymanager__WEBPACK_IMPORTED_MODULE_1__.KeyManager('CM');
     const c_major = music.getScaleTones(music.getNoteValue('c'), _src_music__WEBPACK_IMPORTED_MODULE_2__.Music.scales.major);
     let values = ['c', 'd', 'e', 'f', 'g', 'a', 'b'];
-    equal(c_major.length, 7);
+    assert.equal(c_major.length, 7);
     for (let i = 0; i < c_major.length; ++i) {
-        equal(music.getCanonicalNoteName(c_major[i]), values[i]);
+        assert.equal(music.getCanonicalNoteName(c_major[i]), values[i]);
     }
     // Dorian
     const c_dorian = music.getScaleTones(music.getNoteValue('c'), _src_music__WEBPACK_IMPORTED_MODULE_2__.Music.scales.dorian);
     values = ['c', 'd', 'eb', 'f', 'g', 'a', 'bb'];
     let note = null;
-    equal(c_dorian.length, 7);
+    assert.equal(c_dorian.length, 7);
     for (let i = 0; i < c_dorian.length; ++i) {
         note = music.getCanonicalNoteName(c_dorian[i]);
-        equal(manager.selectNote(note).note, values[i]);
+        assert.equal(manager.selectNote(note).note, values[i]);
     }
     // Mixolydian
     const c_mixolydian = music.getScaleTones(music.getNoteValue('c'), _src_music__WEBPACK_IMPORTED_MODULE_2__.Music.scales.mixolydian);
     values = ['c', 'd', 'e', 'f', 'g', 'a', 'bb'];
-    equal(c_mixolydian.length, 7);
+    assert.equal(c_mixolydian.length, 7);
     for (let i = 0; i < c_mixolydian.length; ++i) {
         note = music.getCanonicalNoteName(c_mixolydian[i]);
-        equal(manager.selectNote(note).note, values[i]);
+        assert.equal(manager.selectNote(note).note, values[i]);
     }
 }
-function scaleIntervals() {
-    expect(6);
+function scaleIntervals(assert) {
+    assert.expect(6);
     const m = new _src_music__WEBPACK_IMPORTED_MODULE_2__.Music();
-    equal(m.getCanonicalIntervalName(m.getIntervalBetween(m.getNoteValue('c'), m.getNoteValue('d'))), 'M2');
-    equal(m.getCanonicalIntervalName(m.getIntervalBetween(m.getNoteValue('g'), m.getNoteValue('c'))), 'p4');
-    equal(m.getCanonicalIntervalName(m.getIntervalBetween(m.getNoteValue('c'), m.getNoteValue('c'))), 'unison');
-    equal(m.getCanonicalIntervalName(m.getIntervalBetween(m.getNoteValue('f'), m.getNoteValue('cb'))), 'dim5');
+    assert.equal(m.getCanonicalIntervalName(m.getIntervalBetween(m.getNoteValue('c'), m.getNoteValue('d'))), 'M2');
+    assert.equal(m.getCanonicalIntervalName(m.getIntervalBetween(m.getNoteValue('g'), m.getNoteValue('c'))), 'p4');
+    assert.equal(m.getCanonicalIntervalName(m.getIntervalBetween(m.getNoteValue('c'), m.getNoteValue('c'))), 'unison');
+    assert.equal(m.getCanonicalIntervalName(m.getIntervalBetween(m.getNoteValue('f'), m.getNoteValue('cb'))), 'dim5');
     // Forwards and backwards
-    equal(m.getCanonicalIntervalName(m.getIntervalBetween(m.getNoteValue('d'), m.getNoteValue('c'), 1)), 'b7');
-    equal(m.getCanonicalIntervalName(m.getIntervalBetween(m.getNoteValue('d'), m.getNoteValue('c'), -1)), 'M2');
+    assert.equal(m.getCanonicalIntervalName(m.getIntervalBetween(m.getNoteValue('d'), m.getNoteValue('c'), 1)), 'b7');
+    assert.equal(m.getCanonicalIntervalName(m.getIntervalBetween(m.getNoteValue('d'), m.getNoteValue('c'), -1)), 'M2');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(MusicTests);
 
@@ -45368,7 +45166,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(MusicTe
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "NoteHeadTests": () => (/* binding */ NoteHeadTests)
+/* harmony export */   NoteHeadTests: () => (/* binding */ NoteHeadTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/flow */ "./src/flow.ts");
@@ -45426,7 +45224,7 @@ function basic(options, contextBuilder) {
     voice.addTickables([note_head1, note_head2, note_head3]);
     formatter.joinVoices([voice]).formatToStave([voice], stave);
     voice.draw(ctx, stave);
-    ok('Basic NoteHead test');
+    options.assert.ok('Basic NoteHead test');
 }
 /**
  * Used by the next two test cases to draw a note.
@@ -45471,8 +45269,8 @@ function variousHeads(options, contextBuilder) {
             const note = notes[i];
             note.stem_direction = staveNum === 0 ? -1 : 1;
             const staveNote = showNote(note, stave, ctx, (i + 1) * 25);
-            ok(staveNote.getX() > 0, 'Note ' + i + ' has X value');
-            ok(staveNote.getYs().length > 0, 'Note ' + i + ' has Y values');
+            options.assert.ok(staveNote.getX() > 0, 'Note ' + i + ' has X value');
+            options.assert.ok(staveNote.getYs().length > 0, 'Note ' + i + ' has Y values');
         }
     }
 }
@@ -45535,8 +45333,8 @@ function variousNoteHeads(options, contextBuilder) {
             const note = notes[i];
             note.stem_direction = staveNum === 0 ? -1 : 1;
             const staveNote = showNote(note, stave, ctx, (i + 1) * 25);
-            ok(staveNote.getX() > 0, 'Note ' + i + ' has X value');
-            ok(staveNote.getYs().length > 0, 'Note ' + i + ' has Y values');
+            options.assert.ok(staveNote.getX() > 0, 'Note ' + i + ' has X value');
+            options.assert.ok(staveNote.getYs().length > 0, 'Note ' + i + ' has Y values');
         }
     }
 }
@@ -45556,8 +45354,8 @@ function variousNoteHeads2(options, contextBuilder) {
     for (let i = 0; i < notes.length; ++i) {
         const note = notes[i];
         const staveNote = showNote(note, stave, ctx, (i + 1) * 25);
-        ok(staveNote.getX() > 0, 'Note ' + i + ' has X value');
-        ok(staveNote.getYs().length > 0, 'Note ' + i + ' has Y values');
+        options.assert.ok(staveNote.getX() > 0, 'Note ' + i + ' has X value');
+        options.assert.ok(staveNote.getYs().length > 0, 'Note ' + i + ' has Y values');
     }
 }
 function drumChordHeads(options, contextBuilder) {
@@ -45589,8 +45387,8 @@ function drumChordHeads(options, contextBuilder) {
             const note = notes[i];
             note.stem_direction = h === 0 ? -1 : 1;
             const staveNote = showNote(note, stave, ctx, (i + 1) * 25);
-            ok(staveNote.getX() > 0, 'Note ' + i + ' has X value');
-            ok(staveNote.getYs().length > 0, 'Note ' + i + ' has Y values');
+            options.assert.ok(staveNote.getX() > 0, 'Note ' + i + ' has X value');
+            options.assert.ok(staveNote.getYs().length > 0, 'Note ' + i + ' has Y values');
         }
     }
 }
@@ -45612,7 +45410,7 @@ function basicBoundingBoxes(options, contextBuilder) {
         ctx.rect(bb.getX(), bb.getY(), bb.getW(), bb.getH());
     }
     ctx.stroke();
-    ok('NoteHead Bounding Boxes');
+    options.assert.ok('NoteHead Bounding Boxes');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(NoteHeadTests);
 
@@ -45628,7 +45426,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(NoteHea
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "NoteSubGroupTests": () => (/* binding */ NoteSubGroupTests)
+/* harmony export */   NoteSubGroupTests: () => (/* binding */ NoteSubGroupTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_barnote__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/barnote */ "./src/barnote.ts");
@@ -45690,7 +45488,7 @@ function basic(options) {
     f.draw();
     notes.forEach((note) => _src_note__WEBPACK_IMPORTED_MODULE_2__.Note.plotMetrics(ctx, note, 150));
     _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.plotLegendForNoteWidth(ctx, 620, 120);
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function multiVoiceSingleDraw(options) {
     multiVoiceHelper(options, 1);
@@ -45741,7 +45539,7 @@ function multiVoiceHelper(options, numDraws) {
         f.draw();
     }
     notes1.forEach((note) => _src_note__WEBPACK_IMPORTED_MODULE_2__.Note.plotMetrics(ctx, note, 150));
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function multiStaff(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 550, 400);
@@ -45791,7 +45589,7 @@ function multiStaff(options) {
     const voice3 = f.Voice().addTickables(notes3);
     f.Formatter().joinVoices([voice1, voice2]).joinVoices([voice3]).formatToStave([voice1, voice2, voice3], stave1);
     f.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(NoteSubGroupTests);
 
@@ -45807,7 +45605,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(NoteSub
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "OffscreenCanvasTests": () => (/* binding */ OffscreenCanvasTests)
+/* harmony export */   OffscreenCanvasTests: () => (/* binding */ OffscreenCanvasTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_canvascontext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/canvascontext */ "./src/canvascontext.ts");
@@ -45834,10 +45632,10 @@ const OffscreenCanvasTests = {
             return;
         }
         QUnit.module('OffscreenCanvas');
-        test('Simple Test', simpleTest);
+        QUnit.test('Simple Test', simpleTest);
     },
 };
-function simpleTest() {
+function simpleTest(assert) {
     // Create a CanvasContext from an OffscreenCanvas.
     // eslint-disable-next-line
     // @ts-ignore
@@ -45871,7 +45669,7 @@ function simpleTest() {
     }
     canvasCtx.drawImage(imgBmp, 0, 0);
     document.body.appendChild(canvas);
-    ok(true, 'all pass');
+    assert.ok(true, 'all pass');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(OffscreenCanvasTests);
 
@@ -45887,7 +45685,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(Offscre
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "OrnamentTests": () => (/* binding */ OrnamentTests)
+/* harmony export */   OrnamentTests: () => (/* binding */ OrnamentTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_accidental__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/accidental */ "./src/accidental.ts");
@@ -45923,13 +45721,14 @@ const OrnamentTests = {
         run('Ornaments Vertically Shifted', drawOrnamentsDisplaced);
         run('Ornaments - Delayed turns', drawOrnamentsDelayed);
         run('Ornaments - Delayed turns, Multiple Draws', drawOrnamentsDelayedMultipleDraws);
+        run('Ornaments - Delayed turns, Multiple Voices', drawOrnamentsDelayedMultipleVoices);
         run('Stacked', drawOrnamentsStacked);
         run('With Upper/Lower Accidentals', drawOrnamentsWithAccidentals);
         run('Jazz Ornaments', jazzOrnaments);
     },
 };
 function drawOrnaments(options, contextBuilder) {
-    expect(0);
+    options.assert.expect(0);
     // Get the rendering context
     const ctx = contextBuilder(options.elementId, 750, 195);
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_7__.Stave(10, 30, 700);
@@ -45966,7 +45765,7 @@ function drawOrnaments(options, contextBuilder) {
     _src_formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter.FormatAndDraw(ctx, stave, notes);
 }
 function drawOrnamentsDisplaced(options, contextBuilder) {
-    expect(0);
+    options.assert.expect(0);
     // Get the rendering context
     const ctx = contextBuilder(options.elementId, 750, 195);
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_7__.Stave(10, 30, 700);
@@ -46025,14 +45824,14 @@ const addDelayedTurns = (f) => {
     return { context, stave, notes };
 };
 function drawOrnamentsDelayed(options) {
-    expect(0);
+    options.assert.expect(0);
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 550, 195);
     const { context, stave, notes } = addDelayedTurns(f);
     // Helper function to justify and draw a 4/4 voice
     _src_formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter.FormatAndDraw(context, stave, notes);
 }
 function drawOrnamentsDelayedMultipleDraws(options) {
-    expect(0);
+    options.assert.expect(0);
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 550, 195);
     const { context, stave, notes } = addDelayedTurns(f);
     // We can FormatAndDraw() two times, and it looks fine.
@@ -46040,8 +45839,40 @@ function drawOrnamentsDelayedMultipleDraws(options) {
     _src_formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter.FormatAndDraw(context, stave, notes);
     _src_formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter.FormatAndDraw(context, stave, notes);
 }
+function drawOrnamentsDelayedMultipleVoices(options, contextBuilder) {
+    options.assert.expect(0);
+    // Get the rendering context
+    const ctx = contextBuilder(options.elementId, 550, 195);
+    const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_7__.Stave(10, 30, 500);
+    stave.addClef('treble');
+    stave.addKeySignature('C#');
+    stave.addTimeSignature('4/4');
+    const notes1 = [
+        new _src_stavenote__WEBPACK_IMPORTED_MODULE_8__.StaveNote({ keys: ['f/5'], duration: '2r' }),
+        new _src_stavenote__WEBPACK_IMPORTED_MODULE_8__.StaveNote({ keys: ['c/5'], duration: '2', stem_direction: 1 }),
+    ];
+    const notes2 = [
+        new _src_stavenote__WEBPACK_IMPORTED_MODULE_8__.StaveNote({ keys: ['a/4'], duration: '4', stem_direction: -1 }),
+        new _src_stavenote__WEBPACK_IMPORTED_MODULE_8__.StaveNote({ keys: ['e/4'], duration: '4r' }),
+        new _src_stavenote__WEBPACK_IMPORTED_MODULE_8__.StaveNote({ keys: ['e/4'], duration: '2r' }),
+    ];
+    notes1[1].addModifier(new _src_ornament__WEBPACK_IMPORTED_MODULE_6__.Ornament('turn_inverted').setDelayed(true), 0);
+    notes2[0].addModifier(new _src_ornament__WEBPACK_IMPORTED_MODULE_6__.Ornament('turn').setDelayed(true), 0);
+    const voice1 = new _src_voice__WEBPACK_IMPORTED_MODULE_9__.Voice({ num_beats: 4, beat_value: 4, });
+    voice1.addTickables(notes1);
+    const voice2 = new _src_voice__WEBPACK_IMPORTED_MODULE_9__.Voice({ num_beats: 4, beat_value: 4, });
+    voice2.addTickables(notes2);
+    const formatWidth = stave.getNoteEndX() - stave.getNoteStartX();
+    const formatter = new _src_formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter();
+    formatter.joinVoices([voice1]);
+    formatter.joinVoices([voice2]);
+    formatter.format([voice1, voice2], formatWidth);
+    stave.setContext(ctx).draw();
+    voice1.draw(ctx, stave);
+    voice2.draw(ctx, stave);
+}
 function drawOrnamentsStacked(options) {
-    expect(0);
+    options.assert.expect(0);
     // Get the rendering context
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 550, 195);
     const ctx = f.getContext();
@@ -46065,7 +45896,7 @@ function drawOrnamentsStacked(options) {
     _src_formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter.FormatAndDraw(ctx, stave, notes);
 }
 function drawOrnamentsWithAccidentals(options) {
-    expect(0);
+    options.assert.expect(0);
     // Get the rendering context
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 650, 250);
     const ctx = f.getContext();
@@ -46134,7 +45965,7 @@ function jazzOrnaments(options) {
         stave.setContext(ctx).draw();
         voice.draw(ctx, stave);
     }
-    expect(0);
+    options.assert.expect(0);
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 950, 400);
     const ctx = f.getContext();
     ctx.scale(1, 1);
@@ -46246,7 +46077,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(Ornamen
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ParserTests": () => (/* binding */ ParserTests)
+/* harmony export */   ParserTests: () => (/* binding */ ParserTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_parser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/parser */ "./src/parser.ts");
@@ -46259,10 +46090,10 @@ __webpack_require__.r(__webpack_exports__);
 const ParserTests = {
     Start() {
         QUnit.module('Parser');
-        test('Basic', basic);
-        test('Advanced', advanced);
-        test('Mixed', mixed);
-        test('Micro Score', microscore);
+        QUnit.test('Basic', basic);
+        QUnit.test('Advanced', advanced);
+        QUnit.test('Mixed', mixed);
+        QUnit.test('Micro Score', microscore);
     },
 };
 /**
@@ -46336,43 +46167,43 @@ class MicroScoreGrammar {
 /**
  * Check that the result is a parse failure, and verify the error position.
  */
-function fails(result, expectedErrorPos, msg) {
-    notOk(result.success, msg);
-    equal(result.errorPos, expectedErrorPos, msg);
+function fails(assert, result, expectedErrorPos, msg) {
+    assert.notOk(result.success, msg);
+    assert.equal(result.errorPos, expectedErrorPos, msg);
 }
-function basic() {
+function basic(assert) {
     const grammar = new TestGrammar();
     grammar.expect = [grammar.LITTLELINE, grammar.EOL];
     const parser = new _src_parser__WEBPACK_IMPORTED_MODULE_1__.Parser(grammar);
     // Each of these strings will parse correctly.
     const mustPass = ['first, second', 'first,second', 'first', 'first,second, third'];
-    mustPass.forEach((line) => equal(parser.parse(line).success, true, line));
-    fails(parser.parse(''), 0);
-    fails(parser.parse('first second'), 6);
-    fails(parser.parse('first,,'), 5);
-    fails(parser.parse('first,'), 5);
-    fails(parser.parse(',,'), 0);
+    mustPass.forEach((line) => assert.equal(parser.parse(line).success, true, line));
+    fails(assert, parser.parse(''), 0);
+    fails(assert, parser.parse('first second'), 6);
+    fails(assert, parser.parse('first,,'), 5);
+    fails(assert, parser.parse('first,'), 5);
+    fails(assert, parser.parse(',,'), 0);
 }
-function advanced() {
+function advanced(assert) {
     const grammar = new TestGrammar();
     grammar.expect = [grammar.BIGLINE, grammar.EOL];
     const parser = new _src_parser__WEBPACK_IMPORTED_MODULE_1__.Parser(grammar);
     const mustPass = ['{first}', '{first!}', '{first,second}', '{first,second!}', '{first,second,third!}'];
-    mustPass.forEach((line) => equal(parser.parse(line).success, true, line));
-    fails(parser.parse('{first,second,third,}'), 19);
-    fails(parser.parse('first,second,third'), 0);
-    fails(parser.parse('{first,second,third'), 19);
-    fails(parser.parse('{!}'), 1);
+    mustPass.forEach((line) => assert.equal(parser.parse(line).success, true, line));
+    fails(assert, parser.parse('{first,second,third,}'), 19);
+    fails(assert, parser.parse('first,second,third'), 0);
+    fails(assert, parser.parse('{first,second,third'), 19);
+    fails(assert, parser.parse('{!}'), 1);
 }
-function mixed() {
+function mixed(assert) {
     const grammar = new TestGrammar();
     grammar.expect = [grammar.BIGORLITTLE, grammar.EOL];
     const parser = new _src_parser__WEBPACK_IMPORTED_MODULE_1__.Parser(grammar);
     const mustPass = ['{first,second,third!}', 'first, second'];
-    mustPass.forEach((line) => equal(parser.parse(line).success, true, line));
-    fails(parser.parse('first second'), 6);
+    mustPass.forEach((line) => assert.equal(parser.parse(line).success, true, line));
+    fails(assert, parser.parse('first second'), 6);
 }
-function microscore() {
+function microscore(assert) {
     const grammar = new MicroScoreGrammar();
     const parser = new _src_parser__WEBPACK_IMPORTED_MODULE_1__.Parser(grammar);
     const mustPass = [
@@ -46383,12 +46214,12 @@ function microscore() {
     mustPass.forEach((line) => {
         var _a;
         const result = parser.parse(line);
-        equal(result.success, true, line);
-        equal((_a = result.matches) === null || _a === void 0 ? void 0 : _a.length, 3, line);
+        assert.equal(result.success, true, line);
+        assert.equal((_a = result.matches) === null || _a === void 0 ? void 0 : _a.length, 3, line);
     });
-    fails(parser.parse('40 42 44 45 47 49 5A 52'), 19);
-    fails(parser.parse('40.44.47] [45.49.52] [47.51.54] [49.52.56]'), 2);
-    fails(parser.parse('40 [40] 45 47 [44.47.51]'), 3); // A chord with a single note is not allowed.
+    fails(assert, parser.parse('40 42 44 45 47 49 5A 52'), 19);
+    fails(assert, parser.parse('40.44.47] [45.49.52] [47.51.54] [49.52.56]'), 2);
+    fails(assert, parser.parse('40 [40] 45 47 [44.47.51]'), 3); // A chord with a single note is not allowed.
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(ParserTests);
 
@@ -46404,7 +46235,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(ParserT
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "PedalMarkingTests": () => (/* binding */ PedalMarkingTests)
+/* harmony export */   PedalMarkingTests: () => (/* binding */ PedalMarkingTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
@@ -46441,7 +46272,7 @@ function createTest(makePedal) {
         f.Formatter().joinVoices([voice1]).formatToStave([voice1], stave1);
         makePedal(f, voice0.getTickables(), voice1.getTickables());
         f.draw();
-        ok(true, 'Must render');
+        options.assert.ok(true, 'Must render');
     };
 }
 function withSimplePedal(style) {
@@ -46491,7 +46322,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(PedalMa
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "PercussionTests": () => (/* binding */ PercussionTests)
+/* harmony export */   PercussionTests: () => (/* binding */ PercussionTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/index */ "./src/index.ts");
@@ -46521,7 +46352,7 @@ const PercussionTests = {
 function draw(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 120);
     new _src_index__WEBPACK_IMPORTED_MODULE_1__.Stave(10, 10, 300).addClef('percussion').setContext(ctx).draw();
-    ok(true);
+    options.assert.ok(true);
 }
 /**
  * Helper function used by the drawNotes() test case below.
@@ -46557,8 +46388,8 @@ function drawNotes(options, contextBuilder) {
             const note = notes[i];
             note.stem_direction = h === 0 ? -1 : 1;
             const staveNote = showNote(note, stave, ctx, (i + 1) * 25);
-            ok(staveNote.getX() > 0, 'Note ' + i + ' has X value');
-            ok(staveNote.getYs().length > 0, 'Note ' + i + ' has Y values');
+            options.assert.ok(staveNote.getX() > 0, 'Note ' + i + ' has X value');
+            options.assert.ok(staveNote.getYs().length > 0, 'Note ' + i + ' has Y values');
         }
     }
 }
@@ -46573,7 +46404,7 @@ function createSingleMeasureTest(setup) {
         setup(f);
         f.Formatter().joinVoices(f.getVoices()).formatToStave(f.getVoices(), stave);
         f.draw();
-        ok(true);
+        options.assert.ok(true);
     };
 }
 const basic0 = createSingleMeasureTest((f) => {
@@ -46701,7 +46532,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(Percuss
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "RegistryTests": () => (/* binding */ RegistryTests)
+/* harmony export */   RegistryTests: () => (/* binding */ RegistryTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/index */ "./src/index.ts");
@@ -46714,64 +46545,64 @@ __webpack_require__.r(__webpack_exports__);
 const RegistryTests = {
     Start() {
         QUnit.module('Registry');
-        test('Register and Clear', registerAndClear);
-        test('Default Registry', defaultRegistry);
-        test('Multiple Classes', classes);
+        QUnit.test('Register and Clear', registerAndClear);
+        QUnit.test('Default Registry', defaultRegistry);
+        QUnit.test('Multiple Classes', classes);
     },
 };
-function registerAndClear() {
+function registerAndClear(assert) {
     const registry = new _src_index__WEBPACK_IMPORTED_MODULE_1__.Registry();
     const score = new _src_index__WEBPACK_IMPORTED_MODULE_1__.EasyScore({ factory: _src_index__WEBPACK_IMPORTED_MODULE_1__.Factory.newFromElementId(null) });
     registry.register(score.notes('C4')[0], 'foobar');
     const foobar = registry.getElementById('foobar');
-    ok(foobar);
-    equal(foobar.getAttribute('id'), 'foobar');
+    assert.ok(foobar);
+    assert.equal(foobar.getAttribute('id'), 'foobar');
     registry.clear();
-    notOk(registry.getElementById('foobar'));
+    assert.notOk(registry.getElementById('foobar'));
     // eslint-disable-next-line
     // @ts-ignore: intentional type mismatch to trigger an error.
-    throws(() => registry.register(score.notes('C4')));
+    assert.throws(() => registry.register(score.notes('C4')));
     registry.clear();
-    ok(registry.register(score.notes('C4[id="boobar"]')[0]).getElementById('boobar'));
+    assert.ok(registry.register(score.notes('C4[id="boobar"]')[0]).getElementById('boobar'));
 }
-function defaultRegistry() {
+function defaultRegistry(assert) {
     const registry = new _src_index__WEBPACK_IMPORTED_MODULE_1__.Registry();
     const score = new _src_index__WEBPACK_IMPORTED_MODULE_1__.EasyScore({ factory: _src_index__WEBPACK_IMPORTED_MODULE_1__.Factory.newFromElementId(null) });
     _src_index__WEBPACK_IMPORTED_MODULE_1__.Registry.enableDefaultRegistry(registry);
     score.notes('C4[id="foobar"]');
     const note = registry.getElementById('foobar');
-    ok(note);
+    assert.ok(note);
     note.setAttribute('id', 'boobar');
-    ok(registry.getElementById('boobar'));
-    notOk(registry.getElementById('foobar'));
+    assert.ok(registry.getElementById('boobar'));
+    assert.notOk(registry.getElementById('foobar'));
     registry.clear();
-    equal(registry.getElementsByType(_src_index__WEBPACK_IMPORTED_MODULE_1__.StaveNote.CATEGORY).length, 0);
+    assert.equal(registry.getElementsByType(_src_index__WEBPACK_IMPORTED_MODULE_1__.StaveNote.CATEGORY).length, 0);
     score.notes('C5');
     const elements = registry.getElementsByType(_src_index__WEBPACK_IMPORTED_MODULE_1__.StaveNote.CATEGORY);
-    equal(elements.length, 1);
+    assert.equal(elements.length, 1);
 }
-function classes() {
+function classes(assert) {
     const registry = new _src_index__WEBPACK_IMPORTED_MODULE_1__.Registry();
     const score = new _src_index__WEBPACK_IMPORTED_MODULE_1__.EasyScore({ factory: _src_index__WEBPACK_IMPORTED_MODULE_1__.Factory.newFromElementId(null) });
     _src_index__WEBPACK_IMPORTED_MODULE_1__.Registry.enableDefaultRegistry(registry);
     score.notes('C4[id="foobar"]');
     const note = registry.getElementById('foobar');
     note.addClass('foo');
-    ok(note.hasClass('foo'));
-    notOk(note.hasClass('boo'));
-    equal(registry.getElementsByClass('foo').length, 1);
-    equal(registry.getElementsByClass('boo').length, 0);
+    assert.ok(note.hasClass('foo'));
+    assert.notOk(note.hasClass('boo'));
+    assert.equal(registry.getElementsByClass('foo').length, 1);
+    assert.equal(registry.getElementsByClass('boo').length, 0);
     note.addClass('boo');
-    ok(note.hasClass('foo'));
-    ok(note.hasClass('boo'));
-    equal(registry.getElementsByClass('foo').length, 1);
-    equal(registry.getElementsByClass('boo').length, 1);
+    assert.ok(note.hasClass('foo'));
+    assert.ok(note.hasClass('boo'));
+    assert.equal(registry.getElementsByClass('foo').length, 1);
+    assert.equal(registry.getElementsByClass('boo').length, 1);
     note.removeClass('boo');
     note.removeClass('foo');
-    notOk(note.hasClass('foo'));
-    notOk(note.hasClass('boo'));
-    equal(registry.getElementsByClass('foo').length, 0);
-    equal(registry.getElementsByClass('boo').length, 0);
+    assert.notOk(note.hasClass('foo'));
+    assert.notOk(note.hasClass('boo'));
+    assert.equal(registry.getElementsByClass('foo').length, 0);
+    assert.equal(registry.getElementsByClass('boo').length, 0);
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(RegistryTests);
 
@@ -46787,7 +46618,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(Registr
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "RendererTests": () => (/* binding */ RendererTests)
+/* harmony export */   RendererTests: () => (/* binding */ RendererTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/index */ "./src/index.ts");
@@ -46910,7 +46741,7 @@ function stringElementId(options) {
     else {
         useFactoryAPI(elementId, options.backend);
     }
-    ok(true);
+    options.assert.ok(true);
 }
 /**
  * Pass a canvas or div element directly to the Renderer constructor.
@@ -46923,7 +46754,7 @@ function canvasOrDivElement(options) {
     else {
         useFactoryAPI(element, options.backend);
     }
-    ok(true);
+    options.assert.ok(true);
 }
 /**
  * Pass the render context directly to the Renderer constructor.
@@ -46944,7 +46775,7 @@ function passRenderContext(options) {
     const renderer = new _src_index__WEBPACK_IMPORTED_MODULE_1__.Renderer(context);
     renderer.resize(STAVE_WIDTH, STAVE_HEIGHT);
     drawStave(new _src_index__WEBPACK_IMPORTED_MODULE_1__.Stave(0, 0, STAVE_WIDTH - STAVE_RIGHT_MARGIN).setContext(context), context);
-    ok(true);
+    options.assert.ok(true);
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(RendererTests);
 
@@ -46960,7 +46791,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(Rendere
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "RestsTests": () => (/* binding */ RestsTests)
+/* harmony export */   RestsTests: () => (/* binding */ RestsTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_beam__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/beam */ "./src/beam.ts");
@@ -47034,7 +46865,7 @@ function basic(options, contextBuilder) {
     ];
     _src_dot__WEBPACK_IMPORTED_MODULE_2__.Dot.buildAndAttach(notes, { all: true });
     _src_formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter.FormatAndDraw(context, stave, notes);
-    ok(true, 'Dotted Rest Test');
+    options.assert.ok(true, 'Dotted Rest Test');
 }
 /**
  * Use the ledger glyph if the whole or half rest is above/below the staff
@@ -47050,7 +46881,7 @@ function ledgerRest(options, contextBuilder) {
         new _src_stavenote__WEBPACK_IMPORTED_MODULE_6__.StaveNote({ keys: ['b/4'], stem_direction: 1, duration: 'wr' }),
     ];
     _src_formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter.FormatAndDraw(context, stave, notes);
-    ok(true, 'Leger/Ledger Rest Test');
+    options.assert.ok(true, 'Leger/Ledger Rest Test');
 }
 // Optional: Use a helper function to make your code more concise.
 const note = (noteStruct) => new _src_stavenote__WEBPACK_IMPORTED_MODULE_6__.StaveNote(noteStruct);
@@ -47080,7 +46911,7 @@ function beamsUp(options, contextBuilder) {
     beam1.setContext(context).draw();
     beam2.setContext(context).draw();
     beam3.setContext(context).draw();
-    ok(true, 'Auto Align Rests - Beams Up Test');
+    options.assert.ok(true, 'Auto Align Rests - Beams Up Test');
 }
 /**
  * Rests are intermixed within beamed notes (with the stems and beams at the bottom).
@@ -47108,7 +46939,7 @@ function beamsDown(options, contextBuilder) {
     beam1.setContext(context).draw();
     beam2.setContext(context).draw();
     beam3.setContext(context).draw();
-    ok(true, 'Auto Align Rests - Beams Down Test');
+    options.assert.ok(true, 'Auto Align Rests - Beams Down Test');
 }
 /**
  * Call setTupletLocation(Tuplet.LOCATION_TOP) to place the tuplet indicator (bracket and number) at the
@@ -47139,7 +46970,7 @@ function tupletsUp(options, contextBuilder) {
     tuplet2.setContext(context).draw();
     tuplet3.setContext(context).draw();
     tuplet4.setContext(context).draw();
-    ok(true, 'Auto Align Rests - Tuplets Stem Up Test');
+    options.assert.ok(true, 'Auto Align Rests - Tuplets Stem Up Test');
 }
 /**
  * Call setTupletLocation(Tuplet.LOCATION_BOTTOM) to place the tuplet indicator (bracket and number) at the
@@ -47178,7 +47009,7 @@ function tupletsDown(options, contextBuilder) {
     beam2.setContext(context).draw();
     beam3.setContext(context).draw();
     beam4.setContext(context).draw();
-    ok(true, 'Auto Align Rests - Tuplets Stem Down Test');
+    options.assert.ok(true, 'Auto Align Rests - Tuplets Stem Down Test');
 }
 /**
  * By default rests are centered vertically within the stave, except
@@ -47210,7 +47041,7 @@ function singleVoiceDefaultAlignment(options, contextBuilder) {
     _src_formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter.FormatAndDraw(context, stave, notes);
     tuplet.setContext(context).draw();
     beam.setContext(context).draw();
-    ok(true, 'Auto Align Rests - Default Test');
+    options.assert.ok(true, 'Auto Align Rests - Default Test');
 }
 /**
  * The only difference between staveRestsAll() and staveRests() is that this test case
@@ -47242,7 +47073,7 @@ function singleVoiceAlignAll(options, contextBuilder) {
     _src_formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter.FormatAndDraw(context, stave, notes, { align_rests: true });
     tuplet.setContext(context).draw();
     beam.setContext(context).draw();
-    ok(true, 'Auto Align Rests - Align All Test');
+    options.assert.ok(true, 'Auto Align Rests - Align All Test');
 }
 /**
  * Multi Voice
@@ -47281,7 +47112,7 @@ function multiVoice(options, contextBuilder) {
     voice1.draw(ctx);
     beam2_1.setContext(ctx).draw();
     beam2_2.setContext(ctx).draw();
-    ok(true, 'Strokes Test Multi Voice');
+    options.assert.ok(true, 'Strokes Test Multi Voice');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(RestsTests);
 
@@ -47297,7 +47128,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(RestsTe
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "RhythmTests": () => (/* binding */ RhythmTests)
+/* harmony export */   RhythmTests: () => (/* binding */ RhythmTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_annotation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/annotation */ "./src/annotation.ts");
@@ -47346,7 +47177,7 @@ function drawSlash(options: TestOptions, contextBuilder: ContextBuilder): void {
     { keys: ['b/4'], duration: '32s', stem_direction: -1 },
     { keys: ['b/4'], duration: '64s', stem_direction: -1 },
   ];
-  expect(notes.length * 2);
+  options.assert.expect(notes.length * 2);
 
   for (let i = 0; i < notes.length; ++i) {
     const staveNote = new StaveNote(notes[i]).setStave(stave);
@@ -47356,8 +47187,8 @@ function drawSlash(options: TestOptions, contextBuilder: ContextBuilder): void {
       .setX((i + 1) * 25);
     staveNote.setContext(ctx).draw();
 
-    ok(staveNote.getX() > 0, 'Note ' + i + ' has X value');
-    ok(staveNote.getYs().length > 0, 'Note ' + i + ' has Y values');
+    options.assert.ok(staveNote.getX() > 0, 'Note ' + i + ' has X value');
+    options.assert.ok(staveNote.getYs().length > 0, 'Note ' + i + ' has Y values');
   }
 }
 */
@@ -47462,7 +47293,7 @@ function drawBasic(options, contextBuilder) {
     ];
     // Helper function to justify and draw a 4/4 voice
     _src_formatter__WEBPACK_IMPORTED_MODULE_3__.Formatter.FormatAndDraw(ctx, staveBar4, notesBar4);
-    expect(0);
+    options.assert.expect(0);
 }
 function drawBeamedSlashNotes(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 800, 150);
@@ -47528,7 +47359,7 @@ function drawBeamedSlashNotes(options, contextBuilder) {
     // Render beams
     beam1.setContext(ctx).draw();
     beam2.setContext(ctx).draw();
-    expect(0);
+    options.assert.expect(0);
 }
 function drawSlashAndBeamAndRests(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 800, 150);
@@ -47601,7 +47432,7 @@ function drawSlashAndBeamAndRests(options, contextBuilder) {
     notesBar2[0].addModifier(new _src_annotation__WEBPACK_IMPORTED_MODULE_1__.Annotation('F').setFont('Times', _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.Font.size + 2), 0);
     // Helper function to justify and draw a 4/4 voice
     _src_formatter__WEBPACK_IMPORTED_MODULE_3__.Formatter.FormatAndDraw(ctx, staveBar2, notesBar2);
-    expect(0);
+    options.assert.expect(0);
 }
 function drawSixtenthWithScratches(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 800, 150);
@@ -47667,7 +47498,7 @@ function drawSixtenthWithScratches(options, contextBuilder) {
     // Render beams
     beam1.setContext(ctx).draw();
     beam2.setContext(ctx).draw();
-    expect(0);
+    options.assert.expect(0);
 }
 function drawThirtySecondWithScratches(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 800, 150);
@@ -47729,7 +47560,7 @@ function drawThirtySecondWithScratches(options, contextBuilder) {
     _src_formatter__WEBPACK_IMPORTED_MODULE_3__.Formatter.FormatAndDraw(ctx, staveBar1, notesBar1_part1);
     // Render beams
     beam1.setContext(ctx).draw();
-    expect(0);
+    options.assert.expect(0);
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(RhythmTests);
 
@@ -47745,7 +47576,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(RhythmT
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveTests": () => (/* binding */ StaveTests)
+/* harmony export */   StaveTests: () => (/* binding */ StaveTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_accidental__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/accidental */ "./src/accidental.ts");
@@ -47784,7 +47615,7 @@ __webpack_require__.r(__webpack_exports__);
 const StaveTests = {
     Start() {
         QUnit.module('Stave');
-        test('StaveModifiers SortByCategory', sortByCategory);
+        QUnit.test('StaveModifiers SortByCategory', sortByCategory);
         const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
         run('Stave Draw Test', draw);
         run('Open Stave Draw Test', drawOpenStave);
@@ -47805,7 +47636,7 @@ const StaveTests = {
         run('Factory API', factoryAPI);
     },
 };
-function sortByCategory() {
+function sortByCategory(assert) {
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_7__.Stave(0, 0, 300);
     const clef0 = new _src_clef__WEBPACK_IMPORTED_MODULE_3__.Clef('treble');
     const clef1 = new _src_clef__WEBPACK_IMPORTED_MODULE_3__.Clef('alto');
@@ -47833,7 +47664,7 @@ function sortByCategory() {
             if (a[i] !== b[i])
                 isSame = false;
         }
-        ok(isSame, title);
+        assert.ok(isSame, title);
     };
     sortAndCompare('Keep the original order 1', [bar0, bar1, clef0, clef1, key0, key1, time0, time1], [bar0, bar1, clef0, clef1, key0, key1, time0, time1], order0);
     sortAndCompare('Keep the original order 2', [time0, time1, key0, key1, bar0, bar1, clef0, clef1], [time0, time1, key0, key1, bar0, bar1, clef0, clef1], order1);
@@ -47846,11 +47677,11 @@ function draw(options, contextBuilder) {
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_7__.Stave(10, 10, 300);
     stave.setContext(ctx);
     stave.draw();
-    equal(stave.getYForNote(0), 100, 'getYForNote(0)');
-    equal(stave.getYForLine(5), 100, 'getYForLine(5)');
-    equal(stave.getYForLine(0), 50, 'getYForLine(0) - Top Line');
-    equal(stave.getYForLine(4), 90, 'getYForLine(4) - Bottom Line');
-    ok(true, 'all pass');
+    options.assert.equal(stave.getYForNote(0), 100, 'getYForNote(0)');
+    options.assert.equal(stave.getYForLine(5), 100, 'getYForLine(5)');
+    options.assert.equal(stave.getYForLine(0), 50, 'getYForLine(0) - Top Line');
+    options.assert.equal(stave.getYForLine(4), 90, 'getYForLine(4) - Bottom Line');
+    options.assert.ok(true, 'all pass');
 }
 function drawOpenStave(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 350);
@@ -47860,11 +47691,11 @@ function drawOpenStave(options, contextBuilder) {
     stave = new _src_stave__WEBPACK_IMPORTED_MODULE_7__.Stave(10, 150, 300, { right_bar: false });
     stave.setContext(ctx);
     stave.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function drawMultipleMeasures(options, contextBuilder) {
     var _a, _b;
-    expect(0);
+    options.assert.expect(0);
     // Get the rendering context
     const ctx = contextBuilder(options.elementId, 550, 200);
     // bar 1
@@ -47909,7 +47740,7 @@ function drawMultipleMeasures(options, contextBuilder) {
     beam2.setContext(ctx).draw();
 }
 function drawRepeats(options, contextBuilder) {
-    expect(0);
+    options.assert.expect(0);
     // Get the rendering context
     const ctx = contextBuilder(options.elementId, 750, 120);
     // bar 1
@@ -47977,7 +47808,7 @@ function drawRepeats(options, contextBuilder) {
     _src_formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter.FormatAndDraw(ctx, staveBar4, notesBar4);
 }
 function drawEndModifiers(options, contextBuilder) {
-    expect(0);
+    options.assert.expect(0);
     const staveWidth = 230;
     const blockHeight = 80;
     let x = 10;
@@ -48058,7 +47889,7 @@ function drawEndModifiers(options, contextBuilder) {
     drawStavesInTwoLines(_src_stavebarline__WEBPACK_IMPORTED_MODULE_8__.BarlineType.REPEAT_BOTH);
 }
 function drawStaveRepetition(options, contextBuilder) {
-    expect(0);
+    options.assert.expect(0);
     // Get the rendering context
     const ctx = contextBuilder(options.elementId, 725, 200);
     // bar 1
@@ -48116,7 +47947,7 @@ function drawStaveRepetition(options, contextBuilder) {
     _src_formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter.FormatAndDraw(ctx, mm4, notesmm4);
 }
 function drawVolta(options, contextBuilder) {
-    expect(0);
+    options.assert.expect(0);
     // Get the rendering context
     const ctx = contextBuilder(options.elementId, 725, 200);
     // bar 1
@@ -48203,7 +48034,7 @@ function drawVolta(options, contextBuilder) {
     _src_formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter.FormatAndDraw(ctx, mm9, notesmm9);
 }
 function drawVoltaModifier(options, contextBuilder) {
-    expect(0);
+    options.assert.expect(0);
     // Get the rendering context
     const ctx = contextBuilder(options.elementId, 1100, 200);
     // bar 1: volta begin, with modifiers (clef, keysignature)
@@ -48274,7 +48105,7 @@ function drawVoltaModifier(options, contextBuilder) {
     _src_formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter.FormatAndDraw(ctx, mm6, notesmm6);
 }
 function drawTempo(options, contextBuilder) {
-    expect(0);
+    options.assert.expect(0);
     const ctx = contextBuilder(options.elementId, 725, 350);
     const padding = 10;
     let x = 0;
@@ -48336,12 +48167,12 @@ function configureSingleLine(options, contextBuilder) {
         .setConfigForLine(4, { visible: true });
     stave.setContext(ctx).draw();
     const config = stave.getConfigForLines();
-    equal(config[0].visible, true, 'getLinesConfiguration() - Line 0');
-    equal(config[1].visible, false, 'getLinesConfiguration() - Line 1');
-    equal(config[2].visible, true, 'getLinesConfiguration() - Line 2');
-    equal(config[3].visible, false, 'getLinesConfiguration() - Line 3');
-    equal(config[4].visible, true, 'getLinesConfiguration() - Line 4');
-    ok(true, 'all pass');
+    options.assert.equal(config[0].visible, true, 'getLinesConfiguration() - Line 0');
+    options.assert.equal(config[1].visible, false, 'getLinesConfiguration() - Line 1');
+    options.assert.equal(config[2].visible, true, 'getLinesConfiguration() - Line 2');
+    options.assert.equal(config[3].visible, false, 'getLinesConfiguration() - Line 3');
+    options.assert.equal(config[4].visible, true, 'getLinesConfiguration() - Line 4');
+    options.assert.ok(true, 'all pass');
 }
 function configureAllLines(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 120);
@@ -48351,12 +48182,12 @@ function configureAllLines(options, contextBuilder) {
         .setContext(ctx)
         .draw();
     const config = stave.getConfigForLines();
-    equal(config[0].visible, false, 'getLinesConfiguration() - Line 0');
-    equal(config[1].visible, true, 'getLinesConfiguration() - Line 1');
-    equal(config[2].visible, false, 'getLinesConfiguration() - Line 2');
-    equal(config[3].visible, true, 'getLinesConfiguration() - Line 3');
-    equal(config[4].visible, false, 'getLinesConfiguration() - Line 4');
-    ok(true, 'all pass');
+    options.assert.equal(config[0].visible, false, 'getLinesConfiguration() - Line 0');
+    options.assert.equal(config[1].visible, true, 'getLinesConfiguration() - Line 1');
+    options.assert.equal(config[2].visible, false, 'getLinesConfiguration() - Line 2');
+    options.assert.equal(config[3].visible, true, 'getLinesConfiguration() - Line 3');
+    options.assert.equal(config[4].visible, false, 'getLinesConfiguration() - Line 4');
+    options.assert.ok(true, 'all pass');
 }
 function drawStaveText(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 900, 140);
@@ -48366,7 +48197,7 @@ function drawStaveText(options, contextBuilder) {
     stave.setText('Above Text', _src_modifier__WEBPACK_IMPORTED_MODULE_6__.Modifier.Position.ABOVE);
     stave.setText('Below Text', _src_modifier__WEBPACK_IMPORTED_MODULE_6__.Modifier.Position.BELOW);
     stave.setContext(ctx).draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function drawStaveTextMultiLine(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 900, 200);
@@ -48380,7 +48211,7 @@ function drawStaveTextMultiLine(options, contextBuilder) {
     stave.setText('Left Below Text', _src_modifier__WEBPACK_IMPORTED_MODULE_6__.Modifier.Position.BELOW, { shift_y: -10, justification: _src_textnote__WEBPACK_IMPORTED_MODULE_12__.TextJustification.LEFT });
     stave.setText('Right Below Text', _src_modifier__WEBPACK_IMPORTED_MODULE_6__.Modifier.Position.BELOW, { shift_y: 10, justification: _src_textnote__WEBPACK_IMPORTED_MODULE_12__.TextJustification.RIGHT });
     stave.setContext(ctx).draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function factoryAPI(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 900, 200);
@@ -48388,7 +48219,7 @@ function factoryAPI(options) {
     stave.setText('Violin', _src_modifier__WEBPACK_IMPORTED_MODULE_6__.Modifier.Position.LEFT, { shift_y: -10 });
     stave.setText('2nd line', _src_modifier__WEBPACK_IMPORTED_MODULE_6__.Modifier.Position.LEFT, { shift_y: 10 });
     f.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(StaveTests);
 
@@ -48404,7 +48235,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(StaveTe
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveConnectorTests": () => (/* binding */ StaveConnectorTests)
+/* harmony export */   StaveConnectorTests: () => (/* binding */ StaveConnectorTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/flow */ "./src/flow.ts");
@@ -48455,7 +48286,7 @@ function drawSingle(options, contextBuilder) {
     stave1.draw();
     stave2.draw();
     connector.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function drawSingle4pxStaveLines(options, contextBuilder) {
     const oldThickness = _src_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.STAVE_LINE_THICKNESS;
@@ -48472,7 +48303,7 @@ function drawSingle4pxStaveLines(options, contextBuilder) {
     stave2.draw();
     connector.draw();
     _src_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.STAVE_LINE_THICKNESS = oldThickness;
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function drawSingleBoth(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 300);
@@ -48490,7 +48321,7 @@ function drawSingleBoth(options, contextBuilder) {
     stave2.draw();
     connector1.draw();
     connector2.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function drawDouble(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 300);
@@ -48509,7 +48340,7 @@ function drawDouble(options, contextBuilder) {
     stave2.draw();
     connector.draw();
     line.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function drawBrace(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 450, 300);
@@ -48529,7 +48360,7 @@ function drawBrace(options, contextBuilder) {
     stave2.draw();
     connector.draw();
     line.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function drawBraceWide(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 300);
@@ -48548,7 +48379,7 @@ function drawBraceWide(options, contextBuilder) {
     stave2.draw();
     connector.draw();
     line.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function drawBracket(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 300);
@@ -48567,7 +48398,7 @@ function drawBracket(options, contextBuilder) {
     stave2.draw();
     connector.draw();
     line.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function drawRepeatBegin(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 300);
@@ -48583,7 +48414,7 @@ function drawRepeatBegin(options, contextBuilder) {
     stave1.draw();
     stave2.draw();
     line.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function drawRepeatEnd(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 300);
@@ -48599,7 +48430,7 @@ function drawRepeatEnd(options, contextBuilder) {
     stave1.draw();
     stave2.draw();
     line.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function drawThinDouble(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 300);
@@ -48615,7 +48446,7 @@ function drawThinDouble(options, contextBuilder) {
     stave1.draw();
     stave2.draw();
     line.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function drawRepeatAdjacent(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 300);
@@ -48655,7 +48486,7 @@ function drawRepeatAdjacent(options, contextBuilder) {
     connector2.draw();
     connector3.draw();
     connector4.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function drawRepeatOffset2(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 300);
@@ -48709,7 +48540,7 @@ function drawRepeatOffset2(options, contextBuilder) {
     connector3.draw();
     connector4.draw();
     connector5.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function drawRepeatOffset(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 300);
@@ -48765,7 +48596,7 @@ function drawRepeatOffset(options, contextBuilder) {
     connector3.draw();
     connector4.draw();
     connector5.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function drawCombined(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 550, 700);
@@ -48815,7 +48646,7 @@ function drawCombined(options, contextBuilder) {
     conn_bracket.draw();
     conn_none.draw();
     conn_brace.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(StaveConnectorTests);
 
@@ -48831,7 +48662,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(StaveCo
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveHairpinTests": () => (/* binding */ StaveHairpinTests)
+/* harmony export */   StaveHairpinTests: () => (/* binding */ StaveHairpinTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_stavehairpin__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/stavehairpin */ "./src/stavehairpin.ts");
@@ -48888,7 +48719,7 @@ function createTest(drawTwoHairpins) {
         factory.Formatter().joinVoices([voice]).formatToStave([voice], stave);
         factory.draw();
         drawTwoHairpins(ctx, notes);
-        ok(true, 'Simple Test');
+        options.assert.ok(true, 'Simple Test');
     };
 }
 const simple = createTest((ctx, notes) => {
@@ -48955,7 +48786,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(StaveHa
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveLineTests": () => (/* binding */ StaveLineTests)
+/* harmony export */   StaveLineTests: () => (/* binding */ StaveLineTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_dot__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/dot */ "./src/dot.ts");
@@ -49004,7 +48835,7 @@ function simple0(options) {
     staveLine2.render_options.line_dash = [10, 10];
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function simple1(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 770);
@@ -49082,7 +48913,7 @@ function simple1(options) {
     staveLine3.render_options.text_position_vertical = 1;
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(StaveLineTests);
 
@@ -49098,7 +48929,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(StaveLi
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveModifierTests": () => (/* binding */ StaveModifierTests)
+/* harmony export */   StaveModifierTests: () => (/* binding */ StaveModifierTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_stave__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/stave */ "./src/stave.ts");
@@ -49125,11 +48956,11 @@ function draw(options, contextBuilder) {
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_1__.Stave(10, 10, 300);
     stave.setContext(ctx);
     stave.draw();
-    equal(stave.getYForNote(0), 100, 'getYForNote(0)');
-    equal(stave.getYForLine(5), 100, 'getYForLine(5)');
-    equal(stave.getYForLine(0), 50, 'getYForLine(0) - Top Line');
-    equal(stave.getYForLine(4), 90, 'getYForLine(4) - Bottom Line');
-    ok(true, 'all pass');
+    options.assert.equal(stave.getYForNote(0), 100, 'getYForNote(0)');
+    options.assert.equal(stave.getYForLine(5), 100, 'getYForLine(5)');
+    options.assert.equal(stave.getYForLine(0), 50, 'getYForLine(0) - Top Line');
+    options.assert.equal(stave.getYForLine(4), 90, 'getYForLine(4) - Bottom Line');
+    options.assert.ok(true, 'all pass');
 }
 function drawBeginAndEnd(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
@@ -49156,7 +48987,7 @@ function drawBeginAndEnd(options, contextBuilder) {
     stave.setKeySignature('F', undefined, END);
     stave.setEndBarType(_src_stavebarline__WEBPACK_IMPORTED_MODULE_2__.BarlineType.SINGLE);
     stave.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(StaveModifierTests);
 
@@ -49172,7 +49003,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(StaveMo
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveNoteTests": () => (/* binding */ StaveNoteTests)
+/* harmony export */   StaveNoteTests: () => (/* binding */ StaveNoteTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_accidental__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/accidental */ "./src/accidental.ts");
@@ -49219,15 +49050,15 @@ __webpack_require__.r(__webpack_exports__);
 const StaveNoteTests = {
     Start() {
         QUnit.module('StaveNote');
-        test('Tick', ticks);
-        test('Tick - New API', ticksNewAPI);
-        test('Stem', stem);
-        test('Automatic Stem Direction', autoStem);
-        test('Stem Extension Pitch', stemExtensionPitch);
-        test('Displacement after calling setStemDirection', setStemDirectionDisplacement);
-        test('StaveLine', staveLine);
-        test('Width', width);
-        test('TickContext', tickContext);
+        QUnit.test('Tick', ticks);
+        QUnit.test('Tick - New API', ticksNewAPI);
+        QUnit.test('Stem', stem);
+        QUnit.test('Automatic Stem Direction', autoStem);
+        QUnit.test('Stem Extension Pitch', stemExtensionPitch);
+        QUnit.test('Displacement after calling setStemDirection', setStemDirectionDisplacement);
+        QUnit.test('StaveLine', staveLine);
+        QUnit.test('Width', width);
+        QUnit.test('TickContext', tickContext);
         const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
         run('StaveNote Draw - Treble', drawBasic, { clef: 'treble', octaveShift: 0, restKey: 'r/4' });
         run('StaveNote BoundingBoxes - Treble', drawBoundingBoxes, { clef: 'treble', octaveShift: 0, restKey: 'r/4' });
@@ -49288,7 +49119,7 @@ function draw(note, stave, context, x, drawBoundingBox = false, addModifierConte
     }
     return note;
 }
-function ticks() {
+function ticks(assert) {
     const BEAT = (1 * _src_flow__WEBPACK_IMPORTED_MODULE_6__.Flow.RESOLUTION) / 4;
     // Key value pairs of `testName: [durationString, expectedBeats, expectedNoteType]`
     const tickTests = {
@@ -49314,14 +49145,14 @@ function ticks() {
         const expectedBeats = testData[1];
         const expectedNoteType = testData[2];
         const note = new _src_stavenote__WEBPACK_IMPORTED_MODULE_13__.StaveNote({ keys: ['c/4', 'e/4', 'g/4'], duration: durationString });
-        equal(note.getTicks().value(), BEAT * expectedBeats, testName + ' must have ' + expectedBeats + ' beats');
-        equal(note.getNoteType(), expectedNoteType, 'Note type must be ' + expectedNoteType);
+        assert.equal(note.getTicks().value(), BEAT * expectedBeats, testName + ' must have ' + expectedBeats + ' beats');
+        assert.equal(note.getNoteType(), expectedNoteType, 'Note type must be ' + expectedNoteType);
     });
-    throws(() => new _src_stavenote__WEBPACK_IMPORTED_MODULE_13__.StaveNote({ keys: ['c/4', 'e/4', 'g/4'], duration: '8.7dddm' }), /BadArguments/, "Invalid note duration '8.7' throws BadArguments exception");
-    throws(() => new _src_stavenote__WEBPACK_IMPORTED_MODULE_13__.StaveNote({ keys: ['c/4', 'e/4', 'g/4'], duration: '2Z' }), /BadArguments/, "Invalid note type 'Z' throws BadArguments exception");
-    throws(() => new _src_stavenote__WEBPACK_IMPORTED_MODULE_13__.StaveNote({ keys: ['c/4', 'e/4', 'g/4'], duration: '2dddZ' }), /BadArguments/, "Invalid note type 'Z' throws BadArguments exception");
+    assert.throws(() => new _src_stavenote__WEBPACK_IMPORTED_MODULE_13__.StaveNote({ keys: ['c/4', 'e/4', 'g/4'], duration: '8.7dddm' }), /BadArguments/, "Invalid note duration '8.7' throws BadArguments exception");
+    assert.throws(() => new _src_stavenote__WEBPACK_IMPORTED_MODULE_13__.StaveNote({ keys: ['c/4', 'e/4', 'g/4'], duration: '2Z' }), /BadArguments/, "Invalid note type 'Z' throws BadArguments exception");
+    assert.throws(() => new _src_stavenote__WEBPACK_IMPORTED_MODULE_13__.StaveNote({ keys: ['c/4', 'e/4', 'g/4'], duration: '2dddZ' }), /BadArguments/, "Invalid note type 'Z' throws BadArguments exception");
 }
-function ticksNewAPI() {
+function ticksNewAPI(assert) {
     const BEAT = (1 * _src_flow__WEBPACK_IMPORTED_MODULE_6__.Flow.RESOLUTION) / 4;
     // Key value pairs of `testName: [noteData, expectedBeats, expectedNoteType]`
     const tickTests = {
@@ -49348,18 +49179,18 @@ function ticksNewAPI() {
         const expectedNoteType = testData[2];
         noteData.keys = ['c/4', 'e/4', 'g/4'];
         const note = new _src_stavenote__WEBPACK_IMPORTED_MODULE_13__.StaveNote(noteData);
-        equal(note.getTicks().value(), BEAT * expectedBeats, testName + ' must have ' + expectedBeats + ' beats');
-        equal(note.getNoteType(), expectedNoteType, 'Note type must be ' + expectedNoteType);
+        assert.equal(note.getTicks().value(), BEAT * expectedBeats, testName + ' must have ' + expectedBeats + ' beats');
+        assert.equal(note.getNoteType(), expectedNoteType, 'Note type must be ' + expectedNoteType);
     });
-    throws(() => new _src_stavenote__WEBPACK_IMPORTED_MODULE_13__.StaveNote({ keys: ['c/4', 'e/4', 'g/4'], duration: '8.7dddm' }), /BadArguments/, "Invalid note duration '8.7' throws BadArguments exception");
-    throws(() => new _src_stavenote__WEBPACK_IMPORTED_MODULE_13__.StaveNote({ keys: ['c/4', 'e/4', 'g/4'], duration: '2Z' }), /BadArguments/, "Invalid note type 'Z' throws BadArguments exception");
-    throws(() => new _src_stavenote__WEBPACK_IMPORTED_MODULE_13__.StaveNote({ keys: ['c/4', 'e/4', 'g/4'], duration: '2dddZ' }), /BadArguments/, "Invalid note type 'Z' throws BadArguments exception");
+    assert.throws(() => new _src_stavenote__WEBPACK_IMPORTED_MODULE_13__.StaveNote({ keys: ['c/4', 'e/4', 'g/4'], duration: '8.7dddm' }), /BadArguments/, "Invalid note duration '8.7' throws BadArguments exception");
+    assert.throws(() => new _src_stavenote__WEBPACK_IMPORTED_MODULE_13__.StaveNote({ keys: ['c/4', 'e/4', 'g/4'], duration: '2Z' }), /BadArguments/, "Invalid note type 'Z' throws BadArguments exception");
+    assert.throws(() => new _src_stavenote__WEBPACK_IMPORTED_MODULE_13__.StaveNote({ keys: ['c/4', 'e/4', 'g/4'], duration: '2dddZ' }), /BadArguments/, "Invalid note type 'Z' throws BadArguments exception");
 }
-function stem() {
+function stem(assert) {
     const note = new _src_stavenote__WEBPACK_IMPORTED_MODULE_13__.StaveNote({ keys: ['c/4', 'e/4', 'g/4'], duration: 'w' });
-    equal(note.getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_14__.Stem.UP, 'Default note has UP stem');
+    assert.equal(note.getStemDirection(), _src_stem__WEBPACK_IMPORTED_MODULE_14__.Stem.UP, 'Default note has UP stem');
 }
-function autoStem() {
+function autoStem(assert) {
     const testData = [
         [['c/5', 'e/5', 'g/5'], _src_stem__WEBPACK_IMPORTED_MODULE_14__.Stem.DOWN],
         [['e/4', 'g/4', 'c/5'], _src_stem__WEBPACK_IMPORTED_MODULE_14__.Stem.UP],
@@ -49371,10 +49202,10 @@ function autoStem() {
         const keys = td[0];
         const expectedStemDirection = td[1];
         const note = new _src_stavenote__WEBPACK_IMPORTED_MODULE_13__.StaveNote({ keys: keys, auto_stem: true, duration: '8' });
-        equal(note.getStemDirection(), expectedStemDirection, 'Stem must be ' + (expectedStemDirection === _src_stem__WEBPACK_IMPORTED_MODULE_14__.Stem.UP ? 'up' : 'down'));
+        assert.equal(note.getStemDirection(), expectedStemDirection, 'Stem must be ' + (expectedStemDirection === _src_stem__WEBPACK_IMPORTED_MODULE_14__.Stem.UP ? 'up' : 'down'));
     });
 }
-function stemExtensionPitch() {
+function stemExtensionPitch(assert) {
     // [keys, expectedStemExtension, override stem direction]
     const testData = [
         [['c/5', 'e/5', 'g/5'], 0, 0],
@@ -49399,55 +49230,55 @@ function stemExtensionPitch() {
         else {
             note = new _src_stavenote__WEBPACK_IMPORTED_MODULE_13__.StaveNote({ keys: keys, duration: '4', stem_direction: overrideStemDirection });
         }
-        equal(note.getStemExtension(), expectedStemExtension, 'For ' + keys.toString() + ' StemExtension must be ' + expectedStemExtension);
+        assert.equal(note.getStemExtension(), expectedStemExtension, 'For ' + keys.toString() + ' StemExtension must be ' + expectedStemExtension);
         // set to weird Stave
         const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_12__.Stave(10, 10, 300, { spacing_between_lines_px: 20 });
         note.setStave(stave);
-        equal(note.getStemExtension(), expectedStemExtension * 2, 'For wide staff ' + keys.toString() + ' StemExtension must be ' + expectedStemExtension * 2);
+        assert.equal(note.getStemExtension(), expectedStemExtension * 2, 'For wide staff ' + keys.toString() + ' StemExtension must be ' + expectedStemExtension * 2);
         //    const whole_note = new StaveNote({ keys: keys, duration: 'w' });
-        //    equal(
+        //    assert.equal(
         //      whole_note.getStemExtension(),
         //      -1 * Flow.STEM_HEIGHT,
         //      'For ' + keys.toString() + ' whole_note StemExtension must always be -1 * Flow.STEM_HEIGHT'
         //    );
     });
 }
-function setStemDirectionDisplacement() {
+function setStemDirectionDisplacement(assert) {
     function getDisplacements(note) {
         return note.noteHeads.map((noteHead) => noteHead.isDisplaced());
     }
     const stemUpDisplacements = [false, true, false];
     const stemDownDisplacements = [true, false, false];
     const note = new _src_stavenote__WEBPACK_IMPORTED_MODULE_13__.StaveNote({ keys: ['c/5', 'd/5', 'g/5'], stem_direction: _src_stem__WEBPACK_IMPORTED_MODULE_14__.Stem.UP, duration: '4' });
-    deepEqual(getDisplacements(note), stemUpDisplacements);
+    assert.deepEqual(getDisplacements(note), stemUpDisplacements);
     note.setStemDirection(_src_stem__WEBPACK_IMPORTED_MODULE_14__.Stem.DOWN);
-    deepEqual(getDisplacements(note), stemDownDisplacements);
+    assert.deepEqual(getDisplacements(note), stemDownDisplacements);
     note.setStemDirection(_src_stem__WEBPACK_IMPORTED_MODULE_14__.Stem.UP);
-    deepEqual(getDisplacements(note), stemUpDisplacements);
+    assert.deepEqual(getDisplacements(note), stemUpDisplacements);
 }
-function staveLine() {
+function staveLine(assert) {
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_12__.Stave(10, 10, 300);
     const note = new _src_stavenote__WEBPACK_IMPORTED_MODULE_13__.StaveNote({ keys: ['c/4', 'e/4', 'a/4'], duration: 'w' });
     note.setStave(stave);
     const props = note.getKeyProps();
-    equal(props[0].line, 0, 'C/4 on line 0');
-    equal(props[1].line, 1, 'E/4 on line 1');
-    equal(props[2].line, 2.5, 'A/4 on line 2.5');
+    assert.equal(props[0].line, 0, 'C/4 on line 0');
+    assert.equal(props[1].line, 1, 'E/4 on line 1');
+    assert.equal(props[2].line, 2.5, 'A/4 on line 2.5');
     const ys = note.getYs();
-    equal(ys.length, 3, 'Chord should be rendered on three lines');
-    equal(ys[0], 100, 'Line for C/4');
-    equal(ys[1], 90, 'Line for E/4');
-    equal(ys[2], 75, 'Line for A/4');
+    assert.equal(ys.length, 3, 'Chord should be rendered on three lines');
+    assert.equal(ys[0], 100, 'Line for C/4');
+    assert.equal(ys[1], 90, 'Line for E/4');
+    assert.equal(ys[2], 75, 'Line for A/4');
 }
-function width() {
+function width(assert) {
     const note = new _src_stavenote__WEBPACK_IMPORTED_MODULE_13__.StaveNote({ keys: ['c/4', 'e/4', 'a/4'], duration: 'w' });
-    throws(() => note.getWidth(), /UnformattedNote/, 'Unformatted note should have no width');
+    assert.throws(() => note.getWidth(), /UnformattedNote/, 'Unformatted note should have no width');
 }
-function tickContext() {
+function tickContext(assert) {
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_12__.Stave(10, 10, 400);
     const note = new _src_stavenote__WEBPACK_IMPORTED_MODULE_13__.StaveNote({ keys: ['c/4', 'e/4', 'a/4'], duration: 'w' }).setStave(stave);
     new _src_tickcontext__WEBPACK_IMPORTED_MODULE_17__.TickContext().addTickable(note).preFormat().setX(10).setPadding(0);
-    expect(0);
+    assert.expect(0);
 }
 function drawBasic(options, contextBuilder) {
     const clef = options.params.clef;
@@ -49495,7 +49326,7 @@ function drawBasic(options, contextBuilder) {
         { clef: clef, keys: restKeys, duration: '128r' },
         { keys: ['x/4'], duration: 'h' },
     ];
-    expect(noteStructs.length * 2);
+    options.assert.expect(noteStructs.length * 2);
     const colorDescendants = (parentItem, color) => () => parentItem.querySelectorAll('*').forEach((child) => {
         child.setAttribute('fill', color);
         child.setAttribute('stroke', color);
@@ -49510,8 +49341,8 @@ function drawBasic(options, contextBuilder) {
                 item.addEventListener('mouseout', colorDescendants(item, 'black'), false);
             }
         }
-        ok(note.getX() > 0, 'Note ' + i + ' has X value');
-        ok(note.getYs().length > 0, 'Note ' + i + ' has Y values');
+        options.assert.ok(note.getX() > 0, 'Note ' + i + ' has X value');
+        options.assert.ok(note.getYs().length > 0, 'Note ' + i + ' has Y values');
     }
 }
 function drawBoundingBoxes(options, contextBuilder) {
@@ -49560,15 +49391,15 @@ function drawBoundingBoxes(options, contextBuilder) {
         { clef: clef, keys: restKeys, duration: '128r' },
         { keys: ['x/4'], duration: 'h' },
     ];
-    expect(noteStructs.length * 2);
+    options.assert.expect(noteStructs.length * 2);
     for (let i = 0; i < noteStructs.length; ++i) {
         const note = draw(staveNote(noteStructs[i]), stave, ctx, (i + 1) * 25, true /* drawBoundingBox */, false /* addModifierContext */);
-        ok(note.getX() > 0, 'Note ' + i + ' has X value');
-        ok(note.getYs().length > 0, 'Note ' + i + ' has Y values');
+        options.assert.ok(note.getX() > 0, 'Note ' + i + ' has X value');
+        options.assert.ok(note.getYs().length > 0, 'Note ' + i + ' has Y values');
     }
 }
 function drawBass(options, contextBuilder) {
-    expect(40);
+    options.assert.expect(40);
     const ctx = contextBuilder(options.elementId, 600, 280);
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_12__.Stave(10, 10, 650);
     stave.setContext(ctx);
@@ -49598,8 +49429,8 @@ function drawBass(options, contextBuilder) {
     ];
     for (let i = 0; i < noteStructs.length; ++i) {
         const note = draw(staveNote(noteStructs[i]), stave, ctx, (i + 1) * 25);
-        ok(note.getX() > 0, 'Note ' + i + ' has X value');
-        ok(note.getYs().length > 0, 'Note ' + i + ' has Y values');
+        options.assert.ok(note.getX() > 0, 'Note ' + i + ' has X value');
+        options.assert.ok(note.getYs().length > 0, 'Note ' + i + ' has Y values');
     }
 }
 function displacements(options, contextBuilder) {
@@ -49628,11 +49459,11 @@ function displacements(options, contextBuilder) {
             stem_direction: _src_stem__WEBPACK_IMPORTED_MODULE_14__.Stem.DOWN,
         },
     ];
-    expect(noteStructs.length * 2);
+    options.assert.expect(noteStructs.length * 2);
     for (let i = 0; i < noteStructs.length; ++i) {
         const note = draw(staveNote(noteStructs[i]), stave, ctx, (i + 1) * 45);
-        ok(note.getX() > 0, 'Note ' + i + ' has X value');
-        ok(note.getYs().length > 0, 'Note ' + i + ' has Y values');
+        options.assert.ok(note.getX() > 0, 'Note ' + i + ' has X value');
+        options.assert.ok(note.getYs().length > 0, 'Note ' + i + ' has Y values');
     }
 }
 function drawHarmonicAndMuted(options, contextBuilder) {
@@ -49678,11 +49509,11 @@ function drawHarmonicAndMuted(options, contextBuilder) {
         { keys: ['c/4', 'e/4', 'a/4'], duration: '64m', stem_direction: _src_stem__WEBPACK_IMPORTED_MODULE_14__.Stem.DOWN },
         { keys: ['c/4', 'e/4', 'a/4'], duration: '128m', stem_direction: _src_stem__WEBPACK_IMPORTED_MODULE_14__.Stem.DOWN },
     ];
-    expect(noteStructs.length * 2);
+    options.assert.expect(noteStructs.length * 2);
     for (let i = 0; i < noteStructs.length; ++i) {
         const note = draw(staveNote(noteStructs[i]), stave, ctx, i * 25 + 5);
-        ok(note.getX() > 0, 'Note ' + i + ' has X value');
-        ok(note.getYs().length > 0, 'Note ' + i + ' has Y values');
+        options.assert.ok(note.getX() > 0, 'Note ' + i + ' has X value');
+        options.assert.ok(note.getYs().length > 0, 'Note ' + i + ' has Y values');
     }
 }
 function drawSlash(options, contextBuilder) {
@@ -49721,7 +49552,7 @@ function drawSlash(options, contextBuilder) {
     _src_formatter__WEBPACK_IMPORTED_MODULE_7__.Formatter.FormatAndDraw(ctx, stave, stave_notes, false);
     beam1.setContext(ctx).draw();
     beam2.setContext(ctx).draw();
-    ok('Slash Note Heads');
+    options.assert.ok('Slash Note Heads');
 }
 function drawKeyStyles(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 300, 280);
@@ -49734,8 +49565,8 @@ function drawKeyStyles(options, contextBuilder) {
     new _src_tickcontext__WEBPACK_IMPORTED_MODULE_17__.TickContext().addTickable(note).preFormat().setX(25);
     stave.setContext(ctx).draw();
     note.setContext(ctx).draw();
-    ok(note.getX() > 0, 'Note has X value');
-    ok(note.getYs().length > 0, 'Note has Y values');
+    options.assert.ok(note.getX() > 0, 'Note has X value');
+    options.assert.ok(note.getYs().length > 0, 'Note has Y values');
 }
 function drawNoteStyles(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 300, 280);
@@ -49748,8 +49579,8 @@ function drawNoteStyles(options, contextBuilder) {
     new _src_tickcontext__WEBPACK_IMPORTED_MODULE_17__.TickContext().addTickable(note).preFormat().setX(25);
     stave.setContext(ctx).draw();
     note.setContext(ctx).draw();
-    ok(note.getX() > 0, 'Note has X value');
-    ok(note.getYs().length > 0, 'Note has Y values');
+    options.assert.ok(note.getX() > 0, 'Note has X value');
+    options.assert.ok(note.getYs().length > 0, 'Note has Y values');
 }
 function drawNoteStemStyles(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 300, 280);
@@ -49762,7 +49593,7 @@ function drawNoteStemStyles(options, contextBuilder) {
     new _src_tickcontext__WEBPACK_IMPORTED_MODULE_17__.TickContext().addTickable(note).preFormat().setX(25);
     stave.setContext(ctx).draw();
     note.setContext(ctx).draw();
-    ok('Note Stem Style');
+    options.assert.ok('Note Stem Style');
 }
 function drawNoteStemLengths(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 975, 150);
@@ -49811,7 +49642,7 @@ function drawNoteStemLengths(options, contextBuilder) {
         notes.push(note);
     }
     _src_formatter__WEBPACK_IMPORTED_MODULE_7__.Formatter.FormatAndDraw(ctx, stave, notes);
-    ok('Note Stem Length');
+    options.assert.ok('Note Stem Length');
 }
 function drawNoteStylesWithFlag(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 300, 280);
@@ -49824,8 +49655,8 @@ function drawNoteStylesWithFlag(options, contextBuilder) {
     new _src_tickcontext__WEBPACK_IMPORTED_MODULE_17__.TickContext().addTickable(note).preFormat().setX(25);
     stave.setContext(ctx).draw();
     note.setContext(ctx).draw();
-    ok(note.getX() > 0, 'Note has X value');
-    ok(note.getYs().length > 0, 'Note has Y values');
+    options.assert.ok(note.getX() > 0, 'Note has X value');
+    options.assert.ok(note.getYs().length > 0, 'Note has Y values');
 }
 function drawBeamStyles(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 160);
@@ -49873,7 +49704,7 @@ function drawBeamStyles(options, contextBuilder) {
     beam2.setContext(ctx).draw();
     beam3.setContext(ctx).draw();
     beam4.setContext(ctx).draw();
-    ok('draw beam styles');
+    options.assert.ok('draw beam styles');
 }
 function dotsAndFlagsStemUp(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 800, 150);
@@ -49899,7 +49730,7 @@ function dotsAndFlagsStemUp(options, contextBuilder) {
     for (let i = 0; i < notes.length; ++i) {
         draw(notes[i], stave, ctx, i * 65);
     }
-    ok(true, 'Full Dot');
+    options.assert.ok(true, 'Full Dot');
 }
 function dotsAndFlagsStemDown(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 800, 160);
@@ -49924,7 +49755,7 @@ function dotsAndFlagsStemDown(options, contextBuilder) {
     for (let i = 0; i < staveNotes.length; ++i) {
         draw(staveNotes[i], stave, ctx, i * 65);
     }
-    ok(true, 'Full Dot');
+    options.assert.ok(true, 'Full Dot');
 }
 function dotsAndBeamsUp(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 800, 150);
@@ -49950,7 +49781,7 @@ function dotsAndBeamsUp(options, contextBuilder) {
         draw(staveNotes[i], stave, ctx, i * 65);
     }
     beam.setContext(ctx).draw();
-    ok(true, 'Full Dot');
+    options.assert.ok(true, 'Full Dot');
 }
 function dotsAndBeamsDown(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 800, 160);
@@ -49975,7 +49806,7 @@ function dotsAndBeamsDown(options, contextBuilder) {
         draw(staveNotes[i], stave, ctx, i * 65);
     }
     beam.setContext(ctx).draw();
-    ok(true, 'Full Dot');
+    options.assert.ok(true, 'Full Dot');
 }
 function noteHeadsSimple(options) {
     const vf = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 800, 250);
@@ -50006,7 +49837,7 @@ function noteHeadsSimple(options) {
         ],
     });
     vf.draw();
-    expect(0);
+    options.assert.expect(0);
 }
 function noPadding(options) {
     const vf = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 800, 500);
@@ -50038,7 +49869,7 @@ function noPadding(options) {
     newStave(100, true);
     newStave(200, false);
     vf.draw();
-    expect(0);
+    options.assert.expect(0);
 }
 function noteHeadsHidden(options) {
     const vf = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 800, 250);
@@ -50073,7 +49904,7 @@ function noteHeadsHidden(options) {
         voices: [score.voice(notes4), score.voice(score.notes('e4/8, e4/8/r, e4/q/r, e4/h/r'))],
     });
     vf.draw();
-    expect(0);
+    options.assert.expect(0);
 }
 function centerAlignedRest(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 400, 160);
@@ -50082,7 +49913,7 @@ function centerAlignedRest(options) {
     const voice = f.Voice().setStrict(false).addTickables([note]);
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function centerAlignedRestFermata(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 400, 160);
@@ -50093,7 +49924,7 @@ function centerAlignedRestFermata(options) {
     const voice = f.Voice().setStrict(false).addTickables([note]);
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function centerAlignedRestAnnotation(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 400, 160);
@@ -50104,7 +49935,7 @@ function centerAlignedRestAnnotation(options) {
     const voice = f.Voice().setStrict(false).addTickables([note]);
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function centerAlignedNoteMultiModifiers(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 400, 160);
@@ -50125,7 +49956,7 @@ function centerAlignedNoteMultiModifiers(options) {
     const voice = f.Voice().setStrict(false).addTickables([note]);
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function centerAlignedMultiVoice(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 400, 160);
@@ -50153,7 +49984,7 @@ function centerAlignedMultiVoice(options) {
     const voice1 = f.Voice({ time: '3/8' }).setStrict(false).addTickables(notes1);
     f.Formatter().joinVoices([voice0, voice1]).formatToStave([voice0, voice1], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(StaveNoteTests);
 
@@ -50169,7 +50000,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(StaveNo
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StaveTieTests": () => (/* binding */ StaveTieTests)
+/* harmony export */   StaveTieTests: () => (/* binding */ StaveTieTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_stem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/stem */ "./src/stem.ts");
@@ -50208,7 +50039,7 @@ function createTest(notesData, setupTies) {
         setupTies(factory, notes, stave);
         factory.Formatter().joinVoices([voice]).formatToStave([voice], stave);
         factory.draw();
-        ok(true);
+        options.assert.ok(true);
     };
 }
 const simple = createTest(['(cb4 e#4 a4)/2, (d4 e4 f4)', { stem: 'down' }], (f, notes) => {
@@ -50301,7 +50132,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(StaveTi
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StringNumberTests": () => (/* binding */ StringNumberTests)
+/* harmony export */   StringNumberTests: () => (/* binding */ StringNumberTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_glyph__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/glyph */ "./src/glyph.ts");
@@ -50328,6 +50159,7 @@ const StringNumberTests = {
         run('Fret Hand Finger In Notation', drawFretHandFingers);
         run('Multi Voice With Strokes, String & Finger Numbers', multi);
         run('Complex Measure With String & Finger Numbers', drawAccidentals);
+        run('Shifted Notehead, Multiple Modifiers', shiftedNoteheadMultipleModifiers);
     },
 };
 function drawMultipleMeasures(options) {
@@ -50398,7 +50230,7 @@ function drawMultipleMeasures(options) {
     const voice3 = score.voice(notesBar3, { time: '6/4' });
     f.Formatter().joinVoices([voice3]).formatToStave([voice3], stave3);
     f.draw();
-    ok(true, 'String Number');
+    options.assert.ok(true, 'String Number');
 }
 function drawFretHandFingers(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 725, 200);
@@ -50465,7 +50297,7 @@ function drawFretHandFingers(options) {
     const voice2 = score.voice(notes2);
     f.Formatter().joinVoices([voice2]).formatToStave([voice2], stave2);
     f.draw();
-    ok(true, 'String Number');
+    options.assert.ok(true, 'String Number');
 }
 function multi(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 200);
@@ -50512,7 +50344,7 @@ function multi(options) {
     f.Beam({ notes: notes2.slice(0, 4) });
     f.Beam({ notes: notes2.slice(4, 8) });
     f.draw();
-    ok(true, 'Strokes Test Multi Voice');
+    options.assert.ok(true, 'Strokes Test Multi Voice');
 }
 function drawAccidentals(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 750);
@@ -50581,7 +50413,25 @@ function drawAccidentals(options) {
         .addClef('treble')
         .draw();
     voice.draw(ctx, stave);
-    ok(true, 'String Number');
+    options.assert.ok(true, 'String Number');
+}
+function shiftedNoteheadMultipleModifiers(options) {
+    const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 900, 150);
+    const score = f.EasyScore();
+    score.set({ time: '6/4' });
+    const stave = f.Stave({ width: 900 }).setEndBarType(_src_stavebarline__WEBPACK_IMPORTED_MODULE_4__.BarlineType.END).addClef('treble');
+    const notes = ['A4 B4', 'B4 C5', 'A4 B#4', 'B4 C#5', 'A#4 B#4', 'B#4 C#5']
+        .map((keys) => score.notes(`(${keys})/q`))
+        .flat();
+    notes.forEach((note) => {
+        note
+            .addModifier(f.StringNumber({ number: '2', position: 'left' }, true), 1)
+            .addModifier(f.StringNumber({ number: '2', position: 'right' }, true), 1);
+    });
+    const voice = score.voice(notes);
+    f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
+    f.draw();
+    options.assert.ok(true, 'String Number');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(StringNumberTests);
 
@@ -50597,7 +50447,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(StringN
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StrokesTests": () => (/* binding */ StrokesTests)
+/* harmony export */   StrokesTests: () => (/* binding */ StrokesTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/index */ "./src/index.ts");
@@ -50652,7 +50502,7 @@ function brushRollRasquedo(options) {
     const voice2 = score.voice(notes2);
     f.Formatter().joinVoices([voice2]).formatToStave([voice2], stave2);
     f.draw();
-    ok(true, 'Brush/Roll/Rasquedo');
+    options.assert.ok(true, 'Brush/Roll/Rasquedo');
 }
 function arpeggioDirectionless(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 700, 200);
@@ -50685,7 +50535,7 @@ function arpeggioDirectionless(options) {
     const voice1 = score.voice(notes1);
     f.Formatter().joinVoices([voice1]).formatToStave([voice1], stave1);
     f.draw();
-    ok(true, 'Arpeggio directionless (without arrows)');
+    options.assert.ok(true, 'Arpeggio directionless (without arrows)');
 }
 function multiVoice(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 500, 200);
@@ -50705,7 +50555,7 @@ function multiVoice(options) {
     const voices = [notes1, notes2].map((notes) => score.voice(notes));
     f.Formatter().joinVoices(voices).formatToStave(voices, stave);
     f.draw();
-    ok(true, 'Strokes Test Multi Voice');
+    options.assert.ok(true, 'Strokes Test Multi Voice');
 }
 function multiNotationAndTab(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 400, 275);
@@ -50767,7 +50617,7 @@ function multiNotationAndTab(options) {
     const voices = [notes1, notes2, tabNotes1, tabNotes2].map((notes) => score.voice(notes));
     f.Formatter().joinVoices(voices).formatToStave(voices, stave);
     f.draw();
-    ok(true, 'Strokes Test Notation & Tab Multi Voice');
+    options.assert.ok(true, 'Strokes Test Notation & Tab Multi Voice');
 }
 /*
 function drawTabStrokes(options: TestOptions): void {
@@ -50855,7 +50705,7 @@ function drawTabStrokes(options: TestOptions): void {
 
   f.draw();
 
-  ok(true, 'Strokes Tab test');
+  options.assert.ok(true, 'Strokes Tab test');
 }
 */
 function notesWithTab(options) {
@@ -50972,7 +50822,7 @@ function notesWithTab(options) {
     beams.forEach(function (beam) {
         beam.setContext(f.getContext()).draw();
     });
-    ok(true);
+    options.assert.ok(true);
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(StrokesTests);
 
@@ -50988,7 +50838,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(Strokes
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "StyleTests": () => (/* binding */ StyleTests)
+/* harmony export */   StyleTests: () => (/* binding */ StyleTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_annotation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/annotation */ "./src/annotation.ts");
@@ -51087,7 +50937,7 @@ function stave(options) {
     const voice = f.Voice().addTickables(notes);
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'Basic Style');
+    options.assert.ok(true, 'Basic Style');
 }
 /**
  * Color elements on a guitar tab.
@@ -51118,7 +50968,7 @@ function tab(options, contextBuilder) {
             .addStroke(0, new _src_strokes__WEBPACK_IMPORTED_MODULE_9__.Stroke(1, { all_voices: false }).setStyle(FS('blue'))),
     ];
     _src_formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter.FormatAndDraw(ctx, stave, notes);
-    ok(true, 'TabNote Modifiers Style');
+    options.assert.ok(true, 'TabNote Modifiers Style');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(StyleTests);
 
@@ -51134,7 +50984,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(StyleTe
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TabNoteTests": () => (/* binding */ TabNoteTests)
+/* harmony export */   TabNoteTests: () => (/* binding */ TabNoteTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_dot__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/dot */ "./src/dot.ts");
@@ -51163,10 +51013,10 @@ __webpack_require__.r(__webpack_exports__);
 const TabNoteTests = {
     Start() {
         QUnit.module('TabNote');
-        test('Tick', ticks);
-        test('TabStave Line', tabStaveLine);
-        test('Width', width);
-        test('TickContext', tickContext);
+        QUnit.test('Tick', ticks);
+        QUnit.test('TabStave Line', tabStaveLine);
+        QUnit.test('Width', width);
+        QUnit.test('TickContext', tickContext);
         const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
         run('TabNote Draw', draw);
         run('TabNote Stems Up', drawStemsUp);
@@ -51176,14 +51026,14 @@ const TabNoteTests = {
         run('TabNote Stems with Dots', drawStemsDotted);
     },
 };
-function ticks() {
+function ticks(assert) {
     const BEAT = (1 * _src_flow__WEBPACK_IMPORTED_MODULE_2__.Flow.RESOLUTION) / 4;
     let note = new _src_tabnote__WEBPACK_IMPORTED_MODULE_6__.TabNote({ positions: [{ str: 6, fret: 6 }], duration: '1' });
-    equal(note.getTicks().value(), BEAT * 4, 'Whole note has 4 beats');
+    assert.equal(note.getTicks().value(), BEAT * 4, 'Whole note has 4 beats');
     note = new _src_tabnote__WEBPACK_IMPORTED_MODULE_6__.TabNote({ positions: [{ str: 3, fret: 4 }], duration: '4' });
-    equal(note.getTicks().value(), BEAT, 'Quarter note has 1 beat');
+    assert.equal(note.getTicks().value(), BEAT, 'Quarter note has 1 beat');
 }
-function tabStaveLine() {
+function tabStaveLine(assert) {
     const note = new _src_tabnote__WEBPACK_IMPORTED_MODULE_6__.TabNote({
         positions: [
             { str: 6, fret: 6 },
@@ -51192,19 +51042,19 @@ function tabStaveLine() {
         duration: '1',
     });
     const positions = note.getPositions();
-    equal(positions[0].str, 6, 'String 6, Fret 6');
-    equal(positions[0].fret, 6, 'String 6, Fret 6');
-    equal(positions[1].str, 4, 'String 4, Fret 5');
-    equal(positions[1].fret, 5, 'String 4, Fret 5');
+    assert.equal(positions[0].str, 6, 'String 6, Fret 6');
+    assert.equal(positions[0].fret, 6, 'String 6, Fret 6');
+    assert.equal(positions[1].str, 4, 'String 4, Fret 5');
+    assert.equal(positions[1].fret, 5, 'String 4, Fret 5');
     const stave = new _src_stave__WEBPACK_IMPORTED_MODULE_5__.Stave(10, 10, 300);
     note.setStave(stave);
     const ys = note.getYs();
-    equal(ys.length, 2, 'Chord should be rendered on two lines');
-    equal(ys[0], 100, 'Line for String 6, Fret 6');
-    equal(ys[1], 80, 'Line for String 4, Fret 5');
+    assert.equal(ys.length, 2, 'Chord should be rendered on two lines');
+    assert.equal(ys[0], 100, 'Line for String 6, Fret 6');
+    assert.equal(ys[1], 80, 'Line for String 4, Fret 5');
 }
-function width() {
-    expect(1);
+function width(assert) {
+    assert.expect(1);
     const note = new _src_tabnote__WEBPACK_IMPORTED_MODULE_6__.TabNote({
         positions: [
             { str: 6, fret: 6 },
@@ -51212,9 +51062,9 @@ function width() {
         ],
         duration: '1',
     });
-    throws(() => note.getWidth(), /UnformattedNote/, 'Unformatted note should have no width');
+    assert.throws(() => note.getWidth(), /UnformattedNote/, 'Unformatted note should have no width');
 }
-function tickContext() {
+function tickContext(assert) {
     const note = new _src_tabnote__WEBPACK_IMPORTED_MODULE_6__.TabNote({
         positions: [
             { str: 6, fret: 6 },
@@ -51223,7 +51073,7 @@ function tickContext() {
         duration: '1',
     });
     const tickContext = new _src_tickcontext__WEBPACK_IMPORTED_MODULE_8__.TickContext().addTickable(note).preFormat().setX(10).setPadding(0);
-    equal(tickContext.getWidth(), 7);
+    assert.equal(tickContext.getWidth(), 7);
 }
 function draw(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 600, 140);
@@ -51292,8 +51142,8 @@ function draw(options, contextBuilder) {
     for (let i = 0; i < notes.length; ++i) {
         const note = notes[i];
         const tabNote = showNote(note, stave, ctx, (i + 1) * 25);
-        ok(tabNote.getX() > 0, 'Note ' + i + ' has X value');
-        ok(tabNote.getYs().length > 0, 'Note ' + i + ' has Y values');
+        options.assert.ok(tabNote.getX() > 0, 'Note ' + i + ' has X value');
+        options.assert.ok(tabNote.getYs().length > 0, 'Note ' + i + ' has Y values');
     }
 }
 function drawStemsUp(options, contextBuilder) {
@@ -51362,7 +51212,7 @@ function drawStemsUp(options, contextBuilder) {
     voice.addTickables(notes);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     voice.draw(ctx, stave);
-    ok(true, 'TabNotes successfully drawn');
+    options.assert.ok(true, 'TabNotes successfully drawn');
 }
 function drawStemsDown(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 600, 200);
@@ -51431,7 +51281,7 @@ function drawStemsDown(options, contextBuilder) {
     voice.addTickables(notes);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     voice.draw(ctx, stave);
-    ok(true, 'All objects have been drawn');
+    options.assert.ok(true, 'All objects have been drawn');
 }
 function drawStemsUpThrough(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 600, 200);
@@ -51501,7 +51351,7 @@ function drawStemsUpThrough(options, contextBuilder) {
     voice.addTickables(notes);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     voice.draw(ctx, stave);
-    ok(true, 'TabNotes successfully drawn');
+    options.assert.ok(true, 'TabNotes successfully drawn');
 }
 function drawStemsDownThrough(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 600, 250);
@@ -51575,7 +51425,7 @@ function drawStemsDownThrough(options, contextBuilder) {
     voice.addTickables(notes);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     voice.draw(ctx, stave);
-    ok(true, 'All objects have been drawn');
+    options.assert.ok(true, 'All objects have been drawn');
 }
 function drawStemsDotted(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 600, 200);
@@ -51621,7 +51471,7 @@ function drawStemsDotted(options, contextBuilder) {
     voice.addTickables(notes);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     voice.draw(ctx, stave);
-    ok(true, 'TabNotes successfully drawn');
+    options.assert.ok(true, 'TabNotes successfully drawn');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TabNoteTests);
 
@@ -51637,7 +51487,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TabNote
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TabSlideTests": () => (/* binding */ TabSlideTests)
+/* harmony export */   TabSlideTests: () => (/* binding */ TabSlideTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/flow */ "./src/flow.ts");
@@ -51700,7 +51550,7 @@ function simple(options, contextBuilder) {
         tabNote({ positions: [{ str: 4, fret: 4 }], duration: 'h' }),
         tabNote({ positions: [{ str: 4, fret: 6 }], duration: 'h' }),
     ], [0], stave, context);
-    ok(true, 'Simple Test');
+    options.assert.ok(true, 'Simple Test');
 }
 /**
  * The slideUp and slideDown tests pass in a builder function: TabSlide.createSlideUp | TabSlide.createSlideDown.
@@ -51752,7 +51602,7 @@ function multiTest(options, buildTabSlide) {
     })
         .setContext(context)
         .draw();
-    ok(true, 'Single note');
+    options.assert.ok(true, 'Single note');
     buildTabSlide({
         first_note: notes[2],
         last_note: notes[3],
@@ -51761,7 +51611,7 @@ function multiTest(options, buildTabSlide) {
     })
         .setContext(context)
         .draw();
-    ok(true, 'Chord');
+    options.assert.ok(true, 'Chord');
     buildTabSlide({
         first_note: notes[4],
         last_note: notes[5],
@@ -51770,7 +51620,7 @@ function multiTest(options, buildTabSlide) {
     })
         .setContext(context)
         .draw();
-    ok(true, 'Single note high-fret');
+    options.assert.ok(true, 'Single note high-fret');
     buildTabSlide({
         first_note: notes[6],
         last_note: notes[7],
@@ -51779,7 +51629,7 @@ function multiTest(options, buildTabSlide) {
     })
         .setContext(context)
         .draw();
-    ok(true, 'Chord high-fret');
+    options.assert.ok(true, 'Chord high-fret');
 }
 function slideUp(options, contextBuilder) {
     options.contextBuilder = contextBuilder;
@@ -51803,7 +51653,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TabSlid
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TabStaveTests": () => (/* binding */ TabStaveTests)
+/* harmony export */   TabStaveTests: () => (/* binding */ TabStaveTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_tabstave__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/tabstave */ "./src/tabstave.ts");
@@ -51826,11 +51676,11 @@ function draw(options, contextBuilder) {
     stave.setNumLines(6);
     stave.setContext(ctx);
     stave.draw();
-    equal(stave.getYForNote(0), 127, 'getYForNote(0)');
-    equal(stave.getYForLine(5), 127, 'getYForLine(5)');
-    equal(stave.getYForLine(0), 62, 'getYForLine(0) - Top Line');
-    equal(stave.getYForLine(4), 114, 'getYForLine(4) - Bottom Line');
-    ok(true, 'all pass');
+    options.assert.equal(stave.getYForNote(0), 127, 'getYForNote(0)');
+    options.assert.equal(stave.getYForLine(5), 127, 'getYForLine(5)');
+    options.assert.equal(stave.getYForLine(0), 62, 'getYForLine(0) - Top Line');
+    options.assert.equal(stave.getYForLine(4), 114, 'getYForLine(4) - Bottom Line');
+    options.assert.ok(true, 'all pass');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TabStaveTests);
 
@@ -51846,7 +51696,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TabStav
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TabTieTests": () => (/* binding */ TabTieTests)
+/* harmony export */   TabTieTests: () => (/* binding */ TabTieTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_annotation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/annotation */ "./src/annotation.ts");
@@ -51919,7 +51769,7 @@ function simple(options, contextBuilder) {
     const note1 = tabNote({ positions: [{ str: 4, fret: 4 }], duration: 'h' });
     const note2 = tabNote({ positions: [{ str: 4, fret: 6 }], duration: 'h' });
     tieNotes([note1, note2], [0], stave, context);
-    ok(true, 'Simple Test');
+    options.assert.ok(true, 'Simple Test');
 }
 function simpleHammerOn(options, contextBuilder) {
     options.contextBuilder = contextBuilder;
@@ -51979,7 +51829,7 @@ function multiTest(options, createTabTie) {
     })
         .setContext(context)
         .draw();
-    ok(true, 'Single note');
+    options.assert.ok(true, 'Single note');
     createTabTie({
         first_note: notes[2],
         last_note: notes[3],
@@ -51988,7 +51838,7 @@ function multiTest(options, createTabTie) {
     })
         .setContext(context)
         .draw();
-    ok(true, 'Chord');
+    options.assert.ok(true, 'Chord');
     createTabTie({
         first_note: notes[4],
         last_note: notes[5],
@@ -51997,7 +51847,7 @@ function multiTest(options, createTabTie) {
     })
         .setContext(context)
         .draw();
-    ok(true, 'Single note high-fret');
+    options.assert.ok(true, 'Single note high-fret');
     createTabTie({
         first_note: notes[6],
         last_note: notes[7],
@@ -52006,7 +51856,7 @@ function multiTest(options, createTabTie) {
     })
         .setContext(context)
         .draw();
-    ok(true, 'Chord high-fret');
+    options.assert.ok(true, 'Chord high-fret');
 }
 function tap(options, contextBuilder) {
     options.contextBuilder = contextBuilder;
@@ -52014,7 +51864,7 @@ function tap(options, contextBuilder) {
     const note1 = tabNote({ positions: [{ str: 4, fret: 12 }], duration: 'h' }).addModifier(new _src_annotation__WEBPACK_IMPORTED_MODULE_1__.Annotation('T'), 0);
     const note2 = tabNote({ positions: [{ str: 4, fret: 10 }], duration: 'h' });
     tieNotes([note1, note2], [0], stave, context, 'P');
-    ok(true, 'Tapping Test');
+    options.assert.ok(true, 'Tapping Test');
 }
 function continuous(options, contextBuilder) {
     options.contextBuilder = contextBuilder;
@@ -52043,7 +51893,7 @@ function continuous(options, contextBuilder) {
     })
         .setContext(context)
         .draw();
-    ok(true, 'Continuous Hammeron');
+    options.assert.ok(true, 'Continuous Hammeron');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TabTieTests);
 
@@ -52059,7 +51909,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TabTieT
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TextBracketTests": () => (/* binding */ TextBracketTests)
+/* harmony export */   TextBracketTests: () => (/* binding */ TextBracketTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
@@ -52102,7 +51952,7 @@ function simple0(options) {
     });
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function simple1(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 550);
@@ -52163,7 +52013,7 @@ function simple1(options) {
     bottomOctaves[1].setDashed(true, [2, 2]);
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TextBracketTests);
 
@@ -52179,7 +52029,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TextBra
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TextFormatterTests": () => (/* binding */ TextFormatterTests)
+/* harmony export */   TextFormatterTests: () => (/* binding */ TextFormatterTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_font__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/font */ "./src/font.ts");
@@ -52194,31 +52044,31 @@ __webpack_require__.r(__webpack_exports__);
 const TextFormatterTests = {
     Start() {
         QUnit.module('TextFormatter');
-        test('Basic', basic);
+        QUnit.test('Basic', basic);
         const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTextTests;
         run('Accuracy', accuracy);
         run('Box Text', textBoxAccuracy);
     },
 };
-function basic() {
+function basic(assert) {
     var _a;
     // See: src/fonts/textfonts.ts > loadTextFonts()
     const registeredFamilies = _src_textformatter__WEBPACK_IMPORTED_MODULE_2__.TextFormatter.getFontFamilies();
-    equal(registeredFamilies.length, 5, `There are five registered font families: 'Roboto Slab' & 'PetalumaScript' and default 'Serif', 'Serif-Bold' and 'Sans'`);
+    assert.equal(registeredFamilies.length, 5, `There are five registered font families: 'Roboto Slab' & 'PetalumaScript' and default 'Serif', 'Serif-Bold' and 'Sans'`);
     // Verify the advanceWidth and other metrics by opening the font file with a glyph inspector:
     // https://fontdrop.info/
     // https://opentype.js.org/glyph-inspector.html
     const petalumaFormatterInfo = _src_textformatter__WEBPACK_IMPORTED_MODULE_2__.TextFormatter.getInfo('PetalumaScript');
-    equal((_a = petalumaFormatterInfo === null || petalumaFormatterInfo === void 0 ? void 0 : petalumaFormatterInfo.glyphs) === null || _a === void 0 ? void 0 : _a.C.advanceWidth, 623, 'PetalumaScript advanceWidth of C character is 623.');
+    assert.equal((_a = petalumaFormatterInfo === null || petalumaFormatterInfo === void 0 ? void 0 : petalumaFormatterInfo.glyphs) === null || _a === void 0 ? void 0 : _a.C.advanceWidth, 623, 'PetalumaScript advanceWidth of C character is 623.');
     const formatterForPetalumaScript = _src_textformatter__WEBPACK_IMPORTED_MODULE_2__.TextFormatter.create({ family: 'PetalumaScript', size: '100px' });
     const metricsPetalumaScriptH = formatterForPetalumaScript.getGlyphMetrics('H');
-    equal(metricsPetalumaScriptH.leftSideBearing, 37);
+    assert.equal(metricsPetalumaScriptH.leftSideBearing, 37);
     const formatterForRobotoSlab = _src_textformatter__WEBPACK_IMPORTED_MODULE_2__.TextFormatter.create({ family: 'Roboto Slab', size: '100px', style: 'italic' });
     const metricsRobotoSlabH = formatterForRobotoSlab.getGlyphMetrics('H');
-    equal(metricsRobotoSlabH.advanceWidth, 1578);
+    assert.equal(metricsRobotoSlabH.advanceWidth, 1578);
     // eslint-disable-next-line
     // @ts-ignore direct access to protected variable .cacheKey
-    equal(formatterForRobotoSlab.cacheKey, 'Roboto_Slab%75%normal%normal');
+    assert.equal(formatterForRobotoSlab.cacheKey, 'Roboto_Slab%75%normal%normal');
 }
 function accuracy(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 600, 500);
@@ -52262,7 +52112,7 @@ function accuracy(options, contextBuilder) {
             startY += lineHeight;
         }
     }
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function textBoxAccuracy(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 600, 800);
@@ -52324,7 +52174,7 @@ function textBoxAccuracy(options, contextBuilder) {
         }
         ctx.restore();
     }
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TextFormatterTests);
 
@@ -52340,7 +52190,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TextFor
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TextNoteTests": () => (/* binding */ TextNoteTests)
+/* harmony export */   TextNoteTests: () => (/* binding */ TextNoteTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_crescendo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/crescendo */ "./src/crescendo.ts");
@@ -52396,7 +52246,7 @@ function formatTextNotes(options) {
     const formatter = f.Formatter();
     formatter.joinVoices([voice1, voice2]).formatToStave([voice1, voice2], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function formatTextNotes2(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 200);
@@ -52435,7 +52285,7 @@ function formatTextNotes2(options) {
     f.Formatter().joinVoices([voice1, voice2]).formatToStave([voice1, voice2], stave);
     voice2.getTickables().forEach((note) => _src_note__WEBPACK_IMPORTED_MODULE_4__.Note.plotMetrics(f.getContext(), note, 170));
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function superscriptAndSubscript(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 230);
@@ -52457,10 +52307,10 @@ function superscriptAndSubscript(options) {
         f.TextNote({ text: 'D' + _src_flow__WEBPACK_IMPORTED_MODULE_2__.Flow.unicode.sharp + '/F', duration: '4d', superscript: 'sus2' }),
         f.TextNote({ text: 'ii', superscript: '6', subscript: '4', duration: '8' }),
         f.TextNote({ text: 'C', superscript: _src_flow__WEBPACK_IMPORTED_MODULE_2__.Flow.unicode.triangle + '7', subscript: '', duration: '8' }),
-        f.TextNote({ text: 'vii', superscript: _src_flow__WEBPACK_IMPORTED_MODULE_2__.Flow.unicode["o-with-slash"] + '7', duration: '8' }),
+        f.TextNote({ text: 'vii', superscript: _src_flow__WEBPACK_IMPORTED_MODULE_2__.Flow.unicode['o-with-slash'] + '7', duration: '8' }),
         f.TextNote({ text: 'V', superscript: '7', duration: '8' }),
     ];
-    equal(notes2[0].getText(), _src_flow__WEBPACK_IMPORTED_MODULE_2__.Flow.unicode.flat + 'I', 'TextNote.getText() return .text');
+    options.assert.equal(notes2[0].getText(), _src_flow__WEBPACK_IMPORTED_MODULE_2__.Flow.unicode.flat + 'I', 'TextNote.getText() return .text');
     const voice2 = score.voice(notes2);
     voice2.getTickables().forEach((note) => {
         const textNote = note;
@@ -52470,7 +52320,7 @@ function superscriptAndSubscript(options) {
     });
     f.Formatter().joinVoices([voice1, voice2]).formatToStave([voice1, voice2], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function formatTextGlyphs0(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 230);
@@ -52500,7 +52350,7 @@ function formatTextGlyphs0(options) {
     voice2.getTickables().forEach((n) => n.setJustification(_src_textnote__WEBPACK_IMPORTED_MODULE_6__.TextNote.Justification.CENTER));
     f.Formatter().joinVoices([voice1, voice2]).formatToStave([voice1, voice2], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function formatTextGlyphs1(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 230);
@@ -52530,7 +52380,7 @@ function formatTextGlyphs1(options) {
     voice2.getTickables().forEach((n) => n.setJustification(_src_textnote__WEBPACK_IMPORTED_MODULE_6__.TextNote.Justification.CENTER));
     f.Formatter().joinVoices([voice1, voice2]).formatToStave([voice1, voice2], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function crescendo(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 230);
@@ -52545,7 +52395,7 @@ function crescendo(options) {
     ]);
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function textDynamics(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 230);
@@ -52569,7 +52419,7 @@ function textDynamics(options) {
     const stave = f.Stave({ y: 40, width: width + _src_stave__WEBPACK_IMPORTED_MODULE_5__.Stave.defaultPadding });
     stave.draw();
     voice.draw(f.getContext(), stave);
-    ok(true);
+    options.assert.ok(true);
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TextNoteTests);
 
@@ -52585,7 +52435,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TextNot
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ThreeVoicesTests": () => (/* binding */ ThreeVoicesTests)
+/* harmony export */   ThreeVoicesTests: () => (/* binding */ ThreeVoicesTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_beam__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/beam */ "./src/beam.ts");
@@ -52631,7 +52481,7 @@ function createThreeVoicesTest(noteGroup1, noteGroup2, noteGroup3, setup) {
         for (let i = 0; i < beams.length; i++) {
             beams[i].setContext(factory.getContext()).draw();
         }
-        ok(true);
+        options.assert.ok(true);
     };
 }
 /**
@@ -52693,7 +52543,7 @@ function autoRestTwoVoices(options) {
     for (let i = 0; i < beams.length; i++) {
         beams[i].setContext(f.getContext()).draw();
     }
-    ok(true, 'Auto Adjust Rests - Two Voices');
+    options.assert.ok(true, 'Auto Adjust Rests - Two Voices');
 }
 function autoRestThreeVoices1(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 850, 200);
@@ -52716,7 +52566,7 @@ function autoRestThreeVoices1(options) {
     createMeasure('Default Rest Positions', 400, false);
     createMeasure('Rests Repositioned To Avoid Collisions', 400, true);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 function autoRestThreeVoices2(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 850, 200);
@@ -52736,7 +52586,7 @@ function autoRestThreeVoices2(options) {
     createMeasure('Default Rest Positions', 400, false);
     createMeasure('Rests Repositioned To Avoid Collisions', 400, true);
     f.draw();
-    ok(true);
+    options.assert.ok(true);
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(ThreeVoicesTests);
 
@@ -52752,7 +52602,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(ThreeVo
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TickContextTests": () => (/* binding */ TickContextTests)
+/* harmony export */   TickContextTests: () => (/* binding */ TickContextTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/flow */ "./src/flow.ts");
@@ -52769,15 +52619,15 @@ __webpack_require__.r(__webpack_exports__);
 const TickContextTests = {
     Start() {
         QUnit.module('TickContext');
-        test('Current Tick Test', currentTick);
-        test('Tracking Test', tracking);
+        QUnit.test('Current Tick Test', currentTick);
+        QUnit.test('Tracking Test', tracking);
     },
 };
-function currentTick() {
+function currentTick(assert) {
     const tc = new _src_tickcontext__WEBPACK_IMPORTED_MODULE_2__.TickContext();
-    equal(tc.getCurrentTick().value(), 0, 'New tick context has no ticks');
+    assert.equal(tc.getCurrentTick().value(), 0, 'New tick context has no ticks');
 }
-function tracking() {
+function tracking(assert) {
     const BEAT = (1 * _src_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.RESOLUTION) / 4;
     const tickables = [
         new _mocks__WEBPACK_IMPORTED_MODULE_3__.MockTickable().setTicks(BEAT).setWidth(10),
@@ -52787,14 +52637,14 @@ function tracking() {
     const tc = new _src_tickcontext__WEBPACK_IMPORTED_MODULE_2__.TickContext();
     tc.setPadding(0);
     tc.addTickable(tickables[0]);
-    equal(tc.getMaxTicks().value(), BEAT);
+    assert.equal(tc.getMaxTicks().value(), BEAT);
     tc.addTickable(tickables[1]);
-    equal(tc.getMaxTicks().value(), BEAT * 2);
+    assert.equal(tc.getMaxTicks().value(), BEAT * 2);
     tc.addTickable(tickables[2]);
-    equal(tc.getMaxTicks().value(), BEAT * 2);
-    equal(tc.getWidth(), 0);
+    assert.equal(tc.getMaxTicks().value(), BEAT * 2);
+    assert.equal(tc.getWidth(), 0);
     tc.preFormat();
-    equal(tc.getWidth(), 30);
+    assert.equal(tc.getWidth(), 30);
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TickContextTests);
 
@@ -52810,7 +52660,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TickCon
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TimeSignatureTests": () => (/* binding */ TimeSignatureTests)
+/* harmony export */   TimeSignatureTests: () => (/* binding */ TimeSignatureTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_stave__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/stave */ "./src/stave.ts");
@@ -52827,7 +52677,7 @@ __webpack_require__.r(__webpack_exports__);
 const TimeSignatureTests = {
     Start() {
         QUnit.module('TimeSignature');
-        test('Time Signature Parser', parser);
+        QUnit.test('Time Signature Parser', parser);
         const run = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests;
         run('Basic Time Signatures', basic);
         run('Big Signature Test', big);
@@ -52840,23 +52690,23 @@ const TimeSignatureTests = {
         run('Time Signature Change Test', change);
     },
 };
-function parser() {
+function parser(assert) {
     const timeSig = new _src_timesignature__WEBPACK_IMPORTED_MODULE_3__.TimeSignature();
-    equal(timeSig.getTimeSpec(), '4/4', 'default time signature is 4/4');
+    assert.equal(timeSig.getTimeSpec(), '4/4', 'default time signature is 4/4');
     const mustFail = ['asdf', '123/', '/10', '/', '4567', 'C+', '1+', '+1', '(3+', '+3)', '()', '(+)'];
     mustFail.forEach((invalidString) => {
-        throws(() => timeSig.parseTimeSpec(invalidString), /BadTimeSignature/);
+        assert.throws(() => timeSig.parseTimeSpec(invalidString), /BadTimeSignature/);
     });
     const mustPass = ['4/4', '10/12', '1/8', '1234567890/1234567890', 'C', 'C|', '+'];
     mustPass.forEach((validString) => timeSig.parseTimeSpec(validString));
     timeSig.setTimeSig('4/4');
-    equal(timeSig.getIsNumeric(), true, '4/4 is numeric');
-    equal(timeSig.getLine(), 0, 'digits are on line 0');
+    assert.equal(timeSig.getIsNumeric(), true, '4/4 is numeric');
+    assert.equal(timeSig.getLine(), 0, 'digits are on line 0');
     timeSig.setTimeSig('C|');
-    equal(timeSig.getTimeSpec(), 'C|', 'timeSpec changed to C|');
-    equal(timeSig.getIsNumeric(), false, 'cut time is not numeric');
-    equal(timeSig.getLine(), 2, 'cut/common are on line 2');
-    ok(true, 'all pass');
+    assert.equal(timeSig.getTimeSpec(), 'C|', 'timeSpec changed to C|');
+    assert.equal(timeSig.getIsNumeric(), false, 'cut time is not numeric');
+    assert.equal(timeSig.getLine(), 2, 'cut/common are on line 2');
+    assert.ok(true, 'all pass');
 }
 function basic(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 600, 120);
@@ -52876,7 +52726,7 @@ function basic(options, contextBuilder) {
         .addEndTimeSignature('C|')
         .setContext(ctx)
         .draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function big(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 120);
@@ -52887,22 +52737,22 @@ function big(options, contextBuilder) {
         .addTimeSignature('987/654321')
         .setContext(ctx)
         .draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function additive(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 120);
     new _src_stave__WEBPACK_IMPORTED_MODULE_1__.Stave(10, 10, 300).addTimeSignature('2+3+2/8').setContext(ctx).draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function alternating(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 120);
     new _src_stave__WEBPACK_IMPORTED_MODULE_1__.Stave(10, 10, 300).addTimeSignature('6/8').addTimeSignature('+').addTimeSignature('3/4').setContext(ctx).draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function interchangeable(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 120);
     new _src_stave__WEBPACK_IMPORTED_MODULE_1__.Stave(10, 10, 300).addTimeSignature('3/4').addTimeSignature('-').addTimeSignature('2/4').setContext(ctx).draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function agregate(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 120);
@@ -52914,7 +52764,7 @@ function agregate(options, contextBuilder) {
         .addTimeSignature('5/4')
         .setContext(ctx)
         .draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function complex(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 120);
@@ -52924,7 +52774,7 @@ function complex(options, contextBuilder) {
         .addTimeSignature('3/8')
         .setContext(ctx)
         .draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function multiple(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 400, 350);
@@ -52942,7 +52792,7 @@ function multiple(options, contextBuilder) {
     new _src_staveconnector__WEBPACK_IMPORTED_MODULE_2__.StaveConnector(stave1, stave2).setType('single').setContext(ctx).draw();
     new _src_staveconnector__WEBPACK_IMPORTED_MODULE_2__.StaveConnector(stave2, stave3).setType('single').setContext(ctx).draw();
     new _src_staveconnector__WEBPACK_IMPORTED_MODULE_2__.StaveConnector(stave2, stave3).setType('brace').setContext(ctx).draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 function change(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 900);
@@ -52960,7 +52810,7 @@ function change(options) {
     const voice = f.Voice().setStrict(false).addTickables(tickables);
     f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'all pass');
+    options.assert.ok(true, 'all pass');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TimeSignatureTests);
 
@@ -52976,7 +52826,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TimeSig
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TremoloTests": () => (/* binding */ TremoloTests)
+/* harmony export */   TremoloTests: () => (/* binding */ TremoloTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_stavebarline__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/stavebarline */ "./src/stavebarline.ts");
@@ -53018,7 +52868,7 @@ function tremoloBasic(options) {
     const voice2 = score.voice(notes2);
     f.Formatter().joinVoices([voice2]).formatToStave([voice2], stave2);
     f.draw();
-    ok(true, 'Tremolo - Basic');
+    options.assert.ok(true, 'Tremolo - Basic');
 }
 function tremoloBig(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600, 200);
@@ -53060,7 +52910,7 @@ function tremoloBig(options) {
     const voice2 = score.voice(notes2);
     f.Formatter().joinVoices([voice2]).formatToStave([voice2], stave2);
     f.draw();
-    ok(true, 'Tremolo - Big');
+    options.assert.ok(true, 'Tremolo - Big');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TremoloTests);
 
@@ -53076,7 +52926,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(Tremolo
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TuningTests": () => (/* binding */ TuningTests)
+/* harmony export */   TuningTests: () => (/* binding */ TuningTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_tuning__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/tuning */ "./src/tuning.ts");
@@ -53089,65 +52939,65 @@ __webpack_require__.r(__webpack_exports__);
 const TuningTests = {
     Start() {
         QUnit.module('Tuning');
-        test('Standard Tuning', standard);
-        test('Standard Banjo Tuning', banjo);
-        test('Return note for fret', noteForFret);
+        QUnit.test('Standard Tuning', standard);
+        QUnit.test('Standard Banjo Tuning', banjo);
+        QUnit.test('Return note for fret', noteForFret);
     },
 };
 /**
  * Helper function to verify that the provided tuning matches a standard 6-string guitar.
  */
-function checkStandard(tuning) {
-    throws(() => tuning.getValueForString(0), /BadArguments/, 'String 0');
-    throws(() => tuning.getValueForString(9), /BadArguments/, 'String 9');
+function checkStandard(assert, tuning) {
+    assert.throws(() => tuning.getValueForString(0), /BadArguments/, 'String 0');
+    assert.throws(() => tuning.getValueForString(9), /BadArguments/, 'String 9');
     // TODO: Tuning constructor has a bug in that the default tuning has 8 strings.
     // See: 'E/5,B/4,G/4,D/4,A/3,E/3,B/2,E/2' in tuning.ts constructor.
-    // throws(() => tuning.getValueForString(7), /BadArguments/, 'String 7');
+    // assert.throws(() => tuning.getValueForString(7), /BadArguments/, 'String 7');
     // Tuning.getValueForString() returns a note number where the value 60 corresponds to middle C.
-    equal(tuning.getValueForString(6), 40, 'Low E string');
-    equal(tuning.getValueForString(5), 45, 'A string');
-    equal(tuning.getValueForString(4), 50, 'D string');
-    equal(tuning.getValueForString(3), 55, 'G string');
-    equal(tuning.getValueForString(2), 59, 'B string');
-    equal(tuning.getValueForString(1), 64, 'High E string');
+    assert.equal(tuning.getValueForString(6), 40, 'Low E string');
+    assert.equal(tuning.getValueForString(5), 45, 'A string');
+    assert.equal(tuning.getValueForString(4), 50, 'D string');
+    assert.equal(tuning.getValueForString(3), 55, 'G string');
+    assert.equal(tuning.getValueForString(2), 59, 'B string');
+    assert.equal(tuning.getValueForString(1), 64, 'High E string');
 }
 /**
  * Helper function to verify that the provided tuning matches a standard 5-string banjo.
  */
-function checkStandardBanjo(tuning) {
-    throws(() => tuning.getValueForString(0), /BadArguments/, 'String 0');
-    throws(() => tuning.getValueForString(6), /BadArguments/, 'String 6');
-    equal(tuning.getValueForString(5), 67, 'High G string');
-    equal(tuning.getValueForString(4), 50, 'D string');
-    equal(tuning.getValueForString(3), 55, 'G string');
-    equal(tuning.getValueForString(2), 59, 'B string');
-    equal(tuning.getValueForString(1), 62, 'High D string');
+function checkStandardBanjo(assert, tuning) {
+    assert.throws(() => tuning.getValueForString(0), /BadArguments/, 'String 0');
+    assert.throws(() => tuning.getValueForString(6), /BadArguments/, 'String 6');
+    assert.equal(tuning.getValueForString(5), 67, 'High G string');
+    assert.equal(tuning.getValueForString(4), 50, 'D string');
+    assert.equal(tuning.getValueForString(3), 55, 'G string');
+    assert.equal(tuning.getValueForString(2), 59, 'B string');
+    assert.equal(tuning.getValueForString(1), 62, 'High D string');
 }
-function standard() {
-    expect(16);
+function standard(assert) {
+    assert.expect(16);
     const tuning = new _src_tuning__WEBPACK_IMPORTED_MODULE_1__.Tuning();
-    checkStandard(tuning);
+    checkStandard(assert, tuning);
     // Set the tuning by specifying a name: 'standard'.
     tuning.setTuning('standard');
-    checkStandard(tuning);
+    checkStandard(assert, tuning);
 }
-function banjo() {
-    expect(7);
+function banjo(assert) {
+    assert.expect(7);
     const tuning = new _src_tuning__WEBPACK_IMPORTED_MODULE_1__.Tuning();
     tuning.setTuning('standardBanjo');
-    checkStandardBanjo(tuning);
+    checkStandardBanjo(assert, tuning);
 }
-function noteForFret() {
-    expect(8);
+function noteForFret(assert) {
+    assert.expect(8);
     const tuning = new _src_tuning__WEBPACK_IMPORTED_MODULE_1__.Tuning('E/5,B/4,G/4,D/4,A/3,E/3');
-    throws(() => tuning.getNoteForFret(-1, 1), /BadArguments/, 'Fret = -1');
-    throws(() => tuning.getNoteForFret(1, -1), /BadArguments/, 'String = -1');
-    equal(tuning.getNoteForFret(0, 1), 'E/5', 'High E string');
-    equal(tuning.getNoteForFret(5, 1), 'A/5', 'High E string, fret 5');
-    equal(tuning.getNoteForFret(0, 2), 'B/4', 'B string');
-    equal(tuning.getNoteForFret(0, 3), 'G/4', 'G string');
-    equal(tuning.getNoteForFret(12, 2), 'B/5', 'B string, fret 12');
-    equal(tuning.getNoteForFret(0, 6), 'E/3', 'Low E string');
+    assert.throws(() => tuning.getNoteForFret(-1, 1), /BadArguments/, 'Fret = -1');
+    assert.throws(() => tuning.getNoteForFret(1, -1), /BadArguments/, 'String = -1');
+    assert.equal(tuning.getNoteForFret(0, 1), 'E/5', 'High E string');
+    assert.equal(tuning.getNoteForFret(5, 1), 'A/5', 'High E string, fret 5');
+    assert.equal(tuning.getNoteForFret(0, 2), 'B/4', 'B string');
+    assert.equal(tuning.getNoteForFret(0, 3), 'G/4', 'G string');
+    assert.equal(tuning.getNoteForFret(12, 2), 'B/5', 'B string, fret 12');
+    assert.equal(tuning.getNoteForFret(0, 6), 'E/3', 'Low E string');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TuningTests);
 
@@ -53163,7 +53013,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TuningT
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TupletTests": () => (/* binding */ TupletTests)
+/* harmony export */   TupletTests: () => (/* binding */ TupletTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_dot__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/dot */ "./src/dot.ts");
@@ -53232,7 +53082,7 @@ function simple(options) {
         .addTickables(notes);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'Simple Test');
+    options.assert.ok(true, 'Simple Test');
 }
 function beamed(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -53262,7 +53112,7 @@ function beamed(options) {
         .addTickables(notes);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'Beamed Test');
+    options.assert.ok(true, 'Beamed Test');
 }
 function ratio(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -53296,7 +53146,7 @@ function ratio(options) {
     const voice = f.Voice().setStrict(true).addTickables(notes);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'Ratioed Test');
+    options.assert.ok(true, 'Ratioed Test');
 }
 function bottom(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 350, 160);
@@ -53328,7 +53178,7 @@ function bottom(options) {
         .addTickables(notes);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'Bottom Test');
+    options.assert.ok(true, 'Bottom Test');
 }
 function bottomRatio(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 350, 160);
@@ -53366,7 +53216,7 @@ function bottomRatio(options) {
         .addTickables(notes);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'Bottom Ratioed Test');
+    options.assert.ok(true, 'Bottom Ratioed Test');
 }
 function awkward(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 370, 160);
@@ -53407,7 +53257,7 @@ function awkward(options) {
     const voice = f.Voice().setStrict(false).addTickables(notes);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'Awkward Test');
+    options.assert.ok(true, 'Awkward Test');
 }
 function complex(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options, 600);
@@ -53461,7 +53311,7 @@ function complex(options) {
     const voice2 = f.Voice().setStrict(true).addTickables(notes2);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter().joinVoices([voice1, voice2]).formatToStave([voice1, voice2], stave);
     f.draw();
-    ok(true, 'Complex Test');
+    options.assert.ok(true, 'Complex Test');
 }
 function mixedTop(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -53497,7 +53347,7 @@ function mixedTop(options) {
     const voice = f.Voice().setStrict(false).addTickables(notes);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'Mixed Stem Direction Tuplet');
+    options.assert.ok(true, 'Mixed Stem Direction Tuplet');
 }
 function mixedBottom(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -53533,7 +53383,7 @@ function mixedBottom(options) {
     const voice = f.Voice().setStrict(false).addTickables(notes);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'Mixed Stem Direction Bottom Tuplet');
+    options.assert.ok(true, 'Mixed Stem Direction Bottom Tuplet');
 }
 function nested(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -53572,7 +53422,7 @@ function nested(options) {
     const voice = f.Voice().setStrict(true).addTickables(notes);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'Nested Tuplets');
+    options.assert.ok(true, 'Nested Tuplets');
 }
 function single(options) {
     const f = _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.makeFactory(options);
@@ -53636,7 +53486,7 @@ function single(options) {
         .addTickables(notes);
     new _src_formatter__WEBPACK_IMPORTED_MODULE_2__.Formatter().joinVoices([voice]).formatToStave([voice], stave);
     f.draw();
-    ok(true, 'Nested Tuplets');
+    options.assert.ok(true, 'Nested Tuplets');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TupletTests);
 
@@ -53652,7 +53502,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TupletT
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TypeGuardTests": () => (/* binding */ TypeGuardTests)
+/* harmony export */   TypeGuardTests: () => (/* binding */ TypeGuardTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_canvascontext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/canvascontext */ "./src/canvascontext.ts");
@@ -53676,45 +53526,45 @@ __webpack_require__.r(__webpack_exports__);
 const TypeGuardTests = {
     Start() {
         QUnit.module('TypeGuard');
-        test('Real VexFlow Types', real);
-        test('Fake VexFlow Types in ES5', fakeES5);
-        test('Fake VexFlow Types in ES6', fakeES6);
-        test('Edge Case ES5/ES6', edgeCaseES5vsES6);
+        QUnit.test('Real VexFlow Types', real);
+        QUnit.test('Fake VexFlow Types in ES5', fakeES5);
+        QUnit.test('Fake VexFlow Types in ES6', fakeES6);
+        QUnit.test('Edge Case ES5/ES6', edgeCaseES5vsES6);
     },
 };
-function real() {
+function real(assert) {
     const s = new _src_stavenote__WEBPACK_IMPORTED_MODULE_2__.StaveNote({ keys: ['c/4'], duration: 'w' });
-    ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isStaveNote)(s), 'isStaveNote helper function');
-    ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isCategory)(s, 'StaveNote'), 'Use isCategory(s, "StaveNote") directly');
-    notOk((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isTabNote)(s), 'isTabNote helper function. s is NOT a TabNote.');
+    assert.ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isStaveNote)(s), 'isStaveNote helper function');
+    assert.ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isCategory)(s, 'StaveNote'), 'Use isCategory(s, "StaveNote") directly');
+    assert.notOk((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isTabNote)(s), 'isTabNote helper function. s is NOT a TabNote.');
     const t = new _src_tabnote__WEBPACK_IMPORTED_MODULE_4__.TabNote({ positions: [{ str: 2, fret: 1 }], duration: '1' });
-    ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isTabNote)(t), 'isTabNote helper function');
-    notOk((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isStaveNote)(t), 't is NOT a StaveNote');
-    ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isNote)(s), 'StaveNote extends StemmableNote which extends Note, so s is a Note');
-    ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isStemmableNote)(t), 'TabNote extends StemmableNote');
-    ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isNote)(t), 'TabNote extends StemmableNote which extends Note, so t is a Note');
+    assert.ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isTabNote)(t), 'isTabNote helper function');
+    assert.notOk((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isStaveNote)(t), 't is NOT a StaveNote');
+    assert.ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isNote)(s), 'StaveNote extends StemmableNote which extends Note, so s is a Note');
+    assert.ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isStemmableNote)(t), 'TabNote extends StemmableNote');
+    assert.ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isNote)(t), 'TabNote extends StemmableNote which extends Note, so t is a Note');
     const canvas = document.createElement('canvas');
     canvas.width = 800;
     canvas.height = 400;
     const ctx = new _src_canvascontext__WEBPACK_IMPORTED_MODULE_1__.CanvasContext(canvas.getContext('2d'));
-    ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isRenderContext)(ctx), 'ctx is a RenderContext');
+    assert.ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isRenderContext)(ctx), 'ctx is a RenderContext');
 }
 /**
  * Helper function to test the fake VexFlow objects we create in fakeES5() and fakeES6().
  */
-function checkFakeObjects(fakeStemmableNote, fakeStaveNote) {
-    ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isStemmableNote)(fakeStemmableNote), 'Fake StemmableNote is a StemmableNote.');
-    notOk((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isNote)(fakeStemmableNote), 'Fake StemmableNote is not a Note (no ancestors with the correct CATEGORY).');
-    ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isCategory)(fakeStaveNote, 'StaveNote'), 'Fake StaveNote is a StaveNote.');
-    ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isStaveNote)(fakeStaveNote), 'Fake StaveNote is a StaveNote (via helper function).');
-    ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isCategory)(fakeStaveNote, 'StemmableNote'), 'Fake StaveNote is also a StemmableNote (via inheritance).');
-    notOk((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isNote)(fakeStaveNote), 'Fake StaveNote is not a Note. CATEGORY does not match.');
+function checkFakeObjects(assert, fakeStemmableNote, fakeStaveNote) {
+    assert.ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isStemmableNote)(fakeStemmableNote), 'Fake StemmableNote is a StemmableNote.');
+    assert.notOk((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isNote)(fakeStemmableNote), 'Fake StemmableNote is not a Note (no ancestors with the correct CATEGORY).');
+    assert.ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isCategory)(fakeStaveNote, 'StaveNote'), 'Fake StaveNote is a StaveNote.');
+    assert.ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isStaveNote)(fakeStaveNote), 'Fake StaveNote is a StaveNote (via helper function).');
+    assert.ok((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isCategory)(fakeStaveNote, 'StemmableNote'), 'Fake StaveNote is also a StemmableNote (via inheritance).');
+    assert.notOk((0,_src_typeguard__WEBPACK_IMPORTED_MODULE_5__.isNote)(fakeStaveNote), 'Fake StaveNote is not a Note. CATEGORY does not match.');
 }
 /**
  * Demonstrate that an object (ES5-style) can pass the isCategory(...) test if it
  * has the correct static .CATEGORY property.
  */
-function fakeES5() {
+function fakeES5(assert) {
     function FakeStemmableNote() {
         this.isFake = true;
     }
@@ -53727,13 +53577,13 @@ function fakeES5() {
     FakeStaveNote.prototype.constructor = FakeStaveNote;
     const fakeStemmableNote = new FakeStemmableNote();
     const fakeStaveNote = new FakeStaveNote();
-    checkFakeObjects(fakeStemmableNote, fakeStaveNote);
+    checkFakeObjects(assert, fakeStemmableNote, fakeStaveNote);
 }
 /**
  * Demonstrate that an object (ES6-style) can pass the isCategory(...) test if it
  * or its ancestor has the correct static .CATEGORY property.
  */
-function fakeES6() {
+function fakeES6(assert) {
     class FakeStemmableNote {
     }
     FakeStemmableNote.CATEGORY = _src_stemmablenote__WEBPACK_IMPORTED_MODULE_3__.StemmableNote.CATEGORY;
@@ -53742,12 +53592,12 @@ function fakeES6() {
     FakeStaveNote.CATEGORY = _src_stavenote__WEBPACK_IMPORTED_MODULE_2__.StaveNote.CATEGORY;
     const fakeStemmableNote = new FakeStemmableNote();
     const fakeStaveNote = new FakeStaveNote();
-    checkFakeObjects(fakeStemmableNote, fakeStaveNote);
+    checkFakeObjects(assert, fakeStemmableNote, fakeStaveNote);
 }
 /**
  * The tsconfig.json target is ES6 (as of August 18, 2021), so isCategory() works even when the root class "extends Object".
  */
-function edgeCaseES5vsES6() {
+function edgeCaseES5vsES6(assert) {
     class Z extends Object {
     }
     class Y extends Z {
@@ -53756,11 +53606,11 @@ function edgeCaseES5vsES6() {
     }
     const zInstance = new Z();
     const xInstance = new X();
-    ok(xInstance instanceof Object, 'es5 & es6: x IS an instanceof Object');
+    assert.ok(xInstance instanceof Object, 'es5 & es6: x IS an instanceof Object');
     // If targeting es5, these three assertions only pass if we remove "extends Object" from the class Z definition.
-    ok(zInstance instanceof Z, 'es6: z IS an instanceof Z');
-    ok(xInstance instanceof Y, 'es6: x IS an instanceof Y');
-    ok(xInstance instanceof Z, 'es6: x IS an instanceof Z');
+    assert.ok(zInstance instanceof Z, 'es6: z IS an instanceof Z');
+    assert.ok(xInstance instanceof Y, 'es6: x IS an instanceof Y');
+    assert.ok(xInstance instanceof Z, 'es6: x IS an instanceof Z');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TypeGuardTests);
 
@@ -53776,7 +53626,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(TypeGua
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "UnisonTests": () => (/* binding */ UnisonTests)
+/* harmony export */   UnisonTests: () => (/* binding */ UnisonTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_tables__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/tables */ "./src/tables.ts");
@@ -53821,7 +53671,7 @@ function simple(options) {
     system.getStaves()[0].setClef('treble');
     system.getStaves()[0].setTimeSignature('4/4');
     vf.draw();
-    expect(0);
+    options.assert.expect(0);
 }
 function style(options) {
     _src_tables__WEBPACK_IMPORTED_MODULE_1__.Tables.UNISON = options.params.unison;
@@ -53838,7 +53688,7 @@ function style(options) {
     system.getStaves()[0].setClef('treble');
     system.getStaves()[0].setTimeSignature('4/4');
     vf.draw();
-    expect(0);
+    options.assert.expect(0);
 }
 function breve(options) {
     _src_tables__WEBPACK_IMPORTED_MODULE_1__.Tables.UNISON = options.params.unison;
@@ -53854,7 +53704,7 @@ function breve(options) {
     system.getStaves()[0].setClef('treble');
     system.getStaves()[0].setTimeSignature('8/4');
     vf.draw();
-    expect(0);
+    options.assert.expect(0);
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(UnisonTests);
 
@@ -53870,10 +53720,10 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(UnisonT
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "MAJOR_KEYS": () => (/* binding */ MAJOR_KEYS),
-/* harmony export */   "MINOR_KEYS": () => (/* binding */ MINOR_KEYS),
-/* harmony export */   "VexFlowTests": () => (/* binding */ VexFlowTests),
-/* harmony export */   "concat": () => (/* binding */ concat)
+/* harmony export */   MAJOR_KEYS: () => (/* binding */ MAJOR_KEYS),
+/* harmony export */   MINOR_KEYS: () => (/* binding */ MINOR_KEYS),
+/* harmony export */   VexFlowTests: () => (/* binding */ VexFlowTests),
+/* harmony export */   concat: () => (/* binding */ concat)
 /* harmony export */ });
 /* harmony import */ var _src_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../src/index */ "./src/index.ts");
 /* harmony import */ var _src_util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/util */ "./src/util.ts");
@@ -54052,7 +53902,7 @@ class VexFlowTests {
         const title = $('<div/>').addClass('name').attr('id', titleId).html(anchorTestTitle).get(0);
         const vexOutput = $(`<${tagName}/>`).addClass('vex-tabdiv').attr('id', elementId).get(0);
         const container = $('<div/>').addClass('testcanvas').append(title, vexOutput).get(0);
-        $('#vexflow_testoutput').append(container);
+        $('#qunit-tests').append(container);
         return vexOutput;
     }
     static makeFactory(options, width = 450, height = 140) {
@@ -54101,8 +53951,8 @@ class VexFlowTests {
      */
     static runNodeTestHelper(fontName, element) {
         if (_src_index__WEBPACK_IMPORTED_MODULE_0__.Renderer.lastContext !== undefined) {
-            const moduleName = sanitizeName(QUnit.current_module);
-            const testName = sanitizeName(QUnit.current_test);
+            const moduleName = sanitizeName(QUnit.module.name);
+            const testName = sanitizeName(QUnit.test.name);
             // If we are only testing Bravura, we OMIT the font name from the
             // output image file name, which allows visual diffs against
             // the previous release: version 3.0.9. In the future, if we decide
@@ -54259,7 +54109,7 @@ _src_index__WEBPACK_IMPORTED_MODULE_0__.Flow.Test = VexFlowTests;
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "VFPrefixTests": () => (/* binding */ VFPrefixTests)
+/* harmony export */   VFPrefixTests: () => (/* binding */ VFPrefixTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/index */ "./src/index.ts");
@@ -54274,99 +54124,99 @@ __webpack_require__.r(__webpack_exports__);
 const VFPrefixTests = {
     Start() {
         QUnit.module('VF.* API');
-        test('VF.* API', VF_Prefix);
-        test('VF Alias', VF_Alias);
+        QUnit.test('VF.* API', VF_Prefix);
+        QUnit.test('VF Alias', VF_Alias);
     },
 };
-function VF_Prefix() {
+function VF_Prefix(assert) {
     // Intentionally use Vex.Flow here so we can verify that the Vex.Flow.* API
     // is equivalent to using the individual classes in TypeScript.
     const VF = Vex.Flow;
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Accidental, VF.Accidental);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Annotation, VF.Annotation);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Articulation, VF.Articulation);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Barline, VF.Barline);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.BarNote, VF.BarNote);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Beam, VF.Beam);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Bend, VF.Bend);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.BoundingBox, VF.BoundingBox);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.BoundingBoxComputation, VF.BoundingBoxComputation);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.ChordSymbol, VF.ChordSymbol);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Clef, VF.Clef);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.ClefNote, VF.ClefNote);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Crescendo, VF.Crescendo);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Curve, VF.Curve);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Dot, VF.Dot);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.EasyScore, VF.EasyScore);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Element, VF.Element);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Factory, VF.Factory);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Flow.RESOLUTION, VF.RESOLUTION);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Font, VF.Font);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Formatter, VF.Formatter);
-    propEqual(new _src_index__WEBPACK_IMPORTED_MODULE_1__.Formatter(), new VF.Formatter(), 'new Formatter()');
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Fraction, VF.Fraction);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.FretHandFinger, VF.FretHandFinger);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.GhostNote, VF.GhostNote);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Glyph, VF.Glyph);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.GlyphNote, VF.GlyphNote);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.GraceNote, VF.GraceNote);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.GraceNoteGroup, VF.GraceNoteGroup);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.GraceTabNote, VF.GraceTabNote);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.KeyManager, VF.KeyManager);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.KeySignature, VF.KeySignature);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.KeySigNote, VF.KeySigNote);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Modifier, VF.Modifier);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.ModifierContext, VF.ModifierContext);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.MultiMeasureRest, VF.MultiMeasureRest);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Music, VF.Music);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Note, VF.Note);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.NoteHead, VF.NoteHead);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.NoteSubGroup, VF.NoteSubGroup);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Ornament, VF.Ornament);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Parser, VF.Parser);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.PedalMarking, VF.PedalMarking);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Registry, VF.Registry);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Renderer, VF.Renderer);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.RepeatNote, VF.RepeatNote);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Repetition, VF.Repetition);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Stave, VF.Stave);
-    notEqual(_src_index__WEBPACK_IMPORTED_MODULE_1__.Stave, VF.StaveNote);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.StaveConnector, VF.StaveConnector);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.StaveHairpin, VF.StaveHairpin);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.StaveLine, VF.StaveLine);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.StaveModifier, VF.StaveModifier);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.StaveNote, VF.StaveNote);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.StaveTempo, VF.StaveTempo);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.StaveText, VF.StaveText);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.StaveTie, VF.StaveTie);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Stem, VF.Stem);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.StringNumber, VF.StringNumber);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Stroke, VF.Stroke);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.System, VF.System);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TabNote, VF.TabNote);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TabSlide, VF.TabSlide);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TabStave, VF.TabStave);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TabTie, VF.TabTie);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TextBracket, VF.TextBracket);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TextDynamics, VF.TextDynamics);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TextFormatter, VF.TextFormatter);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TextNote, VF.TextNote);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TickContext, VF.TickContext);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TimeSignature, VF.TimeSignature);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TimeSigNote, VF.TimeSigNote);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Tremolo, VF.Tremolo);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Tuning, VF.Tuning);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Tuplet, VF.Tuplet);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Vibrato, VF.Vibrato);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.VibratoBracket, VF.VibratoBracket);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Voice, VF.Voice);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Volta, VF.Volta);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Accidental, VF.Accidental);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Annotation, VF.Annotation);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Articulation, VF.Articulation);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Barline, VF.Barline);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.BarNote, VF.BarNote);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Beam, VF.Beam);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Bend, VF.Bend);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.BoundingBox, VF.BoundingBox);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.BoundingBoxComputation, VF.BoundingBoxComputation);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.ChordSymbol, VF.ChordSymbol);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Clef, VF.Clef);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.ClefNote, VF.ClefNote);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Crescendo, VF.Crescendo);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Curve, VF.Curve);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Dot, VF.Dot);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.EasyScore, VF.EasyScore);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Element, VF.Element);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Factory, VF.Factory);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Flow.RESOLUTION, VF.RESOLUTION);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Font, VF.Font);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Formatter, VF.Formatter);
+    assert.propEqual(new _src_index__WEBPACK_IMPORTED_MODULE_1__.Formatter(), new VF.Formatter(), 'new Formatter()');
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Fraction, VF.Fraction);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.FretHandFinger, VF.FretHandFinger);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.GhostNote, VF.GhostNote);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Glyph, VF.Glyph);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.GlyphNote, VF.GlyphNote);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.GraceNote, VF.GraceNote);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.GraceNoteGroup, VF.GraceNoteGroup);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.GraceTabNote, VF.GraceTabNote);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.KeyManager, VF.KeyManager);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.KeySignature, VF.KeySignature);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.KeySigNote, VF.KeySigNote);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Modifier, VF.Modifier);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.ModifierContext, VF.ModifierContext);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.MultiMeasureRest, VF.MultiMeasureRest);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Music, VF.Music);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Note, VF.Note);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.NoteHead, VF.NoteHead);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.NoteSubGroup, VF.NoteSubGroup);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Ornament, VF.Ornament);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Parser, VF.Parser);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.PedalMarking, VF.PedalMarking);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Registry, VF.Registry);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Renderer, VF.Renderer);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.RepeatNote, VF.RepeatNote);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Repetition, VF.Repetition);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Stave, VF.Stave);
+    assert.notEqual(_src_index__WEBPACK_IMPORTED_MODULE_1__.Stave, VF.StaveNote);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.StaveConnector, VF.StaveConnector);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.StaveHairpin, VF.StaveHairpin);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.StaveLine, VF.StaveLine);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.StaveModifier, VF.StaveModifier);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.StaveNote, VF.StaveNote);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.StaveTempo, VF.StaveTempo);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.StaveText, VF.StaveText);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.StaveTie, VF.StaveTie);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Stem, VF.Stem);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.StringNumber, VF.StringNumber);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Stroke, VF.Stroke);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.System, VF.System);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TabNote, VF.TabNote);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TabSlide, VF.TabSlide);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TabStave, VF.TabStave);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TabTie, VF.TabTie);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TextBracket, VF.TextBracket);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TextDynamics, VF.TextDynamics);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TextFormatter, VF.TextFormatter);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TextNote, VF.TextNote);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TickContext, VF.TickContext);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TimeSignature, VF.TimeSignature);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.TimeSigNote, VF.TimeSigNote);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Tremolo, VF.Tremolo);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Tuning, VF.Tuning);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Tuplet, VF.Tuplet);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Vibrato, VF.Vibrato);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.VibratoBracket, VF.VibratoBracket);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Voice, VF.Voice);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Volta, VF.Volta);
 }
 /**
  * If you have name collisions with VexFlow classes, consider extracting classes from Vex.Flow
  * and renaming them with a VF prefix.
  */
-function VF_Alias() {
+function VF_Alias(assert) {
     const Flow = Vex.Flow;
     const VFAliases = {
         get VFAccidental() {
@@ -54380,13 +54230,13 @@ function VF_Alias() {
         },
     };
     const { VFVibrato, VFAccidental, VFAnnotation } = VFAliases;
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Accidental, VFAccidental);
-    equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Annotation, VFAnnotation);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Accidental, VFAccidental);
+    assert.equal(_src_index__WEBPACK_IMPORTED_MODULE_1__.Annotation, VFAnnotation);
     const vibrato = new VFVibrato();
-    ok(vibrato);
+    assert.ok(vibrato);
     const acc1 = new VFAccidental('##');
     const acc2 = new _src_index__WEBPACK_IMPORTED_MODULE_1__.Accidental('##');
-    equal(acc1.type, acc2.type);
+    assert.equal(acc1.type, acc2.type);
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(VFPrefixTests);
 
@@ -54402,7 +54252,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(VFPrefi
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "VibratoTests": () => (/* binding */ VibratoTests)
+/* harmony export */   VibratoTests: () => (/* binding */ VibratoTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/index */ "./src/index.ts");
@@ -54445,7 +54295,7 @@ function simple(options, contextBuilder) {
         }).addModifier(new _src_index__WEBPACK_IMPORTED_MODULE_1__.Vibrato(), 0),
     ];
     _src_index__WEBPACK_IMPORTED_MODULE_1__.Formatter.FormatAndDraw(ctx, stave, notes);
-    ok(true, 'Simple Vibrato');
+    options.assert.ok(true, 'Simple Vibrato');
 }
 /**
  * The harsh vibrato symbol is a zig zag line with sharp points.
@@ -54471,7 +54321,7 @@ function harsh(options, contextBuilder) {
         }).addModifier(new _src_index__WEBPACK_IMPORTED_MODULE_1__.Vibrato().setHarsh(true), 0),
     ];
     _src_index__WEBPACK_IMPORTED_MODULE_1__.Formatter.FormatAndDraw(ctx, stave, notes);
-    ok(true, 'Harsh Vibrato');
+    options.assert.ok(true, 'Harsh Vibrato');
 }
 function withBend(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 500, 240);
@@ -54501,7 +54351,7 @@ function withBend(options, contextBuilder) {
         }).addModifier(new _src_index__WEBPACK_IMPORTED_MODULE_1__.Vibrato().setVibratoWidth(120).setHarsh(true), 0),
     ];
     _src_index__WEBPACK_IMPORTED_MODULE_1__.Formatter.FormatAndDraw(ctx, stave, notes);
-    ok(true, 'Vibrato with Bend');
+    options.assert.ok(true, 'Vibrato with Bend');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(VibratoTests);
 
@@ -54517,7 +54367,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(Vibrato
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "VibratoBracketTests": () => (/* binding */ VibratoBracketTests)
+/* harmony export */   VibratoBracketTests: () => (/* binding */ VibratoBracketTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 // [VexFlow](https://vexflow.com) - Copyright (c) Mohit Muthanna 2010.
@@ -54546,7 +54396,7 @@ function createTest(noteGroup, setupVibratoBracket) {
         setupVibratoBracket(factory, voice.getTickables());
         factory.Formatter().joinVoices([voice]).formatToStave([voice], stave);
         factory.draw();
-        ok(true);
+        options.assert.ok(true);
     };
 }
 const simple = createTest('c4/4, c4, c4, c4', (factory, notes) => {
@@ -54584,7 +54434,7 @@ _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(Vibrato
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "VoiceTests": () => (/* binding */ VoiceTests)
+/* harmony export */   VoiceTests: () => (/* binding */ VoiceTests)
 /* harmony export */ });
 /* harmony import */ var _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vexflow_test_helpers */ "./tests/vexflow_test_helpers.ts");
 /* harmony import */ var _src_flow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../src/flow */ "./src/flow.ts");
@@ -54609,33 +54459,33 @@ __webpack_require__.r(__webpack_exports__);
 const VoiceTests = {
     Start() {
         QUnit.module('Voice');
-        test('Strict Test', strict);
-        test('Ignore Test', ignore);
+        QUnit.test('Strict Test', strict);
+        QUnit.test('Ignore Test', ignore);
         _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.runTests('Full Voice Mode Test', full);
     },
 };
 const BEAT = (1 * _src_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.RESOLUTION) / 4;
 // Helper function to create a tickable with a preset number of ticks.
 const createTickable = () => new _mocks__WEBPACK_IMPORTED_MODULE_7__.MockTickable().setTicks(BEAT);
-function strict() {
-    expect(8);
+function strict(assert) {
+    assert.expect(8);
     const tickables = [createTickable(), createTickable(), createTickable()];
     const voice = new _src_voice__WEBPACK_IMPORTED_MODULE_6__.Voice(_src_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.TIME4_4);
-    equal(voice.getTotalTicks().value(), BEAT * 4, '4/4 Voice has 4 beats');
-    equal(voice.getTicksUsed().value(), BEAT * 0, 'No beats in voice');
+    assert.equal(voice.getTotalTicks().value(), BEAT * 4, '4/4 Voice has 4 beats');
+    assert.equal(voice.getTicksUsed().value(), BEAT * 0, 'No beats in voice');
     voice.addTickables(tickables);
-    equal(voice.getTicksUsed().value(), BEAT * 3, 'Three beats in voice');
+    assert.equal(voice.getTicksUsed().value(), BEAT * 3, 'Three beats in voice');
     voice.addTickable(createTickable());
-    equal(voice.getTicksUsed().value(), BEAT * 4, 'Four beats in voice');
-    equal(voice.isComplete(), true, 'Voice is complete');
+    assert.equal(voice.getTicksUsed().value(), BEAT * 4, 'Four beats in voice');
+    assert.equal(voice.isComplete(), true, 'Voice is complete');
     const numeratorBeforeException = voice.getTicksUsed().numerator;
-    throws(() => voice.addTickable(createTickable()), /BadArgument/, '"Too many ticks" exception');
+    assert.throws(() => voice.addTickable(createTickable()), /BadArgument/, '"Too many ticks" exception');
     // Verify that adding too many ticks does not affect the `ticksUsed` property of the voice.
     // See voice.ts: this.ticksUsed.subtract(ticks);
-    equal(voice.getTicksUsed().numerator, numeratorBeforeException, 'Revert `ticksUsed` after a "Too many ticks" exception');
-    equal(voice.getSmallestTickCount().value(), BEAT, 'Smallest tick count is BEAT');
+    assert.equal(voice.getTicksUsed().numerator, numeratorBeforeException, 'Revert `ticksUsed` after a "Too many ticks" exception');
+    assert.equal(voice.getSmallestTickCount().value(), BEAT, 'Smallest tick count is BEAT');
 }
-function ignore() {
+function ignore(assert) {
     const tickables = [
         createTickable(),
         createTickable(),
@@ -54646,7 +54496,7 @@ function ignore() {
     ];
     const voice = new _src_voice__WEBPACK_IMPORTED_MODULE_6__.Voice(_src_flow__WEBPACK_IMPORTED_MODULE_1__.Flow.TIME4_4);
     voice.addTickables(tickables);
-    ok(true, 'all pass');
+    assert.ok(true, 'all pass');
 }
 function full(options, contextBuilder) {
     const ctx = contextBuilder(options.elementId, 550, 200);
@@ -54666,7 +54516,7 @@ function full(options, contextBuilder) {
         ctx.rect(bb.getX(), bb.getY(), bb.getW(), bb.getH());
     }
     ctx.stroke();
-    throws(() => voice.addTickable(new _src_stavenote__WEBPACK_IMPORTED_MODULE_5__.StaveNote({ keys: ['c/4'], duration: '2' })), /BadArgument/, 'Voice cannot exceed full amount of ticks');
+    options.assert.throws(() => voice.addTickable(new _src_stavenote__WEBPACK_IMPORTED_MODULE_5__.StaveNote({ keys: ['c/4'], duration: '2' })), /BadArgument/, 'Voice cannot exceed full amount of ticks');
 }
 _vexflow_test_helpers__WEBPACK_IMPORTED_MODULE_0__.VexFlowTests.register(VoiceTests);
 
@@ -54750,214 +54600,213 @@ var __webpack_exports__ = {};
   \*******************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Accidental": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Accidental),
-/* harmony export */   "AccidentalTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.AccidentalTests),
-/* harmony export */   "Annotation": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Annotation),
-/* harmony export */   "AnnotationHorizontalJustify": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.AnnotationHorizontalJustify),
-/* harmony export */   "AnnotationTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.AnnotationTests),
-/* harmony export */   "AnnotationVerticalJustify": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.AnnotationVerticalJustify),
-/* harmony export */   "Articulation": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Articulation),
-/* harmony export */   "ArticulationTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.ArticulationTests),
-/* harmony export */   "AutoBeamFormattingTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.AutoBeamFormattingTests),
-/* harmony export */   "BEAM_BOTH": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.BEAM_BOTH),
-/* harmony export */   "BEAM_LEFT": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.BEAM_LEFT),
-/* harmony export */   "BEAM_RIGHT": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.BEAM_RIGHT),
-/* harmony export */   "BachDemoTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.BachDemoTests),
-/* harmony export */   "BarNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.BarNote),
-/* harmony export */   "Barline": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Barline),
-/* harmony export */   "BarlineTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.BarlineTests),
-/* harmony export */   "BarlineType": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.BarlineType),
-/* harmony export */   "Beam": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Beam),
-/* harmony export */   "BeamTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.BeamTests),
-/* harmony export */   "Bend": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Bend),
-/* harmony export */   "BendTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.BendTests),
-/* harmony export */   "BoundingBox": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.BoundingBox),
-/* harmony export */   "BoundingBoxComputation": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.BoundingBoxComputation),
-/* harmony export */   "BoundingBoxComputationTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.BoundingBoxComputationTests),
-/* harmony export */   "BoundingBoxTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.BoundingBoxTests),
-/* harmony export */   "Builder": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Builder),
-/* harmony export */   "CanvasContext": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.CanvasContext),
-/* harmony export */   "Category": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Category),
-/* harmony export */   "ChordSymbol": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.ChordSymbol),
-/* harmony export */   "ChordSymbolHorizontalJustify": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.ChordSymbolHorizontalJustify),
-/* harmony export */   "ChordSymbolTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.ChordSymbolTests),
-/* harmony export */   "ChordSymbolVerticalJustify": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.ChordSymbolVerticalJustify),
-/* harmony export */   "Clef": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Clef),
-/* harmony export */   "ClefKeySignatureTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.ClefKeySignatureTests),
-/* harmony export */   "ClefNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.ClefNote),
-/* harmony export */   "ClefTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.ClefTests),
-/* harmony export */   "Crescendo": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Crescendo),
-/* harmony export */   "CrossBeamTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.CrossBeamTests),
-/* harmony export */   "Curve": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Curve),
-/* harmony export */   "CurvePosition": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.CurvePosition),
-/* harmony export */   "CurveTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.CurveTests),
-/* harmony export */   "Dot": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Dot),
-/* harmony export */   "DotTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.DotTests),
-/* harmony export */   "EasyScore": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.EasyScore),
-/* harmony export */   "EasyScoreGrammar": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.EasyScoreGrammar),
-/* harmony export */   "EasyScoreTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.EasyScoreTests),
-/* harmony export */   "Element": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Element),
-/* harmony export */   "Factory": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Factory),
-/* harmony export */   "FactoryTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.FactoryTests),
-/* harmony export */   "Flow": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Flow),
-/* harmony export */   "Font": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Font),
-/* harmony export */   "FontStyle": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.FontStyle),
-/* harmony export */   "FontTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.FontTests),
-/* harmony export */   "FontWeight": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.FontWeight),
-/* harmony export */   "Formatter": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Formatter),
-/* harmony export */   "FormatterTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.FormatterTests),
-/* harmony export */   "Fraction": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Fraction),
-/* harmony export */   "FractionTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.FractionTests),
-/* harmony export */   "FretHandFinger": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.FretHandFinger),
-/* harmony export */   "GhostNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.GhostNote),
-/* harmony export */   "GhostNoteTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.GhostNoteTests),
-/* harmony export */   "Glyph": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Glyph),
-/* harmony export */   "GlyphNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.GlyphNote),
-/* harmony export */   "GlyphNoteTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.GlyphNoteTests),
-/* harmony export */   "GraceNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.GraceNote),
-/* harmony export */   "GraceNoteGroup": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.GraceNoteGroup),
-/* harmony export */   "GraceNoteTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.GraceNoteTests),
-/* harmony export */   "GraceTabNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.GraceTabNote),
-/* harmony export */   "GraceTabNoteTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.GraceTabNoteTests),
-/* harmony export */   "KeyManager": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.KeyManager),
-/* harmony export */   "KeyManagerTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.KeyManagerTests),
-/* harmony export */   "KeySigNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.KeySigNote),
-/* harmony export */   "KeySignature": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.KeySignature),
-/* harmony export */   "KeySignatureTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.KeySignatureTests),
-/* harmony export */   "Modifier": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Modifier),
-/* harmony export */   "ModifierContext": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.ModifierContext),
-/* harmony export */   "ModifierContextTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.ModifierContextTests),
-/* harmony export */   "ModifierPosition": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.ModifierPosition),
-/* harmony export */   "MultiMeasureRest": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.MultiMeasureRest),
-/* harmony export */   "MultiMeasureRestTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.MultiMeasureRestTests),
-/* harmony export */   "Music": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Music),
-/* harmony export */   "MusicTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.MusicTests),
-/* harmony export */   "Note": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Note),
-/* harmony export */   "NoteHead": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.NoteHead),
-/* harmony export */   "NoteHeadTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.NoteHeadTests),
-/* harmony export */   "NoteSubGroup": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.NoteSubGroup),
-/* harmony export */   "NoteSubGroupTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.NoteSubGroupTests),
-/* harmony export */   "OffscreenCanvasTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.OffscreenCanvasTests),
-/* harmony export */   "Ornament": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Ornament),
-/* harmony export */   "OrnamentTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.OrnamentTests),
-/* harmony export */   "OutlineCode": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.OutlineCode),
-/* harmony export */   "Parenthesis": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Parenthesis),
-/* harmony export */   "Parser": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Parser),
-/* harmony export */   "ParserTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.ParserTests),
-/* harmony export */   "PedalMarking": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.PedalMarking),
-/* harmony export */   "PedalMarkingTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.PedalMarkingTests),
-/* harmony export */   "PercussionTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.PercussionTests),
-/* harmony export */   "Piece": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Piece),
-/* harmony export */   "Registry": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Registry),
-/* harmony export */   "RegistryTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.RegistryTests),
-/* harmony export */   "RenderContext": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.RenderContext),
-/* harmony export */   "Renderer": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Renderer),
-/* harmony export */   "RendererBackends": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.RendererBackends),
-/* harmony export */   "RendererLineEndType": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.RendererLineEndType),
-/* harmony export */   "RendererTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.RendererTests),
-/* harmony export */   "RepeatNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.RepeatNote),
-/* harmony export */   "Repetition": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Repetition),
-/* harmony export */   "RestsTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.RestsTests),
-/* harmony export */   "RhythmTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.RhythmTests),
-/* harmony export */   "RuntimeError": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.RuntimeError),
-/* harmony export */   "SVGContext": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.SVGContext),
-/* harmony export */   "Stave": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Stave),
-/* harmony export */   "StaveConnector": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StaveConnector),
-/* harmony export */   "StaveConnectorTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.StaveConnectorTests),
-/* harmony export */   "StaveHairpin": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StaveHairpin),
-/* harmony export */   "StaveHairpinTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.StaveHairpinTests),
-/* harmony export */   "StaveLine": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StaveLine),
-/* harmony export */   "StaveLineTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.StaveLineTests),
-/* harmony export */   "StaveModifier": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StaveModifier),
-/* harmony export */   "StaveModifierPosition": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StaveModifierPosition),
-/* harmony export */   "StaveModifierTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.StaveModifierTests),
-/* harmony export */   "StaveNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StaveNote),
-/* harmony export */   "StaveNoteTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.StaveNoteTests),
-/* harmony export */   "StaveSection": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StaveSection),
-/* harmony export */   "StaveTempo": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StaveTempo),
-/* harmony export */   "StaveTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.StaveTests),
-/* harmony export */   "StaveText": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StaveText),
-/* harmony export */   "StaveTie": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StaveTie),
-/* harmony export */   "StaveTieTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.StaveTieTests),
-/* harmony export */   "Stem": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Stem),
-/* harmony export */   "StemmableNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StemmableNote),
-/* harmony export */   "StringNumber": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StringNumber),
-/* harmony export */   "StringNumberTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.StringNumberTests),
-/* harmony export */   "Stroke": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Stroke),
-/* harmony export */   "StrokesTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.StrokesTests),
-/* harmony export */   "StyleTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.StyleTests),
-/* harmony export */   "SymbolModifiers": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.SymbolModifiers),
-/* harmony export */   "SymbolTypes": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.SymbolTypes),
-/* harmony export */   "System": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.System),
-/* harmony export */   "TabNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TabNote),
-/* harmony export */   "TabNoteTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TabNoteTests),
-/* harmony export */   "TabSlide": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TabSlide),
-/* harmony export */   "TabSlideTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TabSlideTests),
-/* harmony export */   "TabStave": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TabStave),
-/* harmony export */   "TabStaveTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TabStaveTests),
-/* harmony export */   "TabTie": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TabTie),
-/* harmony export */   "TabTieTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TabTieTests),
-/* harmony export */   "TextBracket": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TextBracket),
-/* harmony export */   "TextBracketPosition": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TextBracketPosition),
-/* harmony export */   "TextBracketTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TextBracketTests),
-/* harmony export */   "TextDynamics": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TextDynamics),
-/* harmony export */   "TextFormatter": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TextFormatter),
-/* harmony export */   "TextFormatterTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TextFormatterTests),
-/* harmony export */   "TextJustification": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TextJustification),
-/* harmony export */   "TextNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TextNote),
-/* harmony export */   "TextNoteTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TextNoteTests),
-/* harmony export */   "ThreeVoicesTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.ThreeVoicesTests),
-/* harmony export */   "TickContext": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TickContext),
-/* harmony export */   "TickContextTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TickContextTests),
-/* harmony export */   "Tickable": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Tickable),
-/* harmony export */   "TimeSigNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TimeSigNote),
-/* harmony export */   "TimeSignature": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TimeSignature),
-/* harmony export */   "TimeSignatureGlyph": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TimeSignatureGlyph),
-/* harmony export */   "TimeSignatureTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TimeSignatureTests),
-/* harmony export */   "Tremolo": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Tremolo),
-/* harmony export */   "TremoloTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TremoloTests),
-/* harmony export */   "Tuning": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Tuning),
-/* harmony export */   "TuningTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TuningTests),
-/* harmony export */   "Tuplet": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Tuplet),
-/* harmony export */   "TupletLocation": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TupletLocation),
-/* harmony export */   "TupletTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TupletTests),
-/* harmony export */   "TypeGuardTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TypeGuardTests),
-/* harmony export */   "UnisonTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.UnisonTests),
-/* harmony export */   "VFPrefixTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.VFPrefixTests),
-/* harmony export */   "Vex": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Vex),
-/* harmony export */   "Vibrato": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Vibrato),
-/* harmony export */   "VibratoBracket": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.VibratoBracket),
-/* harmony export */   "VibratoBracketTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.VibratoBracketTests),
-/* harmony export */   "VibratoTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.VibratoTests),
-/* harmony export */   "Voice": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Voice),
-/* harmony export */   "VoiceMode": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.VoiceMode),
-/* harmony export */   "VoiceTests": () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.VoiceTests),
-/* harmony export */   "Volta": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Volta),
-/* harmony export */   "VoltaType": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.VoltaType),
+/* harmony export */   Accidental: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Accidental),
+/* harmony export */   AccidentalTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.AccidentalTests),
+/* harmony export */   Annotation: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Annotation),
+/* harmony export */   AnnotationHorizontalJustify: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.AnnotationHorizontalJustify),
+/* harmony export */   AnnotationTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.AnnotationTests),
+/* harmony export */   AnnotationVerticalJustify: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.AnnotationVerticalJustify),
+/* harmony export */   Articulation: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Articulation),
+/* harmony export */   ArticulationTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.ArticulationTests),
+/* harmony export */   AutoBeamFormattingTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.AutoBeamFormattingTests),
+/* harmony export */   BEAM_BOTH: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.BEAM_BOTH),
+/* harmony export */   BEAM_LEFT: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.BEAM_LEFT),
+/* harmony export */   BEAM_RIGHT: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.BEAM_RIGHT),
+/* harmony export */   BachDemoTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.BachDemoTests),
+/* harmony export */   BarNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.BarNote),
+/* harmony export */   Barline: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Barline),
+/* harmony export */   BarlineTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.BarlineTests),
+/* harmony export */   BarlineType: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.BarlineType),
+/* harmony export */   Beam: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Beam),
+/* harmony export */   BeamTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.BeamTests),
+/* harmony export */   Bend: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Bend),
+/* harmony export */   BendTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.BendTests),
+/* harmony export */   BoundingBox: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.BoundingBox),
+/* harmony export */   BoundingBoxComputation: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.BoundingBoxComputation),
+/* harmony export */   BoundingBoxTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.BoundingBoxTests),
+/* harmony export */   Builder: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Builder),
+/* harmony export */   CanvasContext: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.CanvasContext),
+/* harmony export */   Category: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Category),
+/* harmony export */   ChordSymbol: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.ChordSymbol),
+/* harmony export */   ChordSymbolHorizontalJustify: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.ChordSymbolHorizontalJustify),
+/* harmony export */   ChordSymbolTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.ChordSymbolTests),
+/* harmony export */   ChordSymbolVerticalJustify: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.ChordSymbolVerticalJustify),
+/* harmony export */   Clef: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Clef),
+/* harmony export */   ClefKeySignatureTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.ClefKeySignatureTests),
+/* harmony export */   ClefNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.ClefNote),
+/* harmony export */   ClefTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.ClefTests),
+/* harmony export */   Crescendo: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Crescendo),
+/* harmony export */   CrossBeamTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.CrossBeamTests),
+/* harmony export */   Curve: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Curve),
+/* harmony export */   CurvePosition: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.CurvePosition),
+/* harmony export */   CurveTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.CurveTests),
+/* harmony export */   Dot: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Dot),
+/* harmony export */   DotTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.DotTests),
+/* harmony export */   EasyScore: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.EasyScore),
+/* harmony export */   EasyScoreGrammar: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.EasyScoreGrammar),
+/* harmony export */   EasyScoreTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.EasyScoreTests),
+/* harmony export */   Element: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Element),
+/* harmony export */   Factory: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Factory),
+/* harmony export */   FactoryTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.FactoryTests),
+/* harmony export */   Flow: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Flow),
+/* harmony export */   Font: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Font),
+/* harmony export */   FontStyle: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.FontStyle),
+/* harmony export */   FontTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.FontTests),
+/* harmony export */   FontWeight: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.FontWeight),
+/* harmony export */   Formatter: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Formatter),
+/* harmony export */   FormatterTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.FormatterTests),
+/* harmony export */   Fraction: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Fraction),
+/* harmony export */   FractionTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.FractionTests),
+/* harmony export */   FretHandFinger: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.FretHandFinger),
+/* harmony export */   GhostNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.GhostNote),
+/* harmony export */   GhostNoteTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.GhostNoteTests),
+/* harmony export */   Glyph: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Glyph),
+/* harmony export */   GlyphNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.GlyphNote),
+/* harmony export */   GlyphNoteTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.GlyphNoteTests),
+/* harmony export */   GraceNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.GraceNote),
+/* harmony export */   GraceNoteGroup: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.GraceNoteGroup),
+/* harmony export */   GraceNoteTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.GraceNoteTests),
+/* harmony export */   GraceTabNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.GraceTabNote),
+/* harmony export */   GraceTabNoteTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.GraceTabNoteTests),
+/* harmony export */   KeyManager: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.KeyManager),
+/* harmony export */   KeyManagerTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.KeyManagerTests),
+/* harmony export */   KeySigNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.KeySigNote),
+/* harmony export */   KeySignature: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.KeySignature),
+/* harmony export */   KeySignatureTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.KeySignatureTests),
+/* harmony export */   Modifier: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Modifier),
+/* harmony export */   ModifierContext: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.ModifierContext),
+/* harmony export */   ModifierContextTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.ModifierContextTests),
+/* harmony export */   ModifierPosition: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.ModifierPosition),
+/* harmony export */   MultiMeasureRest: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.MultiMeasureRest),
+/* harmony export */   MultiMeasureRestTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.MultiMeasureRestTests),
+/* harmony export */   Music: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Music),
+/* harmony export */   MusicTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.MusicTests),
+/* harmony export */   Note: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Note),
+/* harmony export */   NoteHead: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.NoteHead),
+/* harmony export */   NoteHeadTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.NoteHeadTests),
+/* harmony export */   NoteSubGroup: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.NoteSubGroup),
+/* harmony export */   NoteSubGroupTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.NoteSubGroupTests),
+/* harmony export */   OffscreenCanvasTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.OffscreenCanvasTests),
+/* harmony export */   Ornament: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Ornament),
+/* harmony export */   OrnamentTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.OrnamentTests),
+/* harmony export */   OutlineCode: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.OutlineCode),
+/* harmony export */   Parenthesis: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Parenthesis),
+/* harmony export */   Parser: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Parser),
+/* harmony export */   ParserTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.ParserTests),
+/* harmony export */   PedalMarking: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.PedalMarking),
+/* harmony export */   PedalMarkingTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.PedalMarkingTests),
+/* harmony export */   PercussionTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.PercussionTests),
+/* harmony export */   Piece: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Piece),
+/* harmony export */   Registry: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Registry),
+/* harmony export */   RegistryTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.RegistryTests),
+/* harmony export */   RenderContext: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.RenderContext),
+/* harmony export */   Renderer: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Renderer),
+/* harmony export */   RendererBackends: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.RendererBackends),
+/* harmony export */   RendererLineEndType: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.RendererLineEndType),
+/* harmony export */   RendererTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.RendererTests),
+/* harmony export */   RepeatNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.RepeatNote),
+/* harmony export */   Repetition: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Repetition),
+/* harmony export */   RestsTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.RestsTests),
+/* harmony export */   RhythmTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.RhythmTests),
+/* harmony export */   RuntimeError: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.RuntimeError),
+/* harmony export */   SVGContext: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.SVGContext),
+/* harmony export */   Stave: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Stave),
+/* harmony export */   StaveConnector: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StaveConnector),
+/* harmony export */   StaveConnectorTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.StaveConnectorTests),
+/* harmony export */   StaveHairpin: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StaveHairpin),
+/* harmony export */   StaveHairpinTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.StaveHairpinTests),
+/* harmony export */   StaveLine: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StaveLine),
+/* harmony export */   StaveLineTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.StaveLineTests),
+/* harmony export */   StaveModifier: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StaveModifier),
+/* harmony export */   StaveModifierPosition: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StaveModifierPosition),
+/* harmony export */   StaveModifierTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.StaveModifierTests),
+/* harmony export */   StaveNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StaveNote),
+/* harmony export */   StaveNoteTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.StaveNoteTests),
+/* harmony export */   StaveSection: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StaveSection),
+/* harmony export */   StaveTempo: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StaveTempo),
+/* harmony export */   StaveTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.StaveTests),
+/* harmony export */   StaveText: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StaveText),
+/* harmony export */   StaveTie: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StaveTie),
+/* harmony export */   StaveTieTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.StaveTieTests),
+/* harmony export */   Stem: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Stem),
+/* harmony export */   StemmableNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StemmableNote),
+/* harmony export */   StringNumber: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.StringNumber),
+/* harmony export */   StringNumberTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.StringNumberTests),
+/* harmony export */   Stroke: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Stroke),
+/* harmony export */   StrokesTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.StrokesTests),
+/* harmony export */   StyleTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.StyleTests),
+/* harmony export */   SymbolModifiers: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.SymbolModifiers),
+/* harmony export */   SymbolTypes: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.SymbolTypes),
+/* harmony export */   System: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.System),
+/* harmony export */   TabNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TabNote),
+/* harmony export */   TabNoteTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TabNoteTests),
+/* harmony export */   TabSlide: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TabSlide),
+/* harmony export */   TabSlideTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TabSlideTests),
+/* harmony export */   TabStave: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TabStave),
+/* harmony export */   TabStaveTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TabStaveTests),
+/* harmony export */   TabTie: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TabTie),
+/* harmony export */   TabTieTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TabTieTests),
+/* harmony export */   TextBracket: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TextBracket),
+/* harmony export */   TextBracketPosition: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TextBracketPosition),
+/* harmony export */   TextBracketTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TextBracketTests),
+/* harmony export */   TextDynamics: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TextDynamics),
+/* harmony export */   TextFormatter: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TextFormatter),
+/* harmony export */   TextFormatterTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TextFormatterTests),
+/* harmony export */   TextJustification: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TextJustification),
+/* harmony export */   TextNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TextNote),
+/* harmony export */   TextNoteTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TextNoteTests),
+/* harmony export */   ThreeVoicesTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.ThreeVoicesTests),
+/* harmony export */   TickContext: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TickContext),
+/* harmony export */   TickContextTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TickContextTests),
+/* harmony export */   Tickable: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Tickable),
+/* harmony export */   TimeSigNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TimeSigNote),
+/* harmony export */   TimeSignature: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TimeSignature),
+/* harmony export */   TimeSignatureGlyph: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TimeSignatureGlyph),
+/* harmony export */   TimeSignatureTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TimeSignatureTests),
+/* harmony export */   Tremolo: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Tremolo),
+/* harmony export */   TremoloTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TremoloTests),
+/* harmony export */   Tuning: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Tuning),
+/* harmony export */   TuningTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TuningTests),
+/* harmony export */   Tuplet: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Tuplet),
+/* harmony export */   TupletLocation: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.TupletLocation),
+/* harmony export */   TupletTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TupletTests),
+/* harmony export */   TypeGuardTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.TypeGuardTests),
+/* harmony export */   UnisonTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.UnisonTests),
+/* harmony export */   VFPrefixTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.VFPrefixTests),
+/* harmony export */   Vex: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Vex),
+/* harmony export */   Vibrato: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Vibrato),
+/* harmony export */   VibratoBracket: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.VibratoBracket),
+/* harmony export */   VibratoBracketTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.VibratoBracketTests),
+/* harmony export */   VibratoTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.VibratoTests),
+/* harmony export */   Voice: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Voice),
+/* harmony export */   VoiceMode: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.VoiceMode),
+/* harmony export */   VoiceTests: () => (/* reexport safe */ _tests_index__WEBPACK_IMPORTED_MODULE_1__.VoiceTests),
+/* harmony export */   Volta: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.Volta),
+/* harmony export */   VoltaType: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.VoltaType),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   "defined": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.defined),
-/* harmony export */   "drawDot": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.drawDot),
-/* harmony export */   "globalObject": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.globalObject),
-/* harmony export */   "isAccidental": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isAccidental),
-/* harmony export */   "isAnnotation": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isAnnotation),
-/* harmony export */   "isBarline": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isBarline),
-/* harmony export */   "isCategory": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isCategory),
-/* harmony export */   "isDot": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isDot),
-/* harmony export */   "isGraceNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isGraceNote),
-/* harmony export */   "isGraceNoteGroup": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isGraceNoteGroup),
-/* harmony export */   "isHTMLCanvas": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isHTMLCanvas),
-/* harmony export */   "isHTMLDiv": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isHTMLDiv),
-/* harmony export */   "isNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isNote),
-/* harmony export */   "isRenderContext": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isRenderContext),
-/* harmony export */   "isStaveNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isStaveNote),
-/* harmony export */   "isStemmableNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isStemmableNote),
-/* harmony export */   "isTabNote": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isTabNote),
-/* harmony export */   "log": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.log),
-/* harmony export */   "midLine": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.midLine),
-/* harmony export */   "normalizeAngle": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.normalizeAngle),
-/* harmony export */   "prefix": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.prefix),
-/* harmony export */   "sumArray": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.sumArray),
-/* harmony export */   "warn": () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.warn)
+/* harmony export */   defined: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.defined),
+/* harmony export */   drawDot: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.drawDot),
+/* harmony export */   globalObject: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.globalObject),
+/* harmony export */   isAccidental: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isAccidental),
+/* harmony export */   isAnnotation: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isAnnotation),
+/* harmony export */   isBarline: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isBarline),
+/* harmony export */   isCategory: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isCategory),
+/* harmony export */   isDot: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isDot),
+/* harmony export */   isGraceNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isGraceNote),
+/* harmony export */   isGraceNoteGroup: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isGraceNoteGroup),
+/* harmony export */   isHTMLCanvas: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isHTMLCanvas),
+/* harmony export */   isHTMLDiv: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isHTMLDiv),
+/* harmony export */   isNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isNote),
+/* harmony export */   isRenderContext: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isRenderContext),
+/* harmony export */   isStaveNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isStaveNote),
+/* harmony export */   isStemmableNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isStemmableNote),
+/* harmony export */   isTabNote: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.isTabNote),
+/* harmony export */   log: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.log),
+/* harmony export */   midLine: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.midLine),
+/* harmony export */   normalizeAngle: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.normalizeAngle),
+/* harmony export */   prefix: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.prefix),
+/* harmony export */   sumArray: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.sumArray),
+/* harmony export */   warn: () => (/* reexport safe */ _src_index__WEBPACK_IMPORTED_MODULE_0__.warn)
 /* harmony export */ });
 /* harmony import */ var _src_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../src/index */ "./src/index.ts");
 /* harmony import */ var _tests_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../tests/index */ "./tests/index.ts");

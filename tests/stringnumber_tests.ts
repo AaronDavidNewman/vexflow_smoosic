@@ -21,6 +21,7 @@ const StringNumberTests = {
     run('Fret Hand Finger In Notation', drawFretHandFingers);
     run('Multi Voice With Strokes, String & Finger Numbers', multi);
     run('Complex Measure With String & Finger Numbers', drawAccidentals);
+    run('Shifted Notehead, Multiple Modifiers', shiftedNoteheadMultipleModifiers);
   },
 };
 
@@ -120,7 +121,7 @@ function drawMultipleMeasures(options: TestOptions): void {
 
   f.draw();
 
-  ok(true, 'String Number');
+  options.assert.ok(true, 'String Number');
 }
 
 function drawFretHandFingers(options: TestOptions): void {
@@ -206,7 +207,7 @@ function drawFretHandFingers(options: TestOptions): void {
 
   f.draw();
 
-  ok(true, 'String Number');
+  options.assert.ok(true, 'String Number');
 }
 
 function multi(options: TestOptions): void {
@@ -269,7 +270,7 @@ function multi(options: TestOptions): void {
 
   f.draw();
 
-  ok(true, 'Strokes Test Multi Voice');
+  options.assert.ok(true, 'Strokes Test Multi Voice');
 }
 
 function drawAccidentals(options: TestOptions): void {
@@ -346,8 +347,32 @@ function drawAccidentals(options: TestOptions): void {
     .addClef('treble')
     .draw();
   voice.draw(ctx, stave);
-  ok(true, 'String Number');
+  options.assert.ok(true, 'String Number');
 }
 
+function shiftedNoteheadMultipleModifiers(options: TestOptions): void {
+  const f = VexFlowTests.makeFactory(options, 900, 150);
+  const score = f.EasyScore();
+  score.set({ time: '6/4' });
+
+  const stave = f.Stave({ width: 900 }).setEndBarType(BarlineType.END).addClef('treble');
+
+  const notes = ['A4 B4', 'B4 C5', 'A4 B#4', 'B4 C#5', 'A#4 B#4', 'B#4 C#5']
+    .map((keys) => score.notes(`(${keys})/q`))
+    .flat();
+  notes.forEach((note) => {
+    note
+      .addModifier(f.StringNumber({ number: '2', position: 'left' }, true), 1)
+      .addModifier(f.StringNumber({ number: '2', position: 'right' }, true), 1);
+  });
+
+  const voice = score.voice(notes);
+
+  f.Formatter().joinVoices([voice]).formatToStave([voice], stave);
+
+  f.draw();
+
+  options.assert.ok(true, 'String Number');
+}
 VexFlowTests.register(StringNumberTests);
 export { StringNumberTests };

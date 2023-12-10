@@ -6,7 +6,6 @@
 import { ContextBuilder, Factory, Flow, Font, RenderContext, Renderer } from '../src/index';
 
 import { globalObject } from '../src/util';
-import { Assert } from './types/qunit';
 
 // eslint-disable-next-line
 declare const $: any;
@@ -244,7 +243,7 @@ export class VexFlowTests {
     const title = $('<div/>').addClass('name').attr('id', titleId).html(anchorTestTitle).get(0);
     const vexOutput = $(`<${tagName}/>`).addClass('vex-tabdiv').attr('id', elementId).get(0);
     const container = $('<div/>').addClass('testcanvas').append(title, vexOutput).get(0);
-    $('#vexflow_testoutput').append(container);
+    $('#qunit-tests').append(container);
     return vexOutput;
   }
 
@@ -298,8 +297,8 @@ export class VexFlowTests {
    */
   static runNodeTestHelper(fontName: string, element: HTMLElement): void {
     if (Renderer.lastContext !== undefined) {
-      const moduleName = sanitizeName(QUnit.current_module);
-      const testName = sanitizeName(QUnit.current_test);
+      const moduleName = sanitizeName(QUnit.module.name);
+      const testName = sanitizeName(QUnit.test.name);
       // If we are only testing Bravura, we OMIT the font name from the
       // output image file name, which allows visual diffs against
       // the previous release: version 3.0.9. In the future, if we decide
@@ -323,7 +322,7 @@ export class VexFlowTests {
     }
     const testTypeLowerCase = testType.toLowerCase();
     fontStacks.forEach((fontStackName: string) => {
-      QUnit.test(name, (assert: Assert) => {
+      QUnit.test(name, (assert: any) => {
         useTempFontStack(fontStackName);
         const elementId = VexFlowTests.generateTestID(`${testTypeLowerCase}_` + fontStackName);
         const moduleName = assert.test.module.name;
