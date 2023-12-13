@@ -463,7 +463,8 @@ module.exports = (grunt) => {
   grunt.registerTask('default', 'Build all VexFlow targets.', [
     'clean:build',
     'webpack:prodAndDebug',
-    'build:esm'
+    'build:esm',
+    'build:types'
   ]);
 
   // grunt test
