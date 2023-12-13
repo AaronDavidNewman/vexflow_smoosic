@@ -361,13 +361,13 @@ function webpackConfigs() {
 
   return {
     // grunt webpack:prodAndDebug
-    prodAndDebug: () => [prodConfig(), ...fontConfigs(), debugConfig()],
+    prodAndDebug: () => [prodConfig(), debugConfig()],
     // grunt webpack:prod
-    prod: () => [prodConfig(), ...fontConfigs()],
+    prod: () => [prodConfig()],
     // grunt webpack:debug
     debug: () => debugConfig(),
     // grunt webpack:watchProd
-    watchProd: () => [prodConfig(WATCH), ...fontConfigs(WATCH)],
+    watchProd: () => [prodConfig(WATCH)],
     // grunt webpack:watchDebug
     watchDebug: () => debugConfig(WATCH),
   };
@@ -456,15 +456,14 @@ module.exports = (grunt) => {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-webpack');
+  console.log('** Use default build, or build:ESM for Smoosic export **');
 
   // grunt
   // Build all targets for production and debugging.
   grunt.registerTask('default', 'Build all VexFlow targets.', [
     'clean:build',
     'webpack:prodAndDebug',
-    'build:esm',
-    'build:types',
-    'build:docs',
+    'build:esm'
   ]);
 
   // grunt test

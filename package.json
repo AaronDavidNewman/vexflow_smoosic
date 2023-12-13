@@ -1,61 +1,16 @@
 {
   "name": "vexflow_smoosic",
-  "version": "4.2.4",
+  "version": "4.2.5",
   "description": "A JavaScript library for rendering music notation and guitar tablature.",
   "exports": {
     ".": {
-      "types": "./build/types/entry/vexflow.d.ts",
-      "require": "./build/cjs/vexflow.js",
-      "import": "./build/esm/entry/vexflow.js"
-    },
-    "./bravura": {
-      "types": "./build/types/entry/vexflow-bravura.d.ts",
-      "require": "./build/cjs/vexflow-bravura.js",
-      "import": "./build/esm/entry/vexflow-bravura.js"
-    },
-    "./gonville": {
-      "types": "./build/types/entry/vexflow-gonville.d.ts",
-      "require": "./build/cjs/vexflow-gonville.js",
-      "import": "./build/esm/entry/vexflow-gonville.js"
-    },
-    "./leland": {
-      "types": "./build/types/entry/vexflow-leland.d.ts",
-      "require": "./build/cjs/vexflow-leland.js",
-      "import": "./build/esm/entry/vexflow-leland.js"
-    },
-    "./petaluma": {
-      "types": "./build/types/entry/vexflow-petaluma.d.ts",
-      "require": "./build/cjs/vexflow-petaluma.js",
-      "import": "./build/esm/entry/vexflow-petaluma.js"
-    },
-    "./core": {
-      "types": "./build/types/entry/vexflow-core.d.ts",
-      "require": "./build/cjs/vexflow-core.js",
-      "import": "./build/esm/entry/vexflow-core.js"
-    },
-    "./font/bravura": {
-      "types": "./build/types/entry/vexflow-font-bravura.d.ts",
-      "require": "./build/cjs/vexflow-font-bravura.js",
-      "import": "./build/esm/entry/vexflow-font-bravura.js"
-    },
-    "./font/gonville": {
-      "types": "./build/types/entry/vexflow-font-gonville.d.ts",
-      "require": "./build/cjs/vexflow-font-gonville.js",
-      "import": "./build/esm/entry/vexflow-font-gonville.js"
-    },
-    "./font/petaluma": {
-      "types": "./build/types/entry/vexflow-font-petaluma.d.ts",
-      "require": "./build/cjs/vexflow-font-petaluma.js",
-      "import": "./build/esm/entry/vexflow-font-petaluma.js"
-    },
-    "./font/custom": {
-      "types": "./build/types/entry/vexflow-font-custom.d.ts",
-      "require": "./build/cjs/vexflow-font-custom.js",
-      "import": "./build/esm/entry/vexflow-font-custom.js"
+      "types": "./build/esm/types/entry/vexflow-debug.d.ts",
+      "require": "./build/cjs/vexflow-debug.js",
+      "browser": "./build/cjs/vexflow-debug.js",
+      "import": "./build/esm/entry/vexflow-debug.js"
     }
   },
   "main": "./build/cjs/vexflow-debug.js",
-  "browser": "./build/cjs/vexflow-debug.js",
   "module": "./build/esm/entry/vexflow-debug.js",
   "types": "./build/types/entry/vexflow.d.ts",
   "repository": {
@@ -74,7 +29,6 @@
     "tests/flow.html",
     "tests/flow.css",
     "tests/support",
-    "types",
     "release",
     "AUTHORS.md"
   ],

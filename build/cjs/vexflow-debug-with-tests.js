@@ -1,5 +1,5 @@
 /*!
- * VexFlow 4.2.4   2023-12-12T23:34:42.660Z   6d2aa58f346d0929ed5b38eddb1898b60a221bea
+ * VexFlow 4.2.5   2023-12-13T03:52:03.460Z   d79eb751701a95e6eba6b594fe5f43c531788986
  * Vexflow_smoosic, forked from :
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * https://www.vexflow.com   https://github.com/0xfe/vexflow
@@ -30,9 +30,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   ID: () => (/* binding */ ID),
 /* harmony export */   VERSION: () => (/* binding */ VERSION)
 /* harmony export */ });
-const VERSION = '4.2.4';
-const ID = '6d2aa58f346d0929ed5b38eddb1898b60a221bea';
-const DATE = '2023-12-12T23:34:42.660Z';
+const VERSION = '4.2.5';
+const ID = 'd79eb751701a95e6eba6b594fe5f43c531788986';
+const DATE = '2023-12-13T03:52:03.460Z';
 
 
 /***/ }),

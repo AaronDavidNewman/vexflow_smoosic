@@ -3,7 +3,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./build/esm/",
-    "declaration": false,
+    "declaration": true,
+    "declarationDir": "./build/esm/types",
+    "declarationMap": true,    
     "removeComments": true
     // Avoid using incremental builds for now: https://github.com/microsoft/TypeScript/issues/30602
     // "incremental": true,
