@@ -1,5 +1,5 @@
 /*!
- * VexFlow 4.2.2   2023-12-10T22:46:47.526Z   9996264eda00015f217ab2c7d98c873599d70e18
+ * VexFlow 4.2.6   2024-03-31T22:07:36.979Z   9cbdf86a23fafc6a0c86f9a5e91ccc7be26684e2
  * Vexflow_smoosic, forked from :
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * https://www.vexflow.com   https://github.com/0xfe/vexflow
@@ -30,9 +30,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   ID: () => (/* binding */ ID),
 /* harmony export */   VERSION: () => (/* binding */ VERSION)
 /* harmony export */ });
-const VERSION = '4.2.2';
-const ID = '9996264eda00015f217ab2c7d98c873599d70e18';
-const DATE = '2023-12-10T22:46:47.526Z';
+const VERSION = '4.2.6';
+const ID = '9cbdf86a23fafc6a0c86f9a5e91ccc7be26684e2';
+const DATE = '2024-03-31T22:07:36.979Z';
 
 
 /***/ }),
@@ -618,11 +618,11 @@ class Annotation extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
             const glyphWidth = note.getGlyphProps().getWidth();
             // Get the text width from the font metrics.
             const textWidth = textFormatter.getWidthForTextInPx(annotation.text);
-            if (annotation.horizontalJustification === AnnotationHorizontalJustify.LEFT) {
+            if (annotation.horizontalJustification === AnnotationHorizontalJustify.RIGHT) {
                 maxLeftGlyphWidth = Math.max(glyphWidth, maxLeftGlyphWidth);
                 leftWidth = Math.max(leftWidth, textWidth) + Annotation.minAnnotationPadding;
             }
-            else if (annotation.horizontalJustification === AnnotationHorizontalJustify.RIGHT) {
+            else if (annotation.horizontalJustification === AnnotationHorizontalJustify.LEFT) {
                 maxRightGlyphWidth = Math.max(glyphWidth, maxRightGlyphWidth);
                 rightWidth = Math.max(rightWidth, textWidth);
             }
@@ -3156,11 +3156,11 @@ class ChordSymbol extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
             }
             if (symbol.getReportWidth() && (0,_typeguard__WEBPACK_IMPORTED_MODULE_5__.isStemmableNote)(note)) {
                 const glyphWidth = note.getGlyphProps().getWidth();
-                if (symbol.getHorizontal() === ChordSymbolHorizontalJustify.LEFT) {
+                if (symbol.getHorizontal() === ChordSymbolHorizontalJustify.RIGHT) {
                     maxLeftGlyphWidth = Math.max(glyphWidth, maxLeftGlyphWidth);
                     leftWidth = Math.max(leftWidth, symbolWidth) + ChordSymbol.minPadding;
                 }
-                else if (symbol.getHorizontal() === ChordSymbolHorizontalJustify.RIGHT) {
+                else if (symbol.getHorizontal() === ChordSymbolHorizontalJustify.LEFT) {
                     maxRightGlyphWidth = Math.max(glyphWidth, maxRightGlyphWidth);
                     rightWidth = Math.max(rightWidth, symbolWidth);
                 }
@@ -33897,7 +33897,7 @@ class TextNote extends _note__WEBPACK_IMPORTED_MODULE_2__.Note {
             x -= width / 2;
         }
         else if (this.justification === TextJustification.RIGHT) {
-            x -= width;
+            x += width;
         }
         let y;
         if (this.glyph) {

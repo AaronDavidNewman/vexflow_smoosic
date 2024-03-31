@@ -365,34 +365,34 @@ function topJustify(options: TestOptions): void {
     Formatter.FormatAndDraw(ctx, stave, notes);
   }
 
-  let chord1 = f.ChordSymbol().addText('F7').setHorizontal('left').addGlyphOrText('(#11b9)', superscript);
-  let chord2 = f.ChordSymbol({ hJustify: 'left' }).addText('C').addGlyphSuperscript('majorSeventh');
+  let chord1 = f.ChordSymbol().addText('F7').setHorizontal('centerStem').addGlyphOrText('(#11b9)', superscript);
+  let chord2 = f.ChordSymbol({ hJustify: 'centerStem' }).addText('C').addGlyphSuperscript('majorSeventh');
   draw(chord1, chord2, 40);
 
   chord1 = f
-    .ChordSymbol({ hJustify: 'center' })
+    .ChordSymbol()
     .addText('F7')
-    .setHorizontal('left')
+    .setHorizontal('center')
     .addGlyphOrText('(#11b9)', superscript);
   chord2 = f.ChordSymbol({ hJustify: 'center' }).addText('C').addTextSuperscript('Maj.');
   draw(chord1, chord2, 140);
 
   chord1 = f
-    .ChordSymbol({ hJustify: 'right' })
+    .ChordSymbol()
     .addText('F7')
     .setHorizontal('left')
     .addGlyphOrText('#11', superscript)
     .addGlyphOrText('b9', subscript);
-  chord2 = f.ChordSymbol({ hJustify: 'right' }).addText('C').addTextSuperscript('Maj.');
+  chord2 = f.ChordSymbol({ hJustify: 'left' }).addText('C').addTextSuperscript('Maj.');
   draw(chord1, chord2, 240);
 
   chord1 = f
-    .ChordSymbol({ hJustify: 'left' })
+    .ChordSymbol()
     .addText('F7')
-    .setHorizontal('left')
+    .setHorizontal('right')
     .addGlyphOrText('#11', superscript)
     .addGlyphOrText('b9', subscript);
-  chord2 = f.ChordSymbol({ hJustify: 'centerStem' }).addText('C').addTextSuperscript('Maj.');
+  chord2 = f.ChordSymbol({ hJustify: 'right' }).addText('C').addTextSuperscript('Maj.');
   draw(chord1, chord2, 340);
 
   options.assert.ok(true, 'Top Chord Justified');

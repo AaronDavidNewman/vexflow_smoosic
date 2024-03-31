@@ -1,5 +1,5 @@
 /*!
- * VexFlow 4.2.6   2023-12-13T04:36:51.063Z   31dca682bd9c2905c6d93075dcf115a5519cc175
+ * VexFlow 4.2.6   2024-03-31T22:07:36.979Z   9cbdf86a23fafc6a0c86f9a5e91ccc7be26684e2
  * Vexflow_smoosic, forked from :
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * https://www.vexflow.com   https://github.com/0xfe/vexflow
@@ -31,8 +31,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   VERSION: () => (/* binding */ VERSION)
 /* harmony export */ });
 const VERSION = '4.2.6';
-const ID = '31dca682bd9c2905c6d93075dcf115a5519cc175';
-const DATE = '2023-12-13T04:36:51.063Z';
+const ID = '9cbdf86a23fafc6a0c86f9a5e91ccc7be26684e2';
+const DATE = '2024-03-31T22:07:36.979Z';
 
 
 /***/ }),
@@ -618,11 +618,11 @@ class Annotation extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
             const glyphWidth = note.getGlyphProps().getWidth();
             // Get the text width from the font metrics.
             const textWidth = textFormatter.getWidthForTextInPx(annotation.text);
-            if (annotation.horizontalJustification === AnnotationHorizontalJustify.LEFT) {
+            if (annotation.horizontalJustification === AnnotationHorizontalJustify.RIGHT) {
                 maxLeftGlyphWidth = Math.max(glyphWidth, maxLeftGlyphWidth);
                 leftWidth = Math.max(leftWidth, textWidth) + Annotation.minAnnotationPadding;
             }
-            else if (annotation.horizontalJustification === AnnotationHorizontalJustify.RIGHT) {
+            else if (annotation.horizontalJustification === AnnotationHorizontalJustify.LEFT) {
                 maxRightGlyphWidth = Math.max(glyphWidth, maxRightGlyphWidth);
                 rightWidth = Math.max(rightWidth, textWidth);
             }
@@ -3156,11 +3156,11 @@ class ChordSymbol extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
             }
             if (symbol.getReportWidth() && (0,_typeguard__WEBPACK_IMPORTED_MODULE_5__.isStemmableNote)(note)) {
                 const glyphWidth = note.getGlyphProps().getWidth();
-                if (symbol.getHorizontal() === ChordSymbolHorizontalJustify.LEFT) {
+                if (symbol.getHorizontal() === ChordSymbolHorizontalJustify.RIGHT) {
                     maxLeftGlyphWidth = Math.max(glyphWidth, maxLeftGlyphWidth);
                     leftWidth = Math.max(leftWidth, symbolWidth) + ChordSymbol.minPadding;
                 }
-                else if (symbol.getHorizontal() === ChordSymbolHorizontalJustify.RIGHT) {
+                else if (symbol.getHorizontal() === ChordSymbolHorizontalJustify.LEFT) {
                     maxRightGlyphWidth = Math.max(glyphWidth, maxRightGlyphWidth);
                     rightWidth = Math.max(rightWidth, symbolWidth);
                 }
@@ -33897,7 +33897,7 @@ class TextNote extends _note__WEBPACK_IMPORTED_MODULE_2__.Note {
             x -= width / 2;
         }
         else if (this.justification === TextJustification.RIGHT) {
-            x -= width;
+            x += width;
         }
         let y;
         if (this.glyph) {
@@ -40494,31 +40494,31 @@ function topJustify(options) {
         ];
         _src_formatter__WEBPACK_IMPORTED_MODULE_4__.Formatter.FormatAndDraw(ctx, stave, notes);
     }
-    let chord1 = f.ChordSymbol().addText('F7').setHorizontal('left').addGlyphOrText('(#11b9)', superscript);
-    let chord2 = f.ChordSymbol({ hJustify: 'left' }).addText('C').addGlyphSuperscript('majorSeventh');
+    let chord1 = f.ChordSymbol().addText('F7').setHorizontal('centerStem').addGlyphOrText('(#11b9)', superscript);
+    let chord2 = f.ChordSymbol({ hJustify: 'centerStem' }).addText('C').addGlyphSuperscript('majorSeventh');
     draw(chord1, chord2, 40);
     chord1 = f
-        .ChordSymbol({ hJustify: 'center' })
+        .ChordSymbol()
         .addText('F7')
-        .setHorizontal('left')
+        .setHorizontal('center')
         .addGlyphOrText('(#11b9)', superscript);
     chord2 = f.ChordSymbol({ hJustify: 'center' }).addText('C').addTextSuperscript('Maj.');
     draw(chord1, chord2, 140);
     chord1 = f
-        .ChordSymbol({ hJustify: 'right' })
+        .ChordSymbol()
         .addText('F7')
         .setHorizontal('left')
+        .addGlyphOrText('#11', superscript)
+        .addGlyphOrText('b9', subscript);
+    chord2 = f.ChordSymbol({ hJustify: 'left' }).addText('C').addTextSuperscript('Maj.');
+    draw(chord1, chord2, 240);
+    chord1 = f
+        .ChordSymbol()
+        .addText('F7')
+        .setHorizontal('right')
         .addGlyphOrText('#11', superscript)
         .addGlyphOrText('b9', subscript);
     chord2 = f.ChordSymbol({ hJustify: 'right' }).addText('C').addTextSuperscript('Maj.');
-    draw(chord1, chord2, 240);
-    chord1 = f
-        .ChordSymbol({ hJustify: 'left' })
-        .addText('F7')
-        .setHorizontal('left')
-        .addGlyphOrText('#11', superscript)
-        .addGlyphOrText('b9', subscript);
-    chord2 = f.ChordSymbol({ hJustify: 'centerStem' }).addText('C').addTextSuperscript('Maj.');
     draw(chord1, chord2, 340);
     options.assert.ok(true, 'Top Chord Justified');
 }

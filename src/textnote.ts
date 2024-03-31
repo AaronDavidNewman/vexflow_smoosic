@@ -211,7 +211,7 @@ export class TextNote extends Note {
     if (this.justification === TextJustification.CENTER) {
       x -= width / 2;
     } else if (this.justification === TextJustification.RIGHT) {
-      x -= width;
+      x += width;
     }
 
     let y;
