@@ -1,5 +1,5 @@
 /*!
- * VexFlow 4.2.6   2024-03-31T22:07:36.979Z   9cbdf86a23fafc6a0c86f9a5e91ccc7be26684e2
+ * VexFlow 4.2.7   2024-04-06T16:59:27.030Z   cdc550eae26cd1a4620509b8c23c13b3fac99be8
  * Vexflow_smoosic, forked from :
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * https://www.vexflow.com   https://github.com/0xfe/vexflow
@@ -30,9 +30,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   ID: () => (/* binding */ ID),
 /* harmony export */   VERSION: () => (/* binding */ VERSION)
 /* harmony export */ });
-const VERSION = '4.2.6';
-const ID = '9cbdf86a23fafc6a0c86f9a5e91ccc7be26684e2';
-const DATE = '2024-03-31T22:07:36.979Z';
+const VERSION = '4.2.7';
+const ID = 'cdc550eae26cd1a4620509b8c23c13b3fac99be8';
+const DATE = '2024-04-06T16:59:27.030Z';
 
 
 /***/ }),
@@ -533,7 +533,6 @@ class Accidental extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
 Accidental.DEBUG = false;
 
 
-
 /***/ }),
 
 /***/ "./src/annotation.ts":
@@ -839,7 +838,6 @@ Annotation.VerticalJustifyString = {
     center: AnnotationVerticalJustify.CENTER,
     centerStem: AnnotationVerticalJustify.CENTER_STEM,
 };
-
 
 
 /***/ }),
@@ -1201,7 +1199,6 @@ Articulation.DEBUG = false;
 Articulation.INITIAL_OFFSET = -0.5;
 
 
-
 /***/ }),
 
 /***/ "./src/barnote.ts":
@@ -1295,7 +1292,6 @@ class BarNote extends _note__WEBPACK_IMPORTED_MODULE_0__.Note {
 }
 /** To enable logging for this class. Set `Vex.Flow.BarNote.DEBUG` to `true`. */
 BarNote.DEBUG = false;
-
 
 
 /***/ }),
@@ -2411,7 +2407,6 @@ class Bend extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
 }
 /** Default text font. */
 Bend.TEXT_FONT = Object.assign({}, _element__WEBPACK_IMPORTED_MODULE_0__.Element.TEXT_FONT);
-
 
 
 /***/ }),
@@ -3647,7 +3642,6 @@ ChordSymbol.symbolModifiers = SymbolModifiers;
 ChordSymbol.noFormat = false;
 
 
-
 /***/ }),
 
 /***/ "./src/clef.ts":
@@ -3828,7 +3822,6 @@ class Clef extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier {
 }
 /** To enable logging for this class, set `Vex.Flow.Clef.DEBUG` to `true`. */
 Clef.DEBUG = false;
-
 
 
 /***/ }),
@@ -4027,7 +4020,6 @@ class Crescendo extends _note__WEBPACK_IMPORTED_MODULE_0__.Note {
     }
 }
 Crescendo.DEBUG = false;
-
 
 
 /***/ }),
@@ -4793,7 +4785,6 @@ class EasyScore {
 EasyScore.DEBUG = false;
 
 
-
 /***/ }),
 
 /***/ "./src/element.ts":
@@ -5199,7 +5190,6 @@ Element.TEXT_FONT = {
     weight: _font__WEBPACK_IMPORTED_MODULE_0__.FontWeight.NORMAL,
     style: _font__WEBPACK_IMPORTED_MODULE_0__.FontStyle.NORMAL,
 };
-
 
 
 /***/ }),
@@ -5769,7 +5759,6 @@ Factory.DEBUG = false;
 Factory.TEXT_FONT = Object.assign({}, _element__WEBPACK_IMPORTED_MODULE_9__.Element.TEXT_FONT);
 
 
-
 /***/ }),
 
 /***/ "./src/flow.ts":
@@ -6205,7 +6194,6 @@ Flow.TextJustification = _textnote__WEBPACK_IMPORTED_MODULE_71__.TextJustificati
 Flow.VoiceMode = _voice__WEBPACK_IMPORTED_MODULE_81__.VoiceMode;
 
 
-
 /***/ }),
 
 /***/ "./src/font.ts":
@@ -6604,7 +6592,6 @@ Font.WEB_FONT_FILES = {
     'Roboto Slab': 'robotoslab/RobotoSlab-Medium_2.001.woff',
     PetalumaScript: 'petaluma/PetalumaScript_1.10_FS.woff',
 };
-
 
 
 /***/ }),
@@ -20335,7 +20322,6 @@ class Formatter {
 Formatter.DEBUG = false;
 
 
-
 /***/ }),
 
 /***/ "./src/fraction.ts":
@@ -20551,7 +20537,6 @@ class Fraction {
 Fraction.__staticFractionA = new Fraction();
 Fraction.__staticFractionB = new Fraction();
 Fraction.__staticFractionTmp = new Fraction();
-
 /** Helper function to extract the numerator and denominator from another fraction. */
 function getNumeratorAndDenominator(n, d = 1) {
     if (typeof n === 'number') {
@@ -20747,7 +20732,6 @@ FretHandFinger.TEXT_FONT = {
     weight: _font__WEBPACK_IMPORTED_MODULE_0__.FontWeight.BOLD,
     style: _font__WEBPACK_IMPORTED_MODULE_0__.FontStyle.NORMAL,
 };
-
 
 
 /***/ }),
@@ -21243,7 +21227,6 @@ Glyph.CURRENT_CACHE_KEY = '';
 Glyph.MUSIC_FONT_STACK = [];
 
 
-
 /***/ }),
 
 /***/ "./src/glyphnote.ts":
@@ -21648,7 +21631,6 @@ class GraceNoteGroup extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
     }
 }
 GraceNoteGroup.DEBUG = false;
-
 
 
 /***/ }),
@@ -22467,7 +22449,6 @@ KeySignature.accidentalSpacing = {
 };
 
 
-
 /***/ }),
 
 /***/ "./src/keysignote.ts":
@@ -22896,7 +22877,6 @@ class ModifierContext {
     }
 }
 ModifierContext.DEBUG = false;
-
 
 
 /***/ }),
@@ -24246,7 +24226,6 @@ class NoteHead extends _note__WEBPACK_IMPORTED_MODULE_2__.Note {
 NoteHead.DEBUG = false;
 
 
-
 /***/ }),
 
 /***/ "./src/notesubgroup.ts":
@@ -24635,7 +24614,6 @@ class Ornament extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
 Ornament.DEBUG = false;
 
 
-
 /***/ }),
 
 /***/ "./src/parenthesis.ts":
@@ -24974,7 +24952,6 @@ class Parser {
 Parser.DEBUG = false;
 
 
-
 /***/ }),
 
 /***/ "./src/pedalmarking.ts":
@@ -25239,7 +25216,6 @@ PedalMarking.typeString = {
     bracket: PedalMarking.type.BRACKET,
     mixed: PedalMarking.type.MIXED,
 };
-
 
 
 /***/ }),
@@ -25574,7 +25550,6 @@ Renderer.LineEndType = RendererLineEndType;
 // Should this be private?
 // Can we do this in a cleaner way?
 Renderer.lastContext = undefined;
-
 
 
 /***/ }),
@@ -26394,7 +26369,6 @@ Stave.TEXT_FONT = {
 };
 
 
-
 /***/ }),
 
 /***/ "./src/stavebarline.ts":
@@ -26870,7 +26844,6 @@ StaveConnector.typeString = {
 };
 
 
-
 /***/ }),
 
 /***/ "./src/stavehairpin.ts":
@@ -27047,7 +27020,6 @@ StaveHairpin.type = {
     CRESC: 1,
     DECRESC: 2,
 };
-
 
 
 /***/ }),
@@ -27341,7 +27313,6 @@ StaveLine.TextVerticalPosition = {
     BOTTOM: 2,
 };
 StaveLine.TextJustification = _textnote__WEBPACK_IMPORTED_MODULE_2__.TextJustification;
-
 
 
 /***/ }),
@@ -28548,7 +28519,6 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNot
 StaveNote.DEBUG = false;
 
 
-
 /***/ }),
 
 /***/ "./src/staverepetition.ts":
@@ -28730,7 +28700,6 @@ Repetition.type = {
 };
 
 
-
 /***/ }),
 
 /***/ "./src/stavesection.ts":
@@ -28813,7 +28782,6 @@ StaveSection.TEXT_FONT = {
     weight: _font__WEBPACK_IMPORTED_MODULE_0__.FontWeight.BOLD,
     style: _font__WEBPACK_IMPORTED_MODULE_0__.FontStyle.NORMAL,
 };
-
 
 
 /***/ }),
@@ -28937,7 +28905,6 @@ StaveTempo.TEXT_FONT = {
 };
 
 
-
 /***/ }),
 
 /***/ "./src/stavetext.ts":
@@ -29040,7 +29007,6 @@ StaveText.TEXT_FONT = {
     weight: _font__WEBPACK_IMPORTED_MODULE_0__.FontWeight.NORMAL,
     style: _font__WEBPACK_IMPORTED_MODULE_0__.FontStyle.NORMAL,
 };
-
 
 
 /***/ }),
@@ -29240,7 +29206,6 @@ class StaveTie extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 StaveTie.TEXT_FONT = Object.assign({}, _element__WEBPACK_IMPORTED_MODULE_0__.Element.TEXT_FONT);
 
 
-
 /***/ }),
 
 /***/ "./src/stavevolta.ts":
@@ -29328,7 +29293,6 @@ Volta.TEXT_FONT = {
     weight: _font__WEBPACK_IMPORTED_MODULE_0__.FontWeight.BOLD,
     style: _font__WEBPACK_IMPORTED_MODULE_0__.FontStyle.NORMAL,
 };
-
 
 
 /***/ }),
@@ -29510,7 +29474,6 @@ class Stem extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 }
 /** To enable logging for this class. Set `Vex.Flow.Stem.DEBUG` to `true`. */
 Stem.DEBUG = false;
-
 
 
 /***/ }),
@@ -30033,7 +29996,6 @@ StringNumber.TEXT_FONT = {
 };
 
 
-
 /***/ }),
 
 /***/ "./src/strokes.ts":
@@ -30269,7 +30231,6 @@ Stroke.TEXT_FONT = {
     weight: _font__WEBPACK_IMPORTED_MODULE_0__.FontWeight.BOLD,
     style: _font__WEBPACK_IMPORTED_MODULE_0__.FontStyle.ITALIC,
 };
-
 
 
 /***/ }),
@@ -30852,7 +30813,6 @@ class SVGContext extends _rendercontext__WEBPACK_IMPORTED_MODULE_1__.RenderConte
     }
 }
 SVGContext.measureTextCache = new MeasureTextCache();
-
 
 
 /***/ }),
@@ -32109,7 +32069,6 @@ Tables.TIME4_4 = {
     beat_value: 4,
     resolution: RESOLUTION,
 };
-
 // 1/2, 1, 2, 4, 8, 16, 32, 64, 128
 // NOTE: There is no 256 here! However, there are other mentions of 256 in this file.
 // For example, in durations has a 256 key, and sanitizeDuration() can return 256.
@@ -32942,7 +32901,6 @@ TabSlide.TEXT_FONT = {
 };
 
 
-
 /***/ }),
 
 /***/ "./src/tabstave.ts":
@@ -33236,7 +33194,6 @@ TextBracket.TEXT_FONT = {
 };
 
 
-
 /***/ }),
 
 /***/ "./src/textdynamics.ts":
@@ -33368,7 +33325,6 @@ class TextDynamics extends _note__WEBPACK_IMPORTED_MODULE_1__.Note {
 }
 /** To enable logging for this class. Set `Vex.Flow.TextDynamics.DEBUG` to `true`. */
 TextDynamics.DEBUG = false;
-
 
 
 /***/ }),
@@ -33704,7 +33660,6 @@ class TextFormatter {
 TextFormatter.DEBUG = false;
 
 
-
 /***/ }),
 
 /***/ "./src/textnote.ts":
@@ -33897,7 +33852,7 @@ class TextNote extends _note__WEBPACK_IMPORTED_MODULE_2__.Note {
             x -= width / 2;
         }
         else if (this.justification === TextJustification.RIGHT) {
-            x += width;
+            x -= width;
         }
         let y;
         if (this.glyph) {
@@ -33934,7 +33889,6 @@ TextNote.TEXT_FONT = {
     style: _font__WEBPACK_IMPORTED_MODULE_0__.FontStyle.NORMAL,
 };
 TextNote.Justification = TextJustification;
-
 
 
 /***/ }),
@@ -35680,7 +35634,6 @@ class Vex {
 Vex.Flow = _flow__WEBPACK_IMPORTED_MODULE_0__.Flow;
 
 
-
 /***/ }),
 
 /***/ "./src/vibrato.ts":
@@ -35899,7 +35852,6 @@ class VibratoBracket extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 }
 /** To enable logging for this class. Set `Vex.Flow.VibratoBracket.DEBUG` to `true`. */
 VibratoBracket.DEBUG = false;
-
 
 
 /***/ }),
@@ -54049,7 +54001,6 @@ VexFlowTests.FONT_STACKS = {
     Leland: ['Leland', 'Bravura', 'Custom'],
 };
 VexFlowTests.NEXT_TEST_ID = 0;
-
 /**
  * Used with array.reduce(...) to flatten arrays of arrays in the tests.
  */

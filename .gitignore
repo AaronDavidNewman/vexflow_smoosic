@@ -1,5 +1,6 @@
+build/esm/src
+build/esm/tests
 reference
-build
 demos/node/output
 node_modules
 graphs
