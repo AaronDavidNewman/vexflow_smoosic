@@ -163,6 +163,7 @@ export class PedalMarking extends Element {
     let is_pedal_depressed = false;
     let prev_x: number;
     let prev_y: number;
+    let text_width: number = 0;
 
     // Iterate through each note
     this.notes.forEach((note, index, notes) => {
@@ -170,12 +171,14 @@ export class PedalMarking extends Element {
       is_pedal_depressed = !is_pedal_depressed;
 
       // Get the initial coordinates for the note
-      const x = note.getAbsoluteX();
+      let x = note.getAbsoluteX();
       const y = note.checkStave().getYForBottomText(this.line + 3);
 
       // Throw if current note is positioned before the previous note
+      // This happens sometimes if the pedal marking is bigger than the note width.  Just go with it.
       if (x < prev_x) {
-        throw new RuntimeError('InvalidConfiguration', 'The notes provided must be in order of ascending x positions');
+        // throw new RuntimeError('InvalidConfiguration', 'The notes provided must be in order of ascending x positions');
+        x = x + (prev_x - x) + 5;
       }
 
       // Determine if the previous or next note are the same
@@ -183,28 +186,25 @@ export class PedalMarking extends Element {
       // when adjustments are made for the release+depress action
       const next_is_same = notes[index + 1] === note;
       const prev_is_same = notes[index - 1] === note;
-
-      let x_shift = 0;
       const point =
         Tables.currentMusicFont().lookupMetric(`pedalMarking.${is_pedal_depressed ? 'down' : 'up'}.point`) ??
         Tables.NOTATION_FONT_SCALE;
-
+      let x_shift = 0;
       if (is_pedal_depressed) {
         // Adjustment for release+depress
         x_shift = prev_is_same ? 5 : 0;
 
         if (this.type === PedalMarking.type.MIXED && !prev_is_same) {
-          // For MIXED style, start with text instead of bracket
-          if (this.custom_depress_text) {
-            // If we have custom text, use instead of the default "Ped" glyph
-            const text_width = ctx.measureText(this.custom_depress_text).width;
-            ctx.fillText(this.custom_depress_text, x - text_width / 2, y);
-            x_shift = text_width / 2 + this.render_options.text_margin_right;
+          if (this.custom_depress_text) { 
+          text_width = ctx.measureText(this.custom_depress_text).width;
+          ctx.fillText(this.custom_depress_text, x, y);
+          x_shift = text_width + this.render_options.text_margin_right;
           } else {
             // Render the Ped glyph in position
             drawPedalGlyph('pedal_depress', ctx, x, y, point);
             x_shift = 20 + this.render_options.text_margin_right;
           }
+          // For MIXED style, start with text instead of bracket
         } else {
           // Draw start bracket
           ctx.beginPath();
@@ -215,13 +215,20 @@ export class PedalMarking extends Element {
         }
       } else {
         // Adjustment for release+depress
-        x_shift = next_is_same ? -5 : 0;
+        const noteNdx = note.getVoice().getTickables().indexOf(note);
+        const voiceNotes = note.getVoice().getTickables().length;
+        const noteEndX = 
+          noteNdx + 1 < voiceNotes
+          ? // If the next note is in the same voice, use the x position of the next note
+            note.getVoice().getTickables()[noteNdx + 1].getAbsoluteX()
+          : // If this is the last note is the voice, use the x position of the next stave
+            (note.getStave()?.getX() ?? 0) + (note.getStave()?.getWidth() ?? 0);
 
         // Draw end bracket
         ctx.beginPath();
         ctx.moveTo(prev_x, prev_y);
-        ctx.lineTo(x + x_shift, y);
-        ctx.lineTo(x, y - this.render_options.bracket_height);
+        ctx.lineTo(next_is_same ? x - 5 : noteEndX - 5, y);
+        ctx.lineTo(next_is_same ? x : noteEndX - 5, y - this.render_options.bracket_height);
         ctx.stroke();
         ctx.closePath();
       }
@@ -239,6 +246,7 @@ export class PedalMarking extends Element {
   drawText(): void {
     const ctx = this.checkContext();
     let is_pedal_depressed = false;
+    let text_width: number = 0;
 
     // Iterate through each note, placing glyphs or custom text accordingly
     this.notes.forEach((note) => {
@@ -251,7 +259,6 @@ export class PedalMarking extends Element {
         Tables.currentMusicFont().lookupMetric(`pedalMarking.${is_pedal_depressed ? 'down' : 'up'}.point`) ??
         Tables.NOTATION_FONT_SCALE;
 
-      let text_width = 0;
       if (is_pedal_depressed) {
         if (this.custom_depress_text) {
           text_width = ctx.measureText(this.custom_depress_text).width;
@@ -261,8 +268,17 @@ export class PedalMarking extends Element {
         }
       } else {
         if (this.custom_release_text) {
+          const noteNdx = note.getVoice().getTickables().indexOf(note);
+          const voiceNotes = note.getVoice().getTickables().length;
+          // Get the shift for the next note
+          const noteEndX =
+            noteNdx + 1 < voiceNotes
+            ? // If the next note is in the same voice, use the x position of the next note
+              note.getVoice().getTickables()[noteNdx + 1].getAbsoluteX()
+            : // If this is the last note is the voice, use the x position of the next stave
+              (note.getStave()?.getX() ?? 0) + (note.getStave()?.getWidth() ?? 0);
           text_width = ctx.measureText(this.custom_release_text).width;
-          ctx.fillText(this.custom_release_text, x - text_width / 2, y);
+          ctx.fillText(this.custom_release_text, noteEndX - text_width, y); 
         } else {
           drawPedalGlyph('pedal_release', ctx, x, y, point);
         }
@@ -279,9 +295,7 @@ export class PedalMarking extends Element {
     ctx.setStrokeStyle(this.render_options.color);
     ctx.setFillStyle(this.render_options.color);
     ctx.setFont(this.textFont);
-
     L('Rendering Pedal Marking');
-
     if (this.type === PedalMarking.type.BRACKET || this.type === PedalMarking.type.MIXED) {
       ctx.setLineWidth(this.render_options.bracket_line_width);
       this.drawBracketed();

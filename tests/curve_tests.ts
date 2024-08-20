@@ -15,6 +15,8 @@ const CurveTests = {
     QUnit.module('Curve');
     const run = VexFlowTests.runTests;
     run('Simple Curve', simple);
+    run('Opening Direction - up', openingDirUp);
+    run('Opening Direction - down', openingDirDown);    
     run('Rounded Curve', rounded);
     run('Thick Thin Curves', thickThin);
     run('Top Curve', top);
@@ -82,7 +84,48 @@ const simple = createTest(
     });
   }
 );
+const openingDirUp = createTest(
+  ['c4/8, f5, d5, g5', { stem: 'up' }], // beamGroup1
+  ['d6/8, f5, d5, g5', { stem: 'down' }], // beamGroup2
+  (f, notes) => {
+    f.Curve({
+      from: notes[0],
+      to: notes[3],
+      options: {
+        openingDirection: 'up',
+      },
+    });
 
+    f.Curve({
+      from: notes[4],
+      to: notes[7],
+      options: {
+        openingDirection: 'up',
+      },
+    });
+  }
+);
+const openingDirDown = createTest(
+  ['c4/8, f5, d5, g5', { stem: 'up' }], // beamGroup1
+  ['d6/8, f5, d5, g5', { stem: 'down' }], // beamGroup2
+  (f, notes) => {
+    f.Curve({
+      from: notes[0],
+      to: notes[3],
+      options: {
+        openingDirection: 'down',
+      },
+    });
+
+    f.Curve({
+      from: notes[4],
+      to: notes[7],
+      options: {
+        openingDirection: 'down',
+      },
+    });
+  }
+);
 const rounded = createTest(
   ['c5/8, f4, d4, g5', { stem: 'up' }], // beamGroup1
   ['d5/8, d6, d6, g5', { stem: 'down' }], // beamGroup2

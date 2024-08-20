@@ -410,7 +410,7 @@ export class SVGContext extends RenderContext {
     }
 
     const rectangle = this.create('rect');
-    attributes = attributes ?? { fill: 'none', 'stroke-width': this.lineWidth, stroke: 'black' };
+    attributes = attributes ?? { fill: 'none', 'stroke-width': this.lineWidth };
     x = this.round(x);
     y = this.round(y);
     width = this.round(width);

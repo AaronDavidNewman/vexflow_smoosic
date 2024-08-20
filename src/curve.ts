@@ -17,6 +17,7 @@ export interface CurveOptions {
   position?: string | number;
   position_end?: string | number;
   invert?: boolean;
+  openingDirection?: 'up' | 'down' | 'auto';
 }
 
 export enum CurvePosition {
@@ -54,6 +55,7 @@ export class Curve extends Element {
     super();
 
     this.render_options = {
+      openingDirection: 'auto',
       thickness: 2,
       x_shift: 0,
       y_shift: 10,
@@ -181,6 +183,12 @@ export class Curve extends Element {
       last_y = first_note.getStemExtents()[end_metric];
     }
 
+    if (this.render_options.openingDirection === 'up') {
+      stem_direction = 1;
+    }
+    if (this.render_options.openingDirection === 'down') {
+      stem_direction = -1;
+    }
     this.renderCurve({
       first_x,
       last_x,

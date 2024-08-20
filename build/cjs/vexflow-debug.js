@@ -1,5 +1,5 @@
 /*!
- * VexFlow 4.2.7   2024-04-06T16:59:27.030Z   cdc550eae26cd1a4620509b8c23c13b3fac99be8
+ * VexFlow 4.2.7   2024-08-19T03:38:34.249Z   7d77ecf5456d6a5f15551871073491a385160ba7
  * Vexflow_smoosic, forked from :
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * https://www.vexflow.com   https://github.com/0xfe/vexflow
@@ -31,8 +31,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   VERSION: () => (/* binding */ VERSION)
 /* harmony export */ });
 const VERSION = '4.2.7';
-const ID = 'cdc550eae26cd1a4620509b8c23c13b3fac99be8';
-const DATE = '2024-04-06T16:59:27.030Z';
+const ID = '7d77ecf5456d6a5f15551871073491a385160ba7';
+const DATE = '2024-08-19T03:38:34.249Z';
 
 
 /***/ }),
@@ -1255,6 +1255,7 @@ class BarNote extends _note__WEBPACK_IMPORTED_MODULE_0__.Note {
         // Tell the formatter that bar notes have no duration.
         this.ignore_ticks = true;
         this.setType(type);
+        this.barline = new _stavebarline__WEBPACK_IMPORTED_MODULE_1__.Barline(type);
     }
     /** Get the type of bar note.*/
     getType() {
@@ -1283,9 +1284,11 @@ class BarNote extends _note__WEBPACK_IMPORTED_MODULE_0__.Note {
         const ctx = this.checkContext();
         L('Rendering bar line at: ', this.getAbsoluteX());
         this.applyStyle(ctx);
-        const barline = new _stavebarline__WEBPACK_IMPORTED_MODULE_1__.Barline(this.type);
-        barline.setX(this.getAbsoluteX());
-        barline.draw(this.checkStave());
+        ctx.openGroup('barnote', this.getAttribute('id'));
+        this.barline.setType(this.type);
+        this.barline.setX(this.getAbsoluteX());
+        this.barline.draw(this.checkStave());
+        ctx.closeGroup();
         this.restoreStyle(ctx);
         this.setRendered();
     }
@@ -4071,7 +4074,7 @@ class Curve extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
     //    y_shift: pixels to shift
     constructor(from, to, options) {
         super();
-        this.render_options = Object.assign({ thickness: 2, x_shift: 0, y_shift: 10, position: CurvePosition.NEAR_HEAD, position_end: CurvePosition.NEAR_HEAD, invert: false, cps: [
+        this.render_options = Object.assign({ openingDirection: 'auto', thickness: 2, x_shift: 0, y_shift: 10, position: CurvePosition.NEAR_HEAD, position_end: CurvePosition.NEAR_HEAD, invert: false, cps: [
                 { x: 0, y: 10 },
                 { x: 0, y: 10 },
             ] }, options);
@@ -4159,6 +4162,12 @@ class Curve extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
             const stave = first_note.checkStave();
             last_x = stave.getTieEndX();
             last_y = first_note.getStemExtents()[end_metric];
+        }
+        if (this.render_options.openingDirection === 'up') {
+            stem_direction = 1;
+        }
+        if (this.render_options.openingDirection === 'down') {
+            stem_direction = -1;
         }
         this.renderCurve({
             first_x,
@@ -25071,41 +25080,43 @@ class PedalMarking extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
         let is_pedal_depressed = false;
         let prev_x;
         let prev_y;
+        let text_width = 0;
         // Iterate through each note
         this.notes.forEach((note, index, notes) => {
-            var _a;
+            var _a, _b, _c, _d, _e;
             // Each note triggers the opposite pedal action
             is_pedal_depressed = !is_pedal_depressed;
             // Get the initial coordinates for the note
-            const x = note.getAbsoluteX();
+            let x = note.getAbsoluteX();
             const y = note.checkStave().getYForBottomText(this.line + 3);
             // Throw if current note is positioned before the previous note
+            // This happens sometimes if the pedal marking is bigger than the note width.  Just go with it.
             if (x < prev_x) {
-                throw new _util__WEBPACK_IMPORTED_MODULE_5__.RuntimeError('InvalidConfiguration', 'The notes provided must be in order of ascending x positions');
+                // throw new RuntimeError('InvalidConfiguration', 'The notes provided must be in order of ascending x positions');
+                x = x + (prev_x - x) + 5;
             }
             // Determine if the previous or next note are the same
             // as the current note. We need to keep track of this for
             // when adjustments are made for the release+depress action
             const next_is_same = notes[index + 1] === note;
             const prev_is_same = notes[index - 1] === note;
-            let x_shift = 0;
             const point = (_a = _tables__WEBPACK_IMPORTED_MODULE_3__.Tables.currentMusicFont().lookupMetric(`pedalMarking.${is_pedal_depressed ? 'down' : 'up'}.point`)) !== null && _a !== void 0 ? _a : _tables__WEBPACK_IMPORTED_MODULE_3__.Tables.NOTATION_FONT_SCALE;
+            let x_shift = 0;
             if (is_pedal_depressed) {
                 // Adjustment for release+depress
                 x_shift = prev_is_same ? 5 : 0;
                 if (this.type === PedalMarking.type.MIXED && !prev_is_same) {
-                    // For MIXED style, start with text instead of bracket
                     if (this.custom_depress_text) {
-                        // If we have custom text, use instead of the default "Ped" glyph
-                        const text_width = ctx.measureText(this.custom_depress_text).width;
-                        ctx.fillText(this.custom_depress_text, x - text_width / 2, y);
-                        x_shift = text_width / 2 + this.render_options.text_margin_right;
+                        text_width = ctx.measureText(this.custom_depress_text).width;
+                        ctx.fillText(this.custom_depress_text, x, y);
+                        x_shift = text_width + this.render_options.text_margin_right;
                     }
                     else {
                         // Render the Ped glyph in position
                         drawPedalGlyph('pedal_depress', ctx, x, y, point);
                         x_shift = 20 + this.render_options.text_margin_right;
                     }
+                    // For MIXED style, start with text instead of bracket
                 }
                 else {
                     // Draw start bracket
@@ -25118,12 +25129,18 @@ class PedalMarking extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
             }
             else {
                 // Adjustment for release+depress
-                x_shift = next_is_same ? -5 : 0;
+                const noteNdx = note.getVoice().getTickables().indexOf(note);
+                const voiceNotes = note.getVoice().getTickables().length;
+                const noteEndX = noteNdx + 1 < voiceNotes
+                    ? // If the next note is in the same voice, use the x position of the next note
+                        note.getVoice().getTickables()[noteNdx + 1].getAbsoluteX()
+                    : // If this is the last note is the voice, use the x position of the next stave
+                        ((_c = (_b = note.getStave()) === null || _b === void 0 ? void 0 : _b.getX()) !== null && _c !== void 0 ? _c : 0) + ((_e = (_d = note.getStave()) === null || _d === void 0 ? void 0 : _d.getWidth()) !== null && _e !== void 0 ? _e : 0);
                 // Draw end bracket
                 ctx.beginPath();
                 ctx.moveTo(prev_x, prev_y);
-                ctx.lineTo(x + x_shift, y);
-                ctx.lineTo(x, y - this.render_options.bracket_height);
+                ctx.lineTo(next_is_same ? x - 5 : noteEndX - 5, y);
+                ctx.lineTo(next_is_same ? x : noteEndX - 5, y - this.render_options.bracket_height);
                 ctx.stroke();
                 ctx.closePath();
             }
@@ -25139,15 +25156,15 @@ class PedalMarking extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
     drawText() {
         const ctx = this.checkContext();
         let is_pedal_depressed = false;
+        let text_width = 0;
         // Iterate through each note, placing glyphs or custom text accordingly
         this.notes.forEach((note) => {
-            var _a;
+            var _a, _b, _c, _d, _e;
             is_pedal_depressed = !is_pedal_depressed;
             const stave = note.checkStave();
             const x = note.getAbsoluteX();
             const y = stave.getYForBottomText(this.line + 3);
             const point = (_a = _tables__WEBPACK_IMPORTED_MODULE_3__.Tables.currentMusicFont().lookupMetric(`pedalMarking.${is_pedal_depressed ? 'down' : 'up'}.point`)) !== null && _a !== void 0 ? _a : _tables__WEBPACK_IMPORTED_MODULE_3__.Tables.NOTATION_FONT_SCALE;
-            let text_width = 0;
             if (is_pedal_depressed) {
                 if (this.custom_depress_text) {
                     text_width = ctx.measureText(this.custom_depress_text).width;
@@ -25159,8 +25176,16 @@ class PedalMarking extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
             }
             else {
                 if (this.custom_release_text) {
+                    const noteNdx = note.getVoice().getTickables().indexOf(note);
+                    const voiceNotes = note.getVoice().getTickables().length;
+                    // Get the shift for the next note
+                    const noteEndX = noteNdx + 1 < voiceNotes
+                        ? // If the next note is in the same voice, use the x position of the next note
+                            note.getVoice().getTickables()[noteNdx + 1].getAbsoluteX()
+                        : // If this is the last note is the voice, use the x position of the next stave
+                            ((_c = (_b = note.getStave()) === null || _b === void 0 ? void 0 : _b.getX()) !== null && _c !== void 0 ? _c : 0) + ((_e = (_d = note.getStave()) === null || _d === void 0 ? void 0 : _d.getWidth()) !== null && _e !== void 0 ? _e : 0);
                     text_width = ctx.measureText(this.custom_release_text).width;
-                    ctx.fillText(this.custom_release_text, x - text_width / 2, y);
+                    ctx.fillText(this.custom_release_text, noteEndX - text_width, y);
                 }
                 else {
                     drawPedalGlyph('pedal_release', ctx, x, y, point);
@@ -30550,7 +30575,7 @@ class SVGContext extends _rendercontext__WEBPACK_IMPORTED_MODULE_1__.RenderConte
             height *= -1;
         }
         const rectangle = this.create('rect');
-        attributes = attributes !== null && attributes !== void 0 ? attributes : { fill: 'none', 'stroke-width': this.lineWidth, stroke: 'black' };
+        attributes = attributes !== null && attributes !== void 0 ? attributes : { fill: 'none', 'stroke-width': this.lineWidth };
         x = this.round(x);
         y = this.round(y);
         width = this.round(width);

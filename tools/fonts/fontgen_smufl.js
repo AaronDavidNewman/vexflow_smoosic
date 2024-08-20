@@ -14,13 +14,22 @@ function LogError(...args) {
   // eslint-disable-next-line
   console.error(...args);
 }
-
+function formatUnicode(unicode) {
+  unicode = unicode.toString(16);
+  if (unicode.length > 4) {
+      return ("000000" + unicode.toUpperCase()).substr(-6)
+  } else {
+      return ("0000" + unicode.toUpperCase()).substr(-4)
+  }
+}
 // Convert OTF glyph path to Vexflow glyph path
 function toVFPath(glyph) {
   const pointSize = 72;
   const scale = 72 * 20;
   const bb = glyph.getBoundingBox();
   const path = glyph.getPath(0, 0, pointSize);
+  const unistring = glyph.unicodes.map(formatUnicode).join(', ') ;
+  console.log(`unicode ${unistring}`);
   function fix(f, invert = false) {
     return Math.round((f / pointSize) * scale) * (invert ? -1 : 1);
   }
