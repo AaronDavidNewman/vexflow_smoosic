@@ -1,5 +1,5 @@
 /*!
- * VexFlow 4.2.6   2024-03-31T22:07:36.979Z   9cbdf86a23fafc6a0c86f9a5e91ccc7be26684e2
+ * VexFlow 4.2.8   2024-08-22T00:54:49.402Z   26945f85b426cc69f2acae2474cd84f863046c6d
  * Vexflow_smoosic, forked from :
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * https://www.vexflow.com   https://github.com/0xfe/vexflow
@@ -30,9 +30,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   ID: () => (/* binding */ ID),
 /* harmony export */   VERSION: () => (/* binding */ VERSION)
 /* harmony export */ });
-const VERSION = '4.2.6';
-const ID = '9cbdf86a23fafc6a0c86f9a5e91ccc7be26684e2';
-const DATE = '2024-03-31T22:07:36.979Z';
+const VERSION = '4.2.8';
+const ID = '26945f85b426cc69f2acae2474cd84f863046c6d';
+const DATE = '2024-08-22T00:54:49.402Z';
 
 
 /***/ }),
@@ -533,7 +533,6 @@ class Accidental extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
 Accidental.DEBUG = false;
 
 
-
 /***/ }),
 
 /***/ "./src/annotation.ts":
@@ -839,7 +838,6 @@ Annotation.VerticalJustifyString = {
     center: AnnotationVerticalJustify.CENTER,
     centerStem: AnnotationVerticalJustify.CENTER_STEM,
 };
-
 
 
 /***/ }),
@@ -1201,7 +1199,6 @@ Articulation.DEBUG = false;
 Articulation.INITIAL_OFFSET = -0.5;
 
 
-
 /***/ }),
 
 /***/ "./src/barnote.ts":
@@ -1258,6 +1255,7 @@ class BarNote extends _note__WEBPACK_IMPORTED_MODULE_0__.Note {
         // Tell the formatter that bar notes have no duration.
         this.ignore_ticks = true;
         this.setType(type);
+        this.barline = new _stavebarline__WEBPACK_IMPORTED_MODULE_1__.Barline(type);
     }
     /** Get the type of bar note.*/
     getType() {
@@ -1286,16 +1284,17 @@ class BarNote extends _note__WEBPACK_IMPORTED_MODULE_0__.Note {
         const ctx = this.checkContext();
         L('Rendering bar line at: ', this.getAbsoluteX());
         this.applyStyle(ctx);
-        const barline = new _stavebarline__WEBPACK_IMPORTED_MODULE_1__.Barline(this.type);
-        barline.setX(this.getAbsoluteX());
-        barline.draw(this.checkStave());
+        ctx.openGroup('barnote', this.getAttribute('id'));
+        this.barline.setType(this.type);
+        this.barline.setX(this.getAbsoluteX());
+        this.barline.draw(this.checkStave());
+        ctx.closeGroup();
         this.restoreStyle(ctx);
         this.setRendered();
     }
 }
 /** To enable logging for this class. Set `Vex.Flow.BarNote.DEBUG` to `true`. */
 BarNote.DEBUG = false;
-
 
 
 /***/ }),
@@ -2411,7 +2410,6 @@ class Bend extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
 }
 /** Default text font. */
 Bend.TEXT_FONT = Object.assign({}, _element__WEBPACK_IMPORTED_MODULE_0__.Element.TEXT_FONT);
-
 
 
 /***/ }),
@@ -3583,6 +3581,12 @@ ChordSymbol.glyphs = {
     diminished: {
         code: 'csymDiminished',
     },
+    csymDiminished: {
+        code: 'csymDiminished'
+    },
+    csymMinor: {
+        code: 'csymMinor',
+    },
     dim: {
         code: 'csymDiminished',
     },
@@ -3645,7 +3649,6 @@ ChordSymbol.symbolTypes = SymbolTypes;
 ChordSymbol.symbolModifiers = SymbolModifiers;
 /** Currently unused. */
 ChordSymbol.noFormat = false;
-
 
 
 /***/ }),
@@ -3828,7 +3831,6 @@ class Clef extends _stavemodifier__WEBPACK_IMPORTED_MODULE_1__.StaveModifier {
 }
 /** To enable logging for this class, set `Vex.Flow.Clef.DEBUG` to `true`. */
 Clef.DEBUG = false;
-
 
 
 /***/ }),
@@ -4029,7 +4031,6 @@ class Crescendo extends _note__WEBPACK_IMPORTED_MODULE_0__.Note {
 Crescendo.DEBUG = false;
 
 
-
 /***/ }),
 
 /***/ "./src/curve.ts":
@@ -4079,7 +4080,7 @@ class Curve extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
     //    y_shift: pixels to shift
     constructor(from, to, options) {
         super();
-        this.render_options = Object.assign({ thickness: 2, x_shift: 0, y_shift: 10, position: CurvePosition.NEAR_HEAD, position_end: CurvePosition.NEAR_HEAD, invert: false, cps: [
+        this.render_options = Object.assign({ openingDirection: 'auto', thickness: 2, x_shift: 0, y_shift: 10, position: CurvePosition.NEAR_HEAD, position_end: CurvePosition.NEAR_HEAD, invert: false, cps: [
                 { x: 0, y: 10 },
                 { x: 0, y: 10 },
             ] }, options);
@@ -4167,6 +4168,12 @@ class Curve extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
             const stave = first_note.checkStave();
             last_x = stave.getTieEndX();
             last_y = first_note.getStemExtents()[end_metric];
+        }
+        if (this.render_options.openingDirection === 'up') {
+            stem_direction = 1;
+        }
+        if (this.render_options.openingDirection === 'down') {
+            stem_direction = -1;
         }
         this.renderCurve({
             first_x,
@@ -4793,7 +4800,6 @@ class EasyScore {
 EasyScore.DEBUG = false;
 
 
-
 /***/ }),
 
 /***/ "./src/element.ts":
@@ -5199,7 +5205,6 @@ Element.TEXT_FONT = {
     weight: _font__WEBPACK_IMPORTED_MODULE_0__.FontWeight.NORMAL,
     style: _font__WEBPACK_IMPORTED_MODULE_0__.FontStyle.NORMAL,
 };
-
 
 
 /***/ }),
@@ -5769,7 +5774,6 @@ Factory.DEBUG = false;
 Factory.TEXT_FONT = Object.assign({}, _element__WEBPACK_IMPORTED_MODULE_9__.Element.TEXT_FONT);
 
 
-
 /***/ }),
 
 /***/ "./src/flow.ts":
@@ -6205,7 +6209,6 @@ Flow.TextJustification = _textnote__WEBPACK_IMPORTED_MODULE_71__.TextJustificati
 Flow.VoiceMode = _voice__WEBPACK_IMPORTED_MODULE_81__.VoiceMode;
 
 
-
 /***/ }),
 
 /***/ "./src/font.ts":
@@ -6604,7 +6607,6 @@ Font.WEB_FONT_FILES = {
     'Roboto Slab': 'robotoslab/RobotoSlab-Medium_2.001.woff',
     PetalumaScript: 'petaluma/PetalumaScript_1.10_FS.woff',
 };
-
 
 
 /***/ }),
@@ -20335,7 +20337,6 @@ class Formatter {
 Formatter.DEBUG = false;
 
 
-
 /***/ }),
 
 /***/ "./src/fraction.ts":
@@ -20551,7 +20552,6 @@ class Fraction {
 Fraction.__staticFractionA = new Fraction();
 Fraction.__staticFractionB = new Fraction();
 Fraction.__staticFractionTmp = new Fraction();
-
 /** Helper function to extract the numerator and denominator from another fraction. */
 function getNumeratorAndDenominator(n, d = 1) {
     if (typeof n === 'number') {
@@ -20747,7 +20747,6 @@ FretHandFinger.TEXT_FONT = {
     weight: _font__WEBPACK_IMPORTED_MODULE_0__.FontWeight.BOLD,
     style: _font__WEBPACK_IMPORTED_MODULE_0__.FontStyle.NORMAL,
 };
-
 
 
 /***/ }),
@@ -21243,7 +21242,6 @@ Glyph.CURRENT_CACHE_KEY = '';
 Glyph.MUSIC_FONT_STACK = [];
 
 
-
 /***/ }),
 
 /***/ "./src/glyphnote.ts":
@@ -21648,7 +21646,6 @@ class GraceNoteGroup extends _modifier__WEBPACK_IMPORTED_MODULE_2__.Modifier {
     }
 }
 GraceNoteGroup.DEBUG = false;
-
 
 
 /***/ }),
@@ -22467,7 +22464,6 @@ KeySignature.accidentalSpacing = {
 };
 
 
-
 /***/ }),
 
 /***/ "./src/keysignote.ts":
@@ -22896,7 +22892,6 @@ class ModifierContext {
     }
 }
 ModifierContext.DEBUG = false;
-
 
 
 /***/ }),
@@ -24246,7 +24241,6 @@ class NoteHead extends _note__WEBPACK_IMPORTED_MODULE_2__.Note {
 NoteHead.DEBUG = false;
 
 
-
 /***/ }),
 
 /***/ "./src/notesubgroup.ts":
@@ -24635,7 +24629,6 @@ class Ornament extends _modifier__WEBPACK_IMPORTED_MODULE_1__.Modifier {
 Ornament.DEBUG = false;
 
 
-
 /***/ }),
 
 /***/ "./src/parenthesis.ts":
@@ -24974,7 +24967,6 @@ class Parser {
 Parser.DEBUG = false;
 
 
-
 /***/ }),
 
 /***/ "./src/pedalmarking.ts":
@@ -25094,41 +25086,43 @@ class PedalMarking extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
         let is_pedal_depressed = false;
         let prev_x;
         let prev_y;
+        let text_width = 0;
         // Iterate through each note
         this.notes.forEach((note, index, notes) => {
-            var _a;
+            var _a, _b, _c, _d, _e;
             // Each note triggers the opposite pedal action
             is_pedal_depressed = !is_pedal_depressed;
             // Get the initial coordinates for the note
-            const x = note.getAbsoluteX();
+            let x = note.getAbsoluteX();
             const y = note.checkStave().getYForBottomText(this.line + 3);
             // Throw if current note is positioned before the previous note
+            // This happens sometimes if the pedal marking is bigger than the note width.  Just go with it.
             if (x < prev_x) {
-                throw new _util__WEBPACK_IMPORTED_MODULE_5__.RuntimeError('InvalidConfiguration', 'The notes provided must be in order of ascending x positions');
+                // throw new RuntimeError('InvalidConfiguration', 'The notes provided must be in order of ascending x positions');
+                x = x + (prev_x - x) + 5;
             }
             // Determine if the previous or next note are the same
             // as the current note. We need to keep track of this for
             // when adjustments are made for the release+depress action
             const next_is_same = notes[index + 1] === note;
             const prev_is_same = notes[index - 1] === note;
-            let x_shift = 0;
             const point = (_a = _tables__WEBPACK_IMPORTED_MODULE_3__.Tables.currentMusicFont().lookupMetric(`pedalMarking.${is_pedal_depressed ? 'down' : 'up'}.point`)) !== null && _a !== void 0 ? _a : _tables__WEBPACK_IMPORTED_MODULE_3__.Tables.NOTATION_FONT_SCALE;
+            let x_shift = 0;
             if (is_pedal_depressed) {
                 // Adjustment for release+depress
                 x_shift = prev_is_same ? 5 : 0;
                 if (this.type === PedalMarking.type.MIXED && !prev_is_same) {
-                    // For MIXED style, start with text instead of bracket
                     if (this.custom_depress_text) {
-                        // If we have custom text, use instead of the default "Ped" glyph
-                        const text_width = ctx.measureText(this.custom_depress_text).width;
-                        ctx.fillText(this.custom_depress_text, x - text_width / 2, y);
-                        x_shift = text_width / 2 + this.render_options.text_margin_right;
+                        text_width = ctx.measureText(this.custom_depress_text).width;
+                        ctx.fillText(this.custom_depress_text, x, y);
+                        x_shift = text_width + this.render_options.text_margin_right;
                     }
                     else {
                         // Render the Ped glyph in position
                         drawPedalGlyph('pedal_depress', ctx, x, y, point);
                         x_shift = 20 + this.render_options.text_margin_right;
                     }
+                    // For MIXED style, start with text instead of bracket
                 }
                 else {
                     // Draw start bracket
@@ -25141,12 +25135,18 @@ class PedalMarking extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
             }
             else {
                 // Adjustment for release+depress
-                x_shift = next_is_same ? -5 : 0;
+                const noteNdx = note.getVoice().getTickables().indexOf(note);
+                const voiceNotes = note.getVoice().getTickables().length;
+                const noteEndX = noteNdx + 1 < voiceNotes
+                    ? // If the next note is in the same voice, use the x position of the next note
+                        note.getVoice().getTickables()[noteNdx + 1].getAbsoluteX()
+                    : // If this is the last note is the voice, use the x position of the next stave
+                        ((_c = (_b = note.getStave()) === null || _b === void 0 ? void 0 : _b.getX()) !== null && _c !== void 0 ? _c : 0) + ((_e = (_d = note.getStave()) === null || _d === void 0 ? void 0 : _d.getWidth()) !== null && _e !== void 0 ? _e : 0);
                 // Draw end bracket
                 ctx.beginPath();
                 ctx.moveTo(prev_x, prev_y);
-                ctx.lineTo(x + x_shift, y);
-                ctx.lineTo(x, y - this.render_options.bracket_height);
+                ctx.lineTo(next_is_same ? x - 5 : noteEndX - 5, y);
+                ctx.lineTo(next_is_same ? x : noteEndX - 5, y - this.render_options.bracket_height);
                 ctx.stroke();
                 ctx.closePath();
             }
@@ -25162,15 +25162,15 @@ class PedalMarking extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
     drawText() {
         const ctx = this.checkContext();
         let is_pedal_depressed = false;
+        let text_width = 0;
         // Iterate through each note, placing glyphs or custom text accordingly
         this.notes.forEach((note) => {
-            var _a;
+            var _a, _b, _c, _d, _e;
             is_pedal_depressed = !is_pedal_depressed;
             const stave = note.checkStave();
             const x = note.getAbsoluteX();
             const y = stave.getYForBottomText(this.line + 3);
             const point = (_a = _tables__WEBPACK_IMPORTED_MODULE_3__.Tables.currentMusicFont().lookupMetric(`pedalMarking.${is_pedal_depressed ? 'down' : 'up'}.point`)) !== null && _a !== void 0 ? _a : _tables__WEBPACK_IMPORTED_MODULE_3__.Tables.NOTATION_FONT_SCALE;
-            let text_width = 0;
             if (is_pedal_depressed) {
                 if (this.custom_depress_text) {
                     text_width = ctx.measureText(this.custom_depress_text).width;
@@ -25182,8 +25182,16 @@ class PedalMarking extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
             }
             else {
                 if (this.custom_release_text) {
+                    const noteNdx = note.getVoice().getTickables().indexOf(note);
+                    const voiceNotes = note.getVoice().getTickables().length;
+                    // Get the shift for the next note
+                    const noteEndX = noteNdx + 1 < voiceNotes
+                        ? // If the next note is in the same voice, use the x position of the next note
+                            note.getVoice().getTickables()[noteNdx + 1].getAbsoluteX()
+                        : // If this is the last note is the voice, use the x position of the next stave
+                            ((_c = (_b = note.getStave()) === null || _b === void 0 ? void 0 : _b.getX()) !== null && _c !== void 0 ? _c : 0) + ((_e = (_d = note.getStave()) === null || _d === void 0 ? void 0 : _d.getWidth()) !== null && _e !== void 0 ? _e : 0);
                     text_width = ctx.measureText(this.custom_release_text).width;
-                    ctx.fillText(this.custom_release_text, x - text_width / 2, y);
+                    ctx.fillText(this.custom_release_text, noteEndX - text_width, y);
                 }
                 else {
                     drawPedalGlyph('pedal_release', ctx, x, y, point);
@@ -25239,7 +25247,6 @@ PedalMarking.typeString = {
     bracket: PedalMarking.type.BRACKET,
     mixed: PedalMarking.type.MIXED,
 };
-
 
 
 /***/ }),
@@ -25574,7 +25581,6 @@ Renderer.LineEndType = RendererLineEndType;
 // Should this be private?
 // Can we do this in a cleaner way?
 Renderer.lastContext = undefined;
-
 
 
 /***/ }),
@@ -26394,7 +26400,6 @@ Stave.TEXT_FONT = {
 };
 
 
-
 /***/ }),
 
 /***/ "./src/stavebarline.ts":
@@ -26870,7 +26875,6 @@ StaveConnector.typeString = {
 };
 
 
-
 /***/ }),
 
 /***/ "./src/stavehairpin.ts":
@@ -27047,7 +27051,6 @@ StaveHairpin.type = {
     CRESC: 1,
     DECRESC: 2,
 };
-
 
 
 /***/ }),
@@ -27341,7 +27344,6 @@ StaveLine.TextVerticalPosition = {
     BOTTOM: 2,
 };
 StaveLine.TextJustification = _textnote__WEBPACK_IMPORTED_MODULE_2__.TextJustification;
-
 
 
 /***/ }),
@@ -28548,7 +28550,6 @@ class StaveNote extends _stemmablenote__WEBPACK_IMPORTED_MODULE_4__.StemmableNot
 StaveNote.DEBUG = false;
 
 
-
 /***/ }),
 
 /***/ "./src/staverepetition.ts":
@@ -28730,7 +28731,6 @@ Repetition.type = {
 };
 
 
-
 /***/ }),
 
 /***/ "./src/stavesection.ts":
@@ -28813,7 +28813,6 @@ StaveSection.TEXT_FONT = {
     weight: _font__WEBPACK_IMPORTED_MODULE_0__.FontWeight.BOLD,
     style: _font__WEBPACK_IMPORTED_MODULE_0__.FontStyle.NORMAL,
 };
-
 
 
 /***/ }),
@@ -28937,7 +28936,6 @@ StaveTempo.TEXT_FONT = {
 };
 
 
-
 /***/ }),
 
 /***/ "./src/stavetext.ts":
@@ -29040,7 +29038,6 @@ StaveText.TEXT_FONT = {
     weight: _font__WEBPACK_IMPORTED_MODULE_0__.FontWeight.NORMAL,
     style: _font__WEBPACK_IMPORTED_MODULE_0__.FontStyle.NORMAL,
 };
-
 
 
 /***/ }),
@@ -29240,7 +29237,6 @@ class StaveTie extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 StaveTie.TEXT_FONT = Object.assign({}, _element__WEBPACK_IMPORTED_MODULE_0__.Element.TEXT_FONT);
 
 
-
 /***/ }),
 
 /***/ "./src/stavevolta.ts":
@@ -29328,7 +29324,6 @@ Volta.TEXT_FONT = {
     weight: _font__WEBPACK_IMPORTED_MODULE_0__.FontWeight.BOLD,
     style: _font__WEBPACK_IMPORTED_MODULE_0__.FontStyle.NORMAL,
 };
-
 
 
 /***/ }),
@@ -29510,7 +29505,6 @@ class Stem extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 }
 /** To enable logging for this class. Set `Vex.Flow.Stem.DEBUG` to `true`. */
 Stem.DEBUG = false;
-
 
 
 /***/ }),
@@ -30033,7 +30027,6 @@ StringNumber.TEXT_FONT = {
 };
 
 
-
 /***/ }),
 
 /***/ "./src/strokes.ts":
@@ -30269,7 +30262,6 @@ Stroke.TEXT_FONT = {
     weight: _font__WEBPACK_IMPORTED_MODULE_0__.FontWeight.BOLD,
     style: _font__WEBPACK_IMPORTED_MODULE_0__.FontStyle.ITALIC,
 };
-
 
 
 /***/ }),
@@ -30589,7 +30581,7 @@ class SVGContext extends _rendercontext__WEBPACK_IMPORTED_MODULE_1__.RenderConte
             height *= -1;
         }
         const rectangle = this.create('rect');
-        attributes = attributes !== null && attributes !== void 0 ? attributes : { fill: 'none', 'stroke-width': this.lineWidth, stroke: 'black' };
+        attributes = attributes !== null && attributes !== void 0 ? attributes : { fill: 'none', 'stroke-width': this.lineWidth };
         x = this.round(x);
         y = this.round(y);
         width = this.round(width);
@@ -30852,7 +30844,6 @@ class SVGContext extends _rendercontext__WEBPACK_IMPORTED_MODULE_1__.RenderConte
     }
 }
 SVGContext.measureTextCache = new MeasureTextCache();
-
 
 
 /***/ }),
@@ -32109,7 +32100,6 @@ Tables.TIME4_4 = {
     beat_value: 4,
     resolution: RESOLUTION,
 };
-
 // 1/2, 1, 2, 4, 8, 16, 32, 64, 128
 // NOTE: There is no 256 here! However, there are other mentions of 256 in this file.
 // For example, in durations has a 256 key, and sanitizeDuration() can return 256.
@@ -32942,7 +32932,6 @@ TabSlide.TEXT_FONT = {
 };
 
 
-
 /***/ }),
 
 /***/ "./src/tabstave.ts":
@@ -33236,7 +33225,6 @@ TextBracket.TEXT_FONT = {
 };
 
 
-
 /***/ }),
 
 /***/ "./src/textdynamics.ts":
@@ -33368,7 +33356,6 @@ class TextDynamics extends _note__WEBPACK_IMPORTED_MODULE_1__.Note {
 }
 /** To enable logging for this class. Set `Vex.Flow.TextDynamics.DEBUG` to `true`. */
 TextDynamics.DEBUG = false;
-
 
 
 /***/ }),
@@ -33704,7 +33691,6 @@ class TextFormatter {
 TextFormatter.DEBUG = false;
 
 
-
 /***/ }),
 
 /***/ "./src/textnote.ts":
@@ -33897,7 +33883,7 @@ class TextNote extends _note__WEBPACK_IMPORTED_MODULE_2__.Note {
             x -= width / 2;
         }
         else if (this.justification === TextJustification.RIGHT) {
-            x += width;
+            x -= width;
         }
         let y;
         if (this.glyph) {
@@ -33934,7 +33920,6 @@ TextNote.TEXT_FONT = {
     style: _font__WEBPACK_IMPORTED_MODULE_0__.FontStyle.NORMAL,
 };
 TextNote.Justification = TextJustification;
-
 
 
 /***/ }),
@@ -35680,7 +35665,6 @@ class Vex {
 Vex.Flow = _flow__WEBPACK_IMPORTED_MODULE_0__.Flow;
 
 
-
 /***/ }),
 
 /***/ "./src/vibrato.ts":
@@ -35899,7 +35883,6 @@ class VibratoBracket extends _element__WEBPACK_IMPORTED_MODULE_0__.Element {
 }
 /** To enable logging for this class. Set `Vex.Flow.VibratoBracket.DEBUG` to `true`. */
 VibratoBracket.DEBUG = false;
-
 
 
 /***/ }),

@@ -1,5 +1,5 @@
 /*!
- * VexFlow 4.2.7   2024-08-19T03:38:34.249Z   7d77ecf5456d6a5f15551871073491a385160ba7
+ * VexFlow 4.2.8   2024-08-22T00:54:49.402Z   26945f85b426cc69f2acae2474cd84f863046c6d
  * Vexflow_smoosic, forked from :
  * Copyright (c) 2010 Mohit Muthanna Cheppudira <mohit@muthanna.com>
  * https://www.vexflow.com   https://github.com/0xfe/vexflow
@@ -30,9 +30,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   ID: () => (/* binding */ ID),
 /* harmony export */   VERSION: () => (/* binding */ VERSION)
 /* harmony export */ });
-const VERSION = '4.2.7';
-const ID = '7d77ecf5456d6a5f15551871073491a385160ba7';
-const DATE = '2024-08-19T03:38:34.249Z';
+const VERSION = '4.2.8';
+const ID = '26945f85b426cc69f2acae2474cd84f863046c6d';
+const DATE = '2024-08-22T00:54:49.402Z';
 
 
 /***/ }),
@@ -3580,6 +3580,12 @@ ChordSymbol.VerticalJustifyString = {
 ChordSymbol.glyphs = {
     diminished: {
         code: 'csymDiminished',
+    },
+    csymDiminished: {
+        code: 'csymDiminished'
+    },
+    csymMinor: {
+        code: 'csymMinor',
     },
     dim: {
         code: 'csymDiminished',

@@ -180,6 +180,12 @@ export class ChordSymbol extends Modifier {
     diminished: {
       code: 'csymDiminished',
     },
+    csymDiminished: {
+      code: 'csymDiminished'
+    },
+    csymMinor: {
+      code: 'csymMinor',
+    },
     dim: {
       code: 'csymDiminished',
     },
