@@ -1,8 +1,5 @@
 # vexflow_smoosic
-The only difference between this branch and the [main vexflow repository](https://github.com/AaronDavidNewman/vexflow.git) is:
-
-1. the inclusion of the [Leland](https://github.com/MuseScoreFonts/Leland) font
-2. The release directory, which only contains the version vexflow uses.
+The only difference between this branch and the official [vexflow version 4](https://github.com/0xfe/vexflow) is the build and release directory structure.  There are also some bug fixes imported from vexflow 5.
 
 # VexFlow
 
